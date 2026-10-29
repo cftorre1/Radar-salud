@@ -120,7 +120,8 @@ def test_ficha_shows_august_and_keeps_yoy_pending(root):
     assert any("pendiente" in n["text"] for n in fi["notes"])
     tabs = {t["id"]: t for t in fi["tabs"]}
     assert list(tabs) == ["total", "isapres", "mezcla", "movilidad", "regional"]
-    assert [c["form"] for c in tabs["total"]["charts"]] == ["columns_signed", "line"]
+    # Dirección 29-oct (C→B): stock evolution first, monthly differences second.
+    assert [c["form"] for c in tabs["total"]["charts"]] == ["line", "columns_signed"]
     assert [row["label"] for row in tabs["total"]["charts"][0]["rows"]][-1] == "Ago"
     share = tabs["isapres"]["charts"][1]
     assert share["form"] == "dots" and len(share["rows"]) == 7  # open Isapres only
@@ -128,12 +129,150 @@ def test_ficha_shows_august_and_keeps_yoy_pending(root):
     assert fi["verification"]["verdict"] == "PASS" and fi["featured"] is True
     assert fi["verification"]["lenses"] == {"data": "PASS", "editorial": "PASS", "ui": "PASS", "business": "PASS"}
     assert fi["lectura"]["status"] == "not_attempted"
-    # Dirección 28-oct 08:20: each tab carries its own analysis (facts folded in); compact 'Qué mirar'.
-    assert fi["facts"]["rendered_in_tabs"] is True
-    assert tabs["total"]["text"][0] == fi["facts"]["paragraphs"][0]
-    assert tabs["mezcla"]["text"][0] == fi["facts"]["paragraphs"][1]
-    assert tabs["isapres"]["text"][0] == fi["facts"]["paragraphs"][2]
+    # Facts stay as data for the Lectura; the topic layout shows text only where it adds something (Dirección 29-oct).
+    assert fi["facts"]["rendered_in_tabs"] is True and len(fi["facts"]["paragraphs"]) == 3
     assert len(fi["watch"]) == 2
+
+
+def test_topics_follow_the_29_oct_content_rules(root):
+    """Index → topic (option C→B): index line + sparkline per topic; dek and KPI cards only where they add something."""
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    tabs = {t["id"]: t for t in fi["tabs"]}
+    assert {k: t["index_line"] for k, t in tabs.items()} == {
+        "total": "2.486.683 beneficiarios · menor baja del año", "isapres": "Banmédica: 77% de la baja · 3 Isapres crecen",
+        "mezcla": "Cotizantes suben por segundo mes", "movilidad": "Salen más de los que entran · dato a julio",
+        "regional": "Enlace a la SIS · cifras aún no extraídas"}
+    assert {k: t["spark"] for k, t in tabs.items()} == {
+        "total": {"chart": "f1-stock", "form": "line"}, "isapres": {"chart": "f1-isapres", "form": "diverging"},
+        "mezcla": {"chart": "f1-cot", "form": "columns"}, "movilidad": {"chart": "f1-mob", "form": "diverging"}, "regional": None}
+    for k in ("total", "isapres", "movilidad"):
+        assert tabs[k]["dek"] is None and tabs[k]["kpis"] == [] and tabs[k]["text"] == []
+    assert tabs["mezcla"]["dek"] == "Las cargas explican el 78% de la baja del año."
+    assert [(c["label"], c["value"], c["lines"]) for c in tabs["mezcla"]["kpis"]] == [
+        ("Cotizantes", "1.551.169", ["−5.895 desde enero (−0,38%)"]), ("Cargas", "935.514", ["−21.460 desde enero (−2,24%)"])]
+    assert "dek" not in tabs["regional"] and tabs["regional"]["status"] == "pendiente"
+    # Chart text: reading instructions and method clarifications removed; keys and provenance kept.
+    charts = {c["id"]: c for t in fi["tabs"] for c in t["charts"]}
+    texts = " ".join(str(c.get(k) or "") for c in charts.values() for k in ("headline", "subtitle", "legend", "source")).lower()
+    for gone in ("eje sin partir de cero", "columna más corta", "tinta = pierde", "agosto en acento", "no se suman"):
+        assert gone not in texts, gone
+    assert not any(c.get("legend") for c in charts.values())
+    assert "punto = agosto, aro = enero" in charts["f1-share"]["subtitle"]
+    assert "la calcula alicanto" in charts["f1-mm"]["source"].lower()
+    assert charts["f1-stock"]["headline"] == "Beneficiarios Isapre, enero a agosto"
+    # The by-Isapre table: Cambio = Cotizantes + Cargas on every row, closed Isapres grouped, a Sistema row.
+    tbl = charts["f1-isapres"]["table"]
+    assert tbl["columns"] == ["Isapre", "Cambio", "Cotizantes", "Cargas", "% vs. enero"]
+    num = lambda x: int(x.replace("−", "-").replace("+", "").replace(".", ""))  # noqa: E731
+    for row in tbl["rows"]:
+        assert num(row[1]) == num(row[2]) + num(row[3]), row
+    assert [r[0] for r in tbl["rows"]][-1] == "Sistema" and "Cerradas (3)" in [r[0] for r in tbl["rows"]]
+    assert tbl["rows"][0] == ["Banmédica", "−20.948", "−9.542", "−11.406", "−3,70%"]
+    assert tbl["rows"][-1] == ["Sistema", "−27.355", "−5.895", "−21.460", "−1,09%"]
+    assert any("'Menor baja del año' compara" in n["text"] for n in fi["notes"])
+
+
+def test_verify_ficha_traces_topic_kpis_index_lines_and_sparks(root):
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    assert sf.verify_ficha(fi, p)["verdict"] == "PASS"
+
+    def broken(edit):
+        tabs = json.loads(json.dumps(fi["tabs"]))
+        edit({t["id"]: t for t in tabs})
+        return sf.verify_ficha({**fi, "tabs": tabs}, p)["errors"]
+
+    # A figure on a topic card must come from the values that card cites, not from any package value.
+    assert any(e.startswith("topic_kpi_number_not_in_refs:mezcla:tema-cargas")
+               for e in broken(lambda t: t["mezcla"]["kpis"][1].update(value="1.551.169")))
+    assert any(e.startswith("topic_kpi_ref_missing:mezcla") for e in broken(lambda t: t["mezcla"]["kpis"][0].update(refs=["no.existe"])))
+    assert "number_not_in_evidence:81" in broken(lambda t: t["mezcla"].update(dek="Las cargas explican el 81% de la baja del año."))
+    assert "count_not_in_evidence:isapres:4 crecen" in broken(lambda t: t["isapres"].update(index_line="Banmédica: 77% de la baja · 4 Isapres crecen"))
+    assert "spark_not_a_topic_chart:total" in broken(lambda t: t["total"].update(spark={"chart": "f1-cot", "form": "line"}))
+    assert "ui:index_line_long:total" in broken(lambda t: t["total"].update(index_line="x" * 70))
+    assert "ui:topic_over_2_kpis:mezcla" in broken(lambda t: t["mezcla"]["kpis"].append(t["mezcla"]["kpis"][0]))
+
+
+def test_topic_lines_cite_their_own_refs(root):
+    """Independent review 29-oct: index lines and topic deks trace to the refs they declare (unit- and entity-aware)."""
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    tabs = {t["id"]: t for t in fi["tabs"]}
+    assert tabs["total"]["index_refs"] == ["sistema.beneficiarios.2026-08"]
+    assert tabs["isapres"]["index_refs"] == ["contrib.99", "conteo.abiertas_crecen"]
+    assert tabs["mezcla"]["index_refs"] == [] and tabs["mezcla"]["dek_refs"] == ["cargas.contrib"]
+
+    def errors(edit):
+        tabs2 = json.loads(json.dumps(fi["tabs"]))
+        edit({t["id"]: t for t in tabs2})
+        return sf.verify_ficha({**fi, "tabs": tabs2}, p)["errors"]
+
+    # Some package value equals 79 (Isapre 76, cotizantes −79): a global pool would let this wrong share through.
+    assert any(abs(v["value"]) == 79 for v in p["values"].values())
+    assert "topic_number_not_in_refs:isapres:index:79%" in errors(
+        lambda t: t["isapres"].update(index_line="Banmédica: 79% de la baja · 3 Isapres crecen"))
+    # '15 regiones' must not trace to a share (or to anything) the line does not cite.
+    assert "topic_number_not_in_refs:regional:index:15" in errors(lambda t: t["regional"].update(index_line="15 regiones con datos"))
+    # Unit-aware: the contribution is a %, so a plain '77' does not match it, and '3' never matches a %.
+    assert "topic_number_not_in_refs:isapres:index:77" in errors(lambda t: t["isapres"].update(index_line="Banmédica: 77 de la baja"))
+    assert "topic_number_not_in_refs:isapres:index:3%" in errors(lambda t: t["isapres"].update(index_line="Banmédica: 3% de la baja"))
+    # Entity-aware: Banmédica's share credited to another Isapre fails.
+    other = next(e["name"] for e in p["entities"] if e["code"] == 67)
+    assert f"topic_entity_not_in_refs:isapres:index:{other}" in errors(
+        lambda t: t["isapres"].update(index_line=f"{other}: 77% de la baja"))
+    # A dek figure traces to the dek's refs only.
+    assert "topic_number_not_in_refs:mezcla:dek:81%" in errors(lambda t: t["mezcla"].update(dek="Las cargas explican el 81% de la baja del año."))
+    assert any(e.startswith("topic_ref_missing:total:index") for e in errors(lambda t: t["total"].update(index_refs=["no.existe"])))
+
+
+@pytest.mark.parametrize("tab,line,error", [
+    ("isapres", "Banmédica: 79% de la baja · 3 Isapres crecen", "topic_number_not_in_refs:isapres:index:79%"),
+    ("regional", "15 regiones con datos", "topic_number_not_in_refs:regional:index:15"),
+    ("mezcla", "Cotizantes suben por tercer mes", "derived_claim_not_in_series:racha:cotizantes:tercer"),
+    ("mezcla", "Cotizantes bajan por segundo mes", "derived_claim_not_in_series:racha:cotizantes:segundo"),
+    ("total", "2.486.683 beneficiarios · menor baja del año", None),
+])
+def test_wrong_topic_lines_hold(root, monkeypatch, tab, line, error):
+    """End to end: a wrong index line never publishes (HOLD); the true line still passes."""
+    real = f1.compose
+
+    def compose(*a, **kw):
+        fi = real(*a, **kw)
+        next(t for t in fi["tabs"] if t["id"] == tab)["index_line"] = line
+        return fi
+    monkeypatch.setattr(f1, "compose", compose)
+    r = f1.run(root, today=TODAY, llm=False)
+    if error is None:
+        assert r["status"] == "pass", r.get("errors")
+    else:
+        assert r["status"] == "hold" and error in r["errors"], r.get("errors")
+
+
+def test_derived_claims_are_recomputed_from_the_series(root):
+    p = f1.build_package(root)
+    assert sf.derived_claim_errors("Cotizantes suben por segundo mes", p) == []
+    assert sf.derived_claim_errors("Segundo mes al alza (jul +475)", p, "cotizantes") == []
+    assert sf.derived_claim_errors("la menor baja del año", p) == []
+    assert sf.derived_claim_errors("Cotizantes: menor baja del año", p) == ["derived_claim_not_in_series:menor_baja:cotizantes"]
+    worse = json.loads(json.dumps(p))
+    worse["values"]["sistema.beneficiarios.mm.2026-08"]["value"] = -99999  # August is no longer the smallest decline
+    assert sf.derived_claim_errors("la menor baja del año", worse) == ["derived_claim_not_in_series:menor_baja:beneficiarios"]
+    late = {**p, "periods": p["periods"][1:]}  # series starts after January: 'del año' cannot be claimed
+    assert "derived_claim_not_in_series:menor_baja:beneficiarios" in sf.derived_claim_errors("menor baja del año", late)
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    wrong = json.loads(json.dumps(fi))
+    wrong["kpis"][1]["lines"][1] = "Tercer mes al alza (jul +475)"
+    assert "derived_claim_not_in_series:racha:cotizantes:tercer" in sf.verify_ficha(wrong, p)["errors"]
+
+
+def test_isapre_table_split_must_add_up(root):
+    """A capture whose cotizantes + cargas do not add up to beneficiarios never publishes the split table."""
+    data = portfolio(root)
+    for o in data["observations"]:
+        if o["period"] == "2026-08" and o["official_code"] == 99 and o["metric_id"] == "cargas":
+            o["value"] += 1
+    (root / INPUTS[0]).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    assert f1.run(root, today=TODAY, llm=False)["status"] == "hold"
 
 
 def test_verify_ficha_rejects_invented_sources_links_and_placeholders(root):
@@ -581,9 +720,10 @@ def test_sentences_without_figures_must_add_an_implication(root):
     fi = f1.run(root, today=TODAY, llm=False)["ficha"]
     p = f1.build_package(root)
     assert any(e.startswith("no_implication") for e in sf.verify_lectura("La serie se mantiene estable en el período.", p, ficha=fi)["errors"])
-    shown = "Una razón menor no implica menos ingreso: la cotización la paga el cotizante."
+    # Shown text without figures: the Regional topic's text (the only tab text the C→B layout shows for F1).
+    shown = "Alicanto aún no extrae las cifras regionales: la publicación queda enlazada y su ficha suelta se absorbe aquí."
     assert any(e.startswith("restates_shown_text") for e in sf.verify_lectura(shown, p, ficha=fi)["errors"])
-    reworded = "Para las Isapres, una razón menor no implica menos ingreso, porque paga el cotizante."
+    reworded = "Para las Isapres, Alicanto aún no extrae las cifras regionales, porque la publicación solo queda enlazada."
     assert any(e.startswith("restates_shown_text") for e in sf.verify_lectura(reworded, {**p, "causal_note": "n"}, ficha=fi)["errors"])
     two = ("Para la competencia, Banmédica cedió 0,6 pp de participación entre las abiertas desde enero. "
            "Para los prestadores, el riesgo de la cartera se concentra en un solo asegurador.")
@@ -709,8 +849,7 @@ def test_reused_lectura_is_rechecked_with_the_current_verifier(root):
 
 def test_lectura_repeating_a_ficha_sentence_is_dropped(root):
     fi = f1.run(root, today=TODAY, llm=False)["ficha"]
-    repeated = next(x for tab in fi["tabs"] for x in tab.get("text") or [] if "ingreso" in x and not any(ch.isdigit() for ch in x.split(". ")[1]))
-    sentence = repeated.split(". ", 1)[1]
+    sentence = next(x for tab in fi["tabs"] for x in tab.get("text") or [] if "regionales" in x and not any(ch.isdigit() for ch in x))
     text = "Para las Isapres, la señal es de estabilidad en la cartera. " + sentence
     v = sf.verify_lectura(text, f1.build_package(root), ficha=fi)
     assert any(e.startswith("restates_shown_text") for e in v["errors"]), v  # caught by the Jaccard rule…
@@ -835,7 +974,7 @@ def test_four_lenses_reject_redundancy_ui_overload_and_missing_denominator(root)
     fi = f1.run(root, today=TODAY, llm=False)["ficha"]
     p = f1.build_package(root)
     # The facts now live in the tabs: the same sentence in two tabs (or in the dek) is redundant.
-    repeated = {**fi, "tabs": [fi["tabs"][0], {**fi["tabs"][1], "text": fi["tabs"][1]["text"] + fi["tabs"][0]["text"][:1]}, *fi["tabs"][2:]]}
+    repeated = {**fi, "tabs": [fi["tabs"][0], {**fi["tabs"][1], "text": fi["tabs"][1]["text"] + fi["tabs"][-1]["text"][:1]}, *fi["tabs"][2:]]}
     assert any(e.startswith("editorial:repeated_sentence") for e in sf.verify_ficha(repeated, p)["errors"])
     crowded = {**fi, "tabs": [{**fi["tabs"][0], "charts": fi["tabs"][0]["charts"] * 2}, *fi["tabs"][1:]]}
     assert "ui:tab_over_2_charts:total" in sf.verify_ficha(crowded, p)["errors"]

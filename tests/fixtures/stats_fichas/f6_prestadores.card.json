@@ -37,7 +37,7 @@
   "family_label": "Prestadores: Boletín IP",
   "period": "2026-06",
   "published_at": "2026-08-03",
-  "generated_at": "2026-10-29T08:05:49.491199+00:00",
+  "generated_at": "2026-10-29T12:14:48.194353+00:00",
   "release_key": "2026-06:15f9538e2b908c05",
   "featured": false,
   "triggers": [
@@ -209,7 +209,17 @@
      "Al cierre de junio 2026 había 971 prestadores acreditados; 101 tenían observaciones, el 10,4% de los acreditados.",
      "De las 584 solicitudes en tramitación, 367 eran de prestadores privados y 217 de públicos. La división pública/privada del stock acreditado no está verificada.",
      "La comparación con el boletín anterior queda pendiente: ese boletín no tiene cifras verificadas en un documento capturado."
-    ]
+    ],
+    "spark": {
+     "chart": "f6-tramite",
+     "form": "bars"
+    },
+    "index_line": "971 prestadores acreditados · 584 solicitudes en trámite",
+    "index_refs": [
+     "acr.acreditados",
+     "acr.tramite"
+    ],
+    "kpis": []
    },
    {
     "id": "mediacion",
@@ -218,7 +228,13 @@
     "text": [
      "La SIS registraba 175 mediadores inscritos al cierre de junio 2026.",
      "Las solicitudes de mediación acumuladas desde enero de 2019 suman 12.067: es un flujo acumulado, no un stock, y no se divide por el número de mediadores."
-    ]
+    ],
+    "spark": null,
+    "index_line": "175 mediadores inscritos",
+    "index_refs": [
+     "med.mediadores"
+    ],
+    "kpis": []
    },
    {
     "id": "reclamos",
@@ -269,7 +285,17 @@
     "text": [
      "Entre enero y junio ingresaron en promedio 1.996 reclamos al mes, frente a 1.530 en 2025: 466 más al mes.",
      "La SIS informa la variación redondeada (30%); Alicanto la recalcula con los promedios publicados (+30,5%)."
-    ]
+    ],
+    "spark": {
+     "chart": "f6-reclamos",
+     "form": "bars"
+    },
+    "index_line": "1.996 reclamos al mes · +30,5% vs. 2025",
+    "index_refs": [
+     "rec.promedio.2026",
+     "rec.pct"
+    ],
+    "kpis": []
    },
    {
     "id": "rnpi",
@@ -278,7 +304,13 @@
     "text": [
      "El Registro Nacional de Prestadores Individuales tenía 1.004.982 títulos inscritos al cierre de junio 2026. Son títulos, no profesionales únicos: una persona puede tener más de uno.",
      "4.036 registros no tienen fecha de nacimiento."
-    ]
+    ],
+    "spark": null,
+    "index_line": "1.004.982 títulos inscritos",
+    "index_refs": [
+     "rnpi.titulos"
+    ],
+    "kpis": []
    }
   ],
   "facts": {
@@ -332,7 +364,7 @@
     "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf",
     "sha256": "15f9538e2b908c0575682010b6c650f930b5d861f3b7cf7709ad111ebe0870db",
     "published_at": "2026-08-03",
-    "fetched_at": "2026-10-29T08:05:48.828353+00:00",
+    "fetched_at": "2026-10-29T12:14:47.615176+00:00",
     "label": "SIS · Boletín IP N°2-2026 · Acreditación (PDF)",
     "role": "acreditación: cifras verificadas en el PDF capturado",
     "locator": "págs. 1, 2, 7, 8",
@@ -342,7 +374,7 @@
     "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf",
     "sha256": "00aea14f20e6de0432e4377eb386ec80f36508a49af5a7b110aeff975d49f687",
     "published_at": "2026-08-03",
-    "fetched_at": "2026-10-29T08:05:48.891417+00:00",
+    "fetched_at": "2026-10-29T12:14:47.670205+00:00",
     "label": "SIS · Boletín IP N°2-2026 · Mediación (PDF)",
     "role": "mediación: cifras verificadas en el PDF capturado",
     "locator": "págs. 2, 5, 6",
@@ -352,7 +384,7 @@
     "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-reclamos-enero-junio-2026.pdf",
     "sha256": "a80750b8b80f2d1c86b1f7e48021862a88a56325e80cdb23dc564a9f1b375349",
     "published_at": "2026-08-03",
-    "fetched_at": "2026-10-29T08:05:48.892885+00:00",
+    "fetched_at": "2026-10-29T12:14:47.671507+00:00",
     "label": "SIS · Boletín IP N°2-2026 · Reclamos (PDF)",
     "role": "reclamos: cifras verificadas en el PDF capturado",
     "locator": "págs. 2",
@@ -362,7 +394,7 @@
     "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-rnpi-enero-junio-2026.pdf",
     "sha256": "f2628fa9c5c44b19b4056a12c4e77b2b07544f8afde78db83b643dabee714f27",
     "published_at": "2026-08-03",
-    "fetched_at": "2026-10-29T08:05:48.894345+00:00",
+    "fetched_at": "2026-10-29T12:14:47.672839+00:00",
     "label": "SIS · Boletín IP N°2-2026 · RNPI (PDF)",
     "role": "rnpi: cifras verificadas en el PDF capturado",
     "locator": "págs. 1, 2, 4",

@@ -6,8 +6,8 @@ const path=require('node:path');
 // 'Compartir informe' deep link, no horizontal overflow. Cards come from tests/fixtures/stats_fichas (fixture hashes;
 // F4 values are synthetic test values, F6 values are the verified N°2-2026 reading).
 const SHOTS=process.env.ALICANTO_SHOTS_DIR||'artifacts';
-for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral'],4],
-                               ['f6_prestadores',['Acreditación','Mediación','Reclamos','RNPI'],4]]){
+for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral'],0],
+                               ['f6_prestadores',['Acreditación','Mediación','Reclamos','RNPI'],0]]){
  test(`${slug} ficha opens with tabs, charts and a share link`,async({page})=>{
   const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));
   await page.clock.setFixedTime(new Date('2026-10-29T12:00:00-03:00'));
@@ -23,21 +23,25 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
   await row.locator('[data-detail]').first().click();
   const body=page.locator('#detailBody');
   await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
-  await expect(body.locator('.sf-kpi')).toHaveCount(kpis);
-  expect(await body.locator('[role=tab]').evaluateAll(xs=>xs.map(x=>x.textContent.trim()))).toEqual(tabs);
+  // Index → topic (Dirección 29-oct, generic for every family): one row per topic with the builder's index line.
+  await expect(body.locator('.sf-index')).toBeVisible();await expect(body.locator('.sf-kpi:visible')).toHaveCount(kpis);
+  expect(await body.locator('.sf-row-label').evaluateAll(xs=>xs.map(x=>x.firstChild.textContent.trim()))).toEqual(tabs);
+  expect(await body.locator('.sf-row-line').evaluateAll(xs=>xs.map(x=>x.textContent))).toEqual(card.stats_ficha.tabs.map(t=>t.index_line));
   await expect(body.locator('details.sf-notes')).not.toHaveAttribute('open','');
   await expect(body.locator('.sf-reading')).toHaveCount(0);  // no Lectura without a model run
   await expect(body).not.toContainText('Por qué importa');
-  // Every tab opens and every SVG label stays inside its viewBox (no clipped values at 390 px).
-  const inside=()=>page.evaluate(()=>[...document.querySelectorAll('#detailBody .sf-panel:not([hidden]) svg')].every(s=>{const vb=s.viewBox.baseVal;return [...s.querySelectorAll('text')].every(t=>{const b=t.getBBox();return b.x>=-1&&b.x+b.width<=vb.width+1})}));
-  for(const name of tabs){await body.getByRole('tab',{name}).click();await expect(body.locator('.sf-panel:not([hidden])')).toBeVisible();expect(await inside(),name).toBeTruthy()}
-  await body.getByRole('tab',{name:tabs[0]}).click();
-  const charts=body.locator('.sf-panel:not([hidden]) .sf-chart');
+  // Every topic opens (› steps through them) and every SVG label stays inside its viewBox (no clipped values at 390 px).
+  const inside=()=>page.evaluate(()=>[...document.querySelectorAll('#detailBody .sf-tpanel:not([hidden]) svg[role=img]')].every(s=>{const vb=s.viewBox.baseVal;return [...s.querySelectorAll('text')].every(t=>{const b=t.getBBox();return b.x>=-1&&b.x+b.width<=vb.width+1})}));
+  await body.locator('.sf-row').first().click();
+  for(const [i,name] of tabs.entries()){if(i)await body.locator('[data-sf-step="1"]').click();await expect(body.locator('.sf-pick-label')).toHaveText(name);await expect(body.locator('.sf-tpanel:not([hidden])')).toBeVisible();expect(await inside(),name).toBeTruthy()}
+  await body.locator('.sf-pick').click();await body.locator('[role=option]').nth(1).click();
+  await expect(body.locator('.sf-pick-label')).toHaveText(tabs[0]);
+  const charts=body.locator('.sf-tpanel:not([hidden]) .sf-chart');
   expect(await charts.count()).toBeGreaterThan(0);
   await charts.first().locator('summary').click();
   await expect(charts.first().locator('table tbody tr').first()).toBeVisible();
   await charts.first().locator('summary').click();
-  for(const loc of [body.locator('[role=tab]').first(),body.locator('.sf-share')]){const box=await loc.boundingBox();expect(box.height).toBeGreaterThanOrEqual(44)}
+  for(const loc of [body.locator('.sf-pick'),body.locator('.sf-share')]){const box=await loc.boundingBox();expect(box.height).toBeGreaterThanOrEqual(44)}
   await body.locator('.sf-share').click();
   await expect(body.locator('.sf-share-status')).toHaveText('Enlace copiado.');
   expect(await page.evaluate(()=>window.__copied[0])).toMatch(new RegExp(`/data/fichas/${slug}\\.html$`));
@@ -45,8 +49,7 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
   expect(await page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1})).toBeTruthy();
   fs.mkdirSync(SHOTS,{recursive:true});
   await page.screenshot({path:path.join(SHOTS,`${slug}-${test.info().project.name}.png`),fullPage:false});
-  await body.locator('.sf-tabs').scrollIntoViewIfNeeded();
-  await page.screenshot({path:path.join(SHOTS,`${slug}-${test.info().project.name}-tabs.png`),fullPage:false});
+  await page.screenshot({path:path.join(SHOTS,`${slug}-${test.info().project.name}-topic.png`),fullPage:false});
  });
 }
 
@@ -66,12 +69,13 @@ for(const [slug,tabs] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre
   await row.locator('[data-detail]').first().click();
   const body=page.locator('#detailBody');
   await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
-  const check=()=>page.evaluate(()=>[...document.querySelectorAll('#detailBody .sf-panel:not([hidden]) svg')].map(s=>{
+  const check=()=>page.evaluate(()=>[...document.querySelectorAll('#detailBody .sf-tpanel:not([hidden]) svg[role=img]')].map(s=>{
    const vb=s.viewBox.baseVal,texts=[...s.querySelectorAll('text')],inside=texts.every(t=>{const b=t.getBBox();return b.x>=-1&&b.x+b.width<=vb.width+1});
    const xl=[...s.querySelectorAll('text.sf-xlab')].map(t=>t.getBBox()).sort((a,b)=>a.x-b.x);
    return {inside,overlap:xl.some((b,i)=>i&&b.x<xl[i-1].x+xl[i-1].width)}}));
-  for(const name of tabs){
-   await body.getByRole('tab',{name}).click();await expect(body.locator('.sf-panel:not([hidden])')).toBeVisible();
+  await body.locator('.sf-row').first().click();
+  for(const [i,name] of tabs.entries()){
+   if(i)await body.locator('[data-sf-step="1"]').click();await expect(body.locator('.sf-pick-label')).toHaveText(name);await expect(body.locator('.sf-tpanel:not([hidden])')).toBeVisible();
    for(const r of await check()){expect(r.inside,name).toBeTruthy();expect(r.overlap,name).toBeFalsy()}
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();

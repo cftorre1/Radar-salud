@@ -447,8 +447,9 @@ def test_registry_declares_f4_f6_rules():
 
 def test_snapshot_ges_card_leaves_hold_only_when_f4_passes(root):
     hist = json.loads((REPO / "data/history/superintendencia_signals.json").read_text(encoding="utf-8"))["signals"]
+    # Statistics cards only: SIS news (e.g. "Más de 62 millones de casos GES…", 29-oct) also mention GES cases.
     ges = [sf.sanitize_ges_signal(s) for s in hist if "casos ges" in cap._fold(s.get("title"))
-           and s.get("source_name") == "Superintendencia de Salud"]
+           and cap._fold(s.get("title")).startswith("estadistica") and s.get("source_name") == "Superintendencia de Salud"]
     assert any((s.get("statistical_view") or {}).get("publication_status") == "HOLD" for s in ges)
     cards = [{**s, "signal_types": s.get("signal_types") or ["Datos"]} for s in ges]
     # No PASS: no live F4 ficha, the loose GES cards stay as they are (in HOLD).

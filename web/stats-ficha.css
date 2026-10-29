@@ -54,23 +54,89 @@
 .sf-notes code{font-size:11.5px;color:#6B7884}
 .sf-role{color:#6B7884}
 #signalDetail .sf-machine{font-size:12px;color:#6B7884;margin-top:16px;line-height:1.5}
-.sf-tabs{margin:0 0 30px}
-.sf-tablist{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;margin:0 -16px 14px;padding:0 16px 4px;border-bottom:1px solid #E4DFD3}
-.sf-tab{flex:none;min-height:44px;padding:0 14px;border:0;border-bottom:3px solid transparent;background:none;color:#4F6170;font:650 14px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;cursor:pointer;white-space:nowrap}
-.sf-tab[aria-selected="true"]{color:var(--ink,#1D3345);border-bottom-color:var(--accent,#C37C37)}
-.sf-tab:focus-visible,.sf-panel:focus-visible{outline:2px solid #E3A24F;outline-offset:2px}
-.sf-pending{font-size:10.5px;font-weight:700;color:#6B7884;background:#EEF1F3;border-radius:999px;padding:2px 6px;margin-left:4px}
-#signalDetail .sf-tab-text{font-size:15.5px;line-height:1.6;margin:0 0 14px;max-width:640px}
-.sf-panel .sf-charts{margin-bottom:0}
+.sf-pending{font-size:10.5px;font-weight:700;color:#6B7884;background:#EEF1F3;border-radius:999px;padding:2px 6px;margin-left:6px;vertical-align:1px}
 .sf-links{margin:0;padding-left:18px;font-size:14px;line-height:1.6}
 .sf-links a{color:var(--ink,#1D3345);text-decoration-color:var(--accent,#C37C37);text-underline-offset:2px}
-@media (min-width:820px){.sf-tablist{margin:0 0 14px;padding:0 0 4px}}
 @media (min-width:820px){.sf-kpis{grid-template-columns:repeat(4,1fr);gap:12px}.sf-charts{grid-template-columns:1fr 1fr;gap:20px}}
 /* Public correction note (CLAUDE.md rule 6): dated mark on the row, full note in the detail. */
 .correction-tag{margin-left:6px;background:#F4EFE6;color:var(--ink,#1D3345)}
 .stat-correction{font-size:13px;margin:0 0 10px;padding:8px 12px;border-radius:8px;background:#F4EFE6;color:var(--ink,#1D3345)}
 /* Dirección 28-oct 08:20: tab analysis carries the facts; notes and sources sit behind one toggle. */
-.sf-tab-text{max-width:640px}
 .sf-reading{max-width:640px}
 .sf-notes summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:650;font-size:14px;color:var(--ink,#1D3345)}
 .sf-notes[open] summary{margin-bottom:12px}
+/* Index → topic (Dirección 29-oct, option C→B): the ficha opens as an index of its topics with sparklines; a topic
+   opens with a sticky picker, the hero chart first, then its dek, KPI cards and other charts. */
+.sf-cb .sf-actions{margin-bottom:18px}
+.sf-index{margin:0 0 24px;border:1px solid #E4DFD3;border-radius:14px;background:#fff;overflow:hidden}
+.sf-index[hidden],.sf-topic[hidden],.sf-tpanel[hidden],.sf-list[hidden]{display:none}
+.sf-index-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:10px 14px 8px;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#6B7884;border-bottom:1px solid #E4DFD3}
+.sf-index-h span{letter-spacing:0;text-transform:none;font-weight:500;text-align:right}
+.sf-item+.sf-item{border-top:1px solid #E4DFD3}
+.sf-row{display:grid;grid-template-columns:minmax(0,1fr) 96px 18px;align-items:center;gap:10px;min-height:64px;padding:9px 12px 9px 14px;background:#fff;color:var(--ink,#1D3345);text-decoration:none}
+.sf-row:hover{background:#FBF8F2}
+.sf-row:active{background:#F7EFE4}
+.sf-row.sf-last{box-shadow:inset 3px 0 0 var(--accent,#C37C37);background:#FBF5EC}
+.sf-row-txt{min-width:0}
+.sf-row-label{display:block;font-size:15.5px;font-weight:650;line-height:1.3}
+.sf-row-line{display:block;font-size:12.5px;color:#6B7884;margin-top:2px;line-height:1.35}
+.sf-spark{display:flex;justify-content:flex-end}
+.sf-spark svg{width:96px;height:28px;display:block}
+.sf-spark-pend{font-size:11px;color:#6B7884;border:1px dashed #CFC6B5;border-radius:999px;padding:2px 8px}
+.sf-go{display:inline-flex;color:#6B7884}
+.sf-sticky{position:sticky;top:0;z-index:5;margin:0 -16px 12px;padding:8px 10px;background:rgba(250,249,245,.97)}
+/* Sticky offsets count from the dialog's content edge: with no top padding the picker pins flush at the top. */
+#signalDetail:has(.sf-cb){padding-top:0}
+#signalDetail:has(.sf-cb)>.detail-top{margin-top:12px}
+.sf-sticky.stuck{border-bottom:1px solid #E4DFD3;box-shadow:0 6px 14px -10px rgba(29,51,69,.25)}
+@media (min-width:820px){.sf-sticky{margin:0 -36px 14px;padding:8px 36px}#signalDetail:has(.sf-cb)>.detail-top{margin-top:18px}}
+.sf-picker{position:relative;display:flex;gap:6px;min-width:0}
+.sf-pick{flex:1;display:flex;align-items:center;gap:6px;min-width:0;min-height:52px;padding:6px 8px 6px 12px;border:1.5px solid var(--ink,#1D3345);border-radius:12px;background:#fff;color:var(--ink,#1D3345);font:inherit;text-align:left;cursor:pointer}
+.sf-pick-ver{font-size:12px;font-weight:650;color:#6B7884;text-transform:uppercase;letter-spacing:.06em}
+.sf-pick-label{flex:1;min-width:0;font-size:15.5px;font-weight:650;line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.sf-pick-count{font-size:12px;font-weight:650;color:#6B7884;white-space:nowrap}
+.sf-pick-chev{width:18px;height:18px;flex:none;transition:transform .15s}
+.sf-pick[aria-expanded="true"] .sf-pick-chev{transform:rotate(180deg)}
+.sf-step{flex:none;width:42px;min-height:52px;border:1px solid #E4DFD3;border-radius:12px;background:#fff;color:var(--ink,#1D3345);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.sf-step:disabled{opacity:.35;cursor:default}
+.sf-list{position:absolute;z-index:6;left:0;right:0;top:calc(100% + 6px);margin:0;padding:6px;list-style:none;background:#fff;border:1px solid #E4DFD3;border-radius:14px;box-shadow:0 14px 34px rgba(29,51,69,.18);max-height:70vh;overflow:auto}
+.sf-opt{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 10px;border-radius:10px;cursor:pointer}
+.sf-opt:hover,.sf-opt.active{background:#F4F1EA}
+.sf-opt[aria-selected="true"]{background:#F7EFE4}
+.sf-opt-all{border-bottom:1px solid #E4DFD3;border-radius:10px 10px 4px 4px;margin-bottom:4px}
+.sf-opt-n{flex:none;width:22px;height:22px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;color:#4F6170;background:#EEF1F3}
+.sf-opt-all .sf-opt-n{background:#F4F1EA;color:var(--ink,#1D3345)}
+.sf-opt[aria-selected="true"] .sf-opt-n{background:var(--accent,#C37C37);color:#fff}
+.sf-opt-txt{flex:1;min-width:0}
+.sf-opt-label{display:block;font-size:15px;font-weight:650;color:var(--ink,#1D3345)}
+.sf-opt-line{display:block;font-size:12.5px;color:#6B7884;margin-top:1px}
+.sf-tpanels{min-height:50vh}
+.sf-hero{margin:0 0 14px}
+.sf-hero .sf-chart{border-color:#D9D2C3}
+@media (min-width:820px){.sf-hero .sf-chart svg{max-width:620px;margin:0 auto}}
+#signalDetail .sf-tdek{font-size:15.5px;line-height:1.5;margin:0 0 12px;max-width:640px}
+.sf-tkpis{margin:0 0 14px;gap:8px}
+@media (min-width:820px){.sf-tkpis{grid-template-columns:1fr 1fr;max-width:640px}}
+.sf-tpanel .sf-charts{margin:0 0 14px}
+.sf-tpanel .sf-links{margin:0 0 14px}
+.sf-next{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:52px;margin:4px 0 10px;padding:0 14px;border:1px dashed #CFC6B5;border-radius:12px;background:none;color:var(--ink,#1D3345);font:inherit;font-size:14.5px;cursor:pointer;text-align:left}
+.sf-next span{color:#6B7884;font-size:12.5px}
+.sf-next b{flex:1;font-weight:650}
+.sf-next svg{flex:none}
+.sf-all{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;margin:0 0 28px;border:0;border-radius:12px;background:#F1EDE4;color:var(--ink,#1D3345);font:inherit;font-size:14.5px;font-weight:650;cursor:pointer}
+.sf-row:focus-visible,.sf-pick:focus-visible,.sf-step:focus-visible,.sf-next:focus-visible,.sf-all:focus-visible,.sf-list:focus-visible{outline:2px solid #E3A24F;outline-offset:-2px}
+.sf-in{animation:sfIn .28s cubic-bezier(.2,.7,.2,1)}
+.sf-from-right{animation:sfR .26s cubic-bezier(.2,.7,.2,1)}
+.sf-from-left{animation:sfL .26s cubic-bezier(.2,.7,.2,1)}
+@keyframes sfIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes sfR{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes sfL{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sf-in,.sf-from-right,.sf-from-left{animation:none}}
+@media (max-width:350px){.sf-row{grid-template-columns:minmax(0,1fr) 72px 14px;gap:8px;padding:9px 10px}.sf-spark svg{width:72px;height:24px}.sf-pick-ver{display:none}}
+/* Data tables: figures never break inside a number ('−20.948'); headers wrap at spaces; a table wider than the card
+   scrolls inside its toggle instead of widening the ficha. */
+.sf-data{overflow-x:auto}
+.sf-table{font-size:12px}
+.sf-table th,.sf-table td{overflow-wrap:normal;word-break:normal;padding:5px 3px}
+.sf-table td.n{white-space:nowrap}
+@media (max-width:420px){.sf-data{margin-left:-8px;margin-right:-8px}.sf-data summary{padding-left:8px}.sf-table{font-size:11.5px}.sf-table th,.sf-table td{padding:4px 2px}}

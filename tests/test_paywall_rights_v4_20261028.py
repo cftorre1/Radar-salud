@@ -282,7 +282,9 @@ def test_no_stored_la_tercera_item_is_open_and_every_one_carries_its_access_basi
         assert len(md.get("page_text") or "") <= 600
     receipt = json.loads((ROOT / "data/audits/rights_links_migration_2026_10_28.json").read_text(encoding="utf-8"))
     access = receipt["counts"]["la_tercera_access"]["queue" if "queue" in path else "cache"]
-    assert access.get("open_by_path_only", 0) == 0 and access["total"] == len(lt)
+    # The receipt counts the items present at migration time; later runs only add items, and each one is
+    # checked above (paywalled, access basis, ≤ 600 characters). The daily run of 29-oct added new pieces.
+    assert access.get("open_by_path_only", 0) == 0 and access["total"] <= len(lt)
     assert not any(k.startswith("open_by_") for k in access)
     assert receipt["counts"]["remaining_fingerprinted"]["paywalled_context_characters"] == 0
 
