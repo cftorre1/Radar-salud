@@ -164,7 +164,7 @@ def run(cards, model=None, budget=None, cache=None, env=KEY, config=CONFIG):
 
 
 def test_translated_card_keeps_original_title_id_and_adds_verified_spanish():
-    payload, model, budget, cache = run([card(1, description="Weekly measles summary from ECDC."), card(2, source="the_conversation", sections=())])
+    payload, model, budget, cache = run([card(1, description="Weekly measles summary from ECDC."), card(2, source="kff_health_news", sections=())])
     by_id = {c["id"]: c for c in payload["items"]}
     ecdc = by_id["id1"]
     assert ecdc["title"] == "Measles surveillance report number 1 for Europe"  # original kept (dedupe, attribution)
@@ -174,7 +174,7 @@ def test_translated_card_keeps_original_title_id_and_adds_verified_spanish():
     assert ecdc["translation"]["notice_es"] == NOTICE_ES and ecdc["translation"]["change_notice_es"] == "Traducción de Alicanto"
     assert ecdc["ai_used"] is True and set(by_id) == {"id1", "id2"}
     assert ecdc["translation"]["kind"] == "translation"
-    conv = by_id["id2"]  # CC BY-ND: no translation; Alicanto's own summary instead (Dirección 29-oct)
+    conv = by_id["id2"]  # KFF (CC BY-NC-ND): no translation; Alicanto's own summary instead (Dirección 29-oct)
     assert "title_es" not in conv and conv["title"] == "Measles surveillance report number 2 for Europe"
     assert conv["translation"]["status"] == "summarized" and conv["translation"]["kind"] == "summary"
     assert conv["translation"]["notice_es"] == SUMMARY_NOTICE_ES and conv["summary_es"].startswith("El informe")
@@ -441,3 +441,11 @@ def test_summary_budget_path_no_key_and_shared_cap():
     assert len(model.calls) == 30 and cache["last_run"]["new_calls"] == 30 and cache["last_run"]["stopped"] == "run_cap"
     kinds = {c["translation"].get("kind") for c in payload["items"]}
     assert {"translation", "summary"} <= kinds
+
+
+def test_the_conversation_gets_no_summary_from_a_bare_headline():
+    # Its feed stores no description: a summary would paraphrase a CC BY-ND headline, so the original is shown.
+    payload, model, _, _ = run([card(3, source="the_conversation", sections=())])
+    c = payload["items"][0]
+    assert "summary_es" not in c and "title_es" not in c and c["translation"]["status"] == "not_allowed"
+    assert model.calls == []
