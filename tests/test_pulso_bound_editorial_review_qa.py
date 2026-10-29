@@ -25,7 +25,13 @@ def reviewed(tmp_path):
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
     audit = json.loads((tmp_path / qa.EDITORIAL_REVIEW_PATH).read_bytes())
-    current = json.loads((ROOT / "data/state/pending_queue.json").read_bytes())
+    # This replays the ALL32 review on the queue it was applied to. Since the rights
+    # migration (Dirección 28-oct-2026) the working-tree queue keeps only lead +
+    # sha256 receipts for premium Pulso pieces, so the review's quote-in-body checks
+    # are replayed on the exact pre-redaction queue blob from git history.
+    from radar_salud.pinned_evidence import original_audit_bytes
+    current = json.loads(original_audit_bytes(ROOT, "data/state/pending_queue.json")
+                         or (ROOT / "data/state/pending_queue.json").read_bytes())
     queue, history = {}, []
     for record in audit["records"]:
         history.append(deepcopy(record["original_signal"]))

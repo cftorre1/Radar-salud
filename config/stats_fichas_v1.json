@@ -1,0 +1,667 @@
+{
+  "schema_version": "stats_fichas_registry_v1",
+  "approved": {
+    "by": "Dirección",
+    "date": "2026-10-28",
+    "decisions": {
+      "1": "Una ficha viva por familia; se reemplaza cada período y la anterior pasa al archivo. Reemplaza las fichas mínimas sueltas de series que pertenecen a una familia.",
+      "2": "Autopublicación en PASS (verificación determinista + conciliación). En FAIL la ficha queda en HOLD.",
+      "3": "El LLM solo redacta la Lectura Alicanto (≤90 palabras, solo cifras del paquete). Sin presupuesto o con verificador FAIL, se omite y la ficha se publica igual.",
+      "4": "Orden: F1 Cartera, F2 Financieras, F4 GES, F3 Licencias."
+    },
+    "spec": "propuesta 'Fichas estadísticas por familia' (28-oct-2026), secciones 2–4"
+  },
+  "common_rules": {
+    "money": "Montos en nominal y real (UF promedio del período; deflactor IPC si la fuente es anual). El umbral se evalúa sobre el valor real.",
+    "period": "Cada ficha muestra el período del dato y la fecha de publicación por separado.",
+    "revision": "Si una release revisa un período ya publicado se muestra 'revisado: X → Y' y se usa la última versión con su hash. Una revisión > 0,5 % republica la ficha.",
+    "provisional": "Si la fuente declara un dato provisional, se rotula como tal.",
+    "significance": "Un cambio es significativo solo si cumple el umbral relativo y también el mínimo absoluto cuando el KPI lo define.",
+    "baseline": "Comparación base a/a (mismo período del año anterior). La variación m/m solo se usa en stocks mensuales."
+  },
+  "trigger_rules": {
+    "new_period": "Nuevo release_key (período + hash) de la serie principal: publica siempre y archiva la ficha anterior.",
+    "threshold_crossed": "Un KPI cruza su umbral: la ficha sube a destacada y el titular usa la plantilla del hallazgo.",
+    "revision": "Una release corrige un período ya publicado en más de 0,5 %: republica con nota 'revisado'.",
+    "late_release": "La fuente se atrasa más de late_tolerance_days respecto de su calendario: agrega un ítem en Qué mirar.",
+    "hold": "Falla la conciliación (Σ por Isapre ≠ total declarado), el período es anterior al publicado o falta el hash: HOLD, no se publica."
+  },
+  "lectura": {
+    "max_words": 60,
+    "route": "luna",
+    "max_output_tokens": 400,
+    "max_run_usd": 0.05,
+    "review_route": "luna",
+    "review_max_output_tokens": 200,
+    "review_rule": "Respaldo de un segundo modelo (revisión 28-oct): tras PASS del verificador determinista, una llamada del rol revisor (ruta más barata, mismo presupuesto, máximo 1 por ficha) contrasta la Lectura con el paquete de evidencia y devuelve PASS/FAIL con la afirmación objetada. FAIL o sin presupuesto: se omite la Lectura y la ficha se publica igual. El tope max_run_usd cubre redactor + revisor.",
+    "figure_rule": "Dirección 28-oct 15:25: la Lectura puede tener cifras si no es redundante y aporta algo más. Cada cifra (dígitos o palabra numérica) debe calzar con lectura_pool (dígitos), derived_ratios o ranks (palabras) con unidad, signo, entidad y período (stats_fichas.verify_lectura / lectura_verifier). Cada frase debe citar una cifra no mostrada en titular, bajada, KPI, pestañas o hechos, o bien nombrar un actor o implicancia con Jaccard < 0,5 frente a toda frase mostrada.",
+    "jaccard_max": 0.5,
+    "scope_rule": "Cada cifra del pool declara scope (system / open / closed / insurer:<código>) y period_kind (month / ytd / interval / stock_at). Una cifra del sistema solo se atribuye a 'el sistema' o 'las Isapres'; de las abiertas a 'las abiertas'; de las cerradas a 'las cerradas'; de una Isapre a esa Isapre. Un mes nombrado solo calza con month o stock_at de ese mes; ytd exige 'desde enero', 'en lo que va del año' o 'entre enero y <mes>'. 'Más de', 'menos de', 'casi', 'cerca de' se comprueban contra el valor verdadero. Los conteos de entidades (trivial) no cuentan como aporte, y toda frase con Jaccard ≥ 0,5 frente a una frase mostrada es una reformulación.",
+    "implication_terms": [
+      "asegurador",
+      "isapre",
+      "prestador",
+      "inversionista",
+      "regulador",
+      "superintendencia",
+      "competencia",
+      "precio",
+      "cartera",
+      "ingreso",
+      "cotizante",
+      "riesgo",
+      "margen",
+      "mercado",
+      "rentabilidad",
+      "demanda"
+    ],
+    "causal_patterns": [
+      "debid[oa]s? a",
+      "a causa de",
+      "caus\\w*",
+      "provoc\\w*",
+      "explic\\w*",
+      "deb(?:e|en|ia|ian|io|ieron|era|eria|ido|ida)\\s+al?",
+      "se deb\\w*",
+      "gracias al?",
+      "producto de",
+      "fruto de",
+      "a raiz de",
+      "efecto de",
+      "consecuencia\\w*",
+      "atribu\\w*",
+      "impuls\\w*",
+      "motiv\\w*",
+      "origin\\w*",
+      "origen\\w*",
+      "respond\\w* al?",
+      "gener(?:a|an|aba|aban|o|aron|ado|ada|ados|adas|ando|ara|aran|aria|arian|e|en|ar)",
+      "se tradu\\w*",
+      "traduc\\w* en",
+      "llev\\w* al?",
+      "produc(?:e|en|ia|ian|io|ieron|ido|ida|idos|idas|iendo|ir|ira|iria)",
+      "produj\\w*",
+      "deriv\\w* de",
+      "obedec\\w*",
+      "detras de",
+      "empuj\\w*",
+      "arrastr\\w*",
+      "porque",
+      "ya que",
+      "dado que",
+      "puesto que",
+      "por (?:eso|ello|esto|lo tanto)",
+      "de ahi que",
+      "por culpa de",
+      "resultado de",
+      "como resultado",
+      "traduj\\w* en",
+      "traducir(?:se|a|an|ia|ian)? en",
+      "deber(?:se|ia|ian|a|an)? al?",
+      "debers\\w* al?",
+      "conllev\\w*",
+      "incid(?:e|en|io|ieron|ia|ian|ira|iran|iria|irian|ir|iendo|ido|a|an)",
+      "influ(?:ye|yen|yo|yeron|ia|ian|ido|ida|ir|ira|iran|iria|irian|yendo|ya|yan)",
+      "repercut\\w*",
+      "contribu(?:ye|yen|yo|yeron|ia|ian|ido|ida|ir|ira|iran|iria|irian|yendo|ya|yan)",
+      "gatill\\w*",
+      "desencaden\\w*",
+      "propici\\w*",
+      "conduc\\w* al?",
+      "conduj\\w* al?",
+      "conduzc\\w* al?",
+      "(?:d(?:a|an|aba|aban|io|ieron|ara|aran|aria|arian|ado|ando|ar|e|en|iera|ieran)|ha dado|han dado) lugar al?",
+      "por lo que",
+      "asi que",
+      "de modo que",
+      "de manera que",
+      "(?:lo que )?(?:hizo|hicieron|hace|hacen|hara|haran|haria|harian|habria hecho) que",
+      "lo que llev\\w* al?",
+      "nac(?:e|en|io|ieron|era|eran|eria|erian) del?",
+      "(?:pro)?vien(?:e|en) del?",
+      "(?:pro)?ven(?:ia|ian|dria|drian|dra|dran) del?",
+      "(?:pro)?vin(?:o|ieron) del?",
+      "en razon del?",
+      "por ende",
+      "en consecuencia"
+    ],
+    "pattern_syntax": "Expresiones regulares sobre el texto en minúsculas y sin tildes; cada una calza como palabra completa (\\w* final = cualquier conjugación).",
+    "insurers": [
+      {
+        "key": "fonasa",
+        "code": null,
+        "names": [
+          "Fonasa",
+          "Fondo Nacional de Salud",
+          "seguro público",
+          "aseguradora estatal",
+          "asegurador estatal",
+          "asegurador público",
+          "aseguradora pública"
+        ]
+      },
+      {
+        "key": "banmedica",
+        "code": 99,
+        "names": [
+          "Banmédica",
+          "Banmedica",
+          "BMI",
+          "Banmédika",
+          "Banmedika"
+        ]
+      },
+      {
+        "key": "colmena",
+        "code": 67,
+        "names": [
+          "Colmena",
+          "Golden Cross"
+        ]
+      },
+      {
+        "key": "consalud",
+        "code": 107,
+        "names": [
+          "Consalud"
+        ]
+      },
+      {
+        "key": "cruz_blanca",
+        "code": 78,
+        "names": [
+          "Cruz Blanca",
+          "CB",
+          "CruzBlanca"
+        ]
+      },
+      {
+        "key": "nueva_masvida",
+        "code": 81,
+        "names": [
+          "Nueva Más Vida",
+          "Nueva Masvida",
+          "Masvida",
+          "Más Vida"
+        ]
+      },
+      {
+        "key": "vida_tres",
+        "code": 80,
+        "names": [
+          "Vida Tres",
+          "Vida 3"
+        ]
+      },
+      {
+        "key": "esencial",
+        "code": 108,
+        "names": [
+          "Esencial",
+          "Escencial"
+        ]
+      },
+      {
+        "key": "isalud",
+        "code": 63,
+        "names": [
+          "Isalud",
+          "Fusat"
+        ]
+      },
+      {
+        "key": "fundacion",
+        "code": 76,
+        "names": [
+          "Fundación"
+        ]
+      },
+      {
+        "key": "cruz_del_norte",
+        "code": 94,
+        "names": [
+          "Cruz del Norte"
+        ]
+      }
+    ],
+    "insurers_rule": "Solo se pueden nombrar aseguradores del paquete (entity_codes) que además aparecen en 'Qué muestran los datos'. Fonasa no está en el paquete F1. Detección: nombres y alias exactos (CB y BMI solo en mayúsculas), luego errores de tipeo (distancia de edición ≤ 2 en nombres de más de 5 letras, misma inicial; palabras comunes excluidas). 'Vida 3' y 'Vida Tres' son una Isapre y su '3' nunca se lee como cifra.",
+    "max_words_note": "Dirección 28-oct 08:20: Lectura corta (el prompt pide ≤ 50 palabras; el verificador corta en 60, dentro del tope de 90 de la decisión 3)."
+  },
+  "families": {
+    "F1": {
+      "slug": "f1_cartera",
+      "label": "Cartera y movilidad",
+      "status": "active",
+      "cadence": "mensual",
+      "cadence_phrase": "se actualiza cada mes",
+      "series": [
+        "sis_cartera_mensual_2026",
+        "sis_movilidad_cotizantes",
+        "sis_suscripciones_desahucios"
+      ],
+      "primary_series": "sis_cartera_mensual_2026",
+      "release_page": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
+      "supersedes": {
+        "event_titles_prefix": [
+          "Pulso Isapre"
+        ],
+        "stat_families": [
+          "cartera_total",
+          "cartera_regional",
+          "suscripciones",
+          "movilidad"
+        ]
+      },
+      "calendar": {
+        "expected_release_interval_days": 31,
+        "late_tolerance_days": 21,
+        "source": "historial de releases SIS (cartera ago-2026 publicada el 02-10-2026)"
+      },
+      "open_codes": [
+        67,
+        78,
+        80,
+        81,
+        99,
+        107,
+        108
+      ],
+      "closed_codes": [
+        63,
+        76,
+        94
+      ],
+      "kpis": {
+        "beneficiarios": {
+          "label": "Beneficiarios Isapre",
+          "kind": "stock",
+          "formula": "Σ beneficiarios (abiertas + cerradas) en el mes t",
+          "denominator": null,
+          "period_rule": "Stock al cierre del mes; Δ m/m, Δ desde el primer mes capturado del año y Δ a/a. Nunca se suman meses.",
+          "threshold": {
+            "mm_pct": 0.25,
+            "yoy_pct": 2.0,
+            "sign_change_sustained_months": 2
+          },
+          "pitfalls": [
+            "No sumar meses: cada mes es un stock.",
+            "El archivo rodante se sobrescribe: se guarda el hash de cada release.",
+            "Distinguir abiertas y cerradas."
+          ]
+        },
+        "cotizantes": {
+          "label": "Cotizantes",
+          "kind": "stock",
+          "formula": "Σ cotizantes en el mes t",
+          "denominator": null,
+          "period_rule": "Stock al cierre del mes; Δ m/m.",
+          "threshold": {
+            "mm_pct": 0.25,
+            "sign_change_sustained_months": 2
+          },
+          "pitfalls": [
+            "Stock mensual: no sumar meses."
+          ]
+        },
+        "mezcla": {
+          "label": "Cargas por cotizante",
+          "kind": "ratio",
+          "formula": "cargas / cotizantes",
+          "denominator": "cotizantes del mismo mes",
+          "period_rule": "Mes t vs. primer mes del año capturado y vs. t−12.",
+          "threshold": {
+            "abs_delta": 0.005
+          },
+          "pitfalls": [
+            "Una baja de cargas no implica pérdida de ingreso: la cotización la paga el cotizante."
+          ]
+        },
+        "participacion": {
+          "label": "Participación por Isapre",
+          "kind": "share",
+          "formula": "benef_i / Σ benef de las 7 Isapres abiertas × 100",
+          "denominator": "Solo abiertas (7). Las cerradas (Isalud, Fundación, Cruz del Norte) no compiten.",
+          "period_rule": "Mes t vs. primer mes del año capturado y vs. t−12.",
+          "threshold": {
+            "pp": 0.3,
+            "min_persons": 5000
+          },
+          "pitfalls": [
+            "Nunca mezclar el denominador de abiertas y cerradas.",
+            "'Banmédica' es el código 99 (Isapre), no el grupo."
+          ]
+        },
+        "contribucion": {
+          "label": "Contribución al cambio neto",
+          "kind": "contribution",
+          "formula": "Δbenef_i / Δbenef_sistema × 100",
+          "denominator": "Δ del sistema en el mismo intervalo",
+          "period_rule": "Desde el primer mes del año capturado (o 12 m cuando exista).",
+          "threshold": {
+            "share_pct": 50.0,
+            "min_system_delta": 5000
+          },
+          "pitfalls": [
+            "Si |Δ sistema| < 5.000 no se calcula: la contribución se dispara."
+          ]
+        },
+        "movilidad": {
+          "label": "Movilidad neta de cotizantes",
+          "kind": "between_cuts",
+          "formula": "entradas − salidas entre cortes",
+          "denominator": "cotizantes al corte inicial (tasa)",
+          "period_rule": "Corte t vs. t−12 (12 m móviles).",
+          "threshold": {
+            "rate_change_pp": 0.5
+          },
+          "pitfalls": [
+            "Es una comparación entre cortes, no la suma de movimientos intermedios.",
+            "Suscripciones − desahucios ≠ cambio neto: incluye cambios entre Isapres."
+          ]
+        }
+      },
+      "headline_priority": [
+        "sign_change",
+        "record_low_decline",
+        "record_low_decline_moderate",
+        "record_high_decline",
+        "concentration",
+        "sustained_sign_change",
+        "threshold_crossed",
+        "no_change"
+      ],
+      "templates": {
+        "kicker": "{label}",
+        "headline": {
+          "sign_change": "La cartera Isapre vuelve a crecer: {delta_signed} beneficiarios en {month} tras {streak} meses de baja",
+          "record_low_decline": "La cartera Isapre casi deja de caer: {delta_signed} beneficiarios en {month}, la menor baja del año",
+          "record_high_decline": "La cartera Isapre anota su mayor baja del año: {delta_signed} beneficiarios en {month}",
+          "concentration": "{entity} concentra el {share}% de la baja neta de la cartera Isapre en lo que va de {year}",
+          "sustained_sign_change": "Los cotizantes de Isapre suben por {streak_word} mes consecutivo y suman {delta_abs} en {month}",
+          "threshold_crossed": "Cartera Isapre a {month}: {kpi_label} cruza su umbral de cambio",
+          "no_change": "Cartera Isapre a {month}: sin cambios significativos en el mes",
+          "record_low_decline_moderate": "La baja de la cartera Isapre se modera: {delta_signed} beneficiarios en {month}, la menor caída mensual del año"
+        },
+        "dek": "El sistema terminó {month} con {benef} beneficiarios, {delta_ytd_abs} {more_less} que en {base_month}.{cot_clause}{concentration_clause}",
+        "facts": {
+          "magnitude": "Entre {base_month} y {month}, la cartera de Isapres {ytd_verb} en {delta_ytd_abs} beneficiarios ({delta_ytd_pct}).{peak_clause}",
+          "composition": "Las cargas corresponden al {cargas_share}% de la variación ({cargas_delta}); los cotizantes {cot_verb} {cot_delta_abs} en el mismo período y en {month} anotaron {cot_mm} frente a {prev_month}.",
+          "entities": "Por Isapre, {top_entity} registró {top_delta} beneficiarios desde {base_month} y su participación entre las abiertas pasó de {top_share_from}% a {top_share_to}%.{gainers_clause}"
+        },
+        "kicker_meta": "datos a {period_label} · publicado por la SIS el {published_label} · {cadence_phrase}",
+        "dek_emphasis": "{benef} beneficiarios",
+        "headline_rule": "Los titulares describen el stock de beneficiarios al cierre de mes (cambio neto entre stocks), nunca flujos: 'salida de afiliados', 'salieron' o 'se fueron' quedan reservados a la pestaña de movilidad, que mide entradas y salidas entre cortes."
+      },
+      "tabs": [
+        {
+          "id": "total",
+          "label": "Cartera total"
+        },
+        {
+          "id": "isapres",
+          "label": "Por Isapre"
+        },
+        {
+          "id": "mezcla",
+          "label": "Cotizantes y cargas"
+        },
+        {
+          "id": "movilidad",
+          "label": "Movilidad y desahucios"
+        },
+        {
+          "id": "regional",
+          "label": "Regional",
+          "status": "pendiente: cifras regionales no extraídas"
+        },
+        {
+          "id": "planes",
+          "label": "Planes",
+          "status": "se agrega cuando se capturen precios/planes"
+        }
+      ],
+      "builder_version": "f1_compact_v4"
+    },
+    "F2": {
+      "slug": "f2_financieras",
+      "label": "Resultados financieros de aseguradores",
+      "status": "planned",
+      "cadence": "trimestral",
+      "series": [
+        "sis_estadisticas_financieras",
+        "sis_series_1990_2025",
+        "sis_caec",
+        "cmf_holdings"
+      ],
+      "blocked_by": "parser xlsx financiero SIS (hoja y estructura no verificadas); FEFI en HOLD_COVERAGE_ESENCIAL",
+      "kpis": {
+        "siniestralidad": {
+          "formula": "(costo de prestaciones + costo SIL) / ingresos por cotizaciones × 100",
+          "denominator": "Ingresos operacionales del mismo período acumulado",
+          "period_rule": "YTD vs. YTD t−1 y 12 m móviles",
+          "threshold": {
+            "pp": 1.0,
+            "levels_pct": [
+              90,
+              95
+            ]
+          },
+          "pitfalls": [
+            "Fijar la definición de costo (ventas vs. prestaciones).",
+            "Q1 no es comparable con el año por estacionalidad del SIL."
+          ]
+        },
+        "resultado": {
+          "formula": "Del EERR SIS; puente = operacional + no operacional + impuestos/otros (residual)",
+          "denominator": null,
+          "period_rule": "YTD vs. YTD t−1; real en UF",
+          "threshold": {
+            "sign_change": true,
+            "real_pct": 10.0,
+            "min_mm_clp": 5000
+          },
+          "pitfalls": [
+            "El resultado del ejercicio ≠ operacional + no operacional: hay impuestos."
+          ]
+        },
+        "costo_sil": {
+          "formula": "Costo SIL YTD; % de cotizaciones",
+          "denominator": "Ingresos por cotizaciones",
+          "period_rule": "YTD a/a, real",
+          "threshold": {
+            "real_pct": 5.0
+          },
+          "pitfalls": [
+            "Cifras SIS nominales: deflactar."
+          ]
+        },
+        "gav": {
+          "formula": "GAV / ingresos por cotizaciones",
+          "denominator": "Ingresos por cotizaciones",
+          "period_rule": "YTD a/a",
+          "threshold": {
+            "pp": 0.5
+          },
+          "pitfalls": []
+        },
+        "margen_beneficiario": {
+          "formula": "(ingresos − costo de ventas) / beneficiarios promedio",
+          "denominator": "Promedio de stocks mensuales F1",
+          "period_rule": "YTD mensualizado",
+          "threshold": {
+            "real_pct": 5.0
+          },
+          "pitfalls": [
+            "Usar el promedio, no el stock final."
+          ]
+        }
+      }
+    },
+    "F3": {
+      "slug": "f3_licencias",
+      "label": "Licencias médicas y SIL",
+      "status": "planned",
+      "cadence": "mensual",
+      "series": [
+        "sis_licencias_isapre",
+        "suseso_sil_consolidado",
+        "suseso_comunicado_lme",
+        "suseso_sanciones_emisores"
+      ],
+      "kpis": {
+        "licencias_emitidas": {
+          "formula": "Σ LME del período",
+          "denominator": null,
+          "period_rule": "YTD a/a",
+          "threshold": {
+            "pp_change_ytd": 3.0
+          },
+          "pitfalls": [
+            "Comunicados sin dataset: conservar texto y hash."
+          ]
+        },
+        "dias_por_licencia": {
+          "formula": "días autorizados / licencias autorizadas",
+          "denominator": "Autorizadas, no emitidas",
+          "period_rule": "YTD a/a",
+          "threshold": {
+            "days": 0.5
+          },
+          "pitfalls": [
+            "Emitidas y autorizadas tienen denominadores distintos."
+          ]
+        },
+        "tasa_rechazo": {
+          "formula": "rechazadas / tramitadas",
+          "denominator": "Tramitadas, por pagador",
+          "period_rule": "YTD a/a",
+          "threshold": {
+            "pp": 2.0
+          },
+          "pitfalls": [
+            "Isapre vs. COMPIN usan criterios distintos."
+          ]
+        },
+        "sanciones_emisores": {
+          "formula": "Oficios por mes",
+          "denominator": null,
+          "period_rule": "Mes calendario; mes en curso 'parcial'",
+          "threshold": {
+            "vs_3m_avg_pct": 30.0
+          },
+          "pitfalls": [
+            "Ventana de 90 días.",
+            "No nombrar profesionales sin resolución firme."
+          ]
+        }
+      }
+    },
+    "F4": {
+      "slug": "f4_ges",
+      "label": "GES, CAEC y Ricarte Soto",
+      "status": "planned",
+      "cadence": "trimestral",
+      "series": [
+        "sis_casos_ges_trimestral",
+        "sis_caec"
+      ],
+      "interim": "La tarjeta GES actual queda limitada al parser corregido (hoja del año en curso fijada + suma conciliada contra el total declarado); en FAIL, HOLD.",
+      "kpis": {
+        "casos_ges": {
+          "formula": "Σ casos del trimestre, por seguro",
+          "denominator": null,
+          "period_rule": "Trimestre vs. mismo trimestre t−1 y 12 m móviles",
+          "threshold": {
+            "yoy_pct": 5.0
+          },
+          "pitfalls": [
+            "Fijar la hoja del año en curso y validar la suma contra el total declarado."
+          ]
+        },
+        "tasa_uso": {
+          "formula": "casos / beneficiarios promedio × 1.000",
+          "denominator": "Beneficiarios del mismo seguro",
+          "period_rule": "Trimestre a/a",
+          "threshold": {
+            "yoy_pct": 5.0
+          },
+          "pitfalls": [
+            "Tasa bruta: poblaciones Fonasa e Isapre con distinta edad."
+          ]
+        },
+        "top_problemas": {
+          "formula": "Δ casos por problema",
+          "denominator": "Casos del problema en t−1",
+          "period_rule": "Trimestre a/a",
+          "threshold": {
+            "pct": 15.0,
+            "min_cases": 500
+          },
+          "pitfalls": [
+            "Cambios de decreto GES generan saltos artificiales."
+          ]
+        },
+        "caec": {
+          "formula": "Σ casos y costo anual",
+          "denominator": null,
+          "period_rule": "Anual a/a, real",
+          "threshold": {
+            "pct": 10.0
+          },
+          "pitfalls": []
+        }
+      }
+    },
+    "F5": {
+      "slug": "f5_reclamos",
+      "label": "Reclamos, mediación y fiscalización",
+      "status": "planned",
+      "cadence": "trimestral",
+      "series": [
+        "sis_boletin_ip",
+        "sis_fiscalizacion"
+      ],
+      "kpis": {}
+    },
+    "F6": {
+      "slug": "f6_prestadores",
+      "label": "Prestadores: calidad y capacidad",
+      "status": "planned",
+      "cadence": "trimestral",
+      "series": [
+        "sis_boletin_ip",
+        "sis_prestaciones",
+        "sis_egresos"
+      ],
+      "kpis": {}
+    },
+    "F7": {
+      "slug": "f7_financiamiento",
+      "label": "Financiamiento público",
+      "status": "planned",
+      "cadence": "mensual",
+      "series": [
+        "dipres_partida_16"
+      ],
+      "kpis": {}
+    },
+    "F8": {
+      "slug": "f8_presion",
+      "label": "Presión asistencial",
+      "status": "planned",
+      "cadence": "semanal en temporada",
+      "series": [
+        "minsal_campana_invierno",
+        "isp_virus_respiratorios"
+      ],
+      "kpis": {}
+    }
+  },
+  "lenses": {
+    "business": "Implicancia para aseguradores, prestadores o inversionistas; 'Qué mirar' con 2–3 ítems y la próxima publicación.",
+    "data": "Denominadores declarados, stocks no sumados, referencias de KPI en el paquete, tendencia y descomposición por actor.",
+    "editorial": "Titular ≤140, bajada ≤40 palabras, sin frases repetidas entre bloques.",
+    "ui": "3–5 KPI, 2–6 pestañas, ≤2 gráficos por pestaña, ≤12 filas por gráfico, tabla 'Ver datos', etiquetas cortas, móvil primero.",
+    "enforced_by": "stats_fichas.lens_checks (determinista) y stats_fichas.lectura_prompt (generación)"
+  }
+}

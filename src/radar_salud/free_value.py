@@ -304,7 +304,8 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
         except (OSError, ValueError):
             approved = {}
     weekly = reviewed_weekly(approved, today)
-    return {
+    from .source_rights import redact_public_payload
+    return redact_public_payload({
         "generated_at": snapshot.get("generated_at"),
         "status": "available" if teaser and weekly else "partial",
         "global_teaser": teaser,
@@ -322,5 +323,5 @@ def build_free_value(snapshot: dict[str, Any], themes: dict[str, Any], history: 
             "minimum_insight_evidence": "two independent sources, or one high-quality source with reproducible deep analysis and explicit decision use",
             "no_forced_frequency": True,
         },
-    }
+    })
 

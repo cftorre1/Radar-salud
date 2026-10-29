@@ -256,3 +256,68 @@ def apply_backlinks(signals: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
                 target["normative_status_events"] = events
                 target["normative_status"] = events[0]["status"]
     return rows
+
+
+def load_listing_index(path) -> dict[str, dict[str, Any]]:
+    """Official SIS listing identities (``data/state/sis_normative_index.json``); empty if absent."""
+    import json
+    from pathlib import Path
+    p = Path(path)
+    if not p.exists():
+        return {}
+    try:
+        return dict(json.loads(p.read_text(encoding="utf-8")).get("acts") or {})
+    except (OSError, ValueError, AttributeError):
+        return {}
+
+
+def related_documents(card: dict[str, Any], history: Iterable[dict[str, Any]],
+                      index: dict[str, dict[str, Any]] | None = None,
+                      in_feed: Iterable[str] = ()) -> list[dict[str, Any]]:
+    """"Documentos relacionados" for an act that suspends/modifies/confirms an instruction,
+    whatever the age of that instruction (Dirección 28-oct-2026).
+
+    Resolution order, never inventing a URL: (1) our own record of the original in history,
+    at any date; (2) the regulator's listing index (URL read from the official listing);
+    (3) the identity only, without a link.
+    """
+    if card.get("source_name") != ISSUER:
+        return []
+    relations = card.get("normative_relations")
+    if relations is None and card.get("official_subject"):
+        relations = extract_relations(card["official_subject"], _act_label(card), ISSUER)
+    if not relations:
+        return []
+    by_key: dict[str, dict[str, Any]] = {}
+    for row in history:
+        if row.get("source_name") != ISSUER or not row.get("source_url"):
+            continue
+        key = target_key(_act_label(row))
+        if key and (key not in by_key or str(row.get("event_date") or "") > str(by_key[key].get("event_date") or "")):
+            by_key[key] = row
+    feed = set(in_feed)
+    out, seen = [], set()
+    for rel in relations:
+        key = rel.get("target_key")
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        text = relationship_text(rel)
+        original = by_key.get(key)
+        listed = (index or {}).get(key)
+        if original and original.get("source_url") != card.get("source_url"):
+            out.append({"title": original.get("display_title") or original.get("title") or rel["target_id"],
+                        "summary": original.get("official_subject") or (listed or {}).get("official_subject"),
+                        "relationship": text, "url": original["source_url"], "event_date": original.get("event_date"),
+                        "verified": True, "basis": "history_record", "target_id": rel["target_id"],
+                        "history_ficha": {"title": original.get("title"), "event_date": original.get("event_date"),
+                                          "source_url": original["source_url"],
+                                          "in_feed": original["source_url"] in feed}})
+        elif listed and listed.get("url"):
+            out.append({"title": listed.get("id") or rel["target_id"], "summary": listed.get("official_subject"),
+                        "relationship": text, "url": listed["url"], "event_date": listed.get("event_date"),
+                        "verified": True, "basis": "official_listing_index", "target_id": rel["target_id"]})
+        else:
+            out.append({"title": rel["target_id"], "summary": None, "relationship": text, "url": None,
+                        "event_date": None, "verified": False, "basis": "id_only", "target_id": rel["target_id"]})
+    return out

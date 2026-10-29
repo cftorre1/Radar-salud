@@ -29,8 +29,10 @@ test('filters offer only Actores and Temas; a saved format is dropped but saved 
 // Actores › Siguiendo shows them, and the follow survives a reload.
 test('follow an entity from the ficha, see the row marker, filter by Siguiendo and keep it after reload',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto('/');const chip=page.locator('#local [data-entity-chip]').first();await expect(chip).toBeVisible();
- const id=await chip.getAttribute('data-entity-chip');const row=chip.locator('xpath=ancestor::article');const card=await row.getAttribute('data-card');
+ await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
+ // Rows no longer name their actors (Dirección 28-oct 21:49): take the first row whose signal has an entity.
+ const {id,card}=await page.evaluate(()=>{for(const r of document.querySelectorAll('#local article[data-card]')){const ids=refIds(allSignals.find(x=>idFor(x)===r.dataset.card));if(ids.length)return {id:ids[0],card:r.dataset.card}}return {}});
+ expect(id).toBeTruthy();const row=page.locator(`#local [data-card="${card}"]`);
  await expect(page.locator('#interestFilters [data-interest="siguiendo"]')).toHaveCount(0);
  await row.locator('.title-open').click();await expect(page.locator('#signalDetail')).toBeVisible();
  const toggle=page.locator(`#detailBody [data-follow="${id}"]`);await expect(toggle).toHaveAttribute('aria-pressed','false');await expect(toggle).toContainText('Seguir');
@@ -53,26 +55,20 @@ test('follow an entity from the ficha, see the row marker, filter by Siguiendo a
  expect(errors).toEqual([]);
 });
 
-test('a card entity chip is information: not a button and clicking it filters nothing',async({page})=>{
- await page.goto('/');const rows=page.locator('#local article[data-card]');const chip=page.locator('#local [data-entity-chip]').first();await expect(chip).toBeVisible();
- const before=await rows.count();
- expect(await chip.evaluate(el=>el.tagName)).toBe('SPAN');await expect(chip).not.toHaveAttribute('aria-pressed',/.*/);await expect(chip).toHaveAttribute('title',/\S/);
- await chip.click();await expect(rows).toHaveCount(before);await expect(page.locator('#filterLabel')).toHaveText('Todos los temas');
- await expect(page.locator('#signalDetail')).toBeHidden();
+// Dirección 28-oct 21:49: rows carry no actor/entity chips; a content-type label (Normativa, Fiscalización, Datos)
+// and the follow marker of a followed entity are the only labels left on the meta line.
+test('feed rows carry no actor chips, only content-type labels',async({page})=>{
+ await page.goto('/');const rows=page.locator('#local article[data-card]');await expect(rows.first()).toBeVisible();
+ const withRefs=await page.evaluate(()=>[...document.querySelectorAll('#local article[data-card]')].filter(r=>refIds(allSignals.find(x=>idFor(x)===r.dataset.card)).length).length);
+ expect(withRefs).toBeGreaterThan(0);
+ await expect(page.locator('#local [data-entity-chip],#local .ent-chips,#local .ent-chip,#local .ent-more')).toHaveCount(0);
+ for(const tag of await page.locator('#local article[data-card] .card-meta .tag').allTextContents())expect(tag.trim()).toMatch(/^(Normativa|Fiscalización|Datos|Corregido el .+)$/);
+ await expect(page.locator('#local article[data-card] .follow-mark')).toHaveCount(0);
 });
 
-test('entity chips keep the feed share of the first viewport',async({page})=>{
+test('rows without actor chips keep the feed share of the first viewport',async({page})=>{
  await page.goto('/');await page.waitForLoadState('networkidle');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
- await expect(page.locator('#local [data-entity-chip]').first()).toBeVisible();
  const share=await feedShare(page),min=test.info().project.name==='mobile'?0.55:0.60;
  expect(share).toBeGreaterThanOrEqual(min);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(test.info().project.use.viewport.width+1);
-});
-
-// Chips stay on the date line; since opción B (Dirección 28-oct 08:20) the actions are their own row right under it.
-test('entity chips sit on the date line, with the row actions right under it',async({page})=>{
- await page.goto('/');const chip=page.locator('#local [data-entity-chip]').first();await expect(chip).toBeVisible();
- const g=await chip.evaluate(el=>{const r=el.getBoundingClientRect(),row=el.closest('article'),t=row.querySelector('.title-open').getBoundingClientRect(),meta=row.querySelector('.meta-text').getBoundingClientRect(),acts=[...row.querySelectorAll('.row-acts .act')].map(i=>i.getBoundingClientRect().top);return{top:r.top,titleBottom:t.bottom,mid:r.top+r.height/2,metaMid:meta.top+meta.height/2,metaBottom:meta.bottom,acts}});
- expect(g.top).toBeGreaterThanOrEqual(g.titleBottom-0.5);expect(Math.abs(g.mid-g.metaMid)).toBeLessThan(12);
- expect(g.acts.length).toBeGreaterThan(0);for(const y of g.acts)expect(y).toBeGreaterThan(g.metaBottom-12);
 });

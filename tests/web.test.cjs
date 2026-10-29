@@ -97,21 +97,25 @@ test('visible stock obeys committee and publication contract site-wide',()=>{
 
 test('Bupa and Pulso retain approved business depth without weak references',()=>{
  const radar=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
- const bupa=radar.signals.find(s=>/Bupa refuerza/.test(s.title||''));
+ // DF is paywalled (Dirección 28-oct-2026): publisher headline + public deck only, no body-derived rewrite.
+ const bupa=radar.signals.find(s=>/^Bupa acelera inversiones/.test(s.title||''));
  assert.ok(bupa);
  assert.equal(bupa.source_name,'Diario Financiero');
- assert.match(bupa.what_happened,/US\$15 millones/);
+ assert.equal(bupa.paywalled,true);
+ assert.equal(bupa.why_it_matters,'');
+ assert.ok(!bupa.card_what&&!bupa.key_points);
+ assert.match(bupa.title,/US\$ 15 millones/);
  assert.match(bupa.what_happened,/La Dehesa/);
  assert.match(bupa.what_happened,/Huinganal/);
  assert.match(bupa.what_happened,/Mindplace/);
  assert.deepEqual(bupa.related_context||[],[]);
  assert.deepEqual(bupa.source_alternatives||[],[]);
- const pulso=radar.signals.find(s=>s.event_type==='DATA_PULSE'&&/Isapre/.test(s.title||''));
- assert.ok(pulso);
- assert.match(pulso.title,/Pulso Isapre/);
- assert.ok(pulso.summary_table?.rows?.length>=6);
- assert.match(pulso.why_it_matters,/no una explicación causal/);
- assert.ok((pulso.data_insight_evidence||[]).length>=5);
+ // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
+ const ficha=radar.signals.find(s=>s.event_type==='DATA_PULSE'&&s.stats_ficha?.family==='F1');
+ assert.ok(ficha);
+ assert.equal(radar.signals.filter(s=>/^Pulso Isapre/.test(s.title||'')).length,0);
+ assert.ok(ficha.stats_ficha.tabs.length>=4);
+ assert.match(ficha.stats_ficha.notes.map(n=>n.text).join(' '),/no establece por qué cambia la cartera|establece por qué cambia/);
 });
 
 
@@ -209,7 +213,7 @@ test('metadata-only datos.gob.cl changes read as catalog updates',()=>{const c=c
 test('historical connections never label a detection or data-release day as Publicado',()=>{const c=context();const x={label:'Antecedente',url:'https://a.cl/1',title:'Memoria',note:'n',event_date:'2026-10-20',date_basis:'first_detected',first_detected_at:'2026-10-20T12:00:00Z'};const html=c.enrichmentBlock([],[x],null);assert.match(html,/Detectado el/);assert.doesNotMatch(html,/Publicado/);assert.match(c.enrichmentBlock([],[{...x,date_basis:undefined}],null),/Publicado/)});
 test('Global shares the Home header and bar A without inline CSS',()=>{const html=fs.readFileSync('web/global.html','utf8'),home=fs.readFileSync('web/index.html','utf8'),js=fs.readFileSync('web/global.js','utf8'),app=fs.readFileSync('web/app.js','utf8');assert.doesNotMatch(html,/<style/);for(const f of ['home-inbox.css','global.css'])assert.match(html,new RegExp(`href="${f}"`));for(const page of [html,home])assert.match(page,/<script src="inbox-bar\.js"><\/script>/);for(const short of ['Chile','Global','Newsletter'])assert.match(html,new RegExp(`data-short="${short}"`));assert.match(html,/href="subscription\.html"/);assert.match(html,/id="globalLanes"/);assert.match(html,/<details class="filter-details" id="globalFilters">/);assert.match(html,/id="globalMarkAll"/);for(const src of [js,app])assert.match(src,/AlicantoBar\.(syncLanes|wireLanes|dropdown)/);assert.match(js,/globalKey\(id\)\{return `global:\$\{id\}`\}/)});
 test('Dirección 28-oct punto 4: only Actores and Temas filter; a saved format is dropped',()=>{const saved=[];const c=context();c.localStorage.setItem=(k,v)=>saved.push([k,v]);const bupa={entity_refs:[{canonical_id:'cl:org:bupa',basis:'text'}],scopes:[]},none={entity_refs:[],scopes:['Fonasa']};c.bupa=bupa;c.none=none;assert.equal(vm.runInContext('interestMatch(bupa)&&interestMatch(none)',c),true);vm.runInContext("activeInterests.add('fonasa')",c);assert.equal(vm.runInContext('interestMatch(none)',c),true);assert.equal(vm.runInContext('interestMatch(bupa)',c),false);vm.runInContext('persistFilters()',c);const stored=JSON.parse(saved.at(-1)[1]);assert.deepEqual(stored.interests,['fonasa']);assert.deepEqual(stored.entities,[]);assert.ok(!('type' in stored));assert.deepEqual([...new Set(vm.runInContext('INTERESTS.map(x=>x.group)',c))],['Actores','Temas']);const html=fs.readFileSync('web/index.html','utf8'),app=fs.readFileSync('web/app.js','utf8');assert.doesNotMatch(html,/id="typeFilters"|>Formato</);assert.doesNotMatch(app,/entitySearch|entityList|activeEntities|activeType/)});
-test('entity chips stay on cards as information, never as a second filter (Dirección 28-oct punto 4)',()=>{const c=context();vm.runInContext("entityCatalog=[{id:'a',name:'Clínica A',short:'A'},{id:'b',name:'Clínica B',short:'B'},{id:'c',name:'Clínica C',short:'C'}]",c);const html=c.card({title:'Pulso',source_url:'https://example.org/p',event_date:'2026-10-10',entity_refs:[{canonical_id:'c',basis:'member'},{canonical_id:'b',basis:'text'},{canonical_id:'a',basis:'source'}]});const chips=[...html.matchAll(/data-entity-chip="([^"]+)"/g)].map(m=>m[1]);assert.deepEqual(chips,['b','a']);assert.match(html,/<span class="ent-chip" data-entity-chip="b" title="Clínica B">/);assert.doesNotMatch(html,/<button[^>]*ent-chip|aria-pressed="(true|false)"[^>]*ent-chip|Seguir/);assert.match(html,/<span class="ent-chips">[\s\S]*<\/div><div class="row-acts"/);assert.match(html,/\+1</);assert.doesNotMatch(c.card({title:'Sin entidad',source_url:'https://example.org/q',event_date:'2026-10-10',entity_refs:[]}),/ent-chip/)});
+test('rows carry no actor chips; a Datos tag and the follow marker are the only row labels (Dirección 28-oct 21:49)',()=>{const c=context();vm.runInContext("entityCatalog=[{id:'a',name:'Clínica A',short:'A'},{id:'b',name:'Clínica B',short:'B'},{id:'c',name:'Clínica C',short:'C'}]",c);const html=c.card({title:'Pulso',source_url:'https://example.org/p',event_date:'2026-10-10',entity_refs:[{canonical_id:'c',basis:'member'},{canonical_id:'b',basis:'text'},{canonical_id:'a',basis:'source'}]});assert.doesNotMatch(html,/data-entity-chip|ent-chip|ent-more|Clínica [ABC]|\+1</);assert.match(html,/<\/div><div class="row-acts"[^>]*><button type="button" class="act act-open" data-detail=/);assert.equal(typeof c.entityChips,'undefined');assert.match(c.followRow({entity_refs:[{canonical_id:'b',basis:'text'}]}),/data-follow="b"[\s\S]*Seguir B/)});
 test('entity catalog falls back to refs for the chip names',()=>{const c=context();const xs=c.catalogFrom({signals:[{entity_refs:[{canonical_id:'cl:org:meds',name:'Clínica MEDS'}]}]});assert.equal(xs[0].id,'cl:org:meds');assert.equal(c.catalogFrom({entities:[{id:'x',name:'X'}],signals:[]})[0].id,'x');const snap=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));assert.ok(snap.entities.length>=30);assert.ok(snap.signals.every(s=>Array.isArray(s.entity_refs)))});
 
 test('weekly insight freshness mirrors the Monday rule and the legacy bridge (Dirección 27-oct-2026)', () => {
@@ -234,7 +238,7 @@ test('Dirección 28-oct puntos 5-7: Chile and Global share rows, undo and one Pr
 
 test('WATCH restored: following persists, never filters by itself, and Actores › Siguiendo shows followed items',()=>{const saved=[];const c=context(Date,JSON.stringify({entities:['cl:org:bupa'],interests:[]}));c.localStorage.setItem=(k,v)=>saved.push([k,v]);vm.runInContext("entityCatalog=[{id:'cl:org:bupa',name:'Bupa Chile',short:'Bupa'},{id:'cl:org:isp',name:'ISP',short:'ISP'}]",c);const bupa={title:'Bupa invierte',source_url:'https://example.org/b',event_date:'2026-10-10',entity_refs:[{canonical_id:'cl:org:bupa',basis:'text'}],scopes:[]},isp={title:'ISP',source_url:'https://example.org/i',event_date:'2026-10-10',entity_refs:[{canonical_id:'cl:org:isp',basis:'text'}],scopes:[]};c.bupa=bupa;c.isp=isp;
  assert.equal(vm.runInContext('followed.has("cl:org:bupa")',c),true);assert.equal(vm.runInContext('interestMatch(isp)',c),true);
- assert.match(c.card(bupa),/class="follow-mark" title="Sigues a Bupa Chile"/);assert.doesNotMatch(c.card(isp),/follow-mark/);assert.match(c.card(bupa),/class="ent-chip on"/);
+ assert.match(c.card(bupa),/class="follow-mark" title="Sigues a Bupa Chile"/);assert.doesNotMatch(c.card(isp),/follow-mark/);assert.doesNotMatch(c.card(bupa),/ent-chip/);
  const row=c.followRow(bupa);assert.match(row,/data-follow="cl:org:bupa" aria-pressed="true"[^>]*>[\s\S]*Siguiendo Bupa/);assert.match(c.followRow(isp),/aria-pressed="false"[\s\S]*Seguir ISP/);
  vm.runInContext("activeInterests.add('siguiendo')",c);assert.equal(vm.runInContext('interestMatch(bupa)',c),true);assert.equal(vm.runInContext('interestMatch(isp)',c),false);assert.equal(vm.runInContext("INTERESTS.find(x=>x.k==='siguiendo').group",c),'Actores');
  vm.runInContext('persistFilters()',c);assert.deepEqual(JSON.parse(saved.at(-1)[1]).entities,['cl:org:bupa'])});

@@ -103,7 +103,12 @@ def test_all_legacy_nonfactual_records_revalidate_original_and_preserve_exact_di
             assert raw.event_date is None and raw.metadata['publication_timestamp'] is None
     assert calls == [entry['url']]
     assert raw.metadata['article_body_sha256'] == entry['primary_body_sha256']
-    assert raw.metadata['page_text'] == entry['full_primary_body']
+    from radar_salud.source_rights import is_paywalled, redacted_body_verified
+    if is_paywalled(entry['url']):
+        # Premium section: only the lead remains; the receipt proves the same body (Dirección 28-oct-2026).
+        assert redacted_body_verified(raw.metadata) and raw.metadata['page_text'] == raw.metadata['public_teaser']
+    else:
+        assert raw.metadata['page_text'] == entry['full_primary_body']
     assert raw.metadata['html_sha256'] == entry['sha256']
     assert raw.metadata['primary_identity_verified'] is True
     assert raw.metadata['detected_at'] == '2026-10-11T06:00:00Z'

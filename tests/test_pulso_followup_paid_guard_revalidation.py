@@ -16,7 +16,12 @@ from radar_salud.models import RawItem
 from radar_salud.pending_queue import PendingQueue
 from radar_salud.processing import DeferredProcessing
 
+from paywall_test_support import assert_premium_replay, is_premium
+
 ROOT = Path(__file__).resolve().parents[1]
+# Pinned pieces in premium La Tercera sections (rights policy, Dirección 28-oct-2026).
+PREMIUM_REUSE3 = 1
+PREMIUM_HELD = 1
 NOW = datetime(2026, 10, 11, 21, tzinfo=timezone.utc)
 
 
@@ -144,11 +149,19 @@ def test_real3_reuse_same_followup_paid_answer_and_normal_media_pipeline_zero_ca
     monkeypatch.setattr(beta_sources, "fetch_html", forbidden)
     rows = [row for row in actual[0]["rows"] if row["disposition"] == "reuse_code_fn"]
     assert len(rows) == 3
+    premium = 0
     for pin in rows:
         raw = RawItem(**deepcopy(queue.items[pin["queue_fingerprint"]]["raw"]))
         old = deepcopy(raw.metadata["analysis_model_output"])
         old_receipts = deepcopy(raw.metadata[previous.NEW_FAST_RECEIPTS])
         current_receipts = deepcopy(raw.metadata[prior_current.NEW_FAST_RECEIPTS])
+        if is_premium(raw):
+            # Premium section: the locked body is never re-validated; only title + lead are judged.
+            premium += 1
+            assert_premium_replay(beta_sources.process_curated_beta_source, raw)
+            assert raw.metadata[previous.NEW_FAST_RECEIPTS] == old_receipts
+            assert raw.metadata[prior_current.NEW_FAST_RECEIPTS] == current_receipts
+            continue
         signal = beta_sources.process_curated_beta_source(raw, {})
         if signal is None:
             # Dirección 27-oct-2026: a later feed-relevance rule (health must be the title's subject)
@@ -169,6 +182,7 @@ def test_real3_reuse_same_followup_paid_answer_and_normal_media_pipeline_zero_ca
         assert receipt["new_model_request"] is False and receipt["original_model_output_unchanged"] is True
         assert receipt["previous_validation"]["decision"] == "deferred"
         assert receipt["new_validation"]["decision"] == "ready" and receipt["publication_approved"] is False
+    assert premium == PREMIUM_REUSE3
 
 
 def test_historical2_contract_context_survives_but_final_authority_blocks_new_api(tmp_path, actual, monkeypatch):
@@ -207,11 +221,18 @@ def test_removing_every_followup_claim_cannot_bypass_original66_authority(actual
     def forbidden(**kwargs):
         pytest.fail("A known original66 paid answer without admission must fail before any API request")
     monkeypatch.setattr(llm_analysis, "analyze_news", forbidden)
+    premium = 0
     for entry in actual[1]["held"].values():
         raw = RawItem(**deepcopy(entry["raw"]))
         assert not current.has_claim(raw.metadata)
+        if is_premium(raw):
+            # Premium section: never enters the pinned full-body authorities; still no API request.
+            premium += 1
+            assert_premium_replay(beta_sources.process_curated_beta_source, raw)
+            continue
         with pytest.raises(DeferredProcessing, match="evidence_unverified"):
             beta_sources.process_curated_beta_source(raw, {})
+    assert premium == PREMIUM_HELD
 
 
 @pytest.mark.parametrize("attack", ["type", "role", "old49_archive", "old12_archive", "old49_receipts", "old12_receipts", "own_stamp"])

@@ -1,0 +1,176 @@
+{
+  "version": "1.3.0",
+  "decided_at": "2026-10-28",
+  "decided_by": "Dirección (reporte 28-oct: ficha DF con más información que la visible sin suscripción)",
+  "policy": "public_teaser_only",
+  "policy_text": "Para prensa con muro de pago sólo se almacena y muestra lo visible sin cuenta: título, bajada o lead público tal como se publicó, fecha y enlace. La pieza se marca como paywalled. Todo análisis usa sólo ese texto público u otras fuentes abiertas citadas. El cuerpo completo no se persiste en salidas públicas; queda un recibo de auditoría con hash y longitud, sin contenido.",
+  "public_fields": [
+    "title",
+    "public_teaser",
+    "event_date",
+    "source_url"
+  ],
+  "redacted_receipt_fields": [
+    "sha256",
+    "characters",
+    "field",
+    "reason",
+    "redacted_at"
+  ],
+  "teaser_max_characters": 600,
+  "min_teaser_characters_for_analysis": 60,
+  "sources": [
+    {
+      "id": "diario_financiero",
+      "name": "Diario Financiero",
+      "source_slugs": [
+        "diario_financiero"
+      ],
+      "hosts": [
+        "df.cl",
+        "www.df.cl"
+      ],
+      "paywall_model": "subscription",
+      "scope": "host",
+      "evidence": "DF sirve el cuerpo en #articleLock bajo muro de suscripción; sin cuenta sólo son visibles título, bajada, fecha y autor. La ficha IF del 22-oct (Nueva Masvida/costas) mostraba el cuerpo bloqueado.",
+      "in_pipeline": true
+    },
+    {
+      "id": "la_tercera_premium",
+      "name": "La Tercera (todas las secciones: premium y medidas)",
+      "source_slugs": [
+        "pulso_latercera"
+      ],
+      "hosts": [
+        "latercera.com",
+        "www.latercera.com"
+      ],
+      "paywall_model": "premium_sections_and_metered_sections",
+      "scope": "host",
+      "path_prefixes": [
+        "/pulso/",
+        "/pulso-pm/",
+        "/la-tercera-pm/",
+        "/lt-board/",
+        "/earlyaccess/",
+        "/la-tercera-sabado/",
+        "/la-tercera-domingo/"
+      ],
+      "article_flags": [
+        "isAccessibleForFree=false",
+        "publisher_paywall=true",
+        "content_tier=locked"
+      ],
+      "evidence": "Pulso, Pulso PM, La Tercera PM, LT Board, Early Access y las ediciones LT Sábado / LT Domingo son secciones para suscriptores. Revisión 28-oct (inventario offline de 13.896 piezas del caché Pulso y la cola; latercera.com no es accesible desde el entorno de revisión): prefijos de ruta observados /pulso-pm/ (77), /earlyaccess/ (6), /la-tercera-sabado/ (9) y /la-tercera-domingo/ (2), y piezas de sección premium publicadas bajo otra ruta (p. ej. /sustentabilidad/ o /nacional/ con section=Pulso), que se reconocen por la sección declarada por el editor. Otras secciones de latercera.com son medidas (metered): se tratan como paywalled sólo cuando la propia pieza lo declara (isAccessibleForFree=false). Decisión de Dirección 28-oct: las secciones medidas (metered: Qué Pasa, Nacional y toda sección que permite algunos artículos gratis al mes) se tratan como pagadas, por lo que la regla cubre el dominio completo. Los prefijos, secciones y banderas por artículo se conservan como evidencia de la base (access_classification), no como condición.",
+      "in_pipeline": true,
+      "sections": [
+        "Pulso",
+        "Pulso PM",
+        "La Tercera PM",
+        "LT Board",
+        "Early Access",
+        "LT Sábado",
+        "LT Domingo"
+      ],
+      "metered_sections_paywalled": true,
+      "resolved_decision": "28-oct: Qué Pasa (/que-pasa/) y demás secciones medidas pasan a pagadas; LT Domingo queda cubierta por el dominio completo. Secciones de contenido de anunciantes (/branded/, /publirreportajes/, /patrocinado/, /comercial/, /laboratoriodecontenidos/) también: no hay evidencia verificada de que estén fuera del medidor."
+    },
+    {
+      "id": "el_mercurio",
+      "name": "El Mercurio / Emol",
+      "source_slugs": [],
+      "hosts": [
+        "elmercurio.com",
+        "www.elmercurio.com",
+        "digital.elmercurio.com",
+        "emol.com",
+        "www.emol.com"
+      ],
+      "paywall_model": "subscription",
+      "scope": "host",
+      "evidence": "No hay colector activo (verificado 28-oct en config/sources.json y src/). Regla preventiva para cualquier ingreso futuro o fuente adicional.",
+      "in_pipeline": false
+    },
+    {
+      "id": "ex_ante",
+      "name": "Ex-Ante",
+      "source_slugs": [],
+      "hosts": [
+        "ex-ante.cl",
+        "www.ex-ante.cl"
+      ],
+      "paywall_model": "subscription",
+      "scope": "host",
+      "evidence": "No hay colector activo (verificado 28-oct). Regla preventiva.",
+      "in_pipeline": false
+    }
+  ],
+  "redacted_signal_fields": [
+    "why_it_matters",
+    "card_what",
+    "card_why",
+    "display_title",
+    "key_facts",
+    "key_numbers",
+    "key_points",
+    "affected_actors",
+    "affected_processes",
+    "possible_implications",
+    "who_cares",
+    "risk_notes",
+    "review_points",
+    "original_what_happened",
+    "original_why_it_matters",
+    "detail_body",
+    "detail_sections",
+    "editorial_business_review",
+    "editorial_review",
+    "editorial_v2",
+    "df_body_reaudit_observations",
+    "df_body_reaudit_latest_assessment",
+    "data_insights",
+    "data_insight_evidence",
+    "analysis_trace",
+    "materiality_reason",
+    "summary_table",
+    "statistical_conclusion",
+    "source_title_full",
+    "legal_subtitle"
+  ],
+  "redacted_body_fields": [
+    "page_text",
+    "body",
+    "article_body",
+    "articleBody",
+    "description_full",
+    "full_text",
+    "text",
+    "what_happened",
+    "why_it_matters",
+    "analysis_model_output"
+  ],
+  "redacted_committee_fields": [
+    "what_happened",
+    "why_it_matters",
+    "public_title",
+    "uncertainties"
+  ],
+  "teaser_sources": [
+    "og:description",
+    "meta:description",
+    "jsonld:description",
+    "public_lead_element",
+    "df_listing_card",
+    "legacy_description_verified"
+  ],
+  "teaser_rule": "La bajada sólo puede provenir de og:description, la meta description (o la description JSON-LD ligada a la URL), un elemento de bajada explícito anterior al marcador de bloqueo, o la tarjeta pública del listado. Nunca del cuerpo, ni de texto dentro o después de #articleLock. Sin bajada pública: sólo título.",
+  "preserved_internal_fields": [
+    "analysis_model_output"
+  ],
+  "preserved_internal_note": "Las respuestas pagadas del modelo son producto de Alicanto: se conservan internamente (nunca se muestran) y se les retiran las oraciones literales del cuerpo bloqueado (huellas en data/audits/paywalled_body_fingerprints_2026_10_28.json).",
+  "metered_decision": {
+    "decided_at": "2026-10-28",
+    "decided_by": "Dirección (instrucción 28-oct vía coordinación)",
+    "text": "Las secciones medidas (metered) de La Tercera —Qué Pasa, Nacional y cualquier sección que permita algunos artículos gratis al mes— se tratan como PAGADAS: sólo título, bajada pública, fecha, enlace y recibo; el análisis usa sólo eso."
+  }
+}
