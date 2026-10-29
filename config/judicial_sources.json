@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-29",
+  "decided_by": "Dirección (cftorre1), 29-oct-2026: evaluar las sentencias públicas del Poder Judicial como fuente (fallos de protección contra isapres, reclamaciones contra circulares de la SIS, Corte Suprema). Sin evitar CAPTCHA, robots ni bloqueos; si algo no es claro, no se habilita.",
+  "policy": "Conservadora. Ninguna fuente judicial está habilitada. Un scout sólo se implementa si robots.txt lo permite, los términos permiten usar metadatos y existe un listado estable. Si se habilita en el futuro: sólo título, tribunal, rol, fecha, enlace y partes tal como se publican (las sentencias se publican anonimizadas y nunca se des-anonimizan), filtro salud/isapres, gate editorial, tope ~10 por corrida y stub en todos los harness de replay.",
+  "statuses": [
+    "enabled",
+    "disabled_pending_verification",
+    "needs_permission",
+    "needs_terms_review",
+    "rejected"
+  ],
+  "verification_gap": "29-oct: el proxy de este entorno rechaza CONNECT a www.pjud.cl y juris.pjud.cl (403) y WebFetch no tiene esos robots.txt en su lista permitida: robots.txt NO se leyó. Los términos de uso sí se leyeron (WebFetch a https://www.pjud.cl/post/condiciones-de-uso-de-este-portal).",
+  "terms_summary": "Condiciones de uso del portal (leídas 29-oct): autorizan utilizar, acceder, imprimir, reproducir y almacenar la información para fines personales o académicos, citando la fuente; prohíben la reproducción, distribución o uso del portal y sus contenidos para otros fines, y el tratamiento masivo de datos y contenidos sin previa autorización del Consejo Superior (Corporación Administrativa del Poder Judicial). No mencionan robots ni scraping. Alicanto es un uso profesional/comercial y un scout periódico es tratamiento automatizado: requiere autorización expresa.",
+  "sources": [
+    {
+      "id": "pjud_noticias",
+      "name": "Poder Judicial: Noticias del Poder Judicial (prensa y comunicaciones)",
+      "kind": "official_press",
+      "status": "needs_permission",
+      "mode": "none",
+      "live_search": false,
+      "scout_enabled": false,
+      "hosts": ["www.pjud.cl"],
+      "reason": "Listado server-rendered y estable (/prensa-y-comunicaciones/noticias-del-poder-judicial, paginado ?page=N, filtros Jurisdicción/Sala/Tipo noticia incluido 'Noticias sobre fallos'); sin RSS ni sitemap visibles. Notas con tribunal y fecha; rol y partes no siempre publicados. Bloqueo: términos limitan a uso personal/académico y exigen autorización previa para tratamiento masivo; robots.txt no leído.",
+      "evidence_urls": [
+        "https://www.pjud.cl/prensa-y-comunicaciones/noticias-del-poder-judicial",
+        "https://www.pjud.cl/prensa-y-comunicaciones/noticias-del-poder-judicial/146254",
+        "https://www.pjud.cl/prensa-y-comunicaciones/index",
+        "https://www.pjud.cl/post/condiciones-de-uso-de-este-portal"
+      ],
+      "verified": {
+        "robots_txt": "not_read (proxy 403 / fuera de allowlist)",
+        "terms": "read: uso personal/académico; tratamiento masivo requiere autorización del Consejo Superior",
+        "feed": "listado HTML paginado; sin RSS",
+        "on": "2026-10-29"
+      },
+      "verified_at": "2026-10-29",
+      "next_step": "Dirección: (1) leer https://www.pjud.cl/robots.txt; (2) solicitar por escrito a la Corporación Administrativa del Poder Judicial autorización para consultar el listado de noticias (filtro 'Noticias sobre fallos') una vez al día y guardar sólo título, tribunal, rol, fecha, enlace y partes tal como se publican. Sin esa autorización, no habilitar.",
+      "reevaluate_after": "2026-11-29"
+    },
+    {
+      "id": "pjud_fallos_adjuntos",
+      "name": "Poder Judicial: fallos adjuntos a notas de prensa (getRulingNew, docs/download)",
+      "kind": "official_document",
+      "status": "needs_permission",
+      "mode": "none",
+      "live_search": false,
+      "scout_enabled": false,
+      "hosts": ["www.pjud.cl"],
+      "reason": "Documentos enlazados desde notas de prensa (/prensa-y-comunicaciones/getRulingNew/<n>, /prensa-y-comunicaciones/docs/download/<n>). No hay listado propio: sólo se llega desde la nota. getRulingNew devolvió contenido binario no legible desde aquí. Mismos términos que el portal.",
+      "evidence_urls": [
+        "https://www.pjud.cl/prensa-y-comunicaciones/getRulingNew/75029",
+        "https://www.pjud.cl/prensa-y-comunicaciones/docs/download/128528",
+        "https://www.pjud.cl/post/condiciones-de-uso-de-este-portal"
+      ],
+      "verified": {
+        "robots_txt": "not_read (proxy 403 / fuera de allowlist)",
+        "terms": "read: igual que pjud_noticias",
+        "feed": "ninguno (sólo enlaces desde notas)",
+        "on": "2026-10-29"
+      },
+      "verified_at": "2026-10-29",
+      "next_step": "Depende de pjud_noticias. Si se autoriza, sólo guardar el enlace al documento; no descargar ni extraer texto de la sentencia.",
+      "reevaluate_after": "2026-11-29"
+    },
+    {
+      "id": "pjud_buscador_sentencias",
+      "name": "Poder Judicial: Buscador Unificado de Sentencias / Compendio Salud Tercera Sala (juris.pjud.cl)",
+      "kind": "jurisprudence_search",
+      "status": "needs_permission",
+      "mode": "none",
+      "live_search": false,
+      "scout_enabled": false,
+      "hosts": ["juris.pjud.cl"],
+      "reason": "Buscador (no feed) de sentencias de Corte Suprema, Cortes de Apelaciones y tribunales, publicadas 'debidamente anonimizadas'; compendio de la Tercera Sala con salud (primas GES, licencias médicas). Descarga, compartir y alertas de búsquedas guardadas requieren Clave Única. Sin API ni RSS documentados. Términos del portal prohíben tratamiento masivo sin autorización. robots.txt no leído; la página del compendio no se pudo abrir desde aquí.",
+      "evidence_urls": [
+        "https://www.pjud.cl/portal-unificado-sentencias",
+        "https://juris.pjud.cl/busqueda?Corte_Suprema",
+        "https://juris.pjud.cl/busqueda?Salud_CS",
+        "https://juris.pjud.cl/buscador/docs/Manual_de_Uso_Buscador_CS_2025.pdf"
+      ],
+      "verified": {
+        "robots_txt": "not_read (proxy 403 / fuera de allowlist)",
+        "terms": "read: portal pjud.cl; sin términos propios del buscador encontrados",
+        "feed": "ninguno; alertas sólo con cuenta Clave Única",
+        "on": "2026-10-29"
+      },
+      "verified_at": "2026-10-29",
+      "next_step": "No automatizar. Alternativa sin permiso nuevo: un analista usa el buscador manualmente y registra enlaces puntuales como evidencia revisada. Para automatizar: autorización expresa y, de preferencia, un canal de datos ofrecido por el Poder Judicial.",
+      "reevaluate_after": "2026-11-29"
+    },
+    {
+      "id": "pjud_oficina_judicial_virtual",
+      "name": "Poder Judicial: Oficina Judicial Virtual (consulta de causas)",
+      "kind": "case_lookup",
+      "status": "rejected",
+      "mode": "none",
+      "live_search": false,
+      "scout_enabled": false,
+      "hosts": ["oficinajudicialvirtual.pjud.cl"],
+      "reason": "Consulta de causas protegida con CAPTCHA (indicado por Dirección). Nunca se evita un CAPTCHA.",
+      "evidence_urls": ["https://oficinajudicialvirtual.pjud.cl/"],
+      "verified": {"robots_txt": "not_read", "terms": "n/a", "feed": "n/a", "on": "2026-10-29"},
+      "verified_at": "2026-10-29",
+      "next_step": "Fuera de alcance.",
+      "reevaluate_after": "2027-10-29"
+    },
+    {
+      "id": "pjud_datos_abiertos",
+      "name": "Poder Judicial: datos abiertos / API / RSS de sentencias",
+      "kind": "open_data",
+      "status": "rejected",
+      "mode": "none",
+      "live_search": false,
+      "scout_enabled": false,
+      "hosts": [],
+      "reason": "No se encontró API, RSS ni dataset abierto de sentencias en el portal unificado, la nota de prensa ni el manual del buscador (29-oct). No se registra una fuente que no existe.",
+      "evidence_urls": [
+        "https://www.pjud.cl/portal-unificado-sentencias",
+        "https://www.pjud.cl/prensa-y-comunicaciones/noticias-del-poder-judicial"
+      ],
+      "verified": {"robots_txt": "n/a", "terms": "n/a", "feed": "no encontrado", "on": "2026-10-29"},
+      "verified_at": "2026-10-29",
+      "next_step": "Revisar si el Poder Judicial publica datos abiertos (p. ej. su plataforma estadística) y bajo qué licencia.",
+      "reevaluate_after": "2026-11-29"
+    }
+  ]
+}

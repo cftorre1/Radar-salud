@@ -221,11 +221,108 @@ def _act_label(s: dict[str, Any]) -> str:
     return normalize_id(m.group(1), m.group(2), m.group(3)) if m else str(s.get("title") or "")
 
 
-def apply_backlinks(signals: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+# --- Impugnaciones (Dirección 29-oct-2026) -------------------------------------------------
+# Relations that decide a challenge (suspension request or appeal) against a circular.
+CHALLENGE_RELATIONS = ("suspende", "rechaza_suspension", "modifica_por_recurso", "confirma")
+ACCEPTED_OUTCOMES = ("acoge", "acoge parcialmente", "ha lugar", "ha lugar en parte")
+UNIDENTIFIED = "recurrente no identificado"
+_INSURER_KINDS = ("isapre", "asegurador_publico")
+# The petitioner is only who the subject names as filer: "interpuestos por las ISAPRES …",
+# "efectuada por la Isapre …", "solicitud de Isapre … de suspender". A name elsewhere in the
+# clause ("…, que instruye a Isapre Colmena") is a mention in passing and never counts.
+_SPAN_END = r"(?=\s*(?:\b(?:en\s+contra|contra|de\s+suspender|para|respecto|mediante|hasta|conforme|que|sobre)\b|;|$))"
+_FILED_BY = re.compile(
+    r"(?<!\bno\s)\b(?:interpuest|presentad|efectuad|deducid|formulad|promovid|solicitad)[oa]s?\s+por\s+"
+    r"(?P<span>[^;]{1,250}?)" + _SPAN_END, re.I)
+_REQUEST_OF = re.compile(
+    r"\b(?:solicitud(?:es)?|petici[oó]n(?:es)?|recursos?(?:\s+de\s+reposici[oó]n|\s+jer[aá]rquicos?)?)\s+"
+    r"(?:presentad[oa]s?\s+)?de\s+(?:la\s+|las\s+)?(?P<span>isapres?\b[^;]{1,250}?)" + _SPAN_END, re.I)
+
+
+def _negated_at(clause: str, start: int) -> bool:
+    return bool(_NEGATED.search(clause[:start]))
+
+
+def challenge_outcome(relation: str, clause: str) -> str | None:
+    """Outcome as decided by the verb the official subject uses; None when it states no decision
+    on a request or appeal (e.g. a bare "Suspende los efectos de …": never inferred as requested)."""
+    text = " ".join(str(clause or "").split())
+    if relation == "rechaza_suspension":
+        return "no ha lugar" if re.search(r"\bno\s+ha\s+lugar\b", text, re.I) else (
+            "rechaza" if re.search(r"\brechaza\b", text, re.I) else None)
+    if relation == "confirma":
+        return "rechaza" if re.search(r"\brechaza\b", text, re.I) else None
+    for m in re.finditer(r"\b(acoge\s+parcialmente|acoge|ha\s+lugar(?:,?\s+en\s+parte)?)\b", text, re.I):
+        if _negated_at(text, m.start()):
+            continue
+        verb = " ".join(m.group(1).lower().replace(",", " ").split())
+        if relation == "modifica_por_recurso" and not verb.startswith("acoge"):
+            continue
+        return verb
+    return None
+
+
+def challenge_filing(relation: str, clause: str) -> str:
+    if relation in ("suspende", "rechaza_suspension"):
+        return "solicitud de suspensión"
+    text = str(clause or "")
+    repo = bool(re.search(r"\breposici[oó]n\b", text, re.I))
+    jer = bool(re.search(r"\bjer[aá]rquicos?\b", text, re.I))
+    return ("reposición y jerárquico" if repo and jer else "reposición" if repo
+            else "jerárquico" if jer else "recurso (tipo no indicado)")
+
+
+def challenge_petitioners(clause: str, catalog=None) -> list[dict[str, str]]:
+    """Insurers the official subject names as filers, mapped via config/entities.json."""
+    from .entity_watch import fold, load_catalog
+    catalog = catalog if catalog is not None else load_catalog()
+    text = " ".join(str(clause or "").split())
+    out: list[dict[str, str]] = []
+    for rx in (_FILED_BY, _REQUEST_OF):
+        for m in rx.finditer(text):
+            span = fold(m.group("span"))
+            found = []
+            for e in catalog:
+                if e.kind in _INSURER_KINDS and e.matches(span) and all(x["id"] != e.id for x in out):
+                    at = min(h.start() for rx_, _ in e.patterns for h in [rx_.search(span)] if h)
+                    found.append((at, {"id": e.id, "name": e.name}))
+            out.extend(x for _, x in sorted(found, key=lambda p: p[0]))  # order named in the subject
+    return out
+
+
+def challenge_entry(relation: str, actor: dict[str, Any], clause: str, catalog=None) -> dict[str, Any] | None:
+    if relation not in CHALLENGE_RELATIONS:
+        return None
+    outcome = challenge_outcome(relation, clause)
+    if not outcome:
+        return None
+    petitioners = challenge_petitioners(clause, catalog)
+    url = actor.get("source_url")
+    return {"filing": challenge_filing(relation, clause), "outcome": outcome,
+            "accepted": outcome in ACCEPTED_OUTCOMES, "relation": relation,
+            "petitioners": petitioners,
+            "petitioner_basis": "named_in_official_subject" if petitioners else "not_identified",
+            "resolution_id": _act_label(actor), "date": actor.get("event_date"),
+            "url": url if isinstance(url, str) and url.startswith("https://") else None,
+            "evidence": clause, "basis": BASIS}
+
+
+def challenge_summary(entries: list[dict[str, Any]]) -> str:
+    n, a = len(entries), sum(1 for e in entries if e.get("accepted"))
+    return (f"{n} impugnaci{'ón' if n == 1 else 'ones'} · {a} acogida{'' if a == 1 else 's'}") if n else ""
+
+
+def _is_instruction_key(key: str | None) -> bool:
+    return bool(key) and (key.startswith("circular-") or key.startswith("oficio-circular-"))
+
+
+def apply_backlinks(signals: Iterable[dict[str, Any]], catalog=None) -> list[dict[str, Any]]:
     """Mark each instruction with the later acts that suspend/modify/confirm it.
 
     Adds ``normative_status_events`` (newest first) and ``normative_status``
-    to the target card; never removes or rewrites existing fields.
+    to the target card; never removes or rewrites existing fields. Circulars and
+    oficios circulares also get ``normative_challenges`` (newest first) and
+    ``normative_challenge_summary`` when a resolution decides a request or appeal.
     """
     rows = [dict(s) for s in signals]
     by_key: dict[str, list[dict[str, Any]]] = {}
@@ -255,6 +352,26 @@ def apply_backlinks(signals: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
                 events.sort(key=lambda e: str(e.get("date") or ""), reverse=True)
                 target["normative_status_events"] = events
                 target["normative_status"] = events[0]["status"]
+                if not _is_instruction_key(rel.get("target_key")):
+                    continue
+                entry = challenge_entry(rel["relation"], actor, rel.get("evidence") or "", catalog)
+                if entry:
+                    # One entry per resolution and relation, even when the same act is present
+                    # twice (history record and feed card); keep the normalized act identity.
+                    def ident(c):
+                        return (c.get("url") or c.get("resolution_id"), c.get("relation"))
+                    found, dup = [], None
+                    for c in target.get("normative_challenges") or []:
+                        if ident(c) == ident(entry):
+                            dup = c
+                        else:
+                            found.append(c)
+                    if dup and _ID.match(str(dup.get("resolution_id") or "")) and not _ID.match(entry["resolution_id"]):
+                        entry = dup
+                    found.append(entry)
+                    found.sort(key=lambda c: str(c.get("date") or ""), reverse=True)
+                    target["normative_challenges"] = found
+                    target["normative_challenge_summary"] = challenge_summary(found)
     return rows
 
 

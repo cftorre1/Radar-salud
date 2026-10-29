@@ -418,7 +418,11 @@ def _normative_status(recent, universe):
     out=[]
     for s in recent:
         r=dict(s);t=linked.get(r.get("source_url"))
-        if t:r.update(normative_status_events=t["normative_status_events"],normative_status=t["normative_status"])
+        if t:
+            r.update(normative_status_events=t["normative_status_events"],normative_status=t["normative_status"])
+            # Impugnaciones (Dirección 29-oct): only when a resolution decided a request/appeal.
+            if t.get("normative_challenges"):
+                r.update(normative_challenges=t["normative_challenges"],normative_challenge_summary=t["normative_challenge_summary"])
         out.append(r)
     return out
 
