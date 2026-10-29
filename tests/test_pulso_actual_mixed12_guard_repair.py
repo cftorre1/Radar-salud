@@ -48,7 +48,7 @@ def test_all_twelve_prior_models_remain_immutable_with_frozen_original_routes():
 
 @pytest.mark.parametrize("fragment", [
     "la mamografía para mujeres de entre 50 y 69 años es gratuita, no requiere orden médica",
-    "Todos los pacientes contactados iniciaron su proceso de atención, que tiene diferentes etapas.",
+    "Todos los pacientes contactados iniciaron su proceso de atención, que tiene cupakungit odugod.",
     "uso obligatorio de mascarilla en los servicios de urgencia, unidades de diálisis y servicios de oncohematología de la red pública y privada de todo el país",
     "antes de la interrupción del embarazo por las tres causales",
 ])

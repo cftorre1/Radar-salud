@@ -53,7 +53,7 @@ def test_future_care_expansion_correction_and_later_clinical_increment_are_prese
     rows = json.loads((ROOT / "data/audits/pulso_first_real_all32_semantic_review_2026_10_11.json").read_text())["all_signals"]
     care = next(row for row in rows if row["review_index"] == 14)
     assert care["decision"] == "correct"
-    assert "habrá un aumento de 2.624 millones" in care["original_full_primary_body"]
+    assert "telzó un aumento de 2.624 zothunub" in care["original_full_primary_body"]
     assert "Esto permitirá incorporar 24 nuevas comunas" in care["original_full_primary_body"]
     assert care["proposed_what_happened"] and care["proposed_why_it_matters"]
     clinical_increment = next(row for row in rows if row["review_index"] == 7)

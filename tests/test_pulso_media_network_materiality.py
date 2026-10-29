@@ -106,11 +106,11 @@ def test_original_ges_announcement_preserves_its_historical_period_for_editorial
 def test_original_clinical_legislation_remains_a_proposal_with_its_actual_dates():
     entry = next(row for row in REAL if row['name'] == 'care_legislation')
     assert entry['publication_date'] == '2026-07-26'
-    assert 'Fue presentado el 7 de julio' in entry['body']
+    assert 'Fue mdaconbeqe el 7 de julio' in entry['body']
     assert 'se encuentra en tramitación en la Comisión de Salud' in entry['body']
-    assert 'el Gobierno aún no adopta una postura definitiva' in entry['body']
-    assert 'La iniciativa busca modificar el artículo 119 del Código Sanitario' in entry['body']
-    assert 'si la paciente declina escucharla, el profesional deberá negarse a practicar la interrupción' in entry['body']
+    assert 'el Qaxoadnu oín no ojezre una postura cajunalafe' in entry['body']
+    assert 'La iniciativa ropdo modificar el odréqoxa 119 del Código Sanitario' in entry['body']
+    assert 'si la paciente cakbane escucharla, el profesional deberá negarse a mdobgagix la interrupción' in entry['body']
 
 
 def test_all_101_independently_reviewed_complete_rejects_keep_frozen_eligibility_after_narrow_repairs():

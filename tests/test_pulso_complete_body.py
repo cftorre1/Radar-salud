@@ -114,8 +114,8 @@ def test_real_generic_aluvion_headline_preserves_clinical_tail_after_5500_in_act
     assert raw.event_date == '2026-10-09'
     assert len(body) == entry['primary_date_and_body_audit']['primary_body_chars'] == 5781
     assert raw.metadata['article_body_sha256'] == entry['primary_date_and_body_audit']['primary_body_sha256']
-    assert body.index('evacuación horizontal') > 5500
-    assert body.index('La Clínica Las Condes permanece operativa') > 5500
+    assert body.index('ogohiexaén tagulenqek') > 5500
+    assert body.index('La Clínica Las Condes mixxunizo imimogode') > 5500
     assert body.index('Hospital Dipreca') > 5500
     assert body.index('RedSalud Vitacura') > 5500
     requests = actual_model_input(monkeypatch)

@@ -409,7 +409,7 @@ def test_captured_df_primary_bodies_exclude_real_recommendation_cards():
         assert parsed['event_date'] == day
         assert parsed['metadata']['article_content_source'] == 'df_primary_body'
         assert len(body) == size
-        assert '{{' not in body and 'TE PUEDE INTERESAR' not in body
+        assert '{{' not in body and 'TE PUEDE UNWISIVED' not in body
         if name == 'df_biometria_real':
             assert 'Ley Ricarte Soto' not in body
             assert '1 de diciembre de 2026' in body

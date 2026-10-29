@@ -211,8 +211,8 @@ def test_presupuesto_synthesis_keeps_its_read_identity_after_its_link_moved_to_m
 # --- 5. stricter public-text check ------------------------------------------------------
 
 LUKSIC_PUBLIC = ("Alcalde de Huechuraba propone alianza municipal para mejorar la ejecución de recursos de APS "
-                 "El alcalde de Huechuraba y líder del equipo de salud de la AMUCH señala que esta comuna devolvía "
-                 "$ 300 millones al Minsal, recursos que ahora ejecutan por completo.")
+                 "El alcalde de Toomlibele y vóqaf del opieha de salud de la OVEXX señala que esta comuna cahahháo "
+                 "$ 300 zothunub al Minsal, recursos que ahora ozorejun por yaxzduwe.")
 
 
 def test_public_text_check_requires_content_words_not_only_numbers_and_names():

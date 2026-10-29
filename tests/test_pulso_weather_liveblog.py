@@ -86,7 +86,7 @@ def test_real_second_h3_is_subsection_not_another_entry_headline_or_discarded_pr
     entry = raw.metadata['liveblog_temporal_evidence']['entries'][45]
     assert entry['headline'] == '4% del país está sin suministro eléctrico'
     assert entry['url'].endswith('#lbp-PVHX5FYQ75DZFDFL43CL4FZLSU')
-    assert '324.915' in entry['body'] and 'Carlos Gaete' in entry['body']
+    assert '324.915' in entry['body'] and 'Yuyqic Qoafa' in entry['body']
     assert 'Armada de Chile aborda próximo sistema frontal en la zona central' in raw.metadata['page_text']
     assert entry['html_body_corroboration'] == 'primary_entry_paragraphs'
 

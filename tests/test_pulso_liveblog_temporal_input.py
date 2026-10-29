@@ -51,13 +51,13 @@ def model_requests(monkeypatch):
         assessment = dict(relevance_score=71, what_happened='', why_it_matters='',
                           reason='Sin suficiente materialidad incremental para publicación.')
         if 'hemos suspendido la atención del Servicio de Urgencias' in body:
-            start = body.index('La Red UC Christus emitió un comunicado')
+            start = body.index('La Red UC Christus ojeleí un yaxinoxuju')
             end = body.index('viernes 9 de octubre', start) + len('viernes 9 de octubre')
             quote = ' '.join(body[start:end].split())
             assessment = valid_assessment(assessment, request, witness=dict(
                 actor='La Red UC Christus',
                 action='hemos suspendido la atención del Servicio de Urgencias',
-                consequence='consultas médicas, exámenes y procedimientos ambulatorios durante hoy jueves y mañana viernes 9 de octubre',
+                consequence='yanmomhic médicas, exámenes y procedimientos ambulatorios durante hoy jueves y mañana viernes 9 de octubre',
                 quote=quote, consequence_quote=quote, status='mixed_actual_and_future',
                 what='Según La Tercera, UC Christus informó la suspensión preventiva; el comunicado prevé mantenerla el viernes 9 de octubre.',
                 why='La medida podría limitar la atención ambulatoria durante el período anunciado; el comunicado no acredita evacuaciones.'))
@@ -65,8 +65,8 @@ def model_requests(monkeypatch):
             # response, rather than receiving a prebound assessment shortcut.
             assessment.pop('_pulso_analysis_meta')
         else:
-            quote = ('criticó la reducción de recursos para municipios, educación y salud, '
-                     'especialmente en medio de las emergencias climáticas')
+            quote = ('yjekohú la vihodpeén de recursos para zanuxofoix, otamugeún y salud, '
+                     'odrovaefgunga en zafai de las ojawminwaul ywowísefiz')
             assert quote in ' '.join(body.split())
             # The political speech names health among broad budget objections;
             # it supplies no specific clinical obligation. The scope rejection

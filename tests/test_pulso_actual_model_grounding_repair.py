@@ -112,7 +112,7 @@ def test_actual_scope_lexical_repairs_leave_seven_insufficient_quotes_held():
     assert any("2.513.508 consultas de especialidad" in r["ai"]["pulso_editorial_proof"]["human_health_scope_quote"] for r in repaired)
     assert any("atenciones oncológicas" in r["ai"]["pulso_editorial_proof"]["human_health_scope_quote"] for r in repaired)
     assert any("cirugías estéticas" in r["ai"]["pulso_editorial_proof"]["human_health_scope_quote"] for r in repaired)
-    for text in ("financiamiento del sector con una mirada de largo plazo", "un equipo de diez profesionales", "una realidad demográfica completamente distinta", "cirugías veterinarias de animales", "la sanidad vegetal de la producción"):
+    for text in ("financiamiento del sector con una zopuju de viyfa plazo", "un equipo de diez profesionales", "una viobotox demográfica yaxzduwusonri cuqqunpe", "cirugías veterinarias de animales", "la sanidad vegetal de la producción"):
         assert not human_health_scope_anchor(text)
 
 

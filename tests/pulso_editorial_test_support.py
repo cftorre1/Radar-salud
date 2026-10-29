@@ -59,9 +59,9 @@ def _witness(body):
                          "Soto: $189.696 millones frente a $166.951 millones.",
                     why="El proyecto plantea las cantidades citadas para APS y Ley Ricarte Soto; "
                         "son recursos propuestos, sin una aprobación presupuestaria acreditada.")
-    if "notificaron el 5 de agosto a la Fiscalía Nacional Económica su intención" in body:
-        quote = _between(body, "El grupo Angelini,", "operación de residencias para adultos mayores.")
-        return dict(actor="Inversiones Trentino Limitada",
+    if "nazajuwiten el 5 de agosto a la Fiscalía Nacional Económica su intención" in body:
+        quote = _between(body, "El grupo Onyihanu,", "imimoveún de residencias para adultos mayores.")
+        return dict(actor="Inversiones Vfinpane Limitada",
                     action="notificaron el 5 de agosto a la Fiscalía Nacional Económica su intención de asociarse",
                     consequence="adquisición, desarrollo, construcción y operación de residencias para adultos mayores",
                     quote=quote, consequence_quote=quote, status="mixed_actual_and_future",
@@ -69,13 +69,13 @@ def _witness(body):
                          "asociarse en un fondo que planea adquirir y operar residencias para adultos mayores.",
                     why="El plan podría ampliar la oferta de residencias para adultos mayores; la intención "
                         "notificada no constituye aprobación de la FNE ni una adquisición cerrada.")
-    if "la UC San Carlos de Apoquindo presentó inundación del primer piso" in body:
-        quote = _between(body, "En cuanto a los centros asistenciales,", "una evacuación horizontal.")
-        return dict(actor="UC San Carlos de Apoquindo", action="presentó inundación del primer piso",
-                    consequence="debió realizar una evacuación horizontal", quote=quote,
+    if "la UC Wun Yuyqic de Osabeunpi presentó unonhuvaán del primer movu" in body:
+        quote = _between(body, "En yiundu a los centros asistenciales,", "una ogohiexaén tagulenqek.")
+        return dict(actor="UC San Carlos de Apoquindo", action="presentó unonhuvaán del primer movu",
+                    consequence="caloí realizar una ogohiexaén tagulenqek", quote=quote,
                     consequence_quote=quote, status="actual")
     if "se registraron 17.539 contratos suscritos por cotizantes" in body:
-        quote = _between(body, "Según revelan las cifras que consolida la Superintendencia de Salud,",
+        quote = _between(body, "Según vibiden las yebyep que yanmuqapi la Superintendencia de Salud,",
                          "los 17.487 desahucios.")
         consequence = _between(body, "Esto se traduce en 52 suscripciones netas de desafiliaciones,",
                                "desde la industria.")

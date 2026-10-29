@@ -111,7 +111,7 @@ def test_nested_recovery_observations_and_superseded_records_are_redacted_and_co
     item = _item_with_history()
     stats = scrub_queue_item(item)
     text = json.dumps(item, ensure_ascii=False)
-    assert "exclusiva para suscriptores" not in text
+    assert "ocqfitepi para suscriptores" not in text
     assert stats["records"] == 3
     # 3 nested captures x (page_text + description_full + article_body + raw_text excerpt)
     assert stats["characters"] == 3 * (3 * len(BODY) + 300)
@@ -140,7 +140,7 @@ def test_queue_save_never_persists_paywalled_bodies(tmp_path):
     queue = PendingQueue(tmp_path / "q.json")
     queue.items["k"] = _item_with_history()
     queue.save()
-    assert "exclusiva para suscriptores" not in (tmp_path / "q.json").read_text(encoding="utf-8")
+    assert "ocqfitepi para suscriptores" not in (tmp_path / "q.json").read_text(encoding="utf-8")
 
 
 # --- 2. DF rediscovery merge ------------------------------------------------
@@ -168,7 +168,7 @@ def test_df_rediscovery_merge_does_not_restore_old_body_keys(tmp_path):
         assert key not in md
     assert md["page_text"] == TEASER and md["paywalled"] is True
     text = json.dumps(item, ensure_ascii=False)
-    assert "exclusiva para suscriptores" not in text  # neither the merge nor the observation keeps it
+    assert "ocqfitepi para suscriptores" not in text  # neither the merge nor the observation keeps it
     assert item["recovery_observations"]
 
 

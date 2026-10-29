@@ -8,6 +8,12 @@ from pathlib import Path
 
 import pytest
 
+import synthetic_receipts
+
+# Synthetic paywalled-press fixtures resolve to their original-capture receipts
+# (tests/synthetic_receipts.py). Installed before any radar_salud import.
+synthetic_receipts.install()
+
 from radar_salud.pinned_evidence import install_original_audit_reader
 
 install_original_audit_reader(Path(__file__).resolve().parents[1])
