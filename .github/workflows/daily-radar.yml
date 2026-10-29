@@ -96,7 +96,14 @@ jobs:
       - name: Install package
         run: pip install -e . pytest
       - name: Core deterministic tests before collection
-        run: python -m pytest -q --ignore=tests/test_reviewer.py --ignore=tests/test_beta_source_runtime_fast.py
+        # Failing test names surface as annotations (job logs are not readable from the orchestrator).
+        run: |
+          set +e
+          python -m pytest -q -rfE --ignore=tests/test_reviewer.py --ignore=tests/test_beta_source_runtime_fast.py 2>&1 | tee "$RUNNER_TEMP/core-tests.txt"
+          rc=${PIPESTATUS[0]}
+          grep -E '^(FAILED|ERROR) ' "$RUNNER_TEMP/core-tests.txt" | head -20 | sed 's/^/::error title=Core test::/'
+          grep -E '^E  ' "$RUNNER_TEMP/core-tests.txt" | head -10 | sed 's/^/::error title=Core test detail::/'
+          exit $rc
       - name: Preserve paid Terra analyses
         run: python scripts/seed_analysis_cache.py
       - name: Run incremental collectors
