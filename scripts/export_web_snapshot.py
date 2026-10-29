@@ -788,8 +788,13 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument("--input",required=True);ap.add_argument("--output",default="web/data/radar_today.json");ap.add_argument("--offline",action="store_true",help="Rebuild only from recorded evidence");ap.add_argument("--as-of",type=date.fromisoformat,default=None,help="Curation date for deterministic test fixtures (YYYY-MM-DD); omit for the real snapshot");args=ap.parse_args()
     raw=json.loads(Path(args.input).read_text(encoding="utf-8"));signals=raw.get("signals",raw) if isinstance(raw,dict) else raw
     signals=list(signals)
+    # Statistics fichas (Dirección 28-oct-2026): one live ficha per family supersedes its loose cards
+    # and the legacy pulse; GES findings without the corrected parser go to HOLD.
+    from radar_salud import stats_fichas
+    fichas=stats_fichas.live_fichas(Path("."))
+    signals=[stats_fichas.sanitize_ges_signal(s) for s in signals]
     canonical=Path("data/excel/validated_series.json")
-    if canonical.exists():
+    if canonical.exists() and not any(f.get("family")=="F1" for f in fichas):
         try:pulse=build_pulse(json.loads(canonical.read_text(encoding="utf-8")),signals)
         except (OSError,ValueError,TypeError):pulse=None
         if pulse:signals.append(pulse)
@@ -801,6 +806,7 @@ def main():
         except (OSError,ValueError,TypeError):
             pass
     cards=preserve_v3_copy(curate(signals,resolve_external=not args.offline,as_of=args.as_of))
+    cards=stats_fichas.apply_to_snapshot(cards,fichas)
     # WATCH (Dirección 27-oct): every card carries explicit entity refs; aggregates inherit their acts.
     from radar_salud import entity_watch
     entity_watch.apply(cards,history=signals)
@@ -813,6 +819,7 @@ def main():
     cards=[c for c in cards if not (c.get("derived_from")=="editorial_story_group" and c.get("rights_review_required"))]
     payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
+    stats_fichas.write_share_pages(cards,out.parent)
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
     from radar_salud.public_source_catalog import export_public_sources

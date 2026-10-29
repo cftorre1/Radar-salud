@@ -1,6 +1,6 @@
 {
   "date": "2026-10-28",
-  "generated_at": "2026-10-28T22:30:27.638865+00:00",
+  "generated_at": "2026-10-28T23:53:31.680254+00:00",
   "entities": [
     {
       "id": "cl:org:clinica-alemana",
@@ -7560,23 +7560,35 @@
       ],
       "key_points": [],
       "risk_notes": [],
-      "data_insights": [
-        "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
-      ],
+      "data_insights": [],
       "data_insight_meta": {
         "family": "ges",
-        "status": "validated",
-        "sheet": "Año 2005",
-        "period": "2026-06",
-        "rows": 24,
-        "insights": [
-          "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
-        ],
-        "evidence": {
-          "header_row": 3,
-          "fonasa_column": 3,
-          "isapre_column": 4,
-          "aggregation": "none"
+        "status": "HOLD",
+        "hold_reason": "HOLD_GES_UNPINNED_OR_UNRECONCILED",
+        "parser": "ges_pinned_year_reconciled_v2",
+        "superseded_meta": {
+          "family": "ges",
+          "status": "validated",
+          "sheet": "Año 2005",
+          "period": "2026-06",
+          "rows": 24,
+          "evidence": {
+            "header_row": 3,
+            "fonasa_column": 3,
+            "isapre_column": 4,
+            "aggregation": "none"
+          },
+          "withdrawn_insight_texts": [
+            "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
+          ],
+          "withdrawn_data_insights": [
+            "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
+          ],
+          "withdrawn_insights": 1,
+          "corrected_at": "2026-10-28",
+          "reason": "parser leía hoja Año 2005",
+          "superseded_parser": "ges_first_sheet_v1",
+          "corrected_by_parser": "ges_pinned_year_reconciled_v2"
         }
       },
       "validity_text": null,
@@ -7596,11 +7608,25 @@
         "Isapres"
       ],
       "ingestion_mode": "BACKFILL",
+      "statistical_view": {
+        "family": "ges",
+        "publication_status": "HOLD",
+        "hold_reason": "HOLD_GES_UNPINNED_OR_UNRECONCILED",
+        "limitations": [
+          "La lectura automática de la planilla GES no fijó la hoja del año en curso ni concilió la suma con el total declarado; el hallazgo queda retenido hasta la ficha GES (F4)."
+        ],
+        "correction": {
+          "corrected_at": "2026-10-28",
+          "label": "28 oct",
+          "text": "Corregido el 28 oct: se retiró un hallazgo automático que leía la hoja de otro año de la planilla y no conciliaba con el total declarado; vuelve con la ficha GES."
+        },
+        "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026/"
+      },
       "publication_ready_score": 100,
       "publication_gate_reason": "ok",
-      "statistical_value_level": "deep_analysis",
-      "card_what": "La Superintendencia actualizó a junio 2026 los casos y tasas de uso GES de Fonasa e Isapres por problema de salud.",
-      "card_why": "Permite detectar cambios de utilización por patología y dimensionar exposición asistencial y financiera entre seguros.",
+      "statistical_value_level": "central_finding",
+      "card_what": "La publicación reúne casos y tasas de uso GES por problema de salud y seguro (Fonasa e Isapres). Información actualizada a junio 2026.",
+      "card_why": "Permite saber qué patologías y tasas pueden compararse entre seguros; Alicanto aún no ha calculado variaciones entre períodos para esta entrega.",
       "related_context": [],
       "source_alternatives": [],
       "editorial_decision": "accept",
@@ -7618,8 +7644,8 @@
         ],
         "materiality_decision": "accept",
         "public_title": "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a junio 2026",
-        "what_happened": "La Superintendencia actualizó a junio 2026 los casos y tasas de uso GES de Fonasa e Isapres por problema de salud.",
-        "why_it_matters": "Permite detectar cambios de utilización por patología y dimensionar exposición asistencial y financiera entre seguros.",
+        "what_happened": "La publicación reúne casos y tasas de uso GES por problema de salud y seguro (Fonasa e Isapres). Información actualizada a junio 2026.",
+        "why_it_matters": "Permite saber qué patologías y tasas pueden compararse entre seguros; Alicanto aún no ha calculado variaciones entre períodos para esta entrega.",
         "evidence_map": [
           {
             "source": "Superintendencia de Salud",
@@ -7627,7 +7653,7 @@
           }
         ],
         "uncertainties": [],
-        "value_level": "deep_analysis",
+        "value_level": "central_finding",
         "publication_decision": "accept",
         "critical_objections": [],
         "verdict": "PASS",
@@ -11173,138 +11199,6 @@
       "feed_visibility": true
     },
     {
-      "title": "Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",
-      "source_name": "Superintendencia de Salud",
-      "source_type": "official",
-      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-movilidad-de-cartera-de-cotizantes-del-sistema-isapre-a-nivel-regional-ano-2026/",
-      "category": "Aseguramiento",
-      "subcategory": "Estadísticas",
-      "system_domain": "HEALTH_INSURANCE",
-      "what_happened": "La Superintendencia actualizó a agosto 2026 la movilidad de cotizantes entre Isapres y su entrada o salida del sistema, con cortes por edad, sexo y región.",
-      "event_date": "2026-10-02",
-      "detected_at": "2026-10-28T11:29:02.539967+00:00",
-      "primary_source_url": null,
-      "event_type": "OTHER",
-      "strategic_theme": [],
-      "institution_types": [],
-      "entity_refs": [],
-      "country": "CL",
-      "topics": [],
-      "entities": [],
-      "people": [],
-      "geography": [],
-      "key_facts": [
-        "Contiene información de los Cotizantes que se movilizan en el Sistema ISAPRE: Cotizantes que abandonan el Sistema ISAPRE, Cotizantes que ingresan al Sistema ISAPRE y Cotizantes que se cambian de ISAPRE, Cargas y Cotización promedio, por Tramo de Edad y Sexo del Cotizante.",
-        "Información actualizada a agosto 2026."
-      ],
-      "key_numbers": [],
-      "why_it_matters": "Permite detectar qué actores ganan o pierden cotizantes, dónde ocurre la movilidad y si cambian los patrones de entrada, salida o traspaso dentro del sistema.",
-      "who_cares": [
-        "estrategia",
-        "estudios",
-        "isapres",
-        "prestadores",
-        "desarrollo de negocios"
-      ],
-      "possible_implications": [],
-      "watch_tags": [
-        "superintendencia",
-        "isapres",
-        "cartera",
-        "movilidad"
-      ],
-      "connection_keys": [],
-      "trend_keys": [],
-      "prospective_evidence": false,
-      "economic_impact_score": 65,
-      "regulatory_impact_score": 35,
-      "scope_score": 82,
-      "novelty_score": 75,
-      "actionability_score": 80,
-      "source_quality_score": 100,
-      "radar_score": 69,
-      "confidence_score": 100,
-      "distribution": "archive",
-      "validation_status": "automatic",
-      "corroboration_status": "unknown",
-      "additional_sources": [],
-      "source_documents": [
-        {
-          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-movilidad-de-cotizantes-202608.xlsx",
-          "label": "Descargar 385 KB XLSX"
-        }
-      ],
-      "key_points": [],
-      "risk_notes": [],
-      "data_insights": [],
-      "data_insight_meta": {
-        "family": "movilidad",
-        "status": "schema_not_validated",
-        "insights": []
-      },
-      "validity_text": null,
-      "related_reference_ids": [],
-      "original_language": "es",
-      "display_language": "es",
-      "translation_status": "not_required",
-      "original_title": null,
-      "original_what_happened": null,
-      "original_why_it_matters": null,
-      "distribution_free": "weekly_digest",
-      "distribution_pro": "web",
-      "signal_types": [
-        "Datos"
-      ],
-      "scopes": [
-        "Isapres"
-      ],
-      "release_key": "2026-10-02",
-      "listing_publication_date": "2026-10-02",
-      "ingestion_mode": "BACKFILL",
-      "publication_ready_score": 100,
-      "publication_gate_reason": "ok",
-      "statistical_value_level": "central_finding",
-      "card_what": "Contiene información de los Cotizantes que se movilizan en el Sistema ISAPRE: Cotizantes que abandonan el Sistema ISAPRE, Cotizantes que ingresan al Sistema ISAPRE y Cotizantes que se cambian de ISAPRE, Cargas y Cotización promedio, por Tramo de Edad y Sexo del Cotizante.",
-      "card_why": "Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible.",
-      "related_context": [],
-      "source_alternatives": [],
-      "editorial_source_decision": "group",
-      "editorial_decision": "group",
-      "editorial_materiality_score": 60,
-      "editorial_business_review": "Una actualización mensual de movilidad es insumo; debe consolidarse con cartera y flujos, no competir como señal aislada.",
-      "editorial_value_category": "portfolio_competition",
-      "editorial_committee": {
-        "check_kind": "structured_check",
-        "independent_review": false,
-        "committee_version": "1.0",
-        "signal_type": "Datos",
-        "members": [
-          "editorial_intelligence",
-          "health_business",
-          "data_analytics",
-          "decision_intelligence",
-          "evidence_research"
-        ],
-        "materiality_decision": "group",
-        "public_title": "Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",
-        "what_happened": "Contiene información de los Cotizantes que se movilizan en el Sistema ISAPRE: Cotizantes que abandonan el Sistema ISAPRE, Cotizantes que ingresan al Sistema ISAPRE y Cotizantes que se cambian de ISAPRE, Cargas y Cotización promedio, por Tramo de Edad y Sexo del Cotizante.",
-        "why_it_matters": "Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible.",
-        "evidence_map": [
-          {
-            "source": "Superintendencia de Salud",
-            "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-movilidad-de-cartera-de-cotizantes-del-sistema-isapre-a-nivel-regional-ano-2026/"
-          }
-        ],
-        "uncertainties": [],
-        "value_level": "central_finding",
-        "publication_decision": "group",
-        "critical_objections": [],
-        "verdict": "PASS",
-        "parser_or_research_debt_if_any": null
-      },
-      "feed_visibility": true
-    },
-    {
       "title": "Suseso regula la implementación del nuevo Sistema de Subsidio Unificado de Empleo",
       "source_name": "Superintendencia de Seguridad Social (SUSESO)",
       "source_type": "official",
@@ -11399,407 +11293,6 @@
         "uncertainties": [],
         "value_level": null,
         "publication_decision": "accept",
-        "critical_objections": [],
-        "verdict": "PASS",
-        "parser_or_research_debt_if_any": null
-      },
-      "feed_visibility": true
-    },
-    {
-      "title": "Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",
-      "source_name": "Superintendencia de Salud",
-      "source_type": "official",
-      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-suscripciones-y-desahucios-del-sistema-isapre-ano-2026/",
-      "category": "Aseguramiento",
-      "subcategory": "Estadísticas",
-      "system_domain": "HEALTH_INSURANCE",
-      "what_happened": "La Superintendencia actualizó a agosto de 2026 las suscripciones y desahucios del sistema Isapre, incluyendo causal, sexo e Isapre.",
-      "event_date": "2026-10-02",
-      "detected_at": "2026-10-28T11:29:02.539967+00:00",
-      "primary_source_url": null,
-      "event_type": "OTHER",
-      "strategic_theme": [],
-      "institution_types": [],
-      "entity_refs": [],
-      "country": "CL",
-      "topics": [],
-      "entities": [],
-      "people": [],
-      "geography": [],
-      "key_facts": [
-        "Contiene información de las Suscripciones y Desahucios de Contrato del Sistema ISAPRE, efectuados en cada mes del año 2026: Contratos suscritos y Desahucios según su causal, por Sexo del Cotizante e ISAPRE.",
-        "Información actualizada a agosto de 2026."
-      ],
-      "key_numbers": [
-        {
-          "raw": "2026"
-        }
-      ],
-      "why_it_matters": "Permite seguir altas, bajas y motivos de salida, una señal útil para detectar presión comercial y cambios en la dinámica de afiliación.",
-      "who_cares": [
-        "estrategia",
-        "estudios",
-        "isapres",
-        "estrategia comercial"
-      ],
-      "possible_implications": [],
-      "watch_tags": [
-        "superintendencia",
-        "isapres",
-        "cartera",
-        "suscripciones",
-        "desahucios"
-      ],
-      "connection_keys": [],
-      "trend_keys": [],
-      "prospective_evidence": false,
-      "economic_impact_score": 60,
-      "regulatory_impact_score": 35,
-      "scope_score": 75,
-      "novelty_score": 70,
-      "actionability_score": 72,
-      "source_quality_score": 100,
-      "radar_score": 65,
-      "confidence_score": 100,
-      "distribution": "archive",
-      "validation_status": "automatic",
-      "corroboration_status": "unknown",
-      "additional_sources": [],
-      "source_documents": [
-        {
-          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
-          "label": "Descargar 238 KB XLSX"
-        }
-      ],
-      "key_points": [],
-      "risk_notes": [],
-      "data_insights": [],
-      "data_insight_meta": {
-        "family": "suscripciones",
-        "status": "schema_not_validated",
-        "insights": []
-      },
-      "validity_text": null,
-      "related_reference_ids": [],
-      "original_language": "es",
-      "display_language": "es",
-      "translation_status": "not_required",
-      "original_title": null,
-      "original_what_happened": null,
-      "original_why_it_matters": null,
-      "distribution_free": "weekly_digest",
-      "distribution_pro": "web",
-      "signal_types": [
-        "Datos"
-      ],
-      "scopes": [
-        "Isapres"
-      ],
-      "release_key": "2026-10-02",
-      "listing_publication_date": "2026-10-02",
-      "ingestion_mode": "BACKFILL",
-      "publication_ready_score": 100,
-      "publication_gate_reason": "ok",
-      "statistical_value_level": "central_finding",
-      "card_what": "Contiene información de las Suscripciones y Desahucios de Contrato del Sistema ISAPRE, efectuados en cada mes del año 2026: Contratos suscritos y Desahucios según su causal, por Sexo del Cotizante e ISAPRE.",
-      "card_why": "Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible.",
-      "related_context": [],
-      "source_alternatives": [],
-      "editorial_source_decision": "group",
-      "editorial_decision": "group",
-      "editorial_materiality_score": 58,
-      "editorial_business_review": "Suscripciones y desahucios forman parte del mismo paquete mensual y requieren variación, no mera publicación.",
-      "editorial_value_category": "portfolio_competition",
-      "editorial_committee": {
-        "check_kind": "structured_check",
-        "independent_review": false,
-        "committee_version": "1.0",
-        "signal_type": "Datos",
-        "members": [
-          "editorial_intelligence",
-          "health_business",
-          "data_analytics",
-          "decision_intelligence",
-          "evidence_research"
-        ],
-        "materiality_decision": "group",
-        "public_title": "Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",
-        "what_happened": "Contiene información de las Suscripciones y Desahucios de Contrato del Sistema ISAPRE, efectuados en cada mes del año 2026: Contratos suscritos y Desahucios según su causal, por Sexo del Cotizante e ISAPRE.",
-        "why_it_matters": "Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible.",
-        "evidence_map": [
-          {
-            "source": "Superintendencia de Salud",
-            "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-suscripciones-y-desahucios-del-sistema-isapre-ano-2026/"
-          }
-        ],
-        "uncertainties": [],
-        "value_level": "central_finding",
-        "publication_decision": "group",
-        "critical_objections": [],
-        "verdict": "PASS",
-        "parser_or_research_debt_if_any": null
-      },
-      "feed_visibility": true
-    },
-    {
-      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Agosto 2026",
-      "source_name": "Superintendencia de Salud",
-      "source_type": "official",
-      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-agosto-2026/",
-      "category": "Aseguramiento",
-      "subcategory": "Estadísticas",
-      "system_domain": "HEALTH_INSURANCE",
-      "what_happened": "La Superintendencia actualizó la cartera Isapre por región: cotizantes, cargas, edad, sexo, tipo de trabajador y cotización percibida.",
-      "event_date": "2026-10-02",
-      "detected_at": "2026-10-08T08:36:29.173275+00:00",
-      "primary_source_url": null,
-      "event_type": "OTHER",
-      "strategic_theme": [],
-      "institution_types": [],
-      "entity_refs": [],
-      "country": "CL",
-      "topics": [],
-      "entities": [],
-      "people": [],
-      "geography": [],
-      "key_facts": [
-        "Contiene información descriptiva de la Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional: Cotizantes y Cargas vigentes por Tramo de Edad y Sexo, Cotizantes vigentes por Tipo de Trabajador, así como las Suscripciones, Desahucios y Cotización Percibida por ISAPRE y Región del país. Información correspondiente a agosto de 2026."
-      ],
-      "key_numbers": [
-        {
-          "raw": "2026."
-        }
-      ],
-      "why_it_matters": "Permite dimensionar tamaño y composición de cartera y observar cambios territoriales o demográficos que afectan demanda asistencial, ingresos y planificación.",
-      "who_cares": [
-        "estrategia",
-        "estudios",
-        "isapres",
-        "prestadores",
-        "desarrollo de negocios"
-      ],
-      "possible_implications": [],
-      "watch_tags": [
-        "superintendencia",
-        "isapres",
-        "cartera",
-        "cotizantes"
-      ],
-      "connection_keys": [],
-      "trend_keys": [],
-      "prospective_evidence": false,
-      "economic_impact_score": 60,
-      "regulatory_impact_score": 35,
-      "scope_score": 80,
-      "novelty_score": 70,
-      "actionability_score": 72,
-      "source_quality_score": 100,
-      "radar_score": 65,
-      "confidence_score": 100,
-      "distribution": "archive",
-      "validation_status": "automatic",
-      "corroboration_status": "unknown",
-      "additional_sources": [],
-      "source_documents": [
-        {
-          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-regional-202608.xlsx",
-          "label": "Descargar 403 KB XLSX"
-        }
-      ],
-      "key_points": [],
-      "risk_notes": [],
-      "data_insights": [],
-      "data_insight_meta": {
-        "family": "cartera",
-        "status": "schema_not_validated",
-        "insights": []
-      },
-      "validity_text": null,
-      "related_reference_ids": [],
-      "original_language": "es",
-      "display_language": "es",
-      "translation_status": "not_required",
-      "original_title": null,
-      "original_what_happened": null,
-      "original_why_it_matters": null,
-      "distribution_free": "weekly_digest",
-      "distribution_pro": "web",
-      "signal_types": [
-        "Datos"
-      ],
-      "scopes": [
-        "Isapres"
-      ],
-      "ingestion_mode": "BACKFILL",
-      "publication_ready_score": 100,
-      "publication_gate_reason": "ok",
-      "statistical_value_level": "central_finding",
-      "card_what": "Contiene información descriptiva de la Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional: Cotizantes y Cargas vigentes por Tramo de Edad y Sexo, Cotizantes vigentes por Tipo de Trabajador, así como las Suscripciones, Desahucios y Cotización Percibida por ISAPRE y Región del país. Información correspondiente a agosto de 2026.",
-      "card_why": "Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible.",
-      "related_context": [],
-      "source_alternatives": [],
-      "editorial_decision": "accept",
-      "editorial_committee": {
-        "check_kind": "structured_check",
-        "independent_review": false,
-        "committee_version": "1.0",
-        "signal_type": "Datos",
-        "members": [
-          "editorial_intelligence",
-          "health_business",
-          "data_analytics",
-          "decision_intelligence",
-          "evidence_research"
-        ],
-        "materiality_decision": "accept",
-        "public_title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Agosto 2026",
-        "what_happened": "Contiene información descriptiva de la Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional: Cotizantes y Cargas vigentes por Tramo de Edad y Sexo, Cotizantes vigentes por Tipo de Trabajador, así como las Suscripciones, Desahucios y Cotización Percibida por ISAPRE y Región del país. Información correspondiente a agosto de 2026.",
-        "why_it_matters": "Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible.",
-        "evidence_map": [
-          {
-            "source": "Superintendencia de Salud",
-            "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-agosto-2026/"
-          }
-        ],
-        "uncertainties": [],
-        "value_level": "central_finding",
-        "publication_decision": "accept",
-        "critical_objections": [],
-        "verdict": "PASS",
-        "parser_or_research_debt_if_any": null
-      },
-      "feed_visibility": true
-    },
-    {
-      "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",
-      "source_name": "Superintendencia de Salud",
-      "source_type": "official",
-      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
-      "category": "Aseguramiento",
-      "subcategory": "Estadísticas",
-      "system_domain": "HEALTH_INSURANCE",
-      "what_happened": "La Superintendencia actualizó a agosto 2026 la cartera Isapre: cotizantes, cargas, edad, sexo, tipo de trabajador y cotización percibida.",
-      "event_date": "2026-10-02",
-      "detected_at": "2026-10-28T11:29:02.539967+00:00",
-      "primary_source_url": null,
-      "event_type": "OTHER",
-      "strategic_theme": [],
-      "institution_types": [],
-      "entity_refs": [],
-      "country": "CL",
-      "topics": [],
-      "entities": [],
-      "people": [],
-      "geography": [],
-      "key_facts": [
-        "Contiene información descriptiva de la Cartera de Beneficiarios del Sistema ISAPRE, para cada mes del año 2026: Cotizantes y Cargas vigentes por Tramo de Edad y Sexo, Cotizantes vigentes por Tipo de Trabajador, así como las Suscripciones, Desahucios y Cotización Percibida por Isapre.",
-        "Información actualizada a agosto 2026."
-      ],
-      "key_numbers": [
-        {
-          "raw": "2026"
-        }
-      ],
-      "why_it_matters": "Permite dimensionar tamaño y composición de cartera y observar cambios territoriales o demográficos que afectan demanda asistencial, ingresos y planificación.",
-      "who_cares": [
-        "estrategia",
-        "estudios",
-        "isapres",
-        "prestadores",
-        "desarrollo de negocios"
-      ],
-      "possible_implications": [],
-      "watch_tags": [
-        "superintendencia",
-        "isapres",
-        "cartera",
-        "cotizantes"
-      ],
-      "connection_keys": [],
-      "trend_keys": [],
-      "prospective_evidence": false,
-      "economic_impact_score": 60,
-      "regulatory_impact_score": 35,
-      "scope_score": 80,
-      "novelty_score": 70,
-      "actionability_score": 72,
-      "source_quality_score": 100,
-      "radar_score": 65,
-      "confidence_score": 100,
-      "distribution": "archive",
-      "validation_status": "automatic",
-      "corroboration_status": "unknown",
-      "additional_sources": [],
-      "source_documents": [
-        {
-          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-          "label": "Descargar 3 MB XLSX"
-        }
-      ],
-      "key_points": [],
-      "risk_notes": [],
-      "data_insights": [],
-      "data_insight_meta": {
-        "family": "cartera",
-        "status": "schema_not_validated",
-        "insights": []
-      },
-      "validity_text": null,
-      "related_reference_ids": [],
-      "original_language": "es",
-      "display_language": "es",
-      "translation_status": "not_required",
-      "original_title": null,
-      "original_what_happened": null,
-      "original_why_it_matters": null,
-      "distribution_free": "weekly_digest",
-      "distribution_pro": "web",
-      "signal_types": [
-        "Datos"
-      ],
-      "scopes": [
-        "Isapres"
-      ],
-      "release_key": "2026-10-02",
-      "listing_publication_date": "2026-10-02",
-      "ingestion_mode": "BACKFILL",
-      "publication_ready_score": 100,
-      "publication_gate_reason": "ok",
-      "statistical_value_level": "central_finding",
-      "card_what": "Contiene información descriptiva de la Cartera de Beneficiarios del Sistema ISAPRE, para cada mes del año 2026: Cotizantes y Cargas vigentes por Tramo de Edad y Sexo, Cotizantes vigentes por Tipo de Trabajador, así como las Suscripciones, Desahucios y Cotización Percibida por Isapre.",
-      "card_why": "Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible.",
-      "related_context": [],
-      "source_alternatives": [],
-      "editorial_source_decision": "group",
-      "editorial_decision": "group",
-      "editorial_materiality_score": 55,
-      "editorial_business_review": "El archivo nacional duplica la actualización de cartera y debe alimentar un único pulso analítico.",
-      "editorial_value_category": "portfolio_competition",
-      "editorial_committee": {
-        "check_kind": "structured_check",
-        "independent_review": false,
-        "committee_version": "1.0",
-        "signal_type": "Datos",
-        "members": [
-          "editorial_intelligence",
-          "health_business",
-          "data_analytics",
-          "decision_intelligence",
-          "evidence_research"
-        ],
-        "materiality_decision": "group",
-        "public_title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",
-        "what_happened": "Contiene información descriptiva de la Cartera de Beneficiarios del Sistema ISAPRE, para cada mes del año 2026: Cotizantes y Cargas vigentes por Tramo de Edad y Sexo, Cotizantes vigentes por Tipo de Trabajador, así como las Suscripciones, Desahucios y Cotización Percibida por Isapre.",
-        "why_it_matters": "Alicanto identificó el contenido central del documento; el análisis comparativo aún no está disponible.",
-        "evidence_map": [
-          {
-            "source": "Superintendencia de Salud",
-            "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/"
-          }
-        ],
-        "uncertainties": [],
-        "value_level": "central_finding",
-        "publication_decision": "group",
         "critical_objections": [],
         "verdict": "PASS",
         "parser_or_research_debt_if_any": null
@@ -20505,472 +19998,6 @@
         }
       },
       "why_it_matters": ""
-    },
-    {
-      "statistical_view": {
-        "family": "cartera",
-        "publication_status": "RECORDED_VALIDATION",
-        "unit": "personas",
-        "period_start": "2026-01",
-        "period_end": "2026-07",
-        "provisional": true,
-        "complete_series_verified": true,
-        "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-        "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-        "comparison": {
-          "absolute_delta": "-26541",
-          "relative_pct": "-1.055711966167575828209438362",
-          "point_delta": null,
-          "transition": null,
-          "reason_code": null,
-          "comparison_status": "PASS",
-          "publication_status": "CALCULATION_ONLY",
-          "base_version_used": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-          "revision_delta": null
-        },
-        "kpis": [
-          {
-            "label": "Beneficiarios",
-            "value": 2487497,
-            "reference": "2026-07"
-          },
-          {
-            "label": "Cambio desde 2026-01",
-            "value": "-26541",
-            "reference": "2026-01 → 2026-07"
-          },
-          {
-            "label": "Variación relativa",
-            "value": "-1.055711966167575828209438362",
-            "unit": "%",
-            "reference": "Base 2514038"
-          }
-        ],
-        "series": [
-          {
-            "period": "2026-01",
-            "value": 2514038,
-            "locator": "Enero!E20"
-          },
-          {
-            "period": "2026-02",
-            "value": 2510385,
-            "locator": "Febrero!E20"
-          },
-          {
-            "period": "2026-03",
-            "value": 2504837,
-            "locator": "Marzo!E20"
-          },
-          {
-            "period": "2026-04",
-            "value": 2498649,
-            "locator": "Abril!E20"
-          },
-          {
-            "period": "2026-05",
-            "value": 2493684,
-            "locator": "Mayo!E20"
-          },
-          {
-            "period": "2026-06",
-            "value": 2489258,
-            "locator": "Junio!E20"
-          },
-          {
-            "period": "2026-07",
-            "value": 2487497,
-            "locator": "Julio!E20"
-          }
-        ],
-        "limitations": [
-          "Datos provisionales; personas con beneficios vigentes. La composición de cartera no prueba causalidad ni ingresos."
-        ],
-        "entities": [],
-        "entity_status": "desglose no verificado",
-        "methodology": {
-          "formula": "fin − inicio; relativa = 100 × (fin − inicio) / inicio",
-          "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx"
-        },
-        "chosen_representation": {
-          "publication_status": "REVIEW_REQUIRED",
-          "modules": [
-            {
-              "id": "portfolio-trend",
-              "representation": "line",
-              "reason": "Trayectoria mensual comparable, sin inferir causalidad.",
-              "finding": {
-                "id": "portfolio-trend",
-                "kind": "trend",
-                "verified": true,
-                "material": true,
-                "novel": true,
-                "input_refs": [
-                  "Enero!E20",
-                  "Febrero!E20",
-                  "Marzo!E20",
-                  "Abril!E20",
-                  "Mayo!E20",
-                  "Junio!E20",
-                  "Julio!E20"
-                ],
-                "observations": [
-                  {
-                    "period": "2026-01",
-                    "value": 2514038,
-                    "locator": "Enero!E20",
-                    "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-                    "unit": "personas"
-                  },
-                  {
-                    "period": "2026-02",
-                    "value": 2510385,
-                    "locator": "Febrero!E20",
-                    "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-                    "unit": "personas"
-                  },
-                  {
-                    "period": "2026-03",
-                    "value": 2504837,
-                    "locator": "Marzo!E20",
-                    "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-                    "unit": "personas"
-                  },
-                  {
-                    "period": "2026-04",
-                    "value": 2498649,
-                    "locator": "Abril!E20",
-                    "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-                    "unit": "personas"
-                  },
-                  {
-                    "period": "2026-05",
-                    "value": 2493684,
-                    "locator": "Mayo!E20",
-                    "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-                    "unit": "personas"
-                  },
-                  {
-                    "period": "2026-06",
-                    "value": 2489258,
-                    "locator": "Junio!E20",
-                    "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-                    "unit": "personas"
-                  },
-                  {
-                    "period": "2026-07",
-                    "value": 2487497,
-                    "locator": "Julio!E20",
-                    "source_hash": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-                    "unit": "personas"
-                  }
-                ],
-                "incremental_value": "Trayectoria mensual comparable, sin inferir causalidad."
-              }
-            }
-          ]
-        },
-        "additional_views": [
-          {
-            "label": "Contratos · 2026-07",
-            "unit": "contratos",
-            "period": "2026-07",
-            "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
-            "source_hash": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
-            "limitation": "Desahucios voluntarios no incluyen todas las terminaciones; su diferencia no es cambio neto de cartera.",
-            "rows": [
-              {
-                "label": "Suscripciones",
-                "value": 19716,
-                "locator": "Julio!C20"
-              },
-              {
-                "label": "Desahucios voluntarios",
-                "value": 15172,
-                "locator": "Julio!D20"
-              }
-            ]
-          },
-          {
-            "label": "Movilidad · cortes 2025-07 y 2026-07",
-            "unit": "cotizantes",
-            "period_start": "2025-07",
-            "period_end": "2026-07",
-            "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
-            "source_hash": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
-            "limitation": "Comparación entre cortes; no variación mensual ni conteo de todos los movimientos intermedios.",
-            "rows": [
-              {
-                "label": "Entradas entre cortes",
-                "value": 91963,
-                "locator": "Nacional!D31"
-              },
-              {
-                "label": "Salidas entre cortes",
-                "value": 109663,
-                "locator": "Nacional!D19"
-              }
-            ]
-          }
-        ]
-      },
-      "title": "Pulso Isapre · datos a 2026-07",
-      "source_name": "Superintendencia de Salud",
-      "source_type": "official",
-      "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
-      "event_date": "2026-09-07",
-      "publication_date": "2026-09-07",
-      "validation_date": "2026-09-24",
-      "data_period": "2026-07",
-      "signal_types": [
-        "Datos"
-      ],
-      "scopes": [
-        "Isapres"
-      ],
-      "ingestion_mode": "BACKFILL",
-      "category": "Datos sectoriales",
-      "event_type": "DATA_PULSE",
-      "distribution": "archive",
-      "radar_score": 72,
-      "confidence_score": 100,
-      "what_happened": "Las series oficiales del sistema Isapre registran a 2026-07 una cartera de 2.487.497 beneficiarios (1.549.873 cotizantes y 937.624 cargas).",
-      "why_it_matters": "La cartera acumula 6 bajas mensuales y 26.541 beneficiarios menos entre enero y julio; 72,9% de esa disminución aritmética corresponde a cargas. Para gestión comercial y financiera, es una alerta de composición y base de ingresos, no una explicación causal: la brecha entre contratos y desahucios voluntarios omite otras terminaciones, y la movilidad usa otro intervalo. Conviene seguir terminaciones completas, mezcla de cartera y próximas publicaciones antes de atribuir desempeño.",
-      "key_points": [
-        "En 2026-07 se registraron 19.716 contratos suscritos y 15.172 desahucios voluntarios; estos últimos no representan todas las terminaciones.",
-        "Entre los cortes 07-2025 y 07-2026 se registraron 109.663 salidas y 91.963 entradas por movilidad; diferencia entradas menos salidas: -17.700."
-      ],
-      "summary_table": {
-        "title": "Resumen ejecutivo Isapre",
-        "columns": [
-          "Indicador",
-          "Período",
-          "Valor",
-          "Lectura"
-        ],
-        "rows": [
-          {
-            "indicator": "Beneficiarios",
-            "period": "2026-07",
-            "value": "2.487.497",
-            "reading": "26.541 menos que enero; 6 bajas mensuales consecutivas."
-          },
-          {
-            "indicator": "Cotizantes",
-            "period": "2026-07",
-            "value": "1.549.873",
-            "reading": "Base principal de cotizantes al cierre del período."
-          },
-          {
-            "indicator": "Cargas",
-            "period": "2026-07",
-            "value": "937.624",
-            "reading": "72,9% de la caída aritmética enero–julio corresponde a cargas."
-          },
-          {
-            "indicator": "Suscripciones",
-            "period": "2026-07",
-            "value": "19.716",
-            "reading": "4.544 más que desahucios voluntarios en el mes; no equivale a cambio neto."
-          },
-          {
-            "indicator": "Desahucios voluntarios",
-            "period": "2026-07",
-            "value": "15.172",
-            "reading": "No representan todas las terminaciones de contrato."
-          },
-          {
-            "indicator": "Movilidad",
-            "period": "2025-07 → 2026-07",
-            "value": "-17.700",
-            "reading": "91.963 entradas y 109.663 salidas entre cortes; no es variación mensual."
-          }
-        ]
-      },
-      "data_insights": [
-        "La cartera pasó de 2.514.038 a 2.487.497 beneficiarios entre enero y julio de 2026; variación -26.541 (diferencia de stock, no suma mensual).",
-        "Mezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.",
-        "La cartera de beneficiarios cae en 6 comparaciones mensuales consecutivas hasta julio de 2026; no se infiere causa.",
-        "Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.",
-        "Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual."
-      ],
-      "data_insight_evidence": [
-        {
-          "text": "La cartera pasó de 2.514.038 a 2.487.497 beneficiarios entre enero y julio de 2026; variación -26.541 (diferencia de stock, no suma mensual).",
-          "formula": "2487497 - 2514038 = -26541",
-          "family": "cartera",
-          "period": "2026-01 → 2026-07",
-          "sheet": "Julio",
-          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-          "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-          "analysis_kind": "beneficiary_stock_change"
-        },
-        {
-          "text": "Mezcla de cartera enero→julio 2026: cargas por cotizante 0.615 → 0.605 (-1.57%); la baja de 19.350 cargas equivale al 72.9% de la disminución de 26.541 beneficiarios. Describe composición, no causa ni ingreso.",
-          "formula": "cargas/cotizante: (937624/1549873 - 956974/1557064) / (956974/1557064) * 100 = -1.5674%; participación cargas: 19350 / 26541 * 100 = 72.9061%",
-          "family": "cartera",
-          "period": "2026-01 → 2026-07",
-          "sheet": "Julio",
-          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-          "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-          "analysis_kind": "portfolio_mix_shift"
-        },
-        {
-          "text": "La cartera de beneficiarios cae en 6 comparaciones mensuales consecutivas hasta julio de 2026; no se infiere causa.",
-          "formula": "2514038>2510385 and 2510385>2504837 and 2504837>2498649 and 2498649>2493684 and 2493684>2489258 and 2489258>2487497",
-          "family": "cartera",
-          "period": "2026-01 → 2026-07",
-          "sheet": "Julio",
-          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
-          "sha256": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-          "analysis_kind": "beneficiary_streak"
-        },
-        {
-          "text": "Suscripciones y desahucios voluntarios: en julio hubo 19.716 y 15.172, brecha +4.544; enero–julio, brecha acumulada +19.100 eventos. No equivale a variación neta de cartera.",
-          "formula": "julio: 19716 - 15172 = 4544; acumulado: 134943 - 115843 = 19100",
-          "family": "suscripciones",
-          "period": "2026-01 → 2026-07",
-          "sheet": "Julio",
-          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
-          "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
-          "analysis_kind": "subscriptions_voluntary_gap"
-        },
-        {
-          "text": "Movilidad entre cortes julio 2025 y julio 2026: 91.963 entradas y 109.663 salidas; diferencia -17.700. No es variación mensual.",
-          "formula": "91963 - 109663 = -17700",
-          "family": "movilidad",
-          "period": "2025-07 → 2026-07",
-          "sheet": "Nacional",
-          "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
-          "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
-          "analysis_kind": "mobility_interval"
-        }
-      ],
-      "data_insight_meta": {
-        "status": "validated",
-        "families": [
-          "cartera",
-          "suscripciones",
-          "movilidad"
-        ],
-        "period": "2026-07",
-        "mobility_start": "2025-07",
-        "mobility_end": "2026-07",
-        "sha256": {
-          "cartera": "bff79f5f67785da49e1e899d0a2f8c91479a1a14a33f205e4d9d0f0fddd1dbec",
-          "suscripciones": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
-          "movilidad": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7"
-        },
-        "anomaly_checks": {
-          "beneficiarios": {
-            "status": "evaluated",
-            "formula": "abs(delta - median(delta)) * 0.6745 / MAD(delta) > 3.5",
-            "observations": 6,
-            "flagged_periods": []
-          },
-          "contratos_suscritos": {
-            "status": "evaluated",
-            "formula": "abs(delta - median(delta)) * 0.6745 / MAD(delta) > 3.5",
-            "observations": 6,
-            "flagged_periods": []
-          },
-          "desahucios_voluntarios": {
-            "status": "evaluated",
-            "formula": "abs(delta - median(delta)) * 0.6745 / MAD(delta) > 3.5",
-            "observations": 6,
-            "flagged_periods": []
-          }
-        },
-        "publication_dates": {
-          "cartera": "2026-09-07",
-          "suscripciones": "2026-09-07",
-          "movilidad": "2026-09-07"
-        },
-        "validated_at": "2026-09-24T03:49:04.189181+00:00",
-        "validated_insight_count": 10,
-        "published_sample_count": 5,
-        "business_review": "sustained_contraction_and_mix_watch_without_causal_attribution",
-        "business_metrics": {
-          "beneficiary_change": -26541,
-          "beneficiary_decline": 26541,
-          "cargas_decline": 19350,
-          "cargas_share_of_decline_pct": 72.90606985418786,
-          "cargas_per_cotizante_start": 0.6146015834930356,
-          "cargas_per_cotizante_end": 0.6049682780460076,
-          "cargas_per_cotizante_change_pct": -1.5674065452740842,
-          "consecutive_monthly_beneficiary_declines": 6
-        }
-      },
-      "source_alternatives": [
-        {
-          "family": "cartera",
-          "title": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE – año 2026",
-          "source_name": "Superintendencia de Salud",
-          "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/",
-          "event_date": "2026-09-07",
-          "workbook_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx"
-        },
-        {
-          "family": "suscripciones",
-          "title": "Estadística Mensual de Suscripciones y Desahucios del Sistema ISAPRE – año 2026",
-          "source_name": "Superintendencia de Salud",
-          "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-suscripciones-y-desahucios-del-sistema-isapre-ano-2026/",
-          "event_date": "2026-09-07",
-          "workbook_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx"
-        },
-        {
-          "family": "movilidad",
-          "title": "Estadística Mensual de Movilidad de Cartera de Cotizantes del Sistema ISAPRE a Nivel Regional – Año 2026",
-          "source_name": "Superintendencia de Salud",
-          "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-movilidad-de-cartera-de-cotizantes-del-sistema-isapre-a-nivel-regional-ano-2026/",
-          "event_date": "2026-09-07",
-          "workbook_url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx"
-        }
-      ],
-      "key_facts": [
-        "Cartera 2026-07: 2487497 beneficiarios",
-        "Movilidad 2025-07 a 2026-07: -17700"
-      ],
-      "publication_ready_score": 100,
-      "publication_gate_reason": "ok",
-      "related_context": [],
-      "editorial_source_decision": "group",
-      "editorial_decision": "accept",
-      "editorial_materiality_score": 55,
-      "editorial_business_review": "El archivo nacional duplica la actualización de cartera y debe alimentar un único pulso analítico.",
-      "editorial_value_category": "portfolio_competition",
-      "editorial_committee": {
-        "check_kind": "structured_check",
-        "independent_review": false,
-        "committee_version": "1.0",
-        "signal_type": "Datos",
-        "members": [
-          "editorial_intelligence",
-          "health_business",
-          "data_analytics",
-          "decision_intelligence",
-          "evidence_research"
-        ],
-        "materiality_decision": "accept",
-        "public_title": "Pulso Isapre · datos a 2026-07",
-        "what_happened": "Las series oficiales del sistema Isapre registran a 2026-07 una cartera de 2.487.497 beneficiarios (1.549.873 cotizantes y 937.624 cargas).",
-        "why_it_matters": "La cartera acumula 6 bajas mensuales y 26.541 beneficiarios menos entre enero y julio; 72,9% de esa disminución aritmética corresponde a cargas. Para gestión comercial y financiera, es una alerta de composición y base de ingresos, no una explicación causal: la brecha entre contratos y desahucios voluntarios omite otras terminaciones, y la movilidad usa otro intervalo. Conviene seguir terminaciones completas, mezcla de cartera y próximas publicaciones antes de atribuir desempeño.",
-        "evidence_map": [
-          {
-            "source": "Superintendencia de Salud",
-            "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/"
-          }
-        ],
-        "uncertainties": [],
-        "value_level": "portfolio_competition",
-        "publication_decision": "accept",
-        "critical_objections": [],
-        "verdict": "PASS",
-        "parser_or_research_debt_if_any": null
-      },
-      "feed_visibility": true,
-      "entity_refs": []
     },
     {
       "title": "Bancada UDI anuncia “Agenda Pro Consumidor” con 14 medidas en seguros, salud, transporte y otras áreas",
@@ -31412,6 +30439,1092 @@
         }
       },
       "why_it_matters": ""
+    },
+    {
+      "piece_id": "stats-ficha:F1:2026-08",
+      "title": "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
+      "display_title": "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
+      "source_name": "Superintendencia de Salud",
+      "source_type": "official",
+      "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+      "event_date": "2026-10-02",
+      "publication_date": "2026-10-02",
+      "validation_date": "2026-10-28",
+      "data_period": "2026-08",
+      "event_type": "DATA_PULSE",
+      "category": "Datos sectoriales",
+      "signal_types": [
+        "Datos"
+      ],
+      "scopes": [
+        "Isapres"
+      ],
+      "ingestion_mode": "BACKFILL",
+      "distribution": "archive",
+      "radar_score": 86,
+      "confidence_score": 100,
+      "what_happened": "El sistema terminó agosto con 2.486.683 beneficiarios, 27.355 menos que en enero. Los cotizantes subieron por segundo mes consecutivo, y Banmédica concentra el 77% de la baja neta.",
+      "card_what": "El sistema terminó agosto con 2.486.683 beneficiarios, 27.355 menos que en enero. Los cotizantes subieron por segundo mes consecutivo, y Banmédica concentra el 77% de la baja neta.",
+      "card_why_optional": true,
+      "why_it_matters": "",
+      "statistical_value_level": "stats_ficha",
+      "feed_visibility": true,
+      "editorial_decision": "accept",
+      "publication_gate_reason": "stats_ficha_pass",
+      "publication_ready_score": 100,
+      "stats_ficha": {
+        "schema_version": "stats_ficha_v1",
+        "id": "stats-ficha:F1:2026-08",
+        "family": "F1",
+        "family_label": "Cartera y movilidad",
+        "period": "2026-08",
+        "published_at": "2026-10-02",
+        "generated_at": "2026-10-28T21:33:25.487208+00:00",
+        "release_key": "2026-08:b1dc62eb1a40b0f3",
+        "featured": true,
+        "triggers": [
+          "new_period",
+          "threshold_crossed",
+          "format_update"
+        ],
+        "kicker": "Cartera y movilidad",
+        "kicker_meta": "datos a agosto 2026 · publicado por la SIS el 2 oct · se actualiza cada mes",
+        "headline": "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
+        "headline_type": "record_low_decline",
+        "dek": "El sistema terminó agosto con 2.486.683 beneficiarios, 27.355 menos que en enero. Los cotizantes subieron por segundo mes consecutivo, y Banmédica concentra el 77% de la baja neta.",
+        "dek_emphasis": "2.486.683 beneficiarios",
+        "kpis": [
+          {
+            "id": "beneficiarios",
+            "label": "Beneficiarios",
+            "value": "2.486.683",
+            "prov": "C",
+            "lines": [
+              "−814 vs. julio (−0,03%)",
+              "−27.355 desde enero (−1,09%)"
+            ],
+            "badge": "Sin umbral cruzado · a/a pendiente",
+            "badge_kind": "muted",
+            "refs": [
+              "sistema.beneficiarios.2026-08",
+              "sistema.beneficiarios.mm.2026-08",
+              "sistema.beneficiarios.ytd"
+            ]
+          },
+          {
+            "id": "cotizantes",
+            "label": "Cotizantes",
+            "value": "1.551.169",
+            "prov": "C",
+            "lines": [
+              "+1.296 vs. julio",
+              "Segundo mes al alza (jul +475)"
+            ],
+            "badge": "Cambio de signo sostenido",
+            "badge_kind": "crossed",
+            "refs": [
+              "sistema.cotizantes.2026-08",
+              "sistema.cotizantes.mm.2026-08"
+            ]
+          },
+          {
+            "id": "mezcla",
+            "label": "Cargas por cotizante",
+            "value": "0,603",
+            "prov": "C",
+            "lines": [
+              "enero: 0,615 (−0,012)",
+              "Las cargas son el 78% de la baja"
+            ],
+            "badge": "Cruza umbral (0,005)",
+            "badge_kind": "crossed",
+            "refs": [
+              "mezcla.2026-08",
+              "mezcla.2026-01",
+              "mezcla.delta"
+            ]
+          },
+          {
+            "id": "movilidad",
+            "label": "Movilidad neta 12 m",
+            "value": "−17.700",
+            "prov": "C",
+            "lines": [
+              "cotizantes, cortes julio 2025 → julio 2026",
+              "entradas 91.963 · salidas 109.663"
+            ],
+            "badge": "Corte de agosto aún no leído",
+            "badge_kind": "muted",
+            "refs": [
+              "movilidad.diferencia_intervalo",
+              "movilidad.entradas_intervalo",
+              "movilidad.salidas_intervalo"
+            ]
+          }
+        ],
+        "tabs": [
+          {
+            "id": "total",
+            "label": "Cartera total",
+            "charts": [
+              {
+                "id": "f1-mm",
+                "form": "columns_signed",
+                "headline": "La baja mensual se achica desde abril",
+                "subtitle": "Cambio mensual de beneficiarios del sistema Isapre (personas)",
+                "unit": "personas",
+                "rows": [
+                  {
+                    "label": "Feb",
+                    "period": "2026-02",
+                    "value": -3653,
+                    "ref": "sistema.beneficiarios.mm.2026-02",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Mar",
+                    "period": "2026-03",
+                    "value": -5548,
+                    "ref": "sistema.beneficiarios.mm.2026-03",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Abr",
+                    "period": "2026-04",
+                    "value": -6188,
+                    "ref": "sistema.beneficiarios.mm.2026-04",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "May",
+                    "period": "2026-05",
+                    "value": -4965,
+                    "ref": "sistema.beneficiarios.mm.2026-05",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Jun",
+                    "period": "2026-06",
+                    "value": -4426,
+                    "ref": "sistema.beneficiarios.mm.2026-06",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Jul",
+                    "period": "2026-07",
+                    "value": -1761,
+                    "ref": "sistema.beneficiarios.mm.2026-07",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Ago",
+                    "period": "2026-08",
+                    "value": -814,
+                    "ref": "sistema.beneficiarios.mm.2026-08",
+                    "emphasis": true
+                  }
+                ],
+                "table": {
+                  "columns": [
+                    "Mes",
+                    "Cambio",
+                    "Stock final"
+                  ],
+                  "rows": [
+                    [
+                      "Ene",
+                      "—",
+                      "2.514.038"
+                    ],
+                    [
+                      "Feb",
+                      "−3.653",
+                      "2.510.385"
+                    ],
+                    [
+                      "Mar",
+                      "−5.548",
+                      "2.504.837"
+                    ],
+                    [
+                      "Abr",
+                      "−6.188",
+                      "2.498.649"
+                    ],
+                    [
+                      "May",
+                      "−4.965",
+                      "2.493.684"
+                    ],
+                    [
+                      "Jun",
+                      "−4.426",
+                      "2.489.258"
+                    ],
+                    [
+                      "Jul",
+                      "−1.761",
+                      "2.487.497"
+                    ],
+                    [
+                      "Ago",
+                      "−814",
+                      "2.486.683"
+                    ]
+                  ]
+                },
+                "source": "SIS, estadística mensual de cartera (datos provisionales). Stock al cierre de cada mes; la diferencia la calcula Alicanto.",
+                "legend": "Columna más corta = baja menor · agosto en acento"
+              },
+              {
+                "id": "f1-stock",
+                "form": "line",
+                "headline": "Stock de beneficiarios al cierre de cada mes",
+                "subtitle": "Personas; eje sin partir de cero para mostrar la trayectoria",
+                "unit": "personas",
+                "digits": 0,
+                "rows": [
+                  {
+                    "label": "Ene",
+                    "period": "2026-01",
+                    "value": 2514038,
+                    "ref": "sistema.beneficiarios.2026-01",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Feb",
+                    "period": "2026-02",
+                    "value": 2510385,
+                    "ref": "sistema.beneficiarios.2026-02",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Mar",
+                    "period": "2026-03",
+                    "value": 2504837,
+                    "ref": "sistema.beneficiarios.2026-03",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Abr",
+                    "period": "2026-04",
+                    "value": 2498649,
+                    "ref": "sistema.beneficiarios.2026-04",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "May",
+                    "period": "2026-05",
+                    "value": 2493684,
+                    "ref": "sistema.beneficiarios.2026-05",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Jun",
+                    "period": "2026-06",
+                    "value": 2489258,
+                    "ref": "sistema.beneficiarios.2026-06",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Jul",
+                    "period": "2026-07",
+                    "value": 2487497,
+                    "ref": "sistema.beneficiarios.2026-07",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Ago",
+                    "period": "2026-08",
+                    "value": 2486683,
+                    "ref": "sistema.beneficiarios.2026-08",
+                    "emphasis": true
+                  }
+                ],
+                "table": {
+                  "columns": [
+                    "Mes",
+                    "Beneficiarios",
+                    "Cotizantes",
+                    "Cargas"
+                  ],
+                  "rows": [
+                    [
+                      "Ene",
+                      "2.514.038",
+                      "1.557.064",
+                      "956.974"
+                    ],
+                    [
+                      "Feb",
+                      "2.510.385",
+                      "1.555.751",
+                      "954.634"
+                    ],
+                    [
+                      "Mar",
+                      "2.504.837",
+                      "1.553.560",
+                      "951.277"
+                    ],
+                    [
+                      "Abr",
+                      "2.498.649",
+                      "1.550.891",
+                      "947.758"
+                    ],
+                    [
+                      "May",
+                      "2.493.684",
+                      "1.549.840",
+                      "943.844"
+                    ],
+                    [
+                      "Jun",
+                      "2.489.258",
+                      "1.549.398",
+                      "939.860"
+                    ],
+                    [
+                      "Jul",
+                      "2.487.497",
+                      "1.549.873",
+                      "937.624"
+                    ],
+                    [
+                      "Ago",
+                      "2.486.683",
+                      "1.551.169",
+                      "935.514"
+                    ]
+                  ]
+                },
+                "source": "SIS, estadística mensual de cartera. Cada mes es un stock: no se suman."
+              }
+            ],
+            "text": [
+              "Entre enero y agosto, la cartera de Isapres bajó en 27.355 beneficiarios (−1,09%). La pérdida mensual tocó su máximo en abril (−6.188) y desde entonces se redujo en cada mes, hasta −814 en agosto.",
+              "El stock más alto del período fue en enero (2.514.038) y el más bajo en agosto (2.486.683)."
+            ]
+          },
+          {
+            "id": "isapres",
+            "label": "Por Isapre",
+            "charts": [
+              {
+                "id": "f1-isapres",
+                "form": "diverging",
+                "headline": "Una Isapre concentra la baja; tres crecen",
+                "subtitle": "Cambio de beneficiarios entre enero y agosto, por Isapre",
+                "unit": "personas",
+                "rows": [
+                  {
+                    "label": "Banmédica",
+                    "value": -20948,
+                    "ref": "delta.99.ytd",
+                    "base": 565481,
+                    "pct_ref": "delta.99.ytd_pct",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Colmena",
+                    "value": -8876,
+                    "ref": "delta.67.ytd",
+                    "base": 573597,
+                    "pct_ref": "delta.67.ytd_pct",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Cruz Blanca",
+                    "value": -7981,
+                    "ref": "delta.78.ytd",
+                    "base": 360643,
+                    "pct_ref": "delta.78.ytd_pct",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Cerradas (3)",
+                    "value": -1433,
+                    "ref": "delta.cerradas.ytd",
+                    "base": 68130,
+                    "pct_ref": "delta.cerradas.ytd_pct",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Vida Tres",
+                    "value": -991,
+                    "ref": "delta.80.ytd",
+                    "base": 140775,
+                    "pct_ref": "delta.80.ytd_pct",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Consalud",
+                    "value": 397,
+                    "ref": "delta.107.ytd",
+                    "base": 458571,
+                    "pct_ref": "delta.107.ytd_pct",
+                    "emphasis": true
+                  },
+                  {
+                    "label": "Nueva Masvida",
+                    "value": 5461,
+                    "ref": "delta.81.ytd",
+                    "base": 293968,
+                    "pct_ref": "delta.81.ytd_pct",
+                    "emphasis": true
+                  },
+                  {
+                    "label": "Esencial",
+                    "value": 7016,
+                    "ref": "delta.108.ytd",
+                    "base": 52873,
+                    "pct_ref": "delta.108.ytd_pct",
+                    "emphasis": true
+                  }
+                ],
+                "table": {
+                  "columns": [
+                    "Isapre",
+                    "Cambio",
+                    "Enero",
+                    "%"
+                  ],
+                  "rows": [
+                    [
+                      "Banmédica",
+                      "−20.948",
+                      "565.481",
+                      "−3,70%"
+                    ],
+                    [
+                      "Colmena",
+                      "−8.876",
+                      "573.597",
+                      "−1,55%"
+                    ],
+                    [
+                      "Cruz Blanca",
+                      "−7.981",
+                      "360.643",
+                      "−2,21%"
+                    ],
+                    [
+                      "Cerradas (3)",
+                      "−1.433",
+                      "68.130",
+                      "−2,10%"
+                    ],
+                    [
+                      "Vida Tres",
+                      "−991",
+                      "140.775",
+                      "−0,70%"
+                    ],
+                    [
+                      "Consalud",
+                      "+397",
+                      "458.571",
+                      "+0,09%"
+                    ],
+                    [
+                      "Nueva Masvida",
+                      "+5.461",
+                      "293.968",
+                      "+1,86%"
+                    ],
+                    [
+                      "Esencial",
+                      "+7.016",
+                      "52.873",
+                      "+13,27%"
+                    ],
+                    [
+                      "Sistema",
+                      "−27.355",
+                      "2.514.038",
+                      "−1,09%"
+                    ]
+                  ]
+                },
+                "source": "SIS, cartera por Isapre. Las cerradas (Isalud, Fundación, Cruz del Norte) van agrupadas.",
+                "legend": "Tinta = pierde · acento = gana · negrita = 5.000 personas o más"
+              },
+              {
+                "id": "f1-share",
+                "form": "dots",
+                "headline": "Participación entre las Isapres abiertas",
+                "subtitle": "% de beneficiarios de las 7 abiertas · punto = agosto, aro = enero",
+                "unit": "%",
+                "digits": 1,
+                "rows": [
+                  {
+                    "label": "Colmena",
+                    "value": 23.33571351239222,
+                    "ref": "share.67.2026-08",
+                    "base": 23.45129089074487,
+                    "base_ref": "share.67.2026-01"
+                  },
+                  {
+                    "label": "Banmédica",
+                    "value": 22.50149381029477,
+                    "ref": "share.99.2026-08",
+                    "base": 23.119471378318398,
+                    "base_ref": "share.99.2026-01"
+                  },
+                  {
+                    "label": "Consalud",
+                    "value": 18.965729553807336,
+                    "ref": "share.107.2026-08",
+                    "base": 18.748497490502505,
+                    "base_ref": "share.107.2026-01"
+                  },
+                  {
+                    "label": "Cruz Blanca",
+                    "value": 14.572894223355012,
+                    "ref": "share.78.2026-08",
+                    "base": 14.74474918925814,
+                    "base_ref": "share.78.2026-01"
+                  },
+                  {
+                    "label": "Nueva Masvida",
+                    "value": 12.373170753880395,
+                    "ref": "share.81.2026-08",
+                    "base": 12.018767672373613,
+                    "base_ref": "share.81.2026-01"
+                  },
+                  {
+                    "label": "Vida Tres",
+                    "value": 5.776231763324251,
+                    "ref": "share.80.2026-08",
+                    "base": 5.755531279181392,
+                    "base_ref": "share.80.2026-01"
+                  },
+                  {
+                    "label": "Esencial",
+                    "value": 2.474766382946017,
+                    "ref": "share.108.2026-08",
+                    "base": 2.161692099621081,
+                    "base_ref": "share.108.2026-01"
+                  }
+                ],
+                "table": {
+                  "columns": [
+                    "Isapre",
+                    "Enero",
+                    "Agosto",
+                    "Δ pp",
+                    "Aporte al cambio neto"
+                  ],
+                  "rows": [
+                    [
+                      "Colmena",
+                      "23,5%",
+                      "23,3%",
+                      "−0,12",
+                      "32%"
+                    ],
+                    [
+                      "Banmédica",
+                      "23,1%",
+                      "22,5%",
+                      "−0,62",
+                      "77%"
+                    ],
+                    [
+                      "Consalud",
+                      "18,7%",
+                      "19,0%",
+                      "+0,22",
+                      "−1%"
+                    ],
+                    [
+                      "Cruz Blanca",
+                      "14,7%",
+                      "14,6%",
+                      "−0,17",
+                      "29%"
+                    ],
+                    [
+                      "Nueva Masvida",
+                      "12,0%",
+                      "12,4%",
+                      "+0,35",
+                      "−20%"
+                    ],
+                    [
+                      "Vida Tres",
+                      "5,8%",
+                      "5,8%",
+                      "+0,02",
+                      "4%"
+                    ],
+                    [
+                      "Esencial",
+                      "2,2%",
+                      "2,5%",
+                      "+0,31",
+                      "−26%"
+                    ]
+                  ]
+                },
+                "source": "Denominador: solo las 7 Isapres abiertas. El aporte al cambio neto no se calcula si el sistema varía menos de 5.000 personas."
+              }
+            ],
+            "text": [
+              "Por Isapre, Banmédica registró −20.948 beneficiarios desde enero y su participación entre las abiertas pasó de 23,1% a 22,5%. Esencial (+7.016) y Nueva Masvida (+5.461) crecieron.",
+              "Banmédica aporta el 77% del cambio neto del sistema desde enero, medido sobre la variación total de la cartera."
+            ]
+          },
+          {
+            "id": "mezcla",
+            "label": "Cotizantes y cargas",
+            "charts": [
+              {
+                "id": "f1-cot",
+                "form": "columns_signed",
+                "headline": "Cotizantes: cambio mensual",
+                "subtitle": "Personas que cotizan; diferencia entre stocks de meses consecutivos",
+                "unit": "personas",
+                "rows": [
+                  {
+                    "label": "Feb",
+                    "period": "2026-02",
+                    "value": -1313,
+                    "ref": "sistema.cotizantes.mm.2026-02",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Mar",
+                    "period": "2026-03",
+                    "value": -2191,
+                    "ref": "sistema.cotizantes.mm.2026-03",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Abr",
+                    "period": "2026-04",
+                    "value": -2669,
+                    "ref": "sistema.cotizantes.mm.2026-04",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "May",
+                    "period": "2026-05",
+                    "value": -1051,
+                    "ref": "sistema.cotizantes.mm.2026-05",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Jun",
+                    "period": "2026-06",
+                    "value": -442,
+                    "ref": "sistema.cotizantes.mm.2026-06",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Jul",
+                    "period": "2026-07",
+                    "value": 475,
+                    "ref": "sistema.cotizantes.mm.2026-07",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Ago",
+                    "period": "2026-08",
+                    "value": 1296,
+                    "ref": "sistema.cotizantes.mm.2026-08",
+                    "emphasis": true
+                  }
+                ],
+                "table": {
+                  "columns": [
+                    "Mes",
+                    "Cambio",
+                    "Cotizantes"
+                  ],
+                  "rows": [
+                    [
+                      "Feb",
+                      "−1.313",
+                      "1.555.751"
+                    ],
+                    [
+                      "Mar",
+                      "−2.191",
+                      "1.553.560"
+                    ],
+                    [
+                      "Abr",
+                      "−2.669",
+                      "1.550.891"
+                    ],
+                    [
+                      "May",
+                      "−1.051",
+                      "1.549.840"
+                    ],
+                    [
+                      "Jun",
+                      "−442",
+                      "1.549.398"
+                    ],
+                    [
+                      "Jul",
+                      "+475",
+                      "1.549.873"
+                    ],
+                    [
+                      "Ago",
+                      "+1.296",
+                      "1.551.169"
+                    ]
+                  ]
+                },
+                "source": "SIS, estadística mensual de cartera.",
+                "legend": "agosto en acento"
+              },
+              {
+                "id": "f1-mix",
+                "form": "line",
+                "headline": "Cargas por cotizante",
+                "subtitle": "Razón cargas / cotizantes del mismo mes",
+                "unit": "razón",
+                "digits": 3,
+                "rows": [
+                  {
+                    "label": "Ene",
+                    "period": "2026-01",
+                    "value": 0.6146015834930356,
+                    "ref": "mezcla.2026-01",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Feb",
+                    "period": "2026-02",
+                    "value": 0.6136161892230826,
+                    "ref": "mezcla.2026-02",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Mar",
+                    "period": "2026-03",
+                    "value": 0.6123207343134478,
+                    "ref": "mezcla.2026-03",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Abr",
+                    "period": "2026-04",
+                    "value": 0.6111054871038648,
+                    "ref": "mezcla.2026-04",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "May",
+                    "period": "2026-05",
+                    "value": 0.6089944768492231,
+                    "ref": "mezcla.2026-05",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Jun",
+                    "period": "2026-06",
+                    "value": 0.6065968847255515,
+                    "ref": "mezcla.2026-06",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Jul",
+                    "period": "2026-07",
+                    "value": 0.6049682780460076,
+                    "ref": "mezcla.2026-07",
+                    "emphasis": false
+                  },
+                  {
+                    "label": "Ago",
+                    "period": "2026-08",
+                    "value": 0.6031025632925877,
+                    "ref": "mezcla.2026-08",
+                    "emphasis": true
+                  }
+                ],
+                "table": {
+                  "columns": [
+                    "Mes",
+                    "Cargas por cotizante"
+                  ],
+                  "rows": [
+                    [
+                      "Ene",
+                      "0,615"
+                    ],
+                    [
+                      "Feb",
+                      "0,614"
+                    ],
+                    [
+                      "Mar",
+                      "0,612"
+                    ],
+                    [
+                      "Abr",
+                      "0,611"
+                    ],
+                    [
+                      "May",
+                      "0,609"
+                    ],
+                    [
+                      "Jun",
+                      "0,607"
+                    ],
+                    [
+                      "Jul",
+                      "0,605"
+                    ],
+                    [
+                      "Ago",
+                      "0,603"
+                    ]
+                  ]
+                },
+                "source": "Denominador: cotizantes del mismo mes."
+              }
+            ],
+            "text": [
+              "Las cargas corresponden al 78% de la variación (−21.460); los cotizantes cayeron 5.895 en el mismo período y en agosto anotaron +1.296 frente a julio.",
+              "La razón de cargas por cotizante pasó de 0,615 a 0,603. Una razón menor no implica menos ingreso: la cotización la paga el cotizante."
+            ]
+          },
+          {
+            "id": "movilidad",
+            "label": "Movilidad y desahucios",
+            "charts": [
+              {
+                "id": "f1-mob",
+                "form": "diverging",
+                "headline": "Entradas y salidas del sistema entre cortes",
+                "subtitle": "Cotizantes, julio 2025 → julio 2026",
+                "unit": "cotizantes",
+                "rows": [
+                  {
+                    "label": "Entradas",
+                    "value": 91963,
+                    "ref": "movilidad.entradas_intervalo",
+                    "emphasis": true
+                  },
+                  {
+                    "label": "Salidas",
+                    "value": -109663,
+                    "ref": "movilidad.salidas_intervalo",
+                    "sign": -1
+                  },
+                  {
+                    "label": "Neto",
+                    "value": -17700,
+                    "ref": "movilidad.diferencia_intervalo"
+                  }
+                ],
+                "table": {
+                  "columns": [
+                    "Concepto",
+                    "Cotizantes"
+                  ],
+                  "rows": [
+                    [
+                      "Entradas",
+                      "91.963"
+                    ],
+                    [
+                      "Salidas",
+                      "109.663"
+                    ],
+                    [
+                      "Neto",
+                      "−17.700"
+                    ]
+                  ]
+                },
+                "source": "SIS, movilidad de cotizantes (hoja Nacional). Comparación entre dos cortes.",
+                "legend": "Salidas a la izquierda · entradas en acento"
+              },
+              {
+                "id": "f1-sub",
+                "form": "bars",
+                "headline": "Contratos suscritos y desahucios voluntarios",
+                "subtitle": "Contratos en julio 2026",
+                "unit": "contratos",
+                "rows": [
+                  {
+                    "label": "Suscritos",
+                    "value": 19716,
+                    "ref": "suscripciones.contratos_suscritos.2026-07",
+                    "emphasis": true
+                  },
+                  {
+                    "label": "Desahucios vol.",
+                    "value": 15172,
+                    "ref": "suscripciones.desahucios_voluntarios.2026-07"
+                  }
+                ],
+                "table": {
+                  "columns": [
+                    "Concepto",
+                    "Contratos"
+                  ],
+                  "rows": [
+                    [
+                      "Contratos suscritos",
+                      "19.716"
+                    ],
+                    [
+                      "Desahucios voluntarios",
+                      "15.172"
+                    ]
+                  ]
+                },
+                "source": "SIS, suscripciones y desahucios. Los desahucios voluntarios no son todas las terminaciones."
+              }
+            ],
+            "text": [
+              "Entre los cortes de julio 2025 y julio 2026 salieron 109.663 cotizantes y entraron 91.963; la tasa sobre el corte inicial queda pendiente.",
+              "En julio 2026 se suscribieron 19.716 contratos y hubo 15.172 desahucios voluntarios; la diferencia no es el cambio neto, porque incluye cambios entre Isapres."
+            ]
+          },
+          {
+            "id": "regional",
+            "label": "Regional",
+            "charts": [],
+            "status": "pendiente",
+            "text": [
+              "Alicanto aún no extrae las cifras regionales: la publicación queda enlazada y su ficha suelta se absorbe aquí."
+            ],
+            "links": [
+              {
+                "label": "Estadística Mensual de Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional – Agosto 2026",
+                "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-a-nivel-regional-agosto-2026/"
+              },
+              {
+                "label": "Planilla regional (xlsx)",
+                "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-regional-202608.xlsx"
+              }
+            ]
+          }
+        ],
+        "facts": {
+          "heading": "Qué muestran los datos",
+          "paragraphs": [
+            "Entre enero y agosto, la cartera de Isapres bajó en 27.355 beneficiarios (−1,09%). La pérdida mensual tocó su máximo en abril (−6.188) y desde entonces se redujo en cada mes, hasta −814 en agosto.",
+            "Las cargas corresponden al 78% de la variación (−21.460); los cotizantes cayeron 5.895 en el mismo período y en agosto anotaron +1.296 frente a julio.",
+            "Por Isapre, Banmédica registró −20.948 beneficiarios desde enero y su participación entre las abiertas pasó de 23,1% a 22,5%. Esencial (+7.016) y Nueva Masvida (+5.461) crecieron."
+          ],
+          "rendered_in_tabs": true
+        },
+        "lectura": null,
+        "watch": [
+          {
+            "headline": "Cartera a septiembre 2026 (la SIS la publicaría hacia el 2 nov).",
+            "explanation": "Si la variación mensual supera 0,25% del stock o los cotizantes cambian de signo, la ficha pasa a destacada."
+          },
+          {
+            "headline": "Participación de Banmédica entre las abiertas (22,5% en agosto).",
+            "explanation": "Una variación de 0,30 pp o más, con 5.000 personas o más, frente al inicio del año marca un cruce de umbral en esta ficha."
+          }
+        ],
+        "notes": [
+          {
+            "id": "n1",
+            "text": "Son stocks al cierre de mes y no se suman. Los datos de la SIS son provisionales. La comparación contra agosto del año anterior queda pendiente: Alicanto no tiene capturada la serie mensual del año anterior."
+          },
+          {
+            "id": "n2",
+            "text": "La participación usa como denominador solo las 7 Isapres abiertas (2.419.986 en agosto). Las cerradas (Isalud, Fundación, Cruz del Norte) atienden poblaciones cautivas y no compiten. 'Banmédica' es la Isapre, no el grupo controlador."
+          },
+          {
+            "id": "n3",
+            "text": "La movilidad compara dos cortes; no equivale a la suma de los movimientos intermedios ni a suscripciones menos desahucios, que incluyen cambios entre Isapres."
+          },
+          {
+            "id": "n5",
+            "text": "Ningún dato de esta ficha establece por qué cambia la cartera (precio, ley corta o calidad de servicio)."
+          }
+        ],
+        "sources": [
+          {
+            "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+            "sha256": "b1dc62eb1a40b0f34452f67e7fdecefb91adc175235ffc046b60a6e5e0c7e4ee",
+            "published_at": "2026-10-02",
+            "fetched_at": "2026-10-28T17:18:47.695321+00:00",
+            "label": "SIS · Estadística mensual de cartera de beneficiarios 2026 (xlsx)",
+            "role": "beneficiarios, cotizantes y cargas por Isapre, enero–agosto",
+            "locator": "Enero…Agosto!C8:E19 · fila Total Sistema",
+            "key": "cartera"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-movilidad-de-cotizantes-202607.xlsx",
+            "sha256": "851222149779fb792b699b5c47ed36b0ec0e413214f10c0d3d63d1c6fa23f0e7",
+            "published_at": null,
+            "fetched_at": "2026-09-24T03:49:04.189181+00:00",
+            "label": "SIS · Movilidad de cotizantes, corte julio 2026 (xlsx)",
+            "role": "entradas y salidas del sistema entre cortes",
+            "locator": "Nacional!D19, D31, D43",
+            "key": "movilidad"
+          },
+          {
+            "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
+            "sha256": "dbffd33734c67d1272e76fab6423a5f0372cf81f5715801acb725f0cf56d27f6",
+            "published_at": null,
+            "fetched_at": "2026-09-24T03:49:04.189181+00:00",
+            "label": "SIS · Suscripciones y desahucios 2026 (xlsx)",
+            "role": "contratos suscritos y desahucios voluntarios",
+            "locator": "Julio!C:D · fila Total Sistema",
+            "key": "suscripciones"
+          }
+        ],
+        "machine_note": "Ficha generada por la regla \"nuevo período\" (release del 2 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (sin modelo en esta corrida).",
+        "status": "PASS",
+        "late_release": null,
+        "revisions": []
+      },
+      "share_url": "data/fichas/f1_cartera.html",
+      "editorial_committee": {
+        "check_kind": "structured_check",
+        "independent_review": false,
+        "committee_version": "1.0",
+        "signal_type": "Datos",
+        "members": [
+          "editorial_intelligence",
+          "health_business",
+          "data_analytics",
+          "decision_intelligence",
+          "evidence_research"
+        ],
+        "materiality_decision": "accept",
+        "public_title": "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
+        "what_happened": "El sistema terminó agosto con 2.486.683 beneficiarios, 27.355 menos que en enero. Los cotizantes subieron por segundo mes consecutivo, y Banmédica concentra el 77% de la baja neta.",
+        "why_it_matters": "",
+        "evidence_map": [
+          {
+            "source": "Superintendencia de Salud",
+            "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx"
+          }
+        ],
+        "uncertainties": [],
+        "value_level": "stats_ficha",
+        "publication_decision": "accept",
+        "critical_objections": [],
+        "verdict": "PASS",
+        "parser_or_research_debt_if_any": null
+      },
+      "entity_refs": [
+        {
+          "canonical_id": "cl:isapre:99",
+          "name": "Isapre Banmédica",
+          "kind": "isapre",
+          "basis": "text"
+        }
+      ]
     }
   ]
 }

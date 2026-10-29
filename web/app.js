@@ -157,6 +157,8 @@ function detailKind(s){if(s.statistical_value_level==='deep_analysis'&&s.summary
 function cardDepth(s){return detailKind(s)!==null}
 function httpsSource(value){try{const url=new URL(value);return url.protocol==='https:'&&Boolean(url.hostname)}catch{return false}}
 function detailHtml(s){
+ // Statistics ficha (Dirección 28-oct-2026): self-contained renderer in stats-ficha.js.
+ if(s.stats_ficha&&typeof AlicantoFicha!=='undefined')return AlicantoFicha.render(s.stats_ficha,{shareId:`sig-${idFor(s)}`,shareUrl:s.share_url});
  const v3=String(s.editorial_schema_version)==='3';const title=triageTitle(s),seen=new Set([String(title).trim().toLowerCase()]);
  const fresh=x=>{if(!x)return false;const n=String(x).trim().toLowerCase();if(seen.has(n))return false;seen.add(n);return true};
  let body='';
@@ -193,7 +195,7 @@ function normativeIdentityHtml(){return ""}
 // Inbox rows use a short 'source · date'; data pulses and sanction pulses keep their full dated metadata, and the record always shows it in full.
 function rowMeta(s){if(s.event_type==='DATA_PULSE'||s.sanction_count||!s.event_date||s.date_basis==='first_detected'||s.date_basis==='data_release')return cardMetadata(s);const badge='';return `${s.source_name?`${esc(canonicalSource(s.source_name))} · `:''}${fmtDate(s.event_date)}${badge}`}
 // Dense rows label only formats that change how a row is read (Normativa, Fiscalización, Datos).
-function formatTag(s){const t=['Normativa','Fiscalización','Datos'].find(x=>typeTags(s).includes(x));return t?` <span class="tag">${t}</span>`:''}
+function formatTag(s){const t=['Normativa','Fiscalización','Datos'].find(x=>typeTags(s).includes(x));return (t?` <span class="tag">${t}</span>`:'')+(typeof AlicantoFicha!=='undefined'?AlicantoFicha.correctionTag(s):'')}
 // Entity chips: at most two, named in the card itself before acts aggregated in a pulse. Since Dirección 28-oct
 // (punto 4) they are plain labels: who is involved, at a glance; filtering lives only in Actores and Temas.
 const ENTITY_CHIPS=2;
@@ -267,7 +269,10 @@ async function toggleRead(s){const id=idFor(s),value=!isRead(s);await AlicantoRe
 async function markAllRead(){const ids=visible().filter(s=>!isRead(s)).map(idFor);if(!ids.length)return;if(AlicantoRead.setMany)await AlicantoRead.setMany(ids,true);else for(const id of ids)await AlicantoRead.set(id,true);readStatus(`${ids.length} señales marcadas como leídas.`);draw();AlicantoBar.feedUndo(document.getElementById('local'),{label:`${ids.length} señales marcadas como leídas`,onUndo:async()=>{if(AlicantoRead.setMany)await AlicantoRead.setMany(ids,false);else for(const id of ids)await AlicantoRead.set(id,false);readStatus('Lectura deshecha para las señales.');draw();rowFor(ids[0])?.querySelector('.title-open')?.focus()}})?.querySelector('button')?.focus()}
 let revealedHash='';
 function sharedHashTarget(){try{return decodeURIComponent(location.hash.slice(1))}catch{return ''}}
-function revealSharedHash(){const target=sharedHashTarget();if(!target||target===revealedHash)return;let element=document.getElementById(target);if(!element){const prefix=target.startsWith('special-')?'special-':target.startsWith('sig-')?'sig-':'',id=target.slice(prefix.length),signal=prefix==='sig-'?allSignals.find(x=>idFor(x)===id):null,special=prefix==='special-'?specials().find(x=>x.id===id):null;if(signal){activeInterests.clear();if(!inPeriod(signal))periodMode='90';persistFilters();renderFilters();element=null}}if(!element)element=document.getElementById(target);revealedHash=target;if(element){requestAnimationFrame(()=>requestAnimationFrame(()=>{const current=document.getElementById(target);if(!current)return;current.focus({preventScroll:true});current.scrollIntoView({block:'start'})}))}}
+function revealSharedHash(){const target=sharedHashTarget();if(!target||target===revealedHash)return;let element=document.getElementById(target);if(!element){const prefix=target.startsWith('special-')?'special-':target.startsWith('sig-')?'sig-':'',id=target.slice(prefix.length),signal=prefix==='sig-'?allSignals.find(x=>idFor(x)===id):null,special=prefix==='special-'?specials().find(x=>x.id===id):null;if(signal){activeInterests.clear();if(!inPeriod(signal))periodMode='90';persistFilters();renderFilters();element=null}}if(!element)element=document.getElementById(target);revealedHash=target;
+ // Share pages ('Compartir informe') link with ?abrir=1: open the detail, not only the row.
+ if(target.startsWith('sig-')&&new URLSearchParams(location.search).get('abrir')==='1'){const signal=allSignals.find(x=>idFor(x)===target.slice(4));if(signal){try{history.replaceState(null,'',location.pathname+location.hash)}catch{}requestAnimationFrame(()=>requestAnimationFrame(()=>openDetail(signal)));return}}
+ if(element){requestAnimationFrame(()=>requestAnimationFrame(()=>{const current=document.getElementById(target);if(!current)return;current.focus({preventScroll:true});current.scrollIntoView({block:'start'})}))}}
 function shareCard(button){return AlicantoBar.shareCard(button)}
 // Relevance scores are not calibrated enough to split the inbox (most signals score as relevant),
 // so groups are factual date buckets; relevance stays available as a sort order.

@@ -114,6 +114,10 @@ jobs:
         run: |
           limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 400 else 200)')
           timeout --signal=TERM 90m python -m radar_salud.engine_cli --limit "$limit"
+      # Dirección 28-oct-2026: PASS publishes, FAIL holds (data/stats_fichas/POLICY.md).
+      - name: Statistics fichas
+        continue-on-error: true
+        run: python scripts/run_stats_fichas.py
       - name: Export public snapshot and source health
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Live beta source validation (degrades beta, never blocks core)
@@ -164,6 +168,8 @@ jobs:
           git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json data/inbox data/outbox
           # Dirección 27-oct-2026: CMF and SIS-isapres are daily sources; keep their captured data.
           git add data/market data/entities
+          # Statistics fichas (Dirección 28-oct-2026); guarded so either merge order keeps this step green.
+          [ -d data/stats_fichas ] && git add data/stats_fichas
           git add data/global_intelligence data/audits/global_source_recovery_2026_10_11/runs web/data/source_health.json web/data/product.json
           git add data/audits/global_integration_2026_10_11
           if [ "${{ job.status }}" = success ]; then git add web/data; fi
