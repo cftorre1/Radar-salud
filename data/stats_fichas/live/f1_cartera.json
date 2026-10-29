@@ -974,7 +974,7 @@
       "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
       "sha256": "b1dc62eb1a40b0f34452f67e7fdecefb91adc175235ffc046b60a6e5e0c7e4ee",
       "published_at": "2026-10-02",
-      "fetched_at": "2026-10-28T17:18:47.695321+00:00",
+      "fetched_at": "2026-10-29T14:06:26.758587+00:00",
       "label": "SIS · Estadística mensual de cartera de beneficiarios 2026 (xlsx)",
       "role": "beneficiarios, cotizantes y cargas por Isapre, enero–agosto",
       "locator": "Enero…Agosto!C8:E19 · fila Total Sistema",
@@ -1001,7 +1001,7 @@
       "key": "suscripciones"
     }
   ],
-  "machine_note": "Ficha generada por la regla \"nuevo período\" (release del 2 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (sin modelo en esta corrida).",
+  "machine_note": "Ficha generada por la regla \"publicación vigente\" (release del 2 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (error del modelo).",
   "featured": true,
   "triggers": [
     "new_period",
@@ -1011,12 +1011,13 @@
   "late_release": null,
   "revisions": [],
   "lectura": {
-    "status": "not_attempted",
+    "status": "generation_error",
+    "reason": "RuntimeError:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)",
     "text": null,
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-10-28T21:33:25.487208+00:00",
+  "generated_at": "2026-10-29T14:21:29.688626+00:00",
   "builder_version": "f1_lectura_scope_v6",
   "verification": {
     "verdict": "PASS",
@@ -6053,7 +6054,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "sistema.beneficiarios.ytd",
@@ -6069,7 +6071,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "sistema.beneficiarios.ytd_pct",
@@ -6085,7 +6088,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "sistema.cotizantes.2026-08",
@@ -6100,7 +6104,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "sistema.cotizantes.ytd",
@@ -6116,7 +6121,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "sistema.cargas.ytd",
@@ -6132,7 +6138,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "sistema.cargas.2026-08",
@@ -6147,7 +6154,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "mezcla.2026-08",
@@ -6162,7 +6170,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "cotizantes"
       },
       {
         "id": "mezcla.2026-01",
@@ -6177,7 +6186,8 @@
         "requires_period": true,
         "scope": "system",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "cotizantes"
       },
       {
         "id": "mezcla.delta_shown",
@@ -6193,7 +6203,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "cotizantes"
       },
       {
         "id": "abiertas.beneficiarios.2026-08",
@@ -6208,7 +6219,8 @@
         "requires_period": false,
         "scope": "open",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.cerradas.ytd",
@@ -6224,7 +6236,8 @@
         "requires_period": false,
         "scope": "closed",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.cerradas.ytd_pct",
@@ -6240,7 +6253,8 @@
         "requires_period": false,
         "scope": "closed",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cargas.contrib",
@@ -6256,7 +6270,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "sistema.beneficiarios.mm.2026-08",
@@ -6272,7 +6287,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "month",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "sistema.beneficiarios.mm_pct",
@@ -6288,7 +6304,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "month",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_mes_anterior"
       },
       {
         "id": "sistema.cotizantes.mm.2026-08",
@@ -6304,7 +6321,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "month",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.63.ytd",
@@ -6320,7 +6338,8 @@
         "requires_period": false,
         "scope": "insurer:63",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.63.ytd_pct",
@@ -6336,7 +6355,8 @@
         "requires_period": false,
         "scope": "insurer:63",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.63.beneficiarios.2026-08",
@@ -6351,7 +6371,8 @@
         "requires_period": false,
         "scope": "insurer:63",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.67.ytd",
@@ -6367,7 +6388,8 @@
         "requires_period": false,
         "scope": "insurer:67",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.67.ytd_pct",
@@ -6383,7 +6405,8 @@
         "requires_period": false,
         "scope": "insurer:67",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.67.beneficiarios.2026-08",
@@ -6398,7 +6421,8 @@
         "requires_period": false,
         "scope": "insurer:67",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "share.67.2026-08",
@@ -6413,7 +6437,8 @@
         "requires_period": false,
         "scope": "insurer:67",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.67.2026-01",
@@ -6428,7 +6453,8 @@
         "requires_period": true,
         "scope": "insurer:67",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.67.delta_pp",
@@ -6444,7 +6470,8 @@
         "requires_period": false,
         "scope": "insurer:67",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "contrib.67",
@@ -6460,7 +6487,8 @@
         "requires_period": false,
         "scope": "insurer:67",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "delta.76.ytd",
@@ -6476,7 +6504,8 @@
         "requires_period": false,
         "scope": "insurer:76",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.76.ytd_pct",
@@ -6492,7 +6521,8 @@
         "requires_period": false,
         "scope": "insurer:76",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.76.beneficiarios.2026-08",
@@ -6507,7 +6537,8 @@
         "requires_period": false,
         "scope": "insurer:76",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.78.ytd",
@@ -6523,7 +6554,8 @@
         "requires_period": false,
         "scope": "insurer:78",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.78.ytd_pct",
@@ -6539,7 +6571,8 @@
         "requires_period": false,
         "scope": "insurer:78",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.78.beneficiarios.2026-08",
@@ -6554,7 +6587,8 @@
         "requires_period": false,
         "scope": "insurer:78",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "share.78.2026-08",
@@ -6569,7 +6603,8 @@
         "requires_period": false,
         "scope": "insurer:78",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.78.2026-01",
@@ -6584,7 +6619,8 @@
         "requires_period": true,
         "scope": "insurer:78",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.78.delta_pp",
@@ -6600,7 +6636,8 @@
         "requires_period": false,
         "scope": "insurer:78",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "contrib.78",
@@ -6616,7 +6653,8 @@
         "requires_period": false,
         "scope": "insurer:78",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "delta.80.ytd",
@@ -6632,7 +6670,8 @@
         "requires_period": false,
         "scope": "insurer:80",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.80.ytd_pct",
@@ -6648,7 +6687,8 @@
         "requires_period": false,
         "scope": "insurer:80",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.80.beneficiarios.2026-08",
@@ -6663,7 +6703,8 @@
         "requires_period": false,
         "scope": "insurer:80",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "share.80.2026-08",
@@ -6678,7 +6719,8 @@
         "requires_period": false,
         "scope": "insurer:80",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.80.2026-01",
@@ -6693,7 +6735,8 @@
         "requires_period": true,
         "scope": "insurer:80",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.80.delta_pp",
@@ -6709,7 +6752,8 @@
         "requires_period": false,
         "scope": "insurer:80",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "contrib.80",
@@ -6725,7 +6769,8 @@
         "requires_period": false,
         "scope": "insurer:80",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "delta.81.ytd",
@@ -6741,7 +6786,8 @@
         "requires_period": false,
         "scope": "insurer:81",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.81.ytd_pct",
@@ -6757,7 +6803,8 @@
         "requires_period": false,
         "scope": "insurer:81",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.81.beneficiarios.2026-08",
@@ -6772,7 +6819,8 @@
         "requires_period": false,
         "scope": "insurer:81",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "share.81.2026-08",
@@ -6787,7 +6835,8 @@
         "requires_period": false,
         "scope": "insurer:81",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.81.2026-01",
@@ -6802,7 +6851,8 @@
         "requires_period": true,
         "scope": "insurer:81",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.81.delta_pp",
@@ -6818,7 +6868,8 @@
         "requires_period": false,
         "scope": "insurer:81",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "contrib.81",
@@ -6834,7 +6885,8 @@
         "requires_period": false,
         "scope": "insurer:81",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "delta.94.ytd",
@@ -6850,7 +6902,8 @@
         "requires_period": false,
         "scope": "insurer:94",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.94.ytd_pct",
@@ -6866,7 +6919,8 @@
         "requires_period": false,
         "scope": "insurer:94",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.94.beneficiarios.2026-08",
@@ -6881,7 +6935,8 @@
         "requires_period": false,
         "scope": "insurer:94",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.99.ytd",
@@ -6897,7 +6952,8 @@
         "requires_period": false,
         "scope": "insurer:99",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.99.ytd_pct",
@@ -6913,7 +6969,8 @@
         "requires_period": false,
         "scope": "insurer:99",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.99.beneficiarios.2026-08",
@@ -6928,7 +6985,8 @@
         "requires_period": false,
         "scope": "insurer:99",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "share.99.2026-08",
@@ -6943,7 +7001,8 @@
         "requires_period": false,
         "scope": "insurer:99",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.99.2026-01",
@@ -6958,7 +7017,8 @@
         "requires_period": true,
         "scope": "insurer:99",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.99.delta_pp",
@@ -6974,7 +7034,8 @@
         "requires_period": false,
         "scope": "insurer:99",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "contrib.99",
@@ -6990,7 +7051,8 @@
         "requires_period": false,
         "scope": "insurer:99",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "delta.107.ytd",
@@ -7006,7 +7068,8 @@
         "requires_period": false,
         "scope": "insurer:107",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.107.ytd_pct",
@@ -7022,7 +7085,8 @@
         "requires_period": false,
         "scope": "insurer:107",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.107.beneficiarios.2026-08",
@@ -7037,7 +7101,8 @@
         "requires_period": false,
         "scope": "insurer:107",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "share.107.2026-08",
@@ -7052,7 +7117,8 @@
         "requires_period": false,
         "scope": "insurer:107",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.107.2026-01",
@@ -7067,7 +7133,8 @@
         "requires_period": true,
         "scope": "insurer:107",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.107.delta_pp",
@@ -7083,7 +7150,8 @@
         "requires_period": false,
         "scope": "insurer:107",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "contrib.107",
@@ -7099,7 +7167,8 @@
         "requires_period": false,
         "scope": "insurer:107",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "delta.108.ytd",
@@ -7115,7 +7184,8 @@
         "requires_period": false,
         "scope": "insurer:108",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "delta.108.ytd_pct",
@@ -7131,7 +7201,8 @@
         "requires_period": false,
         "scope": "insurer:108",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "stock_base"
       },
       {
         "id": "cartera.108.beneficiarios.2026-08",
@@ -7146,7 +7217,8 @@
         "requires_period": false,
         "scope": "insurer:108",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "share.108.2026-08",
@@ -7161,7 +7233,8 @@
         "requires_period": false,
         "scope": "insurer:108",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.108.2026-01",
@@ -7176,7 +7249,8 @@
         "requires_period": true,
         "scope": "insurer:108",
         "period_kind": "stock_at",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "share.108.delta_pp",
@@ -7192,7 +7266,8 @@
         "requires_period": false,
         "scope": "insurer:108",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "abiertas"
       },
       {
         "id": "contrib.108",
@@ -7208,7 +7283,8 @@
         "requires_period": false,
         "scope": "insurer:108",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "movilidad.entradas_intervalo",
@@ -7224,7 +7300,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "interval",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "movilidad.salidas_intervalo",
@@ -7240,7 +7317,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "interval",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "movilidad.diferencia_intervalo",
@@ -7256,7 +7334,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "interval",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "suscripciones.contratos_suscritos.2026-07",
@@ -7271,7 +7350,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "month",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "suscripciones.desahucios_voluntarios.2026-07",
@@ -7286,7 +7366,8 @@
         "requires_period": false,
         "scope": "system",
         "period_kind": "month",
-        "trivial": false
+        "trivial": false,
+        "base": null
       }
     ],
     "derived_ratios": [
@@ -7308,7 +7389,8 @@
         ],
         "scope": "system",
         "period_kind": "interval",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "ratio.suscritos_por_desahucio",
@@ -7327,7 +7409,8 @@
         ],
         "scope": "system",
         "period_kind": "month",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "ratio.baja_maxima_vs_actual",
@@ -7347,7 +7430,8 @@
         ],
         "scope": "system",
         "period_kind": "interval",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "ratio.mayor_baja_vs_alzas",
@@ -7369,7 +7453,8 @@
         ],
         "scope": "insurer:99",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "ratio.mayor_baja_vs_segunda",
@@ -7389,7 +7474,8 @@
         ],
         "scope": "insurer:99",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "ratio.mayor_alza_vs_segunda",
@@ -7409,7 +7495,8 @@
         ],
         "scope": "insurer:108",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": null
       },
       {
         "id": "fraccion.contribucion_mayor",
@@ -7428,7 +7515,8 @@
         ],
         "scope": "insurer:99",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "fraccion.cargas_en_la_baja",
@@ -7447,7 +7535,8 @@
         ],
         "scope": "system",
         "period_kind": "ytd",
-        "trivial": false
+        "trivial": false,
+        "base": "variacion_sistema"
       },
       {
         "id": "conteo.abiertas",

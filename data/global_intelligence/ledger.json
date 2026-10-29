@@ -3549,6 +3549,283 @@
         }
       },
       "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40767743948/inventory.json"
+    },
+    {
+      "run_id": "40883592591",
+      "mode": "live_discovery",
+      "capture_reuse": {
+        "reused_url_count": 0,
+        "maximum_campaign_capture_age_hours": 1,
+        "does_not_prove_cadence": true
+      },
+      "generated_at": "2026-10-29T14:59:17.935252+00:00",
+      "as_of": "2026-10-29",
+      "sources": {
+        "who": {
+          "name": "WHO",
+          "checked_at": "2026-10-29T14:34:15.280193+00:00",
+          "status": "ok",
+          "technical_status": "ok",
+          "coverage_status": "complete",
+          "outcome": "READY_FOR_INTEGRATION",
+          "operation_mode": "isolated_qualification",
+          "discovery_scope": "global_intelligence",
+          "recurrent_operation_proven": true,
+          "cadence_seconds": 86400,
+          "cadence_validation_pending": false,
+          "coverage_contract_id": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
+          "next_cadence_validation_not_before": null,
+          "coverage_completeness": "complete",
+          "coverage_window_days": 90,
+          "coverage_from": "2026-08-01",
+          "coverage_to": "2026-10-29",
+          "pages_checked": 7,
+          "recent_items": 107,
+          "discovery_recall_30": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_url_count": 107,
+            "detected": 107,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "discovery_recall_90": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_url_count": 242,
+            "detected": 242,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "window_completeness": {
+            "30": "complete_on_declared_surfaces",
+            "90": "complete_on_declared_surfaces"
+          },
+          "unique_language_urls_90": 242,
+          "unique_items": 242,
+          "counts": {
+            "30": 107,
+            "90": 242
+          },
+          "indexed_counts": {
+            "30": 107,
+            "90": 242
+          },
+          "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+          "material_items": 137,
+          "published": 0,
+          "rejected": 6,
+          "deferred": 236,
+          "pending_date_items": 0,
+          "technical_failures": [],
+          "discovered": 242,
+          "new": 1,
+          "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
+          "parser_routes": [
+            "news",
+            "publications",
+            "disease_outbreak_news"
+          ],
+          "boundary_evidence": [
+            {
+              "section": "news",
+              "stop": "verified_older_boundary",
+              "pages": 3
+            },
+            {
+              "section": "publications",
+              "stop": "verified_older_boundary",
+              "pages": 3
+            },
+            {
+              "section": "disease_outbreak_news",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            }
+          ],
+          "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40883592591/inventory.json",
+          "source_quality_disposition": "pass_data",
+          "publication_activation": false,
+          "content_freshness": "recent",
+          "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+          "publication_activation_decision": {
+            "rule": "two_consecutive_successful_daily_live_runs",
+            "authorized": true,
+            "authorized_by": "Dirección (autorizado 27-oct-2026)",
+            "activated": false,
+            "evidence_run_ids": [],
+            "reason": "failed_live_run_since_previous_daily_success",
+            "publication_still_requires": [
+              "editorial_approval",
+              "rights_review"
+            ],
+            "earned_at": null,
+            "earned_evidence_run_ids": []
+          }
+        },
+        "paho": {
+          "name": "PAHO",
+          "checked_at": "2026-10-29T14:59:17.921865+00:00",
+          "status": "ok",
+          "technical_status": "ok",
+          "coverage_status": "complete",
+          "outcome": "READY_FOR_INTEGRATION",
+          "operation_mode": "isolated_qualification",
+          "discovery_scope": "global_intelligence",
+          "recurrent_operation_proven": true,
+          "cadence_seconds": 86400,
+          "cadence_validation_pending": false,
+          "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
+          "next_cadence_validation_not_before": null,
+          "coverage_completeness": "complete",
+          "coverage_window_days": 90,
+          "coverage_from": "2026-08-01",
+          "coverage_to": "2026-10-29",
+          "pages_checked": 127,
+          "recent_items": 191,
+          "discovery_recall_30": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_url_count": 231,
+            "detected": 231,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "discovery_recall_90": {
+            "basis": "independent_native_index_control_on_declared_surfaces",
+            "inventory_url_count": 674,
+            "detected": 674,
+            "omitted_urls": [],
+            "recall": 1.0,
+            "whole_source_archive_claim": false
+          },
+          "window_completeness": {
+            "30": "complete_on_declared_surfaces",
+            "90": "complete_on_declared_surfaces"
+          },
+          "unique_language_urls_90": 674,
+          "unique_items": 544,
+          "counts": {
+            "30": 191,
+            "90": 544
+          },
+          "indexed_counts": {
+            "30": 191,
+            "90": 544
+          },
+          "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
+          "material_items": 221,
+          "published": 0,
+          "rejected": 15,
+          "deferred": 529,
+          "pending_date_items": 0,
+          "technical_failures": [],
+          "discovered": 544,
+          "new": 3,
+          "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
+          "parser_routes": [
+            "regional_news",
+            "regional_news_es",
+            "chile_news",
+            "chile_news_es",
+            "epidemiological_alerts",
+            "technical_reports"
+          ],
+          "boundary_evidence": [
+            {
+              "section": "regional_news",
+              "stop": "verified_date_partition_coverage",
+              "pages": 42
+            },
+            {
+              "section": "regional_news_es",
+              "stop": "verified_date_partition_coverage",
+              "pages": 80
+            },
+            {
+              "section": "chile_news",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            },
+            {
+              "section": "chile_news_es",
+              "stop": "verified_older_boundary",
+              "pages": 2
+            },
+            {
+              "section": "epidemiological_alerts",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            },
+            {
+              "section": "technical_reports",
+              "stop": "verified_older_boundary",
+              "pages": 1
+            }
+          ],
+          "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40883592591/inventory.json",
+          "source_quality_disposition": "pass_data",
+          "publication_activation": false,
+          "content_freshness": "recent",
+          "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+          "publication_activation_decision": {
+            "rule": "two_consecutive_successful_daily_live_runs",
+            "authorized": true,
+            "authorized_by": "Dirección (autorizado 27-oct-2026)",
+            "activated": false,
+            "evidence_run_ids": [],
+            "reason": "failed_live_run_since_previous_daily_success",
+            "publication_still_requires": [
+              "editorial_approval",
+              "rights_review"
+            ],
+            "earned_at": null,
+            "earned_evidence_run_ids": []
+          }
+        },
+        "reuters": {
+          "name": "Reuters",
+          "discovery_scope": "global_intelligence",
+          "checked_at": null,
+          "status": "error",
+          "technical_status": "not_polled_license_hold",
+          "coverage_status": "not_permitted",
+          "outcome": "EXTERNAL_BLOCKER_PROVEN",
+          "operation_mode": "manual_curated_only",
+          "recurrent_operation_proven": false,
+          "coverage_completeness": "unmeasured_without_permitted_route",
+          "coverage_window_days": 90,
+          "counts": {
+            "30": null,
+            "90": null
+          },
+          "recent_items": null,
+          "unique_items": null,
+          "material_items": null,
+          "published": 0,
+          "rejected": 0,
+          "deferred": 0,
+          "discovered": 0,
+          "new": 0,
+          "pages_checked": 0,
+          "technical_failures": [
+            {
+              "code": "prior_written_consent_required",
+              "evidence_ref": "data/audits/global_source_recovery_2026_10_11/probes/38141320771/reuters_robots.body"
+            }
+          ],
+          "manual_reference_control": {
+            "total": 8,
+            "30": 6,
+            "90": 8,
+            "collector_recall": null
+          },
+          "reason": "Reuters prohibits automated collection of content/data/information without prior written consent; no authorized contracted route is configured or documented for Alicanto.",
+          "publication_activation": false,
+          "editorial_outcome": "rights_hold"
+        }
+      },
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/40883592591/inventory.json"
     }
   ]
 }

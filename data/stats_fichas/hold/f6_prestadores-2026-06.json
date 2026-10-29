@@ -1,0 +1,39 @@
+{
+  "status": "hold",
+  "family": "F6",
+  "period": "2026-06",
+  "generated_at": "2026-10-29T14:21:35.790044+00:00",
+  "decision": {
+    "decision": "HOLD",
+    "holds": [
+      "HOLD_RECONCILIATION:2026-06:verified_figure_not_in_document:acreditacion:with_observations,pending_applications"
+    ],
+    "triggers": [
+      "new_period"
+    ],
+    "featured": false,
+    "late_release": null,
+    "material_revisions": []
+  },
+  "verification": null,
+  "errors": [
+    "HOLD_RECONCILIATION:2026-06:verified_figure_not_in_document:acreditacion:with_observations,pending_applications"
+  ],
+  "candidate": {
+    "reconciliation": {
+      "ok": false,
+      "failures": [
+        "2026-06:verified_figure_not_in_document:acreditacion:with_observations,pending_applications"
+      ],
+      "checks": [
+        "un PDF por tema (acreditación, mediación, reclamos, RNPI) del mismo boletín y período",
+        "cada documento capturado con SHA-256 y formato PDF",
+        "cada cifra viene de la lectura independiente y aparece en el texto del PDF capturado",
+        "privadas + públicas = solicitudes en tramitación",
+        "con observaciones ≤ acreditados",
+        "variación de reclamos calculada = variación informada (redondeada)",
+        "los stocks no se suman entre boletines"
+      ]
+    }
+  }
+}
