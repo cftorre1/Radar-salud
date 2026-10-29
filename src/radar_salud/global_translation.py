@@ -204,6 +204,16 @@ week-long long-term short-term long short term term mid mid-term weekly-update c
 tenfold twofold threefold fivefold consumer consumers personnel certain due not disorder disorders funded nih-funded species spp
 commissioner minister president vice governor surgeon chair chairman chairwoman mayor ambassador spokesperson spokesman administrator
 deputy assistant acting principal envoy advisory adviser advisor advisers advisors
+court courts judge judges senator senators lawmaker lawmakers legislator legislators legislature company companies firm firms
+drugmaker drugmakers manufacturer manufacturers pharmacy pharmacies pharmacist pharmacists clinic clinics school schools student
+students parent parents family families mother mothers father fathers employer employers employee employees official officials
+veteran veterans resident residents citizen citizens voter voters union unions nursing home homes facility facilities lab labs
+laboratory laboratories heatwave heatwaves wildfire wildfires smoke flood floods flooding storm storms hurricane earthquake war
+conflict refugee refugees migrant migrants prisoner prisoners prison prisons nearly almost half fewer inside despite following
+ahead toward towards abortion contraception gun guns firearm firearms life expectancy vaping e-cigarette e-cigarettes sugar salt
+diet exercise sleep loneliness suicide suicides homelessness poverty hunger malnutrition famine drought donor donors charity
+charities nonprofit nonprofits startup startups investor investors industry industries sector economy economic trade tariff
+tariffs strike strikes protest protests shooting shootings vaccine-makers mpox-hit rural urban
 """.split())
 
 # Disease, organ, drug and population terms with their Spanish forms: they must map 1:1 (Measles -> sarampión, never
@@ -318,10 +328,13 @@ PLACES_ES = {
     "georgia": {"georgia"}, "kentucky": {"kentucky"}, "maryland": {"maryland"}, "delaware": {"delaware"},
     "connecticut": {"connecticut"}, "massachusetts": {"massachusetts"}, "vermont": {"vermont"}, "maine": {"maine"},
     "rhode island": {"rhode island"}, "minnesota": {"minnesota"}, "wisconsin": {"wisconsin"},
+    # also Spanish words (montaña, nevada, colorado, indiana): counted in the output only when capitalised
+    "nevada": {"nevada"}, "montana": {"montana"}, "colorado": {"colorado"}, "indiana": {"indiana"},
     "monday": {"lunes"},
     "tuesday": {"martes"}, "wednesday": {"miércoles"}, "thursday": {"jueves"}, "friday": {"viernes"}, "saturday": {"sábado"},
     "sunday": {"domingo"},
 }
+_CAPITALISED_ONLY_PLACES = {"nevada", "montana", "colorado", "indiana"}
 # Extra source words that justify a Spanish place form (an "EU" source may say "Europa").
 _PLACE_ALSO = {"europe": {"european", "eu", "eea"}, "america": {"american", "us", "usa"}, "americas": {"paho"}, "africa": {"african"},
                "britain": {"uk", "british"}}
@@ -363,8 +376,25 @@ enfrentan enfrenta afecta afectan amenaza amenazan preocupa preocupan nuevo nuev
 cada todos todas todo toda otro otra otros otras dos tres cuatro cinco seis siete ocho nueve diez cien mil
 como que quien cual cuales donde por que no si ya aun hoy ayer manana ahora
 lo le les sin ni o u e y a de ley leyes rey hoy muy hay
+parte partes comision reglamento reglamentos directiva directivas espacio espacios estrategia estrategias fondo fondos
+iniciativa iniciativas marco servicio comite comites consejos alianza autoridad autoridades junta juntas politica politicas
+norma normas paquete asociacion asociaciones zona zonas campana campanas cumbre asamblea coalicion fundacion proyecto
+proyectos plataforma mecanismo registro registros observatorio pacto tratado agenda hoja ruta sanidad sanitario sanitaria
+sanitarios sanitarias general generales regional regionales internacional internacionales americana americano panamericana
+organizacion alimentos humanos control prevencion tribunal tribunales corte cortes suprema supremo senado camara congreso
+representantes casa blanca oficial oficiales unidas unidas especial especiales nacion naciones derechos derecho social
+sociales seguridad atencion primaria hospitalaria hospitalario medica medico medicos medicas farmacia farmacias farmaceutica
+farmaceuticas investigacion innovacion ciencia ciencias tecnologia evaluacion calidad acceso emergencia emergencias
+respuesta preparacion vacunacion inmunizacion enfermeria clinicas cancer medicina medicinas mental bienestar familia
+familias infancia juventud mujer ministerial ejecutivo ejecutiva agencias consejo direccion superintendencia
+fiscalia contraloria defensoria intendencia secretaria subsecretaria division unidad unidades area areas
 """.split())
 _ES_COMMON = {_fold_static(w) for w in _ES_COMMON}
+_ES_NAME_RUN_SUFFIX = re.compile(r"(?:cion|ciones|sion|siones|dad|dades|miento|mientos|mento|mentos|encia|encias|ancia|ancias|"
+                                 r"ismo|ismos|ista|istas|ico|ica|icos|icas|ivo|iva|ivos|ivas|al|ales|ario|aria|arios|arias|"
+                                 r"oso|osa|osos|osas|ura|uras|aje|ajes|eo|ea|eos|eas|ense|enses|orio|oria|orios|orias|ia|ias|"
+                                 r"logia|logias|cio|cia|cios|cias|ente|entes|ante|antes|or|ores|ero|era|eros|eras|ido|ida|idos|idas|"
+                                 r"ado|ada|ados|adas)$")
 _ES_MORPH = re.compile(r"(?:cion|ciones|sion|siones|idad|idades|miento|mientos|mente|ismo|ismos|encia|encias|ancia|ancias|logia|logias)$")
 
 _SPLIT_ABBR = re.compile(r"\b(?:EE\.\s?UU\.|U\.S\.|U\.K\.|e\.g\.|i\.e\.|p\.\s?ej\.|Dr\.|Sr\.|Sra\.|St\.|No\.|Nr\.|vs\.|etc\.|approx\.|aprox\.|[A-Z]\.)", re.I)
@@ -689,13 +719,71 @@ def _name_parts(base: str) -> list[str]:
     return [p for p in re.split(r"[-–]", base) if p and p[:1].isupper() and not p.isupper() and len(p) > 1]
 
 
+_PERSON_TITLES = {"senator", "sen", "rep", "representative", "congressman", "congresswoman", "president", "secretary",
+                  "commissioner", "governor", "minister", "dr", "doctor", "professor", "prof", "judge", "justice", "mayor",
+                  "director", "chief", "ceo", "chair", "chairman", "chairwoman", "spokesperson", "spokesman", "ambassador",
+                  "king", "queen", "prince", "princess", "pope", "mr", "mrs", "ms", "lord", "lady", "sir", "dame", "rfk"}
+# Head nouns of official names (laws, programmes, bodies): a capitalised run containing one is a name that is
+# translated (Critical Medicines Act -> Ley de Medicamentos Críticos), not a person or company.
+_ORG_HEADS = {"act", "acts", "law", "bill", "regulation", "directive", "space", "strategy", "plan", "programme", "program",
+              "agency", "fund", "initiative", "framework", "service", "services", "office", "committee", "council", "commission",
+              "institute", "institutes", "centre", "center", "centers", "centres", "system", "network", "alliance", "authority",
+              "board", "department", "ministry", "policy", "scheme", "rule", "package", "partnership", "union", "area", "report",
+              "campaign", "day", "week", "summit", "conference", "forum", "assembly", "group", "coalition", "foundation", "trust",
+              "project", "platform", "mechanism", "facility", "registry", "register", "database", "observatory", "compact",
+              "charter", "pact", "treaty", "agenda", "roadmap", "guidelines", "standard", "court", "senate", "house", "congress",
+              "parliament", "government", "organization", "organisation", "administration", "health", "care", "data", "medicines",
+              "prevention", "control", "safety", "security", "republic"}
+_RUN_CONNECT_EN = {"of", "the", "and", "for", "on", "&"}
+_RUN_CONNECT_ES = {"de", "del", "la", "las", "los", "el", "y", "e", "para", "sobre", "en"}
+_TITLE_LOWER_OK = {"with", "from", "into", "onto", "over", "than", "that", "upon", "amid", "about", "after", "versus", "under",
+                   "this", "these", "their", "your"}
+
+
+def _title_case(text: str) -> bool:
+    """Headline written in Title Case: every word of 4+ letters (except short function words) is capitalised."""
+    ws = [w for w in _words(text) if len(w) >= 4 and not w.isupper() and w.lower() not in _TITLE_LOWER_OK]
+    return len(ws) >= 2 and all(w[:1].isupper() for w in ws)
+
+
+def _cap_runs(text: str, connectors: set[str]) -> list[list[int]]:
+    """Runs of capitalised (non-acronym) word tokens, joined by connector words: indices into ``_word_spans``."""
+    spans = _word_spans(text)
+    runs, current, pending = [], [], []
+    for i, (word, start) in enumerate(spans):
+        cap = word[:1].isupper() and not word.isupper() and len(word) > 1
+        gap = text[spans[i - 1][1] + len(spans[i - 1][0]):start] if i else ""
+        broken = bool(re.search(r"[.!?:;,()\[\]\"“”]", gap))
+        if broken:
+            if len(current) >= 2:
+                runs.append(current)
+            current, pending = [], []
+        if cap:
+            current = current + [i] if current else [i]
+            pending = []
+        elif current and word.lower() in connectors and len(pending) < 2:
+            pending.append(i)
+        else:
+            if len(current) >= 2:
+                runs.append(current)
+            current, pending = [], []
+    if len(current) >= 2:
+        runs.append(current)
+    return runs
+
+
 def protected_terms(text: str) -> list[str]:
     """Names a translation must keep as written: drug names (INN stems; the Spanish DCI form is accepted), Latin
-    binomials, marks, and every capitalized token that is not an English dictionary word, a glossary term, a mapped
-    place, or a month. Capitalised dictionary words (Disorder, Consumers, Rose, "Critical Medicines Act") may be
-    translated: official names of laws and programmes are rendered in Spanish; layer B reviews the meaning."""
+    binomials, marks, and every capitalized token that is not ordinary English (common list), a glossary term, a mapped
+    place or a month. A capitalised English dictionary word is free to translate only in a Title Case headline
+    (Disorder, Consumers, Rose) or inside an official name run (Critical Medicines Act); elsewhere -- mid-sentence, or
+    the first word of a sentence-case headline -- it is a name (Trump, Bush, Sanders, Victoria), as is any word after
+    a person title (Senator Sanders)."""
     terms = []
     spans = _word_spans(text)
+    title = _title_case(text)
+    official = {i for run in _cap_runs(text, _RUN_CONNECT_EN)
+                if any(_fold(spans[j][0]) in _ORG_HEADS for j in run) for i in run}
     for i, (word, start) in enumerate(spans):
         base = re.sub(r"['’]s?$", "", word)
         low = base.lower()
@@ -705,9 +793,14 @@ def protected_terms(text: str) -> list[str]:
             nxt = spans[i + 1][0]
             if nxt[:1].islower() and not is_common(nxt) and _LATIN_EPITHET.search(nxt.lower()):
                 terms.append(base + " " + nxt)
+        after_title = i > 0 and _fold(spans[i - 1][0]).rstrip(".") in _PERSON_TITLES
         for part in _name_parts(base):
             f = _fold(part)
-            if f in GLOSSARY or f in PLACES_ES or f in MONTHS or is_dictionary_word(part):
+            if f in GLOSSARY or f in PLACES_ES or f in MONTHS:
+                continue
+            if is_common(part) and not after_title:
+                continue
+            if is_dictionary_word(part) and not after_title and (title or i in official):
                 continue
             if any(_has(_fold(text), p) and f in p.split() for p in PLACES_ES if " " in p):
                 continue  # part of a multi-word place (New York, La Réunion), checked as a place
@@ -770,8 +863,11 @@ def _added_forms(source: str, output: str) -> list[str]:
     for form in _justified_forms(fs):
         rest = re.sub(r"(?<![a-z0-9])" + re.escape(form) + r"(?:e?s)?(?![a-z0-9])", " ", rest)
     added = []
+    caps_out = {_fold(w) for w in _words(output) if w[:1].isupper()}
     for table in (GLOSSARY, PLACES_ES):
         for en, forms in table.items():
+            if en in _CAPITALISED_ONLY_PLACES and en not in caps_out:
+                continue  # "montaña", "nevada" (snowfall), "colorado" (red) in lower case are ordinary Spanish
             if any(_has(rest, f) for f in forms):
                 added.append(_fold(sorted(forms)[0]))
     for es in set(MONTHS.values()):
@@ -808,24 +904,29 @@ def looks_spanish(folded: str) -> bool:
 
 
 def _added_names(source: str, output: str) -> list[str]:
-    """Capitalised words in the Spanish output that look like names and that the source does not justify ("…de la
-    FDA Makary"). Layer A only flags what is name-like: the first word of a sentence, a common Spanish word (list,
-    -ción/-idad… suffix or Spanish spelling: "Ley de Medicamentos Críticos", "Espacio Europeo de Datos de Salud",
-    "Parte D") pass; known places, drugs and diseases are checked by the term tables (an added "Texas" or "Londres"
-    is term_added); acronyms and codes separately. Meaning is layer B's job."""
+    """Capitalised words in the Spanish output the source does not account for ("…de la FDA Makary", "el senador
+    Moreno", "la empresa Moderna", "hospital Santa Rosa"). Source-anchored: a capitalised token that is not
+    sentence-initial must be (a) in the source or a mapped Spanish form of a source term, (b) a common Spanish word
+    from the curated list, or (c) part of a translated official name: a run of 2+ capitalised tokens matching a
+    capitalised run of similar size in the source, and Spanish by suffix ("Ley de Medicamentos Críticos", "Espacio
+    Europeo de Datos de Salud"). Suffix/shape rules are never applied to an isolated mid-sentence token. A
+    sentence-initial token passes if it is Spanish-shaped; the source's names are required separately (term_missing).
+    Known places, drugs and diseases are checked by the term tables; acronyms and codes separately."""
     fs = _fold(source)
     mapped = _mapped_words(source)
+    src_runs = [len(r) for r in _cap_runs(source, _RUN_CONNECT_EN)]
+    in_run = {i for run in _cap_runs(output, _RUN_CONNECT_ES) if any(abs(len(run) - n) <= 2 for n in src_runs) for i in run}
     names = []
-    for word, start in _word_spans(output):
+    for k, (word, start) in enumerate(_word_spans(output)):
         base = re.sub(r"['’]s?$", "", word)
         for idx, part in enumerate(_name_parts(base)):
             f = _fold(part)
-            if _has(fs, part) or f in mapped or f in _ES_COMMON or f in _ES_NUMBER_WORDS or _ES_MORPH.search(f):
-                continue
-            if idx == 0 and base.startswith(part) and _is_initial(output, start):
-                continue  # sentence-initial: capitalised by grammar, not a name signal
-            if looks_spanish(f):
-                continue
+            if _has(fs, part) or f in mapped or f in _ES_COMMON or f in _ES_NUMBER_WORDS:
+                continue  # (a) in the source or a mapped Spanish form; (b) a common Spanish word
+            if idx == 0 and base.startswith(part) and _is_initial(output, start) and (looks_spanish(f) or _ES_MORPH.search(f)):
+                continue  # sentence-initial Spanish-shaped word: grammar; source names are required separately
+            if k in in_run and (_ES_NAME_RUN_SUFFIX.search(f) or _ES_MORPH.search(f)):
+                continue  # (c) inside a translated official name matching a capitalised run of the source
             names.append(part)
     return names
 
@@ -881,6 +982,16 @@ _POLARITY = [
      r"\b(?:approv\w*|authori[sz]\w*|clear(?:s|ed|ance)?|licen[sc]\w*|green.?light\w*|recommend\w*|endors\w*|grant\w*|"
      r"allow\w*|permit\w*|marketing)\b"),
     ("safe", r"\b(?:segur[oa]s?|inocu[oa]s?)\b", r"\b(?:safe\w*|secur\w*|harmless|insur\w*|coverage|cover\w*|plans?)\b"),
+    ("annul", r"\b(?:anul\w*|revoc\w*|invalid\w*|deja(?:n|r)? sin efecto|derog\w*)\b",
+     r"\b(?:annul\w*|overturn\w*|revok\w*|revocation|invalidat\w*|strik\w* down|struck down|vacat\w*|repeal\w*|quash\w*|"
+     r"revers\w*|cancel\w*|rescind\w*|nullif\w*|void\w*|block\w*)\b"),
+    ("uphold", r"\b(?:ratific\w*|ratifiq\w*|confirma(?:n|ron|do)? la (?:validez|legalidad|vigencia|prohibicion|norma|ley|decision))\b",
+     r"\b(?:uphold\w*|upheld|ratif\w*|affirm\w*|confirm\w*|endors\w*|validat\w*)\b"),
+    ("impose", r"\b(?:impon\w*|impus\w*|impuso)\b",
+     r"\b(?:impos\w*|introduc\w*|lev(?:y|ies|ied)|enact\w*|mandat\w*|requir\w*|order\w*|tariff\w*|tax\w*)\b"),
+    ("lift", r"\b(?:levant\w*|suprim\w*|deroga\w*)\b",
+     r"\b(?:lift\w*|remov\w*|eliminat\w*|end\w*|scrap\w*|drop\w*|eas\w*|repeal\w*|rescind\w*|abolish\w*|withdr\w*|"
+     r"cancel\w*|rais\w*)\b"),
     ("recommend", r"\b(?:recomiend\w*|recomend\w*|aconsej\w*)\b",
      r"\b(?:recommend\w*|advis\w*|urg\w*|suggest\w*|guidance|guideline\w*|endors\w*|call\w* for|should)\b"),
 ]

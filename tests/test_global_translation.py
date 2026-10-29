@@ -600,7 +600,7 @@ def test_title_case_dictionary_words_are_not_names_and_acronym_compounds_protect
     assert verify("West Nile Virus Detected in Texas", "Detectan el virus del Nilo Occidental en Texas") == []
     assert "term_not_mapped:nile" in verify("West Nile Virus Detected in Texas", "Detectan el virus del Zika en Texas")
     # A genus followed by an ordinary word is not a binomial; a Latin epithet is.
-    assert protected_terms("Listeria outbreak linked to cheese") == []
+    assert not any(" " in t for t in protected_terms("Listeria outbreak linked to cheese"))
     assert "Candida auris" in protected_terms("Rise in Candida auris cases")
     # Names that are not dictionary words stay protected; capitalised dictionary words (official names) may be translated.
     assert "Pfizer" in protected_terms("Pfizer Recalls Paxlovid Lots") and "Paxlovid" in protected_terms("Pfizer Recalls Paxlovid Lots")
@@ -959,3 +959,99 @@ def test_lexicon_is_package_data():
     assert '"lexicon/en_words.txt.gz"' in pyproject and "[tool.setuptools.package-data]" in pyproject
     from radar_salud.global_translation import _LEXICON_PATH, _lexicon
     assert _LEXICON_PATH.exists() and len(_lexicon()) > 50000 and "personnel" in _lexicon()
+
+
+# ------------------------------------------------------------------ fourth review 29-oct: name swaps and additions
+
+# The reviewer's adversarial probes (gt4/adv.py, adv2.py): every one must be rejected by layer A.
+REVIEWER_ADVERSARIAL = [   ('FDA reports 12 deaths linked to device', 'La FDA informa 21 muertes vinculadas al dispositivo'),
+    ('Seven states report measles outbreaks', 'Ocho estados informan brotes de sarampión'),
+    ('Hospital debt tops $3 billion', 'La deuda hospitalaria supera los US$3 millones'),
+    ('Hospital debt tops $3 billion', 'La deuda hospitalaria supera los US$30 mil millones'),
+    ('Rule takes effect on 1 January 2027', 'La norma entra en vigor el 1 de enero de 2028'),
+    ('Rule takes effect in March 2027', 'La norma entra en vigor en mayo de 2027'),
+    ('Uninsured rate falls to 7.7%', 'La tasa de personas sin seguro cae al 77 %'),
+    ('Hepatitis B cases rise.', 'Suben los casos de hepatitis C.'),
+    ('Group A strep infections rise', 'Suben las infecciones por estreptococo del grupo B'),
+    ('Clade I mpox detected in Kenya', 'Detectan mpox del clado II en Kenia'),
+    ('Avian influenza A(H5N1) found in cats', 'Detectan influenza aviar A(H7N9) en gatos'),
+    ('Medicare Part D premiums rise', 'Suben las primas de la Parte B de Medicare'),
+    ('CDC issues new guidance on RSV', 'Los NIH emiten una nueva guía sobre el VRS'),
+    ('Cholera outbreak in Guinea', 'Brote de cólera en Liberia'),
+    ('Malaria cases rise in Chad', 'Suben los casos de malaria en Níger'),
+    ('WHO convenes experts in Geneva', 'La OMS reúne a expertos en Ginebra y Londres'),
+    ('Measles cases in Colombia', 'Casos de sarampión en Venezuela'),
+    ('Dengue outbreak in Jordan', 'Brote de dengue en Turquía'),
+    ('Heatwave deaths in Turkey', 'Muertes por ola de calor en Grecia'),
+    ('Health ministers meet in Bern', 'Ministros de salud se reúnen en Berlín'),
+    ('Measles in New York', 'Sarampión en Nueva Jersey'),
+    ('Trump signs order on drug prices', 'Biden firma una orden sobre precios de medicamentos'),
+    ('Bush administration report released', 'Se publica informe del gobierno de Obama'),
+    ('Senator Sanders calls for drug price caps', 'El senador Moreno pide topes al precio de los medicamentos'),
+    ("FDA approves Leqembi for Alzheimer's", 'La FDA aprueba Kisunla para el alzhéimer'),
+    ('Shortage of amoxicillin in UK', 'Escasez de penicilina en el Reino Unido'),
+    ('Tuberculosis cases rise in Peru', 'Suben los casos de malaria en Perú'),
+    ('Vaccine approved for infants', 'Vacuna aprobada para adultos mayores'),
+    ('Study of pregnant women', 'Estudio en hombres'),
+    ('Drug improves survival', 'El fármaco no mejora la supervivencia'),
+    ('Court upholds abortion ban', 'Tribunal anula la prohibición del aborto'),
+    ('Prices fell after law passed', 'Los precios subieron tras aprobarse la ley'),
+    ('Agency lifts restrictions on vaccine', 'La agencia impone restricciones a la vacuna'),
+    ('Senate passes health bill', 'El Senado rechaza el proyecto de ley de salud'),
+    ('FDA commissioner resigns', 'Renuncia el comisionado de la FDA Marcos Ortega'),
+    ('Hospital in Ohio closes', 'Cierra hospital Santa Rosa en Ohio'),
+    ('Company recalls drug', 'La empresa Moderna retira un fármaco'),
+    ('Court upholds abortion ban', 'El tribunal anula la prohibición del aborto'),
+    ('Dengue cases rise in Lima', 'Suben los casos de dengue en Cusco'),
+    ('Novartis recalls drug', 'Sanofi retira un fármaco'),
+    ('Report by Kennedy on vaccines', 'Informe de Mora sobre vacunas'),
+    ('Hospital strike in Victoria', 'Huelga hospitalaria en Granada'),
+    ('Medicaid cuts hit rural hospitals', 'Los recortes de Medicaid golpean hospitales rurales de Arizona'),
+    ('Medicaid cuts hit rural hospitals', 'Los recortes de Medicaid golpean hospitales rurales de Nevada'),
+    ('Measles cases in Ontario', 'Casos de sarampión en Alberta'),
+    ('Outbreak at Johns Hopkins hospital', 'Brote en el hospital Santa María')]
+
+
+def test_reviewer_adversarial_probes_all_rejected_by_layer_a():
+    missed = [(s, o) for s, o in REVIEWER_ADVERSARIAL if not verify(s, o)]
+    assert missed == []
+
+
+def test_name_swaps_and_additions_are_source_anchored():
+    # Dictionary-word surnames are names mid-sentence, first in a sentence-case headline, or after a person title.
+    assert "term_missing:Trump" in verify("Trump signs order on drug prices", "Biden firma una orden sobre precios de medicamentos")
+    assert verify("Trump signs order on drug prices", "Trump firma una orden sobre precios de medicamentos") == []
+    assert "term_missing:Bush" in verify("Bush administration report released", "Se publica informe del gobierno de Obama")
+    assert "term_missing:Sanders" in verify("Senator Sanders calls for drug price caps",
+                                            "El senador Moreno pide topes al precio de los medicamentos")
+    assert "Sanders" in protected_terms("Senator Sanders Calls for Drug Price Caps")  # Title Case too, after a title
+    assert "term_missing:Victoria" in verify("Hospital strike in Victoria", "Huelga hospitalaria en Granada")
+    # Isolated Spanish-looking names mid-sentence are not accepted by shape.
+    for src, out, name in (("FDA commissioner resigns", "Renuncia el comisionado de la FDA Marcos Ortega", "Ortega"),
+                           ("Hospital in Ohio closes", "Cierra hospital Santa Rosa en Ohio", "Rosa"),
+                           ("Company recalls drug", "La empresa Moderna retira un fármaco", "Moderna")):
+        assert "name_added:" + name in verify(src, out), (out, verify(src, out))
+    # Translated official names (a capitalised run matching one in the source) still pass.
+    assert verify("Commission proposes Critical Medicines Act", "La Comisión propone la Ley de Medicamentos Críticos") == []
+    assert verify("The European Health Data Space enters into force.",
+                  "El Espacio Europeo de Datos de Salud entra en vigor.", kind="description") == []
+    assert "name_added:Ortega" in verify("Commission proposes Critical Medicines Act",
+                                         "La Comisión de Ortega propone la Ley de Medicamentos Críticos")
+
+
+def test_ambiguous_state_names_are_places_only_when_capitalised_and_in_the_source():
+    assert "term_added:nevada" in verify("Medicaid cuts hit rural hospitals", "Los recortes de Medicaid golpean hospitales rurales de Nevada")
+    assert verify("Medicaid cuts hit rural hospitals in Nevada", "Los recortes de Medicaid golpean hospitales rurales de Nevada") == []
+    assert verify("Heat deaths in mountain towns", "Muertes por calor en pueblos de montaña") == []
+    assert "term_not_mapped:colorado" in verify("Measles in Colorado", "Sarampión en Utah")
+
+
+def test_uphold_annul_and_lift_impose_antonyms():
+    assert "meaning_added:annul" in verify("Court upholds abortion ban", "El tribunal anula la prohibición del aborto")
+    assert verify("Court upholds abortion ban", "El tribunal ratifica la prohibición del aborto") == []
+    assert "meaning_added:uphold" in verify("Court strikes down abortion ban", "El tribunal ratifica la prohibición del aborto")
+    assert verify("Court strikes down abortion ban", "El tribunal anula la prohibición del aborto") == []
+    assert "meaning_added:impose" in verify("Agency lifts restrictions on vaccine", "La agencia impone restricciones a la vacuna")
+    assert verify("Agency lifts restrictions on vaccine", "La agencia levanta las restricciones a la vacuna") == []
+    assert "meaning_added:lift" in verify("Agency imposes restrictions on vaccine", "La agencia levanta las restricciones a la vacuna")
+    assert verify("Agency imposes restrictions on vaccine", "La agencia impone restricciones a la vacuna") == []
