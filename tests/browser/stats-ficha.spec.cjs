@@ -56,10 +56,10 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  expect(await page.evaluate(()=>window.__copied[0])).toMatch(/\/data\/fichas\/f1_cartera\.html$/);
  await body.locator('.sf-share-status').evaluate(e=>{e.textContent=''});
  await shot(page,`stats-ficha-f1-index-${test.info().project.name}`);
- // Index → topic pushes a history entry: #tema=total, the picker reads 'Cartera total 1/5', the stock line comes first.
+ // Index → topic pushes a history entry: #sig-<id>&tema=total, the picker reads 'Cartera total 1/5', the stock line comes first.
  const len0=await page.evaluate(()=>history.length);
  await body.locator('.sf-row').filter({hasText:'Cartera total'}).click();
- await expect(page).toHaveURL(/#tema=total$/);expect(await page.evaluate(()=>history.length)).toBe(len0+1);
+ await expect(page).toHaveURL(/#sig-[^&]+&tema=total$/);expect(await page.evaluate(()=>history.length)).toBe(len0+1);
  await expect(index).toBeHidden();await expect(topic).toBeVisible();
  await expect(body.locator('.sf-pick-label')).toHaveText('Cartera total');await expect(body.locator('.sf-pick-count')).toHaveText('1/5');
  const panel=body.locator('.sf-tpanel:not([hidden])');
@@ -76,7 +76,7 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  await shot(page,`stats-ficha-f1-total-${test.info().project.name}`);
  // ‹ › switch topics and replace the entry (no new history); the by-Isapre table splits cambio into cotizantes and cargas.
  await body.locator('[data-sf-step="1"]').click();
- await expect(page).toHaveURL(/#tema=isapres$/);expect(await page.evaluate(()=>history.length)).toBe(len0+1);
+ await expect(page).toHaveURL(/#sig-[^&]+&tema=isapres$/);expect(await page.evaluate(()=>history.length)).toBe(len0+1);
  await expect(body.locator('.sf-pick-count')).toHaveText('2/5');
  await expect(panel.locator('.sf-tdek')).toHaveCount(0);await expect(panel.locator('.sf-kpi')).toHaveCount(0);
  const isa=panel.locator('[data-chart="f1-isapres"]');
@@ -97,7 +97,7 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  await expect(list.locator('[role=option]').first()).toContainText('Todos los temas');
  await page.keyboard.press('ArrowDown');await page.keyboard.press('Enter');
  await expect(list).toBeHidden();await expect(body.locator('.sf-pick')).toBeFocused();
- await expect(page).toHaveURL(/#tema=mezcla$/);
+ await expect(page).toHaveURL(/#sig-[^&]+&tema=mezcla$/);
  // Cotizantes y cargas: hero chart, then the dek and the two KPI cards from the evidence, then the ratio chart.
  await expect(panel.locator('.sf-tdek')).toHaveText('Las cargas explican el 78% de la baja del año.');
  expect(await panel.locator('.sf-kpi').evaluateAll(xs=>xs.map(x=>[x.querySelector('.sf-lab').textContent,x.querySelector('.sf-val').firstChild.textContent,x.querySelector('.sf-delta').textContent])))
@@ -109,26 +109,26 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  await scrollTo(body.locator('.sf-topic'));
  await shot(page,`stats-ficha-f1-cotizantes-${test.info().project.name}`);
  // ← / → change topic in topic mode (desktop keyboard).
- if(!mobile){await page.locator('body').press('ArrowRight');await expect(page).toHaveURL(/#tema=movilidad$/);await page.locator('body').press('ArrowLeft');await expect(page).toHaveURL(/#tema=mezcla$/)}
+ if(!mobile){await page.locator('body').press('ArrowRight');await expect(page).toHaveURL(/#sig-[^&]+&tema=movilidad$/);await page.locator('body').press('ArrowLeft');await expect(page).toHaveURL(/#sig-[^&]+&tema=mezcla$/)}
  // Browser Back returns to the index (dialog stays open), highlighting and focusing the last topic's row.
  await page.goBack();
  await expect(index).toBeVisible();await expect(topic).toBeHidden();await expect(dialog).toBeVisible();
- expect(page.url()).not.toContain('#tema=');
+ expect(page.url()).not.toContain('tema=');
  const last=body.locator('.sf-row').filter({hasText:'Cotizantes y cargas'});await expect(last).toHaveClass(/sf-last/);await expect(last).toBeFocused();
  await expect(page.locator('#closeDetail')).toContainText('Volver');
  // The foot's 'Siguiente tema' and 'Todos los temas', and the dialog's back button in topic mode, also lead back.
  await body.locator('.sf-row').filter({hasText:'Movilidad y desahucios'}).click();
  await expect(panel.locator('.sf-tdek')).toHaveCount(0);await expect(panel.locator('.sf-kpi')).toHaveCount(0);
- await panel.locator('.sf-next').click();await expect(page).toHaveURL(/#tema=regional$/);
+ await panel.locator('.sf-next').click();await expect(page).toHaveURL(/#sig-[^&]+&tema=regional$/);
  await expect(panel).toContainText('Alicanto aún no extrae');await expect(panel.locator('.sf-links a').first()).toHaveAttribute('href',/a-nivel-regional-agosto-2026/);
  await expect(panel.locator('.sf-next')).toHaveCount(0);await expect(body.locator('[data-sf-step="1"]')).toBeDisabled();
- await panel.locator('.sf-all').click();await expect(index).toBeVisible();expect(page.url()).not.toContain('#tema=');
+ await panel.locator('.sf-all').click();await expect(index).toBeVisible();expect(page.url()).not.toContain('tema=');
  await body.locator('.sf-row').first().click();await expect(topic).toBeVisible();
  await page.locator('#closeDetail').click();await expect(index).toBeVisible();await expect(dialog).toBeVisible();
  await page.locator('#closeDetail').click();await expect(dialog).toBeHidden();
  // Closing in topic mode leaves no topic in the URL.
- await row.locator('[data-detail]').first().click();await body.locator('.sf-row').nth(2).click();await expect(page).toHaveURL(/#tema=mezcla$/);
- await page.keyboard.press('Escape');await expect(dialog).toBeHidden();await expect.poll(()=>page.url()).not.toContain('#tema=');
+ await row.locator('[data-detail]').first().click();await body.locator('.sf-row').nth(2).click();await expect(page).toHaveURL(/#sig-[^&]+&tema=mezcla$/);
+ await page.keyboard.press('Escape');await expect(dialog).toBeHidden();await expect.poll(()=>page.url()).not.toContain('tema=');
 });
 
 test('a #tema deep link opens that topic directly and Back leaves it',async({page})=>{
@@ -147,19 +147,49 @@ test('a #tema deep link opens that topic directly and Back leaves it',async({pag
  expect(page.url()).toContain(`#${id}`);expect(page.url()).not.toContain('tema=');
 });
 
+// Independent review 29-oct: a topic URL keeps the signal anchor, so copying it from the address bar reopens the ficha
+// on that topic; an unknown topic opens the ficha at its index (never a silent no-op) and is dropped from the URL.
+test('a copied topic URL reopens the ficha; an unknown topic opens its index',async({page})=>{
+ const card=f1Card();
+ const row=await openF1(page,card);
+ const id=encodeURIComponent(`sig-${card.piece_id}`),body=page.locator('#detailBody'),dialog=page.locator('#signalDetail');
+ await row.locator('[data-detail]').first().click();
+ await body.locator('.sf-row').filter({hasText:'Cotizantes y cargas'}).click();
+ await expect(page).toHaveURL(new RegExp(`#${id}&tema=mezcla$`));
+ await expect(body.locator('.sf-row').first()).toHaveAttribute('href',`#${id}&tema=total`);
+ const copied=page.url();
+ await page.goto('about:blank');await page.goto(copied);  // a fresh load of the copied URL (no ?abrir=1)
+ await expect(dialog).toBeVisible();await expect(body.locator('.sf-topic')).toBeVisible();
+ await expect(body.locator('.sf-pick-label')).toHaveText('Cotizantes y cargas');await expect(body.locator('.sf-pick-count')).toHaveText('3/5');
+ // Closing the reopened ficha drops the topic and keeps the signal anchor.
+ await page.locator('#closeDetail').click();await expect(body.locator('.sf-index')).toBeVisible();
+ expect(page.url()).toContain(`#${id}`);expect(page.url()).not.toContain('tema=');
+ await page.locator('#closeDetail').click();await expect(dialog).toBeHidden();
+ // An unknown topic: the ficha opens at its index and the bad '&tema=' leaves the URL.
+ for(const bad of ['nope','x.y']){
+  await page.goto('about:blank');await page.goto(`/index.html#${id}&tema=${bad}`);
+  await expect(dialog).toBeVisible();await expect(body.locator('.sf-index')).toBeVisible();await expect(body.locator('.sf-topic')).toBeHidden();
+  await expect.poll(()=>page.url()).not.toContain('tema=');expect(page.url()).toContain(`#${id}`);
+ }
+ // Closing the ficha also strips an unknown '&tema=' that reached the URL after it opened.
+ await page.evaluate(h=>history.replaceState(null,'',location.pathname+h),`#${id}&tema=nope`);
+ await page.locator('#closeDetail').click();await expect(dialog).toBeHidden();
+ await expect.poll(()=>page.url()).not.toContain('tema=');expect(page.url()).toContain(`#${id}`);
+});
+
 test('swipe changes topic on phones',async({page})=>{
  test.skip(test.info().project.name!=='mobile','touch only');
  const row=await openF1(page,f1Card());
  await row.locator('[data-detail]').first().click();
  const body=page.locator('#detailBody');
- await body.locator('.sf-row').first().click();await expect(page).toHaveURL(/#tema=total$/);
+ await body.locator('.sf-row').first().click();await expect(page).toHaveURL(/#sig-[^&]+&tema=total$/);
  const swipe=dx=>body.locator('.sf-tpanels').evaluate((el,dx)=>{const r=el.getBoundingClientRect(),y=r.top+80,x=r.left+r.width/2;
   const t=(cx)=>new Touch({identifier:1,target:el,clientX:cx,clientY:y});
   el.dispatchEvent(new TouchEvent('touchstart',{touches:[t(x)],changedTouches:[t(x)],bubbles:true}));
   el.dispatchEvent(new TouchEvent('touchend',{touches:[],changedTouches:[t(x+dx)],bubbles:true}))},dx);
- await swipe(-120);await expect(page).toHaveURL(/#tema=isapres$/);
- await swipe(120);await expect(page).toHaveURL(/#tema=total$/);
- await swipe(30);await expect(page).toHaveURL(/#tema=total$/);  // short moves are scrolls, not swipes
+ await swipe(-120);await expect(page).toHaveURL(/#sig-[^&]+&tema=isapres$/);
+ await swipe(120);await expect(page).toHaveURL(/#sig-[^&]+&tema=total$/);
+ await swipe(30);await expect(page).toHaveURL(/#sig-[^&]+&tema=total$/);  // short moves are scrolls, not swipes
 });
 
 // 320 and 390 px with CI's fallback font (DejaVu Sans, wider than local fonts): index rows, picker, KPI cards and every

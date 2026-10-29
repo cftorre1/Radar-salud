@@ -47,6 +47,8 @@ let freeValue={};
 let previousVisit;try{previousVisit=localStorage.getItem('alicanto_last_visit')}catch{}
 let periodMode=filterStored.period||'30';
 let laneMode=['p','l','t'].includes(filterStored.lane)?filterStored.lane:'p',detailPending=null;
+// Only the hash the page was loaded with reopens a ficha topic: the ficha's own topic URLs (pushState) never do.
+const loadHash=typeof location!=='undefined'?location.hash:'';
 const readSet=AlicantoRead.readSet;
 function persistFilters(){saveLocal('alicanto_filters',JSON.stringify({interests:[...activeInterests],entities:[...followed],period:periodMode,sort:sortMode,lane:laneMode}))}
 function encodedId(value){return btoa(unescape(encodeURIComponent(value)))}
@@ -283,10 +285,13 @@ async function toggleRead(s){const id=idFor(s),value=!isRead(s);await AlicantoRe
 async function markAllRead(){const ids=visible().filter(s=>!isRead(s)).map(idFor);if(!ids.length)return;if(AlicantoRead.setMany)await AlicantoRead.setMany(ids,true);else for(const id of ids)await AlicantoRead.set(id,true);readStatus(`${ids.length} señales marcadas como leídas.`);draw();AlicantoBar.feedUndo(document.getElementById('local'),{label:`${ids.length} señales marcadas como leídas`,onUndo:async()=>{if(AlicantoRead.setMany)await AlicantoRead.setMany(ids,false);else for(const id of ids)await AlicantoRead.set(id,false);readStatus('Lectura deshecha para las señales.');draw();rowFor(ids[0])?.querySelector('.title-open')?.focus()}})?.querySelector('button')?.focus()}
 let revealedHash='';
 // A shared ficha link may name a topic after the signal ('#sig-<id>&tema=<tema>'); the ficha reads that part itself.
-function sharedHashTarget(){try{return decodeURIComponent(location.hash.slice(1)).replace(/&tema=[\w-]+$/,'')}catch{return ''}}
+// A ficha topic link is '#sig-<id>&tema=<topic>'; any '&tema=' value is dropped here (an unknown topic is the ficha's job).
+function sharedHashTarget(){try{return decodeURIComponent(location.hash.slice(1)).replace(/&tema=[^&]*$/,'')}catch{return ''}}
 function revealSharedHash(){const target=sharedHashTarget();if(!target||target===revealedHash)return;let element=document.getElementById(target);if(!element){const prefix=target.startsWith('special-')?'special-':target.startsWith('sig-')?'sig-':'',id=target.slice(prefix.length),signal=prefix==='sig-'?allSignals.find(x=>idFor(x)===id):null,special=prefix==='special-'?specials().find(x=>x.id===id):null;if(signal){activeInterests.clear();if(!inPeriod(signal))periodMode='90';persistFilters();renderFilters();element=null}}if(!element)element=document.getElementById(target);revealedHash=target;
- // Share pages ('Compartir informe') link with ?abrir=1: open the detail, not only the row.
- if(target.startsWith('sig-')&&new URLSearchParams(location.search).get('abrir')==='1'){const signal=allSignals.find(x=>idFor(x)===target.slice(4));if(signal){try{history.replaceState(null,'',location.pathname+location.hash)}catch{}requestAnimationFrame(()=>requestAnimationFrame(()=>openDetail(signal)));return}}
+ // Share pages ('Compartir informe') link with ?abrir=1: open the detail, not only the row. A ficha topic link
+ // ('#sig-<id>&tema=<topic>', copied from the address bar) also reopens the ficha; an unknown topic opens it at its index.
+ const abrir=new URLSearchParams(location.search).get('abrir')==='1',topicLink=/&tema=[^&]*$/.test(location.hash)&&location.hash===loadHash&&!document.getElementById('signalDetail')?.open;
+ if(target.startsWith('sig-')&&(abrir||topicLink)){const signal=allSignals.find(x=>idFor(x)===target.slice(4)&&(abrir||x.stats_ficha));if(signal){try{history.replaceState(null,'',location.pathname+location.hash)}catch{}requestAnimationFrame(()=>requestAnimationFrame(()=>openDetail(signal)));return}}
  if(element){requestAnimationFrame(()=>requestAnimationFrame(()=>{const current=document.getElementById(target);if(!current)return;current.focus({preventScroll:true});current.scrollIntoView({block:'start'})}))}}
 function shareCard(button){return AlicantoBar.shareCard(button)}
 // Relevance scores are not calibrated enough to split the inbox (most signals score as relevant),

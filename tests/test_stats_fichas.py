@@ -193,6 +193,78 @@ def test_verify_ficha_traces_topic_kpis_index_lines_and_sparks(root):
     assert "ui:topic_over_2_kpis:mezcla" in broken(lambda t: t["mezcla"]["kpis"].append(t["mezcla"]["kpis"][0]))
 
 
+def test_topic_lines_cite_their_own_refs(root):
+    """Independent review 29-oct: index lines and topic deks trace to the refs they declare (unit- and entity-aware)."""
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    p = f1.build_package(root)
+    tabs = {t["id"]: t for t in fi["tabs"]}
+    assert tabs["total"]["index_refs"] == ["sistema.beneficiarios.2026-08"]
+    assert tabs["isapres"]["index_refs"] == ["contrib.99", "conteo.abiertas_crecen"]
+    assert tabs["mezcla"]["index_refs"] == [] and tabs["mezcla"]["dek_refs"] == ["cargas.contrib"]
+
+    def errors(edit):
+        tabs2 = json.loads(json.dumps(fi["tabs"]))
+        edit({t["id"]: t for t in tabs2})
+        return sf.verify_ficha({**fi, "tabs": tabs2}, p)["errors"]
+
+    # Some package value equals 79 (Isapre 76, cotizantes −79): a global pool would let this wrong share through.
+    assert any(abs(v["value"]) == 79 for v in p["values"].values())
+    assert "topic_number_not_in_refs:isapres:index:79%" in errors(
+        lambda t: t["isapres"].update(index_line="Banmédica: 79% de la baja · 3 Isapres crecen"))
+    # '15 regiones' must not trace to a share (or to anything) the line does not cite.
+    assert "topic_number_not_in_refs:regional:index:15" in errors(lambda t: t["regional"].update(index_line="15 regiones con datos"))
+    # Unit-aware: the contribution is a %, so a plain '77' does not match it, and '3' never matches a %.
+    assert "topic_number_not_in_refs:isapres:index:77" in errors(lambda t: t["isapres"].update(index_line="Banmédica: 77 de la baja"))
+    assert "topic_number_not_in_refs:isapres:index:3%" in errors(lambda t: t["isapres"].update(index_line="Banmédica: 3% de la baja"))
+    # Entity-aware: Banmédica's share credited to another Isapre fails.
+    other = next(e["name"] for e in p["entities"] if e["code"] == 67)
+    assert f"topic_entity_not_in_refs:isapres:index:{other}" in errors(
+        lambda t: t["isapres"].update(index_line=f"{other}: 77% de la baja"))
+    # A dek figure traces to the dek's refs only.
+    assert "topic_number_not_in_refs:mezcla:dek:81%" in errors(lambda t: t["mezcla"].update(dek="Las cargas explican el 81% de la baja del año."))
+    assert any(e.startswith("topic_ref_missing:total:index") for e in errors(lambda t: t["total"].update(index_refs=["no.existe"])))
+
+
+@pytest.mark.parametrize("tab,line,error", [
+    ("isapres", "Banmédica: 79% de la baja · 3 Isapres crecen", "topic_number_not_in_refs:isapres:index:79%"),
+    ("regional", "15 regiones con datos", "topic_number_not_in_refs:regional:index:15"),
+    ("mezcla", "Cotizantes suben por tercer mes", "derived_claim_not_in_series:racha:cotizantes:tercer"),
+    ("mezcla", "Cotizantes bajan por segundo mes", "derived_claim_not_in_series:racha:cotizantes:segundo"),
+    ("total", "2.486.683 beneficiarios · menor baja del año", None),
+])
+def test_wrong_topic_lines_hold(root, monkeypatch, tab, line, error):
+    """End to end: a wrong index line never publishes (HOLD); the true line still passes."""
+    real = f1.compose
+
+    def compose(*a, **kw):
+        fi = real(*a, **kw)
+        next(t for t in fi["tabs"] if t["id"] == tab)["index_line"] = line
+        return fi
+    monkeypatch.setattr(f1, "compose", compose)
+    r = f1.run(root, today=TODAY, llm=False)
+    if error is None:
+        assert r["status"] == "pass", r.get("errors")
+    else:
+        assert r["status"] == "hold" and error in r["errors"], r.get("errors")
+
+
+def test_derived_claims_are_recomputed_from_the_series(root):
+    p = f1.build_package(root)
+    assert sf.derived_claim_errors("Cotizantes suben por segundo mes", p) == []
+    assert sf.derived_claim_errors("Segundo mes al alza (jul +475)", p, "cotizantes") == []
+    assert sf.derived_claim_errors("la menor baja del año", p) == []
+    assert sf.derived_claim_errors("Cotizantes: menor baja del año", p) == ["derived_claim_not_in_series:menor_baja:cotizantes"]
+    worse = json.loads(json.dumps(p))
+    worse["values"]["sistema.beneficiarios.mm.2026-08"]["value"] = -99999  # August is no longer the smallest decline
+    assert sf.derived_claim_errors("la menor baja del año", worse) == ["derived_claim_not_in_series:menor_baja:beneficiarios"]
+    late = {**p, "periods": p["periods"][1:]}  # series starts after January: 'del año' cannot be claimed
+    assert "derived_claim_not_in_series:menor_baja:beneficiarios" in sf.derived_claim_errors("menor baja del año", late)
+    fi = f1.run(root, today=TODAY, llm=False)["ficha"]
+    wrong = json.loads(json.dumps(fi))
+    wrong["kpis"][1]["lines"][1] = "Tercer mes al alza (jul +475)"
+    assert "derived_claim_not_in_series:racha:cotizantes:tercer" in sf.verify_ficha(wrong, p)["errors"]
+
+
 def test_isapre_table_split_must_add_up(root):
     """A capture whose cotizantes + cargas do not add up to beneficiarios never publishes the split table."""
     data = portfolio(root)

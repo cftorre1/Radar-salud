@@ -21,7 +21,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, fmt_signed, month_label, month_name, value
 
 FAMILY = "F1"
-BUILDER_VERSION = "f1_index_topic_v7"  # a new builder republishes the same release (no archive, no new paid Lectura)
+BUILDER_VERSION = "f1_index_topic_v8"  # a new builder republishes the same release (no archive, no new paid Lectura)
 METRIC_COL = {"cotizantes": "C", "cargas": "D", "beneficiarios": "E"}
 
 
@@ -632,6 +632,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     record_low = htype in {"record_low_decline", "record_low_decline_moderate"} or (
         mm_t < 0 and len(k["declines"]) >= 3 and k["declines"][t] == min(k["declines"].values()))
     total_line = f"{fmt_int(k['B'][t])} beneficiarios · " + (f"menor baja {span}" if record_low and whole_year else f"{fmt_signed(mm_t)} en {month}")
+    # Each topic line cites the evidence ids of its figures (verify_ficha traces them unit- and entity-aware).
+    total_refs = [f"sistema.beneficiarios.{t}"] + ([] if record_low and whole_year else [f"sistema.beneficiarios.mm.{t}"])
+    isapres_refs = ([f"contrib.{conc['entity']}"] + (["conteo.abiertas_crecen"] if n_up else [])) if conc else []
     if conc:
         isapres_line = (f"{names[conc['entity']]}: {fmt_dec(k['contributions'][conc['entity']], 0)}% de la {'baja' if ytd < 0 else 'variación'}"
                         + (f" · {n_up} {'Isapre crece' if n_up == 1 else 'Isapres crecen'}" if n_up else ""))
@@ -639,6 +642,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         isapres_line = f"Cambio por Isapre desde {base_month}"
     mezcla_line = (f"Cotizantes {'suben' if cot_up else 'bajan'} por {sf.ordinal(k['cot_streak'])} mes" if k["cot_sustained"]
                    else f"Cotizantes {fmt_signed(v['sistema.cotizantes.ytd']['value'])} desde {base_month}")
+    mezcla_refs = [] if k["cot_sustained"] else ["sistema.cotizantes.ytd"]
     mezcla_dek, mezcla_kpis = None, []
     contrib_cargas = v.get("cargas.contrib", {}).get("value")
     if contrib_cargas is not None and 0 < contrib_cargas <= 100 and ytd < 0:
@@ -650,11 +654,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                             "refs": [f"sistema.{metric}.{t}", f"sistema.{metric}.ytd", f"sistema.{metric}.ytd_pct"]})
     tabs = [
         {"id": "total", "label": "Cartera total", "charts": [chart_stock, chart1], "text": [],
-         "index_line": total_line, "spark": {"chart": "f1-stock", "form": "line"}, "dek": None, "kpis": []},
+         "index_line": total_line, "index_refs": total_refs, "spark": {"chart": "f1-stock", "form": "line"}, "dek": None, "kpis": []},
         {"id": "isapres", "label": "Por Isapre", "charts": [chart2, chart_share], "text": [],
-         "index_line": isapres_line, "spark": {"chart": "f1-isapres", "form": "diverging"}, "dek": None, "kpis": []},
+         "index_line": isapres_line, "index_refs": isapres_refs, "spark": {"chart": "f1-isapres", "form": "diverging"}, "dek": None, "kpis": []},
         {"id": "mezcla", "label": "Cotizantes y cargas", "charts": [chart_cot, chart_mix], "text": [],
-         "index_line": mezcla_line, "spark": {"chart": "f1-cot", "form": "columns"}, "dek": mezcla_dek, "kpis": mezcla_kpis},
+         "index_line": mezcla_line, "index_refs": mezcla_refs, "spark": {"chart": "f1-cot", "form": "columns"}, "dek": mezcla_dek,
+         "dek_refs": ["cargas.contrib"] if mezcla_dek else [], "kpis": mezcla_kpis},
     ]
     if "movilidad.diferencia_intervalo" in v or package.get("suscripciones"):
         mov_charts = []
@@ -686,11 +691,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         else:
             mov_line = "Contratos suscritos y desahucios voluntarios"
         tabs.append({"id": "movilidad", "label": "Movilidad y desahucios", "charts": mov_charts, "text": [],
-                     "index_line": mov_line, "spark": {"chart": mov_charts[0]["id"], "form": "diverging" if mov_charts[0]["form"] == "diverging" else "bars"},
+                     "index_line": mov_line, "index_refs": [], "spark": {"chart": mov_charts[0]["id"], "form": "diverging" if mov_charts[0]["form"] == "diverging" else "bars"},
                      "dek": None, "kpis": []})
     reg = package.get("regional")
     tabs.append({"id": "regional", "label": "Regional", "charts": [], "status": "pendiente", "spark": None,
-                 "index_line": ("Enlace a la SIS · cifras aún no extraídas" if reg else "Cifras aún no extraídas"),
+                 "index_line": ("Enlace a la SIS · cifras aún no extraídas" if reg else "Cifras aún no extraídas"), "index_refs": [],
                  "text": ["Alicanto aún no extrae las cifras regionales: la publicación queda enlazada y su ficha suelta se absorbe aquí."],
                  "links": ([{"label": reg["title"], "url": reg["url"]}] + [{"label": "Planilla regional (xlsx)", "url": u} for u in reg["documents"]]) if reg else []})
 

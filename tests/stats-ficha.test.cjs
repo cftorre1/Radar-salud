@@ -15,8 +15,11 @@ test('ficha opens as an index of topics and renders each topic with the hero cha
  assert.doesNotMatch(html,/aria-label="Indicadores clave"/);assert.doesNotMatch(html,/class="sf-watch"/);assert.doesNotMatch(html,/class="sf-facts"/);
  assert.match(html,/<details class="sf-notes"><summary>Notas y fuentes<\/summary>/);assert.doesNotMatch(html,/Por qué importa/);
  assert.match(html,/id="detailTitle"/);assert.match(html,/2\.486\.683/);assert.match(html,/agosto 2026/);
+ // Index rows link to '#sig-<id>&tema=<topic>' (a copied URL reopens the ficha); without a signal id, '#tema=<topic>'.
+ assert.match(load().render(pub),/<a class="sf-row" href="#tema=total" data-sf-row="0">/);assert.doesNotMatch(load().render(pub),/data-sf-sig=/);
+ assert.match(html,/<article class="sf sf-cb" data-sf-sig="sig-stats-ficha:F1:2026-08"/);
  // Index: 5 rows with label, one line and a sparkline (no number under it); Regional is pending.
- const rows=[...html.matchAll(/<a class="sf-row" href="#tema=([\w-]+)" data-sf-row="\d"><span class="sf-row-txt"><span class="sf-row-label">([^<]+)(?:<span class="sf-pending">pendiente<\/span>)?<\/span><span class="sf-row-line">([^<]+)<\/span><\/span><span class="sf-spark">(<svg[^]*?<\/svg>|<span class="sf-spark-pend">pendiente<\/span>)<\/span>/g)];
+ const rows=[...html.matchAll(/<a class="sf-row" href="#sig-stats-ficha%3AF1%3A2026-08&amp;tema=([\w-]+)" data-sf-row="\d"><span class="sf-row-txt"><span class="sf-row-label">([^<]+)(?:<span class="sf-pending">pendiente<\/span>)?<\/span><span class="sf-row-line">([^<]+)<\/span><\/span><span class="sf-spark">(<svg[^]*?<\/svg>|<span class="sf-spark-pend">pendiente<\/span>)<\/span>/g)];
  assert.deepEqual(rows.map(m=>[m[1],m[2],m[3]]),[['total','Cartera total','2.486.683 beneficiarios · menor baja del año'],
   ['isapres','Por Isapre','Banmédica: 77% de la baja · 3 Isapres crecen'],['mezcla','Cotizantes y cargas','Cotizantes suben por segundo mes'],
   ['movilidad','Movilidad y desahucios','Salen más de los que entran · dato a julio'],['regional','Regional','Enlace a la SIS · cifras aún no extraídas']]);
@@ -87,7 +90,9 @@ test('app.js hands statistics fichas to the self-contained renderer and keeps le
  const app=fs.readFileSync('web/app.js','utf8');
  assert.match(app,/if\(s\.stats_ficha&&typeof AlicantoFicha!=='undefined'\)return AlicantoFicha\.render\(s\.stats_ficha,\{shareId:`sig-\$\{idFor\(s\)\}`,shareUrl:s\.share_url\}\);/);
  // The detail mounts the index → topic behaviour after rendering; a shared '#sig-<id>&tema=<tema>' still finds the signal.
- assert.match(app,/AlicantoFicha\.mount\(body\)/);assert.match(app,/replace\(\/&tema=\[\\w-\]\+\$\/,''\)/);
+ assert.match(app,/AlicantoFicha\.mount\(body\)/);assert.match(app,/replace\(\/&tema=\[\^&\]\*\$\/,''\)/);
+ // A copied topic URL (page-load hash with '&tema=') reopens the ficha; the ficha's own pushState URLs never do.
+ assert.match(app,/topicLink=\/&tema=\[\^&\]\*\$\/\.test\(location\.hash\)&&location\.hash===loadHash/);
  const index=fs.readFileSync('web/index.html','utf8');
  assert.ok(index.indexOf('stats-ficha.js')>index.indexOf('statistical-view.js')&&index.indexOf('stats-ficha.js')<index.indexOf('src="app.js"'));
  assert.match(index,/stats-ficha\.css/);

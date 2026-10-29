@@ -28,7 +28,7 @@ from .stats_fichas import fmt_dec, fmt_int, fmt_signed, value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F4"
-BUILDER_VERSION = "f4_index_topic_v2"
+BUILDER_VERSION = "f4_index_topic_v3"
 CAPTURE = Path("data/stats_fichas/captures/ges_quarterly.json")
 PORTFOLIO = Path("data/market/isapre_portfolio.json")
 QWORD = {1: "primer", 2: "segundo", 3: "tercer", 4: "cuarto"}
@@ -409,6 +409,12 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     label_numbers = sorted({abs(v) for r in problems for _, v, _ in numbers_in(r["label"])})
     constants = [1000, kpcfg["casos_ges"]["threshold"]["yoy_pct"], tp["pct"], tp["min_cases"], 3, len(quarters), *label_numbers]
     months_all = sorted({m for (y, q) in quarters for m in qmonths(y, q)})
+    # Figures the topic index lines cite (verify_ficha traces each line to its own refs): the registry threshold and the
+    # number of derivable quarters, as evidence ids instead of loose constants.
+    values["regla.top_problemas.pct"] = value("regla.top_problemas.pct", tp["pct"], unit="%", period=t, source=None,
+                                              formula="umbral del registro (top_problemas)", kind="rule")
+    values["conteo.trimestres"] = value("conteo.trimestres", len(quarters), unit="trimestres", period=t, source=None,
+                                        formula="conteo de trimestres derivables", kind="derived")
     package.update(period=t, periods=months_all, base_period=qend(by, bq) if has_yoy else None, findings=findings,
                    revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
                    constants=constants,
@@ -619,8 +625,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         tabs[-1]["text"].append("La tendencia se dibuja desde el segundo trimestre capturado.")
 
     # Index → topic layout (Dirección 29-oct): generic index fields; the topic dek falls back to the tab text.
+    index_refs = {"problemas": ["regla.top_problemas.pct"], "tendencia": ["conteo.trimestres"],
+                  "seguros": [f"ges.q.{tk}.isapre_share"], "totales": [f"ges.q.{tk}.total", "ges.yoy.total"] if yoy else [f"ges.q.{tk}.total"]}
     for tab in tabs:
-        sf.topic_fields(tab)
+        refs = index_refs.get(tab["id"], [])
+        sf.topic_fields(tab, text_refs=refs, headline_refs=refs)
     paragraphs = [tot_text[0], ins_text[0], top_text[0]]
 
     # Qué mirar

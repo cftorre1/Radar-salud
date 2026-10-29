@@ -1,7 +1,8 @@
 // Statistics ficha. Dirección 29-oct-2026 approved option "C→B": the ficha opens as an index of its topics (label,
 // one-line reading, sparkline); a topic opens in topic mode: sticky "Ver: <tema> n/N ▾" picker with ‹ ›, the hero chart
 // first, then that topic's dek, KPI cards and other charts, and "Siguiente tema" / "Todos los temas" at the foot.
-// Deep links: #tema=<id>. Entering a topic from the index pushes a history entry, switching topics replaces it, and Back
+// Deep links: #sig-<id>&tema=<topic> (#tema=<topic> when the ficha has no signal id), so a copied URL reopens the ficha
+// on that topic. Entering a topic from the index pushes a history entry, switching topics replaces it, and Back
 // returns to the index. Every number arrives formatted or as a value from the evidence package; this file only lays out.
 (function(root){
  const C={ink:'#1D3345',ink70:'#4F6170',ink50:'#6B7884',axis:'#B9B3A6',accent:'#C37C37'};
@@ -120,12 +121,14 @@
    nx+`<button type="button" class="sf-all" data-sf-index>${I.grid}<span>Todos los temas</span></button>`;
  }
  let seq=0;
- function topics(f){
+ // The hash of a topic keeps the ficha's signal anchor: '#sig-<id>&tema=<topic>'.
+ const temaHash=(sig,id)=>(sig?`#${encodeURIComponent(sig)}&`:'#')+'tema='+id;
+ function topics(f,o={}){
   const ts=arr(f.tabs).filter(t=>t&&t.label),N=ts.length,base=`sf${++seq}`;
   const pend=t=>t.status==='pendiente'?'<span class="sf-pending">pendiente</span>':'';
   const ids=ts.map((t,i)=>String(t.id||i));
   const index=`<section class="sf-index" data-sf-view="index" aria-label="Temas de la ficha"><div class="sf-index-h">En esta ficha <span>${N} temas · toca para abrir</span></div>`+
-   ts.map((t,i)=>`<div class="sf-item"><a class="sf-row" href="#tema=${esc(ids[i])}" data-sf-row="${i}"><span class="sf-row-txt"><span class="sf-row-label">${esc(t.label)}${pend(t)}</span><span class="sf-row-line">${esc(indexLine(t))}</span></span>${spark(t)}<span class="sf-go">${I.right}</span></a></div>`).join('')+`</section>`;
+   ts.map((t,i)=>`<div class="sf-item"><a class="sf-row" href="${esc(temaHash(o.shareId,ids[i]))}" data-sf-row="${i}"><span class="sf-row-txt"><span class="sf-row-label">${esc(t.label)}${pend(t)}</span><span class="sf-row-line">${esc(indexLine(t))}</span></span>${spark(t)}<span class="sf-go">${I.right}</span></a></div>`).join('')+`</section>`;
   const opts=`<li role="option" id="${base}-o-all" class="sf-opt sf-opt-all" data-sf-opt="-1" aria-selected="false"><span class="sf-opt-n">${I.grid}</span><span class="sf-opt-txt"><span class="sf-opt-label">Todos los temas</span><span class="sf-opt-line">Volver al índice de la ficha</span></span></li>`+
    ts.map((t,i)=>`<li role="option" id="${base}-o${i}" class="sf-opt" data-sf-opt="${i}" aria-selected="${i===0}"><span class="sf-opt-n">${i+1}</span><span class="sf-opt-txt"><span class="sf-opt-label">${esc(t.label)}${pend(t)}</span><span class="sf-opt-line">${esc(indexLine(t))}</span></span></li>`).join('');
   const topic=`<section class="sf-topic" data-sf-view="topic" aria-label="Tema de la ficha" hidden><div class="sf-sticky"><div class="sf-picker">`+
@@ -143,12 +146,12 @@
   const ts=arr(f.tabs).filter(t=>t&&t.label);
   // With topics, KPI cards live inside each topic (only when they add something its charts do not show) and the
   // ficha has no 'Qué mirar' block (Dirección 29-oct, option C→B). A ficha without topics keeps the KPI strip.
-  const body=ts.length?topics(f):
+  const body=ts.length?topics(f,opts):
    `<section class="sf-kpis" aria-label="Indicadores clave">${arr(f.kpis).map(kpi).join('')}</section>`+
    (arr(f.charts).length?`<section class="sf-charts" aria-label="Gráficos">${arr(f.charts).map(chart).join('')}</section>`:'')+
    (f.facts?.rendered_in_tabs||!arr(f.facts?.paragraphs).length?'':`<section class="sf-facts"><h3>${esc(f.facts?.heading||'Qué muestran los datos')}</h3>${arr(f.facts?.paragraphs).map(p=>`<p>${esc(p)}</p>`).join('')}</section>`)+
    (arr(f.watch).length?`<aside class="sf-watch"><h3>Qué mirar</h3><ol>${arr(f.watch).slice(0,2).map(w=>`<li><strong>${esc(w.headline)}</strong> ${esc(w.explanation)}</li>`).join('')}</ol></aside>`:'');
-  return`<article class="sf${ts.length?' sf-cb':''}" data-family="${esc(f.family)}" data-period="${esc(f.period)}">`+
+  return`<article class="sf${ts.length?' sf-cb':''}"${opts.shareId?` data-sf-sig="${esc(opts.shareId)}"`:''} data-family="${esc(f.family)}" data-period="${esc(f.period)}">`+
    `<p class="sf-kicker">${esc(f.kicker)}${f.kicker_meta?` · <span>${esc(f.kicker_meta)}</span>`:''}${f.featured?' <span class="sf-featured">Destacada</span>':''}</p>`+
    `<h2 id="detailTitle" class="sf-headline">${esc(f.headline)}</h2>`+
    `<p class="sf-dek">${dek(f)}</p>${share}`+body+
@@ -161,7 +164,7 @@
  // Behaviour of the index → topic layout inside the ficha detail (dialog). One ficha is mounted at a time; closing the
  // dialog unmounts it and leaves the URL as it was before the ficha opened a topic.
  let active=null;
- const TEMA=/(?:^#|&)tema=([\w-]+)$/;
+ const TEMA=/(?:^#|&)tema=([\w-]+)$/,ANY_TEMA=/(?:^#|&)tema=[^&]*$/;
  function mount(container){
   if(active){active();active=null}
   const host=container&&container.querySelector?container.querySelector('.sf-cb'):null;if(!host||!root.document)return null;
@@ -172,9 +175,12 @@
   const reduce=!!(root.matchMedia&&root.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const back=dialog&&dialog.querySelector('.detail-close'),backTxt=back&&back.querySelector('span'),orig=back?{t:backTxt?backTxt.textContent:'',a:back.getAttribute('aria-label')}:null;
   const parse=()=>{const m=TEMA.exec(loc.hash);return m?ids.indexOf(m[1]):-1};
-  const home=loc.pathname+loc.search+loc.hash.replace(/^#tema=[\w-]+$/,'').replace(/&tema=[\w-]+$/,'');
+  const home=loc.pathname+loc.search+loc.hash.replace(/^#tema=[^&]*$/,'').replace(/&tema=[^&]*$/,'');
+  // The ficha's signal anchor (from its render, else from a '#sig-…' already in the URL) stays in every topic URL.
+  const sigOf=()=>{try{const m=/^#(sig-[^&]+)/.exec(loc.hash);return m?decodeURIComponent(m[1]):''}catch{return ''}};
+  const sig=host.dataset.sfSig||sigOf();
   let cur=-1,last=0,entered=false,act=0;
-  const url=i=>i<0?home:'#tema='+ids[i];
+  const url=i=>i<0?home:temaHash(sig,ids[i]);
   const top0=()=>dialog?dialog.getBoundingClientRect().top:0;
   const offset=el=>el.getBoundingClientRect().top-top0();
   const go=y=>{try{scroller.scrollTo({top:Math.max(0,y),behavior:reduce?'auto':'smooth'})}catch{scroller.scrollTop=Math.max(0,y)}};
@@ -239,11 +245,14 @@
    backLabel(false);if(active===unmount)active=null;
   }
   // Closing the ficha in topic mode leaves the URL as it was before (the pushed topic entry is popped).
-  function onClose(){const inTopic=parse()>=0;unmount();if(inTopic){if(entered)hist.back();else try{hist.replaceState(null,'',url(-1))}catch{}}}
+  // An unknown '&tema=' (stale or mistyped link) is stripped too.
+  function onClose(){const known=parse()>=0,any=ANY_TEMA.test(loc.hash);unmount();if(known&&entered)hist.back();else if(any)try{hist.replaceState(null,'',url(-1))}catch{}}
   if(dialog)dialog.addEventListener('close',onClose);
   active=unmount;
   // Deep link (#tema=<id>, or #sig-<id>&tema=<id> from a shared link): open that topic directly; Back then leaves.
-  const i0=parse();show(i0,{scroll:false});
+  // An unknown topic opens the ficha at its index and drops the bad '&tema=' from the URL.
+  const i0=parse();if(i0<0&&ANY_TEMA.test(loc.hash))try{hist.replaceState(null,'',home)}catch{}
+  show(i0,{scroll:false});
   if(i0>=0)(root.requestAnimationFrame||setTimeout)(()=>{scroller.scrollTop+=offset(topic)});
   return{show,openTopic,toIndex,unmount,current:()=>cur};
  }
