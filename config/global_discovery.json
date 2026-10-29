@@ -858,6 +858,17 @@
       "target": "español neutro latinoamericano (Chile)",
       "cache_path": "data/global_intelligence/translations.json",
       "notice_es": "Traducción automática de Alicanto",
+      "summary": {
+        "enabled": true,
+        "authorized_by": "Dirección (cftorre1)",
+        "authorized_at": "2026-10-29",
+        "authorization_note": "Dirección 29-oct-2026: for sources whose rights do not allow translation, Alicanto writes its OWN 1-2 sentence factual Spanish summary (not a translation, no copied phrasing) from the facts in the item's own feed title/description; the original English title and link stay.",
+        "sources": ["ema", "who", "paho", "kff_health_news", "the_conversation"],
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "max_words": 45,
+        "budget": "shared with translations: ai_budget.allow_call('fast'), same model, same max_new_per_run, cached by content hash, no key -> nothing generated, no model fallback",
+        "verification": "verify_summary: every number, date, percentage, code, acronym and proper name in the summary must be in the source title/description (or a glossary/place/acronym Spanish form of a source term); no added negation or reversed direction; no 6-word copied run; <= 2 sentences and 45 words; failure -> original only"
+      },
       "official_sources": {
         "who": {
           "translation_allowed": false,

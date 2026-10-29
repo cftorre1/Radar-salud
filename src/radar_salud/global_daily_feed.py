@@ -25,7 +25,9 @@ dropped, and a card id already shown keeps its id (read state survives).
 """
 from __future__ import annotations
 
+import copy
 import json
+import logging
 import re
 import unicodedata
 from hashlib import sha256
@@ -372,8 +374,15 @@ def export(root: Path, as_of: date, translate: bool = True, **translate_kwargs) 
                     config, _read(target, None), as_of)
     from .source_rights import redact_public_payload
     payload = redact_public_payload(payload)  # paywalled press: title + public lead only
+    from .global_translation import strip_derived
+    # History cards carry last run's Spanish text: it is re-derived (and re-gated) every run, never trusted.
+    payload["items"] = [strip_derived(c) for c in payload.get("items", [])]
     if translate and payload.get("enabled"):
         from .global_translation import translate_export
-        payload = translate_export(root, payload, config, **translate_kwargs)
+        try:
+            payload = translate_export(root, copy.deepcopy(payload), config, **translate_kwargs)
+        except Exception:  # noqa: BLE001 - a translation failure must never block the headlines
+            logging.getLogger(__name__).exception("global translation failed; exporting the untranslated feed")
+            payload["translation"] = {"status": "error_untranslated"}
     atomic_json(target, payload)
     return payload

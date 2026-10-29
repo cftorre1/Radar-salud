@@ -304,3 +304,24 @@ test('Global translation (Dirección 29-oct): Spanish row and ficha, original ti
  const n=c.entryFor('daily-n1');assert.equal(n.title,'Insurers use AI');assert.match(c.metaFor(n),/Contenido en inglés \(licencia no permite traducción\)/);
  const nh=c.headlineDetail(n);assert.match(nh,/<h2 id="globalDetailTitle">Insurers use AI<\/h2>/);assert.match(nh,/<p class="ficha-note">Contenido en inglés \(licencia no permite traducción\)\.<\/p>/);assert.doesNotMatch(nh,/Ignorado|Título original/);
 });
+test('Global Alicanto summary (Dirección 29-oct): sources without translation rights keep the English title, summary labelled and escaped',()=>{
+ const c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map,URL};vm.createContext(c);vm.runInContext(fs.readFileSync('web/global.js','utf8').split('AlicantoRead.subscribe(')[0],c);
+ const load=xs=>{c.input=xs;vm.runInContext("themes=[];headlines=input;buildEntries()",c)};
+ const base={id:'m1',source:'ema',source_label:'EMA',attribution:'European Medicines Agency',bylines:[],url:'https://www.ema.europa.eu/en/news/1',published_at:'2026-10-27',
+  title:'EMA recommends 4 new medicines <b>',description:'The CHMP recommended 4 medicines.',summary_es:'La EMA propuso autorizar 4 medicamentos <script>alert(1)</script>.',title_es:'Ignorado',
+  translation:{status:'summarized',kind:'summary',verified:true,notice_es:'Resumen de Alicanto (la fuente no permite traducir)',check_note_es:'Escrito automáticamente por Alicanto; puede contener errores'}};
+ load([base]);const e=c.entryFor('daily-m1');
+ assert.equal(e.title,'EMA recommends 4 new medicines <b>');assert.equal(e.key,'global-feed:m1');
+ assert.match(c.metaFor(e),/<span class="tr-note">Resumen de Alicanto \(la fuente no permite traducir\)<\/span>/);
+ const html=c.headlineDetail(e);
+ assert.match(html,/<h2 id="globalDetailTitle">EMA recommends 4 new medicines &lt;b&gt;<\/h2><h3 class="ficha-h">Resumen de Alicanto \(la fuente no permite traducir\)<\/h3><p class="alicanto-summary">La EMA propuso autorizar 4 medicamentos &lt;script&gt;alert\(1\)&lt;\/script&gt;\.<\/p>/);
+ assert.doesNotMatch(html,/<script>|<b>|Ignorado|Título original/);
+ assert.match(html,/<h3 class="ficha-h">Resumen de la fuente<\/h3><p>The CHMP recommended 4 medicines\.<\/p>/);
+ assert.match(html,/Escrito automáticamente por Alicanto; puede contener errores\./);
+ // Unverified, wrong kind or empty summary -> the original only.
+ for(const bad of [{translation:{...base.translation,verified:false}},{translation:{...base.translation,kind:'translation'}},{summary_es:''},{translation:{status:'not_allowed',note_es:'Contenido en inglés (los términos de EMA no contemplan traducción)'}}]){
+  load([{...base,...bad}]);const h=c.headlineDetail(c.entryFor('daily-m1'));assert.doesNotMatch(h,/Resumen de Alicanto|propuso autorizar/)}
+ // A translation's ficha says what the automatic check covers, not more.
+ load([{...base,id:'t1',source:'cdc',summary_es:undefined,title:'CDC reports 3 cases',title_es:'Los CDC informan 3 casos',description:null,translation:{status:'translated',kind:'translation',verified:true,notice_es:'Traducción automática de Alicanto'}}]);
+ const th=c.headlineDetail(c.entryFor('daily-t1'));assert.match(th,/Traducción automática de Alicanto\. Control automático de cifras, fechas, siglas y nombres frente al original; puede contener errores\./);assert.doesNotMatch(th,/verificada/);
+});
