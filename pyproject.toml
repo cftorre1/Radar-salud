@@ -18,6 +18,10 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+# English word list used by global_translation (Title Case words that are not names) and its licence notice.
+radar_salud = ["lexicon/en_words.txt.gz", "lexicon/LICENSE-SCOWL.txt"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]

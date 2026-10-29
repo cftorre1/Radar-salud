@@ -39,7 +39,9 @@ def test_verifier_dates_codes_drugs_and_organisms():
     assert verify("H5N1 bird flu detected in 12 states", "Gripe aviar H5N1 detectada en 12 estados") == []
     drug = "New data on semaglutide and Escherichia coli outbreaks"
     assert verify(drug, "Nuevos datos sobre semaglutide y brotes de Escherichia coli") == []
-    problems = verify(drug, "Nuevos datos sobre semaglutida y brotes de E. coli")
+    # The Spanish DCI form of an INN is the same drug (third review 29-oct); a binomial must stay whole.
+    assert verify(drug, "Nuevos datos sobre semaglutida y brotes de Escherichia coli") == []
+    problems = verify(drug, "Nuevos datos sobre tirzepatida y brotes de E. coli")
     assert "term_missing:semaglutide" in problems and "term_missing:Escherichia coli" in problems
     # Brand names in sentence-case text stay as written; Ebola -> ébola is the same word.
     brand = "EMA recommends authorisation of Rasonque for metastatic pancreatic cancer"
@@ -424,7 +426,7 @@ def test_verify_summary_accepts_own_factual_summary_and_rejects_distortions():
         "too_long": EMA_OK + " " + " ".join(["dato"] * 30),
         "too_many_sentences": "La EMA se reunió. Propuso 4 medicamentos. Entre ellos Rasonque.",
         "copied_phrasing": "The CHMP recommended 4 medicines, including Rasonque.",
-        "name_not_in_source:Chile": EMA_OK.replace("contra el cáncer de páncreas", "relevante para Chile"),
+        "term_added:chile": EMA_OK.replace("contra el cáncer de páncreas", "relevante para Chile"),
     }
     for expected, text in bad.items():
         problems = verify_summary(EMA_TITLE, EMA_DESC, text)
@@ -490,7 +492,8 @@ def test_the_conversation_gets_no_summary_from_a_bare_headline():
 LEXICAL_PROBES = [
     ("FDA Commissioner says agency will review vaccine safety data",
      "El comisionado de la FDA Makary dice que la agencia revisará los datos de seguridad de las vacunas", "name_added:Makary"),
-    ("CDC reports new measles cases", "Los CDC informan nuevos casos de sarampión en Texas", "name_added:Texas"),
+    ("CDC reports new measles cases", "Los CDC informan nuevos casos de sarampión en Texas", "term_added:texas"),
+    ("CDC reports new measles cases", "Los CDC informan nuevos casos de sarampión, según Johnson", "name_added:Johnson"),
     ("FDA approves new migraine drug", "La FDA aprueba un nuevo fármaco contra la migraña y retira otro", "conjunction_added"),
     ("FDA approves new migraine drug", "La FDA rechaza un nuevo fármaco contra la migraña", "meaning_added:reject"),
     ("CDC recommends RSV vaccine for older adults", "Los CDC desaconsejan la vacuna contra el VRS para adultos mayores",
@@ -599,9 +602,9 @@ def test_title_case_dictionary_words_are_not_names_and_acronym_compounds_protect
     # A genus followed by an ordinary word is not a binomial; a Latin epithet is.
     assert protected_terms("Listeria outbreak linked to cheese") == []
     assert "Candida auris" in protected_terms("Rise in Candida auris cases")
-    # Names still protected: not dictionary words, or capitalised mid-sentence in sentence case.
+    # Names that are not dictionary words stay protected; capitalised dictionary words (official names) may be translated.
     assert "Pfizer" in protected_terms("Pfizer Recalls Paxlovid Lots") and "Paxlovid" in protected_terms("Pfizer Recalls Paxlovid Lots")
-    assert "Kaiser" in protected_terms("Insurers in several states cut Kaiser plans for older patients")
+    assert protected_terms("Commission proposes Critical Medicines Act") == []
 
 
 VERIFIER_FAIL = {"faithful": False, "issues": [{"type": "changed_role", "detail": "plaintiff and defendant swapped"}]}
@@ -700,3 +703,259 @@ def test_public_domain_translation_also_carries_the_row_marker():
     t = payload["items"][0]["translation"]
     assert t["status"] == "translated" and t["row_note_es"] == ROW_NOTE_ES == "Traducido por Alicanto"
     assert t["change_notice_es"] is None and t["notice_es"] == NOTICE_ES and "model" not in t
+
+
+# ------------------------------------------------------------------ third review 29-oct: reviewer's sets as tests
+
+# The reviewer's 31 correct translations (title/description) and 3 correct summaries (probeFR.py, probeFR2.py).
+REVIEWER_CORRECT = [   (   'ECDC: Measles cases in the EU/EEA rose by 12% in September 2026',
+        'ECDC: los casos de sarampión en la UE/EEE aumentaron un 12 % en septiembre de 2026',
+        'title'),
+    (   'FDA Approves First Generic of Liraglutide for Type 2 Diabetes',
+        'La FDA aprueba el primer genérico de liraglutida para la diabetes tipo 2',
+        'title'),
+    (   'EMA recommends suspension of marketing authorisation for Ocaliva',
+        'La EMA recomienda suspender la autorización de comercialización de Ocaliva',
+        'title'),
+    (   'Avian influenza A(H5N1) detected in dairy cattle in three new states',
+        'Detectan influenza aviar A(H5N1) en ganado lechero de tres nuevos estados',
+        'title'),
+    (   'NHS England to expand lung cancer screening to 1.2 million more people',
+        'El NHS de Inglaterra ampliará el tamizaje de cáncer de pulmón a 1,2 millones de personas más',
+        'title'),
+    (   'Medicare Part D spending on GLP-1 drugs reached $5.7 billion in 2024',
+        'El gasto de la Parte D de Medicare en fármacos GLP-1 alcanzó US$5,7 mil millones en 2024',
+        'title'),
+    (   'WHO prequalifies second malaria vaccine for children in Africa',
+        'La OMS precalifica una segunda vacuna contra la malaria para niños en África',
+        'title'),
+    (   'Cholera cases decline in Haiti as vaccination campaign continues',
+        'Disminuyen los casos de cólera en Haití mientras continúa la campaña de vacunación',
+        'title'),
+    (   'UKHSA confirms two cases of clade Ib mpox in London',
+        'La UKHSA confirma dos casos de mpox del clado Ib en Londres',
+        'title'),
+    (   'Study links ultra-processed food to higher risk of heart disease in women',
+        'Un estudio vincula los alimentos ultraprocesados con un mayor riesgo de enfermedad cardíaca en mujeres',
+        'title'),
+    (   'Antimicrobial resistance caused an estimated 1.14 million deaths in 2021',
+        'La resistencia a los antimicrobianos causó unas 1,14 millones de muertes en 2021',
+        'title'),
+    (   'European Commission approves Wegovy label update for cardiovascular risk reduction',
+        'La Comisión Europea aprueba una actualización de la ficha de Wegovy para reducir el riesgo cardiovascular',
+        'title'),
+    (   'The European Health Data Space regulation enters into force on 26 March 2025. Member States must set up digital '
+        'health authorities.',
+        'El reglamento del Espacio Europeo de Datos de Salud entra en vigor el 26 de marzo de 2025. Los Estados miembros '
+        'deben crear autoridades de salud digital.',
+        'description'),
+    (   'Dengue cases in the Americas exceeded 4 million this year, according to PAHO.',
+        'Los casos de dengue en las Américas superaron los 4 millones este año, según la OPS.',
+        'description'),
+    (   'Hospitals in Gaza face severe shortages of fuel and medical supplies',
+        'Los hospitales de Gaza enfrentan una grave escasez de combustible e insumos médicos',
+        'title'),
+    (   'Pfizer and BioNTech seek approval of updated COVID-19 vaccine for older adults',
+        'Pfizer y BioNTech solicitan la aprobación de una vacuna actualizada contra la COVID-19 para adultos mayores',
+        'title'),
+    (   'FDA Approves First Generic of Liraglutide for Type 2 Diabetes',
+        'La FDA aprueba el primer genérico de liraglutide para la diabetes tipo 2',
+        'title'),
+    (   'Avian influenza A(H5N1) detected in dairy cattle in three new states',
+        'Detectan influenza A(H5N1) aviar en ganado lechero de tres nuevos estados',
+        'title'),
+    (   'WHO convenes experts in Geneva to review mpox emergency',
+        'La OMS reúne a expertos en Ginebra para revisar la emergencia por mpox',
+        'title'),
+    (   "New York City reports rise in Legionnaires' disease cases",
+        'La ciudad de Nueva York informa un aumento de casos de enfermedad del legionario',
+        'title'),
+    (   'CMS finalizes 2027 Medicare Advantage payment rule',
+        'Los CMS finalizan la norma de pagos de Medicare Advantage para 2027',
+        'title'),
+    (   'NICE recommends tirzepatide for people living with obesity',
+        'El NICE recomienda tirzepatide para personas que viven con obesidad',
+        'title'),
+    (   'Mental health services for young people face record demand',
+        'Los servicios de salud mental para jóvenes enfrentan una demanda récord',
+        'title'),
+    (   "Researchers identify new genetic variant linked to Alzheimer's disease",
+        'Investigadores identifican una nueva variante genética vinculada a la enfermedad de Alzheimer',
+        'title'),
+    (   'ECDC publishes rapid risk assessment on Oropouche virus disease',
+        'El ECDC publica una evaluación rápida de riesgo sobre la enfermedad por virus Oropouche',
+        'title'),
+    (   'Global tuberculosis report: 8.2 million people newly diagnosed in 2023',
+        'Informe mundial sobre tuberculosis: 8,2 millones de personas recién diagnosticadas en 2023',
+        'title'),
+    ('Nurses in Scotland vote to accept pay offer', 'Enfermeras de Escocia votan aceptar la oferta salarial', 'title'),
+    (   'The agency did not find a causal link between the vaccine and the reported events.',
+        'La agencia no encontró un vínculo causal entre la vacuna y los eventos notificados.',
+        'description'),
+    (   'Health spending in OECD countries grew by 3.4% in real terms last year.',
+        'El gasto en salud de los países de la OCDE creció un 3,4 % en términos reales el año pasado.',
+        'description'),
+    (   'Commission proposes Critical Medicines Act to secure supply of essential drugs',
+        'La Comisión propone la Ley de Medicamentos Críticos para asegurar el suministro de fármacos esenciales',
+        'title'),
+    (   'Chikungunya outbreak in La Réunion: more than 50,000 cases',
+        'Brote de chikungunya en La Reunión: más de 50.000 casos',
+        'title')]
+REVIEWER_CORRECT_SUMMARIES = [   (   'EMA recommends approval of new hepatitis B vaccine for adults',
+        None,
+        'La agencia europea EMA dio su visto bueno a una nueva vacuna contra la hepatitis B destinada a adultos.'),
+    (   'WHO reports 120 cholera deaths in Sudan since August',
+        None,
+        'Según la OMS, el cólera ha causado 120 muertes en Sudán desde agosto.'),
+    (   'KFF Poll: Half of Adults Worry About Affording Health Care',
+        'A new KFF poll finds that half of adults are worried about being able to afford health care costs.',
+        'Una encuesta de KFF indica que la mitad de los adultos teme no poder costear la atención de salud.')]
+# The reviewer's distortions (probeA.py): every one must be rejected by layer A.
+REVIEWER_DISTORTED = [   ('FDA approves new drug for migraine', 'La FDA de Makary aprueba un nuevo fármaco para la migraña'),
+    ('FDA approves new drug for migraine', 'La FDA aprueba en Texas un nuevo fármaco para la migraña'),
+    ('CDC reports measles cases in Texas', 'Los CDC informan casos de sarampión en Texas y Nuevo México'),
+    ('WHO warns of cholera outbreak', 'La OMS advierte de un brote de cólera en Sudán'),
+    ('EMA recommends approval of vaccine', 'La EMA recomienda aprobar la vacuna y pide más estudios'),
+    ('Hospital costs rise in 2025', 'Los costos hospitalarios suben en 2025 y los pacientes pagan más'),
+    ('EMA recommends approval of vaccine', 'La EMA rechaza la aprobación de la vacuna'),
+    ('Panel recommends screening for adults', 'Un panel desaconseja el tamizaje en adultos'),
+    ('Study finds drug is safe in pregnancy', 'Estudio concluye que el fármaco es peligroso en el embarazo'),
+    ('FDA approves gene therapy', 'La FDA suspende la terapia génica'),
+    ('Vaccine reduces hospital admissions', 'La vacuna no reduce los ingresos hospitalarios'),
+    ('Cases fall while deaths rise', 'Los casos suben mientras las muertes caen'),
+    ('Overdose deaths decline in 2025', 'Las muertes por sobredosis aumentan en 2025'),
+    ('Insurance premiums increase', 'Las primas de los seguros bajan'),
+    ('Three new cases of Ebola reported', 'Se informan cuatro nuevos casos de ébola'),
+    ('Twenty-five countries sign agreement', 'Treinta y cinco países firman un acuerdo'),
+    ('Two hundred deaths reported', 'Se informan doscientas cincuenta muertes'),
+    ('Medicare spending reaches $1.5 billion', 'El gasto de Medicare alcanza US$1,5 millones'),
+    ('Medicare spending reaches $1.5 billion', 'El gasto de Medicare alcanza US$1,5 billones'),
+    ('Fund adds 2 million doses', 'El fondo suma 2 mil dosis'),
+    ('Shortage of insulin in hospitals', 'Escasez de heparina en hospitales'),
+    ('New lung cancer screening program', 'Nuevo programa de tamizaje de cáncer de mama'),
+    ('Hepatitis B vaccine coverage falls', 'Cae la cobertura de la vacuna contra la hepatitis C'),
+    ('Vaccine approved for adults', 'Vacuna aprobada para niños'),
+    ('Measles outbreak spreads', 'Se extiende brote de gripe'),
+    ('Type 2 diabetes drug approved', 'Aprobado fármaco para la diabetes tipo 1'),
+    ('Influenza A cases rise', 'Suben los casos de influenza B'),
+    ('FDA approves semaglutide for obesity', 'La FDA aprueba tirzepatida para la obesidad'),
+    ('FDA approves semaglutide for obesity', 'La FDA aprueba semaglutida y tirzepatida para la obesidad'),
+    ('EMA recommends approval of vaccine', 'EMA recommends approval of the vaccine'),
+    ('Cases rose 15% in October', 'Los casos subieron 50 % en octubre'),
+    ('Meeting on 22 October 2026', 'Reunión el 23 de octubre de 2026'),
+    ('Breast cancer screening for women over 40', 'Tamizaje de cáncer de mama para hombres mayores de 40'),
+    ('Mpox cases in Congo', 'Casos de mpox en Uganda'),
+    ('Agency issues new guidance', 'La agencia emite una nueva guía de la OMS')]
+REVIEWER_DISTORTED_SUMMARIES = [   (   'EMA recommends approval of new hepatitis B vaccine',
+        None,
+        'The EMA recommended approving a new hepatitis B vaccine for use.'),
+    (   'EMA recommends approval of new hepatitis B vaccine',
+        None,
+        'La EMA recomendó aprobar una nueva vacuna contra la hepatitis C.'),
+    ('WHO reports 120 cholera deaths in Sudan', None, 'La OMS reporta 1.200 muertes por cólera en Sudán.'),
+    ('WHO reports 120 cholera deaths in Sudan', None, 'La OMS reporta 120 muertes por cólera en Sudán y Chad.'),
+    (   'KFF poll: most adults support Medicaid',
+        None,
+        'Una encuesta de KFF muestra que la mayoría de los niños apoya Medicaid.'),
+    (   'WHO reports 120 cholera deaths in Sudan',
+        None,
+        'La OMS reporta 120 muertes por cólera en Sudán, aunque los casos bajan.'),
+    (   'EMA recommends approval of insulin biosimilar',
+        None,
+        'La EMA desaconseja la aprobación de un biosimilar de insulina.')]
+
+
+def test_reviewer_correct_set_false_reject_rate_at_most_1_in_15():
+    rejected = {out: verify(src, out, kind=kind) for src, out, kind in REVIEWER_CORRECT if verify(src, out, kind=kind)}
+    assert len(REVIEWER_CORRECT) == 31
+    assert len(rejected) * 15 <= len(REVIEWER_CORRECT), rejected
+    rejected_summaries = [s for t, d, s in REVIEWER_CORRECT_SUMMARIES if verify_summary(t, d, s)]
+    assert rejected_summaries == []
+
+
+def test_reviewer_distortions_all_rejected_by_layer_a():
+    missed = [(s, o) for s, o in REVIEWER_DISTORTED if not verify(s, o)]
+    assert missed == []
+    missed = [(t, s) for t, d, s in REVIEWER_DISTORTED_SUMMARIES if not verify_summary(t, d, s)]
+    assert missed == []
+
+
+def test_letter_code_before_a_full_stop_is_a_code():
+    assert "letter_code_changed" in verify("Vaccination against hepatitis B.", "Vacunación contra la hepatitis C.", kind="description")
+    assert verify("Vaccination against hepatitis B.", "Vacunación contra la hepatitis B.", kind="description") == []
+    assert "letter_code_changed" in verify("Cases of hepatitis B. Deaths fell.", "Casos de hepatitis C. Las muertes cayeron.",
+                                           kind="description")
+    assert "letter_code_not_in_source" in verify_summary("EMA recommends approval of new hepatitis B vaccine", None,
+                                                         "La EMA recomendó aprobar una nueva vacuna contra la hepatitis C.")
+    assert verify_summary("EMA recommends approval of new hepatitis B vaccine", None,
+                          "La EMA recomendó aprobar una nueva vacuna contra la hepatitis B.") == []
+    # Abbreviations are still not codes.
+    assert verify("E. coli outbreak in the U.S.", "Brote de E. coli en EE. UU.") == []
+
+
+def test_place_exonyms_avian_influenza_order_part_d_legionnaires_and_official_names():
+    assert verify("WHO convenes experts in Geneva", "La OMS reúne a expertos en Ginebra") == []
+    assert verify("UKHSA confirms cases in London", "La UKHSA confirma casos en Londres") == []
+    assert verify("CDC reports measles in Missouri", "Los CDC informan sarampión en Misuri") == []
+    assert verify("Outbreak in New York and North Carolina", "Brote en Nueva York y Carolina del Norte") == []
+    assert "term_not_mapped:geneva" in verify("WHO convenes experts in Geneva", "La OMS reúne a expertos en Bruselas")
+    assert "term_added:bruselas" in verify("WHO convenes experts in Geneva", "La OMS reúne a expertos en Bruselas")
+    for out in ("Detectan influenza aviar A(H5N1) en vacas", "Detectan influenza A(H5N1) aviar en vacas"):
+        assert verify("Avian influenza A(H5N1) detected in cows", out) == [], out
+    assert "letter_code_changed" in verify("Avian influenza A(H5N1) detected in cows", "Detectan influenza aviar B(H5N1) en vacas")
+    assert verify("Medicare Part D costs rise", "Suben los costos de la Parte D de Medicare") == []
+    assert "letter_code_changed" in verify("Medicare Part D costs rise", "Suben los costos de la Parte B de Medicare")
+    assert verify("Legionnaires' disease cases rise", "Aumentan los casos de enfermedad del legionario") == []
+    # Sentence-initial words are grammar, not names; foreign-looking added names are still caught.
+    assert verify("Drug shortages worsen", "Escasez de medicamentos empeora") == []
+    assert "name_added:Makary" in verify("FDA approves new drug for migraine", "La FDA de Makary aprueba un nuevo fármaco para la migraña")
+    # "no poder" renders English inability in a summary.
+    assert verify_summary("Half of adults worry about affording care", None,
+                          "La mitad de los adultos teme no poder costear la atención de salud.") == []
+    assert "negation_added" in verify_summary("Half of adults worry about care", None,
+                                              "La mitad de los adultos no teme por la atención de salud.")
+
+
+def test_odd_verdict_types_fail_only_that_item():
+    good, other = card(1, source="cdc", sections=()), card(2, source="ecdc", day="2026-10-27")
+    for verdict in ({"faithful": True, "issues": [{"type": ["added_fact"], "detail": "x"}]},
+                    {"faithful": True, "issues": [{"type": {"a": 1}}]}, {"faithful": True, "issues": [{"type": "added_fact", "detail": 3}]},
+                    {"faithful": True, "issues": ["added_fact"]}):
+        assert parse_verdict(verdict) == ["review:malformed_verdict"]
+        model = FakeModel(verdict=verdict)
+        payload, model, budget, cache = run([good, other], model=model)
+        assert all("title_es" not in c and c["translation"]["status"] == "verification_failed" for c in payload["items"])
+        assert all(r["reason"] == ["review:malformed_verdict"] for r in cache["rejected"].values()) and len(cache["rejected"]) == 2
+    # The other item is unaffected when only one verdict is odd.
+    verdicts = iter([{"faithful": True, "issues": [{"type": ["x"]}]}, {"faithful": True, "issues": []}])
+
+    class Mixed(FakeModel):
+        def __call__(self, prompt, model):
+            if REVIEW_MARK in prompt:
+                self.calls.append((prompt, model))
+                return SimpleNamespace(output=next(verdicts), model=model, input_tokens=1, output_tokens=1, estimated_cost_usd=0)
+            return super().__call__(prompt, model)
+
+    payload, _, _, _ = run([good, other], model=Mixed())
+    statuses = sorted(c["translation"]["status"] for c in payload["items"])
+    assert statuses == ["translated", "verification_failed"]
+
+
+def test_kill_switch_withdraws_cached_spanish_text_but_no_key_keeps_it():
+    first, _, _, cache = run([card(1), ema(2, day="2026-10-27")], model=FakeModel(summary=EMA_OK))
+    assert first["translation"]["translated"] == 1 and first["translation"]["summarized"] == 1
+    config = copy.deepcopy(CONFIG)
+    config["daily_feed"]["translation"]["enabled"] = False
+    off, model, budget, cache_after = run([card(1), ema(2, day="2026-10-27")], cache=cache, config=config)
+    assert model.calls == [] and budget.attempts == 0
+    assert all("title_es" not in c and "summary_es" not in c and not c["ai_used"] for c in off["items"])
+    assert off["ai_text_items"] == 0 and len(cache_after["entries"]) == 2  # cache kept, not published
+    nokey, model, _, _ = run([card(1), ema(2, day="2026-10-27")], cache=cache, env={})
+    assert model.calls == [] and nokey["translation"]["translated"] == 1 and nokey["translation"]["summarized"] == 1
+
+
+def test_lexicon_is_package_data():
+    pyproject = Path("pyproject.toml").read_text()
+    assert '"lexicon/en_words.txt.gz"' in pyproject and "[tool.setuptools.package-data]" in pyproject
+    from radar_salud.global_translation import _LEXICON_PATH, _lexicon
+    assert _LEXICON_PATH.exists() and len(_lexicon()) > 50000 and "personnel" in _lexicon()

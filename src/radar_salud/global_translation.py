@@ -18,8 +18,8 @@
      places and drugs in BOTH directions (every name in the source kept, every capitalised name, place, drug or
      disease in the output traceable to the source); disease/organ/drug/population terms mapped 1:1; no added
      negation, no reversed or reordered direction of change, no added antonym (aprueba->rechaza); no added clause,
-     sentence or conjunction; Spanish text (stopword ratio); length bounds. Title Case words that are ordinary
-     English (bundled SCOWL word list) are not treated as names.
+     sentence or conjunction; Spanish text (stopword ratio); length bounds. Capitalised English dictionary words
+     (bundled SCOWL word list) are not treated as names; in the Spanish output only name-like words are flagged.
   B. Independent semantic review: a SECOND model call with its own prompt (it never sees the translator prompt)
      gets the English source and the Spanish text and must return strict JSON
      ``{"faithful": bool, "issues": [{"type": ..., "detail": ...}]}``. Only ``faithful == true`` with ``issues == []``
@@ -288,7 +288,37 @@ PLACES_ES = {
     "indonesia": {"indonesia"}, "philippines": {"filipinas"}, "vietnam": {"vietnam"}, "thailand": {"tailandia"}, "iran": {"irán"},
     "iraq": {"irak"}, "syria": {"siria"}, "lebanon": {"líbano"}, "venezuela": {"venezuela"}, "ecuador": {"ecuador"},
     "bolivia": {"bolivia"}, "paraguay": {"paraguay"}, "uruguay": {"uruguay"}, "cuba": {"cuba"}, "guatemala": {"guatemala"},
-    "honduras": {"honduras"}, "nicaragua": {"nicaragua"}, "panama": {"panamá"}, "nile": {"nilo"}, "monday": {"lunes"},
+    "honduras": {"honduras"}, "nicaragua": {"nicaragua"}, "panama": {"panamá"}, "nile": {"nilo"}, "chad": {"chad"},
+    "somalia": {"somalia"}, "mali": {"malí"}, "niger": {"níger"}, "sierra leone": {"sierra leona"}, "south africa": {"sudáfrica"},
+    "saudi arabia": {"arabia saudita", "arabia saudí"}, "new zealand": {"nueva zelanda"}, "singapore": {"singapur"},
+    "taiwan": {"taiwán"}, "myanmar": {"myanmar", "birmania"}, "cambodia": {"camboya"}, "greenland": {"groenlandia"},
+    "la reunion": {"la reunión", "reunión"}, "dominican republic": {"república dominicana"},
+    # cities (WHO, EU, US agencies)
+    "london": {"londres"}, "geneva": {"ginebra"}, "brussels": {"bruselas"}, "copenhagen": {"copenhague"},
+    "stockholm": {"estocolmo"}, "washington": {"washington"}, "atlanta": {"atlanta"}, "paris": {"parís"}, "berlin": {"berlín"},
+    "rome": {"roma"}, "madrid": {"madrid"}, "lisbon": {"lisboa"}, "amsterdam": {"ámsterdam", "amsterdam"}, "vienna": {"viena"},
+    "warsaw": {"varsovia"}, "prague": {"praga"}, "athens": {"atenas"}, "dublin": {"dublín"}, "edinburgh": {"edimburgo"},
+    "cardiff": {"cardiff"}, "oslo": {"oslo"}, "helsinki": {"helsinki"}, "moscow": {"moscú"}, "beijing": {"pekín", "beijing"},
+    "tokyo": {"tokio"}, "new delhi": {"nueva delhi"}, "delhi": {"delhi"}, "cairo": {"el cairo", "cairo"}, "nairobi": {"nairobi"},
+    "kinshasa": {"kinsasa", "kinshasa"}, "kampala": {"kampala"}, "addis ababa": {"adís abeba", "addis abeba"},
+    "johannesburg": {"johannesburgo"}, "cape town": {"ciudad del cabo"}, "mexico city": {"ciudad de méxico"},
+    "strasbourg": {"estrasburgo"}, "the hague": {"la haya"}, "bern": {"berna"}, "toronto": {"toronto"}, "ottawa": {"ottawa"},
+    "sydney": {"sídney", "sydney"}, "boston": {"boston"}, "chicago": {"chicago"}, "los angeles": {"los ángeles"},
+    "san francisco": {"san francisco"}, "seattle": {"seattle"}, "philadelphia": {"filadelfia"}, "houston": {"houston"},
+    "dallas": {"dallas"}, "miami": {"miami"}, "baltimore": {"baltimore"}, "bethesda": {"bethesda"}, "new york": {"nueva york"},
+    # US states (names that are also Spanish words -- Montana, Nevada, Colorado, Indiana -- are left out on purpose)
+    "texas": {"texas"}, "florida": {"florida"}, "california": {"california"}, "missouri": {"misuri", "missouri"},
+    "new mexico": {"nuevo méxico"}, "new jersey": {"nueva jersey"}, "new hampshire": {"nuevo hampshire"},
+    "north carolina": {"carolina del norte"}, "south carolina": {"carolina del sur"}, "north dakota": {"dakota del norte"},
+    "south dakota": {"dakota del sur"}, "pennsylvania": {"pensilvania"}, "louisiana": {"luisiana"}, "hawaii": {"hawái", "hawaii"},
+    "west virginia": {"virginia occidental"}, "virginia": {"virginia"}, "oregon": {"oregón"}, "michigan": {"míchigan", "michigan"},
+    "tennessee": {"tennessee", "tenesí"}, "mississippi": {"misisipi", "mississippi"}, "arizona": {"arizona"}, "utah": {"utah"},
+    "idaho": {"idaho"}, "wyoming": {"wyoming"}, "alaska": {"alaska"}, "ohio": {"ohio"}, "illinois": {"illinois"}, "iowa": {"iowa"},
+    "kansas": {"kansas"}, "nebraska": {"nebraska"}, "oklahoma": {"oklahoma"}, "arkansas": {"arkansas"}, "alabama": {"alabama"},
+    "georgia": {"georgia"}, "kentucky": {"kentucky"}, "maryland": {"maryland"}, "delaware": {"delaware"},
+    "connecticut": {"connecticut"}, "massachusetts": {"massachusetts"}, "vermont": {"vermont"}, "maine": {"maine"},
+    "rhode island": {"rhode island"}, "minnesota": {"minnesota"}, "wisconsin": {"wisconsin"},
+    "monday": {"lunes"},
     "tuesday": {"martes"}, "wednesday": {"miércoles"}, "thursday": {"jueves"}, "friday": {"viernes"}, "saturday": {"sábado"},
     "sunday": {"domingo"},
 }
@@ -332,7 +362,7 @@ recibe reciben destina destinan invierte invierten financia financian apoya apoy
 enfrentan enfrenta afecta afectan amenaza amenazan preocupa preocupan nuevo nuevas mas menos casi solo hasta segun
 cada todos todas todo toda otro otra otros otras dos tres cuatro cinco seis siete ocho nueve diez cien mil
 como que quien cual cuales donde por que no si ya aun hoy ayer manana ahora
-lo le les sin ni o u e y a de
+lo le les sin ni o u e y a de ley leyes rey hoy muy hay
 """.split())
 _ES_COMMON = {_fold_static(w) for w in _ES_COMMON}
 _ES_MORPH = re.compile(r"(?:cion|ciones|sion|siones|idad|idades|miento|mientos|mente|ismo|ismos|encia|encias|ancia|ancias|logia|logias)$")
@@ -378,12 +408,6 @@ def _word_spans(text: str) -> list[tuple[str, int]]:
 def _is_initial(text: str, start: int) -> bool:
     """The word at ``start`` opens the text, a sentence, a quote or a segment after ':' / ' - '."""
     return _INITIAL_BEFORE.search((text or "")[:start]) is not None
-
-
-def _title_case(text: str) -> bool:
-    """Headline written in Title Case (most words of 4+ letters capitalised)."""
-    ws = [w for w in _words(text) if len(w) >= 4 and not w.isupper()]
-    return len(ws) >= 2 and sum(1 for w in ws if w[:1].isupper()) / len(ws) >= 0.6
 
 
 def code_tokens(text: str) -> list[str]:
@@ -577,20 +601,23 @@ _CODE_TRIGGERS = (r"hepatitis|influenza|flu|gripe|type|tipo|group|grupo|strain|c
 
 def _letter_codes(text: str) -> Counter:
     """Single capital letters used as codes, and Roman numerals after a code word. "A" and "I" count only after a code
-    word (articles/pronouns otherwise); a letter followed by '.' is an abbreviation (E. coli, U.S.)."""
+    word or right before "(" (A(H5N1)); otherwise they are articles/pronouns. A letter followed by '.' and then a letter
+    or a lower-case word is an abbreviation (E. coli, U.S.); before a full stop that ends the text or a sentence
+    ("hepatitis B.") it is a code."""
     s = text or ""
     for code in code_tokens(s):
         s = s.replace(code, " ")
     out: Counter = Counter()
-    for m in re.finditer(r"(?<![A-Za-zÀ-ÿ0-9.'’\-])([A-Z])(?![A-Za-zÀ-ÿ0-9.'’])", s):
+    for m in re.finditer(r"(?<![A-Za-zÀ-ÿ0-9.'’\-])([A-Z])(?![A-Za-zÀ-ÿ0-9'’])(?!\.(?:[A-Za-zÀ-ÿ]|\s+[a-zà-ÿ]))", s):
         letter = m.group(1)
         after_trigger = re.search(r"(?i:\b(?:" + _CODE_TRIGGERS + r"))\s+(?:del?\s+|de la\s+)?$", s[:m.start()]) is not None
+        after_trigger = after_trigger or s[m.end():m.end() + 1] == "("
         if letter in ("A", "I") and not after_trigger:
             continue
         if not after_trigger and _is_initial(s, m.start()):
             continue
         out[letter] += 1
-    for m in re.finditer(r"(?i:\b(?:" + _CODE_TRIGGERS + r"))\s+(?:del?\s+)?([IVX]{2,4})(?![A-Za-z0-9])", s):
+    for m in re.finditer(r"(?i:\b(?:" + _CODE_TRIGGERS + r"))\s+(?:del?\s+)?([IVX]{2,4}|[IVX]{1,4}[a-d])(?![A-Za-z0-9])", s):
         out[m.group(1)] += 1
     return out
 
@@ -605,7 +632,7 @@ def _sentences(text: str) -> int:
 
 
 def _stems(word: str) -> set[str]:
-    w = _fold(re.sub(r"['’]s$", "", word))
+    w = _fold(re.sub(r"['’]s?$", "", word))
     out = {w}
     for suffix, repl in (("ies", "y"), ("es", ""), ("s", ""), ("ed", ""), ("ed", "e"), ("d", ""), ("ing", ""), ("ing", "e"), ("ly", "")):
         if w.endswith(suffix) and len(w) - len(suffix) >= 2:
@@ -663,14 +690,14 @@ def _name_parts(base: str) -> list[str]:
 
 
 def protected_terms(text: str) -> list[str]:
-    """Names a translation must keep as written: drug names (INN stems), Latin binomials, marks, and every capitalized
-    token that is not ordinary English, a glossary term, a mapped place, or a month. In Title Case headlines and at the
-    start of a sentence, any dictionary word counts as ordinary English (Disorder, Consumers, Rose, Tenfold)."""
+    """Names a translation must keep as written: drug names (INN stems; the Spanish DCI form is accepted), Latin
+    binomials, marks, and every capitalized token that is not an English dictionary word, a glossary term, a mapped
+    place, or a month. Capitalised dictionary words (Disorder, Consumers, Rose, "Critical Medicines Act") may be
+    translated: official names of laws and programmes are rendered in Spanish; layer B reviews the meaning."""
     terms = []
     spans = _word_spans(text)
-    title = _title_case(text)
     for i, (word, start) in enumerate(spans):
-        base = re.sub(r"['’]s$", "", word)
+        base = re.sub(r"['’]s?$", "", word)
         low = base.lower()
         if _is_inn(low) and _fold(low) not in GLOSSARY:
             terms.append(base)
@@ -678,13 +705,12 @@ def protected_terms(text: str) -> list[str]:
             nxt = spans[i + 1][0]
             if nxt[:1].islower() and not is_common(nxt) and _LATIN_EPITHET.search(nxt.lower()):
                 terms.append(base + " " + nxt)
-        lenient = title or _is_initial(text, start)
         for part in _name_parts(base):
             f = _fold(part)
-            if f in GLOSSARY or f in PLACES_ES or f in MONTHS or is_common(part):
+            if f in GLOSSARY or f in PLACES_ES or f in MONTHS or is_dictionary_word(part):
                 continue
-            if lenient and is_dictionary_word(part):
-                continue
+            if any(_has(_fold(text), p) and f in p.split() for p in PLACES_ES if " " in p):
+                continue  # part of a multi-word place (New York, La Réunion), checked as a place
             terms.append(part)
     for mark in re.findall(r"([A-Za-z][A-Za-z0-9\-]*)\s?[®™]", text or ""):
         terms.append(mark)
@@ -695,14 +721,29 @@ def protected_terms(text: str) -> list[str]:
     return out
 
 
+def _fold_case_kept(text: str) -> str:
+    """Accents removed, case and length kept (positions match the original text)."""
+    return "".join((unicodedata.normalize("NFKD", c)[0] if c.isalpha() else c) for c in (text or ""))
+
+
+def _form_present(folded_out: str, form: str) -> bool:
+    """A required form is in the output: as a phrase, or (multi-word forms) every word present in any order
+    ("influenza aviar A(H5N1)" and "influenza A(H5N1) aviar")."""
+    if _has(folded_out, form):
+        return True
+    words = _fold(form).split()
+    return len(words) > 1 and all(_has(folded_out, w) for w in words if len(w) > 2)
+
+
 def _required_forms(text: str) -> list[tuple[str, set[str]]]:
     """(source term, accepted output forms) for glossary terms, mapped places and stand-alone months."""
     folded = _fold(text)
     need = [(en, GLOSSARY[en] | {en}) for en in _glossary_hits(folded)]
-    for word in set(_words(text)):
-        f = _fold(word)
-        if f in PLACES_ES and word[:1].isupper():
-            need.append((f, PLACES_ES[f] | {f}))
+    for place, forms in PLACES_ES.items():
+        for m in re.finditer(r"(?<![A-Za-zÀ-ÿ])" + re.escape(place) + r"(?![A-Za-zÀ-ÿ])", _fold_case_kept(text), re.I):
+            if text[m.start()].isupper():
+                need.append((place, forms | {place}))
+                break
     names = "|".join(sorted(MONTHS, key=len, reverse=True))
     for m in re.finditer(rf"\b({names})\b\.?(\s+\d)?", text or "", re.I):
         word = m.group(1)
@@ -751,18 +792,39 @@ def _mapped_words(source: str) -> set[str]:
     return mapped
 
 
+_SPANISH_INITIAL = re.compile(r"^(?:[aeiou]|[bcdfgpt][lr]|ch|ll|rr|[b-df-hj-np-tv-z][aeiou])")
+
+
+def looks_spanish(folded: str) -> bool:
+    """Spelling that ordinary Spanish words can have (Espacio, Críticos, Parte, Escasez, Tamizaje). Foreign-looking
+    spellings (Makary, Johnson, Smith, Pfizer, BioNTech, Merck) fail: k/w, 'y' not at the end of a known word,
+    'h' not before a vowel, double letters Spanish does not use, a Spanish-impossible start or ending."""
+    f = folded
+    if not f or re.search(r"[kw]|y(?![aeiou])|(?<!c)h(?![aeiou])|q(?!u)|th|sh|ph|tt|ss|ff|zz|gg|pp|bb|dd|mm|oo|ee|uu|ii", f):
+        return False
+    if not _SPANISH_INITIAL.search(f):
+        return False  # Smith, Stanford, Pfizer: Spanish writes es- (estudio) and has no such initial clusters
+    return re.search(r"(?:[aeiou]|[aeiou][snrldzjx]|ns)$", f) is not None
+
+
 def _added_names(source: str, output: str) -> list[str]:
-    """Capitalised words in the Spanish output that the source does not justify ("…de la FDA Makary", "de Texas").
-    A word passes if it is in the source, is the Spanish form of a source term, is ordinary Spanish (list or
-    -ción/-idad/-miento… suffix). Acronyms are checked separately."""
+    """Capitalised words in the Spanish output that look like names and that the source does not justify ("…de la
+    FDA Makary"). Layer A only flags what is name-like: the first word of a sentence, a common Spanish word (list,
+    -ción/-idad… suffix or Spanish spelling: "Ley de Medicamentos Críticos", "Espacio Europeo de Datos de Salud",
+    "Parte D") pass; known places, drugs and diseases are checked by the term tables (an added "Texas" or "Londres"
+    is term_added); acronyms and codes separately. Meaning is layer B's job."""
     fs = _fold(source)
     mapped = _mapped_words(source)
     names = []
-    for word, _start in _word_spans(output):
-        base = re.sub(r"['’]s$", "", word)
-        for part in _name_parts(base):
+    for word, start in _word_spans(output):
+        base = re.sub(r"['’]s?$", "", word)
+        for idx, part in enumerate(_name_parts(base)):
             f = _fold(part)
             if _has(fs, part) or f in mapped or f in _ES_COMMON or f in _ES_NUMBER_WORDS or _ES_MORPH.search(f):
+                continue
+            if idx == 0 and base.startswith(part) and _is_initial(output, start):
+                continue  # sentence-initial: capitalised by grammar, not a name signal
+            if looks_spanish(f):
                 continue
             names.append(part)
     return names
@@ -791,7 +853,8 @@ _EN_UP = {"rise", "rises", "rose", "risen", "rising", "increase", "increases", "
           "surged", "surging", "soar", "soars", "soared", "jump", "jumps", "jumped", "climb", "climbs", "climbed", "grow", "grows",
           "grew", "growing", "growth", "spike", "spikes", "spiked", "gain", "gains", "rebound", "rebounds", "expand", "expands",
           "expanded", "expansion", "boost", "boosts", "boosted", "raise", "raises", "raised", "hike", "hikes", "higher", "highest",
-          "high", "more", "upsurge", "resurgence", "extend", "extends", "extended", "widen", "widens"}
+          "high", "more", "upsurge", "resurgence", "extend", "extends", "extended", "widen", "widens", "worsen", "worsens",
+          "worsened", "worsening"}
 _EN_DOWN = {"fall", "falls", "fell", "fallen", "falling", "drop", "drops", "dropped", "dropping", "decline", "declines", "declined",
             "declining", "decrease", "decreases", "decreased", "decreasing", "down", "lower", "lowered", "lowers", "lowest", "low",
             "plunge", "plunges", "plunged", "slump", "slumps", "dip", "dips", "reduce", "reduces", "reduced", "reducing",
@@ -830,8 +893,14 @@ def _neg_count_en(text: str) -> int:
     return n
 
 
-def _neg_count_es(text: str) -> int:
-    return sum(w in _ES_NEG for w in re.findall(r"[a-z]+", _fold(text)))
+def _neg_count_es(text: str, source: str = "") -> int:
+    """Spanish negations; "no poder/no puede(n)" renders English inability (can't, cannot, unable, afford, able to) and
+    is not counted when the source expresses it."""
+    folded = _fold(text)
+    n = sum(w in _ES_NEG for w in re.findall(r"[a-z]+", folded))
+    if source and re.search(r"can['’]?t|cannot|unable|inability|\bafford|\bable to", _fold(source)):
+        n -= len(re.findall(r"\bno (?:poder|pued\w*|podr\w*|alcanz\w*)\b", folded))
+    return n
 
 
 def _direction_seq_en(text: str) -> list[str]:
@@ -917,7 +986,7 @@ def _meaning_problems(source: str, output: str) -> list[str]:
     """Shared by translations and summaries: added terms, drugs, negation, direction (order) and antonyms."""
     problems = ["term_added:" + a for a in _added_forms(source, output)]
     problems += ["drug_added:" + d for d in _added_drugs(source, output)]
-    if _neg_count_es(output) > _neg_count_en(source):
+    if _neg_count_es(output, source) > _neg_count_en(source):
         problems.append("negation_added")
     problems += _direction_problems(source, output)
     problems += _polarity_problems(source, output)
@@ -962,13 +1031,17 @@ def verify(source: str, output: str, *, kind: str = "title") -> list[str]:
     extra = out_acr - allowed_out
     if extra:
         problems.append("acronym_added:" + ",".join(sorted(extra)))
+    dci = {_inn_like_output(w) for w in _words(out)} - {None}
     for term in protected_terms(src):
-        if not _has(fo, term):
+        if not _has(fo, term) and _fold(term) not in dci:  # liraglutide -> liraglutida (Spanish DCI) is the same drug
             problems.append("term_missing:" + term)
+    for code in code_tokens(out):
+        if _fold(code) not in _fold(src):
+            problems.append("code_added:" + code)
     problems += ["name_added:" + n for n in _added_names(src, out)]
     problems += _meaning_problems(src, out)
     for term, forms in _required_forms(src):
-        if not any(_has(fo, f) for f in forms):
+        if not any(_form_present(fo, f) for f in forms):
             problems.append("term_not_mapped:" + term)
     for need in _dates(src):
         if _fold(need) not in fo:
@@ -1093,7 +1166,8 @@ def parse_verdict(output, kind: str = "translation") -> list[str]:
         return ["review:malformed_verdict"]
     problems = []
     for issue in output["issues"]:
-        if not isinstance(issue, dict) or issue.get("type") not in allowed or not isinstance(issue.get("detail", ""), str):
+        if not isinstance(issue, dict) or not isinstance(issue.get("type"), str) or issue["type"] not in allowed \
+                or not isinstance(issue.get("detail", ""), str):
             return ["review:malformed_verdict"]
         problems.append("review:" + issue["type"])
     if output["faithful"] is not True and not problems:
@@ -1332,11 +1406,14 @@ def translate_payload(payload: dict, config: dict, cache: dict, *, env=None, cal
             problems, details = ["review:malformed_verdict"], None
         else:
             verdict = getattr(review, "output", None)
-            problems = parse_verdict(verdict, kind)
+            try:
+                problems = parse_verdict(verdict, kind)
+                details = None
+                if problems and problems != ["review:malformed_verdict"]:
+                    details = [{"type": str(i.get("type")), "detail": str(i.get("detail", ""))[:200]} for i in verdict["issues"][:6]]
+            except Exception:  # noqa: BLE001 - any odd verdict fails this item only (as malformed), never the run
+                problems, details = ["review:malformed_verdict"], None
             record(not problems)
-            details = None
-            if problems and problems != ["review:malformed_verdict"]:
-                details = [{"type": str(i.get("type")), "detail": str(i.get("detail", ""))[:200]} for i in verdict["issues"][:6]]
         cache["pending_review"].pop(key, None)
         if problems:
             reject(key, problems, card, "independent_review", version, details)
@@ -1352,11 +1429,10 @@ def translate_payload(payload: dict, config: dict, cache: dict, *, env=None, cal
 
     cards = [strip_derived(c) for c in payload.get("items", [])]
     order = sorted(range(len(cards)), key=lambda i: (cards[i].get("published_at") or "", cards[i].get("priority") or 0), reverse=True)
-    for i in order:
-        card = cards[i]
+    def process(card):
         if already_spanish(card):
             card["translation"] = {"status": "source_in_spanish"}
-            counts["source_in_spanish"] += 1; continue
+            counts["source_in_spanish"] += 1; return
         policy = policy_for(card, config)
         description = card.get("description") or None
         if not policy["allowed"]:
@@ -1364,20 +1440,20 @@ def translate_payload(payload: dict, config: dict, cache: dict, *, env=None, cal
             spolicy = summary_policy(card, config)
             if not spolicy["enabled"]:
                 card["translation"] = not_allowed
-                counts["not_allowed"] += 1; continue
+                counts["not_allowed"] += 1; return
+            if not enabled:  # kill switch: no Spanish text at all, cached summaries included (cache kept)
+                card["translation"] = {**not_allowed, "summary_status": "pending", "summary_reason": "translation_not_authorized"}
+                counts["not_allowed"] += 1; return
             key = content_key(card["title"], description, SUMMARY_PROMPT_VERSION)
             entry = cache["entries"].get(key)
             if entry and entry.get("kind") == "summary" and isinstance(entry.get("summary_es"), str) and entry.get("review"):
                 entry["last_used"] = stamp
                 _apply_summary(card, entry, policy, spolicy, key)
-                counts["summarized"] += 1; counts["from_cache"] += 1; continue
+                counts["summarized"] += 1; counts["from_cache"] += 1; return
             if key in cache["rejected"]:
                 cache["rejected"][key]["last_used"] = stamp
                 card["translation"] = {**not_allowed, "summary_status": "verification_failed"}
-                counts["not_allowed"] += 1; continue
-            if not enabled:
-                card["translation"] = {**not_allowed, "summary_status": "pending", "summary_reason": "translation_not_authorized"}
-                counts["not_allowed"] += 1; continue
+                counts["not_allowed"] += 1; return
             state, data = produce(
                 card, key, "summary", SUMMARY_PROMPT_VERSION, build_summary_prompt(card["title"], description),
                 lambda o: {"summary_es": (o.get("summary_es").strip() if isinstance(o, dict) and isinstance(o.get("summary_es"), str)
@@ -1385,7 +1461,7 @@ def translate_payload(payload: dict, config: dict, cache: dict, *, env=None, cal
                 lambda f: verify_summary(card["title"], description, f["summary_es"]))
             if state == "ok":
                 _apply_summary(card, data, policy, spolicy, key)
-                counts["summarized"] += 1; continue
+                counts["summarized"] += 1; return
             counts["not_allowed"] += 1
             if state == "pending":
                 card["translation"] = {**not_allowed, "summary_status": "pending", "summary_reason": data}
@@ -1393,20 +1469,20 @@ def translate_payload(payload: dict, config: dict, cache: dict, *, env=None, cal
                 card["translation"] = {**not_allowed, "summary_status": "verification_failed"}
                 counts["verification_failed"] += 1
                 counts["review_failed"] += any(p.startswith("review:") for p in data)
-            continue
+            return
+        if not enabled:  # kill switch: cached translations are withdrawn too (cache kept, not published)
+            card["translation"] = {"status": "pending", "reason": "translation_not_authorized"}
+            counts["pending"] += 1; return
         key = content_key(card["title"], description)
         entry = cache["entries"].get(key)
         if entry and entry.get("kind", "translation") == "translation" and isinstance(entry.get("title_es"), str) and entry.get("review"):
             entry["last_used"] = stamp
             _apply(card, entry, policy, key)
-            counts["translated"] += 1; counts["from_cache"] += 1; continue
-        if not enabled:
-            card["translation"] = {"status": "pending", "reason": "translation_not_authorized"}
-            counts["pending"] += 1; continue
+            counts["translated"] += 1; counts["from_cache"] += 1; return
         if key in cache["rejected"]:
             cache["rejected"][key]["last_used"] = stamp
             card["translation"] = {"status": "verification_failed", "reason": cache["rejected"][key].get("reason")}
-            counts["verification_failed"] += 1; continue
+            counts["verification_failed"] += 1; return
 
         def check_translation(fields, card=card, description=description):
             title_es, desc_es = fields["title_es"], fields["description_es"]
@@ -1432,6 +1508,8 @@ def translate_payload(payload: dict, config: dict, cache: dict, *, env=None, cal
             card["translation"] = {"status": "verification_failed", "reason": data[:6]}
             counts["verification_failed"] += 1
             counts["review_failed"] += any(p.startswith("review:") for p in data)
+    for i in order:
+        process(cards[i])
     run["estimated_cost_usd"] = round(run["estimated_cost_usd"], 6)
     run.pop("failures_in_row")
     cache["last_run"] = {**run, **counts}  # internal state (data/), never published
