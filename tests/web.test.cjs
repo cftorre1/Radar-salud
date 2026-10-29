@@ -97,21 +97,25 @@ test('visible stock obeys committee and publication contract site-wide',()=>{
 
 test('Bupa and Pulso retain approved business depth without weak references',()=>{
  const radar=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
- const bupa=radar.signals.find(s=>/Bupa refuerza/.test(s.title||''));
+ // DF is paywalled (Dirección 28-oct-2026): publisher headline + public deck only, no body-derived rewrite.
+ const bupa=radar.signals.find(s=>/^Bupa acelera inversiones/.test(s.title||''));
  assert.ok(bupa);
  assert.equal(bupa.source_name,'Diario Financiero');
- assert.match(bupa.what_happened,/US\$15 millones/);
+ assert.equal(bupa.paywalled,true);
+ assert.equal(bupa.why_it_matters,'');
+ assert.ok(!bupa.card_what&&!bupa.key_points);
+ assert.match(bupa.title,/US\$ 15 millones/);
  assert.match(bupa.what_happened,/La Dehesa/);
  assert.match(bupa.what_happened,/Huinganal/);
  assert.match(bupa.what_happened,/Mindplace/);
  assert.deepEqual(bupa.related_context||[],[]);
  assert.deepEqual(bupa.source_alternatives||[],[]);
- const pulso=radar.signals.find(s=>s.event_type==='DATA_PULSE'&&/Isapre/.test(s.title||''));
- assert.ok(pulso);
- assert.match(pulso.title,/Pulso Isapre/);
- assert.ok(pulso.summary_table?.rows?.length>=6);
- assert.match(pulso.why_it_matters,/no una explicación causal/);
- assert.ok((pulso.data_insight_evidence||[]).length>=5);
+ // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
+ const ficha=radar.signals.find(s=>s.event_type==='DATA_PULSE'&&s.stats_ficha?.family==='F1');
+ assert.ok(ficha);
+ assert.equal(radar.signals.filter(s=>/^Pulso Isapre/.test(s.title||'')).length,0);
+ assert.ok(ficha.stats_ficha.tabs.length>=4);
+ assert.match(ficha.stats_ficha.notes.map(n=>n.text).join(' '),/no establece por qué cambia la cartera|establece por qué cambia/);
 });
 
 

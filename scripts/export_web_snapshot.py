@@ -422,6 +422,23 @@ def _normative_status(recent, universe):
         out.append(r)
     return out
 
+def _late_related_documents(recent, history, index_path=Path("data/state/sis_normative_index.json")):
+    """A resolution/suspension/appeal that arrives after the instruction it acts on left the
+    visible window still links to it: our history record at any date, else the regulator's
+    listing URL, else the bare identity (never an invented URL)."""
+    from radar_salud.normative_relations import related_documents, load_listing_index
+    index=load_listing_index(index_path);feed={s.get("source_url") for s in recent}
+    out=[]
+    for s in recent:
+        r=dict(s);docs=related_documents(r,history,index,feed)
+        if docs:
+            r["official_related_documents"]=docs
+            if not r.get("normative_minimal"):
+                known={(x.get("url") or x.get("title")) for x in docs}
+                r["related_context"]=(docs+[x for x in (r.get("related_context") or []) if (x.get("url") or x.get("title")) not in known])[:6]
+        out.append(r)
+    return out
+
 def _stat_family(s):
     if s.get("source_name")!="Superintendencia de Salud" or "Datos" not in (s.get("signal_types") or []):return None
     t=(s.get("title") or "").lower()
@@ -716,6 +733,7 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent,today=as_of);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent);recent=_individual_sanction_titles(recent)
     recent=_normative_status(recent,normalized)
+    recent=_late_related_documents(recent,signals)
     # An explicitly reviewed DF corroboration yields to its official event when
     # that counterpart is present. Keep both source records in durable history.
     counterpart_urls={s.get('source_url') for s in recent}
@@ -729,7 +747,12 @@ def curate(signals,resolve_external=True,as_of=None):
     # One card per story (Dirección, punto II): same-event coverage folds into a lead card;
     # long running stories become one reviewed synthesis. Members stay in history.
     from radar_salud.story_groups import apply_story_groups, load_groups
+    from radar_salud.source_rights import public_teaser_index, story_group_problems
+    story_teasers=public_teaser_index(normalized)
     def story_gate(card):
+        # Rights (28-oct): a synthesis is judged by its member and cited sources; one whose
+        # facts do not trace to allowed text is rejected, so its members stay (redacted).
+        if story_group_problems(card,teasers=story_teasers):return False
         ok,reason,score=publication_ready(card)
         if not ok:return False
         card["publication_gate_reason"]=reason;card["publication_ready_score"]=score
@@ -738,10 +761,13 @@ def curate(signals,resolve_external=True,as_of=None):
         return card["editorial_committee"].get("verdict")=="PASS"
     recent,summaries=apply_story_groups(recent,load_groups(),gate=story_gate)
     recent.extend(summaries)
-    # Individual accreditation acts stay out of the feed; one verifiable rolling pulse instead.
-    from radar_salud.accreditation_pulse import accreditation_pulse
-    pulse=accreditation_pulse(signals,latest)
-    if pulse:
+    # SIS news about an act with its own visible card folds into it (after every visibility gate).
+    from radar_salud.sis_news import fold_news_into_acts
+    recent=fold_news_into_acts(recent)
+    # Individual accreditation acts stay out of the feed; verifiable rolling pulses instead
+    # (last 30 days and days 31-90: information stays available 90 days).
+    from radar_salud.accreditation_pulse import accreditation_pulses
+    for pulse in accreditation_pulses(signals,latest):
         ok,reason,score=publication_ready(pulse)
         if ok:
             pulse["publication_gate_reason"]=reason;pulse["publication_ready_score"]=score
@@ -762,8 +788,13 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument("--input",required=True);ap.add_argument("--output",default="web/data/radar_today.json");ap.add_argument("--offline",action="store_true",help="Rebuild only from recorded evidence");ap.add_argument("--as-of",type=date.fromisoformat,default=None,help="Curation date for deterministic test fixtures (YYYY-MM-DD); omit for the real snapshot");args=ap.parse_args()
     raw=json.loads(Path(args.input).read_text(encoding="utf-8"));signals=raw.get("signals",raw) if isinstance(raw,dict) else raw
     signals=list(signals)
+    # Statistics fichas (Dirección 28-oct-2026): one live ficha per family supersedes its loose cards
+    # and the legacy pulse; GES findings without the corrected parser go to HOLD.
+    from radar_salud import stats_fichas
+    fichas=stats_fichas.live_fichas(Path("."))
+    signals=[stats_fichas.sanitize_ges_signal(s) for s in signals]
     canonical=Path("data/excel/validated_series.json")
-    if canonical.exists():
+    if canonical.exists() and not any(f.get("family")=="F1" for f in fichas):
         try:pulse=build_pulse(json.loads(canonical.read_text(encoding="utf-8")),signals)
         except (OSError,ValueError,TypeError):pulse=None
         if pulse:signals.append(pulse)
@@ -775,11 +806,20 @@ def main():
         except (OSError,ValueError,TypeError):
             pass
     cards=preserve_v3_copy(curate(signals,resolve_external=not args.offline,as_of=args.as_of))
+    cards=stats_fichas.apply_to_snapshot(cards,fichas)
     # WATCH (Dirección 27-oct): every card carries explicit entity refs; aggregates inherit their acts.
     from radar_salud import entity_watch
     entity_watch.apply(cards,history=signals)
+    # Dirección 28-oct-2026: paywalled press shows only title + public lead; every
+    # rendered link must be a valid absolute URL or no link at all.
+    from radar_salud.source_rights import public_teaser_index, redact_signal, redact_story_card
+    from radar_salud.source_urls import sanitize_card_links
+    teasers=public_teaser_index(signals)
+    cards=[sanitize_card_links(redact_story_card(redact_signal(card),teasers=teasers)) for card in cards]
+    cards=[c for c in cards if not (c.get("derived_from")=="editorial_story_group" and c.get("rights_review_required"))]
     payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
+    stats_fichas.write_share_pages(cards,out.parent)
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
     from radar_salud.public_source_catalog import export_public_sources

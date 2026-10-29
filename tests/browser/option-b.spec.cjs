@@ -29,7 +29,7 @@ test('news ficha is lean on Chile and Global and carries the action set',async({
  await page.goto('/');const row=page.locator('#local article[data-card]').first();await row.locator('.act-open').click();
  const body=page.locator('#detailBody');await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(body).not.toContainText(/Por qué importa/);await expect(body.locator('.ficha-h').first()).toHaveText(/Qué pasó/i);
- const id=await row.getAttribute('data-card');const s=await page.evaluate(id=>{const x=allSignals.find(s=>idFor(s)===id);return {why:x.card_why||x.why_it_matters,url:x.source_url}},id);
+ const id=await row.getAttribute('data-card');const s=await page.evaluate(id=>{const x=allSignals.find(s=>idFor(s)===id);return {why:x.card_why||x.why_it_matters,url:originalLink(x)}},id);
  if(s.why&&!s.why.startsWith((await body.locator('p').first().textContent()).slice(0,40)))await expect(body).not.toContainText(s.why.slice(0,60));
  expect(await page.locator('#detailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir']);
  await expect(page.locator('#detailActs .act-src')).toHaveAttribute('href',s.url);

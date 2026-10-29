@@ -30,6 +30,8 @@ def _prompt(p):
 
 def run_weekly_pipeline(snapshot,history=None,as_of=None,run_model=True):
     as_of = as_of or chile_today()
+    from .source_rights import redact_public_payload
+    snapshot=redact_public_payload(snapshot)  # paywalled press: title + public lead only
     p=build_evidence_package(snapshot,history,as_of)
     if not p["candidate"]:return {"status":"no_candidate","top3":p["top3"],"weekly_insight":None}
     result={"status":"evidence_ready","top3":p["top3"],"evidence_package":{"candidate_url":p["candidate"].get("source_url"),"related":p["related"],"committee":p["committee"]},"weekly_insight":None}

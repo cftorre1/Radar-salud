@@ -11,7 +11,10 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-MONTHS = ("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio")
+# Every month the annual workbook may hold; validation stops at the first missing sheet or empty
+# future-month template (the old fixed January–July list froze the Pulso at July, see F1 ficha).
+MONTHS = ("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+          "Noviembre", "Diciembre")
 URLS = {
     "cartera": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
     "suscripciones": "https://www.superdesalud.gob.cl/app/uploads/2026/08/estadistica-mensual-suscripcion-y-desahucios-2026.xlsx",
@@ -36,8 +39,14 @@ def _monthly(book, family):
     result = []
     for index, month in enumerate(MONTHS, 1):
         if month not in book:
-            raise ValueError(f"Missing month {month}")
+            if index == 1:
+                raise ValueError(f"Missing month {month}")
+            break
         sheet = book[month]
+        if index > 1:
+            template = [list(r) for r in sheet.iter_rows(min_row=8, max_row=20, max_col=5, values_only=True)]
+            if all(all(v is None for v in r[2:5]) for r in template if isinstance(r[0], int) and r[1]):
+                break  # empty future-month template
         if sheet["A4"].value != f"{month.upper()} 2026":
             raise ValueError(f"Unexpected reporting period in {month}")
         headers = [sheet.cell(6, col).value for col in range(1, 6)]

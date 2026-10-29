@@ -50,8 +50,20 @@ def _title_period(title:str):
     names={"enero":1,"febrero":2,"marzo":3,"abril":4,"mayo":5,"junio":6,"julio":7,"agosto":8,"septiembre":9,"octubre":10,"noviembre":11,"diciembre":12}
     return f"{m.group(2)}-{names[m.group(1)]:02d}"
 
+GES_PARSER="ges_pinned_year_reconciled_v2"  # mirrored in stats_fichas.GES_PARSER
+
+def _ges_hold(reason:str,period:str|None,**extra)->dict:
+    return {"family":"ges","status":"HOLD","hold_reason":reason,"parser":GES_PARSER,"period":period,"insights":[],**extra}
+
 def parse_ges_workbook(book_bytes:bytes,title:str)->dict:
-    """Validate a conservative GES table shape; never infer causes or sum ambiguous rows."""
+    """GES table under the corrected contract (Dirección 28-oct-2026); never infer causes.
+
+    1. Pin the sheet of the reporting year taken from the title (e.g. 'a junio 2026' → the one sheet
+       whose name contains 2026). Historical sheets such as 'Año 2005' are never read.
+    2. Rows need a text problem label (a bare code such as '21' is not a label).
+    3. The sum of the rows must equal the declared 'Total' row for Fonasa and for Isapre.
+    Any failure returns HOLD with no insight.
+    """
     try:
         from openpyxl import load_workbook
         wb=load_workbook(io.BytesIO(book_bytes),read_only=True,data_only=True)
@@ -60,36 +72,54 @@ def parse_ges_workbook(book_bytes:bytes,title:str)->dict:
     period=_title_period(title)
     if not period:
         return {"family":"ges","status":"period_not_validated","insights":[]}
-    for ws in wb.worksheets[:16]:
-        rows=[list(r[:30]) for r in ws.iter_rows(min_row=1,max_row=450,values_only=True)]
-        rows=[r for r in rows if any(v not in (None,"") for v in r)]
-        for hi,row in enumerate(rows[:80]):
-            labels=[_norm(v).lower() for v in row]
-            fonasa=next((i for i,x in enumerate(labels) if "fonasa" in x),None)
-            isapre=next((i for i,x in enumerate(labels) if "isapre" in x),None)
-            name_col=next((i for i,x in enumerate(labels) if any(k in x for k in ("problema","ges","patolog","condición","condicion"))),0)
-            if fonasa is None or isapre is None or fonasa==isapre:
+    year=period[:4]
+    pinned=[ws for ws in wb.worksheets if re.search(rf"(?<!\d){year}(?!\d)",ws.title)]
+    if len(pinned)!=1:
+        return _ges_hold("HOLD_GES_SHEET_NOT_PINNED",period,sheets=[ws.title for ws in wb.worksheets][:30])
+    ws=pinned[0]
+    rows=[list(r[:30]) for r in ws.iter_rows(min_row=1,max_row=450,values_only=True)]
+    for hi,row in enumerate(rows[:80]):
+        labels=[_norm(v).lower() for v in row]
+        fonasa=next((i for i,x in enumerate(labels) if "fonasa" in x),None)
+        isapre=next((i for i,x in enumerate(labels) if "isapre" in x),None)
+        name_col=next((i for i,x in enumerate(labels) if any(k in x for k in ("problema","patolog","condición","condicion"))),None)
+        if fonasa is None or isapre is None or fonasa==isapre or name_col is None:
+            continue
+        observations=[];declared=None;total_row=None
+        for offset,data in enumerate(rows[hi+1:],hi+2):
+            if len(data)<=max(fonasa,isapre,name_col):continue
+            label=_norm(data[name_col])
+            if not label:continue
+            a=_safe_numeric(data[fonasa]);b=_safe_numeric(data[isapre])
+            if label.lower().startswith("total"):
+                if a is not None and b is not None and declared is None:
+                    declared=(a,b);total_row=offset
                 continue
-            observations=[]
-            seen=set()
-            for data in rows[hi+1:]:
-                if len(data)<=max(fonasa,isapre,name_col): continue
-                label=_norm(data[name_col])
-                if not label or label.lower() in seen: continue
-                a=_safe_numeric(data[fonasa]); b=_safe_numeric(data[isapre])
-                if a is None or b is None or a<0 or b<0: continue
-                seen.add(label.lower()); observations.append({"label":label,"fonasa":int(a),"isapre":int(b)})
-            if len(observations)<3:
-                continue
-            # We deliberately avoid totals: workbook rows may not be mutually exclusive.
-            largest=max(observations,key=lambda x:x["fonasa"]+x["isapre"])
-            return {
-                "family":"ges","status":"validated","sheet":ws.title,"period":period,
-                "rows":len(observations),
-                "insights":[f"{largest['label']} presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte {period}; no se infiere prevalencia ni causalidad."],
-                "evidence":{"header_row":hi+1,"fonasa_column":fonasa+1,"isapre_column":isapre+1,"aggregation":"none"},
-            }
-    return {"family":"ges","status":"schema_not_validated","period":period,"insights":[]}
+            if declared is not None:break  # rows after the declared total belong to another table
+            if a is None or b is None:continue
+            if not re.search(r"[a-záéíóúñ]",label,re.I):
+                return _ges_hold("HOLD_GES_LABEL_NOT_TEXT",period,sheet=ws.title,row=offset,label=label[:40])
+            if a<0 or b<0 or a!=int(a) or b!=int(b):
+                return _ges_hold("HOLD_GES_INVALID_COUNT",period,sheet=ws.title,row=offset)
+            observations.append({"label":label,"fonasa":int(a),"isapre":int(b),"row":offset})
+        if len(observations)<3:
+            continue
+        if declared is None:
+            return _ges_hold("HOLD_GES_TOTAL_MISSING",period,sheet=ws.title,header_row=hi+1)
+        sums=(sum(o["fonasa"] for o in observations),sum(o["isapre"] for o in observations))
+        reconciliation={"ok":sums==(int(declared[0]),int(declared[1])),"rows_sum":list(sums),"declared_total":[int(declared[0]),int(declared[1])],
+                        "total_row":total_row}
+        if not reconciliation["ok"]:
+            return _ges_hold("HOLD_GES_RECONCILIATION",period,sheet=ws.title,reconciliation=reconciliation)
+        largest=max(observations,key=lambda x:x["fonasa"]+x["isapre"])
+        return {
+            "family":"ges","status":"validated","parser":GES_PARSER,"sheet":ws.title,"period":period,
+            "rows":len(observations),"reconciliation":reconciliation,
+            "insights":[f"{largest['label']} registra el mayor número de casos GES informados por Fonasa e Isapres en la hoja {ws.title} del corte {period}; no se infiere prevalencia ni causalidad."],
+            "evidence":{"header_row":hi+1,"fonasa_column":fonasa+1,"isapre_column":isapre+1,"label_column":name_col+1,
+                        "aggregation":"rows reconciled to declared total","largest_row":largest["row"]},
+        }
+    return _ges_hold("HOLD_GES_SCHEMA_NOT_VALIDATED",period,sheet=ws.title)
 
 def source_specific_insights(url:str,title:str,validated_schemas:dict|None=None)->dict:
     """Fail-closed parser for three known SuperSalud statistical families.
