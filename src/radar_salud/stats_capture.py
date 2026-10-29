@@ -2,14 +2,15 @@
 
 The SIS releases are listed in ``data/history/superintendencia_signals.json`` (title, release page and document
 URLs). This module downloads each document once, stores its SHA-256 and the parsed, reconciled values in
-``data/stats_fichas/captures/<kind>.json`` and never stores the binary. A document already captured is never
-downloaded again (no backfill: only the releases already in the history are read, at most ``max_new`` per run).
+``data/stats_fichas/captures/<kind>.json`` and never stores the binary. A document already captured is not downloaded
+again (no backfill: only the releases already in the history are read, at most ``max_new`` per run), except once when
+the Boletín checker version of its topic is bumped: then it is re-checked and must hash to the recorded SHA-256.
 
 - GES (xlsx): ``data_insights.parse_ges_workbook`` — the corrected parser: the sheet of the reporting year is
   pinned and the rows must add up to the declared total, else HOLD.
 - Boletín IP (PDF): the text is never interpreted by a model. The figures come from the independent reading in
   ``config/statistical_analysis_verified_v1.json`` and the capture only records whether each verified figure is
-  present in the captured document's text (``verified_present``). Releases whose documents belong to another
+  present in the captured document's text (``verified_present``) and under which rule (``figure_rules``). Releases whose documents belong to another
   release (e.g. a 'Septiembre 2026' page listing the 'enero-junio-2026' PDFs) are rejected, never relabelled.
 """
 from __future__ import annotations
@@ -190,6 +191,125 @@ def present_in(text: str, n: int | float, context: tuple[str, ...] = GENERIC_CON
     return False
 
 
+# Checker version of the Boletín IP parse, per topic (recorded as ``checker_version`` in every parse result). A captured
+# document whose recorded version is older than the code's is re-checked on the next run (``capture``): the bytes are
+# obtained again within the same limits, must hash to the recorded SHA-256 (else HOLD: status 'hash_mismatch') and are
+# re-parsed. Version 1 = context window only. Version 2 (acreditación, approved by Dirección 2026-10-29) adds the
+# same-sentence rule and the 'Total' row rule below; the context window is unchanged.
+CHECKER_VERSIONS = {"acreditacion": 2}
+DEFAULT_CHECKER_VERSION = 1
+HEADING_MAX_LINES = 3  # non-table lines read above a table as its caption / heading
+_INT_CELL = r"\d{1,3}(?:\.\d{3})+|\d+"
+_TRAILING_CELLS = re.compile(r"(?:^|\s)((?:(?:" + _INT_CELL + r")\s+)*(?:" + _INT_CELL + r"))\s*$")
+_TOTAL_ROW = re.compile(r"^\s*(total(?:\s+general)?)\s+((?:(?:" + _INT_CELL + r")\s+)*(?:" + _INT_CELL + r"))\s*$")
+# Sentence boundary: '.' (not a thousands separator between digits), ';', ':' or a blank line. A single line break
+# inside a sentence does not end it.
+_SENTENCE_END = re.compile(r"[;:]|\.(?!\d)|(?<!\d)\.|\n[ \t]*\n")
+
+
+def checker_version(topic: str | None) -> int:
+    return CHECKER_VERSIONS.get(str(topic or ""), DEFAULT_CHECKER_VERSION)
+
+
+def _cell_value(token: str) -> int:
+    return int(token.replace(".", ""))
+
+
+def _trailing_cells(line: str) -> list[int]:
+    """Integer cells at the end of a line ('Region de Aysen 4 12 16' → [4, 12, 16]); [] if the line ends in a word."""
+    m = _TRAILING_CELLS.search(line)
+    return [_cell_value(t) for t in m[1].split()] if m else []
+
+
+def _number_spans(folded: str, n: int | float):
+    for form in number_forms(n):
+        for m in re.finditer(r"(?<![\d.,])" + re.escape(form) + r"(?![\d]|[.,]\d)", folded):
+            yield m.start(), m.end()
+
+
+def _is_table_cell(folded: str, start: int, end: int) -> bool:
+    """The number is one of >= 2 trailing integer cells of its line (a table row, not prose)."""
+    line_start = folded.rfind("\n", 0, start) + 1
+    line_end = folded.find("\n", end)
+    line = folded[line_start: len(folded) if line_end < 0 else line_end]
+    m = _TRAILING_CELLS.search(line)
+    return bool(m) and len(m[1].split()) >= 2 and line_start + m.start(1) <= start
+
+
+def in_same_sentence(text: str, n: int | float, context: tuple[str, ...]) -> bool:
+    """Rule (a): the figure and one of its metric keywords in the same sentence (bounded by . ; : or a blank line; a
+    single line break does not end it). A figure printed as a table cell (one of >= 2 trailing integer cells of its
+    line) never counts here: tables are judged by rule (b) only."""
+    folded = _fold(text)
+    bounds = [0] + [m.end() for m in _SENTENCE_END.finditer(folded)] + [len(folded)]
+    for start, end in _number_spans(folded, n):
+        if _is_table_cell(folded, start, end):
+            continue
+        lo = max(b for b in bounds if b <= start)
+        hi = min(b for b in bounds if b >= end)
+        if any(word in folded[lo:hi] for word in context):
+            return True
+    return False
+
+
+def total_row_match(text: str, n: int | float, context: tuple[str, ...]) -> dict | None:
+    """Rule (b): the figure is a cell of a row starting with 'Total' / 'Total general' (only integer cells after the
+    label), and the table's caption / heading contains a metric keyword. The heading is the nearest block of up to
+    HEADING_MAX_LINES non-empty, non-table lines directly above the table body (the contiguous table rows above the
+    Total row; a table row ends in >= 2 integer cells, or >= 1 when the Total row has a single cell). Sum check: when
+    the row has >= 3 cells, the figure must equal the sum of the other cells (e.g. 367 + 217 = 584); with 1-2 cells
+    the row structure does not allow it ('not_applicable'). Returns the evidence, or None."""
+    lines = _fold(text).split("\n")
+    for i, line in enumerate(lines):
+        m = _TOTAL_ROW.match(line)
+        if not m:
+            continue
+        cells = [_cell_value(t) for t in m[2].split()]
+        if int(n) not in cells:
+            continue
+        others = list(cells)
+        others.remove(int(n))
+        if len(cells) >= 3:
+            if sum(others) != int(n):
+                continue
+            sum_check = " + ".join(str(c) for c in others) + f" = {int(n)}"
+        else:
+            sum_check = "not_applicable"
+        need = 2 if len(cells) >= 2 else 1
+        j = i - 1
+        while j >= 0 and (not lines[j].strip() or len(_trailing_cells(lines[j])) >= need):
+            j -= 1  # table body (blank lines inside the table are skipped)
+        heading = []
+        while j >= 0 and len(heading) < HEADING_MAX_LINES:
+            if lines[j].strip():
+                if len(_trailing_cells(lines[j])) >= need:
+                    break  # another table: no heading in between
+                heading.insert(0, lines[j].strip())
+            j -= 1
+        head = " ".join(heading)
+        if any(word in head for word in context):
+            return {"row": line.strip(), "heading": head, "sum_check": sum_check}
+    return None
+
+
+def figure_evidence(pages: list[str], cited: list[int], n: int | float, context: tuple[str, ...],
+                    version: int = DEFAULT_CHECKER_VERSION) -> dict | None:
+    """Which rule places the figure on a cited page: 'context_window' (v1+), then 'sentence' and 'total_row' (v2+)."""
+    for p in cited:
+        if present_in(pages[p - 1], n, context):
+            return {"rule": "context_window", "page": p}
+    if version < 2:
+        return None
+    for p in cited:
+        if in_same_sentence(pages[p - 1], n, context):
+            return {"rule": "sentence", "page": p}
+    for p in cited:
+        hit = total_row_match(pages[p - 1], n, context)
+        if hit:
+            return {"rule": "total_row", "page": p, **hit}
+    return None
+
+
 def pdf_pages(data: bytes) -> list[str]:
     from pypdf import PdfReader
     reader = PdfReader(io.BytesIO(data))
@@ -201,24 +321,28 @@ def pdf_text(data: bytes) -> tuple[str, int]:
     return "\n".join(pages), len(pages)
 
 
-def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int] | None = None) -> dict:
+def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int] | None = None,
+                      topic: str | None = None) -> dict:
     """Hash-bound check of verified figures; no figure is read from the PDF by guesswork.
 
-    A figure counts as present only on the pages cited by the independent reading (``pages_1based``) and next to a
-    context word of its metric; without cited pages nothing is verified (fail closed)."""
+    A figure counts as present only on the pages cited by the independent reading (``pages_1based``) and under one
+    of the rules of the topic's checker version (``figure_evidence``); without cited pages nothing is verified (fail
+    closed). The rule that placed each figure is recorded in ``figure_rules``."""
+    version = checker_version(topic)
     try:
         pages = pdf_pages(data)
     except Exception as exc:  # unreadable PDF: captured hash, no verification
-        return {"status": "pdf_unreadable", "error": f"{type(exc).__name__}"[:80]}
+        return {"status": "pdf_unreadable", "error": f"{type(exc).__name__}"[:80], "checker_version": version}
     text = "\n".join(pages)
     out = {"status": "no_verified_metrics", "pages": len(pages),
-           "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest()}
+           "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "checker_version": version}
     if metrics:
         cited = [p for p in (pages_1based or []) if isinstance(p, int) and 1 <= p <= len(pages)]
-        present = {k: any(present_in(pages[p - 1], v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT)) for p in cited)
-                   for k, v in metrics.items() if isinstance(v, (int, float))}
+        evidence = {k: figure_evidence(pages, cited, v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT), version)
+                    for k, v in metrics.items() if isinstance(v, (int, float))}
+        present = {k: e is not None for k, e in evidence.items()}
         out.update(status="verified" if present and all(present.values()) else "verified_figure_missing",
-                   verified_present=present, pages_checked=cited)
+                   verified_present=present, pages_checked=cited, figure_rules=evidence)
     return out
 
 
@@ -339,12 +463,43 @@ def _capture_doc(doc: dict, *, fetch: Callable[[str], bytes], parse: Callable[[b
     return {**rec, "status": "captured", "parse": parsed}
 
 
+def _recheck_doc(prev: dict, *, fetch: Callable[[str], bytes], parse: Callable[[bytes], dict],
+                 stored: Callable[[dict], bytes | None] | None = None) -> dict:
+    """Re-check a document already captured with an older checker version. The bytes come from ``stored`` when it
+    has them (this module never stores binaries, so by default they are downloaded again through ``fetch``, i.e. the
+    same allowlist / robots / size / time limits). They must hash to the recorded SHA-256: on mismatch the document
+    goes to HOLD ('hash_mismatch', recorded hash and parse kept, never re-captured automatically). A failed download or
+    parse leaves the previous record in place and notes the attempt in ``recheck``."""
+    attempts = int((prev.get("recheck") or {}).get("attempts") or 0) + 1
+    try:
+        data = (stored(prev) if stored else None) or fetch(prev["url"])
+    except Exception as exc:
+        return {**prev, "recheck": {"status": "fetch_failed", "error": f"{type(exc).__name__}:{exc}"[:160],
+                                    "attempts": attempts, "at": _now()}}
+    sha = hashlib.sha256(data).hexdigest()
+    if sha != prev.get("sha256"):
+        return {**prev, "status": "hash_mismatch", "recheck": {"status": "hash_mismatch", "recorded_sha256": prev.get("sha256"),
+                                                              "fetched_sha256": sha, "bytes": len(data), "at": _now()}}
+    try:
+        parsed = parse(data)
+    except Exception as exc:
+        return {**prev, "recheck": {"status": "parse_failed", "error": f"{type(exc).__name__}:{exc}"[:160],
+                                    "attempts": attempts, "at": _now()}}
+    rest = {k: v for k, v in prev.items() if k != "recheck"}
+    return {**rest, "status": "captured", "parse": parsed, "rechecked_at": _now(),
+            "rechecked_from_checker_version": int((prev.get("parse") or {}).get("checker_version") or DEFAULT_CHECKER_VERSION)}
+
+
 def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new: int = 6,
-            time_budget_s: float = TIME_BUDGET_S, clock: Callable[[], float] = time.monotonic) -> dict:
+            time_budget_s: float = TIME_BUDGET_S, clock: Callable[[], float] = time.monotonic,
+            stored: Callable[[dict], bytes | None] | None = None) -> dict:
     """Download each listed document once (at most ``max_new`` per kind and run, newest release first); store hashes
     and parsed values, never binaries. A failed download is retried up to MAX_ATTEMPTS times, then once a week; a file
     that downloads but fails to parse is retried after RETRY_AFTER_DAYS. The whole step stops starting downloads once
-    ``time_budget_s`` has elapsed (documents left for the next run stay 'not_fetched')."""
+    ``time_budget_s`` has elapsed (documents left for the next run stay 'not_fetched').
+
+    A Boletín document already captured whose parse carries an older ``checker_version`` than the code's (and that
+    has verified figures to check) is re-checked once (``_recheck_doc``); it uses the same download budget and limits."""
     root = Path(root)
     deadline = clock() + time_budget_s
     fetch = fetch or SisFetcher(deadline=deadline, clock=clock)
@@ -374,6 +529,19 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         if int(old.get("attempts") or 0) < MAX_ATTEMPTS:
             return True
         return days_since(old) >= RETRY_AFTER_DAYS
+
+    def needs_recheck(old: dict | None, topic: str | None, has_metrics: bool) -> bool:
+        if not old or old.get("status") != "captured" or old.get("format") != "pdf" or not has_metrics:
+            return False
+        recorded = int((old.get("parse") or {}).get("checker_version") or DEFAULT_CHECKER_VERSION)
+        if recorded >= checker_version(topic):
+            return False
+        last = old.get("recheck") or {}
+        if last.get("status") == "fetch_failed" and int(last.get("attempts") or 0) >= MAX_ATTEMPTS:
+            return days_since({"fetched_at": last.get("at")}) >= RETRY_AFTER_DAYS
+        if last.get("status") == "parse_failed":
+            return days_since({"fetched_at": last.get("at")}) >= RETRY_AFTER_DAYS
+        return True
 
     # GES
     path = root / STORE / "ges_quarterly.json"
@@ -411,12 +579,15 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         docs = []
         for d in rel["documents"]:
             prev = old_docs.get(d["url"])
+            info = verified.get(d["url"]) or {}
+            parse = (lambda b, m=info.get("metrics"), pg=info.get("pages_1based"), t=d.get("topic"):
+                     parse_boletin_pdf(b, m, pg, t))
             if needs(prev) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
-                info = verified.get(d["url"]) or {}
-                docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf",
-                                         parse=lambda b, m=info.get("metrics"), pg=info.get("pages_1based"):
-                                         parse_boletin_pdf(b, m, pg)))
+                docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf", parse=parse))
+            elif needs_recheck(prev, d.get("topic"), bool(info.get("metrics"))) and budget["left"] > 0 and has_time():
+                budget["left"] -= 1
+                docs.append(_recheck_doc({**prev, **d}, fetch=fetch, parse=parse, stored=stored))
             else:
                 docs.append(prev or {**d, "status": "not_fetched"})
         known[rel["period"]] = {k: rel[k] for k in ("period", "number", "title", "release_url", "published_at")} | {"documents": docs}
