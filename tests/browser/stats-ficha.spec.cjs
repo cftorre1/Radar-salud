@@ -213,8 +213,8 @@ for(const width of [320,390]){
    for(const r of await labelsFit(page)){expect(r.bad,`${label} ${r.chart}`).toEqual([]);expect(r.overlap,`${label} ${r.chart}`).toBeFalsy()}
    expect(await noOverflow(page),label).toBeTruthy();
    // The picker keeps its label, count and both arrows on one line.
-   const [p,s]=await Promise.all([body.locator('.sf-pick').boundingBox(),body.locator('[data-sf-step="1"]').boundingBox()]);
-   expect(Math.abs(p.y-s.y)).toBeLessThan(2);
+   // Measured in one frame (two boundingBox calls can straddle the smooth scroll to the topic), until settled.
+   await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('detailBody');const a=d.querySelector('.sf-pick').getBoundingClientRect(),b=d.querySelector('[data-sf-step="1"]').getBoundingClientRect();return Math.abs(a.top-b.top)}),{timeout:3000}).toBeLessThan(2);
   }
   if(width===390)await shot(page,'stats-ficha-f1-390-dejavu');
  });
