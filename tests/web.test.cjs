@@ -278,3 +278,55 @@ test('paywall corroboration renders inside the option-B ficha (Qué pasó + Fuen
  assert.doesNotMatch(c.detailHtml({...s,paywalled:false}),/Fuentes relacionadas|Según Superintendencia/);
  assert.doesNotMatch(c.detailHtml({...s,corroboration:{...s.corroboration,status:'rejected'}}),/Fuentes relacionadas|Según Superintendencia/);
 });
+test('Global translation (Dirección 29-oct): Spanish row and ficha, original title kept, links, attribution and read keys unchanged',()=>{
+ const c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map,URL};vm.createContext(c);vm.runInContext(fs.readFileSync('web/global.js','utf8').split('AlicantoRead.subscribe(')[0],c);
+ const load=xs=>{c.input=xs;vm.runInContext("themes=[];headlines=input;buildEntries()",c)};
+ const base={id:'e1',source:'ecdc',source_label:'ECDC',attribution:'Source: ECDC, CC BY 4.0',bylines:[],url:'https://www.ecdc.europa.eu/en/news/1',published_at:'2026-10-27',
+  rights_basis:{license_label:'CC BY 4.0',license_url:'https://creativecommons.org/licenses/by/4.0/'},title:'Measles cases rise 12% in the EU/EEA',description:'ECDC reports 1,200 cases.',
+  title_es:'Los casos de sarampión suben 12% en la UE/EEE',description_es:'El ECDC informa 1.200 casos.',
+  translation:{status:'translated',verified:true,notice_es:'Traducción automática de Alicanto',change_notice_es:'Traducción de Alicanto'}};
+ load([base]);const e=c.entryFor('daily-e1');
+ assert.equal(e.title,'Los casos de sarampión suben 12% en la UE/EEE');assert.equal(e.key,'global-feed:e1');assert.equal(e.dom,'daily-e1');assert.equal(e.url,'https://www.ecdc.europa.eu/en/news/1');
+ assert.match(c.metaFor(e),/CC BY 4\.0<\/a> · <span class="tr-note">Traducido por Alicanto<\/span>/);
+ // Public-domain sources (no change notice) are marked too; the marker is escaped and never repeated.
+ load([{...base,id:'pd1',source:'cdc',rights_basis:{},translation:{status:'translated',verified:true,notice_es:'Traducción automática de Alicanto'}}]);
+ assert.match(c.metaFor(c.entryFor('daily-pd1')),/ · <span class="tr-note">Traducido por Alicanto<\/span>$/);
+ load([{...base,id:'pd2',translation:{...base.translation,row_note_es:'<b>x</b>'}}]);assert.match(c.metaFor(c.entryFor('daily-pd2')),/&lt;b&gt;x&lt;\/b&gt;/);
+ load([base]);
+ const html=c.headlineDetail(e);
+ assert.match(html,/<h2 id="globalDetailTitle">Los casos de sarampión suben 12% en la UE\/EEE<\/h2><p class="orig-title"><span>Título original<\/span> Measles cases rise 12% in the EU\/EEA<\/p>/);
+ assert.match(html,/<h3 class="ficha-h">Resumen de la fuente<\/h3><p>El ECDC informa 1\.200 casos\.<\/p>/);assert.doesNotMatch(html,/ECDC reports 1,200/);
+ assert.match(html,/Traducción automática de Alicanto · Traducción de Alicanto\./);
+ // The source link and attribution stay as captured: publisher's own title on the link.
+ assert.match(html,/href="https:\/\/www\.ecdc\.europa\.eu\/en\/news\/1"[^>]*>ECDC · Measles cases rise 12% in the EU\/EEA ↗<\/a>/);assert.match(html,/Source: ECDC, CC BY 4\.0/);
+ // Unverified, pending, or a summary without its translation -> the original only, never a partial translation.
+ for(const bad of [{translation:{status:'pending',reason:'no_api_key'}},{translation:{status:'translated'}},{description_es:''},{translation:{status:'verification_failed'}}]){
+  load([{...base,...bad}]);const b=c.entryFor('daily-e1'),h=c.headlineDetail(b);
+  assert.equal(b.title,base.title);assert.doesNotMatch(h,/Título original|Traducción automática|sarampión|1\.200 casos/);assert.match(h,/<p>ECDC reports 1,200 cases\.<\/p>/)}
+ // CC BY-ND: English kept with the note, in the row and the ficha.
+ load([{id:'n1',source:'the_conversation',source_label:'The Conversation',bylines:['Ana A'],url:'https://theconversation.com/x-1',published_at:'2026-10-27',title:'Insurers use AI',
+  translation:{status:'not_allowed',note_es:'Contenido en inglés (licencia no permite traducción)'},title_es:'Ignorado'}]);
+ const n=c.entryFor('daily-n1');assert.equal(n.title,'Insurers use AI');assert.match(c.metaFor(n),/Contenido en inglés \(licencia no permite traducción\)/);
+ const nh=c.headlineDetail(n);assert.match(nh,/<h2 id="globalDetailTitle">Insurers use AI<\/h2>/);assert.match(nh,/<p class="ficha-note">Contenido en inglés \(licencia no permite traducción\)\.<\/p>/);assert.doesNotMatch(nh,/Ignorado|Título original/);
+});
+test('Global Alicanto summary (Dirección 29-oct): sources without translation rights keep the English title, summary labelled and escaped',()=>{
+ const c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map,URL};vm.createContext(c);vm.runInContext(fs.readFileSync('web/global.js','utf8').split('AlicantoRead.subscribe(')[0],c);
+ const load=xs=>{c.input=xs;vm.runInContext("themes=[];headlines=input;buildEntries()",c)};
+ const base={id:'m1',source:'ema',source_label:'EMA',attribution:'European Medicines Agency',bylines:[],url:'https://www.ema.europa.eu/en/news/1',published_at:'2026-10-27',
+  title:'EMA recommends 4 new medicines <b>',description:'The CHMP recommended 4 medicines.',summary_es:'La EMA propuso autorizar 4 medicamentos <script>alert(1)</script>.',title_es:'Ignorado',
+  translation:{status:'summarized',kind:'summary',verified:true,notice_es:'Resumen de Alicanto (la fuente no permite traducir)',check_note_es:'Escrito automáticamente por Alicanto; puede contener errores'}};
+ load([base]);const e=c.entryFor('daily-m1');
+ assert.equal(e.title,'EMA recommends 4 new medicines <b>');assert.equal(e.key,'global-feed:m1');
+ assert.match(c.metaFor(e),/<span class="tr-note">Resumen de Alicanto \(la fuente no permite traducir\)<\/span>/);
+ const html=c.headlineDetail(e);
+ assert.match(html,/<h2 id="globalDetailTitle">EMA recommends 4 new medicines &lt;b&gt;<\/h2><h3 class="ficha-h">Resumen de Alicanto \(la fuente no permite traducir\)<\/h3><p class="alicanto-summary">La EMA propuso autorizar 4 medicamentos &lt;script&gt;alert\(1\)&lt;\/script&gt;\.<\/p>/);
+ assert.doesNotMatch(html,/<script>|<b>|Ignorado|Título original/);
+ assert.match(html,/<h3 class="ficha-h">Resumen de la fuente<\/h3><p>The CHMP recommended 4 medicines\.<\/p>/);
+ assert.match(html,/Escrito automáticamente por Alicanto; puede contener errores\./);
+ // Unverified, wrong kind or empty summary -> the original only.
+ for(const bad of [{translation:{...base.translation,verified:false}},{translation:{...base.translation,kind:'translation'}},{summary_es:''},{translation:{status:'not_allowed',note_es:'Contenido en inglés (los términos de EMA no contemplan traducción)'}}]){
+  load([{...base,...bad}]);const h=c.headlineDetail(c.entryFor('daily-m1'));assert.doesNotMatch(h,/Resumen de Alicanto|propuso autorizar/)}
+ // A translation's ficha says what the automatic check covers, not more.
+ load([{...base,id:'t1',source:'cdc',summary_es:undefined,title:'CDC reports 3 cases',title_es:'Los CDC informan 3 casos',description:null,translation:{status:'translated',kind:'translation',verified:true,notice_es:'Traducción automática de Alicanto'}}]);
+ const th=c.headlineDetail(c.entryFor('daily-t1'));assert.match(th,/Traducción automática de Alicanto\. Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores\./);assert.doesNotMatch(th,/verificada/);
+});

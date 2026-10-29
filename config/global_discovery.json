@@ -165,7 +165,18 @@
         ],
         "verified_on": "2026-10-27",
         "verified_how": "syndication and rss-feeds pages read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)",
-        "description_basis": null
+        "description_basis": null,
+        "translation_allowed": false,
+        "translation_reason": "CC BY-NC-ND 4.0 (NoDerivatives and NonCommercial); KFF is also out of Global by Dirección 28-oct.",
+        "translation_note_es": "Contenido en inglés (licencia no permite traducción)",
+        "translation_evidence": {
+          "basis": "CC BY-NC-ND 4.0",
+          "evidence_urls": [
+            "https://kffhealthnews.org/syndication/"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "Relies on the 27-oct read recorded above."
+        }
       },
       "daily_feed": {
         "display": false,
@@ -219,7 +230,18 @@
         "verified_on": "2026-10-27",
         "verified_how": "legal notice and RSS page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed)",
         "paid_tier_requires_publisher_confirmation": false,
-        "description_basis": "EMA legal notice: reproduction permitted with acknowledgement (summary verbatim and attributed; a summary over 300 chars is shown as a marked excerpt ending \"… (extracto)\", never reworded)"
+        "description_basis": "EMA legal notice: reproduction permitted with acknowledgement (summary verbatim and attributed; a summary over 300 chars is shown as a marked excerpt ending \"… (extracto)\", never reworded)",
+        "translation_allowed": false,
+        "translation_reason": "EMA legal notice grants reproduction and distribution 'totally or in part', commercial included, with acknowledgement, but says nothing about modification, adaptation or translation and names no open licence. Unclear -> keep the original (fail closed) until EMA confirms in writing; record the confirmation here and flip this flag.",
+        "translation_note_es": "Contenido en inglés (los términos de EMA no contemplan traducción)",
+        "translation_evidence": {
+          "basis": "EMA legal notice (no adaptation/translation grant)",
+          "evidence_urls": [
+            "https://www.ema.europa.eu/about-us/legal-notice"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "Legal notice read via web fetch 29-oct: 'may be reproduced and / or distributed, totally or in part, irrespective of the means and / or the formats used ... for non-commercial and commercial purposes, provided that EMA is always acknowledged'; modification, adaptation and translation not mentioned; no Creative Commons licence named."
+        }
       },
       "daily_feed": {
         "display": true,
@@ -275,7 +297,9 @@
           "store_description": false,
           "store_description_note": "MedWatch items often link to company recall announcements (third-party, not public domain): title + link only, never the summary.",
           "enabled": false,
-          "disabled_reason": "Dirección 28-oct-2026 09:58: ruta nueva no verificada (website-policies y robots.txt de fda.gov no se pudieron leer; feed no descargado en vivo). Apagada; el feed de press releases sigue como estaba. Ver config/global_source_candidates.json."
+          "disabled_reason": "Dirección 28-oct-2026 09:58: ruta nueva no verificada (website-policies y robots.txt de fda.gov no se pudieron leer; feed no descargado en vivo). Apagada; el feed de press releases sigue como estaba. Ver config/global_source_candidates.json.",
+          "translate": false,
+          "translate_note": "Company recall announcements are third-party, not public domain: never translated."
         }
       ],
       "rights": {
@@ -296,7 +320,17 @@
         "verified_how": "RSS feed list page read via web fetch 27-oct; robots.txt enforced at runtime (fail closed); 28-oct (global-sources-more): RSS list page re-read via web fetch, routes What's New: Drugs, What's New: Vaccines, Blood and Biologics and MedWatch Safety Alerts added (food/consumer feeds left out). 28-oct review fix: https://www.fda.gov/about-fda/about-website/website-policies and https://www.fda.gov/robots.txt fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> NOT verified; the rights basis relies on the statute (17 U.S.C. §105) alone, not on a page read; the drugs/biologics/medwatch feed URLs were not fetched live. MedWatch summaries withheld (company announcements are not public domain).",
         "paid_tier_requires_publisher_confirmation": false,
         "description_basis": "US federal government work, public domain (17 U.S.C. §105)",
-        "website_policies_verified": false
+        "website_policies_verified": false,
+        "translation_allowed": true,
+        "translation_reason": "Public domain US federal work: translating the title and the FDA's own summary is allowed with attribution ('Source: U.S. FDA') and no implied endorsement. Third-party content stays out: the MedWatch route (company announcements) is not translated (route translate=false).",
+        "translation_evidence": {
+          "basis": "17 U.S.C. §105: US federal government works are not subject to copyright, so a translation needs no licence; attribution kept and no endorsement implied",
+          "evidence_urls": [
+            "https://www.fda.gov/about-fda/about-website/website-policies"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "Statutory basis only; fda.gov website-policies still not readable from the sandbox (see verified_how above), not re-read 29-oct."
+        }
       },
       "daily_feed": {
         "display": true,
@@ -347,7 +381,17 @@
         "verified_on": "2026-10-28",
         "verified_how": "agencymaterials page read via web fetch 28-oct; feed URLs from a public feed directory (feeder.co); not fetched live (sandbox has no route); robots.txt enforced at runtime (fail closed)",
         "paid_tier_requires_publisher_confirmation": false,
-        "description_basis": "US federal government work, public domain (17 U.S.C. §105); summary kept verbatim (CDC asks not to alter substance)"
+        "description_basis": "US federal government work, public domain (17 U.S.C. §105); summary kept verbatim (CDC asks not to alter substance)",
+        "translation_allowed": true,
+        "translation_reason": "Public domain US federal work. CDC asks not to alter substance: the translation is gated by a deterministic verifier (numbers, dates, acronyms, drugs and organisms unchanged; no added sentences) and the ficha keeps the original title; the Spanish text is labelled 'Traducción automática de Alicanto' and no endorsement is implied.",
+        "translation_evidence": {
+          "basis": "17 U.S.C. §105: US federal government works are not subject to copyright, so a translation needs no licence; attribution kept and no endorsement implied",
+          "evidence_urls": [
+            "https://cdc.gov/other/agencymaterials.html"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "Relies on the 28-oct read of agencymaterials recorded above; 29-oct re-fetch blocked (allowlist / robots on mirrors), so the exact wording on altering content was not re-read."
+        }
       },
       "daily_feed": {
         "display": true,
@@ -391,7 +435,17 @@
         "verified_on": "2026-10-28",
         "verified_how": "NIH copyright page read via web fetch 28-oct; feed structure confirmed on a public mirror of nih.gov/news-releases/feed.xml, not fetched live; robots.txt enforced at runtime",
         "paid_tier_requires_publisher_confirmation": false,
-        "description_basis": "US federal government work, public domain (17 U.S.C. §105)"
+        "description_basis": "US federal government work, public domain (17 U.S.C. §105)",
+        "translation_allowed": true,
+        "translation_reason": "Public domain US federal work ('may be used for any purpose'): translation allowed with attribution ('Source: NIH').",
+        "translation_evidence": {
+          "basis": "17 U.S.C. §105: US federal government works are not subject to copyright, so a translation needs no licence; attribution kept and no endorsement implied",
+          "evidence_urls": [
+            "https://www.nih.gov/node/24846"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "Relies on the 28-oct read recorded above; not re-read 29-oct."
+        }
       },
       "daily_feed": {
         "display": true,
@@ -439,7 +493,15 @@
         "verified_on": "2026-10-28",
         "verified_how": "Statutory basis 17 U.S.C. §105. FR developer page read via web fetch 28-oct: 'No API keys are needed'; 'Republishers of Federal Register material are not permitted to use official NARA or OFR logos or seals'; it does not mention the documents.rss endpoint; not fetched live; robots for /api/ unverified -> feed disabled",
         "paid_tier_requires_publisher_confirmation": false,
-        "description_basis": "US federal government work, public domain (17 U.S.C. §105)"
+        "description_basis": "US federal government work, public domain (17 U.S.C. §105)",
+        "translation_allowed": true,
+        "translation_reason": "Public domain US federal work; translation allowed with attribution. Feed is disabled, so nothing is translated today.",
+        "translation_evidence": {
+          "basis": "17 U.S.C. §105: US federal government works are not subject to copyright, so a translation needs no licence; attribution kept and no endorsement implied",
+          "evidence_urls": [],
+          "verified_on": "2026-10-29",
+          "verified_how": "Statutory basis only."
+        }
       },
       "daily_feed": {
         "display": true,
@@ -488,7 +550,19 @@
         "paid_tier_requires_publisher_confirmation": false,
         "license_url": "https://creativecommons.org/licenses/by/4.0/",
         "license_label": "CC BY 4.0",
-        "description_basis": "CC BY 4.0 (ECDC copyright notice); summary verbatim with attribution; a cut summary is marked \"… (extracto)\" (change indicated)"
+        "description_basis": "CC BY 4.0 (ECDC copyright notice); summary verbatim with attribution; a cut summary is marked \"… (extracto)\" (change indicated)",
+        "translation_allowed": true,
+        "translation_reason": "CC BY 4.0 permits Adapted Material (a translation is one) for commercial use, with attribution and an indication of changes: rows and ficha show 'Traducción de Alicanto' and the ficha keeps the original title.",
+        "translation_notice_es": "Traducción de Alicanto",
+        "translation_evidence": {
+          "basis": "CC BY 4.0 s.2(a)(1)(B) and s.3(a)(1)(B)",
+          "evidence_urls": [
+            "https://www.ecdc.europa.eu/en/copyright",
+            "https://creativecommons.org/licenses/by/4.0/legalcode.en"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "CC BY 4.0 legal code read via web fetch 29-oct (copy at cds.climate.copernicus.eu, creativecommons.org itself blocked by the sandbox allowlist): s.1(a) 'Adapted Material' is material 'in which the Licensed Material is translated, altered...'; s.2(a)(1)(B) grants 'produce, reproduce, and Share Adapted Material'; s.3(a)(1)(B) requires to 'indicate if You modified the Licensed Material'. Publisher licence page not re-read 29-oct (allowlist); relies on the 28-oct read recorded above."
+        }
       },
       "daily_feed": {
         "display": true,
@@ -533,7 +607,19 @@
         "paid_tier_requires_publisher_confirmation": false,
         "license_url": "https://creativecommons.org/licenses/by/4.0/",
         "license_label": "CC BY 4.0",
-        "description_basis": "CC BY 4.0 (Commission Decision 2011/833/EU); summary verbatim with attribution; a cut summary is marked \"… (extracto)\" (change indicated)"
+        "description_basis": "CC BY 4.0 (Commission Decision 2011/833/EU); summary verbatim with attribution; a cut summary is marked \"… (extracto)\" (change indicated)",
+        "translation_allowed": true,
+        "translation_reason": "CC BY 4.0 (Commission Decision 2011/833/EU) permits Adapted Material, commercial use included, with attribution and an indication of changes: rows and ficha show 'Traducción de Alicanto' and the ficha keeps the original title.",
+        "translation_notice_es": "Traducción de Alicanto",
+        "translation_evidence": {
+          "basis": "CC BY 4.0 s.2(a)(1)(B) and s.3(a)(1)(B)",
+          "evidence_urls": [
+            "https://commission.europa.eu/legal-notice_en",
+            "https://creativecommons.org/licenses/by/4.0/legalcode.en"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "CC BY 4.0 legal code read via web fetch 29-oct (copy at cds.climate.copernicus.eu, creativecommons.org itself blocked by the sandbox allowlist): s.1(a) 'Adapted Material' is material 'in which the Licensed Material is translated, altered...'; s.2(a)(1)(B) grants 'produce, reproduce, and Share Adapted Material'; s.3(a)(1)(B) requires to 'indicate if You modified the Licensed Material'. Publisher licence page not re-read 29-oct (allowlist); relies on the 28-oct read recorded above."
+        }
       },
       "daily_feed": {
         "display": true,
@@ -575,7 +661,18 @@
         "verified_on": "2026-10-28",
         "verified_how": "republishing guidelines read via web fetch 28-oct; feed URL from public feed directories (feedspot); not fetched live; robots.txt enforced at runtime",
         "paid_tier_requires_publisher_confirmation": false,
-        "description_basis": null
+        "description_basis": null,
+        "translation_allowed": false,
+        "translation_reason": "CC BY-ND 4.0 (NoDerivatives): a translation is an adaptation, which ND forbids. Title kept in English, verbatim.",
+        "translation_note_es": "Contenido en inglés (licencia no permite traducción)",
+        "translation_evidence": {
+          "basis": "CC BY-ND 4.0 NoDerivatives; restriction already recorded: 'headline verbatim, never translated or reworded'",
+          "evidence_urls": [
+            "https://theconversation.com/republishing-guidelines"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "Relies on the 28-oct read recorded above; 29-oct re-fetch blocked by the sandbox allowlist."
+        }
       },
       "daily_feed": {
         "display": true,
@@ -636,7 +733,18 @@
         "description_basis": "OGL v3.0 permits copying and publishing the publisher's own summary with attribution",
         "verified_on": "2026-10-28",
         "verified_how": "OGL v3 text (nationalarchives.gov.uk) and the GOV.UK footer on the DHSC organisation page read via web fetch 28-oct ('All content is available under the Open Government Licence v3.0, except where otherwise stated'); feed URL and cadence from a public feed directory (feeder.co); not fetched live. 28-oct review fix: https://www.gov.uk/robots.txt re-read via web fetch (User-agent * disallows only /*/print and /search/all*; specific bots blocked: deepcrawl, MS Search 6.0 Robot; /government/organisations/*.atom allowed) -> robots VERIFIED; the .atom feed URLs and the organisation page fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> feeds NOT fetched live, entry format and summaries unverified; fixtures are constructed. robots.txt is also enforced at runtime (fail closed).",
-        "paid_tier_requires_publisher_confirmation": false
+        "paid_tier_requires_publisher_confirmation": false,
+        "translation_allowed": true,
+        "translation_reason": "OGL v3.0 lets you 'adapt the Information' and exploit it commercially, with the attribution statement and no implied official status. Feed disabled today.",
+        "translation_notice_es": "Traducción de Alicanto",
+        "translation_evidence": {
+          "basis": "OGL v3.0 'You are free to ... adapt the Information'",
+          "evidence_urls": [
+            "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "OGL v3.0 text read via web fetch 29-oct: free to 'copy, publish, distribute and transmit', 'adapt the Information', 'exploit the Information commercially and non-commercially'; condition: acknowledge the source with the attribution statement; non-endorsement clause."
+        }
       },
       "expected_items_per_week": {
         "raw": 28,
@@ -698,7 +806,18 @@
         "description_basis": "OGL v3.0 permits copying and publishing the publisher's own summary with attribution",
         "verified_on": "2026-10-28",
         "verified_how": "OGL v3 text (nationalarchives.gov.uk) read via web fetch 28-oct. The MHRA organisation page itself was NOT read: the OGL footer was read on the GOV.UK DHSC and UKHSA organisation pages (the GOV.UK footer is site-wide; MHRA content is on the same www.gov.uk host), so the MHRA licence rests on the site-wide GOV.UK footer, not on an MHRA page read. Feed URL and cadence from a public feed directory (feeder.co); not fetched live. 28-oct review fix: https://www.gov.uk/robots.txt re-read via web fetch (User-agent * disallows only /*/print and /search/all*; specific bots blocked: deepcrawl, MS Search 6.0 Robot; /government/organisations/*.atom allowed) -> robots VERIFIED; the .atom feed URLs and the organisation page fetch re-attempted, blocked by the sandbox (web-fetch allowlist; proxy CONNECT 403) -> feeds NOT fetched live, entry format and summaries unverified; fixtures are constructed. robots.txt is also enforced at runtime (fail closed).",
-        "paid_tier_requires_publisher_confirmation": false
+        "paid_tier_requires_publisher_confirmation": false,
+        "translation_allowed": true,
+        "translation_reason": "OGL v3.0 lets you 'adapt the Information' and exploit it commercially, with the attribution statement and no implied official status. Feed disabled today.",
+        "translation_notice_es": "Traducción de Alicanto",
+        "translation_evidence": {
+          "basis": "OGL v3.0 'You are free to ... adapt the Information'",
+          "evidence_urls": [
+            "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          ],
+          "verified_on": "2026-10-29",
+          "verified_how": "OGL v3.0 text read via web fetch 29-oct: free to 'copy, publish, distribute and transmit', 'adapt the Information', 'exploit the Information commercially and non-commercially'; condition: acknowledge the source with the attribution statement; non-endorsement clause."
+        }
       },
       "expected_items_per_week": {
         "raw": 11,
@@ -724,10 +843,70 @@
     "max_per_source_per_day": 6,
     "stale_after_days": 2,
     "card_contract": "publisher title verbatim + link + date + attribution (+ byline when the licence asks) + the publisher's own short summary verbatim (<= 300 chars) only when the feed's rights allow it (store_description + rights.description_basis), otherwise title only + deterministic Spanish relevance line; never body/content:encoded/photos; never an Alicanto analysis or Chile effect; never an invented description",
-    "ai_policy": "paid_ai_calls=0. Optional future: Spanish translation of titles only for CC BY / public-domain feeds (not KFF, not The Conversation: NoDerivatives), cheap model inside the USD 10/month cap, requires Dirección OK.",
+    "ai_policy": "Dirección 29-oct-2026: titles and publisher summaries of Global come translated to Spanish where the source's rights allow it (rights.translation_allowed, per feed). Cheap fast-tier model inside the USD 10/month paced budget (ai_budget.allow_call + openai_runtime.call_json), cached by content hash, deterministic verifier; failed check or no budget -> original text, never a partial or unverified translation.",
     "kff_decision": "Dirección 28-oct-2026: KFF Health News queda fuera de Global (PREMIUM) por ahora; sigue como descubrimiento sin publicación.",
     "window_note": "Dirección 28-oct-2026: Global es una sola bandeja ordenada por fecha con 90 días de visibilidad y novedades diarias.",
-    "dedup": "same canonical URL -> one card; same normalized headline (GOV.UK document-type prefixes kept, so 'Guidance: X' and 'Consultation outcome: X' stay distinct) within 3 days -> one card. A card already shown keeps its id (read state); otherwise the earliest wins. Other publishers go to also_reported_by; every merged copy, same publisher included, is recorded in the payload's duplicates ledger."
+    "dedup": "same canonical URL -> one card; same normalized headline (GOV.UK document-type prefixes kept, so 'Guidance: X' and 'Consultation outcome: X' stay distinct) within 3 days -> one card. A card already shown keeps its id (read state); otherwise the earliest wins. Other publishers go to also_reported_by; every merged copy, same publisher included, is recorded in the payload's duplicates ledger.",
+    "translation": {
+      "enabled": true,
+      "authorized_by": "Dirección (cftorre1)",
+      "authorized_at": "2026-10-29",
+      "authorization_note": "Dirección 29-oct-2026: \"todas las noticias de Global deben venir traducidas al español\", limited by each source's rights.",
+      "model": "gpt-5.6-luna",
+      "budget_tier": "fast",
+      "max_new_per_run": 30,
+      "target": "español neutro latinoamericano (Chile)",
+      "cache_path": "data/global_intelligence/translations.json",
+      "notice_es": "Traducción automática de Alicanto",
+      "row_note_es": "Traducido por Alicanto",
+      "verification": "Two layers, both must pass (second review 29-oct): A) deterministic floor global_translation.verify (numbers incl. spelled-out and scale words, letter codes, dates, acronyms, names both directions, disease/organ/drug/population terms 1:1, negation, antonyms, direction order, added conjunction/clause/sentence, Spanish text, length); B) independent second-model review (own prompt, no access to the translator prompt) returning strict JSON {faithful, issues}; publish only if faithful and no issues. Failure or malformed verdict -> original shown, failure cached. max_new_per_run counts calls (a translated item = 2).",
+      "summary": {
+        "enabled": true,
+        "authorized_by": "Dirección (cftorre1)",
+        "authorized_at": "2026-10-29",
+        "authorization_note": "Dirección 29-oct-2026: for sources whose rights do not allow translation, Alicanto writes its OWN 1-2 sentence factual Spanish summary (not a translation, no copied phrasing) from the facts in the item's own feed title/description; the original English title and link stay.",
+        "sources": [
+          "ema",
+          "who",
+          "paho",
+          "kff_health_news"
+        ],
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "max_words": 45,
+        "budget": "shared with translations: ai_budget.allow_call('fast') per call (summary + independent review = 2 calls), same model, same max_new_per_run (counts calls), cached by content hash, no key -> nothing generated, no model fallback",
+        "verification": "Two layers (second review 29-oct). A) verify_summary: every number (incl. spelled-out and scale words), date, percentage, code, letter variant, acronym, proper name and drug in the summary must be in the source title/description (or a glossary/place/acronym Spanish form of a source term); no added negation, antonym or reordered direction; no 6-word copied run; Spanish by stopword ratio; <= 2 sentences and 45 words. B) independent second-model review with its own prompt (strict JSON faithful/issues, incl. copied_phrasing). Any failure or malformed verdict -> original only, failure cached",
+        "excluded_sources": {
+          "the_conversation": "Feed stores no description; a summary would be a paraphrase of a CC BY-ND headline. Original shown (Claude orchestrator, 29-oct-2026)."
+        }
+      },
+      "official_sources": {
+        "who": {
+          "translation_allowed": false,
+          "translation_reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+          "translation_note_es": "Contenido en inglés (licencia no permite traducción)",
+          "translation_evidence": {
+            "evidence_urls": [
+              "https://www.who.int/copyright"
+            ],
+            "verified_on": "2026-10-29",
+            "verified_how": "Read via web fetch 29-oct: 'Permission is required for commercial uses and licensing of WHO materials'; 'The adaptation or translation must be licensed under the same or similar licence terms'; translations must state 'This translation was not created by the World Health Organization (WHO)'. The page states the licence for publications; website news is not addressed -> unclear, kept original."
+          }
+        },
+        "paho": {
+          "translation_allowed": false,
+          "translation_reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+          "translation_note_es": "Contenido en inglés (licencia no permite traducción)",
+          "translation_evidence": {
+            "evidence_urls": [
+              "https://www.paho.org/en/publications/permissions-and-licensing"
+            ],
+            "verified_on": "2026-10-29",
+            "verified_how": "Read via web fetch 29-oct: CC BY-NC-SA 3.0 IGO for publications since 6-dec-2019; 'Permission is required for commercial uses and licensing of PAHO materials'; 'The adaptation or translation must be licensed under the same or similar license terms'; website news content not addressed."
+          }
+        }
+      },
+      "themes_note": "Global themes (data/global_themes.json) are written by Alicanto in Spanish; their cited source titles are third-party (Reuters, Deloitte, McKinsey...) with no translation right recorded, so they are not translated."
+    }
   },
   "global_relevance": {
     "decided_by": "Dirección (cftorre1)",
