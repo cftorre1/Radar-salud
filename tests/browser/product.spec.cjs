@@ -794,7 +794,7 @@ test('Global read rows keep publisher and date',async({page})=>{
 });
 // Dirección 27-oct 22:44 (puntos 2, 3 y 5) supersede the lanes menu of PR #72 review N1: read status is an
 // always-visible segmented control; topics are one compact multi-select dropdown floating over the feed;
-// Insight/Global keep their silver/gold tone after reading. Feed titles still clamp to two lines (review N2).
+// Insight/Global keep their silver/gold tone after reading. Feed titles clamp to three lines (Dirección 28-oct 21:49).
 test('segmented read status, floating topics dropdown and toned weekly rows',async({page})=>{
  await page.goto('/');const rows=page.locator('#local article[data-card]');await expect(rows.first()).toBeVisible();
  for(const k of ['p','l','t'])await expect(page.locator(`#lanes [data-lane="${k}"]`)).toBeVisible();
@@ -816,7 +816,8 @@ test('segmented read status, floating topics dropdown and toned weekly rows',asy
  for(let i=0;i<specialsCount;i++){await page.locator('#bigThings .big-feature:not(.read) [data-special-read]').first().click();await expect(page.locator('#bigThings .big-feature.read')).toHaveCount(i+1)}
  await expect.poll(()=>page.locator('#bigThings .big-feature').evaluateAll(xs=>xs.map(x=>getComputedStyle(x).backgroundImage))).toEqual(fills);
  const lines=await page.locator('#local .signal.item .title-open').evaluateAll(xs=>xs.map(x=>Math.round(x.getBoundingClientRect().height/parseFloat(getComputedStyle(x).lineHeight))));
- expect(Math.max(...lines)).toBeLessThanOrEqual(2);
+ // Dirección 28-oct 21:49 (punto 3) supersedes review N2's two lines: row titles clamp to three.
+ expect(Math.max(...lines)).toBeLessThanOrEqual(3);
 });
 
 // Dirección 28-oct (puntos 5, 6 y 7): Premium and Suscribirse open the same dialogs in place on Chile and Global;

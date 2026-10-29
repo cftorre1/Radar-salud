@@ -13,7 +13,7 @@
 .global-feed .theme,.global-feed .daily-item{position:relative;margin:0;padding:9px var(--gutter) 9px 40px;border:0;border-bottom:1px solid var(--ink09);border-radius:0;background:transparent;scroll-margin-top:calc(var(--hdr) + 104px)}
 .global-feed{margin:0 calc(-1 * var(--gutter))}
 .global-feed .theme h2,.global-feed .daily-item h2{font:600 15px/1.36 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:-.005em;margin:0;color:var(--ink)}
-.global-feed .title-open{all:unset;cursor:pointer;color:inherit;font:inherit;text-align:left;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.global-feed .title-open{all:unset;cursor:pointer;color:inherit;font:inherit;text-align:left;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;max-height:calc(3 * 1.36em)}
 .global-feed .title-open:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:4px}
 .global-feed .card-meta{display:block;margin:3px 0 0;padding:0;border:0;font-size:12px;line-height:1.5;color:var(--ink68)}
 .global-feed .newsletter-strip{margin:0}
