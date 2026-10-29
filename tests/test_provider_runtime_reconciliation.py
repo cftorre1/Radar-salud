@@ -1,3 +1,4 @@
+import pytest
 import importlib.util
 import json
 import sys
@@ -12,7 +13,11 @@ from radar_salud.source_health import record
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_provider_sources_enter_daily_durable_queue_without_ai(tmp_path, monkeypatch):
+# The daily run has OPENAI_API_KEY set; CI does not. Run both ways so discovery-only never touches AI capacity.
+@pytest.mark.parametrize("api_key", ["", "sk-test-not-a-real-key"])
+def test_provider_sources_enter_daily_durable_queue_without_ai(tmp_path, monkeypatch, api_key):
+    if api_key:monkeypatch.setenv("OPENAI_API_KEY", api_key)
+    else:monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     configs = json.loads((ROOT / "config/sources.json").read_text())
     expected = {"red_davila", "andes_salud", "clinicas_achs_salud"}
     assert expected <= {r["slug"] for r in configs}

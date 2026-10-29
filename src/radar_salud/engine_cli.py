@@ -365,7 +365,8 @@ def main():
     from .daily_window import requested_window_days
     if requested_window_days() < 90:
         queue.archive_outside_daily_window(requested_window_days(), sources=set(selected_sources) if selected_sources else None)
-    try:ai_available=bool(os.getenv("OPENAI_API_KEY")) and has_capacity("fast")
+    # Discovery-only never checks or consumes AI capacity (daily run 29-oct failed here with the key set).
+    try:ai_available=(not args.discovery_only) and bool(os.getenv("OPENAI_API_KEY")) and has_capacity("fast")
     except Exception:ai_available=False  # unreadable ledger: no revival, never a crash
     revived=queue.revive_unscored_sis_news(ai_available=ai_available,
         max_attempts=int(os.getenv("RADAR_MAX_RETRY_ATTEMPTS","4") or 4))
