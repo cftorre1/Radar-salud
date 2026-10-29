@@ -14,6 +14,14 @@ install_original_audit_reader(Path(__file__).resolve().parents[1])
 
 
 @pytest.fixture(autouse=True)
+def _no_provider_key(monkeypatch):
+    """Tests never see the runner's real AI key (daily run 29-oct: with the key present, export tests made real
+    translation calls and Pulso replays reached the model branch). A test that needs a key sets it itself."""
+    for name in ("OPENAI_API_KEY", "ANTHROPIC_API_KEY"):
+        monkeypatch.delenv(name, raising=False)
+
+
+@pytest.fixture(autouse=True)
 def _fresh_paywall_run_counter():
     """Each test is its own run for the per-run teaser re-analysis cap."""
     from radar_salud import pulso_paywall
