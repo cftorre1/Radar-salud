@@ -41,24 +41,27 @@
   const vals=rows.map(r=>Number(r.value)),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo)*.15||Math.abs(hi)*.01||1,min=lo-pad,max=hi+pad,W=360,top=24,H=130,x=i=>20+i*(W-40)/(rows.length-1),y=v=>top+(max-v)/(max-min)*H;
   const pts=rows.map((r,i)=>`${x(i).toFixed(1)},${y(Number(r.value)).toFixed(1)}`).join(' ');
   let s=`<polyline points="${pts}" fill="none" stroke="${C.ink}" stroke-width="2.5"/>`;
-  rows.forEach((r,i)=>{const v=Number(r.value),last=i===rows.length-1,first=i===0;s+=`<g class="sf-mark"><title>${esc(r.label)}: ${dec(v,d)}</title><circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${last?5:3.5}" fill="${last?C.accent:C.ink}"/></g><text x="${x(i).toFixed(1)}" y="${top+H+22}" font-size="11.5" text-anchor="middle" fill="${C.ink70}">${esc(r.label)}</text>`;if(first||last)s+=`<text x="${x(i).toFixed(1)}" y="${(y(v)-10).toFixed(1)}" font-size="${last?13:12}" font-weight="${last?700:500}" text-anchor="${first?'start':'end'}" fill="${C.ink}">${dec(v,d)}</text>`});
+  rows.forEach((r,i)=>{const v=Number(r.value),last=i===rows.length-1,first=i===0;s+=`<g class="sf-mark"><title>${esc(r.label)}: ${dec(v,d)}</title><circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${last?5:3.5}" fill="${last?C.accent:C.ink}"/></g><text x="${x(i).toFixed(1)}" y="${top+H+22}" font-size="11.5" text-anchor="${first&&rows.length>1&&String(r.label).length>4?'start':last&&String(r.label).length>4?'end':'middle'}" fill="${C.ink70}">${esc(r.label)}</text>`;if(first||last)s+=`<text x="${x(i).toFixed(1)}" y="${(y(v)-10).toFixed(1)}" font-size="${last?13:12}" font-weight="${last?700:500}" text-anchor="${first?'start':'end'}" fill="${C.ink}">${dec(v,d)}</text>`});
   return`<svg viewBox="0 0 ${W} ${top+H+30}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${dec(r.value,d)}`).join(', ')}.`)}">${s}</svg>`;
  }
  // Dot plot vs. the base period: dot = current, ring = base.
  function dots(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';const d=Number.isInteger(c.digits)?c.digits:1;
-  const all=rows.flatMap(r=>[Number(r.value),Number(r.base)]).filter(Number.isFinite),max=Math.max(...all)*1.08||1,W=360,row=26,x0=118,x1=340,X=v=>x0+v/max*(x1-x0),H=8+rows.length*row+6;
+  // Right margin sized to the longest value label, so '50.515' never runs past the viewBox at 390 px.
+  const lab=Math.max(...rows.map(r=>(dec(r.value,d)+(c.unit==='%'?'%':'')).length))*7.4+14;
+  const all=rows.flatMap(r=>[Number(r.value),Number(r.base)]).filter(Number.isFinite),max=Math.max(...all)||1,W=360,row=26,x0=118,x1=W-lab,X=v=>x0+v/max*(x1-x0),H=8+rows.length*row+6;
   let s=`<line x1="${x0}" y1="4" x2="${x0}" y2="${H-6}" stroke="${C.axis}"/>`;
   rows.forEach((r,i)=>{const v=Number(r.value),b=Number(r.base),y=8+i*row+9;s+=`<text x="0" y="${y+4}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text>`;
    if(Number.isFinite(b))s+=`<line x1="${X(Math.min(v,b)).toFixed(1)}" y1="${y}" x2="${X(Math.max(v,b)).toFixed(1)}" y2="${y}" stroke="${C.axis}" stroke-width="2"/><circle cx="${X(b).toFixed(1)}" cy="${y}" r="5" fill="#fff" stroke="${C.ink50}" stroke-width="1.5"/>`;
    s+=`<g class="sf-mark"><title>${esc(r.label)}: ${dec(v,d)}${c.unit==='%'?'%':''}</title><circle cx="${X(v).toFixed(1)}" cy="${y}" r="5.5" fill="${Number.isFinite(b)&&v>b?C.accent:C.ink}"/></g><text x="${(X(Math.max(v,Number.isFinite(b)?b:v))+10).toFixed(1)}" y="${y+4}" font-size="12" fill="${C.ink}">${dec(v,d)}${c.unit==='%'?'%':''}</text>`});
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${dec(r.value,d)}`).join(', ')}.`)}">${s}</svg>`;
  }
- // Plain horizontal bars for non-negative counts.
+ // Plain horizontal bars for non-negative values: counts (integer) or, with c.digits, rates and percentages (F4/F6).
  function bars(c){
-  const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';const max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=30,x0=118,L=170,H=rows.length*row+8;
-  const s=rows.map((r,i)=>{const v=Number(r.value),w=Math.max(Math.abs(v)/max*L,2),y=4+i*row;return`<text x="0" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text><g class="sf-mark"><title>${esc(r.label)}: ${nf(v)}</title><rect x="${x0}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="3" fill="${r.emphasis?C.accent:'#CFC9BC'}"/></g><text x="${(x0+w+6).toFixed(1)}" y="${y+15}" font-size="12.5" font-weight="${r.emphasis?700:500}" fill="${C.ink}">${nf(v)}</text>`}).join('');
-  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${nf(r.value)}`).join(', ')}.`)}">${s}</svg>`;
+  const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';const max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=30,x0=128,L=160,H=rows.length*row+8;
+  const fv=v=>Number.isInteger(c.digits)?dec(v,c.digits)+(c.unit==='%'?'%':''):nf(v);
+  const s=rows.map((r,i)=>{const v=Number(r.value),w=Math.max(Math.abs(v)/max*L,2),y=4+i*row;return`<text x="0" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text><g class="sf-mark"><title>${esc(r.label)}: ${fv(v)}</title><rect x="${x0}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="3" fill="${r.emphasis?C.accent:'#CFC9BC'}"/></g><text x="${(x0+w+6).toFixed(1)}" y="${y+15}" font-size="12.5" font-weight="${r.emphasis?700:500}" fill="${C.ink}">${fv(v)}</text>`}).join('');
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${fv(r.value)}`).join(', ')}.`)}">${s}</svg>`;
  }
  const FORMS={diverging,line,dots,bars,columns_signed:columns};
  function chart(c,i){const svg=(FORMS[c.form]||columns)(c);if(!svg)return'';return`<figure class="sf-chart" data-chart="${esc(c.id||i)}"><h3>${esc(c.headline)}</h3>${c.subtitle?`<p class="sf-sub">${esc(c.subtitle)}</p>`:''}${svg}<details class="sf-data"><summary>Ver datos del gráfico</summary>${table(c.table)}</details>${c.source?`<p class="sf-src">${esc(c.source)}</p>`:''}</figure>`}

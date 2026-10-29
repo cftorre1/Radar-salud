@@ -53,3 +53,34 @@ test('GES correction: the row tag and the detail note use the same date label',(
  assert.equal(F.correctionLabel({corrected_at:'2026-10-28'}),'28 oct');assert.equal(F.correctionTag({}),'');
  assert.match(fs.readFileSync('web/app.js','utf8'),/AlicantoFicha\.correctionTag\(s\)/);
 });
+
+// F4 (GES) and F6 (Boletín IP) fichas: fixture cards built by tests/stats_ficha_fixtures.py (fixture hashes; F4 values
+// are synthetic, F6 values are the verified N°2-2026 reading). Layout only: every number comes from the package.
+for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral'],5,4],
+                                      ['f6_prestadores',['Acreditación','Mediación','Reclamos','RNPI'],3,4]]){
+ test(`${slug}: themed tabs, KPI strip, collapsed notes and Option-B share`,()=>{
+  const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));const f=card.stats_ficha;
+  assert.equal(f.evidence,undefined);assert.equal(f.status,'PASS');
+  const html=load().render(f,{shareId:`sig-${card.piece_id}`,shareUrl:card.share_url});
+  const order=['sf-kicker','sf-headline','sf-dek','sf-share','sf-kpis','sf-tabs','sf-watch','sf-notes'];
+  const at=order.map(k=>html.indexOf(k));assert.ok(at.every(i=>i>=0),JSON.stringify(at));assert.deepEqual([...at].sort((a,b)=>a-b),at);
+  assert.deepEqual([...html.matchAll(/role="tab"[^>]*>([^<]+)/g)].map(m=>m[1]),tabs);
+  assert.equal((html.match(/<figure class="sf-chart"/g)||[]).length,charts);
+  assert.equal((html.match(/class="sf-kpi"/g)||[]).length,kpis);
+  assert.match(html,/<details class="sf-notes"><summary>Notas y fuentes<\/summary>/);assert.doesNotMatch(html,/<details class="sf-notes" open/);
+  assert.doesNotMatch(html,/Por qué importa/);assert.doesNotMatch(html,/class="sf-facts"/);
+  assert.match(html,new RegExp(`data-share-url="data/fichas/${slug}\\.html"`));assert.match(html,/sha256 [0-9a-f]{12}…/);
+  assert.equal(card.share_url,`data/fichas/${slug}.html`);
+ });
+}
+test('F4 shows tasa bruta, Fonasa rate not available and percent bars with one decimal',()=>{
+ const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f4_ges.card.json','utf8')).stats_ficha;const html=load().render(f);
+ assert.match(html,/Tasa bruta Isapre/);assert.match(html,/tasa no disponible/);
+ assert.match(html,/aria-label="Variación a\/a de casos por problema[^"]*Cáncer de mama en… 35,5%/);
+ assert.match(html,/Dos problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
+});
+test('F6 keeps stocks and titles labelled and shows the claims change',()=>{
+ const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f6_prestadores.card.json','utf8')).stats_ficha;const html=load().render(f);
+ assert.match(html,/971/);assert.match(html,/1\.004\.982/);assert.match(html,/no profesionales únicos/);assert.match(html,/\+30,5%/);
+ assert.match(html,/nunca se suman entre boletines/);
+});

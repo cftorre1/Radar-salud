@@ -41,10 +41,15 @@ from typing import Any
 MONTHS = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
           "noviembre", "diciembre")
 MONTH_RX = "|".join(MONTHS)
-PERSON_UNITS = {"personas", "cotizantes", "contratos", "beneficiarios", "cargas", "desahucios"}
+# Head-count units. F4 (casos GES) and F6 (prestadores, solicitudes, reclamos, títulos, mediadores) add their nouns.
+PERSON_UNITS = {"personas", "cotizantes", "contratos", "beneficiarios", "cargas", "desahucios", "casos", "prestadores",
+                "solicitudes", "reclamos", "titulos", "mediadores"}
 NOUNS = {"personas": None, "beneficiarios": "beneficiarios", "cotizantes": "cotizantes", "cargas": "cargas",
-         "afiliados": None, "contratos": "contratos", "desahucios": "desahucios"}
-NOUN_RX = "personas|beneficiarios|cotizantes|cargas|afiliados|contratos|desahucios"
+         "afiliados": None, "contratos": "contratos", "desahucios": "desahucios", "casos": "casos",
+         "prestadores": "prestadores", "solicitudes": "solicitudes", "reclamos": "reclamos", "titulos": "titulos",
+         "mediadores": "mediadores"}
+NOUN_RX = ("personas|beneficiarios|cotizantes|cargas|afiliados|contratos|desahucios|casos|prestadores|solicitudes|"
+           "reclamos|titulos|mediadores")
 WORD_TOL_REL = 0.05  # display tolerance of a multiple or fraction word ('doble' = 1,9–2,1)
 APPROX_TOL_REL = 0.05  # 'cerca de', 'alrededor de', 'unos', 'aproximadamente', 'casi'
 BOUND_TOL_REL = 0.10  # 'más de' / 'menos de': the stated bound must also be close (never 'más de 1')
@@ -124,6 +129,11 @@ YTD_GENERIC = re.compile(r"en lo que va (?:del ano|de 20\d\d)|desde (?:el )?(?:i
 # A 12-month window is a period phrase, never a figure ('en doce meses', 'en los últimos 12 meses'); a streak
 # ('doce meses consecutivos') stays a figure.
 WINDOW_RX = re.compile(r"(?<![a-z0-9·])(?P<n>12|doce) meses(?! (?:consecutiv|seguid|de (?:alza|baja|caida|crecimiento)))")
+# Same quarter one year earlier ('frente al mismo trimestre de 2025', 'a/a', 'interanual', 'un año antes').
+YOY_RX = re.compile(r"mismo trimestre|interanual|a/a|un ano antes|(?:del|el) ano anterior|ano a ano")
+# A crude rate per 1.000 of the same insurer's beneficiaries ('4,1 casos por cada mil beneficiarios').
+RATE_RX = re.compile(r"(?<![\w.,])(?P<num>\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:,\d+)?)\s+(?:casos\s+)?por\s+(?:cada\s+)?"
+                     r"(?:mil|1\.000)\s+(?:beneficiari\w*|afiliad\w*|personas)")
 YTD_FROM = re.compile(r"(?:desde|entre|de) (?P<m>" + MONTH_RX + r")(?: de 20\d\d)?(?= y | a | hasta |\b)")
 GROUP_MARKERS = [  # subject phrases (folded); the order matters: 'las Isapres abiertas' is open, not system
     (r"(?:las |los |a las |de las |entre las )?(?:isapres |aseguradoras )?abiertas", "open"),
@@ -183,6 +193,44 @@ BASES = {
     "stock_mes_anterior": {"short": "variación sobre el stock del mes anterior",
                            "es": "variación sobre el stock del mes anterior", "required": False},
     "cotizantes": {"short": "cargas por cotizante", "es": "cargas por cotizante (no es un porcentaje)", "required": False},
+    # F4 GES
+    "beneficiarios_mismo_seguro": {
+        "short": "tasa bruta por 1.000 beneficiarios del mismo seguro",
+        "es": "tasa bruta: casos del seguro / beneficiarios promedio del mismo seguro en el trimestre × 1.000; sin ajuste "
+              "por edad: escribe 'por cada mil beneficiarios'",
+        "required": True,
+        "accept": r"beneficiari\w*",
+        "reject": r"poblacion\w*|habitantes|de ambos seguros|del sistema",
+    },
+    "casos_ambos_seguros": {
+        "short": "parte de los casos GES informados por Fonasa e Isapres",
+        "es": "casos del seguro / casos de Fonasa + Isapres del mismo trimestre; no es participación de mercado ni "
+              "de beneficiarios: escribe 'de los casos'",
+        "required": True,
+        "accept": r"de los casos|del total de casos|de ambos seguros",
+        "reject": r"beneficiari\w*|poblacion\w*|(?:del|de|el|al) mercado",
+    },
+    "casos_mismo_trimestre_anio_anterior": {"short": "variación frente al mismo trimestre del año anterior",
+                                            "es": "variación sobre los casos del mismo trimestre un año antes",
+                                            "required": False},
+    # F6 Boletín IP
+    "acreditados": {
+        "short": "parte de los prestadores acreditados",
+        "es": "prestadores con observaciones / prestadores acreditados al corte: escribe 'de los acreditados'",
+        "required": True,
+        "accept": r"(?:de|entre) los (?:prestadores )?acreditados",
+        "reject": r"solicitud\w*|tramit\w*",
+    },
+    "solicitudes_en_tramite": {
+        "short": "parte de las solicitudes de acreditación en tramitación",
+        "es": "solicitudes del sector / solicitudes en tramitación al corte: escribe 'de las solicitudes'",
+        "required": True,
+        "accept": r"(?:de|entre) las solicitudes",
+        "reject": r"(?:de|entre) los (?:prestadores )?acreditados",
+    },
+    "promedio_mensual_anio_anterior": {"short": "variación frente al promedio mensual del año anterior",
+                                       "es": "variación del promedio mensual del año sobre el promedio mensual del año anterior",
+                                       "required": False},
 }
 
 COPULA = r"(?:\s*,\s*|\s+)(?:(?:es|fue|era|sigue siendo|queda|quedo|se ubica como|se ubico como|como|ya es)\s+)?(?:el|la)\s+$"
@@ -338,6 +386,11 @@ def _period_ok(e: dict, ctx: dict) -> bool:
     if not ps:
         return False
     pm = {_month(p) for p in ps}
+    if kind == "quarter":  # one quarter's flow: the quarter must be named ('segundo trimestre'), never a lone month
+        return bool(months) and months <= pm and len(months) >= 2 and not ctx.get("yoy") and _year_ok(ps, years)
+    if kind == "quarter_yoy":  # same quarter vs. one year earlier: the quarter and year-on-year wording (or both years)
+        return (bool(months) and months <= pm and len(months) >= 2 and (bool(ctx.get("yoy")) or len(years) >= 2)
+                and _year_ok(ps, years))
     if ctx.get("window"):  # 'en doce meses': only an entry that spans exactly that window
         if kind in (None, "stock_at") or len(ps) < 2:
             return False
@@ -390,6 +443,8 @@ def _unit_ok(m: dict, e: dict) -> bool:
         return eu in ("share", "%")
     if u == "count":
         return eu == "count"
+    if u == "rate1000":
+        return eu == "per_1000"
     if u == "rank":
         return eu == "rank"
     if u == "approx":
@@ -494,7 +549,7 @@ def _clause_of(clauses: list[tuple[int, int]], pos: int) -> tuple[int, int]:
 
 
 def _period_ctx(f: str) -> dict:
-    return {"months": {i + 1 for i, mo in enumerate(MONTHS) if _w(mo).search(f)},
+    return {"months": {i + 1 for i, mo in enumerate(MONTHS) if _w(mo).search(f)}, "yoy": bool(YOY_RX.search(f)),
             "ytd_from": {MONTHS.index(m.group("m")) + 1 for m in YTD_FROM.finditer(f)},
             "ytd_generic": bool(YTD_GENERIC.search(f)), "window": 12 if WINDOW_RX.search(f) else None}
 
@@ -540,7 +595,7 @@ def _rank_kind(f: str, start: int, end: int) -> str | None:
 
 
 def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dict, package_years: set[int],
-                   package_months: set[tuple[int, int]]) -> dict:
+                   package_months: set[tuple[int, int]], group_markers: list | None = None) -> dict:
     """Mentions, period context and unmapped number-like tokens of one sentence."""
     text = unicodedata.normalize("NFKC", sentence)
     spans = insurer_spans(text, catalog, name_rx)
@@ -562,7 +617,7 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
     markers: list[tuple[int, int, str]] = [(a, b, f"insurer:{key_code.get(k) if key_code.get(k) is not None else k}")
                                            for a, b, k in spans]
     taken = [False] * len(f)
-    for rx, scope in GROUP_MARKERS:
+    for rx, scope in (group_markers or GROUP_MARKERS):
         for mm in _w(rx).finditer(f):
             if any(taken[mm.start():mm.end()]):
                 continue
@@ -604,7 +659,7 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
         ca, cb = _clause_of(clauses, a)
         local = _period_ctx(f[ca:cb])
         if local["months"] or local["ytd_from"] or local["ytd_generic"] or local["window"]:
-            return local
+            return {**local, "yoy": local["yoy"] or sentence_ctx["yoy"]}
         return sentence_ctx
 
     def take(a: int, b: int) -> bool:
@@ -667,6 +722,13 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
     word_mentions(rf"(?P<a>{num_word}) de cada (?P<b>{num_word})",
                   lambda mm: {"value": nval(mm.group("a")) / nval(mm.group("b")), "unit": "share", "tol_rel": WORD_TOL_REL}
                   if nval(mm.group("b")) else None)
+    # Crude rates per 1.000 beneficiaries ('4,1 casos por cada mil beneficiarios'): one figure, the 1.000 is the base.
+    for mm in RATE_RX.finditer(f):
+        if not take(mm.start(), mm.end()):
+            continue
+        value, dec = parse_num(mm.group("num"))
+        add(masked[mm.start():mm.end()], mm.start(), mm.end(), value=value, decimals=dec, unit="rate1000", kind="digit",
+            sign=None)
     # Digits (with optional scale and unit). Years first: a bare 19xx/20xx is a period mention.
     for mm in DIGIT_RX.finditer(f):
         num = mm.group("num")
@@ -819,7 +881,7 @@ def parse_sentence(sentence: str, *, catalog: list[dict], name_rx, key_code: dic
         superlatives.append({"text": masked[mm.start():mm.end()], "rank_kind": kind, "q": q, "subject": {bound[0][2]},
                              "period_ctx": period_ctx(mm.start())})
     ctx = {"entities": ents, "months": sentence_ctx["months"], "years": years, "ytd_from": sentence_ctx["ytd_from"],
-           "ytd_generic": sentence_ctx["ytd_generic"], "window": sentence_ctx["window"]}
+           "ytd_generic": sentence_ctx["ytd_generic"], "window": sentence_ctx["window"], "yoy": sentence_ctx["yoy"]}
     for m in mentions + superlatives:
         m["period_ctx"] = {**m["period_ctx"], "years": years}
     return {"mentions": mentions, "unmapped": unmapped, "errors": errors, "ctx": ctx, "insurer_spans": spans,
@@ -934,8 +996,12 @@ def check(text: str, *, pool: list[dict], ratios: list[dict], ranks: list[dict],
     return errors
 
 
-PERIOD_KIND_ES = {"month": "mes", "ytd": "desde enero (acumulado del año)", "interval": "entre cortes", "stock_at": "stock al cierre"}
-SCOPE_ES = {"system": "el sistema (todas las Isapres)", "open": "las Isapres abiertas", "closed": "las Isapres cerradas"}
+PERIOD_KIND_ES = {"month": "mes", "ytd": "desde enero (acumulado del año)", "interval": "entre cortes", "stock_at": "stock al cierre",
+                  "quarter": "un trimestre (nómbralo: 'en el segundo trimestre')",
+                  "quarter_yoy": "trimestre frente al mismo trimestre del año anterior"}
+SCOPE_ES = {"system": "el sistema (todas las Isapres)", "open": "las Isapres abiertas", "closed": "las Isapres cerradas",
+            "isapres": "las Isapres en conjunto (no Fonasa)", "insurer:fonasa": "Fonasa",
+            "public": "prestadores o solicitudes públicos", "private": "prestadores o solicitudes privados"}
 
 
 def describe(entry: dict, names: dict[Any, str]) -> dict:
@@ -948,7 +1014,7 @@ def describe(entry: dict, names: dict[Any, str]) -> dict:
     if entry.get("metric"):
         out["métrica"] = entry["metric"]
     scope = entry_scope(entry)
-    if scope.startswith("insurer:"):
+    if scope.startswith("insurer:") and scope != "insurer:fonasa":
         out["entidad"] = names.get(entry.get("entity"), entry.get("entity"))
     else:
         out["ámbito"] = SCOPE_ES.get(scope, scope)

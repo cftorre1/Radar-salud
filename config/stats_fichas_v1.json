@@ -558,48 +558,51 @@
     },
     "F4": {
       "slug": "f4_ges",
-      "label": "GES, CAEC y Ricarte Soto",
-      "status": "planned",
+      "label": "Casos GES",
+      "status": "active",
       "cadence": "trimestral",
       "series": [
-        "sis_casos_ges_trimestral",
-        "sis_caec"
+        "sis_casos_ges_trimestral"
       ],
-      "interim": "La tarjeta GES actual queda limitada al parser corregido (hoja del año en curso fijada + suma conciliada contra el total declarado); en FAIL, HOLD.",
+      "interim": "Reemplaza la tarjeta GES suelta solo cuando la ficha F4 está en PASS; mientras tanto la tarjeta sigue en HOLD (parser corregido).",
       "kpis": {
         "casos_ges": {
-          "formula": "Σ casos del trimestre, por seguro",
+          "formula": "Σ casos del trimestre por seguro; con hoja acumulada del año: corte(t) − corte(t−1) del mismo año (T1 = corte de marzo)",
           "denominator": null,
-          "period_rule": "Trimestre vs. mismo trimestre t−1 y 12 m móviles",
+          "period_rule": "Trimestre vs. mismo trimestre t−1 (a/a); nunca se suman cortes acumulados",
           "threshold": {
             "yoy_pct": 5.0
           },
           "pitfalls": [
-            "Fijar la hoja del año en curso y validar la suma contra el total declarado."
+            "Fijar la hoja del año en curso y validar la suma contra el total declarado.",
+            "Un corte acumulado menor que el anterior del mismo año es una falla de conciliación (HOLD)."
           ]
         },
         "tasa_uso": {
-          "formula": "casos / beneficiarios promedio × 1.000",
-          "denominator": "Beneficiarios del mismo seguro",
+          "formula": "casos del seguro en el trimestre / beneficiarios promedio del mismo seguro (3 cierres de mes) × 1.000",
+          "denominator": "Beneficiarios del mismo seguro: Isapre desde la cartera mensual F1; Fonasa no capturado → 'tasa no disponible'",
           "period_rule": "Trimestre a/a",
           "threshold": {
             "yoy_pct": 5.0
           },
           "pitfalls": [
-            "Tasa bruta: poblaciones Fonasa e Isapre con distinta edad."
-          ]
+            "Tasa bruta: poblaciones Fonasa e Isapre con distinta edad.",
+            "Nunca estimar beneficiarios Fonasa."
+          ],
+          "label": "Tasa bruta por 1.000 beneficiarios"
         },
         "top_problemas": {
           "formula": "Δ casos por problema",
           "denominator": "Casos del problema en t−1",
-          "period_rule": "Trimestre a/a",
+          "period_rule": "Mismo trimestre a/a; solo problemas presentes en ambos trimestres",
           "threshold": {
             "pct": 15.0,
             "min_cases": 500
           },
           "pitfalls": [
-            "Cambios de decreto GES generan saltos artificiales."
-          ]
+            "Cambios de decreto GES generan saltos artificiales: los problemas sin base comparable se marcan y no entran al ranking; la variación total se muestra también solo con problemas comparables."
+          ],
+          "min_cases_rule": "min_cases se aplica a los casos del problema en el trimestre base (denominador)"
         },
         "caec": {
           "formula": "Σ casos y costo anual",
@@ -608,9 +611,76 @@
           "threshold": {
             "pct": 10.0
           },
-          "pitfalls": []
+          "pitfalls": [],
+          "status": "pendiente: serie CAEC no capturada"
         }
-      }
+      },
+      "cadence_phrase": "se actualiza cada trimestre",
+      "primary_series": "sis_casos_ges_trimestral",
+      "release_page": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026/",
+      "source_name": "Superintendencia de Salud",
+      "scopes": [
+        "Isapres",
+        "Fonasa"
+      ],
+      "supersedes": {
+        "event_titles_prefix": [],
+        "stat_families": [
+          "ges"
+        ]
+      },
+      "calendar": {
+        "expected_release_interval_days": 92,
+        "late_tolerance_days": 45,
+        "source": "historial de releases SIS GES (dic-2025 publicada el 25-03-2026; mar-2026 el 10-07-2026; jun-2026 el 14-10-2026)"
+      },
+      "capture": {
+        "store": "data/stats_fichas/captures/ges_quarterly.json",
+        "parser": "ges_pinned_year_reconciled_v2",
+        "documents": "source_documents de las releases 'Estadística Trimestral de Casos GES' en data/history/superintendencia_signals.json"
+      },
+      "measure": {
+        "declared": "ytd",
+        "confirmed": false,
+        "confirmed_by": null,
+        "rule": "La hoja del año fijada se trata como casos acumulados desde enero solo si el encabezado de la planilla lo declara ('acumulado', 'enero a …') o si un revisor lo confirma aquí (confirmed: true, confirmed_by) tras abrir la planilla capturada. Sin eso: HOLD_RECONCILIATION measure_unconfirmed. 'Desde 2005' nunca se usa."
+      },
+      "decree_changes": [],
+      "decree_rule": "Cambios de decreto: la ficha marca los problemas presentes en un solo trimestre de la comparación a/a (detectado desde los datos). Las notas oficiales de decreto se agregan aquí ({'note': …}) solo con fuente; nunca se infieren.",
+      "headline_priority": [
+        "threshold_crossed",
+        "problem_growth",
+        "no_change"
+      ],
+      "templates": {
+        "kicker": "{label}",
+        "headline": {
+          "yoy": "Casos GES del {qlabel}: {total}, {yoy} frente al mismo trimestre del año anterior",
+          "no_yoy": "Casos GES del {qlabel}: {total} informados por Fonasa e Isapres"
+        },
+        "dek": "Fonasa informó {fonasa} casos y las Isapres {isapre}, el {share}% de los casos de ambos seguros.{rate_clause}",
+        "kicker_meta": "datos del {period_label} · publicado por la SIS el {published_label} · {cadence_phrase}",
+        "headline_rule": "Los casos son flujos del trimestre; las tasas son brutas y por beneficiarios del mismo seguro."
+      },
+      "tabs": [
+        {
+          "id": "totales",
+          "label": "Totales"
+        },
+        {
+          "id": "problemas",
+          "label": "Top problemas"
+        },
+        {
+          "id": "seguros",
+          "label": "Fonasa vs Isapre"
+        },
+        {
+          "id": "tendencia",
+          "label": "Tendencia trimestral"
+        }
+      ],
+      "builder_version": "f4_ges_v1"
     },
     "F5": {
       "slug": "f5_reclamos",
@@ -618,22 +688,130 @@
       "status": "planned",
       "cadence": "trimestral",
       "series": [
-        "sis_boletin_ip",
         "sis_fiscalizacion"
       ],
-      "kpis": {}
+      "kpis": {},
+      "note": "El Boletín IP pasó a F6 (fichas F4/F6, 29-oct-2026)."
     },
     "F6": {
       "slug": "f6_prestadores",
-      "label": "Prestadores: calidad y capacidad",
-      "status": "planned",
+      "label": "Prestadores: Boletín IP",
+      "status": "active",
       "cadence": "trimestral",
       "series": [
-        "sis_boletin_ip",
-        "sis_prestaciones",
-        "sis_egresos"
+        "sis_boletin_ip"
       ],
-      "kpis": {}
+      "kpis": {
+        "acreditados": {
+          "label": "Prestadores acreditados",
+          "kind": "stock",
+          "formula": "stock declarado al cierre del boletín",
+          "denominator": null,
+          "period_rule": "Stock al corte; vs. boletín anterior solo con ambos verificados; nunca se suman cortes",
+          "pitfalls": [
+            "Stock: no sumar boletines."
+          ]
+        },
+        "observaciones": {
+          "label": "% con observaciones",
+          "kind": "share",
+          "formula": "con observaciones / acreditados × 100",
+          "denominator": "Prestadores acreditados del mismo corte",
+          "period_rule": "Corte",
+          "pitfalls": []
+        },
+        "tramite": {
+          "label": "Solicitudes en tramitación",
+          "kind": "stock",
+          "formula": "stock declarado; privadas + públicas = total",
+          "denominator": "Solicitudes en tramitación (para el % por sector)",
+          "period_rule": "Corte",
+          "pitfalls": [
+            "La división pública/privada del stock acreditado no está verificada."
+          ]
+        },
+        "reclamos": {
+          "label": "Reclamos al mes",
+          "kind": "flow_average",
+          "formula": "promedio mensual declarado; Δ% = (prom t − prom año anterior) / prom año anterior × 100",
+          "denominator": "Promedio mensual del año anterior",
+          "period_rule": "Enero–mes del corte vs. año anterior completo; la variación informada (redondeada) debe calzar",
+          "pitfalls": [
+            "Promedio de un flujo: no es un stock."
+          ]
+        },
+        "mediacion": {
+          "label": "Mediadores inscritos",
+          "kind": "stock",
+          "formula": "stock declarado; solicitudes acumuladas desde 2019 aparte",
+          "denominator": null,
+          "period_rule": "Corte",
+          "pitfalls": [
+            "El acumulado de solicitudes es un flujo desde 2019: no se divide por mediadores."
+          ]
+        },
+        "rnpi": {
+          "label": "Títulos en el RNPI",
+          "kind": "stock",
+          "formula": "títulos inscritos declarados",
+          "denominator": null,
+          "period_rule": "Corte",
+          "pitfalls": [
+            "Títulos, no profesionales únicos."
+          ]
+        }
+      },
+      "cadence_phrase": "se actualiza cada trimestre",
+      "primary_series": "sis_boletin_ip",
+      "release_page": "https://www.superdesalud.gob.cl/biblioteca-digital/boletin-estadistico-informativo-ip-junio-2026/",
+      "source_name": "Superintendencia de Salud",
+      "scopes": [
+        "Prestadores"
+      ],
+      "supersedes": {
+        "event_titles_prefix": [],
+        "stat_families": [
+          "boletin_ip"
+        ]
+      },
+      "calendar": {
+        "expected_release_interval_days": 92,
+        "late_tolerance_days": 45,
+        "source": "historial Boletín IP (jun-2025 06-08-2025; sep-2025 05-11-2025; dic-2025 29-01-2026; mar-2026 29-04-2026; jun-2026 03-08-2026)"
+      },
+      "capture": {
+        "store": "data/stats_fichas/captures/boletin_ip.json",
+        "format": "PDF (4 documentos por boletín: acreditación, mediación, reclamos, RNPI)",
+        "figures": "config/statistical_analysis_verified_v1.json (lectura independiente) + presencia de cada cifra en el texto del PDF capturado"
+      },
+      "templates": {
+        "kicker": "{label}",
+        "headline": {
+          "default": "Boletín IP a {month_label}: {acreditados} prestadores acreditados y {tramite} solicitudes de acreditación en trámite"
+        },
+        "dek": "{rec_clause} El RNPI suma {titulos} títulos inscritos, que no son profesionales únicos.",
+        "kicker_meta": "datos a {period_label} · publicado por la SIS el {published_label} · {cadence_phrase}"
+      },
+      "tabs": [
+        {
+          "id": "acreditacion",
+          "label": "Acreditación"
+        },
+        {
+          "id": "mediacion",
+          "label": "Mediación"
+        },
+        {
+          "id": "reclamos",
+          "label": "Reclamos"
+        },
+        {
+          "id": "rnpi",
+          "label": "RNPI"
+        }
+      ],
+      "builder_version": "f6_boletin_ip_v1",
+      "note": "Dirección 28-oct: el Boletín IP (acreditación, mediación, reclamos, RNPI) vive en F6; F5 queda para fiscalización."
     },
     "F7": {
       "slug": "f7_financiamiento",

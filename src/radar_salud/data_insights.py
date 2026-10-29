@@ -115,6 +115,10 @@ def parse_ges_workbook(book_bytes:bytes,title:str)->dict:
         return {
             "family":"ges","status":"validated","parser":GES_PARSER,"sheet":ws.title,"period":period,
             "rows":len(observations),"reconciliation":reconciliation,
+            # F4 ficha (stats_ficha_f4): every reconciled row and the header texts that declare the measure.
+            "observations":observations,
+            "header":{"label":_norm(rows[hi][name_col]),"fonasa":_norm(rows[hi][fonasa]),"isapre":_norm(rows[hi][isapre]),
+                      "above":[_norm(v) for r in rows[max(0,hi-3):hi] for v in r if _norm(v)][:12]},
             "insights":[f"{largest['label']} registra el mayor número de casos GES informados por Fonasa e Isapres en la hoja {ws.title} del corte {period}; no se infiere prevalencia ni causalidad."],
             "evidence":{"header_row":hi+1,"fonasa_column":fonasa+1,"isapre_column":isapre+1,"label_column":name_col+1,
                         "aggregation":"rows reconciled to declared total","largest_row":largest["row"]},
