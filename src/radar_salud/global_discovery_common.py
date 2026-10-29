@@ -24,7 +24,9 @@ HOSTS = {"www.who.int", "who.int", "www.paho.org", "paho.org", "iris.paho.org"}
 FEED_HOSTS = {"kffhealthnews.org", "www.kffhealthnews.org", "www.ema.europa.eu", "www.fda.gov",
               # 28-oct: CDC (feed host tools.cdc.gov, links www.cdc.gov), NIH, Federal Register, ECDC, EC health, The Conversation.
               "tools.cdc.gov", "www.cdc.gov", "www.nih.gov", "www.federalregister.gov", "www.ecdc.europa.eu",
-              "health.ec.europa.eu", "ec.europa.eu", "theconversation.com"}
+              "health.ec.europa.eu", "ec.europa.eu", "theconversation.com",
+              # 28-oct (global-sources-more): GOV.UK organisation Atom feeds (DHSC, MHRA), OGL v3.0.
+              "www.gov.uk"}
 MONTHS = {name.lower(): number for number, names in enumerate([
     ("January", "Jan", "enero"), ("February", "Feb", "febrero"), ("March", "Mar", "marzo"),
     ("April", "Apr", "abril"), ("May", "mayo"), ("June", "Jun", "junio"),
@@ -121,10 +123,13 @@ class PublicRedirect(HTTPRedirectHandler):
         return redirected
 
 class CaptureClient:
-    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False, live_budget_seconds: float = 1800., hosts=None, accept: str = "text/html,application/json,application/xml"):
+    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False, live_budget_seconds: float = 1800., hosts=None, accept: str = "text/html,application/json,application/xml", robots_accept: str | None = None):
         self.directory, self.replay, self.delay = directory, replay, delay
         self.hosts = HOSTS if hosts is None else frozenset(hosts)
         self.accept = accept
+        # robots.txt is text/plain: a feed-only Accept header can earn an HTTP 406 from strict servers.
+        # None keeps the historical behaviour (same Accept as pages) for the WHO/PAHO collectors.
+        self.robots_accept = robots_accept
         directory.mkdir(parents=True, exist_ok=True)
         self.records, self.robots, self.network_requests = {}, {}, 0
         self._live_lock = RLock()
@@ -215,7 +220,7 @@ class CaptureClient:
             from urllib.parse import quote
             # Non-ASCII characters in a URL (e.g. an en dash in a WHO slug) are percent-encoded for
             # transport; the URL identity used for robots, evidence and dedup is unchanged.
-            request = Request(quote(url, safe=":/?&=%+#;,@!$()*[]~"), headers={"User-Agent": USER_AGENT, "Accept": self.accept})
+            request = Request(quote(url, safe=":/?&=%+#;,@!$()*[]~"), headers={"User-Agent": USER_AGENT, "Accept": (self.robots_accept or self.accept) if robots else self.accept})
             request._global_is_robots = robots
             request._global_redirect_chain = []
             try:
