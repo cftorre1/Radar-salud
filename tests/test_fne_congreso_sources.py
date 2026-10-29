@@ -312,3 +312,46 @@ def test_sources_catalog_and_freshness_policy_register_both():
     from radar_salud import engine_cli
     assert {fne.SLUG, cg.SLUG} <= set(engine_cli.DETERMINISTIC_SOURCES) & set(engine_cli.PUBLIC_DATA_SOURCES)
     assert engine_cli.FneScout is fne.FneScout and engine_cli.CongresoScout is cg.CongresoScout
+
+
+# --- review 28-oct-2026: loose health words and per-run cap -----------------------------
+
+@pytest.mark.parametrize("title,health", [
+    ("FNE aprueba adquisición de laboratorio clínico Bionet por parte de Achs", True),
+    ("FNE investiga adquisición de Laboratorios Farmacéuticos Andinos", True),
+    ("FNE publica estudio de mercado sobre medicamentos genéricos", True),
+    ("FNE aprueba compra de centros de diagnóstico por imágenes", True),
+    ("FNE aprueba adquisición de laboratorio de ensayos de materiales de construcción", False),
+    ("FNE presenta diagnóstico del mercado del transporte interurbano", False),
+    ("FNE investiga colusión en productos genéricos de limpieza", False),
+])
+def test_fne_loose_health_words_need_health_context(title, health):
+    from radar_salud.official_open import HEALTH_TERMS, fold, health_basis
+    assert bool(HEALTH_TERMS.search(fold(title).casefold())) is health
+    assert bool(health_basis(title)) is health  # the editorial-gate nexus fallback does not reopen them
+
+
+def test_fne_and_congreso_per_run_cap_is_configured_and_keeps_newest():
+    from radar_salud.models import RawItem
+    from radar_salud.official_open import cap_new_items
+    cfg = {s["slug"]: s for s in json.loads(Path("config/sources.json").read_text(encoding="utf-8"))}
+    for slug in (fne.SLUG, cg.SLUG):
+        assert 1 <= cfg[slug]["max_new_items_per_run"] <= 10
+    items = [RawItem(fne.SLUG, f"t{i}", f"https://www.fne.gob.cl/p{i}/", fne.SOURCE_NAME, "official",
+                     event_date=f"2026-10-{i + 1:02d}", raw_text="") for i in range(14)]
+    known = {items[0].url}
+    kept, deferred = cap_new_items(items, known, 10, lambda r: r.url)
+    assert items[0] in kept and len(kept) == 11 and len(deferred) == 3
+    assert {r.event_date for r in deferred} == {"2026-10-02", "2026-10-03", "2026-10-04"}  # oldest wait
+
+
+def test_engine_applies_the_cap_to_fne_and_congreso():
+    from radar_salud import engine_cli
+    assert set(engine_cli.NEW_ITEM_CAPPED_SOURCES) == {fne.SLUG, cg.SLUG}
+    src = Path(engine_cli.__file__).read_text(encoding="utf-8")
+    assert "cap_new_items(items,seen|set(queue.items),cap,fingerprint)" in src
+
+
+def test_senado_registry_note_records_missing_licence():
+    senado = next(s for s in REG.sources if s["id"] == "senado")
+    assert "licencia" in senado["licence"].lower() and senado["status"] != "enabled"

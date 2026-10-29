@@ -105,6 +105,25 @@ class RobotsGate:
         return self._policy(urlsplit(url).hostname or "").can_fetch(self.user_agent, url)
 
 
+# --- per-run cap ------------------------------------------------------------------
+
+DEFAULT_MAX_NEW_PER_RUN = 10  # config/sources.json: <slug>.max_new_items_per_run
+
+
+def cap_new_items(items, known, cap, key):
+    """Keep every already-known item and at most ``cap`` new ones, newest first.
+
+    ``known`` holds the keys already seen or queued; ``key(item)`` gives an item's
+    key. Deferred new items are not marked seen, so a later run (inside the source
+    window) picks them up. Returns ``(kept, deferred)``.
+    """
+    cap = max(int(cap), 0)
+    old = [i for i in items if key(i) in known]
+    new = sorted((i for i in items if key(i) not in known),
+                 key=lambda i: (str(getattr(i, "event_date", "") or ""), str(getattr(i, "url", ""))), reverse=True)
+    return old + new[:cap], new[cap:]
+
+
 # --- health scope ---------------------------------------------------------------
 
 def fold(text):
@@ -114,17 +133,29 @@ def fold(text):
 
 # Sector words for official titles that are not general press. "Sanitarias"
 # (water utilities) and "fibra óptica" (telecom) are deliberately absent: both
-# are frequent FNE markets that are not health.
+# are frequent FNE markets that are not health. "Laboratorio", "diagnóstico" and
+# "genérico" alone are not health either (laboratorios de ensayo de materiales,
+# "diagnóstico de mercado", "productos genéricos" de consumo): each needs health
+# context next to it (review of 28-oct-2026).
 HEALTH_TERMS = re.compile(
-    r"\bsalud\b|\bclinic|\bhospital|\bisapre|\bfonasa\b|\bmedic[oa]s?\b|\bmedicament|\bfarmac|\blaboratori|"
-    r"\bopticas\b|\bgrupo optico\b|\bdispositivos? medic|\binsumos? medic|\bdiagnostic|\bdental|\bodontol|"
+    r"\bsalud\b|\bclinic|\bhospital|\bisapre|\bfonasa\b|\bmedic[oa]s?\b|\bmedicament|\bfarmac|"
+    r"\blaboratorios? (clinic|farmaceutic|medic|biomedic|de analisis clinic|de diagnostic|de examenes)|"
+    r"\bopticas\b|\bgrupo optico\b|\bdispositivos? medic|\binsumos? medic|"
+    r"\b(centros?|examen(es)?|pruebas?|test|imagenes|servicios?) de diagnostic|"
+    r"\bdiagnostico (clinico|medico|por imagenes|de laboratorio)|\bimagenologia|\bdental|\bodontol|"
     r"\bmutual(idad|idades|es)?\b|\blicencias? medic|\bges\b|\bauge\b|\bricarte soto\b|\bcenabast\b|\bisp\b|"
     r"\banamed\b|\benfermer|\bpaciente|\bprestador(es)? de salud|\bseguros? de salud|\bseguro complementario|"
     r"\boncolog|\bdialisis|\bvacun|\bsalud mental|\bcancer\b|\bcompin\b|\bsuseso\b|\baccidentes del trabajo|"
     r"\benfermedades profesionales|\bsuperintendencia de salud\b|\bminsal\b|\bcuidados paliativos|\beutanasia|"
     r"\bsanatorio|\bbanmedica|\bredsalud|\bbupa\b|\bchristus\b|\bindisa\b|\binterclinica|\bsalcobrand|\bcruz verde\b|"
-    r"\bahumada\b|\bpreunic\b|\bsaval\b|\bchemopharma|\bsanitas\b|\brecalcine|\bandromaco|\bbiosimil|\bgeneric[oa]s?\b",
+    r"\bahumada\b|\bpreunic\b|\bsaval\b|\bchemopharma|\bsanitas\b|\brecalcine|\bandromaco|\bbiosimil|"
+    r"\b(medicamentos?|farmacos?|remedios?) generic|\bgenericos? (bioequivalente|farmaceutic)|\bbioequivalen",
     re.I)
+
+
+# The editorial gate's broad nexus list also contains these stems; they never
+# count on their own here (only through the contextual HEALTH_TERMS forms).
+_LOOSE_WORDS = re.compile(r"\b(laborator\w*|diagn[oó]stic\w*|gen[eé]ric\w*)", re.I)
 
 
 def health_basis(text, catalog=None):
@@ -138,7 +169,7 @@ def health_basis(text, catalog=None):
     m = HEALTH_TERMS.search(fold(text).casefold())
     if m:
         basis.append("term:" + m.group(0).strip())
-    elif title_has_health_nexus(str(text or "")):
+    elif title_has_health_nexus(_LOOSE_WORDS.sub(" ", str(text or ""))):
         basis.append("nexus")
     return basis
 

@@ -97,13 +97,19 @@ entre era es esa ese eso esta este esto estos estas fue fueron ha han hasta hay 
 muy no nos o otra otro para pero por porque que quien se sea segun ser si sin sobre su sus tambien tan tras
 tu un una uno unos unas y ya ano anos mes meses dia dias hoy ayer manana nuevo nueva nuevos nuevas primer
 primera tras busca buscan sera seran podria puede pueden chile chilena chileno pais millones mil us usd uf clp
+debido
 """.split())
 _STEM = 5
+# Official long forms that press headlines abbreviate: one token for both spellings.
+_ABBREVIATIONS = [(re.compile(r"\bsecretari[oa]s? regional(?:es)? ministerial(?:es)?\b"), "seremi")]
 
 
 def terms(text: str) -> set[str]:
     out = set()
-    for tok in re.findall(r"[a-z0-9ñ]+", fold(text).casefold()):
+    folded = fold(text).casefold()
+    for rx, short in _ABBREVIATIONS:
+        folded = rx.sub(short, folded)
+    for tok in re.findall(r"[a-z0-9ñ]+", folded):
         if len(tok) < 4 or tok in _STOP or tok.isdigit():
             continue
         out.add(tok[:_STEM])
@@ -333,6 +339,7 @@ class Match:
     conflicts: list[str]
     term_recall: float
     shared_amounts: list[str] = field(default_factory=list)
+    shared_places: list[str] = field(default_factory=list)
 
 
 class CorpusIndex:
@@ -441,32 +448,72 @@ def score_pair(p: Features, pdate: date | None, doc: Doc, d: Features, index: Co
     title_terms = index.distinctive(p.terms)
     shared_t = sorted(title_terms & d.terms)
     ent = 1.0 if shared_a else (len(shared_e) / len(p.entities) if p.entities else 0.0)
-    recall = len(shared_t) / len(title_terms) if title_terms else 0.0
+    shared_m = sorted(f"{u}{a:g}" for u, a in p.amounts if any(u == du and _same_amount(a, b) for du, b in d.amounts))
+    # The headline's key facts are its distinctive terms plus, when the piece states one,
+    # its figure: a stated amount counts once in the denominator, and once in the
+    # numerator only if the candidate states the same amount.
+    has_m = 1 if p.amounts else 0
+    denom = len(title_terms) + has_m
+    recall = (len(shared_t) + min(len(shared_m), 1)) / denom if denom else 0.0
     w = m.get("weights") or {"entity": 0.45, "terms": 0.35, "date": 0.2}
     score = w["entity"] * ent + w["terms"] * recall + w["date"] * (1 - gap / (window + 1))
-    shared_m = sorted(f"{u}{a:g}" for u, a in p.amounts if any(u == du and _same_amount(a, b) for du, b in d.amounts))
     return Match(doc=doc, score=round(score, 4), shared_entities=shared_e, shared_acts=shared_a,
                  shared_terms=shared_t, day_gap=gap, conflicts=conflicts(p, d), term_recall=round(recall, 3),
-                 shared_amounts=shared_m)
+                 shared_amounts=shared_m, shared_places=sorted(p.places & d.places))
+
+
+# Words that name a health-policy *topic*, not an event: "listas de espera",
+# "permiso", "licencias", "plan", "programa"... An issuer's own press room uses
+# them every week, so sharing them with a headline proves nothing (review of
+# 28-oct-2026: Colmed/Chomali on waiting lists matched a Minsal-cajas convenio;
+# a parental-leave bill matched "Ley Mila a cinco años"). Stored as 5-letter
+# stems, like ``terms``; config ``matching.generic_terms`` adds to this list.
+GENERIC_TERMS = frozenset(t[:_STEM] for t in """
+lista listas espera esperas tiempo tiempos permiso permisos licencia licencias salud sanitario sanitaria ministerio
+ministro ministra plan planes programa programas proyecto proyectos gobierno sistema servicio servicios medida
+medidas paciente pacientes hospital hospitales atencion medico medicos medica publico publica publicos politica
+politicas reforma anuncio anuncia anuncian avance avances balance cifras datos informe nacional regional
+""".split())
+
+
+def _generic(registry: Registry) -> set[str]:
+    return set(GENERIC_TERMS).union(*(terms(t) for t in registry.matching.get("generic_terms") or []))
+
+
+def specific_terms(match: Match, registry: Registry) -> list[str]:
+    """Shared distinctive terms that name the event, not the policy topic."""
+    generic = _generic(registry)
+    return [t for t in match.shared_terms if t not in generic]
 
 
 def _eligible(match: Match, registry: Registry) -> bool:
-    """Hard gates before any score: no conflicting fact, a shared actor, and event-specific words.
+    """Hard gates before any score, applied to *every* candidate (primary and extra related sources).
 
-    An issuer match alone ("src:sis": the title names the Superintendencia) is the
-    weakest anchor, so it needs two distinctive shared terms like any other pair;
-    two named catalog entities (e.g. Indisa and Achs) need one; a shared act ID needs none.
-    A shared amount (same unit, headline rounding tolerated) counts as one distinctive term.
+    * No conflicting fact, and title-term recall at least ``min_title_term_recall``.
+    * A shared act ID is enough.
+    * An issuer tag ("src:minsal": the title names the Ministerio) is the weakest
+      anchor. When it is the only shared entity, the pair also needs a shared named
+      entity outside the issuer (company, person, merging party), a shared place, a
+      shared amount or figure, or at least ``min_distinctive_terms`` shared terms that
+      are not on the generic stoplist (``GENERIC_TERMS``).
+    * Two named catalog entities (e.g. Indisa and Achs) need one distinctive term;
+      a single named entity needs ``min_distinctive_terms`` (an amount counts as one).
     """
     m = registry.matching
     if match.conflicts or match.term_recall < float(m.get("min_title_term_recall", 0.3)):
         return False
     if match.shared_acts:
         return True
-    named = [e for e in match.shared_entities if not e.startswith("src:")]
     if not match.shared_entities:
         return False
-    need = 1 if len(named) >= 2 else int(m.get("min_distinctive_terms", 2))
+    need_terms = int(m.get("min_distinctive_terms", 2))
+    named = [e for e in match.shared_entities if not e.startswith("src:")]
+    if not named:
+        # Issuer-only anchor: event-specific evidence is mandatory.
+        if match.shared_places or match.shared_amounts:
+            return True
+        return len(specific_terms(match, registry)) >= need_terms
+    need = 1 if len(named) >= 2 else need_terms
     return len(match.shared_terms) + min(len(match.shared_amounts), 1) >= need
 
 
@@ -623,7 +670,7 @@ def _related(x: Match) -> dict:
             "event_date": x.doc.event_date.isoformat() if x.doc.event_date else None,
             "score": x.score, "day_gap": x.day_gap,
             "matched_on": {"entities": x.shared_entities, "acts": x.shared_acts, "terms": x.shared_terms,
-                           "amounts": x.shared_amounts}}
+                           "amounts": x.shared_amounts, "places": x.shared_places}}
 
 
 def apply(cards: list[dict], root: Path | str | None = None, *, corpus: list[Doc] | None = None,

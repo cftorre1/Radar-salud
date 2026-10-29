@@ -44,6 +44,7 @@ from .fne_sources import FneScout, process_fne
 from .congreso_sources import CongresoScout, process_congreso
 DETERMINISTIC_SOURCES = ("datos_gob_cl", "cmf_health_ecosystem", "prestadores_data", "fne_competencia",
                          "congreso_tramitacion")
+NEW_ITEM_CAPPED_SOURCES = ("fne_competencia", "congreso_tramitacion")
 FIRST_DETECTED_SOURCES = ("bupa_chile", "clinicas_chile", "prestadores_data")
 from .date_basis import BASELINE_SOURCES as FIRST_DETECTION_BASELINE_SOURCES
 
@@ -265,6 +266,14 @@ def main():
                 (name in FISCALIZATION_SOURCES and (store.is_seen(legacy_fingerprint(raw)) or
                     (not raw.metadata.get('source_record_id') and canonical_url(raw.url) in published_urls) or
                     (canonical_url(raw.url), raw.metadata.get('source_record_id')) in published_records))}
+            if name in NEW_ITEM_CAPPED_SOURCES:
+                # Review 28-oct-2026: at most max_new_items_per_run new FNE/Congreso items per run.
+                from .official_open import DEFAULT_MAX_NEW_PER_RUN, cap_new_items
+                cap=int(cfgs[name].get("max_new_items_per_run",DEFAULT_MAX_NEW_PER_RUN))
+                items,deferred=cap_new_items(items,seen|set(queue.items),cap,fingerprint)
+                if name in discovery_details:
+                    discovery_details[name]["diagnostics"]["per_run_cap"]={"cap":cap,"deferred":len(deferred),
+                        "deferred_urls":[raw.url for raw in deferred]}
             checked_at=datetime.now(timezone.utc).isoformat()
             added=queue.discover(name,items,seen,last_discovered_at=watermarks.get(name),
                                  published_urls=published_history_urls(history))

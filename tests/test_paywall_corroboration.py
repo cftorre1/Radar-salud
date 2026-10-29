@@ -297,3 +297,107 @@ def test_judge_saying_no_or_failing_never_accepts(monkeypatch):
         raise RuntimeError("timeout")
     assert pc.corroborate(BIONET, idx, judge=boom)["status"] == "borderline_review"
     assert calls["record"][-1] == ("fast", False)
+
+
+# --- issuer-only anchors (independent review, 28-oct-2026) ---------------------------
+# Real records and real headlines. Each false match below shared only the issuer
+# tag (src:minsal) and topic words ("listas de espera", "padres", "permiso").
+
+SUSESO_PLAN_ENLACE = signal(
+    "https://www.suseso.gob.cl/605/w3-article-790601.html",
+    "Minsal y cajas de compensación firman convenio para reducir tiempos de espera de las listas No GES para "
+    "beneficiarios de Fonasa",
+    "El Minsal y las cajas de compensación Los Héroes, 18 de Septiembre y La Araucana firmaron un convenio para "
+    "incorporar sus redes de prestadores al Plan Enlace. La iniciativa identificará a afiliados de las cajas "
+    "pertenecientes a los grupos B, C y D de Fonasa que esperan atenciones No GES y les permitirá acceder a "
+    "prestaciones en convenio sin costo adicional. SUSESO impulsó la articulación del acuerdo, que se plantea como "
+    "una estrategia permanente para enfrentar una lista cercana a 3 millones de personas.",
+    "2026-09-23", "Superintendencia de Seguridad Social (SUSESO)")
+MINSAL_LEY_MILA = signal(
+    "https://www.minsal.cl/a-cinco-anos-de-su-promulgacion-minsal-muestra-avances-de-ley-mila-en-hospitales-e-"
+    "implementa-sello-en-recintos/",
+    "A cinco años de su promulgación: Minsal muestra avances de Ley Mila en hospitales e implementa sello en recintos",
+    "El Ministerio de Salud informó, a cinco años de la promulgación de la Ley Mila (Ley N.º 21.372), los resultados "
+    "de una evaluación aplicada a 182 establecimientos de los 29 servicios de salud. Según el reporte, 162 permiten "
+    "el acompañamiento de padres, madres o tutores de menores hospitalizados y el 100% de los establecimientos que "
+    "atienden partos facilita la compañía de una persona elegida por la mujer. Además, implementará un sello de "
+    "certificación para los recintos que cumplan los requisitos de la ley.",
+    "2026-10-16", "Ministerio de Salud")
+MINSAL_PERMISO_SUICIDIO = signal(
+    "https://www.minsal.cl/minsal-ingresa-proyecto-de-ley-que-otorga-a-padres-un-permiso-para-cuidar-a-sus-hijos-"
+    "tras-hospitalizacion-por-intento-de-suicidio/",
+    "Minsal ingresa proyecto de ley que otorga a padres un permiso para cuidar a sus hijos tras hospitalización por "
+    "intento de suicidio",
+    "El Ministerio de Salud ingresó al Congreso un proyecto que complementa la Ley Sanna y permitiría a madres, "
+    "padres y cuidadores legales afiliados al seguro obtener una licencia laboral para acompañar a hijos de entre 5 "
+    "y 17 años después de una hospitalización por intento de suicidio. El permiso sería de 15 días iniciales, "
+    "prorrogables por otros 15 días según evaluación médica, hasta 30 días por evento y por cada hijo o hija.",
+    "2026-10-15", "Ministerio de Salud")
+LT = "https://www.latercera.com/nacional/noticia/"
+CARD_6_COLMED = item(
+    "Colmed Santiago y expertos ponen paños fríos al optimismo del Minsal por avances en listas de espera",
+    "2026-09-22",
+    "La presidenta del gremio capitalino, Francisca Crispi, así como exautoridades de salud pública advierten que la "
+    "alerta sanitaria del ministerio para reducir las listas oncológicas tuvo un efecto parcial en el balance general "
+    "y que el problema sigue siendo estructural.",
+    LT + "colmed-santiago-y-expertos-ponen-panos-frios-al-optimismo-del-minsal-por-avances-en-listas-de-espera/")
+CARD_7_CHOMALI = item(
+    "Chomali por listas de espera: “Yo no esperaba que disminuyeran, lo que yo espero es que disminuyan los tiempos”",
+    "2026-09-23",
+    "La ministra de Salud respondió a los cuestionamientos por el estado de las listas de espera y defendió que la "
+    "estrategia del gobierno está enfocada en reducir los tiempos de espera y avanzar en cambios estructurales.",
+    LT + "chomali-por-listas-de-espera-yo-no-esperaba-que-disminuyeran-lo-que-yo-espero-es-que-disminuyan-los-tiempos/")
+CARD_9_PERMISO = item(
+    MINSAL_PERMISO_SUICIDIO["title"], "2026-10-15",
+    "La iniciativa complementa la Ley Sanna y beneficia a madres, padres y cuidadores afiliados al seguro, con hijos "
+    "entre 5 y 17 años. El permiso se extenderá hasta 30 días por cada evento y por cada hijo o hija, contados desde "
+    "el inicio de la primera licencia.",
+    LT + "minsal-ingresa-proyecto-de-ley-que-otorga-a-padres-un-permiso-para-cuidar-a-sus-hijos-tras-"
+         "hospitalizacion-por-intento-de-suicidio/")
+
+
+@pytest.mark.parametrize("card", [CARD_6_COLMED, CARD_7_CHOMALI], ids=["card6_colmed", "card7_chomali"])
+def test_waiting_list_commentary_does_not_match_plan_enlace_convenio(card):
+    ix = index([SUSESO_PLAN_ENLACE, MINSAL_LEY_MILA])
+    block = pc.corroborate(card, ix)
+    assert block["status"] == "none" and block["related_sources"] == []
+    # The pair is still scored: what rejects it is the issuer-only gate, not the date window.
+    doc = next(d for d in ix.docs if d.url == SUSESO_PLAN_ENLACE["source_url"])
+    feats = pc.features(f"{card['title']} {card['teaser']}", REG, catalog=ix.catalog)
+    feats.terms = pc.terms(card["title"])
+    mt = pc.score_pair(feats, card["date"], doc, doc.feat, ix)
+    assert mt is not None and [e for e in mt.shared_entities if not e.startswith("src:")] == []
+    assert not pc._eligible(mt, REG)
+
+
+def test_parental_leave_bill_keeps_its_own_record_and_drops_ley_mila_as_extra():
+    block = pc.corroborate(CARD_9_PERMISO, index([MINSAL_PERMISO_SUICIDIO, MINSAL_LEY_MILA, SUSESO_PLAN_ENLACE]))
+    assert block["status"] == "corroborated"
+    assert [r["url"] for r in block["related_sources"]] == [MINSAL_PERMISO_SUICIDIO["source_url"]]
+
+
+def test_issuer_only_anchor_needs_event_specific_evidence():
+    base = dict(doc=None, score=0.9, shared_entities=["src:minsal"], shared_acts=[], day_gap=0, conflicts=[],
+                term_recall=0.5)
+    generic = pc.Match(shared_terms=["esper", "lista", "tiemp", "permi"], **base)
+    assert pc.specific_terms(generic, REG) == [] and not pc._eligible(generic, REG)
+    assert not pc._eligible(pc.Match(shared_terms=["padre", "permi"], **base), REG)
+    assert pc._eligible(pc.Match(shared_terms=["eleam", "cuent"], **base), REG)
+    assert pc._eligible(pc.Match(shared_terms=["lista"], shared_amounts=["%12.3"], **base), REG)
+    assert pc._eligible(pc.Match(shared_terms=["lista"], shared_places=["Talca"], **base), REG)
+    named = {**base, "shared_entities": ["src:minsal", "cl:org:indisa", "cl:org:achs"]}
+    assert pc._eligible(pc.Match(shared_terms=["lista"], **named), REG)
+    acts = {**base, "shared_acts": ["ley:21372"]}
+    assert pc._eligible(pc.Match(shared_terms=[], **acts), REG)
+
+
+def test_title_recall_floor_is_at_least_the_code_default():
+    assert float(REG.matching["min_title_term_recall"]) >= 0.3
+    low = pc.Match(doc=None, score=0.9, shared_entities=["src:minsal", "cl:org:indisa", "cl:org:achs"],
+                   shared_acts=[], shared_terms=["bione"], day_gap=0, conflicts=[], term_recall=0.25)
+    assert not pc._eligible(low, REG)
+
+
+def test_seremi_headline_matches_the_official_long_form():
+    assert "serem" in pc.terms("Secretario Regional Ministerial de Salud de La Araucanía")
+    assert "debid" not in pc.terms("debido a declaraciones")
