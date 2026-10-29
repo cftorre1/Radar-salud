@@ -17,6 +17,8 @@ from radar_salud import paywall_corroboration as pc
 from radar_salud.source_rights import redact_signal, sha256_text
 
 REG = pc.Registry(pc.load_registry(Path(".")))
+# Publication is off in config (re-check 28-oct-2026); apply() tests that need the block opt in explicitly.
+REG_PUBLISH = pc.Registry({**pc.load_registry(Path(".")), "corroboration": {"publish_enabled": True}})
 DF = "https://www.df.cl/empresas/salud/"
 PULSO = "https://www.latercera.com/pulso/noticia/"
 
@@ -205,7 +207,7 @@ def test_apply_attaches_block_without_touching_public_fields():
                           "source_url": BIONET["url"], "event_date": "2026-09-02",
                           "public_teaser": BIONET["teaser"]})
     corpus = pc.build_corpus(Path("."), REG, signal_sets=[[CMF_BIONET]], queue={})
-    out = pc.apply([card, CMF_BIONET], Path("."), corpus=corpus, registry=REG)
+    out = pc.apply([card, CMF_BIONET], Path("."), corpus=corpus, registry=REG_PUBLISH)
     assert out[1] is CMF_BIONET and "corroboration" not in out[1]   # open cards untouched
     got = out[0]
     assert {k: v for k, v in got.items() if k != "corroboration"} == card
@@ -382,7 +384,8 @@ def test_issuer_only_anchor_needs_event_specific_evidence():
     generic = pc.Match(shared_terms=["esper", "lista", "tiemp", "permi"], **base)
     assert pc.specific_terms(generic, REG) == [] and not pc._eligible(generic, REG)
     assert not pc._eligible(pc.Match(shared_terms=["padre", "permi"], **base), REG)
-    assert pc._eligible(pc.Match(shared_terms=["eleam", "cuent"], **base), REG)
+    assert not pc._eligible(pc.Match(shared_terms=["eleam", "cuent"], **base), REG)  # 2 < 3 (re-check)
+    assert pc._eligible(pc.Match(shared_terms=["eleam", "cuent", "autor"], **base), REG)
     assert pc._eligible(pc.Match(shared_terms=["lista"], shared_amounts=["%12.3"], **base), REG)
     assert pc._eligible(pc.Match(shared_terms=["lista"], shared_places=["Talca"], **base), REG)
     named = {**base, "shared_entities": ["src:minsal", "cl:org:indisa", "cl:org:achs"]}
@@ -401,3 +404,102 @@ def test_title_recall_floor_is_at_least_the_code_default():
 def test_seremi_headline_matches_the_official_long_form():
     assert "serem" in pc.terms("Secretario Regional Ministerial de Salud de La Araucanía")
     assert "debid" not in pc.terms("debido a declaraciones")
+
+
+# --- re-check 28-oct-2026: publication off, and four more false pairs -------------------
+
+def test_publication_is_off_and_no_card_gets_corroboration_fields():
+    assert REG.raw["corroboration"]["publish_enabled"] is False and not pc.publish_enabled(REG)
+    card = redact_signal({"title": BIONET["title"], "source_name": "Pulso / La Tercera",
+                          "source_url": BIONET["url"], "event_date": "2026-09-02",
+                          "public_teaser": BIONET["teaser"]})
+    stale = {**card, "corroboration": {"status": "corroborated", "what": [], "related_sources": []}}
+    corpus = pc.build_corpus(Path("."), REG, signal_sets=[[CMF_BIONET]], queue={})
+    # The matcher itself still finds the pair (that is what the audit reports) ...
+    assert pc.corroborate(BIONET, index([CMF_BIONET]))["status"] == "corroborated"
+    # ... but the export attaches nothing and strips any stale block; "Qué pasó" is untouched.
+    out = pc.apply([card, stale, CMF_BIONET], Path("."), corpus=corpus)
+    assert all("corroboration" not in c for c in out)
+    assert out[0] == card and out[1] == card and out[0]["what_happened"] == card["what_happened"]
+    snapshot = json.loads(Path("web/data/radar_today.json").read_text(encoding="utf-8"))
+    assert not any("corroboration" in c for c in snapshot["signals"])
+
+
+MINSAL_SARAMPION = signal(
+    "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-contra-el-sarampion/",
+    "Minsal buscó y vacunó a más de 44 mil niños y niñas contra el sarampión y llama a vacunar a quienes tienen su "
+    "esquema pendiente",
+    "El Ministerio de Salud informó que la búsqueda activa permitió vacunar a más de 44 mil niños y niñas contra el "
+    "sarampión; persisten niños con esquema pendiente.", "2026-10-28", "Ministerio de Salud")
+
+
+def test_influenza_piece_is_not_corroborated_by_measles_campaign():
+    flu = item("Minsal dice que 44 mil niños aún no se vacunan contra la influenza", "2026-10-28")
+    assert pc.corroborate(flu, index([MINSAL_SARAMPION]))["status"] == "none"
+    assert "condition" in pc.conflicts(pc.features(flu["title"], REG), pc.features(MINSAL_SARAMPION["title"], REG))
+
+
+def test_suseso_mental_health_study_is_not_corroborated_by_circular_3929():
+    study = item("Salud mental en educación: Suseso publica estudio sobre procedimientos estandarizados para "
+                 "calificar enfermedades profesionales", "2026-10-05")
+    circular = signal("https://www.suseso.gob.cl/612/w3-article-791706.html", "Circular 3929",
+                      "La SUSESO publicó la Circular 3929, vigente desde su publicación, que modifica el Compendio de "
+                      "Normas del Seguro Social de la Ley N°16.744. La circular incorpora asistencia técnica para "
+                      "prevenir acoso laboral, acoso sexual y violencia en el trabajo en centros educativos; aborda "
+                      "aspectos de la calificación del origen de patologías de salud mental.", "2026-10-08",
+                      "Superintendencia de Seguridad Social (SUSESO)")
+    ix = index([circular])
+    assert pc.corroborate(study, ix)["status"] == "none"
+    feats = pc.features(study["title"], REG, catalog=ix.catalog)
+    mt = pc.score_pair(feats, study["date"], ix.docs[0], ix.docs[0].feat, ix)
+    assert [e for e in mt.shared_entities if not e.startswith("src:")] == []
+    assert len(pc.specific_terms(mt, REG)) < 3 and not pc._eligible(mt, REG)
+    assert int(REG.matching["min_issuer_only_terms"]) >= 3
+
+
+def _ges(month):
+    return signal("https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-"
+                  f"fonasa-y-sistema-isapre-a-{month}-2025/",
+                  f"Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema Isapre – a {month} 2025",
+                  f"La Superintendencia actualizó a {month} 2025 los casos y tasas de uso GES de Fonasa e Isapres por "
+                  "problema de salud.", "2025-10-03", "Superintendencia de Salud")
+
+
+def test_ges_reports_of_different_quarters_do_not_corroborate_each_other():
+    june, march = _ges("junio"), _ges("marzo")
+    piece = item(june["title"], "2025-10-03", june["what_happened"])
+    block = pc.corroborate(piece, index([march]))
+    assert block["status"] == "none"
+    assert "period:month" in pc.conflicts(pc.features(june["title"], REG), pc.features(march["title"], REG))
+    assert pc.corroborate(piece, index([march, june]))["related_sources"][0]["url"] == june["source_url"]
+    assert "period:quarter" in pc.conflicts(pc.features("Informe del primer trimestre 2025", REG),
+                                            pc.features("Informe del tercer trimestre 2025", REG))
+
+
+DO = "https://www.diariooficial.interior.gob.cl/publicaciones/2026/09/02/44540/01/"
+DO_CP_20192 = signal(
+    DO + "2863854.pdf",
+    "Resolución exenta número CP 20.192, de 2026.- Declara zona de riesgo sanitario la comuna de Renaico Ver PDF "
+    "(CVE-2862808) Instituto de Salud Pública Extracto de resolución exenta número 4.011, de 2026.- Aprueba "
+    "lineamientos y exigencias para productos farmacéuticos peligrosos",
+    "Resolución exenta número CP 20.192, de 2026.- Declara zona de riesgo sanitario la comuna de Renaico. Instituto "
+    "de Salud Pública Extracto de resolución exenta número 4.011, de 2026.- Aprueba lineamientos y exigencias para "
+    "productos farmacéuticos peligrosos.", "2026-09-02", "Diario Oficial")
+DO_ISP_4011 = signal(
+    DO + "2863853.pdf",
+    "Instituto de Salud Pública Extracto de resolución exenta número 4.011, de 2026.- Aprueba lineamientos y "
+    "exigencias para productos farmacéuticos peligrosos",
+    "Instituto de Salud Pública Extracto de resolución exenta número 4.011, de 2026.- Aprueba lineamientos y "
+    "exigencias para productos farmacéuticos peligrosos.", "2026-09-02", "Diario Oficial")
+
+
+def test_numero_act_ids_are_parsed_and_isp_4011_does_not_match_cp_20192():
+    assert pc.act_list(DO_CP_20192["title"])[:2] == ["resolucion:20192", "resolucion:4011"]
+    assert pc.act_ids("Ley número 21.809") == {"ley:21809"}
+    isp = item("ISP aprueba lineamientos para productos farmacéuticos peligrosos (resolución exenta número 4.011)",
+               "2026-09-02")
+    assert "act_id" in pc.conflicts(pc.features(isp["title"], REG), pc.features(DO_CP_20192["title"], REG))
+    block = pc.corroborate(isp, index([DO_CP_20192]))
+    assert block["status"] == "none"
+    block = pc.corroborate(isp, index([DO_CP_20192, DO_ISP_4011]))
+    assert [r["url"] for r in block["related_sources"]] == [DO_ISP_4011["source_url"]]

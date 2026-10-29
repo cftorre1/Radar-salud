@@ -117,12 +117,19 @@ def terms(text: str) -> set[str]:
 
 
 _ACT = re.compile(r"\b(resoluci[oó]n exenta|res\.? ?ex\.?|resoluci[oó]n|circular|oficio|ord\.?|decreto|dictamen|"
-                  r"ley|bolet[ií]n)\s*(?:[a-z]{1,4}\s*/\s*)?(?:n[°ºo.]?\s*)?(\d[\d.\-]*\d|\d)", re.I)
+                  r"ley|bolet[ií]n)\s*(?:[a-z]{1,4}\s*/\s*)?"
+                  # "N° 4.011", "número 4.011", "nro. 4011", and the Diario Oficial's "número CP 20.192"
+                  r"(?:(?:numero|nro\.?|n[°ºo.]?)\s*(?:(?-i:[A-Z]{1,3})\s+)?)?(\d[\d.\-]*\d|\d)", re.I)
 _ACT_KIND = {"ord": "oficio", "boletin": "boletin"}
 
 
 def act_ids(text: str) -> set[str]:
-    out = set()
+    return set(act_list(text))
+
+
+def act_list(text: str) -> list[str]:
+    """Act IDs in order of appearance (the first one in a record's title is its own act)."""
+    out: list[str] = []
     for kind, num in _ACT.findall(fold(text)):
         k = re.sub(r"[^a-z ]", "", kind.casefold()).strip()
         k = "resolucion" if k.startswith("res") else _ACT_KIND.get(k, k.split(" ")[0])
@@ -131,8 +138,45 @@ def act_ids(text: str) -> set[str]:
         # "ley 2026" or a 1-2 digit "ley 5" is not an act id; laws in force are 5 digits (21.xxx)
         if k == "ley" and len(n) != 5:
             continue
-        out.add(f"{k}:{n}")
+        if f"{k}:{n}" not in out:
+            out.append(f"{k}:{n}")
     return out
+
+
+# Diseases and conditions: a piece about influenza is not corroborated by one about measles.
+_CONDITIONS = {
+    "influenza": r"influenza|gripe", "sarampion": r"sarampion", "covid": r"covid|sars.?cov|coronavirus",
+    "vrs": r"vrs|virus respiratorio sincicial|sincicial", "dengue": r"dengue", "listeria": r"listeri\w*",
+    "hepatitis": r"hepatitis", "tuberculosis": r"tuberculosis", "vih": r"vih|sida", "coqueluche": r"coqueluche|tos convulsiva",
+    "varicela": r"varicela", "rabia": r"rabia", "hantavirus": r"hanta\w*", "mpox": r"mpox|viruela del mono|viruela simica",
+    "polio": r"polio\w*", "meningitis": r"meningitis|meningococ\w*", "neumococo": r"neumococ\w*",
+    "salmonella": r"salmonel\w*", "chikungunya": r"chikungunya", "zika": r"zika", "fiebre amarilla": r"fiebre amarilla",
+}
+_CONDITION_RX = {k: re.compile(r"\b(?:" + v + r")\b") for k, v in _CONDITIONS.items()}
+
+
+def conditions(text: str) -> set[str]:
+    folded = fold(text).casefold()
+    return {k for k, rx in _CONDITION_RX.items() if rx.search(folded)}
+
+
+# Reporting periods: "a junio 2025" and "a marzo 2025" are different reports.
+_MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
+           "noviembre", "diciembre"]
+_ORD = {"primer": 1, "primero": 1, "segundo": 2, "tercer": 3, "tercero": 3, "cuarto": 4}
+_Q = re.compile(r"\b(primer|primero|segundo|tercer|tercero|cuarto) trimestre\b|\b([1-4])\s?(?:t|q|er trimestre|do trimestre|"
+                r"to trimestre)\b|\b(?:t|q)([1-4])\b")
+
+
+def periods(text: str) -> dict[str, set]:
+    """{"year": {...}, "month": {...}, "quarter": {...}} named in the text."""
+    folded = fold(text).casefold()
+    years = {int(y) for y in re.findall(r"(?<![\d.,])((?:19|20)\d{2})(?![\d.,]\d)", folded)}
+    months = {i + 1 for i, m in enumerate(_MONTHS) if re.search(r"\b" + m + r"\b", folded)}
+    quarters = set()
+    for word, num, num2 in _Q.findall(folded):
+        quarters.add(_ORD[word] if word else int(num or num2))
+    return {"year": years, "month": months, "quarter": quarters}
 
 
 _SCALE = {"mil millones": 1e9, "millones": 1e6, "millon": 1e6, "mm": 1e6, "mil": 1e3}
@@ -178,6 +222,9 @@ class Features:
     places: set[str] = field(default_factory=set)
     terms: set[str] = field(default_factory=set)
     verbs: set[str] = field(default_factory=set)
+    primary_act: str | None = None
+    conditions: set[str] = field(default_factory=set)
+    periods: dict = field(default_factory=dict)
 
 
 def _mask_entities(text: str, catalog) -> str:
@@ -203,8 +250,10 @@ def features(text: str, registry: Registry, own_source: dict | None = None, cata
             ents.add("src:" + sid)
     if own_source is not None and own_source.get("issuer_patterns"):
         ents.add("src:" + own_source["id"])
-    return Features(entities=ents, acts=act_ids(text), amounts=amounts(text), places=places(text, registry, catalog),
-                    terms=terms(text), verbs=_verbs(text))
+    acts = act_list(text)
+    return Features(entities=ents, acts=set(acts), amounts=amounts(text), places=places(text, registry, catalog),
+                    terms=terms(text), verbs=_verbs(text), primary_act=acts[0] if acts else None,
+                    conditions=conditions(text), periods=periods(text))
 
 
 # --- corpus -----------------------------------------------------------------
@@ -423,6 +472,16 @@ def conflicts(p: Features, d: Features) -> list[str]:
     if any(not ({a for a in p.acts if a.startswith(k + ":")} & {a for a in d.acts if a.startswith(k + ":")})
            for k in kinds):
         out.append("act_id")
+    # A record's own act is the first one it names (Diario Oficial titles run on into the next act):
+    # "resolución número CP 20.192 ... resolución número 4.011" is act 20.192, not 4.011.
+    elif d.primary_act and d.primary_act.split(":")[0] in kinds and d.primary_act not in p.acts:
+        out.append("act_id")
+    if p.conditions and d.conditions and not (p.conditions & d.conditions):
+        out.append("condition")
+    for kind in ("year", "quarter", "month"):
+        a, b = (p.periods or {}).get(kind) or set(), (d.periods or {}).get(kind) or set()
+        if a and b and not (a & b):
+            out.append(f"period:{kind}")
     for unit, value in sorted(p.amounts):
         same_unit = {v for u, v in d.amounts if u == unit}
         if same_unit and not any(_same_amount(value, v) for v in same_unit):
@@ -444,7 +503,7 @@ def score_pair(p: Features, pdate: date | None, doc: Doc, d: Features, index: Co
     if gap > window:
         return None
     shared_e = sorted(p.entities & d.entities)
-    shared_a = sorted(p.acts & d.acts)
+    shared_a = sorted(p.acts & ({d.primary_act} if d.primary_act else d.acts))
     title_terms = index.distinctive(p.terms)
     shared_t = sorted(title_terms & d.terms)
     ent = 1.0 if shared_a else (len(shared_e) / len(p.entities) if p.entities else 0.0)
@@ -473,6 +532,7 @@ lista listas espera esperas tiempo tiempos permiso permisos licencia licencias s
 ministro ministra plan planes programa programas proyecto proyectos gobierno sistema servicio servicios medida
 medidas paciente pacientes hospital hospitales atencion medico medicos medica publico publica publicos politica
 politicas reforma anuncio anuncia anuncian avance avances balance cifras datos informe nacional regional
+mental calificacion calificar enfermedad enfermedades
 """.split())
 
 
@@ -494,7 +554,7 @@ def _eligible(match: Match, registry: Registry) -> bool:
     * An issuer tag ("src:minsal": the title names the Ministerio) is the weakest
       anchor. When it is the only shared entity, the pair also needs a shared named
       entity outside the issuer (company, person, merging party), a shared place, a
-      shared amount or figure, or at least ``min_distinctive_terms`` shared terms that
+      shared amount or figure, or at least ``min_issuer_only_terms`` (3) shared terms that
       are not on the generic stoplist (``GENERIC_TERMS``).
     * Two named catalog entities (e.g. Indisa and Achs) need one distinctive term;
       a single named entity needs ``min_distinctive_terms`` (an amount counts as one).
@@ -512,7 +572,7 @@ def _eligible(match: Match, registry: Registry) -> bool:
         # Issuer-only anchor: event-specific evidence is mandatory.
         if match.shared_places or match.shared_amounts:
             return True
-        return len(specific_terms(match, registry)) >= need_terms
+        return len(specific_terms(match, registry)) >= int(m.get("min_issuer_only_terms", 3))
     need = 1 if len(named) >= 2 else need_terms
     return len(match.shared_terms) + min(len(match.shared_amounts), 1) >= need
 
@@ -673,6 +733,11 @@ def _related(x: Match) -> dict:
                            "amounts": x.shared_amounts, "places": x.shared_places}}
 
 
+def publish_enabled(registry: Registry) -> bool:
+    """config/corroboration_sources.json ``corroboration.publish_enabled`` (default False)."""
+    return (registry.raw.get("corroboration") or {}).get("publish_enabled") is True
+
+
 def apply(cards: list[dict], root: Path | str | None = None, *, corpus: list[Doc] | None = None,
           registry: Registry | None = None, judge: Judge | None = None, history: Iterable[dict] = ()) -> list[dict]:
     """Attach ``corroboration`` to thin paywalled cards. Other cards are returned unchanged.
@@ -682,6 +747,10 @@ def apply(cards: list[dict], root: Path | str | None = None, *, corpus: list[Doc
     """
     base = Path(root) if root else project_root()
     registry = registry or Registry(load_registry(base))
+    if not publish_enabled(registry):
+        # Re-check 28-oct-2026: deterministic matching still produced false pairs. The matcher keeps
+        # running for the audit (scripts/paywall_corroboration_report.py); cards get nothing.
+        return [{k: v for k, v in c.items() if k != "corroboration"} for c in cards]
     targets = [(i, paywalled_item(c)) for i, c in enumerate(cards)]
     targets = [(i, it) for i, it in targets if it and is_thin(it, registry)]
     if not targets:

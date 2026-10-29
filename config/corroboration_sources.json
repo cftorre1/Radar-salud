@@ -471,6 +471,10 @@
       "reevaluate_after": "2027-01-31"
     }
   ],
+  "corroboration": {
+    "publish_enabled": false,
+    "note": "Re-chequeo 28-oct-2026: el emparejamiento determinista aún produjo corroboraciones falsas (influenza/sarampión, estudio SUSESO/Circular 3929, informes GES de distinto trimestre, resolución ISP 4.011/CP 20.192). Ruta conservadora: el matcher corre y escribe data/audits/paywall_corroboration_*.json, pero la exportación no adjunta nada a las tarjetas y 'Qué pasó' queda como hoy. Activar requiere decisión de Dirección tras revisar la auditoría."
+  },
   "matching": {
     "window_days": 7,
     "accept_score": 0.62,
@@ -478,8 +482,9 @@
     "weights": {"entity": 0.45, "terms": 0.35, "date": 0.2},
     "min_title_term_recall": 0.3,
     "min_distinctive_terms": 2,
+    "min_issuer_only_terms": 3,
     "generic_terms": ["lista de espera", "tiempos de espera", "permiso", "licencia médica", "salud", "ministerio", "plan", "programa", "proyecto de ley"],
-    "generic_terms_note": "Revisión 28-oct-2026: palabras de tema, no de evento. Si la única entidad compartida es el emisor (src:minsal, src:suseso, src:sis...), el par exige además una entidad nombrada o lugar compartido, un ID de acto, una cifra compartida, o al menos min_distinctive_terms términos fuera de esta lista (se suman a GENERIC_TERMS en paywall_corroboration.py). Aplica a la fuente principal y a cada fuente relacionada adicional. min_title_term_recall sube de 0.2 a 0.3 (default del código).",
+    "generic_terms_note": "Revisión 28-oct-2026: palabras de tema, no de evento. Si la única entidad compartida es el emisor (src:minsal, src:suseso, src:sis...), el par exige además una entidad nombrada o lugar compartido, un ID de acto, una cifra compartida, o al menos min_issuer_only_terms (3, re-chequeo 28-oct-2026) términos fuera de esta lista (se suman a GENERIC_TERMS en paywall_corroboration.py). Aplica a la fuente principal y a cada fuente relacionada adicional. min_title_term_recall sube de 0.2 a 0.3 (default del código).",
     "distinctive_max_df": 0.02,
     "distinctive_min_count": 5,
     "thin_teaser_characters": 200,
