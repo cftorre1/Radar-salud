@@ -219,20 +219,25 @@ def test_apply_attaches_block_without_touching_public_fields():
 def test_ui_renders_attribution_original_source_and_related_sources():
     js = Path("web/app.js").read_text(encoding="utf-8")
     pick = lambda name: re.search(r"^(?:const|function) " + name + r"\b.*$", js, re.M).group(0)
-    script = "\n".join([pick("esc"), pick("arr"), pick("fmtDate"), pick("corroborationBlock")]) + """
+    script = "\n".join([pick("esc"), pick("arr"), pick("fmtDate"), pick("corroboration"), pick("corrUrlOk"),
+                        pick("corroborationWhat"), pick("corroborationRelated")]) + """
 const card={paywalled:true,corroboration:{status:'corroborated',original_label:'Fuente original: Pulso (contenido para suscriptores)',
  what:[{text:'INDISA aceptó oferta de ACHS.',attribution:'la CMF (hecho esencial)',source_url:'https://www.cmfchile.cl/a'},
        {text:'<script>x</script>',attribution:'nadie',source_url:'javascript:alert(1)'}],
  related_sources:[{title:'INSTITUTO DE DIAGNOSTICO S.A.: hecho esencial',source_name:'CMF',url:'https://www.cmfchile.cl/a',event_date:'2026-09-02'}]}};
-console.log(JSON.stringify({ok:corroborationBlock(card),open:corroborationBlock({...card,paywalled:false}),
- none:corroborationBlock({paywalled:true,corroboration:{status:'none',what:[],related_sources:[]}})}));
+const both=c=>corroborationWhat(c)+corroborationRelated(c);
+console.log(JSON.stringify({what:corroborationWhat(card),rel:corroborationRelated(card),open:both({...card,paywalled:false}),
+ none:both({paywalled:true,corroboration:{status:'none',what:[],related_sources:[]}})}));
 """
     out = json.loads(subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True).stdout)
-    html = out["ok"]
-    assert "<h3>Qué pasó</h3>" in html
-    assert "Según la CMF (hecho esencial): INDISA aceptó oferta de ACHS." in html
+    # Option B (staging #90): the attributed sentences join the ficha's own "Qué pasó" section and the related
+    # sources join its "Fuentes" section; "Fuente original" and the subscriber note come from originalLink/
+    # paywallNote (see tests/web.test.cjs), not from a separate block.
+    html = out["what"] + out["rel"]
+    assert "<h3" not in out["what"] and "Fuentes relacionadas" not in out["what"]
+    assert "Según la CMF (hecho esencial): INDISA aceptó oferta de ACHS." in out["what"]
     assert 'href="https://www.cmfchile.cl/a"' in html
-    assert "Fuente original: Pulso (contenido para suscriptores)" in html and "Fuentes relacionadas" in html
+    assert "Fuentes relacionadas" in out["rel"]
     assert "javascript:" not in html and "<script>" not in html and "nadie" not in html
     assert out["open"] == "" and out["none"] == ""
 

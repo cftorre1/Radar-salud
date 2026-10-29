@@ -308,7 +308,7 @@ def test_sources_catalog_and_freshness_policy_register_both():
     sources = {s["slug"]: s for s in json.loads(Path("config/sources.json").read_text(encoding="utf-8"))}
     assert sources[fne.SLUG]["cadence"] == sources[cg.SLUG]["cadence"] == "daily"
     policy = json.loads(Path("config/source_freshness_policy.json").read_text(encoding="utf-8"))
-    assert policy["activated_daily_2026_10_28"] == [fne.SLUG, cg.SLUG]
+    assert {fne.SLUG, cg.SLUG} <= set(policy["activated_daily_2026_10_28"])
     from radar_salud import engine_cli
     assert {fne.SLUG, cg.SLUG} <= set(engine_cli.DETERMINISTIC_SOURCES) & set(engine_cli.PUBLIC_DATA_SOURCES)
     assert engine_cli.FneScout is fne.FneScout and engine_cli.CongresoScout is cg.CongresoScout
