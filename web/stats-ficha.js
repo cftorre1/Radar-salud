@@ -136,10 +136,11 @@
  const temaHash=(sig,id)=>(sig?`#${encodeURIComponent(sig)}&`:'#')+'tema='+id;
  function topics(f,o={}){
   const ts=arr(f.tabs).filter(t=>t&&t.label),N=ts.length,base=`sf${++seq}`;
+  // A pending topic shows 'pendiente' once in the index, in its sparkline slot (mockup); the picker list keeps the badge.
   const pend=t=>t.status==='pendiente'?'<span class="sf-pending">pendiente</span>':'';
   const ids=ts.map((t,i)=>String(t.id||i));
   const index=`<section class="sf-index" data-sf-view="index" aria-label="Temas de la ficha"><div class="sf-index-h">En esta ficha <span>${N} temas · toca para abrir</span></div>`+
-   ts.map((t,i)=>`<div class="sf-item"><a class="sf-row" href="${esc(temaHash(o.shareId,ids[i]))}" data-sf-row="${i}"><span class="sf-row-txt"><span class="sf-row-label">${esc(t.label)}${pend(t)}</span><span class="sf-row-line">${esc(indexLine(t))}</span></span>${spark(t)}<span class="sf-go">${I.right}</span></a></div>`).join('')+`</section>`;
+   ts.map((t,i)=>`<div class="sf-item"><a class="sf-row" href="${esc(temaHash(o.shareId,ids[i]))}" data-sf-row="${i}"><span class="sf-row-txt"><span class="sf-row-label">${esc(t.label)}</span><span class="sf-row-line">${esc(indexLine(t))}</span></span>${spark(t)}<span class="sf-go">${I.right}</span></a></div>`).join('')+`</section>`;
   const opts=`<li role="option" id="${base}-o-all" class="sf-opt sf-opt-all" data-sf-opt="-1" aria-selected="false"><span class="sf-opt-n">${I.grid}</span><span class="sf-opt-txt"><span class="sf-opt-label">Todos los temas</span><span class="sf-opt-line">Volver al índice de la ficha</span></span></li>`+
    ts.map((t,i)=>`<li role="option" id="${base}-o${i}" class="sf-opt" data-sf-opt="${i}" aria-selected="${i===0}"><span class="sf-opt-n">${i+1}</span><span class="sf-opt-txt"><span class="sf-opt-label">${esc(t.label)}${pend(t)}</span><span class="sf-opt-line">${esc(indexLine(t))}</span></span></li>`).join('');
   const topic=`<section class="sf-topic" data-sf-view="topic" aria-label="Tema de la ficha" hidden><div class="sf-sticky"><div class="sf-picker">`+

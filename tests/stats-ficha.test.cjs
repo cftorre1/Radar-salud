@@ -19,11 +19,14 @@ test('ficha opens as an index of topics and renders each topic with the hero cha
  assert.match(load().render(pub),/<a class="sf-row" href="#tema=total" data-sf-row="0">/);assert.doesNotMatch(load().render(pub),/data-sf-sig=/);
  assert.match(html,/<article class="sf sf-cb" data-sf-sig="sig-stats-ficha:F1:2026-08"/);
  // Index: 5 rows with label, one line and a sparkline (no number under it); Regional is pending.
- const rows=[...html.matchAll(/<a class="sf-row" href="#sig-stats-ficha%3AF1%3A2026-08&amp;tema=([\w-]+)" data-sf-row="\d"><span class="sf-row-txt"><span class="sf-row-label">([^<]+)(?:<span class="sf-pending">pendiente<\/span>)?<\/span><span class="sf-row-line">([^<]+)<\/span><\/span><span class="sf-spark">(<svg[^]*?<\/svg>|<span class="sf-spark-pend">pendiente<\/span>)<\/span>/g)];
+ const rows=[...html.matchAll(/<a class="sf-row" href="#sig-stats-ficha%3AF1%3A2026-08&amp;tema=([\w-]+)" data-sf-row="\d"><span class="sf-row-txt"><span class="sf-row-label">([^<]+)<\/span><span class="sf-row-line">([^<]+)<\/span><\/span><span class="sf-spark">(<svg[^]*?<\/svg>|<span class="sf-spark-pend">pendiente<\/span>)<\/span>/g)];
  assert.deepEqual(rows.map(m=>[m[1],m[2],m[3]]),[['total','Cartera total','2.486.683 beneficiarios · menor baja del año'],
   ['isapres','Por Isapre','Banmédica: 77% de la baja · 3 Isapres crecen'],['mezcla','Cotizantes y cargas','Cotizantes suben por segundo mes'],
   ['movilidad','Movilidad y desahucios','Salen más de los que entran · dato a julio'],['regional','Regional','Enlace a la SIS · cifras aún no extraídas']]);
  assert.equal(rows.filter(m=>m[4].startsWith('<svg')).length,4);assert.match(rows[4][4],/pendiente/);
+ // 'pendiente' shows once per pending row: in the sparkline slot, never also as a badge next to the label (mockup).
+ const idx=html.slice(html.indexOf('<section class="sf-index"'),html.indexOf('<section class="sf-topic"'));
+ assert.equal((idx.match(/pendiente/g)||[]).length,1);assert.doesNotMatch(idx,/sf-pending/);
  for(const m of rows)assert.doesNotMatch(m[4],/<b>|<text/);
  // Topic mode: select-only combobox with 'Todos los temas' first, step buttons, one hidden panel per topic.
  assert.match(html,/<button type="button" class="sf-pick" aria-haspopup="listbox" aria-expanded="false" aria-controls="(sf\d+)-list">/);

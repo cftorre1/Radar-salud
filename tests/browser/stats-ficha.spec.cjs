@@ -64,6 +64,10 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  expect(await body.locator('.sf-row-label').evaluateAll(xs=>xs.map(x=>x.firstChild.textContent))).toEqual(['Cartera total','Por Isapre','Cotizantes y cargas','Movilidad y desahucios','Regional']);
  await expect(body.locator('.sf-row').nth(1)).toContainText('Banmédica: 77% de la baja · 3 Isapres crecen');
  await expect(body.locator('.sf-index .sf-spark svg')).toHaveCount(4);
+ // Regional (pending) says 'pendiente' once, in its sparkline slot; no second badge next to its label.
+ const regional=body.locator('.sf-row').filter({hasText:'Regional'});
+ await expect(regional.locator('.sf-spark-pend')).toHaveText('pendiente');await expect(regional.locator('.sf-row-label .sf-pending')).toHaveCount(0);
+ expect((await regional.innerText()).match(/pendiente/gi)).toHaveLength(1);
  await expect(body.locator('.sf-kpi:visible')).toHaveCount(0);await expect(body.locator('.sf-watch')).toHaveCount(0);
  await expect(body.locator('details.sf-notes')).not.toHaveAttribute('open','');
  await expect(body.locator('.sf-reading')).toHaveCount(0);  // no verified Lectura in this release
@@ -296,6 +300,13 @@ test('F1 compact header: index rows and the hero chart show above the fold at 39
  const hero=body.locator('.sf-tpanel:not([hidden]) .sf-hero .sf-chart');await expect(hero).toBeVisible();
  await expect.poll(async()=>{const t=await fold(page,'#detailBody .sf-tpanel:not([hidden]) .sf-hero .sf-chart');const h=t.els[0];return h.top>=t.sticky-1&&h.mid<=t.bottom},{timeout:3000}).toBe(true);
  await shot(page,'stats-ficha-f1-fold-isapres-390x844');
+ // The sticky bar and picker are opaque (page background) with the mockup's divider: nothing shows through them.
+ const chrome=await page.evaluate(()=>[document.querySelector('#signalDetail .detail-top'),document.querySelector('#detailBody .sf-sticky')].map(e=>{const c=getComputedStyle(e);return {bg:c.backgroundColor,border:c.borderBottomColor,width:c.borderBottomWidth}}));
+ for(const c of chrome)expect(c.bg).toBe('rgb(250, 249, 245)');
+ expect(chrome[0].width).toBe('1px');await expect(body.locator('.sf-sticky')).toHaveClass(/stuck/);
+ // The bar's divider fades in (0.2 s border transition): polled until settled.
+ for(const sel of ['#signalDetail .detail-top','#detailBody .sf-sticky'])
+  await expect.poll(()=>page.evaluate(s=>getComputedStyle(document.querySelector(s)).borderBottomColor,sel),{timeout:3000}).toBe('rgb(228, 223, 211)');
  // Even with the ficha scrolled back to its top (header in view), the hero's top half is above the fold.
  await page.evaluate(()=>{document.getElementById('signalDetail').scrollTop=0});
  const t0=await fold(page,'#detailBody .sf-tpanel:not([hidden]) .sf-hero .sf-chart');
