@@ -341,13 +341,16 @@ def test_replay_never_activates_or_writes_records(tmp_path):
     assert not (tmp_path / "data/global_intelligence/publication_activation.json").exists()
 
 
-def test_current_staging_ledger_does_not_activate_now():
+def test_current_staging_ledger_matches_the_recorded_activation():
+    # WHO met the two-daily-run rule on 30-oct (publication_activation.json); the replayed decision on the committed
+    # ledger must agree with that record for each source (PAHO not yet activated).
     ledger = json.loads(Path("data/global_intelligence/ledger.json").read_text())
+    recorded = json.loads(Path("data/global_intelligence/publication_activation.json").read_text()).get("sources", {})
     last = ledger["runs"][-1]
     for source in ("who", "paho"):
         decision = publication_activation_decision({"runs": ledger["runs"][:-1]}, source, last["sources"][source], last["run_id"],
                                                    last["mode"], POLICY, last["sources"][source].get("coverage_contract_id"))
-        assert not decision["activated"], (source, decision)
+        assert decision["activated"] == (source in recorded), (source, decision)
 
 
 def test_sticky_activation_exposes_earned_evidence_for_audits(tmp_path):

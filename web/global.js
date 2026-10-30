@@ -46,6 +46,11 @@ function themeEntry(t){return {kind:'theme',id:t.id,dom:`theme-${t.id}`,key:glob
 function str(v){return typeof v==='string'?v.trim():''}
 function translated(x){const t=x?.translation;return Boolean(t&&t.status==='translated'&&t.verified===true&&str(x.title_es)&&(!str(x.description)||str(x.description_es)))}
 function summarized(x){const t=x?.translation;return Boolean(t&&t.status==='summarized'&&t.kind==='summary'&&t.verified===true&&str(x.summary_es))&&!translated(x)}
+// Spanish only (Dirección 30-oct): a headline is listed only with a verified translation, a verified Alicanto summary,
+// or when the page is already in Spanish (PAHO /es/). The exporter applies the same rule; this is the defensive copy
+// (an older or hand-edited feed never shows an English-only row). display.spanish_only === false turns it off.
+function spanishPage(x){try{const u=new URL(String(x?.url||''));return (u.hostname==='paho.org'||u.hostname.endsWith('.paho.org'))&&u.pathname.startsWith('/es/')}catch{return false}}
+function inSpanish(x){return translated(x)||summarized(x)||spanishPage(x)}
 const SUMMARY_NOTICE='Resumen de Alicanto (la fuente no permite traducir)',ROW_NOTE='Traducido por Alicanto',CHECK_NOTE='Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores';
 function shownTitle(x){return translated(x)?str(x.title_es):x.title}
 function headlineEntry(x){return {kind:'headline',id:x.id,dom:`daily-${x.id}`,key:feedKey(x.id),date:String(x.published_at).slice(0,10),seen:String(x.first_seen_on||'').slice(0,10),title:shownTitle(x),publishers:[x.source_label].filter(Boolean),url:httpsUrl(x.url),priority:Number(x.priority)||0,x}}
@@ -144,7 +149,7 @@ const backTop=document.getElementById('backTop'),topControls=document.querySelec
 if(topControls&&'IntersectionObserver' in window){new IntersectionObserver(entries=>{const e=entries[0];backTop.hidden=e.isIntersecting||e.boundingClientRect.top>=0}).observe(topControls)}else if(topControls){const updateTop=()=>backTop.hidden=topControls.getBoundingClientRect().bottom>0;window.addEventListener('scroll',updateTop,{passive:true});updateTop()}
 backTop.onclick=()=>{const host=document.querySelector('main');host.tabIndex=-1;host.focus({preventScroll:true});host.scrollIntoView({behavior:motionBehavior()})};
 // Daily headlines only when Dirección authorized them (enabled) as metadata and link; bad or old items are dropped.
-function loadFeed(){return fetch('data/global_feed.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!feedAccepted(d))return;feedMeta=d;const w=feedWindow(d);headlines=(d.items||[]).filter(x=>x&&x.id&&x.title&&httpsUrl(x.url)&&x.published_at&&ageDays(x.published_at)>=0&&ageDays(x.published_at)<w)}).catch(()=>{})}
+function loadFeed(){return fetch('data/global_feed.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!feedAccepted(d))return;feedMeta=d;const w=feedWindow(d);const spanishOnly=d.display?.spanish_only!==false;headlines=(d.items||[]).filter(x=>x&&x.id&&x.title&&httpsUrl(x.url)&&x.published_at&&ageDays(x.published_at)>=0&&ageDays(x.published_at)<w&&(!spanishOnly||inSpanish(x)))}).catch(()=>{})}
 // Footer: attribution and no-endorsement note, shown while headlines are listed; a stale feed says so.
 // OGL v3.0 items listed -> the licence's attribution statement is in the footer too.
 function renderFooter(){const note=document.getElementById('globalAttribution');if(!note)return;note.hidden=!headlines.length;const ogl=document.getElementById('globalFeedOgl');if(ogl)ogl.innerHTML=headlines.some(isOgl)?` Contains public sector information licensed under the <a href="${esc(OGL_URL)}" target="_blank" rel="noopener license">Open Government Licence v3.0</a>.`:'';const f=feedMeta?.freshness||{};document.getElementById('globalFeedStale').textContent=f.status==='stale'&&f.newest_published_at?` Sin titulares nuevos desde ${dateText(f.newest_published_at)}.`:''}

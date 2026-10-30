@@ -846,6 +846,30 @@
     "ai_policy": "Dirección 29-oct-2026: titles and publisher summaries of Global come translated to Spanish where the source's rights allow it (rights.translation_allowed, per feed). Cheap fast-tier model inside the USD 10/month paced budget (ai_budget.allow_call + openai_runtime.call_json), cached by content hash, deterministic verifier; failed check or no budget -> original text, never a partial or unverified translation.",
     "kff_decision": "Dirección 28-oct-2026: KFF Health News queda fuera de Global (PREMIUM) por ahora; sigue como descubrimiento sin publicación.",
     "window_note": "Dirección 28-oct-2026: Global es una sola bandeja ordenada por fecha con 90 días de visibilidad y novedades diarias.",
+    "state_path": "data/global_intelligence/global_feed_state.json",
+    "display": {
+      "spanish_only": true,
+      "authorized_by": "Dirección (cftorre1)",
+      "authorized_at": "2026-10-30",
+      "authorization_note": "Dirección 30-oct-2026: Global muestra solo los ítems que puede presentar en español. Fuente sin derecho de traducción (WHO, EMA, KFF...): solo con resumen de Alicanto verificado (translation.status 'summarized', verified). Fuente traducible: solo 'translated' (verificada); 'pending' o 'verification_failed' quedan ocultos. Páginas en español de OPS (/es/) se muestran. Los temas de Alicanto no cambian. Los ítems ocultos se conservan en state_path (data/) y aparecen cuando tengan texto en español verificado.",
+      "applied_in": "src/radar_salud/global_daily_feed.py public_payload (web/data/global_feed.json) and web/global.js (defensive)"
+    },
+    "page_meta_description": {
+      "enabled": true,
+      "authorized_by": "Dirección (cftorre1)",
+      "authorized_at": "2026-10-30",
+      "authorization_note": "Dirección 30-oct-2026: para WHO y EMA, cuando el ítem no trae descripción en el feed, leer la descripción declarada por la propia página (<meta name=\"description\"> u og:description) como insumo del resumen de Alicanto. Solo el texto de la meta etiqueta (nunca el cuerpo), máximo 600 caracteres; no se muestra textual en el feed público.",
+      "sources": ["who", "ema"],
+      "allowed_domains": ["who.int", "ema.europa.eu"],
+      "max_new_fetches_per_run": 30,
+      "max_bytes": 2000000,
+      "timeout_seconds": 15,
+      "live_budget_seconds": 180,
+      "max_chars": 600,
+      "retry_failed_after_days": 7,
+      "cache_path": "data/global_intelligence/page_descriptions.json",
+      "robots": "robots.txt checked before every page request through CaptureClient (fail closed: unavailable or disallowed -> no request)"
+    },
     "dedup": "same canonical URL -> one card; same normalized headline (GOV.UK document-type prefixes kept, so 'Guidance: X' and 'Consultation outcome: X' stay distinct) within 3 days -> one card. A card already shown keeps its id (read state); otherwise the earliest wins. Other publishers go to also_reported_by; every merged copy, same publisher included, is recorded in the payload's duplicates ledger.",
     "translation": {
       "enabled": true,
