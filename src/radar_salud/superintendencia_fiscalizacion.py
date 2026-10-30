@@ -433,5 +433,31 @@ def sanction_card_title(r):
         ground = _DATE_FRAGMENT_RE.sub("", clause)
         ground = re.sub(r"\s+,", ",", re.sub(r",\s*,", ",", ground)).strip(" ,;:")
     if ground:
-        return _cap_title(head, f" por {ground}")
+        full = f"{head} por {ground}"
+        if len(full) <= TITLE_MAX:
+            return full
+        # Raw legal text is never cut mid-clause ("…del Reglamento…"): a short label read from the
+        # same clause (the accreditation procedure it names), else only the act, amount and entity.
+        for label in _infringement_labels(ground):
+            if len(head) + 2 + len(label) <= TITLE_MAX:
+                return f"{head}: {label}"
+        return head if len(head) <= TITLE_MAX else _cap_title(head, "")
     return None if needs_ground else _cap_title(head, "")
+
+
+_ACCREDITATION_PROCEDURE_RE = re.compile(
+    r"\ben\s+el\s+procedimiento\s+de\s+acreditaci[oó]n\s+(?:del?\s+)?(?:la\s+)?"
+    r"(?:prestador(?:a)?\s+(?:institucional|individual)\s+|prestador(?:a)?\s+)?(.+)$", re.I)
+
+
+def _infringement_labels(ground):
+    """Short infringement labels taken verbatim from the regulator's clause, best first.
+    Only the accreditation procedure (and the provider it names) is summarised; any other
+    clause yields none and the title stays "<acto> · Multa de X a <entidad>"."""
+    m = _ACCREDITATION_PROCEDURE_RE.search(ground or "")
+    if not m:
+        return []
+    provider = m.group(1).strip(" ,;:.")
+    if not provider or len(provider.split()) > 14:
+        return []
+    return [f"Infracción en la acreditación de {provider}", f"Acreditación de {provider}"]

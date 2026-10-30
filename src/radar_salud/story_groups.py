@@ -105,3 +105,44 @@ def apply_story_groups(cards: list[dict[str, Any]], groups: list[dict[str, Any]]
             summaries.append(card)
             hidden |= {m.get("source_url") for m in members}
     return [c for c in cards if c.get("source_url") not in hidden], summaries
+
+
+def _title_key(title: Any) -> str:
+    import re
+    import unicodedata
+    from .sis_news import clean_title
+    t = unicodedata.normalize("NFKD", clean_title(str(title or ""))).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", " ", t).strip()
+
+
+AUTO_TITLE_MIN_WORDS = 6  # short labels ("Comunicado de prensa") never group by title
+
+
+def same_title_groups(cards: list[dict[str, Any]], groups: list[dict[str, Any]] = ()) -> list[dict[str, Any]]:
+    """``lead`` groups for the same story published by different official sources the same day
+    under the same headline (normalized: accents, case, punctuation and the site-name suffix).
+
+    Only official sources, only identical normalized titles of at least AUTO_TITLE_MIN_WORDS words,
+    only cards not already in a configured group. Lead: the card with the higher radar score
+    (then the longer summary, then the URL, so the choice is deterministic)."""
+    taken = {u for g in groups for u in g.get("member_urls") or []}
+    buckets: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for c in cards:
+        url = c.get("source_url")
+        key = _title_key(c.get("title"))
+        if (not url or url in taken or c.get("source_type") != "official" or not c.get("event_date")
+                or c.get("event_type") == "STORY_SUMMARY" or len(key.split()) < AUTO_TITLE_MIN_WORDS):
+            continue
+        buckets.setdefault((str(c["event_date"])[:10], key), []).append(c)
+    out = []
+    for (day, _), members in sorted(buckets.items()):
+        if len({m.get("source_name") for m in members}) < 2:
+            continue
+        lead = max(members, key=lambda m: (m.get("radar_score") or 0, len(str(m.get("what_happened") or "")),
+                                           str(m.get("source_url"))))
+        import hashlib
+        digest = hashlib.sha1(str(lead["source_url"]).encode()).hexdigest()[:8]
+        out.append({"id": f"auto-same-title-{day}-{digest}", "mode": "lead",
+                    "lead_url": lead["source_url"], "member_urls": [m["source_url"] for m in members],
+                    "reason": "Mismo titular el mismo día en fuentes oficiales distintas (agrupación automática)."})
+    return out

@@ -64,13 +64,13 @@ def official_sis_url(url):
 def record_listing_identity(index,title,url,event_date,subject,listing_url):
     """Official identity -> URL, read from the regulator's own listing (no constructed URLs).
     Used to link a late resolution to the circular it acts on when that circular is not in history."""
-    from .normative_relations import target_key
+    from .normative_relations import clean_subject, target_key
     key=target_key(title or "")
     if not key or not official_sis_url(url):return
     if not key.startswith(("circular-","oficio-circular-")):return
     current=index.get(key)
     record={"id":" ".join(str(title).split()),"url":url,"event_date":event_date,
-            "official_subject":" ".join(str(subject or "").split())[:400] or None,"listing_url":listing_url}
+            "official_subject":clean_subject(" ".join(str(subject or "").split())[:400]),"listing_url":listing_url}
     if current is None or (event_date or "")>(current.get("event_date") or ""):index[key]=record
 
 class SuperintendenciaNormativaScout:

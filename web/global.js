@@ -20,13 +20,13 @@ function stored(key,fallback){try{return JSON.parse(localStorage.getItem(key))??
 function globalKey(id){return `global:${id}`}
 function feedKey(id){return `global-feed:${id}`}
 const readSet=AlicantoRead.readSet;
-// Same period options as Chile; the Global window is 90 days. A saved longer period (1 año, todo) becomes 90 días.
-const PERIODS=['last','7','14','30','60','90'],WINDOW_DAYS=90,FEED_SCHEMA=2,OGL_URL='https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
+// Same period options as Chile; the Global window is 90 days and, without a saved preference, Global opens on all of it (Dirección: one date-ordered 90-day inbox; Chile stays 30). A saved longer period (1 año, todo) becomes 90 días.
+const PERIODS=['last','7','14','30','60','90'],WINDOW_DAYS=90,DEFAULT_PERIOD='90',FEED_SCHEMA=2,OGL_URL='https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
 let themes=[],headlines=[],feedMeta=null,entries=[],detailOrigin=null,detailPending=null;
 const filters=stored('alicanto_global_filters',{});
 // Before 27-oct a single publisher was stored as `publisher`; it becomes a one-item selection.
 const activePublishers=new Set(Array.isArray(filters.publishers)?filters.publishers:filters.publisher&&filters.publisher!=='Todos'?[filters.publisher]:[]);
-let periodMode=PERIODS.includes(String(filters.period))?String(filters.period):['365','all'].includes(String(filters.period))?'90':'30';
+let periodMode=PERIODS.includes(String(filters.period))?String(filters.period):['365','all'].includes(String(filters.period))?'90':DEFAULT_PERIOD;
 let laneMode=['p','l','t'].includes(filters.lane)?filters.lane:'p';
 let previousVisit=null;try{previousVisit=localStorage.getItem('alicanto_global_last_visit')}catch{}
 function persistFilters(){try{localStorage.setItem('alicanto_global_filters',JSON.stringify({period:periodMode,publishers:[...activePublishers],lane:laneMode}))}catch{}}
@@ -132,7 +132,7 @@ periodSelect.onchange=ev=>{periodMode=ev.target.value;persistFilters();filtersDr
 AlicantoBar.wireLanes(document.getElementById('globalLanes'),()=>laneMode,k=>{laneMode=k;persistFilters();render()});
 document.getElementById('globalMarkAll').onclick=markAll;
 document.getElementById('globalDone').onclick=()=>filtersDropdown.close(true);
-document.getElementById('globalReset').onclick=()=>{activePublishers.clear();periodMode='30';periodSelect.value=periodMode;persistFilters();render()};
+document.getElementById('globalReset').onclick=()=>{activePublishers.clear();periodMode=DEFAULT_PERIOD;periodSelect.value=periodMode;persistFilters();render()};
 document.getElementById('closeGlobalDetail').onclick=()=>document.getElementById('globalDetail').close();
 document.getElementById('globalDetail').onclick=ev=>{if(ev.target.id==='globalDetail')ev.target.close()};
 // Closing returns focus to the row; an item read by opening it leaves Pendientes only after its inline undo.

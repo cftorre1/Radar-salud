@@ -148,7 +148,9 @@ def test_discover_window_article_decides_title_and_date():
     assert items[ges].event_date == "2026-10-14"
     assert items[ges].metadata["publication_date_source"] == "article:published_time"
     c = items[comunicado]
-    assert c.title == "Comunicado de prensa sobre la Circular IF/N°534" and c.metadata["listing_title_mismatch"]
+    # The listing's "COMUNICADO DE PRENSA" is a section label, not another entry's title (audit 29-oct):
+    # the article headline replaces it without flagging a listing mismatch.
+    assert c.title == "Comunicado de prensa sobre la Circular IF/N°534" and not c.metadata.get("listing_title_mismatch")
     assert c.metadata["mentioned_acts"] == ["circular-if-534"]  # named in the title
     assert items[seminario].event_date is None  # undated listing and article: never dated by guess
 

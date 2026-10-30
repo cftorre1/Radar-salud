@@ -60,7 +60,35 @@ LEAD_MAX = 400
 DETAIL_WINDOW_DAYS = 30  # article pages fetched only for entries that can still be processed
 CHILE = ZoneInfo("America/Santiago")
 
-_ACT = re.compile(r"\b(Oficio\s+Circular|Circular|Resoluci[oó]n\s+Exenta)\s+(?:(IF|IP|SS)\s*[/\-]?\s*)?N?\s*[°º]?\s*(\d[\d\.]*)", re.I)
+_ACT = re.compile(r"\b(Oficio\s+Circular|Circular|Resoluci[oó]n\s+Exenta)\s+(?:(IF|IP|SS)\s*[/\-]?\s*)?"
+                  r"(?:N(?:\s*\.?\s*[°º˚]|o\.?|\.)?|[°º˚])?\s*(\d[\d\.]*)", re.I)
+# Page titles carry the site name ("… - Superintendencia de Salud"); the headline is what precedes it.
+_SITE_SUFFIX = re.compile(r"\s+[-–—|·:]\s*Superintendencia\s+de\s+Salud(?:\s*[-–—|·]\s*Gobierno\s+de\s+Chile)?\s*$", re.I)
+# Section labels used as page titles; they say nothing about the story (staging audit 29-oct).
+GENERIC_TITLES = {"comunicado de prensa", "comunicado", "comunicados", "noticias", "noticia", "nota de prensa",
+                  "prensa", "superintendencia de salud"}
+GENERIC_LEAD_CHARS = 600
+
+
+def clean_title(title: str | None) -> str:
+    """Headline without the site-name suffix and extra whitespace (never reworded)."""
+    t = " ".join(str(title or "").split())
+    while True:
+        stripped = _SITE_SUFFIX.sub("", t).strip()
+        if stripped == t:
+            return t
+        t = stripped
+
+
+def is_generic_title(title: str | None) -> bool:
+    return _norm(clean_title(title)) in GENERIC_TITLES or not _norm(clean_title(title))
+
+
+def choose_title(*candidates: str | None) -> str | None:
+    """First informative headline among the candidates (article h1, og:title, page <title>,
+    listing title), each cleaned of the site suffix; a generic label only if nothing else exists."""
+    cleaned = [clean_title(c) for c in candidates if clean_title(c)]
+    return next((c for c in cleaned if not is_generic_title(c)), cleaned[0] if cleaned else None)
 
 
 def robots_allows(url: str, fetch: Callable[[str], str] | None = None) -> bool:
@@ -106,9 +134,43 @@ def parse_listing(html: str, page_url: str) -> list[dict]:
     return out
 
 
+def _headline_parser():
+    from .public_source_pipeline import _Meta
+
+    class _Headlines(_Meta):
+        """_Meta plus the page's <h1> texts and <title> (the article headline candidates)."""
+
+        def __init__(self):
+            super().__init__()
+            self.h1, self.page_title, self._in = [], "", None
+            self._buf = []
+
+        def handle_starttag(self, tag, attrs):
+            super().handle_starttag(tag, attrs)
+            if tag.lower() in ("h1", "title") and self._in is None:
+                self._in, self._buf = tag.lower(), []
+
+        def handle_data(self, data):
+            super().handle_data(data)
+            if self._in:
+                self._buf.append(data)
+
+        def handle_endtag(self, tag):
+            super().handle_endtag(tag)
+            if self._in and tag.lower() == self._in:
+                text = " ".join(" ".join(self._buf).split())
+                if text and self._in == "h1":
+                    self.h1.append(text)
+                elif text and not self.page_title:
+                    self.page_title = text
+                self._in = None
+
+    return _Headlines()
+
+
 def parse_article(html: str) -> dict:
-    from .public_source_pipeline import _Meta, _date
-    meta = _Meta()
+    from .public_source_pipeline import _date
+    meta = _headline_parser()
     meta.feed(html)
     text = " ".join(meta.text)
     published = _date(meta.published) if meta.published else None
@@ -119,7 +181,10 @@ def parse_article(html: str) -> dict:
     if not visible:
         visible = _date(text[:4000])
     lead = meta.description or next((t for t in meta.text if len(t) >= 60), "")
-    return {"title": meta.ogtitle or None, "published": published, "visible_date": visible,
+    # Headline: og:title unless it is a section label ("COMUNICADO DE PRENSA"); then the page's own
+    # h1 (the newsroom h1 can also be just "Noticias"), then <title>. Site suffix removed.
+    title = choose_title(meta.ogtitle, *meta.h1, meta.page_title)
+    return {"title": title or None, "published": published, "visible_date": visible,
             "description": meta.description, "lead": " ".join(lead.split())[:LEAD_MAX], "text": text}
 
 
@@ -214,10 +279,13 @@ class SuperintendenciaNoticiasScout:
                 continue
             failures.pop(entry["url"], None)
             page_date = article["published"] or article["visible_date"]
+            title = clean_title(title)
             if article["title"]:
-                if _norm(article["title"]) != _norm(title):
+                if _norm(article["title"]) != _norm(title) and not is_generic_title(title) and not is_generic_title(article["title"]):
                     meta["listing_title_mismatch"] = True  # listing paired another entry's title
-                title = article["title"]
+                title = choose_title(article["title"], title)
+            if is_generic_title(title):
+                meta["generic_title"] = True  # no informative headline on the page or the listing
             if page_date and listed and page_date != listed:
                 meta["listing_date_conflict"] = {"listing": listed, "article": page_date}
             event_date = page_date or (listed if not meta.get("listing_title_mismatch") else None)
@@ -227,7 +295,9 @@ class SuperintendenciaNoticiasScout:
                 "article:published_time" if article["published"] else "article_visible_date" if article["visible_date"]
                 else "listing_date" if event_date else None))
             # Same act only when the title or the lead names it (not a passing mention in the body).
-            meta["mentioned_acts"] = mentioned_acts(" ".join([title, lead]))
+            # A generic "COMUNICADO DE PRENSA" has no headline: its opening text stands in for it.
+            opening = article["text"][:GENERIC_LEAD_CHARS] if meta.get("generic_title") else ""
+            meta["mentioned_acts"] = mentioned_acts(" ".join([title, lead, opening]))
             out.append(RawItem(SLUG, title, entry["url"], SOURCE_NAME, self.SOURCE_TYPE,
                                event_date=event_date, raw_text=excerpt, metadata=meta))
         # Ledger entries outside the 30-day window can never be processed again: pruned.
@@ -412,3 +482,30 @@ def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
                 continue
         out.append(c)
     return out
+
+
+_FIRST_SENTENCE = re.compile(r"^(.+?[^\s.]{2}\.)(?:\s+[A-ZÁÉÍÓÚÑ]|$)", re.S)
+
+
+def repair_stored_news(row: dict) -> dict:
+    """Stored SIS news rows captured before the headline rules: drop the site-name suffix from
+    the title, and for a generic title ("COMUNICADO DE PRENSA") read the act it is about from
+    the first sentence of the stored summary, so ``fold_news_into_acts`` can attach it to that
+    act's card. Nothing is invented: the title is only shortened, the act ID is read verbatim."""
+    if row.get("source_name") != SOURCE_NAME or not str(row.get("source_url") or "").startswith(f"https://{HOST}/noticias/"):
+        return row
+    r = dict(row)
+    title = clean_title(r.get("title"))
+    if title and title != r.get("title"):
+        r["source_page_title"] = r.get("title")
+        r["title"] = title
+    if is_generic_title(title):
+        r["generic_title"] = True
+        if not r.get("mentioned_acts"):
+            text = " ".join(str(r.get("what_happened") or "").split())
+            m = _FIRST_SENTENCE.match(text)
+            acts = mentioned_acts(m.group(1) if m else text[:300])
+            if acts:
+                r["mentioned_acts"] = acts
+                r["mentioned_acts_basis"] = "generic_title_summary_first_sentence"
+    return r
