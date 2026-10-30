@@ -794,14 +794,13 @@
             "pages_hint": [
               2
             ],
-            "source_quote": "…acreditados al 30 de junio, 101 prestadores institucionales⏎obtuvieron el resultado de acreditado con observaciones…",
-            "source": "boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf sha256 8b7f7c7a385e…, p.2 (cita enviada por coordinación; por confirmar con el texto impreso por CI)",
-            "reviewed_by": "pendiente",
-            "reviewed_at": null
+            "source_quote": "de un total de 971 prestadores institucionales acreditados al 30 de junio , 101 prestadores institucionales obtuvieron el resultado de acreditado con observaciones, lo que equivale a un 10%",
+            "source": "boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf sha256 8b7f7c7a385e…, p.2; texto normalizado impreso por CI (PR #112, 30-oct-2026)",
+            "reviewed_by": "Dirección (cftorre1)",
+            "reviewed_at": "2026-10-30"
           },
           "pending_applications": {
-            "caption": "<<CAPTION_P8>>",
-            "pattern": "{caption}(?:(?!total general \\d).)*?\\btotal general (\\d+) (\\d+) (\\d+)(?![\\d])",
+            "pattern": "numero de solicitudes de acreditacion que estan en tramitacion, al \\d{1,2} de [a-z]+ de \\d{4}, desagregadas por region del prestador y tipo(?:(?!total general \\d).)*?\\btotal general (\\d+) (\\d+) (\\d+)(?![\\d])",
             "groups": 3,
             "figure_group": 3,
             "sum_of": [
@@ -815,10 +814,10 @@
             "pages_hint": [
               8
             ],
-            "source_quote": "Total general 367 217 584",
-            "source": "boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf sha256 8b7f7c7a385e…, p.8; título exacto de la tabla pendiente (imprimirlo con el test CI)",
-            "reviewed_by": "pendiente",
-            "reviewed_at": null
+            "source_quote": "numero de solicitudes de acreditacion que estan en tramitacion, al 30 de junio de 2026, desagregadas por region del prestador y tipo … total general 367 217 584",
+            "source": "boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf sha256 8b7f7c7a385e…, p.8; título de la tabla del texto normalizado impreso por CI (PR #112, 30-oct-2026); la fecha del corte queda variable",
+            "reviewed_by": "Dirección (cftorre1)",
+            "reviewed_at": "2026-10-30"
           }
         }
       },
