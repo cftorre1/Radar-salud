@@ -1,6 +1,9 @@
-"""Review probes of PR #112 (independent review, 2026-10-29): every probe must be rejected by checker v2 except the
-two real layouts of the N°2-2026 acreditación PDF (and the 'Fig.' probe, accepted by the unchanged 80-char window,
-and the well-formed 4-cell Total row). Copied verbatim from the reviewer's probe112b.py. No network.
+"""Review probes of PR #112 (independent reviews, 2026-10-29: probe112b, probe112d, probe112e), copied verbatim.
+
+Checker v2 has no generic sentence / table rule any more: the only addition over the unchanged 80-char window is a
+human-reviewed anchored template per figure. So every probe must be rejected by v2 with the templates filled and
+reviewed (the strictest case for this test): v2 accepts exactly what v1's window accepts and nothing else. The two real
+layouts are the positives. No network.
 """
 import re
 import sys
@@ -16,108 +19,286 @@ from radar_salud import stats_capture as cap  # noqa: E402
 C = cap.METRIC_CONTEXT
 OBS, TRA, PRIV, PUB, ACR = (C["with_observations"], C["pending_applications"], C["private_pending"],
                             C["public_pending"], C["accredited_providers"])
+KEY = {OBS: "with_observations", TRA: "pending_applications", PRIV: "private_pending", PUB: "public_pending",
+       ACR: "accredited_providers"}
 PAD = " ".join(["relleno"] * 14)  # ~110 chars, defeats the 80-char window
+L = "establecimientos institucionales de los servicios metropolitanos correspondientes administrativamente"
+L4 = "establecimientos institucionales metropolitanos administrativamente de la de los"
+H2 = PAD + "\n" + PAD
+VERIFIED = {"with_observations": 101, "pending_applications": 584, "private_pending": 367, "public_pending": 217,
+            "accredited_providers": 971}
+# Probes accepted by the unchanged v1 window (out of scope of this change): v2 must give the same answer.
+WINDOW_ACCEPTED = {"'Fig.' abbreviation splits (fail-closed ok)", "A12 PRIV 'ademas de 217 publicos' later"}
 
 PROBES = [
-    ("diff sentence", f"Hay 101 prestadores {PAD}. Varios tienen observaciones.", 101, OBS, False),
-    ("other metric kw in sentence", f"Hay 101 prestadores {PAD} con solicitudes en tramitacion.", 101, OBS, False),
-    ("substring public<-publicado", f"Este boletin fue publicado en agosto {PAD} con 217 graficos.", 217, PUB, False),
-    ("substring public<-Republica", f"La Republica de Chile {PAD} tiene 217 hospitales.", 217, PUB, False),
-    ("substring privad<-privadamente", f"Se informo privadamente {PAD} a 367 hospitales.", 367, PRIV, False),
-    ("negation: sin observaciones", f"Del total, 101 prestadores {PAD} fueron acreditados sin observaciones.", 101, OBS, False),
-    ("semantics: public accredited (not pending)", f"De los 971 prestadores acreditados, 217 {PAD} son publicos.", 217, PUB,
-     False),
-    ("pct-column table, no periods, heading kw", "\n".join(
-        ["Prestadores privados acreditados segun tipo de establecimiento y complejidad", PAD, "Tipo Numero Porcentaje",
-         "Clinicas de alta complejidad 367 37,8%"]), 367, PRIV, False),
-    ("single-cell rows table (rows treated as prose)", "\n".join(
-        ["Prestadores publicos acreditados por region", PAD, "Region Metropolitana 90", "Region de Valparaiso 217"]), 217,
-     PUB, False),
-    ("running header merges into first sentence", "\n".join(
-        ["Intendencia de Prestadores Publicos y Privados", PAD, "217 prestadores fueron fiscalizados en el semestre."]),
-     217, PUB, False),
-    ("decimal '2.0' joins sentences", f"Hubo observaciones en la version 2.0 del informe. {PAD} 101 casos de otra cosa",
-     101, OBS, False),
-    ("'Fig.' abbreviation splits (fail-closed ok)", f"Ver Fig. 2 {PAD} 101 con observaciones", 101, OBS, True),
-    ("Total row of next table inherits prev heading (2-cell rows, year caption)", "\n".join(
-        ["Solicitudes en tramitacion segun sector", PAD, "Privados 367 10", "Publicos 217 12", "Reclamos por Isapre 2024 2025",
-         "Isapre A 300 284", "Isapre B 1 2", "Isapre C 1 2", "Isapre D 1 2", "Total 300 284 584"]), 584, TRA, False),
-    ("Total row: adjacent tables separated only by blanks", "\n".join(
-        ["Solicitudes en tramitacion por region", PAD, "Arica 3 4 7", "Total 3 4 7", "", "", "Isapre A 300 284 584",
-         "Isapre B 1 2 3", "Isapre C 1 2 3", "Total 300 284 584"]), 584, TRA, False),
-    ("Total row: prose line above caption supplies kw", "\n".join(
-        ["el numero de solicitudes en tramitacion se informa mas abajo", "Cuadro 2. Reclamos por mes " + PAD,
-         "Enero 300 284", "Febrero 1 2", "Marzo 1 2", "Abril 1 2", "Total 300 284 584"]), 584, TRA, False),
-    ("Total row: heading across many blank lines", "\n".join(
-        ["Solicitudes en tramitacion", "", "", "", "", "", PAD, "Ene 300 284", "Feb 1 2", "Mar 1 2", "Abr 1 2",
-         "Total 300 284 584"]), 584, TRA, False),
-    ("Total row: heading 4 non-table lines away", "\n".join(
-        ["Solicitudes en tramitacion", PAD, "linea dos", "linea tres", "Ene 300 284", "Feb 1 2", "Mar 1 2",
-         "Total 300 284 584"]), 584, TRA, False),
-    ("Total 2-cell: wrong-year column", "\n".join(
-        ["Solicitudes en tramitacion 2025 y 2026", PAD, "Sector 2025 2026", "Privados 300 367", "Publicos 1 2", "Otros 1 2",
-         "Total 584 600"]), 584, TRA, False),
-    ("Total 2-cell: 217 accepted as private", "\n".join(
-        ["Solicitudes privadas y publicas en tramitacion", PAD, "Region 1 1", "Region 2 2", "Region 3 3", "Region 4 4",
-         "Total 367 217"]), 217, PRIV, False),
-    ("Total 1-cell: prose lines ending in a number are 'body'", "\n".join(
-        ["Solicitudes en tramitacion", PAD, "Reclamos de 2025", "Reclamos ingresados en junio 2026", "Total 584"]), 584, TRA,
-     False),
-    ("Total 4-cell: figure is any cell equal to sum of others", "\n".join(
-        ["Solicitudes en tramitacion", PAD, "a 1 2 3 4", "b 1 2 3 4", "c 1 2 3 4", "d 1 2 3 4", "Total 100 200 284 584"]),
-     584, TRA, True),
-    ("Total: middle cell = sum (non-total column)", "\n".join(
-        ["Solicitudes en tramitacion", PAD, "a 1 2 3", "b 1 2 3", "c 1 2 3", "d 1 2 3", "Total 300 584 284"]), 584, TRA, False),
-    ("space-thousands split into cells", "\n".join(
-        ["Solicitudes en tramitacion", PAD, "a 1 2 3", "b 1 2 3", "c 1 2 3", "d 1 2 3", "Total 1 000 583 1 585"]), 584, TRA,
-     False),
-    ("same number in unrelated table, no kw", "\n".join(
-        ["Reclamos por mes", PAD, "a 1 2", "b 1 2", "c 1 2", "Total 300 284 584"]), 584, TRA, False),
+    ('probe112b', "diff sentence",
+     f"Hay 101 prestadores {PAD}. Varios tienen observaciones.",
+     101, OBS),
+    ('probe112b', "other metric kw in sentence",
+     f"Hay 101 prestadores {PAD} con solicitudes en tramitacion.",
+     101, OBS),
+    ('probe112b', "substring public<-publicado",
+     f"Este boletin fue publicado en agosto {PAD} con 217 graficos.",
+     217, PUB),
+    ('probe112b', "substring public<-Republica",
+     f"La Republica de Chile {PAD} tiene 217 hospitales.",
+     217, PUB),
+    ('probe112b', "substring privad<-privadamente",
+     f"Se informo privadamente {PAD} a 367 hospitales.",
+     367, PRIV),
+    ('probe112b', "negation: sin observaciones",
+     f"Del total, 101 prestadores {PAD} fueron acreditados sin observaciones.",
+     101, OBS),
+    ('probe112b', "semantics: public accredited (not pending)",
+     f"De los 971 prestadores acreditados, 217 {PAD} son publicos.",
+     217, PUB),
+    ('probe112b', "pct-column table, no periods, heading kw",
+     "\n".join(
+    ["Prestadores privados acreditados segun tipo de establecimiento y complejidad", PAD, "Tipo Numero Porcentaje",
+     "Clinicas de alta complejidad 367 37,8%"]),
+     367, PRIV),
+    ('probe112b', "single-cell rows table (rows treated as prose)",
+     "\n".join(
+    ["Prestadores publicos acreditados por region", PAD, "Region Metropolitana 90", "Region de Valparaiso 217"]),
+     217, PUB),
+    ('probe112b', "running header merges into first sentence",
+     "\n".join(
+    ["Intendencia de Prestadores Publicos y Privados", PAD, "217 prestadores fueron fiscalizados en el semestre."]),
+     217, PUB),
+    ('probe112b', "decimal '2.0' joins sentences",
+     f"Hubo observaciones en la version 2.0 del informe. {PAD} 101 casos de otra cosa",
+     101, OBS),
+    ('probe112b', "'Fig.' abbreviation splits (fail-closed ok)",
+     f"Ver Fig. 2 {PAD} 101 con observaciones",
+     101, OBS),
+    ('probe112b', "Total row of next table inherits prev heading (2-cell rows, year caption)",
+     "\n".join(
+    ["Solicitudes en tramitacion segun sector", PAD, "Privados 367 10", "Publicos 217 12", "Reclamos por Isapre 2024 2025",
+     "Isapre A 300 284", "Isapre B 1 2", "Isapre C 1 2", "Isapre D 1 2", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112b', "Total row: adjacent tables separated only by blanks",
+     "\n".join(
+    ["Solicitudes en tramitacion por region", PAD, "Arica 3 4 7", "Total 3 4 7", "", "", "Isapre A 300 284 584",
+     "Isapre B 1 2 3", "Isapre C 1 2 3", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112b', "Total row: prose line above caption supplies kw",
+     "\n".join(
+    ["el numero de solicitudes en tramitacion se informa mas abajo", "Cuadro 2. Reclamos por mes " + PAD,
+     "Enero 300 284", "Febrero 1 2", "Marzo 1 2", "Abril 1 2", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112b', "Total row: heading across many blank lines",
+     "\n".join(
+    ["Solicitudes en tramitacion", "", "", "", "", "", PAD, "Ene 300 284", "Feb 1 2", "Mar 1 2", "Abr 1 2", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112b', "Total row: heading 4 non-table lines away",
+     "\n".join(
+    ["Solicitudes en tramitacion", PAD, "linea dos", "linea tres", "Ene 300 284", "Feb 1 2", "Mar 1 2", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112b', "Total 2-cell: wrong-year column",
+     "\n".join(
+    ["Solicitudes en tramitacion 2025 y 2026", PAD, "Sector 2025 2026", "Privados 300 367", "Publicos 1 2", "Otros 1 2", "Total 584 600"]),
+     584, TRA),
+    ('probe112b', "Total 2-cell: 217 accepted as private",
+     "\n".join(
+    ["Solicitudes privadas y publicas en tramitacion", PAD, "Region 1 1", "Region 2 2", "Region 3 3", "Region 4 4", "Total 367 217"]),
+     217, PRIV),
+    ('probe112b', "Total 1-cell: prose lines ending in a number are 'body'",
+     "\n".join(
+    ["Solicitudes en tramitacion", PAD, "Reclamos de 2025", "Reclamos ingresados en junio 2026", "Total 584"]),
+     584, TRA),
+    ('probe112b', "Total 4-cell: figure is any cell equal to sum of others",
+     "\n".join(
+    ["Solicitudes en tramitacion", PAD, "a 1 2 3 4", "b 1 2 3 4", "c 1 2 3 4", "d 1 2 3 4", "Total 100 200 284 584"]),
+     584, TRA),
+    ('probe112b', "Total: middle cell = sum (non-total column)",
+     "\n".join(
+    ["Solicitudes en tramitacion", PAD, "a 1 2 3", "b 1 2 3", "c 1 2 3", "d 1 2 3", "Total 300 584 284"]),
+     584, TRA),
+    ('probe112b', "space-thousands split into cells",
+     "\n".join(
+    ["Solicitudes en tramitacion", PAD, "a 1 2 3", "b 1 2 3", "c 1 2 3", "d 1 2 3", "Total 1 000 583 1 585"]),
+     584, TRA),
+    ('probe112b', "same number in unrelated table, no kw",
+     "\n".join(
+    ["Reclamos por mes", PAD, "a 1 2", "b 1 2", "c 1 2", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112d', "A0 control (should accept): 101 <L> con observaciones",
+     f"Se informan {PAD} 101 {L} con observaciones.",
+     101, OBS),
+    ('probe112d', "A1 stopword padding, 101 = reviewed",
+     f"Se revisaron {PAD} 101 de los prestadores del sistema de salud de la red de la de la region de la de la, de la, varios con observaciones.",
+     101, OBS),
+    ('probe112d', "A2 'de los cuales algunos'",
+     f"Se fiscalizaron {PAD} 101 {L}, de los cuales algunos con observaciones.",
+     101, OBS),
+    ('probe112d', "A3 'no fueron acreditados con observaciones'",
+     f"Del total {PAD}, 101 {L} no fueron acreditados con observaciones.",
+     101, OBS),
+    ('probe112d', "A4 'excepto los con observaciones'",
+     f"Se acreditaron {PAD} 101 {L} excepto los con observaciones.",
+     101, OBS),
+    ('probe112d', "A5 'ninguno con observaciones'",
+     f"Se acreditaron {PAD} 101 {L}, ninguno con observaciones.",
+     101, OBS),
+    ('probe112d', "A6 'nunca con observaciones'",
+     f"Se acreditaron {PAD} 101 {L} nunca con observaciones.",
+     101, OBS),
+    ('probe112d', "A7 ACR 'no acreditados'",
+     f"Al cierre {PAD} 101 {L} no acreditados.",
+     101, ACR),
+    ('probe112d', "A8 ACR 'que fueron des-acreditados'... 'que dejaron de estar acreditados'",
+     f"Al cierre {PAD} 101 {L} dejaron de estar acreditados.",
+     101, ACR),
+    ('probe112d', "A9 subordinate clause 'que en su mayoria quedaron con observaciones'",
+     f"Ingresaron {PAD} 971 solicitudes institucionales correspondientes administrativamente metropolitanas, que en su mayoria quedaron con observaciones.",
+     971, OBS),
+    ('probe112d', "A10 PRIV via 'publicos y privados'",
+     f"Hay {PAD} 584 solicitudes en tramitacion de los establecimientos institucionales, publicos y privados.",
+     584, PRIV),
+    ('probe112d', "A11 PUB 'no publicos'",
+     f"Hay {PAD} 584 solicitudes en tramitacion de los establecimientos institucionales metropolitanos no publicos.",
+     584, PUB),
+    ('probe112d', "A12 PRIV 'ademas de 217 publicos' later",
+     f"En tramitacion hay {PAD} 584 solicitudes de los establecimientos institucionales metropolitanos privados.",
+     584, PRIV),
+    ('probe112d', "A13 date exemption: '30 de junio' real number is count",
+     f"Se informan {PAD} 30 de junio a la fecha de los establecimientos institucionales metropolitanos con observaciones.",
+     30, OBS),
+    ('probe112d', "A14 table row with date label read as prose",
+     "Region Metropolitana junio 2026 101 " + L + " con observaciones",
+     101, OBS),
+    ('probe112d', "A15 OBS sentence negated by 'sin' 4 words back",
+     f"Se acreditaron {PAD} 101 {L} sin ningun tipo de observaciones ni con observaciones menores.",
+     101, OBS),
+    ('probe112d', "B0 control",
+     "\n".join(["Solicitudes en tramitacion por region", H2, "Arica 300 284 584", "Tarapaca 1 2 3", "Total 301 286 587"]),
+     587, TRA),
+    ('probe112d', "B1 caption BELOW table A labels table B",
+     "\n".join(
+    ["Reclamos por region", "Arica 1 2 3", "Total 1 2 3", "Cuadro 1. Solicitudes en tramitacion por region", H2,
+     "Isapre A 300 284 584", "Isapre B 1 2 3", "Total 301 286 587"]),
+     587, TRA),
+    ('probe112d', "B2 prose above other heading supplies kw",
+     "\n".join(
+    ["Las solicitudes en tramitacion se describen antes", "Reclamos ingresados por mes", PAD, "Ene 300 284 584",
+     "Feb 1 2 3", "Total 301 286 587"]),
+     587, TRA),
+    ('probe112d', "B3 two stacked tables same cell count, no blank",
+     "\n".join(
+    ["Solicitudes en tramitacion por region", H2, "Arica 1 2 3", "Tarapaca 1 2 3", "Reclamos Isapre A 300 284 584",
+     "Reclamos Isapre B 1 2 3", "Total 303 290 593"]),
+     593, TRA),
+    ('probe112d', "B4 caption about other metric incl tramitacion (ACR)",
+     "\n".join(
+    ["Cuadro 4. Prestadores acreditados con reacreditacion en tramitacion", H2, "Privados 40 30 70", "Publicos 20 10 30",
+     "Total 60 40 100"]),
+     100, ACR),
+    ('probe112d', "B5 PRIV: Total column of a privados+publicos table",
+     "\n".join(
+    ["Solicitudes en tramitacion de prestadores privados y publicos", H2,
+     "Norte 200 100 300", "Sur 167 117 284", "Total 367 217 584"]),
+     584, PRIV),
+    ('probe112d', "B6 percent Total row w/o % signs",
+     "\n".join(
+    ["Distribucion porcentual de solicitudes en tramitacion", H2, "Privados 63 37 100", "Total 63 37 100"]),
+     100, TRA),
+    ('probe112d', "B7 percent Total row with %",
+     "\n".join(
+    ["Solicitudes en tramitacion (%)", H2, "Privados 63% 37% 100%", "Total 63% 37% 100%"]),
+     100, TRA),
+    ('probe112d', "B8 caption line naming two tables",
+     "\n".join(
+    ["Cuadro 3. Solicitudes en tramitacion y Cuadro 4. Reclamos por mes", H2, "Ene 300 284 584", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112d', "B9 'sin tramitacion' heading",
+     "\n".join(
+    ["Solicitudes sin tramitacion por region", H2, "Arica 300 284 584", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112d', "B10 OBS: heading 'en tramite, sin observaciones'",
+     "\n".join(
+    ["Acreditaciones en tramite sin observaciones", H2, "Arica 60 41 101", "Total 60 41 101"]),
+     101, OBS),
+    ('probe112d', "B11 OBS: 'con observaciones' column but Total is all",
+     "\n".join(
+    ["Solicitudes en tramitacion con y sin observaciones", H2, "Arica 60 41 101", "Total 60 41 101"]),
+     101, OBS),
+    ('probe112d', "B12 heading: 'tramitacion' only in 3rd line up of prose",
+     "\n".join(
+    ["Reclamos: se excluyen las solicitudes en tramitacion", "Reclamos por prestador privado", PAD, "Ene 300 284 584", "Total 300 284 584"]),
+     584, PRIV),
+    ('probe112d', "B13 caption 'Tabla 2' of other metric, kw in following subtitle line",
+     "\n".join(
+    ["Solicitudes en tramitacion", "Tabla 2", "Reclamos por mes", PAD, "Ene 300 284 584", "Total 300 284 584"]),
+     584, TRA),
+    ('probe112e', "N1 'no fueron'",
+     f"Del total {PAD}, 101 {L4} no fueron con observaciones.",
+     101, OBS),
+    ('probe112e', "N2 'excepto los'",
+     f"Se acreditaron {PAD} 101 {L4} excepto los con observaciones.",
+     101, OBS),
+    ('probe112e', "N3 'ninguno'",
+     f"Se acreditaron {PAD} 101 {L4}, ninguno con observaciones.",
+     101, OBS),
+    ('probe112e', "N4 'no obtuvieron'",
+     f"Se acreditaron {PAD} 101 {L4} no obtuvieron con observaciones.",
+     101, OBS),
+    ('probe112e', "N5 ACR 'no acreditados'",
+     f"Al cierre {PAD} 101 {L4} no acreditados.",
+     101, ACR),
+    ('probe112e', "N6 subordinate 'que quedaron'",
+     f"Ingresaron {PAD} 971 {L4}, que quedaron con observaciones.",
+     971, OBS),
+    ('probe112e', "N7 subordinate 'cuyos pares'",
+     f"Ingresaron {PAD} 971 {L4}, cuyos pares quedaron con observaciones.",
+     971, OBS),
+    ('probe112e', "N8 PUB 'no publicos ... tramitacion'",
+     f"Hay {PAD} 584 {L4} no publicos en tramitacion.",
+     584, PUB),
 ]
 
 
-@pytest.mark.parametrize("name,text,n,ctx,accept", PROBES, ids=[p[0] for p in PROBES])
-def test_review_probe(name, text, n, ctx, accept):
-    assert cap.figure_evidence([text], [1], n, ctx, 1) is None or name.startswith("'Fig.'")  # v1 misses (window)
-    v2 = cap.figure_evidence([text], [1], n, ctx, 2)
-    assert (v2 is not None) == accept, v2
-    if name.startswith("'Fig.'"):
-        assert v2["rule"] == "context_window"  # accepted by the unchanged window, not by the new rules
-    if name.startswith("Total 4-cell"):
-        assert v2["rule"] == "total_row" and v2["sum_check"] == "100 + 200 + 284 = 584"
+def _ids():
+    return [f"{p[0]}:{re.sub(r'[^A-Za-z0-9]+', '_', p[1])[:60]}" for p in PROBES]
+
+
+@pytest.mark.parametrize("templates", ["repo", "filled"])
+@pytest.mark.parametrize("tag,name,text,n,ctx", PROBES, ids=_ids())
+def test_review_probe_is_rejected(tag, name, text, n, ctx, templates):
+    tpl = real.REPO_TEMPLATES if templates == "repo" else real.filled()
+    v1 = cap.figure_evidence([text], [1], n, ctx, 1)
+    v2 = cap.figure_evidence([text], [1], n, ctx, 2, KEY.get(ctx), tpl, VERIFIED)
+    if name in WINDOW_ACCEPTED:
+        assert v1 == v2 == {"rule": "context_window", "page": 1}
+    else:
+        assert v1 is None and v2 is None, v2
+    if KEY.get(ctx) in tpl:  # the template itself, applied directly, never matches a probe
+        assert cap.template_evidence([text], [1], n, tpl[KEY[ctx]], VERIFIED)[0] is None
+
+
+def test_probe_count():
+    assert len(PROBES) == 62
 
 
 def test_uncited_page_page_boundary_and_other_topics():
-    assert cap.figure_evidence(["x", "Hay 101 con observaciones"], [1], 101, OBS, 2) is None
-    assert cap.figure_evidence([f"101 prestadores {PAD}", "con observaciones."], [1, 2], 101, OBS, 2) is None
+    tpl = real.filled()
+    p2 = real.text_of(real.doc(), 2)
+    assert cap.figure_evidence(["x", p2], [1], 101, OBS, 2, "with_observations", tpl, VERIFIED) is None
+    words = p2.split("obtuvieron")
+    assert cap.figure_evidence([words[0], "obtuvieron" + words[1]], [1, 2], 101, OBS, 2, "with_observations", tpl,
+                               VERIFIED) is None  # a template never spans pages
     assert [cap.checker_version(t) for t in ("mediacion", "rnpi", "reclamos", None)] == [1, 1, 1, 1]
     assert cap.checker_version("acreditacion") == 2
-    # Metrics without v2 rules (other topics, generic context) never use the new rules.
-    assert cap.figure_evidence([f"Hay 175 {PAD} mediadores."], [1], 175, C["registered_mediators"], 2) is None
+    assert cap.figure_evidence([p2], [1], 101, OBS, 1, "with_observations", tpl, VERIFIED) is None  # v1: no templates
 
 
-def test_real_layouts_are_the_accepted_positives():
+def test_real_layouts_are_the_only_positives():
     pdf = real.doc()
     p2, p8 = real.text_of(pdf, 2), real.text_of(pdf, 8)
+    tpl = real.filled()
     assert cap.figure_evidence([p2], [1], 101, OBS, 1) is None and cap.figure_evidence([p8], [1], 584, TRA, 1) is None
-    assert cap.figure_evidence([p2], [1], 101, OBS, 2) == {"rule": "sentence", "page": 1}
-    tot = cap.figure_evidence([p8], [1], 584, TRA, 2)
-    assert tot["rule"] == "total_row" and tot["sum_check"] == "367 + 217 = 584" and tot["heading"].startswith("tabla 7.")
-
-
-@pytest.mark.parametrize("text,key,ok", [
-    ("Del total, 101 prestadores obtuvieron el resultado de acreditado con observaciones.", "with_observations", True),
-    ("Del total, 101 prestadores sin y con observaciones.", "with_observations", False),  # 'sin' within 3 words
-    ("Hay 101 prestadores que en sus procesos regionales anteriores finalmente obtuvieron el resultado con observaciones.",
-     "with_observations", False),  # > 6 content words between
-    ("Hay 101 prestadores y 30 clinicas con observaciones.", "with_observations", False),  # another number in between
-    ("Hay 367 solicitudes de prestadores privados en tramitacion.", "private_pending", True),
-    ("Hay 367 solicitudes de prestadores privados.", "private_pending", False),  # pending word required
-    ("Hay 584 solicitudes en tramitacion.", "pending_applications", True),
-    ("Hay 101 prestadores " + "con " * 100 + "observaciones.", "with_observations", False),  # > 300 chars
-    ("Total 101 prestadores con observaciones.", "with_observations", False),  # 'Total …' line
-    ("Hay 101 prestadores con observaciones 2026 2025", "with_observations", False),  # ends in a number: table-like
-])
-def test_sentence_rule_details(text, key, ok):
-    assert cap.in_same_sentence(text, int(re.search(r"\d+", text)[0]), key) is ok
-
+    assert cap.figure_evidence([p2], [1], 101, OBS, 2, "with_observations", tpl, VERIFIED)["rule"] == "template"
+    tot = cap.figure_evidence([p8], [1], 584, TRA, 2, "pending_applications", tpl, VERIFIED)
+    assert tot["rule"] == "template" and tot["sum_check"] == "367 + 217 = 584"
+    # The same layouts with the repo templates (placeholder caption, review 'pendiente') stay on HOLD.
+    assert cap.figure_evidence([p2], [1], 101, OBS, 2, "with_observations", real.REPO_TEMPLATES, VERIFIED) is None
+    assert cap.figure_evidence([p8], [1], 584, TRA, 2, "pending_applications", real.REPO_TEMPLATES, VERIFIED) is None

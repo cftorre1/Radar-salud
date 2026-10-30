@@ -4,13 +4,15 @@ The SIS releases are listed in ``data/history/superintendencia_signals.json`` (t
 URLs). This module downloads each document once, stores its SHA-256 and the parsed, reconciled values in
 ``data/stats_fichas/captures/<kind>.json`` and never stores the binary. A document already captured is not downloaded
 again (no backfill: only the releases already in the history are read, at most ``max_new`` per run), except once when
-the Boletín checker version of its topic is bumped: then it is re-checked and must hash to the recorded SHA-256.
+the Boletín checker version or the figure templates of its topic change: then it is re-checked and must
+hash to the recorded SHA-256.
 
 - GES (xlsx): ``data_insights.parse_ges_workbook`` — the corrected parser: the sheet of the reporting year is
   pinned and the rows must add up to the declared total, else HOLD.
 - Boletín IP (PDF): the text is never interpreted by a model. The figures come from the independent reading in
   ``config/statistical_analysis_verified_v1.json`` and the capture only records whether each verified figure is
-  present in the captured document's text (``verified_present``) and under which rule (``figure_rules``). Releases whose documents belong to another
+  present in the captured document's text (``verified_present``) and under which rule (``figure_rules``: the
+  context window or, for acreditación, a human-reviewed anchored template). Releases whose documents belong to another
   release (e.g. a 'Septiembre 2026' page listing the 'enero-junio-2026' PDFs) are rejected, never relabelled.
 """
 from __future__ import annotations
@@ -192,192 +194,110 @@ def present_in(text: str, n: int | float, context: tuple[str, ...] = GENERIC_CON
 
 
 # Checker version of the Boletín IP parse, per topic (recorded as ``checker_version`` in every parse result). A captured
-# document whose recorded version is older than the code's is re-checked on the next run (``capture``): the bytes are
-# obtained again within the same limits, must hash to the recorded SHA-256 (else HOLD: status 'hash_mismatch') and are
-# re-parsed. Version 1 = context window only. Version 2 (acreditación, approved by Dirección 2026-10-29) adds the
-# same-sentence rule and the 'Total' row rule below; the context window is unchanged.
+# document whose recorded version is older than the code's, or whose recorded ``templates_sha256`` differs from the
+# current figure templates of its topic, is re-checked on the next run (``capture``): the bytes are obtained again
+# within the same limits, must hash to the recorded SHA-256 (else HOLD: status 'hash_mismatch') and are re-parsed.
+# Version 1 = context window only. Version 2 (acreditación, Dirección 2026-10-29) adds per-figure anchored templates
+# declared in ``config/stats_fichas_v1.json`` (families.F6.figure_templates) and reviewed by a human; the context
+# window is unchanged. No generic sentence or table heuristic is used.
 CHECKER_VERSIONS = {"acreditacion": 2}
 DEFAULT_CHECKER_VERSION = 1
-HEADING_MAX_LINES = 3  # at most this many text lines above a table body form its heading
-SENTENCE_MAX_CHARS = 300  # a longer 'sentence' is rejected (extraction joined unrelated text)
-GOVERN_MAX_WORDS = 6  # content words allowed between a figure and the keyword it governs
-_MONTHS_RE = "|".join(MONTHS)
-_INT_CELL = r"\d{1,3}(?:\.\d{3})+|\d+"
-_NUM_TOKEN = re.compile(r"(?<![\w.,])\d[\d.,]*%?")
-_DATE_EXPR = re.compile(r"\b\d{1,2}\s+de\s+(?:" + _MONTHS_RE + r")(?:\s+(?:de|del)\s+\d{4})?\b|\b(?:" + _MONTHS_RE
-                        + r")\s+(?:de\s+|del\s+)?\d{4}\b")
-_TOTAL_ROW = re.compile(r"^\s*total(?:\s+general)?\s+((?:(?:" + _INT_CELL + r")\s+)*(?:" + _INT_CELL + r"))\s*$")
-_TOTAL_START = re.compile(r"^\s*total\b")
-_CAPTION = re.compile(r"^\s*(?:cuadro|tabla|grafico)\s+(?:n\s*[°ºo.]?\s*)?\d")
-_SENTENCE_END = re.compile(r"[;:?!]|\.(?!\d)|(?<!\d)\.")
-_BULLET = "•-–—*·▪○◦"
-# Function words not counted between a figure and its keyword (articles, contractions, de/en/y/o).
-_STOPWORDS = frozenset({"el", "la", "los", "las", "lo", "un", "una", "unos", "unas", "de", "del", "al", "a", "en", "y",
-                        "o", "e"})
-_PENDING = r"\btramit(?:e|es|acion|aciones)\b"
-# Checker v2 keyword requirements (folded, whole words). 'kw' must follow the figure in its sentence (the figure
-# governs it); 'needs' must also appear in the same sentence; 'not_before' must not be among the 3 words before 'kw'.
-V2_RULES = {
-    "accredited_providers": {"kw": r"\bacreditad[oa]s?\b"},
-    "with_observations": {"kw": r"\bcon\s+observacion(?:es)?\b", "not_before": "sin"},
-    "pending_applications": {"kw": _PENDING},
-    "private_pending": {"kw": r"\bprivad[oa]s?\b", "needs": _PENDING},
-    "public_pending": {"kw": r"\bpublic[oa]s?\b", "needs": _PENDING},
-}
-_KEY_BY_CONTEXT = {METRIC_CONTEXT[k]: k for k in V2_RULES}
+REGISTRY = Path("config/stats_fichas_v1.json")
+PLACEHOLDER = re.compile(r"<<[^>]*>>")
+UNREVIEWED = frozenset({"", "pendiente", "pending", "todo"})
 
 
 def checker_version(topic: str | None) -> int:
     return CHECKER_VERSIONS.get(str(topic or ""), DEFAULT_CHECKER_VERSION)
 
 
-def _number_spans(folded: str, n: int | float):
-    for form in number_forms(n):
-        for m in re.finditer(r"(?<![\d.,])" + re.escape(form) + r"(?![\d]|[.,]\d)", folded):
-            yield m.start(), m.end()
+def figure_templates(root: Path, topic: str | None) -> dict:
+    """The topic's figure templates (``families.F6.figure_templates.<topic>``) of the root's registry; {} if none."""
+    reg = _load(Path(root) / REGISTRY, {})
+    fam = ((reg.get("families") or {}).get("F6") or {}) if isinstance(reg, dict) else {}
+    out = (fam.get("figure_templates") or {}).get(str(topic or "")) or {}
+    return {k: v for k, v in out.items() if isinstance(v, dict)}
 
 
-def is_table_like(line: str) -> bool:
-    """A line that looks like a table row: starts with 'Total', ends in a number or a percentage, or carries >= 2
-    numeric tokens (date expressions such as '30 de junio' or 'junio de 2026' are not counted as tokens)."""
-    f = _fold(line).strip()
-    if not f:
-        return False
-    if _TOTAL_START.match(f) or re.search(r"\d\s*%?$", f):
-        return True
-    return len(_NUM_TOKEN.findall(_DATE_EXPR.sub(" ", f))) >= 2
-
-
-def _continues(prev: str, nxt: str) -> bool:
-    """A single line break continues a sentence only when the previous line ends in a lowercase letter or a comma and
-    the next line starts with a lowercase letter (an uppercase letter, digit or bullet starts a new sentence)."""
-    p, q = prev.rstrip(), nxt.lstrip()
-    return bool(p and q) and (p[-1].islower() or p[-1] == ",") and q[0].islower() and q[0] not in _BULLET
-
-
-def sentences(text: str) -> list[str]:
-    """Prose sentences of a page (original case). Table-like lines and blank lines are hard boundaries and never part
-    of a sentence; . ; : ? ! end a sentence (a dot between digits does not)."""
-    groups, cur = [], []
-    for line in str(text or "").split("\n"):
-        if not line.strip() or is_table_like(line):
-            if cur:
-                groups.append(" ".join(cur))
-            cur = []
-            continue
-        if cur and not _continues(cur[-1], line):
-            groups.append(" ".join(cur))
-            cur = []
-        cur.append(line.strip())
-    if cur:
-        groups.append(" ".join(cur))
-    out = []
-    for g in groups:
-        out += [x.strip() for x in _SENTENCE_END.split(g) if x.strip()]
-    return out
-
-
-def _governs(folded: str, end: int, kw: re.Match) -> bool:
-    between = folded[end: kw.start()]
-    if re.search(r"\d", between):
-        return False
-    words = [w for w in re.findall(r"[a-z]+", between) if w not in _STOPWORDS]
-    return len(words) <= GOVERN_MAX_WORDS
-
-
-def in_same_sentence(text: str, n: int | float, key: str) -> bool:
-    """Rule (a), checker v2: the figure directly governs its metric keyword in one prose sentence (see V2_RULES)."""
-    spec = V2_RULES.get(key)
-    if not spec:
-        return False
-    for sent in sentences(text):
-        if len(sent) > SENTENCE_MAX_CHARS:
-            continue
-        f = _fold(sent)
-        if spec.get("needs") and not re.search(spec["needs"], f):
-            continue
-        for _, end in _number_spans(f, n):
-            kw = re.compile(spec["kw"]).search(f, end)  # only the first keyword after the figure can be governed by it
-            if not kw:
-                continue
-            if spec.get("not_before") and spec["not_before"] in re.findall(r"[a-z]+", f[:kw.start()])[-3:]:
-                continue
-            if _governs(f, end, kw):
-                return True
-    return False
-
-
-def _row_cells(line: str) -> list[int] | None:
-    m = _TOTAL_ROW.match(line)
-    if not m:
+def templates_sha256(templates: dict | None) -> str | None:
+    if not templates:
         return None
-    toks = m[1].split()
-    if any(len(t) > 1 and t[0] == "0" for t in toks):
-        return None  # '1 000' split into cells: ambiguous
-    return [int(t.replace(".", "")) for t in toks]
+    return hashlib.sha256(json.dumps(templates, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
 
 
-def _body_cells(line: str) -> int:
-    """Trailing integer cells of a 'label n n n' row (0 if the line does not end in integer cells)."""
-    m = re.search(r"(?:^|\s)((?:(?:" + _INT_CELL + r")\s+)*(?:" + _INT_CELL + r"))\s*$", line)
-    return len(m[1].split()) if m else 0
+def normalize_page(text: str) -> str:
+    """Template text: case and accents folded, thousands dots removed ('1.004.982' → '1004982'), all whitespace
+    (newlines included) collapsed to single spaces."""
+    t = _fold(text)
+    t = re.sub(r"(?<=\d)\.(?=\d{3}(?!\d))", "", t)
+    return re.sub(r"\s+", " ", t).strip()
 
 
-def total_row_match(text: str, n: int | float, key: str) -> dict | None:
-    """Rule (b), checker v2: the figure is the LAST cell of a 'Total' / 'Total general' row with >= 3 integer cells
-    and equals the sum of the other cells. The table body (>= 1 row) is the run of lines directly above whose number of
-    trailing integer cells equals the Total row's. The heading is the block of text lines directly above the body (at
-    most HEADING_MAX_LINES); the walk stops at a blank line, another 'Total' line or any line ending in a number that is
-    not a body row. A caption line ('Cuadro' / 'Tabla' / 'Gráfico' N) met in the walk is the heading on its own. The
-    heading must contain the metric keyword and 'tramitación' / 'trámite' (whole words)."""
-    spec = V2_RULES.get(key)
-    if not spec:
-        return None
-    lines = _fold(text).split("\n")
-    for i, line in enumerate(lines):
-        cells = _row_cells(line)
-        if not cells or len(cells) < 3 or cells[-1] != int(n) or sum(cells[:-1]) != int(n):
-            continue
-        j = i - 1
-        while j >= 0 and lines[j].strip() and not _TOTAL_START.match(lines[j]) and _body_cells(lines[j]) == len(cells):
-            j -= 1
-        if j == i - 1:
-            continue  # no body rows
-        heading = []
-        while j >= 0 and len(heading) < HEADING_MAX_LINES:
-            ln = lines[j].strip()
-            if _CAPTION.match(ln):
-                heading = [ln]
-                break
-            if not ln or _TOTAL_START.match(ln) or re.search(r"\d\s*%?$", ln):
-                break
-            heading.insert(0, ln)
-            j -= 1
-        head = " ".join(heading)
-        if re.search(spec["kw"], head) and re.search(_PENDING, head):
-            return {"row": line.strip(), "heading": head,
-                    "sum_check": " + ".join(str(c) for c in cells[:-1]) + f" = {cells[-1]}"}
-    return None
+def template_pattern(tpl: dict) -> tuple[re.Pattern | None, str]:
+    """Compile a template, or say why it is not usable ('placeholder', 'unreviewed', 'invalid')."""
+    caption = tpl.get("caption")
+    raw = str(tpl.get("pattern") or "")
+    if not raw or PLACEHOLDER.search(raw) or (caption is not None and (not str(caption).strip()
+                                                                       or PLACEHOLDER.search(str(caption)))):
+        return None, "placeholder"
+    if str(tpl.get("reviewed_by") or "").strip().casefold() in UNREVIEWED or not str(tpl.get("reviewed_at") or "").strip():
+        return None, "unreviewed"
+    if "{caption}" in raw:
+        if caption is None:
+            return None, "placeholder"
+        raw = raw.replace("{caption}", re.escape(normalize_page(str(caption))))
+    try:
+        pat = re.compile(raw)
+    except re.error:
+        return None, "invalid"
+    if pat.groups != int(tpl.get("groups") or 1) or not 1 <= int(tpl.get("figure_group") or 1) <= pat.groups:
+        return None, "invalid"
+    return pat, "ok"
+
+
+def template_evidence(pages: list[str], cited: list[int], n: int | float, tpl: dict | None,
+                      metrics: dict | None = None) -> tuple[dict | None, str]:
+    """Apply one reviewed template to the cited pages: it must match exactly once across them, the captured figure
+    must equal the independent reading's ``n``, and the optional ``sum_of`` / ``parts_equal`` checks must hold."""
+    if not tpl:
+        return None, "not_configured"
+    pat, why = template_pattern(tpl)
+    if not pat:
+        return None, why
+    hits = [(p, m) for p in cited for m in pat.finditer(normalize_page(pages[p - 1]))]
+    if len(hits) != 1:
+        return None, "no_match" if not hits else f"multiple_matches:{len(hits)}"
+    page, m = hits[0]
+    groups = [int(g) for g in m.groups()]
+    if groups[int(tpl.get("figure_group") or 1) - 1] != int(n):
+        return None, "figure_mismatch"
+    ev = {"rule": "template", "page": page, "match": m[0][:300], "reviewed_by": tpl.get("reviewed_by"),
+          "reviewed_at": tpl.get("reviewed_at")}
+    if tpl.get("sum_of"):
+        parts = [groups[i - 1] for i in tpl["sum_of"]]
+        if sum(parts) != int(n):
+            return None, "sum_mismatch"
+        ev["sum_check"] = " + ".join(map(str, parts)) + f" = {int(n)}"
+    for g, key in (tpl.get("parts_equal") or {}).items():
+        want = (metrics or {}).get(key)
+        if not isinstance(want, (int, float)) or groups[int(g) - 1] != int(want):
+            return None, f"part_mismatch:{key}"
+    if tpl.get("parts_equal"):
+        ev["parts_equal"] = {key: groups[int(g) - 1] for g, key in tpl["parts_equal"].items()}
+    return ev, "ok"
 
 
 def figure_evidence(pages: list[str], cited: list[int], n: int | float, context: tuple[str, ...],
-                    version: int = DEFAULT_CHECKER_VERSION, key: str | None = None) -> dict | None:
-    """Which rule places the figure on a cited page: 'context_window' (v1+), then 'sentence' and 'total_row' (v2+,
-    only for metrics with V2_RULES; ``key`` defaults to the metric whose context tuple is ``context``)."""
+                    version: int = DEFAULT_CHECKER_VERSION, key: str | None = None, templates: dict | None = None,
+                    metrics: dict | None = None) -> dict | None:
+    """Which rule places the figure on a cited page: 'context_window' (all versions), then, from v2, the reviewed
+    anchored 'template' of the metric (``templates[key]``). Nothing else."""
     for p in cited:
         if present_in(pages[p - 1], n, context):
             return {"rule": "context_window", "page": p}
-    key = key or _KEY_BY_CONTEXT.get(tuple(context))
-    if version < 2 or key not in V2_RULES:
+    if version < 2 or not key:
         return None
-    for p in cited:
-        if in_same_sentence(pages[p - 1], n, key):
-            return {"rule": "sentence", "page": p}
-    for p in cited:
-        hit = total_row_match(pages[p - 1], n, key)
-        if hit:
-            return {"rule": "total_row", "page": p, **hit}
-    return None
+    return template_evidence(pages, cited, n, (templates or {}).get(key), metrics)[0]
 
 
 def pdf_pages(data: bytes) -> list[str]:
@@ -392,27 +312,38 @@ def pdf_text(data: bytes) -> tuple[str, int]:
 
 
 def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int] | None = None,
-                      topic: str | None = None) -> dict:
+                      topic: str | None = None, templates: dict | None = None) -> dict:
     """Hash-bound check of verified figures; no figure is read from the PDF by guesswork.
 
-    A figure counts as present only on the pages cited by the independent reading (``pages_1based``) and under one
-    of the rules of the topic's checker version (``figure_evidence``); without cited pages nothing is verified (fail
-    closed). The rule that placed each figure is recorded in ``figure_rules``."""
+    A figure counts as present only on the pages cited by the independent reading (``pages_1based``): next to a
+    context word of its metric, or (checker v2) through its reviewed anchored template. Without cited pages nothing is
+    verified (fail closed). ``figure_rules`` records the rule per figure, ``template_status`` why a template did not
+    apply ('not_configured', 'placeholder', 'unreviewed', 'no_match', 'multiple_matches:N', …)."""
     version = checker_version(topic)
+    templates = templates if version >= 2 else None
+    base = {"checker_version": version, "templates_sha256": templates_sha256(templates)}
     try:
         pages = pdf_pages(data)
     except Exception as exc:  # unreadable PDF: captured hash, no verification
-        return {"status": "pdf_unreadable", "error": f"{type(exc).__name__}"[:80], "checker_version": version}
+        return {"status": "pdf_unreadable", "error": f"{type(exc).__name__}"[:80], **base}
     text = "\n".join(pages)
     out = {"status": "no_verified_metrics", "pages": len(pages),
-           "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "checker_version": version}
+           "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), **base}
     if metrics:
         cited = [p for p in (pages_1based or []) if isinstance(p, int) and 1 <= p <= len(pages)]
-        evidence = {k: figure_evidence(pages, cited, v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT), version, k)
-                    for k, v in metrics.items() if isinstance(v, (int, float))}
+        evidence, status = {}, {}
+        for k, v in metrics.items():
+            if not isinstance(v, (int, float)):
+                continue
+            evidence[k] = figure_evidence(pages, cited, v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT), version, k,
+                                          templates, metrics)
+            if evidence[k] is None and version >= 2:
+                status[k] = template_evidence(pages, cited, v, (templates or {}).get(k), metrics)[1]
         present = {k: e is not None for k, e in evidence.items()}
         out.update(status="verified" if present and all(present.values()) else "verified_figure_missing",
                    verified_present=present, pages_checked=cited, figure_rules=evidence)
+        if status:
+            out["template_status"] = status
     return out
 
 
@@ -568,8 +499,9 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
     that downloads but fails to parse is retried after RETRY_AFTER_DAYS. The whole step stops starting downloads once
     ``time_budget_s`` has elapsed (documents left for the next run stay 'not_fetched').
 
-    A Boletín document already captured whose parse carries an older ``checker_version`` than the code's (and that
-    has verified figures to check) is re-checked once (``_recheck_doc``); it uses the same download budget and limits."""
+    A Boletín document already captured whose parse carries an older ``checker_version`` than the code's, or other
+    ``templates_sha256`` than its topic's current figure templates (and that has verified figures to check), is
+    re-checked once (``_recheck_doc``); it uses the same download budget and limits."""
     root = Path(root)
     deadline = clock() + time_budget_s
     fetch = fetch or SisFetcher(deadline=deadline, clock=clock)
@@ -600,11 +532,14 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
             return True
         return days_since(old) >= RETRY_AFTER_DAYS
 
-    def needs_recheck(old: dict | None, topic: str | None, has_metrics: bool) -> bool:
+    def needs_recheck(old: dict | None, topic: str | None, has_metrics: bool, templates: dict) -> bool:
         if not old or old.get("status") != "captured" or old.get("format") != "pdf" or not has_metrics:
             return False
-        recorded = int((old.get("parse") or {}).get("checker_version") or DEFAULT_CHECKER_VERSION)
-        if recorded >= checker_version(topic):
+        parsed = old.get("parse") or {}
+        version = checker_version(topic)
+        recorded = int(parsed.get("checker_version") or DEFAULT_CHECKER_VERSION)
+        current_tpl = templates_sha256(templates) if version >= 2 else None
+        if recorded >= version and parsed.get("templates_sha256") == current_tpl:
             return False
         last = old.get("recheck") or {}
         if last.get("status") == "fetch_failed" and int(last.get("attempts") or 0) >= MAX_ATTEMPTS:
@@ -650,12 +585,13 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         for d in rel["documents"]:
             prev = old_docs.get(d["url"])
             info = verified.get(d["url"]) or {}
-            parse = (lambda b, m=info.get("metrics"), pg=info.get("pages_1based"), t=d.get("topic"):
-                     parse_boletin_pdf(b, m, pg, t))
+            tpl = figure_templates(root, d.get("topic"))
+            parse = (lambda b, m=info.get("metrics"), pg=info.get("pages_1based"), t=d.get("topic"), tp=tpl:
+                     parse_boletin_pdf(b, m, pg, t, tp))
             if needs(prev) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
                 docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf", parse=parse))
-            elif needs_recheck(prev, d.get("topic"), bool(info.get("metrics"))) and budget["left"] > 0 and has_time():
+            elif needs_recheck(prev, d.get("topic"), bool(info.get("metrics")), tpl) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
                 docs.append(_recheck_doc({**prev, **d}, fetch=fetch, parse=parse, stored=stored))
             else:
