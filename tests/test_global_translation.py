@@ -287,8 +287,10 @@ def test_export_translates_writes_cache_and_keeps_ids(tmp_path):
     (tmp_path / "config").mkdir()
     (tmp_path / "config/global_discovery.json").write_text(json.dumps(CONFIG))
     discover_global_feeds.run(tmp_path, tmp_path / "captures", AS_OF, "daily-test", client=FeedClient())  # no key: original text
-    before = json.loads((tmp_path / "web/data/global_feed.json").read_text())
+    state_path = tmp_path / "data/global_intelligence/global_feed_state.json"
+    before = json.loads(state_path.read_text())  # every card; the public feed lists only Spanish ones (30-oct)
     assert "paid_ai_calls" not in before and all("title_es" not in c for c in before["items"])
+    assert json.loads((tmp_path / "web/data/global_feed.json").read_text())["items"] == []
 
     def model(prompt, name):
         if REVIEW_MARK in prompt:
@@ -301,9 +303,14 @@ def test_export_translates_writes_cache_and_keeps_ids(tmp_path):
                                model=name, input_tokens=400, output_tokens=150, estimated_cost_usd=0.00026)
 
     budget = Budget()
-    after = export(tmp_path, AS_OF, env=KEY, call=model, allow=budget.allow, record=budget.record, now=NOW)
+    public = export(tmp_path, AS_OF, env=KEY, call=model, allow=budget.allow, record=budget.record, now=NOW)
+    after = json.loads(state_path.read_text())
     assert [c["id"] for c in after["items"]] == [c["id"] for c in before["items"]]
     assert [c["title"] for c in after["items"]] == [c["title"] for c in before["items"]]
+    # Public: exactly the cards with a verified Spanish text, in the same order.
+    assert public["items"] and [c["id"] for c in public["items"]] == [
+        c["id"] for c in after["items"] if c["translation"]["status"] in ("translated", "summarized", "source_in_spanish")]
+    assert all(c["translation"]["status"] == "translated" for c in public["items"])
     cache = json.loads((tmp_path / "data/global_intelligence/translations.json").read_text())
     assert cache["prompt_version"] == "global_translation_v2" and cache["review_version"] == "global_fidelity_review_v1"
     assert cache["entries"] or cache["rejected"]
@@ -385,7 +392,7 @@ def test_export_falls_back_to_untranslated_feed_on_any_translation_error(tmp_pat
     (tmp_path / "config").mkdir()
     (tmp_path / "config/global_discovery.json").write_text(json.dumps(CONFIG))
     discover_global_feeds.run(tmp_path, tmp_path / "captures", AS_OF, "daily-test", client=FeedClient())
-    target = tmp_path / "web/data/global_feed.json"
+    target = tmp_path / "data/global_intelligence/global_feed_state.json"  # the history the next run builds on
     # A translated history card must not carry its old Spanish text into an untranslated export.
     previous = json.loads(target.read_text())
     previous["items"][0].update(title_es="Texto viejo", translation={"status": "translated", "verified": True, "kind": "translation"})
@@ -394,10 +401,13 @@ def test_export_falls_back_to_untranslated_feed_on_any_translation_error(tmp_pat
     def boom():
         raise RuntimeError("budget ledger unreadable")
 
-    after = export(tmp_path, AS_OF, env=KEY, allow=boom, call=FakeModel(), record=lambda ok: None, now=NOW)
+    public = export(tmp_path, AS_OF, env=KEY, allow=boom, call=FakeModel(), record=lambda ok: None, now=NOW)
+    after = json.loads(target.read_text())
     assert after["translation"] == {"status": "error_untranslated"} and after["items"]
     assert all("title_es" not in c and "summary_es" not in c and "translation" not in c for c in after["items"])
-    assert json.loads(target.read_text())["items"][0]["id"] == previous["items"][0]["id"]
+    assert after["items"][0]["id"] == previous["items"][0]["id"]
+    # Nothing verified in Spanish -> nothing listed publicly (Dirección 30-oct), the headlines are kept in data/.
+    assert public["translation"] == {"status": "error_untranslated"} and public["items"] == []
     assert "global translation failed" in caplog.text
 
 

@@ -211,9 +211,14 @@ def test_feed_run_writes_the_daily_feed_and_new_sources_parse(tmp_path):
     payload = discover_global_feeds.run(tmp_path, tmp_path / "captures", AS_OF, "daily-test", client=FeedClient())
     assert payload["publication_count"] == 0
     daily = json.loads((tmp_path / "web/data/global_feed.json").read_text())
-    assert daily["enabled"] and daily["items"] and daily["content_use"] == "metadata_and_link_only"
-    again = export(tmp_path, AS_OF)
-    assert [c["id"] for c in again["items"]] == [c["id"] for c in daily["items"]]
+    assert daily["enabled"] and daily["content_use"] == "metadata_and_link_only"
+    # Dirección 30-oct (Spanish only): without a key nothing has Spanish text, so the public feed lists nothing;
+    # every card is kept in the data/ state file and is the history of the next run.
+    state = json.loads((tmp_path / "data/global_intelligence/global_feed_state.json").read_text())
+    assert state["items"] and daily["items"] == [] and daily["display"]["hidden"] == len(state["items"])
+    export(tmp_path, AS_OF)
+    again = json.loads((tmp_path / "data/global_intelligence/global_feed_state.json").read_text())
+    assert [c["id"] for c in again["items"]] == [c["id"] for c in state["items"]]
     conv = next(f for f in CONFIG["feeds"] if f["id"] == "the_conversation")
     rows = parse_feed((FIX / "conversation_health.atom").read_bytes(), conv["routes"][0], conv, AS_OF)
     assert rows[0]["url"] == "https://theconversation.com/medicare-advantage-insurers-use-ai-to-deny-coverage-300001"

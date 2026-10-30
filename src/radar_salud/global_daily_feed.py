@@ -333,11 +333,7 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
     cards, duplicates = dedupe(cards, visible)
     cards, capped = _cap_per_source_day(cards, int(policy.get("max_per_source_per_day", 6)))
     cards.sort(key=lambda c: (c["published_at"], c["priority"], c["id"]), reverse=True)
-    ages = [(as_of - _day(c["published_at"])).days for c in cards]
-    newest = cards[0]["published_at"] if cards else None
-    stale_after = int(policy.get("stale_after_days", 2))
-    last7 = [c for c in cards if (as_of - _day(c["published_at"])).days < 7]
-    segments7 = Counter(s for c in last7 for s in c["segments"])
+    derived = _derived(cards, as_of, policy)
     return {"schema_version": SCHEMA_VERSION, "as_of": as_of.isoformat(),
             "generated_at": generated_at or datetime.now(timezone.utc).isoformat(), "enabled": enabled,
             "authorized_by": authorized_by, "authorized_at": policy.get("authorized_at") if enabled else None,
@@ -345,38 +341,121 @@ def build(feed_payload: dict, discovery: dict, config: dict, previous: dict | No
             "body_stored": False, "paid_ai_calls": 0, "summary_method": SUMMARY_METHOD,
             "editorial_status": "headline_index_not_editorial_analysis", "chile_transfer": "hypothesis_only",
             "window_days": window, "retention_days": retention,
-            "freshness": {"newest_published_at": newest, "items_last_2_days": sum(a < 2 for a in ages),
+            "freshness": derived["freshness"], "sources": derived["sources"],
+            "held": dict(sorted(held.items())), "capped_per_source_day": capped, "duplicates_merged": len(duplicates), "duplicates": duplicates,
+            "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
+            "weekly_signal": derived["weekly_signal"],
+            "items": cards}
+
+
+def _derived(cards: list[dict], as_of: date, policy: dict) -> dict:
+    """Freshness, source list and weekly signal of the cards actually listed (recomputed after the display rule)."""
+    ages = [(as_of - _day(c["published_at"])).days for c in cards]
+    newest = max((c["published_at"] for c in cards), default=None)
+    stale_after = int(policy.get("stale_after_days", 2))
+    last7 = [c for c in cards if (as_of - _day(c["published_at"])).days < 7]
+    segments7 = Counter(s for c in last7 for s in c["segments"])
+    return {"freshness": {"newest_published_at": newest, "items_last_2_days": sum(a < 2 for a in ages),
                           "items_last_7_days": len(last7), "status": "fresh" if newest and (as_of - _day(newest)).days < stale_after else "stale",
                           "stale_after_days": stale_after},
             "sources": sorted({(c["source"], c["source_label"]) for c in cards}),
-            "held": dict(sorted(held.items())), "capped_per_source_day": capped, "duplicates_merged": len(duplicates), "duplicates": duplicates,
-            "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
             # Input for the weekly "Desde afuera" theme: the most active segments of the week, with their cards.
             "weekly_signal": [{"segment": s, "label_es": SEGMENT_ES[s], "count": n,
                                "item_ids": [c["id"] for c in sorted(last7, key=lambda c: -c["priority"]) if s in c["segments"]][:5]}
-                              for s, n in segments7.most_common(3)],
-            "items": cards}
+                              for s, n in segments7.most_common(3)]}
+
+
+def _str(value) -> str:
+    return value.strip() if isinstance(value, str) else ""
+
+
+def displayable(card: dict) -> tuple[bool, str]:
+    """Dirección 30-oct: Global lists only what it can present in Spanish.
+
+    * PAHO Spanish pages (/es/) are already Spanish -> shown.
+    * Translatable source -> only a verified translation (``translated``); ``pending``/``verification_failed`` hidden.
+    * Source without translation rights (WHO, EMA, KFF...) -> only with a verified Alicanto summary (``summarized``).
+    Returns (shown, reason)."""
+    from .global_translation import already_spanish
+    if already_spanish(card):
+        return True, "source_in_spanish"
+    t = card.get("translation") or {}
+    status = t.get("status")
+    if status == "translated" and t.get("verified") is True and _str(card.get("title_es")) and (
+            not _str(card.get("description")) or _str(card.get("description_es"))):
+        return True, "translated"
+    if status == "summarized" and t.get("kind") == "summary" and t.get("verified") is True and _str(card.get("summary_es")):
+        return True, "summarized"
+    if status == "not_allowed":
+        return False, "not_allowed_without_verified_summary"
+    if status in ("pending", "verification_failed"):
+        return False, "translation_" + status
+    return False, "no_spanish_text"
+
+
+def _public_card(card: dict) -> dict:
+    """A page meta description is summary input only: never shown verbatim (WHO CC BY-NC-SA; the feed contract keeps
+    publisher text to the feed's own <= 300-character summary)."""
+    from .global_page_meta import DESCRIPTION_SOURCE
+    if card.get("description_source") != DESCRIPTION_SOURCE:
+        return card
+    card = dict(card)
+    card.update(description=None, description_truncated=False, description_source=None, summary_input=DESCRIPTION_SOURCE)
+    if card.get("description_es"):
+        card["description_es"] = None
+    return card
+
+
+def public_payload(payload: dict, config: dict, as_of: date) -> dict:
+    """The public feed: only displayable cards when ``daily_feed.display.spanish_only`` is on. Hidden cards stay in
+    the data/ state file (``state_path``) and appear once they get a verified Spanish text."""
+    policy = config.get("daily_feed") or {}
+    rule = policy.get("display") or {}
+    on = rule.get("spanish_only") is True
+    shown, hidden = [], Counter()
+    for card in payload.get("items", []):
+        ok, why = displayable(card) if on else (True, "rule_off")
+        if ok:
+            shown.append(_public_card(card))
+        else:
+            hidden[why] += 1
+    public = dict(payload)
+    public.update(_derived(shown, as_of, policy))
+    public["items"] = shown
+    public["display"] = {"spanish_only": on, "shown": len(shown), "hidden": sum(hidden.values()),
+                         "hidden_by_reason": dict(sorted(hidden.items())), "authorized_by": rule.get("authorized_by") if on else None,
+                         "authorized_at": rule.get("authorized_at") if on else None}
+    return public
 
 
 def _read(path: Path, default):
     return json.loads(path.read_text()) if path.exists() else default
 
 
-def export(root: Path, as_of: date, translate: bool = True, **translate_kwargs) -> dict:
-    """Read the discovery outputs, write ``web/data/global_feed.json`` atomically.
+def export(root: Path, as_of: date, translate: bool = True, page_client=None, **translate_kwargs) -> dict:
+    """Read the discovery outputs, write ``web/data/global_feed.json`` atomically and return that public payload.
 
     Dirección 29-oct: Spanish title/summary where the source's rights allow it (``global_translation``);
-    the original text and the card ids are never changed."""
+    the original text and the card ids are never changed. Dirección 30-oct: the public feed lists only cards it can
+    show in Spanish (``public_payload``); every card, hidden ones included, is kept in the data/ state file, which is
+    the history the next run builds on. ``page_client`` (live runs only) fetches WHO/EMA page meta descriptions as
+    summary input (``global_page_meta``); without it the cached ones are applied, offline."""
     from .pending_queue import atomic_json
     config = json.loads((root / "config/global_discovery.json").read_text())
+    policy = config.get("daily_feed") or {}
     target = root / "web/data/global_feed.json"
+    state_path = root / (policy.get("state_path") or "data/global_intelligence/global_feed_state.json")
+    # History: the full state (hidden cards included); the public file only before the state existed.
+    previous = _read(state_path, None) or _read(target, None)
     payload = build(_read(root / "data/global_intelligence/feed_discovery.json", {}), _read(root / "data/global_intelligence/discovery.json", {}),
-                    config, _read(target, None), as_of)
+                    config, previous, as_of)
     from .source_rights import redact_public_payload
     payload = redact_public_payload(payload)  # paywalled press: title + public lead only
     from .global_translation import strip_derived
     # History cards carry last run's Spanish text: it is re-derived (and re-gated) every run, never trusted.
     payload["items"] = [strip_derived(c) for c in payload.get("items", [])]
+    if payload.get("enabled"):
+        _page_descriptions(root, payload, config, page_client)
     if translate and payload.get("enabled"):
         from .global_translation import translate_export
         try:
@@ -384,5 +463,34 @@ def export(root: Path, as_of: date, translate: bool = True, **translate_kwargs) 
         except Exception:  # noqa: BLE001 - a translation failure must never block the headlines
             logging.getLogger(__name__).exception("global translation failed; exporting the untranslated feed")
             payload["translation"] = {"status": "error_untranslated"}
-    atomic_json(target, payload)
-    return payload
+    atomic_json(state_path, payload)
+    public = public_payload(payload, config, as_of)
+    atomic_json(target, public)
+    return public
+
+
+def _page_descriptions(root: Path, payload: dict, config: dict, client) -> None:
+    """WHO/EMA page meta descriptions: fetch (live client only), then apply the URL cache to cards without one.
+    A card whose title-only Alicanto summary is already verified keeps it (paid output): no fetch, no description."""
+    from . import global_page_meta as pm
+    from .global_translation import SUMMARY_PROMPT_VERSION, content_key, load_cache as load_translations
+    from .pending_queue import atomic_json
+    cfg = pm.settings(config)
+    if not cfg["enabled"]:
+        return
+    rel = (((config.get("daily_feed") or {}).get("translation")) or {}).get("cache_path") or "data/global_intelligence/translations.json"
+    entries = load_translations(root / rel).get("entries", {}) if (root / rel).exists() else {}
+
+    def keep_title_only(card):
+        entry = entries.get(content_key(card["title"], None, SUMMARY_PROMPT_VERSION)) or {}
+        return entry.get("kind") == "summary" and bool(entry.get("review"))
+
+    path = root / cfg["cache_path"]
+    cache = pm.load_cache(path)
+    if client is not None:
+        try:
+            pm.fetch_descriptions(payload.get("items", []), config, cache, client, skip=keep_title_only)
+        except Exception:  # noqa: BLE001 - page descriptions are optional input; never block the headlines
+            logging.getLogger(__name__).exception("page meta descriptions failed; continuing with the cache")
+        atomic_json(path, cache)
+    pm.apply_descriptions(payload.get("items", []), config, cache, skip=keep_title_only)

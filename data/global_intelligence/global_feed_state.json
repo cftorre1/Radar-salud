@@ -1,0 +1,2238 @@
+{
+  "schema_version": 2,
+  "as_of": "2026-10-29",
+  "generated_at": "2026-10-30T01:52:37.223768+00:00",
+  "enabled": true,
+  "authorized_by": "Dirección (cftorre1)",
+  "authorized_at": "2026-10-28",
+  "access_tier": "PREMIUM",
+  "kind": "global_daily_headlines",
+  "content_use": "metadata_and_link_only",
+  "body_stored": false,
+  "summary_method": "deterministic_template_v1",
+  "editorial_status": "headline_index_not_editorial_analysis",
+  "chile_transfer": "hypothesis_only",
+  "window_days": 90,
+  "retention_days": 90,
+  "freshness": {
+    "newest_published_at": "2026-10-28",
+    "items_last_2_days": 3,
+    "items_last_7_days": 6,
+    "status": "fresh",
+    "stale_after_days": 2
+  },
+  "sources": [
+    [
+      "ec_health",
+      "Comisión Europea"
+    ],
+    [
+      "ecdc",
+      "ECDC"
+    ],
+    [
+      "ema",
+      "EMA"
+    ],
+    [
+      "fda",
+      "FDA"
+    ],
+    [
+      "who",
+      "OMS"
+    ]
+  ],
+  "held": {
+    "feed_not_authorized_for_display": 17,
+    "feed_not_enabled": 25,
+    "not_global_interest:no_global_interest_signal": 20,
+    "not_global_interest:source_rule_exclusion": 3,
+    "not_material_or_unverified": 111,
+    "not_relevant_or_undated": 70,
+    "official_title_without_executive_keyword": 81,
+    "publication_activation_pending_paho": 551
+  },
+  "capped_per_source_day": 0,
+  "duplicates_merged": 0,
+  "duplicates": [],
+  "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
+  "weekly_signal": [
+    {
+      "segment": "providers",
+      "label_es": "Prestadores",
+      "count": 3,
+      "item_ids": [
+        "bfdd8633fe174ab8e461",
+        "5bdb36cd4ca372a4d2e0",
+        "0acfc72ecc068e88b4a6"
+      ]
+    },
+    {
+      "segment": "regulation",
+      "label_es": "Regulación",
+      "count": 2,
+      "item_ids": [
+        "718f8cdb059d564a272c",
+        "1e2dda4154b36b712837"
+      ]
+    },
+    {
+      "segment": "healthtech",
+      "label_es": "Salud digital y dispositivos",
+      "count": 2,
+      "item_ids": [
+        "718f8cdb059d564a272c",
+        "93ba694c2e268873ff20"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "bfdd8633fe174ab8e461",
+      "source": "ecdc",
+      "source_label": "ECDC",
+      "attribution": "European Centre for Disease Prevention and Control (ECDC)",
+      "bylines": [],
+      "title": "As the cold season nears, universal immunisation of newborns against RSV could significantly reduce infant hospitalisations across Europe",
+      "url": "https://www.ecdc.europa.eu/en/news-events/cold-season-nears-universal-immunisation-newborns-against-rsv-could-significantly",
+      "published_at": "2026-10-28",
+      "segments": [
+        "providers"
+      ],
+      "description": "As the season for respiratory syncytial virus (RSV) and other respiratory diseases approaches, a new report from the European Centre for Disease Prevention and Control (ECDC) indicates that universal immunisation of newborns against RSV could substantially reduce hospitalisations among infants…",
+      "description_truncated": true,
+      "description_source": "publisher_feed_summary_excerpt",
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "ecdc_intellectual_property_notice_cc_by_4_0",
+        "license": "CC BY 4.0 (ECDC-owned web content, commercial or non-commercial); logo and third-party material excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: ECDC, CC BY 4.0 (link to the licence), with link; titles unmodified",
+        "evidence_urls": [
+          "https://www.ecdc.europa.eu/en/copyright"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "news"
+      ],
+      "first_seen_on": "2026-10-29",
+      "title_es": "A medida que se acerca la temporada fría, la inmunización universal de los recién nacidos contra el VRS podría reducir significativamente las hospitalizaciones de lactantes en toda Europa",
+      "description_es": "A medida que se acerca la temporada del virus respiratorio sincicial (VRS) y de otras enfermedades respiratorias, un nuevo informe del Centro Europeo para la Prevención y el Control de las Enfermedades (ECDC) indica que la inmunización universal de los recién nacidos contra el VRS podría reducir considerablemente las hospitalizaciones entre los lactantes…",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "c581d18f43604038816a9ad45097575a"
+      }
+    },
+    {
+      "id": "5bdb36cd4ca372a4d2e0",
+      "source": "ecdc",
+      "source_label": "ECDC",
+      "attribution": "European Centre for Disease Prevention and Control (ECDC)",
+      "bylines": [],
+      "title": "Multi-model assessment of the impact of newborn RSV immunisation on hospitalisation burden in the EU/EEA",
+      "url": "https://www.ecdc.europa.eu/en/publications-data/multi-model-assessment-impact-newborn-rsv-immunisation-hospitalisation-burden",
+      "published_at": "2026-10-28",
+      "segments": [
+        "providers"
+      ],
+      "description": "Respiratory Syncytial Virus (RSV) is a major cause of respiratory infections across the EU/EEA, representing a recurrent source of pressure on healthcare systems. …",
+      "description_truncated": true,
+      "description_source": "publisher_feed_summary_excerpt",
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "ecdc_intellectual_property_notice_cc_by_4_0",
+        "license": "CC BY 4.0 (ECDC-owned web content, commercial or non-commercial); logo and third-party material excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: ECDC, CC BY 4.0 (link to the licence), with link; titles unmodified",
+        "evidence_urls": [
+          "https://www.ecdc.europa.eu/en/copyright"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "publications"
+      ],
+      "first_seen_on": "2026-10-28",
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "description:term_missing:Respiratory",
+          "description:term_missing:Syncytial"
+        ]
+      }
+    },
+    {
+      "id": "0acfc72ecc068e88b4a6",
+      "source": "ecdc",
+      "source_label": "ECDC",
+      "attribution": "European Centre for Disease Prevention and Control (ECDC)",
+      "bylines": [],
+      "title": "As the cold season nears, immunisation of newborns against universal RSV could significantly reduce infant hospitalisations across Europe",
+      "url": "https://www.ecdc.europa.eu/en/news-events/cold-season-nears-immunisation-newborns-against-universal-rsv-could-significantly",
+      "published_at": "2026-10-28",
+      "segments": [
+        "providers"
+      ],
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "ecdc_intellectual_property_notice_cc_by_4_0",
+        "license": "CC BY 4.0 (ECDC-owned web content, commercial or non-commercial); logo and third-party material excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: ECDC, CC BY 4.0 (link to the licence), with link; titles unmodified",
+        "evidence_urls": [
+          "https://www.ecdc.europa.eu/en/copyright"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "first_seen_on": "2026-10-28",
+      "description": null,
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "title:term_added:infancia",
+          "title:term_added:infantil"
+        ]
+      }
+    },
+    {
+      "id": "718f8cdb059d564a272c",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Health Technology Assessment: Updated procedural guidance for joint scientific consultations to include the role of watcher",
+      "url": "https://health.ec.europa.eu/latest-updates/health-technology-assessment-updated-procedural-guidance-joint-scientific-consultations-include-role-2026-10-26_en",
+      "published_at": "2026-10-26",
+      "segments": [
+        "regulation",
+        "healthtech"
+      ],
+      "description": "Health Technology Assessment: Updated procedural guidance for joint scientific consultations for medicinal products and for joint scientific consultations for medical devices and in-vitro diagnostics medical devices, to include the role of watcher",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-10-28",
+      "title_es": "Evaluación de tecnologías sanitarias: orientaciones actualizadas sobre el procedimiento para las consultas científicas conjuntas a fin de incluir el rol del observador",
+      "description_es": "Evaluación de tecnologías sanitarias: orientaciones actualizadas sobre el procedimiento para las consultas científicas conjuntas sobre medicamentos y para las consultas científicas conjuntas sobre productos sanitarios y productos sanitarios para diagnóstico in vitro, a fin de incluir el rol del observador",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "92087ebac77818aa9b0727bc87ca3118"
+      }
+    },
+    {
+      "id": "93ba694c2e268873ff20",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Flash report - Member State Coordination Group on HTA (HTACG) (22 October 2026)",
+      "url": "https://health.ec.europa.eu/latest-updates/flash-report-member-state-coordination-group-hta-htacg-22-october-2026-2026-10-26_en",
+      "published_at": "2026-10-26",
+      "segments": [
+        "healthtech"
+      ],
+      "description": "Flash report - Member State Coordination Group on HTA (HTACG) (22 October 2026)",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-10-28",
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "title:length_ratio",
+          "title:acronym_missing:HTA",
+          "description:acronym_missing:HTA"
+        ]
+      }
+    },
+    {
+      "id": "1e2dda4154b36b712837",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "AMA and EMA issue joint guidance on Ebola vaccine development",
+      "url": "https://www.ema.europa.eu/en/news/ama-ema-issue-joint-guidance-ebola-vaccine-development",
+      "published_at": "2026-10-23",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": "EMA’s Emergency Task Force (ETF) and the African Medicines Agency (AMA) have published a joint position paper to support the timely start of clinical trials for potential…",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "ema_legal_notice_reuse_with_acknowledgement",
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: European Medicines Agency (EMA), with link",
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "news"
+      ],
+      "first_seen_on": "2026-10-28",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "EMA legal notice grants reproduction and distribution 'totally or in part', commercial included, with acknowledgement, but says nothing about modification, adaptation or translation and names no open licence. Unclear -> keep the original (fail closed) until EMA confirms in writing; record the confirmation here and flip this flag.",
+        "note_es": "Contenido en inglés (los términos de EMA no contemplan traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "f6ebc6837cc78103112e",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Call for Proposals for hosting the 20th International Conference of Drug Regulatory Authorities (ICDRA)",
+      "url": "https://www.who.int/news/item/20-10-2026-call-for-proposals-for-hosting-the-20th-international-conference-of-drug-regulatory-authorities-(icdra)",
+      "published_at": "2026-10-20",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "518ae8b745241b4f952f",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Development, management and support of care workers: towards an integrated health and care workforce: policy options",
+      "url": "https://www.who.int/publications/i/item/9789240124011",
+      "published_at": "2026-10-20",
+      "segments": [
+        "providers",
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "363698bbe819db64daac",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Issues Final Guidance on Prescription Drug Apps and Software",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-issues-final-guidance-prescription-drug-apps-and-software",
+      "published_at": "2026-10-20",
+      "segments": [
+        "pharma",
+        "regulation",
+        "healthtech"
+      ],
+      "description": "The U.S. Food and Drug Administration today released final guidance establishing a clear framework for how drug companies can develop, distribute, and label apps used alongside their prescription medicines.",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 89,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-10-29",
+      "title_es": "La FDA emite una guía final sobre las aplicaciones y el software para medicamentos de venta con receta",
+      "description_es": "La Administración de Alimentos y Medicamentos de EE. UU. publicó hoy una guía final que establece un marco claro sobre cómo las compañías farmacéuticas pueden desarrollar, distribuir y etiquetar aplicaciones utilizadas junto con sus medicamentos de venta con receta.",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": null,
+        "cache_key": "02d2ab98783bf9b455d246002372b29a"
+      }
+    },
+    {
+      "id": "81cc45fd813073f0a7c8",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Regional Workshop on Strengthening Paediatric Medicines Ecosystems in the ASEAN Region, Report of a WHO meeting, Kuala Lumpur, Malaysia, 11–13 May 2026",
+      "url": "https://www.who.int/publications/i/item/B09890",
+      "published_at": "2026-10-20",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "e6174bc977b43ae3cc33",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Approves First-of-Its-Kind Chronic Hepatitis B Treatment",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-its-kind-chronic-hepatitis-b-treatment",
+      "published_at": "2026-10-20",
+      "segments": [
+        "regulation"
+      ],
+      "description": "FDA today approved Hibsago (bepirovirsen) injection, in combination with existing antiviral therapy, to treat chronic hepatitis B virus (HBV) infection in certain adults without cirrhosis.",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-10-29",
+      "title_es": "FDA aprueba el primer tratamiento de su tipo para la hepatitis B crónica",
+      "description_es": "FDA aprobó hoy la inyección de Hibsago (bepirovirsen), en combinación con la terapia antiviral existente, para tratar la infección crónica por el virus de la hepatitis B (HBV) en ciertos adultos sin cirrosis.",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": null,
+        "cache_key": "d080991659181c543a5fd03ff9b24f11"
+      }
+    },
+    {
+      "id": "b72d7214afd564ada8f3",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "One in four doctors nearing retirement age as WHO warns of global health workforce gap",
+      "url": "https://www.who.int/news/item/18-09-2026-one-in-four-doctors-nearing-retirement-age-as-who-warns-of-global-health-workforce-gap",
+      "published_at": "2026-10-19",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "895f64511344c997a2bc",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Early menopause: Why better research and global guidance matter for women’s health",
+      "url": "https://www.who.int/news/item/16-10-2026-early-menopause--why-better-research-and-global-guidance-matter-for-women-s-health",
+      "published_at": "2026-10-16",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "summary_es": "La menopausia precoz pone de relieve la importancia de mejorar la investigación y contar con orientaciones mundiales para la salud de las mujeres.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "767607cf4ec6568446f67144d2e9b858"
+      }
+    },
+    {
+      "id": "075ea1273caa1acd719b",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Commission welcomes PPPR resolution adopted by UN General Assembly",
+      "url": "https://health.ec.europa.eu/latest-updates/commission-welcomes-pppr-resolution-adopted-un-general-assembly-2026-10-16_en",
+      "published_at": "2026-10-16",
+      "segments": [
+        "regulation"
+      ],
+      "description": "Commission welcomes PPPR resolution adopted by UN General Assembly",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-10-29",
+      "title_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
+      "description_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "566f56e26f30c0623ef9e8db70e80050"
+      }
+    },
+    {
+      "id": "05518be530da51b752cf",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Summary report OECD/EUPHA - Long COVID Policy Dialogue",
+      "url": "https://health.ec.europa.eu/latest-updates/summary-report-oecdeupha-long-covid-policy-dialogue-2026-10-14_en",
+      "published_at": "2026-10-15",
+      "segments": [
+        "regulation"
+      ],
+      "description": "Summary report OECD/EUPHA - Long COVID Policy Dialogue",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-10-28",
+      "title_es": "Informe resumido OCDE/EUPHA - Diálogo sobre políticas relativas al COVID persistente",
+      "description_es": "Informe resumido OCDE/EUPHA - Diálogo sobre políticas relativas al COVID persistente",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "b044be63d18ebd17f0b52b428fcfffec"
+      }
+    },
+    {
+      "id": "6129483e4257e705dcf4",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Approves First Treatment for Certain People With BCG-Unresponsive Bladder Cancer",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-certain-people-bcg-unresponsive-bladder-cancer",
+      "published_at": "2026-10-14",
+      "segments": [
+        "regulation"
+      ],
+      "description": "FDA Approves First Treatment for Certain People With BCG-Unresponsive Bladder Cancer",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "title:term_missing:Unresponsive",
+          "title:negation_added",
+          "description:term_missing:Unresponsive",
+          "description:negation_added"
+        ]
+      }
+    },
+    {
+      "id": "81af49b1d200a3b8fd1f",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Commission establishes the European Health Data Space Stakeholder Forum and Community",
+      "url": "https://health.ec.europa.eu/latest-updates/commission-establishes-european-health-data-space-stakeholder-forum-and-community-2026-10-13_en",
+      "published_at": "2026-10-13",
+      "segments": [
+        "healthtech"
+      ],
+      "description": "Commission establishes the European Health Data Space Stakeholder Forum and Community",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-10-28",
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "title:name_added:Comunidad",
+          "description:name_added:Comunidad"
+        ]
+      }
+    },
+    {
+      "id": "4380c2b4d22a1571b97c",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Clinical trial applications advice pilot becomes permanent",
+      "url": "https://www.ema.europa.eu/en/news/clinical-trial-applications-advice-pilot-becomes-permanent",
+      "published_at": "2026-10-08",
+      "segments": [
+        "pharma"
+      ],
+      "description": "The Accelerating Clinical Trials in the EU (ACT EU) advice pilot, which helps sponsors prepare clinical trial applications, will become a permanent initiative from January 2027.…",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "ema_legal_notice_reuse_with_acknowledgement",
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: European Medicines Agency (EMA), with link",
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "news"
+      ],
+      "first_seen_on": "2026-10-28",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "EMA legal notice grants reproduction and distribution 'totally or in part', commercial included, with acknowledgement, but says nothing about modification, adaptation or translation and names no open licence. Unclear -> keep the original (fail closed) until EMA confirms in writing; record the confirmation here and flip this flag.",
+        "note_es": "Contenido en inglés (los términos de EMA no contemplan traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "b1cec9334e573bd24e4a",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO guidelines on the integrated management of obesity in adolescents",
+      "url": "https://www.who.int/publications/i/item/9789240123878",
+      "published_at": "2026-10-07",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "76868a5aacebc358eb15",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO guidelines on the integrated management of obesity in children",
+      "url": "https://www.who.int/publications/i/item/9789240123397",
+      "published_at": "2026-10-07",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "444047af244f7312c9d4",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO issues first global guidelines on child and adolescent obesity",
+      "url": "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity",
+      "published_at": "2026-10-07",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "summary_es": "La WHO emite las primeras directrices mundiales sobre obesidad infantil y adolescente.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "0f8c03e2b71b2bef1b5d6fe9f1c848dc"
+      }
+    },
+    {
+      "id": "7c3859b630ba1eec6d27",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "HTA Regulation - Commission selects first medical devices for joint clinical assessment",
+      "url": "https://ec.europa.eu/newsroom/sante/newsletter-archives/80023",
+      "published_at": "2026-10-06",
+      "segments": [
+        "regulation",
+        "healthtech"
+      ],
+      "description": "HTA Regulation - Commission selects first medical devices for joint clinical assessment",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-10-28",
+      "title_es": "Reglamento sobre HTA: la Comisión selecciona los primeros dispositivos médicos para la evaluación clínica conjunta",
+      "description_es": "Reglamento sobre HTA: la Comisión selecciona los primeros dispositivos médicos para la evaluación clínica conjunta",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "a17b1b0b221762be5d0dbaa3c5857451"
+      }
+    },
+    {
+      "id": "ce3dbd504d024e342517",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Global regulators call for advancing alternatives to animal testing across the medicine lifecycle",
+      "url": "https://www.ema.europa.eu/en/news/global-regulators-call-advancing-alternatives-animal-testing-across-medicine-lifecycle",
+      "published_at": "2026-10-01",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": "EMA has endorsed a joint statement from the International Coalition of Medicines Regulatory Authorities (ICMRA) calling on medicine developers, manufacturers, regulators and…",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "ema_legal_notice_reuse_with_acknowledgement",
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: European Medicines Agency (EMA), with link",
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "news"
+      ],
+      "first_seen_on": "2026-10-28",
+      "summary_es": "La EMA respaldó una declaración conjunta de la ICMRA que llama a avanzar en alternativas a las pruebas con animales durante todo el ciclo de vida de los medicamentos.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "EMA legal notice grants reproduction and distribution 'totally or in part', commercial included, with acknowledgement, but says nothing about modification, adaptation or translation and names no open licence. Unclear -> keep the original (fail closed) until EMA confirms in writing; record the confirmation here and flip this flag.",
+        "note_es": "Contenido en inglés (los términos de EMA no contemplan traducción)",
+        "cache_key": "6d8f3aec80bf2bb22a63270b3483bcbf"
+      }
+    },
+    {
+      "id": "ca0def6261c2f46f8b58",
+      "source": "ema",
+      "source_label": "EMA",
+      "attribution": "European Medicines Agency (EMA)",
+      "bylines": [],
+      "title": "Women are missing from medicines development: EMA’s roadmap for change",
+      "url": "https://www.ema.europa.eu/en/news/women-are-missing-medicines-development-emas-roadmap-change",
+      "published_at": "2026-09-30",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": "By the end of 2026, EMA will develop a regulatory roadmap to help drive decisive change on how women’s health is considered across medicines development and regulation. This…, Women are still missing: from research and data, prevention, diagnosis and treatment. …",
+      "description_truncated": true,
+      "description_source": "publisher_feed_summary_excerpt",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "ema_legal_notice_reuse_with_acknowledgement",
+        "license": "EMA legal notice: reproduction/distribution for non-commercial and commercial purposes provided EMA is acknowledged; excludes third-party content, photos and logo",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: European Medicines Agency (EMA), with link",
+        "evidence_urls": [
+          "https://www.ema.europa.eu/en/about-us/legal-notice",
+          "https://www.ema.europa.eu/en/news-event/rss-feeds"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "news"
+      ],
+      "first_seen_on": "2026-10-28",
+      "summary_es": "La EMA elaborará para fines de 2026 una hoja de ruta regulatoria para impulsar cambios decisivos en la consideración de la salud de las mujeres durante el desarrollo y la regulación de medicamentos, actualmente ausente en investigación, datos, prevención, diagnóstico y tratamiento.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "EMA legal notice grants reproduction and distribution 'totally or in part', commercial included, with acknowledgement, but says nothing about modification, adaptation or translation and names no open licence. Unclear -> keep the original (fail closed) until EMA confirms in writing; record the confirmation here and flip this flag.",
+        "note_es": "Contenido en inglés (los términos de EMA no contemplan traducción)",
+        "cache_key": "3de75e704f1499174b063f035f72ccfc"
+      }
+    },
+    {
+      "id": "d2674c5a4f395eda7822",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Approves First Treatment for MCT8 Deficiency",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-mct8-deficiency",
+      "published_at": "2026-09-28",
+      "segments": [
+        "regulation"
+      ],
+      "description": "The U.S. Food and Drug Administration today approved Emcitate (tiratricol) tablets for oral suspension to treat peripheral thyrotoxicosis (excess thyroid hormone levels in the blood that causes symptoms, such as rapid heart rate, increased blood pressure and adverse effects on metabolism) in patient",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-10-29",
+      "title_es": "La FDA aprueba el primer tratamiento para la deficiencia de MCT8",
+      "description_es": "La Administración de Alimentos y Medicamentos de EE. UU. aprobó hoy las tabletas de Emcitate (tiratricol) para suspensión oral para tratar la tirotoxicosis periférica (niveles excesivos de hormonas tiroideas en la sangre que causan síntomas, como frecuencia cardíaca rápida, aumento de la presión arterial y efectos adversos en el metabolismo) en paciente",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": null,
+        "cache_key": "5b725a0b871d4d40eebe7187e74375e3"
+      }
+    },
+    {
+      "id": "a4fdf03c14452013938a",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO Expert Committee on Drug Dependence: forty-eighth report",
+      "url": "https://www.who.int/publications/i/item/9789240124714",
+      "published_at": "2026-09-24",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "1fe7798917d08ec8430f",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "New WHO report calls for stronger ethics oversight of AI-related health research",
+      "url": "https://www.who.int/news/item/21-09-2026-new-who-report-calls-for-stronger-ethics-oversight-of-ai-related-health-research",
+      "published_at": "2026-09-21",
+      "segments": [
+        "ai_in_health"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "IA en salud"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "6e17245bdcbdd6ce7534",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Patient safety at the heart of forthcoming WHO asthma guidelines",
+      "url": "https://www.who.int/news/item/17-09-2026-patient-safety-at-the-heart-of-forthcoming-who-asthma-guidelines",
+      "published_at": "2026-09-17",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "61cc17db990406c78d46",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "GLP1-receptor agonists landscape: manufacturer mapping and regulatory pathways",
+      "url": "https://www.who.int/publications/i/item/9789240125148",
+      "published_at": "2026-09-17",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "463a07f32cd10e2546fc",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Approves First Gene Therapy for Pediatric Patients with Sanfilippo Syndrome Type A",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-gene-therapy-pediatric-patients-sanfilippo-syndrome-type",
+      "published_at": "2026-09-17",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": "The U.S. Food and Drug Administration today approved Fayuvi (rebisufligene etisparvovec-hopf), the first treatment for pediatric patients with mucopolysaccharidosis type IIIA (MPS IIIA), also known as Sanfilippo syndrome type A.",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-10-29",
+      "title_es": "La FDA aprueba la primera terapia génica para pacientes pediátricos con síndrome de Sanfilippo tipo A",
+      "description_es": "La Administración de Alimentos y Medicamentos de EE. UU. aprobó hoy Fayuvi (rebisufligene etisparvovec-hopf), el primer tratamiento para pacientes pediátricos con mucopolisacaridosis tipo IIIA (MPS IIIA), también conocida como síndrome de Sanfilippo tipo A.",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": null,
+        "cache_key": "fa36d8f739574e05095e75b12e49d7af"
+      }
+    },
+    {
+      "id": "29c4af3a6942ffa52c35",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO calls for more research into traditional medicine to meet growing health needs",
+      "url": "https://www.who.int/news/item/17-09-2026-who-calls-for-more-research-into-traditional-medicine-to-meet-growing-health-needs",
+      "published_at": "2026-09-17",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "188020d7e3a2aab3464d",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO global research priorities and agenda for traditional, complementary and integrative medicine 2025–2034",
+      "url": "https://www.who.int/publications/i/item/9789240124738",
+      "published_at": "2026-09-16",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "f71b61d5d3ebbc6eddd1",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Committing to sexual and reproductive health and rights: investing in people through universal health coverage: an investment in people",
+      "url": "https://www.who.int/publications/i/item/B09881",
+      "published_at": "2026-09-15",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "summary_es": "El compromiso con la salud y los derechos sexuales y reproductivos se presenta como una inversión en las personas mediante la cobertura sanitaria universal.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "21e269e85baad85afa94712f57ae3d39"
+      }
+    },
+    {
+      "id": "0c45545c840494022d5c",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO and Commonwealth Secretariat renew partnership to strengthen health systems and advance universal health coverage",
+      "url": "https://www.who.int/news/item/15-09-2026-who-and-commonwealth-secretariat-renew-partnership-to-strengthen-health-systems-and-advance-universal-health-coverage",
+      "published_at": "2026-09-15",
+      "segments": [
+        "payers",
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento",
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "b25d62f15be813fe3d0c",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "New strategy to build a healthier market for childhood cancer medicines",
+      "url": "https://www.who.int/news/item/15-09-2026-new-strategy-to-build-a-healthier-market-for-childhood-cancer-medicines",
+      "published_at": "2026-09-15",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "5cc28754d130672533c2",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Closing the childhood cancer survival gap through sustainable access to essential medicines: market shaping strategy (2026–2030)",
+      "url": "https://www.who.int/publications/i/item/9789240125087",
+      "published_at": "2026-09-15",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "78c6485f030d4ad75096",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Vaccines, thiomersal and autism spectrum disorder: evidence review 2010-2025",
+      "url": "https://www.who.int/publications/i/item/9789240123533",
+      "published_at": "2026-09-03",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "55f97ea4aaa05a231a6e",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Approves First Drug to Treat Alexander Disease",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-drug-treat-alexander-disease",
+      "published_at": "2026-09-03",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": "The U.S. Food and Drug Administration has approved Zanvastro (zilganersen) injection for the treatment of Alexander disease in pediatric and adult patients.",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "pending",
+        "reason": "no_api_key"
+      }
+    },
+    {
+      "id": "7178c4ecf9894c615e2d",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Global initiative launched to improve access to mpox vaccines",
+      "url": "https://www.who.int/news/item/02-09-2026-global-initiative-launched-to-improve-access-to-mpox-vaccines",
+      "published_at": "2026-09-02",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "0e2cceea0cf02f02cd4d",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Monitoring progress on universal health coverage and the health-related Sustainable Development Goals in the South-East Asia Region, 2026",
+      "url": "https://www.who.int/publications/i/item/9789292800208",
+      "published_at": "2026-09-01",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "9d23be3b5b15c433c5a1",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO expands global regulatory capacity through new collaborating centre in Republic of Korea",
+      "url": "https://www.who.int/news/item/27-08-2026-who-expands-global-regulatory-capacity-through-new-collaborating-centre-in-republic-of-korea",
+      "published_at": "2026-08-27",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "a717a6b277d00bd7e22a",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO global technical consultation on public health and social measures during health emergencies: report of the third meeting, Geneva, Switzerland, 24-26 March 2026",
+      "url": "https://www.who.int/publications/i/item/9789240124318",
+      "published_at": "2026-08-27",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "20e0cdd174be04676529",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Essential functions of community health workforces for public health emergency risk management",
+      "url": "https://www.who.int/publications/i/item/9789292800130",
+      "published_at": "2026-08-25",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 95,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "481c0c92c15789d62f1f",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Mozambique strengthens regulation of medicines and imported vaccines, boosting health protection",
+      "url": "https://www.who.int/news/item/24-08-2026-mozambique-strengthens-regulation-of-medicines-and-imported-vaccines--boosting-health-protection",
+      "published_at": "2026-08-24",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "e7605b40470bb9da0daf",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Global guidance on monitoring public health and social measures policies during health emergencies, rev. ed., 2025.",
+      "url": "https://www.who.int/publications/i/item/9789240114562",
+      "published_at": "2026-08-03",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "06ce6ffa60be991cc41c",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Paediatric drug optimization for sickle cell disease: meeting report, 8-10 September 2025",
+      "url": "https://www.who.int/publications/i/item/B09861",
+      "published_at": "2026-08-03",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    }
+  ],
+  "translation": {
+    "translated": 9,
+    "summarized": 5,
+    "from_cache": 14,
+    "verification_failed": 5,
+    "review_failed": 0,
+    "not_allowed": 26,
+    "pending": 1,
+    "source_in_spanish": 0
+  },
+  "ai_text_items": 14,
+  "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget"
+}

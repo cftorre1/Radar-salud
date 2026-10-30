@@ -344,3 +344,25 @@ test('staging audit 29-oct: the read-status live region is screen-reader only un
  assert.equal(attrs.has('data-read-volatile'),false);read.persistent=false;listeners.forEach(fn=>fn());assert.equal(attrs.has('data-read-volatile'),true);
  read.persistent=true;listeners.forEach(fn=>fn());assert.equal(attrs.has('data-read-volatile'),false);
 });
+test('Global Spanish only (Dirección 30-oct): English-only, pending and failed headlines are never listed; summaries, translations and PAHO /es/ are',async()=>{
+ const js=fs.readFileSync('web/global.js','utf8'),c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map,URL,Promise};vm.createContext(c);vm.runInContext(js.split('AlicantoRead.subscribe(')[0],c);
+ const day=new Date(Date.now()-86400000).toISOString().slice(0,10),base={source:'who',source_label:'OMS',url:'https://www.who.int/news/item/x',published_at:day,title:'WHO issues guidance'};
+ const items=[
+  {...base,id:'na',translation:{status:'not_allowed',note_es:'Contenido en inglés (licencia no permite traducción)'}},
+  {...base,id:'naf',translation:{status:'not_allowed',summary_status:'verification_failed'}},
+  {...base,id:'pend',source:'cdc',url:'https://www.cdc.gov/x',translation:{status:'pending',reason:'no_api_key'}},
+  {...base,id:'fail',source:'cdc',url:'https://www.cdc.gov/y',translation:{status:'verification_failed'}},
+  {...base,id:'bare'},
+  {...base,id:'sum',summary_es:'La OMS publicó una guía.',translation:{status:'summarized',kind:'summary',verified:true}},
+  {...base,id:'unv',summary_es:'La OMS publicó una guía.',translation:{status:'summarized',kind:'summary',verified:false}},
+  {...base,id:'tr',source:'cdc',url:'https://www.cdc.gov/z',title_es:'Los CDC informan',translation:{status:'translated',kind:'translation',verified:true}},
+  {...base,id:'es',source:'paho',source_label:'OPS',url:'https://www.paho.org/es/noticias/x',title:'La OPS informa',translation:{status:'source_in_spanish'}},
+  {...base,id:'en',source:'paho',source_label:'OPS',url:'https://www.paho.org/en/news/x',translation:{status:'not_allowed'}}];
+ assert.deepEqual(items.filter(x=>c.inSpanish(x)).map(x=>x.id),['sum','tr','es']);
+ const load=js.match(/function loadFeed\(\)\{[^\n]*\n/)[0];vm.runInContext(load,c);
+ const run=async feed=>{c.fetch=async()=>({ok:true,json:async()=>feed});vm.runInContext('headlines=[]',c);await vm.runInContext('loadFeed()',c);return vm.runInContext('headlines.map(x=>x.id)',c)};
+ const feed={enabled:true,content_use:'metadata_and_link_only',schema_version:2,window_days:90,items};
+ assert.deepEqual(await run(feed),['sum','tr','es']);
+ assert.deepEqual(await run({...feed,display:{spanish_only:true}}),['sum','tr','es']);
+ assert.equal((await run({...feed,display:{spanish_only:false}})).length,items.length);
+});

@@ -123,13 +123,14 @@ class PublicRedirect(HTTPRedirectHandler):
         return redirected
 
 class CaptureClient:
-    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False, live_budget_seconds: float = 1800., hosts=None, accept: str = "text/html,application/json,application/xml", robots_accept: str | None = None):
+    def __init__(self, directory: Path, replay: Path | None = None, delay: float = 1., cooldown_file: Path | None = None, resume: bool = False, live_budget_seconds: float = 1800., hosts=None, accept: str = "text/html,application/json,application/xml", robots_accept: str | None = None, timeout: float = 25, max_body_bytes: int = 5000000):
         self.directory, self.replay, self.delay = directory, replay, delay
         self.hosts = HOSTS if hosts is None else frozenset(hosts)
         self.accept = accept
         # robots.txt is text/plain: a feed-only Accept header can earn an HTTP 406 from strict servers.
         # None keeps the historical behaviour (same Accept as pages) for the WHO/PAHO collectors.
         self.robots_accept = robots_accept
+        self.timeout, self.max_body_bytes = timeout, max_body_bytes
         directory.mkdir(parents=True, exist_ok=True)
         self.records, self.robots, self.network_requests = {}, {}, 0
         self._live_lock = RLock()
@@ -224,12 +225,12 @@ class CaptureClient:
             request._global_is_robots = robots
             request._global_redirect_chain = []
             try:
-                response = self.opener.open(request, timeout=25)
+                response = self.opener.open(request, timeout=self.timeout)
             except HTTPError as exc:
                 response = exc
             with response:
-                data = response.read(5000001)
-                if len(data) > 5000000:
+                data = response.read(self.max_body_bytes + 1)
+                if len(data) > self.max_body_bytes:
                     raise ValueError("response_body_limit")
                 canonical_url_h(self, response.url)
                 # A transport-only percent-encoding of the requested URL is not a redirect: keep the identity.
