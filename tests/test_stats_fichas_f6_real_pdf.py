@@ -1,16 +1,16 @@
-"""CI-only: the F6 checker v2 (anchored, human-reviewed templates) on the real Boletín IP N°2-2026 acreditación PDF.
+"""CI-only: the F6 checker v2 (anchored templates reviewed by Dirección) on the real Boletín IP N°2-2026 acreditación PDF.
 
 Downloads the document through the production ``SisFetcher`` (allowlist, robots.txt, byte cap, deadline) and skips
-when the network or the SIS is unavailable (e.g. sandboxes without egress). When it runs (GitHub Actions / daily run)
-it emits the normalized text of pp. 2, 7 and 8 as GitHub check-run annotations (``::notice title=F6 p<N> (k/n)::``,
-~3,000-character chunks, at most 9 annotations with the final ``::notice title=F6 templates::`` summary of whether
-each template, as written, would match exactly once). They are written to the real stdout (pytest's capture
-suspended with ``capsys.disabled()``), so they appear on the PR's checks (qa.yml job 'tests'). A human copies the exact p.8 table
-caption into ``config/stats_fichas_v1.json`` (families.F6.figure_templates.acreditacion.pending_applications.caption)
-and reviews both templates.
+when the network or the SIS is unavailable (e.g. sandboxes without egress). When it runs (GitHub Actions) it emits the
+normalized text of pp. 2, 7 and 8 as GitHub check-run annotations (``::notice title=F6 p<N> (k/n)::``, ~3,000-character
+chunks, at most 9 annotations with the final ``::notice title=F6 templates::`` summary of each template's match). They
+are written to the real stdout (pytest's capture suspended with ``capsys.disabled()``), so they appear on the PR's
+checks (qa.yml job 'tests').
 
-While the templates are placeholder / unreviewed, the expected result is HOLD (intentional). Once reviewed, the test
-requires 101 and 584 to be verified by their templates on pp. 2 and 8 (367 + 217 = 584).
+With the repo templates (filled from that text, approved by Dirección on 2026-10-30) it requires: the bytes still hash to
+the recorded SHA-256; the v1 window still misses 101 and 584; each template matches exactly once on the cited pages
+(101 on p.2; 367 + 217 = 584 on p.8, parts equal to the verified private / public figures); the parse is 'verified';
+and the F6 package built from the committed capture store with this parse passes reconciliation.
 """
 import os
 import sys
@@ -91,8 +91,11 @@ def real_pdf(capsys) -> bytes:
         pytest.skip(reason)
 
 
-def test_real_acreditacion_pdf_checker_v2(real_pdf, capsys):
+def test_real_acreditacion_pdf_checker_v2(real_pdf, capsys, tmp_path, monkeypatch):
     import hashlib
+    import json
+    import shutil
+    from radar_salud import stats_ficha_f6 as f6, stats_fichas as sf
     sha = hashlib.sha256(real_pdf).hexdigest()
     if sha != SHA:
         emit([f"::notice title=F6 real PDF changed::sha256 {sha} != recorded {SHA}"], capsys)
@@ -101,25 +104,42 @@ def test_real_acreditacion_pdf_checker_v2(real_pdf, capsys):
     info = cap.verified_metrics(root)[ACR]
     pages = cap.pdf_pages(real_pdf)
     templates = cap.figure_templates(root, "acreditacion")
-    stamped = {k: {**v, "reviewed_by": "grounding-check", "reviewed_at": "-"} for k, v in templates.items()}
-    summary = []
-    for k, tpl in stamped.items():
+    found, summary = {}, []
+    for k, tpl in templates.items():
         ev, why = cap.template_evidence(pages, info["pages_1based"], info["metrics"][k], tpl, info["metrics"])
+        found[k] = (ev, why)
         summary.append(f"{k}: {why}" + (f" p.{ev['page']} match='{ev['match'][:200]}'" if ev else "")
-                       + f" (review: {templates[k].get('reviewed_by')!r})")
+                       + f" (review: {tpl.get('reviewed_by')!r} {tpl.get('reviewed_at')!r})")
+    res = cap.parse_boletin_pdf(real_pdf, info["metrics"], info["pages_1based"], "acreditacion", templates)
+    summary.append(f"parse: {res['status']}")
     emit(annotation_lines({p: cap.normalize_page(pages[p - 1]) for p in PAGES},
                           f"sha256 {sha[:12]}… · " + " | ".join(summary)), capsys)
-    old = cap.parse_boletin_pdf(real_pdf, info["metrics"], info["pages_1based"])  # checker v1: today's HOLD
+
+    old = cap.parse_boletin_pdf(real_pdf, info["metrics"], info["pages_1based"])  # checker v1: the production HOLD
     assert old["verified_present"]["with_observations"] is False and old["verified_present"]["pending_applications"] is False
-    res = cap.parse_boletin_pdf(real_pdf, info["metrics"], info["pages_1based"], "acreditacion", templates)
-    reviewed = {k: cap.template_pattern(v)[1] == "ok" for k, v in templates.items()}
-    for k in ("with_observations", "pending_applications"):
-        if not reviewed.get(k):  # intentional HOLD until a human fills and reviews the template
-            assert res["verified_present"][k] is False
-            assert res["template_status"][k] in {"placeholder", "unreviewed", "not_configured"}, res["template_status"]
-        else:
-            ev = res["figure_rules"][k]
-            assert ev and ev["rule"] == "template", res.get("template_status")
-            assert ev["page"] == {"with_observations": 2, "pending_applications": 8}[k], ev
-    if all(reviewed.get(k) for k in ("with_observations", "pending_applications")):
-        assert res["status"] == "verified" and res["figure_rules"]["pending_applications"]["sum_check"] == "367 + 217 = 584"
+    # Both templates are reviewed and match exactly once on the cited pages of the real PDF.
+    for k, page in (("with_observations", 2), ("pending_applications", 8)):
+        assert cap.template_pattern(templates[k])[1] == "ok", templates[k]
+        ev, why = found[k]
+        assert why == "ok" and ev["page"] == page, (k, why)
+    assert found["with_observations"][0]["match"] == \
+        "101 prestadores institucionales obtuvieron el resultado de acreditado con observaciones"
+    assert found["pending_applications"][0]["sum_check"] == "367 + 217 = 584"
+    assert found["pending_applications"][0]["parts_equal"] == {"private_pending": 367, "public_pending": 217}
+    assert res["status"] == "verified" and all(res["verified_present"].values()), res.get("template_status")
+    assert res["figure_rules"]["with_observations"]["rule"] == "template"
+    assert res["figure_rules"]["pending_applications"]["rule"] == "template"
+
+    # F6 reconciliation on the committed capture store with this document's v2 parse.
+    monkeypatch.setenv("RADAR_ROOT", str(tmp_path / "ledger-root"))
+    for rel in (cap.VERIFIED, f6.CAPTURE):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(root / rel, tmp_path / rel)
+    store = json.loads((tmp_path / f6.CAPTURE).read_text(encoding="utf-8"))
+    acr = next(d for r in store["releases"] for d in r["documents"] if d["url"] == ACR)
+    assert acr["sha256"] == sha
+    acr.update(status="captured", parse=res)
+    (tmp_path / f6.CAPTURE).write_text(json.dumps(store, ensure_ascii=False), encoding="utf-8")
+    pkg = f6.build_package(tmp_path, sf.load_registry())
+    assert pkg["period"] == "2026-06" and pkg["releases_state"]["2026-06"] == ["ok"], pkg["releases_state"]
+    assert pkg["reconciliation"]["ok"] is True and pkg["reconciliation"]["failures"] == [], pkg["reconciliation"]

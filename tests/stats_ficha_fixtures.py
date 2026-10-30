@@ -80,7 +80,7 @@ def pdf_with_text(lines: list[str], *, pages: list[list[str]] | None = None) -> 
     objs = [b"<< /Type /Catalog /Pages 2 0 R >>", f"<< /Type /Pages /Kids [{kids}] /Count {n} >>".encode()]
     for i, page in enumerate(pages):
         content = "BT /F1 11 Tf 50 780 Td 14 TL " + " ".join(f"({esc(x)}) '" for x in page) + " ET"
-        stream = content.encode("latin-1")
+        stream = content.encode("cp1252")  # WinAnsiEncoding (en dash, bullet, …)
         objs.append(f"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents {4 + 2 * i} 0 R "
                     f"/Resources << /Font << /F1 {font} 0 R >> >> >>".encode())
         objs.append(b"<< /Length " + str(len(stream)).encode() + b" >>\nstream\n" + stream + b"\nendstream")

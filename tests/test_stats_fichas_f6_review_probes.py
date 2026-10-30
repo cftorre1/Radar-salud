@@ -1,9 +1,9 @@
 """Review probes of PR #112 (independent reviews, 2026-10-29: probe112b, probe112d, probe112e), copied verbatim.
 
 Checker v2 has no generic sentence / table rule any more: the only addition over the unchanged 80-char window is a
-human-reviewed anchored template per figure. So every probe must be rejected by v2 with the templates filled and
-reviewed (the strictest case for this test): v2 accepts exactly what v1's window accepts and nothing else. The two real
-layouts are the positives. No network.
+human-reviewed anchored template per figure. Every probe must be rejected by v2 with the repo templates (filled from
+the real PDF and approved by Dirección on 2026-10-30) and with a placeholder copy: v2 accepts exactly what v1's window
+accepts and nothing else. The real normalized pp. 2 and 8 are the only positives. No network.
 """
 import re
 import sys
@@ -261,10 +261,10 @@ def _ids():
     return [f"{p[0]}:{re.sub(r'[^A-Za-z0-9]+', '_', p[1])[:60]}" for p in PROBES]
 
 
-@pytest.mark.parametrize("templates", ["repo", "filled"])
+@pytest.mark.parametrize("templates", ["repo_reviewed", "placeholder_copy"])
 @pytest.mark.parametrize("tag,name,text,n,ctx", PROBES, ids=_ids())
 def test_review_probe_is_rejected(tag, name, text, n, ctx, templates):
-    tpl = real.REPO_TEMPLATES if templates == "repo" else real.filled()
+    tpl = real.REPO_TEMPLATES if templates == "repo_reviewed" else real.placeholder_copy()
     v1 = cap.figure_evidence([text], [1], n, ctx, 1)
     v2 = cap.figure_evidence([text], [1], n, ctx, 2, KEY.get(ctx), tpl, VERIFIED)
     if name in WINDOW_ACCEPTED:
@@ -280,25 +280,29 @@ def test_probe_count():
 
 
 def test_uncited_page_page_boundary_and_other_topics():
-    tpl = real.filled()
-    p2 = real.text_of(real.doc(), 2)
+    tpl = real.REPO_TEMPLATES
+    p2 = real.REAL_PAGES[2]
     assert cap.figure_evidence(["x", p2], [1], 101, OBS, 2, "with_observations", tpl, VERIFIED) is None
-    words = p2.split("obtuvieron")
-    assert cap.figure_evidence([words[0], "obtuvieron" + words[1]], [1, 2], 101, OBS, 2, "with_observations", tpl,
-                               VERIFIED) is None  # a template never spans pages
+    head, tail = p2.split(" obtuvieron el resultado de acreditado", 1)
+    assert cap.figure_evidence([head, "obtuvieron el resultado de acreditado" + tail], [1, 2], 101, OBS, 2,
+                               "with_observations", tpl, VERIFIED) is None  # a template never spans pages
     assert [cap.checker_version(t) for t in ("mediacion", "rnpi", "reclamos", None)] == [1, 1, 1, 1]
     assert cap.checker_version("acreditacion") == 2
     assert cap.figure_evidence([p2], [1], 101, OBS, 1, "with_observations", tpl, VERIFIED) is None  # v1: no templates
 
 
 def test_real_layouts_are_the_only_positives():
-    pdf = real.doc()
-    p2, p8 = real.text_of(pdf, 2), real.text_of(pdf, 8)
-    tpl = real.filled()
-    assert cap.figure_evidence([p2], [1], 101, OBS, 1) is None and cap.figure_evidence([p8], [1], 584, TRA, 1) is None
-    assert cap.figure_evidence([p2], [1], 101, OBS, 2, "with_observations", tpl, VERIFIED)["rule"] == "template"
-    tot = cap.figure_evidence([p8], [1], 584, TRA, 2, "pending_applications", tpl, VERIFIED)
-    assert tot["rule"] == "template" and tot["sum_check"] == "367 + 217 = 584"
-    # The same layouts with the repo templates (placeholder caption, review 'pendiente') stay on HOLD.
-    assert cap.figure_evidence([p2], [1], 101, OBS, 2, "with_observations", real.REPO_TEMPLATES, VERIFIED) is None
-    assert cap.figure_evidence([p8], [1], 584, TRA, 2, "pending_applications", real.REPO_TEMPLATES, VERIFIED) is None
+    p2, p7, p8 = real.REAL_PAGES[2], real.REAL_PAGES[7], real.REAL_PAGES[8]
+    tpl = real.REPO_TEMPLATES
+    assert cap.figure_evidence([p2], [1], 101, OBS, 1) is None
+    assert cap.figure_evidence([p7, p8], [1, 2], 584, TRA, 1) is None
+    obs = cap.figure_evidence([p2], [1], 101, OBS, 2, "with_observations", tpl, VERIFIED)
+    assert obs["rule"] == "template" and obs["match"] == real.SENTENCE_P2
+    tot = cap.figure_evidence([p7, p8], [1, 2], 584, TRA, 2, "pending_applications", tpl, VERIFIED)
+    assert tot["rule"] == "template" and tot["page"] == 2 and tot["sum_check"] == "367 + 217 = 584"
+    # p.7's own '… 237 584' row is not anchored by the p.8 title: the only match is on p.8.
+    assert cap.template_evidence([p7], [1], 584, tpl["pending_applications"], VERIFIED)[1] == "no_match"
+    # The same pages with the placeholder / unreviewed copy stay on HOLD.
+    ph = real.placeholder_copy()
+    assert cap.figure_evidence([p2], [1], 101, OBS, 2, "with_observations", ph, VERIFIED) is None
+    assert cap.figure_evidence([p8], [1], 584, TRA, 2, "pending_applications", ph, VERIFIED) is None

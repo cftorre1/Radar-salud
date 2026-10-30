@@ -271,7 +271,8 @@ def template_evidence(pages: list[str], cited: list[int], n: int | float, tpl: d
     groups = [int(g) for g in m.groups()]
     if groups[int(tpl.get("figure_group") or 1) - 1] != int(n):
         return None, "figure_mismatch"
-    ev = {"rule": "template", "page": page, "match": m[0][:300], "reviewed_by": tpl.get("reviewed_by"),
+    text = m[0] if len(m[0]) <= 300 else f"{m[0][:150]} … {m[0][-120:]}"  # both anchors kept
+    ev = {"rule": "template", "page": page, "match": text, "reviewed_by": tpl.get("reviewed_by"),
           "reviewed_at": tpl.get("reviewed_at")}
     if tpl.get("sum_of"):
         parts = [groups[i - 1] for i in tpl["sum_of"]]
