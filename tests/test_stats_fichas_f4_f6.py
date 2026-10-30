@@ -424,7 +424,8 @@ def test_runner_wires_f4_f6_capture_and_daily_workflow_needs_no_change(root, mon
     assert len(seen) == 1
     reg_ = reg()
     assert {f for f, c in reg_["families"].items() if c["status"] == "active"} == {"F1", "F4", "F6"}
-    assert set(runner.BUILDERS) == {"F1", "F4", "F6"}
+    # F2 has a builder but stays 'planned': the daily default (active families) never runs or captures it.
+    assert set(runner.BUILDERS) == {"F1", "F2", "F4", "F6"} and reg_["families"]["F2"]["status"] == "planned"
     # The daily workflow (main) runs the script without arguments and commits data/stats_fichas.
     wf = (REPO / ".github/workflows/daily-radar.yml").read_text(encoding="utf-8")
     assert "run: python scripts/run_stats_fichas.py\n" in wf and "git add data/stats_fichas" in wf

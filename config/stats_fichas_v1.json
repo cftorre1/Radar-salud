@@ -433,7 +433,167 @@
         "sis_caec",
         "cmf_holdings"
       ],
-      "blocked_by": "parser xlsx financiero SIS (hoja y estructura no verificadas); FEFI en HOLD_COVERAGE_ESENCIAL",
+      "blocked_by": "plantilla de la planilla FEFI sin revisar (families.F2.parser_template: marcadores <<…>>, reviewed_by pendiente) y FEFI en HOLD_COVERAGE_ESENCIAL (config/editorial_rules_v3.json holds.fefi_2026_03)",
+      "cadence_phrase": "se actualiza cada trimestre",
+      "primary_series": "sis_estadisticas_financieras",
+      "release_page": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/",
+      "source_name": "Superintendencia de Salud",
+      "scopes": [
+        "Isapres"
+      ],
+      "supersedes": {
+        "event_titles_prefix": [],
+        "stat_families": []
+      },
+      "calendar": {
+        "expected_release_interval_days": 92,
+        "late_tolerance_days": 45,
+        "source": "historial FEFI (mar-2025 16-06-2025; jun-2025 17-09-2025; sep-2025 23-12-2025; dic-2025 22-04-2026; mar-2026 07-07-2026)"
+      },
+      "capture": {
+        "store": "data/stats_fichas/captures/fefi.json",
+        "format": "xls/xlsx (una planilla por trimestre; .xls se lee con xlrd)",
+        "figures": "plantilla revisada families.F2.parser_template; nunca heurísticas de texto"
+      },
+      "lectura_enabled": false,
+      "esencial_code": 108,
+      "parser_template": {
+        "_doc": "Plantilla de estructura de la planilla FEFI (Dirección 2026-10-29, mismo criterio que las plantillas F6). Cada patrón es una regex sobre texto normalizado (minúsculas, sin tildes, sin puntos de miles, espacios colapsados; figure_templates.normalize_text) y debe calzar exactamente una vez: 'sheet' contra los nombres de hoja; 'header_row' contra las filas (celdas unidas con ' | ') de las primeras 80 filas; cada 'columns.*.pattern' contra la etiqueta de su columna (las 'header_rows' filas del encabezado, con el rótulo combinado arrastrado a la derecha); cada 'entities.*' contra la etiqueta de su fila (las 'label_columns' primeras celdas) entre el encabezado y la primera fila que calza 'total_row'; 'unit.pattern' contra las filas de la hoja. 'item' es uno de stats_capture_fefi.ITEMS y 'period' es 't' (el trimestre del título) o 't_1' (el mismo trimestre del año anterior). 'sign': -1 si la planilla imprime costos como negativos. Una columna que no exista en la planilla se borra: el tema que la necesita no se muestra. Con cualquier marcador <<…>>, o sin reviewed_by/reviewed_at, la ficha queda en HOLD. Solo una persona llena y marca la revisión, tras ver el texto real que imprime el test CI tests/test_stats_ficha_f2_real_xls.py.",
+        "source": "Por llenar con las anotaciones CI de finan_ifrs_mar_2026_web_v2.xls (hojas y filas de encabezado).",
+        "reviewed_by": "pendiente",
+        "reviewed_at": null,
+        "entities": {
+          "67": "<<regex de la fila de colmena>>",
+          "78": "<<regex de la fila de cruz blanca>>",
+          "80": "<<regex de la fila de vida tres>>",
+          "81": "<<regex de la fila de nueva masvida>>",
+          "99": "<<regex de la fila de banmedica>>",
+          "107": "<<regex de la fila de consalud>>",
+          "108": "<<regex de la fila de esencial>>",
+          "63": "<<regex de la fila de isalud>>",
+          "76": "<<regex de la fila de fundacion>>",
+          "94": "<<regex de la fila de cruz del norte>>"
+        },
+        "tables": {
+          "resultados": {
+            "sheet": "<<regex del nombre de la hoja del estado de resultados por Isapre; la nota de Work6 cita 'E. Resultados comparado por Isa'>>",
+            "orientation": "entities_in_rows",
+            "header_row": "<<regex de la fila de encabezado>>",
+            "header_rows": 2,
+            "label_columns": 2,
+            "total_row": "<<regex de la fila del total del sistema>>",
+            "unit": {
+              "pattern": "<<regex de la unidad, p. ej. 'en miles de pesos'>>",
+              "to_mm_clp": "<<factor a millones de pesos, p. ej. 0.001>>",
+              "label": "MM$"
+            },
+            "sum_tolerance": 0,
+            "columns": {
+              "resultado_ejercicio.t": {
+                "pattern": "<<regex del encabezado normalizado de la columna: resultado del ejercicio, trimestre del título>>",
+                "item": "resultado_ejercicio",
+                "period": "t"
+              },
+              "resultado_ejercicio.t_1": {
+                "pattern": "<<regex del encabezado normalizado de la columna: resultado del ejercicio, mismo trimestre del año anterior>>",
+                "item": "resultado_ejercicio",
+                "period": "t_1"
+              },
+              "ingresos_operacionales.t": {
+                "pattern": "<<regex del encabezado normalizado de la columna: ingresos operacionales, trimestre del título>>",
+                "item": "ingresos_operacionales",
+                "period": "t"
+              },
+              "ingresos_operacionales.t_1": {
+                "pattern": "<<regex del encabezado normalizado de la columna: ingresos operacionales, año anterior>>",
+                "item": "ingresos_operacionales",
+                "period": "t_1"
+              },
+              "costo_operacional.t": {
+                "pattern": "<<regex del encabezado normalizado de la columna: costo operacional (costo de ventas), trimestre del título>>",
+                "item": "costo_operacional",
+                "period": "t"
+              },
+              "costo_operacional.t_1": {
+                "pattern": "<<regex del encabezado normalizado de la columna: costo operacional, año anterior>>",
+                "item": "costo_operacional",
+                "period": "t_1"
+              },
+              "ingresos_cotizaciones.t": {
+                "pattern": "<<regex del encabezado normalizado de la columna: ingresos por cotizaciones, trimestre del título>>",
+                "item": "ingresos_cotizaciones",
+                "period": "t"
+              },
+              "ingresos_cotizaciones.t_1": {
+                "pattern": "<<regex del encabezado normalizado de la columna: ingresos por cotizaciones, año anterior>>",
+                "item": "ingresos_cotizaciones",
+                "period": "t_1"
+              },
+              "costo_prestaciones.t": {
+                "pattern": "<<regex del encabezado normalizado de la columna: costo de prestaciones de salud, trimestre del título>>",
+                "item": "costo_prestaciones",
+                "period": "t"
+              },
+              "costo_prestaciones.t_1": {
+                "pattern": "<<regex del encabezado normalizado de la columna: costo de prestaciones de salud, año anterior>>",
+                "item": "costo_prestaciones",
+                "period": "t_1"
+              }
+            }
+          },
+          "balance": {
+            "sheet": "<<regex del nombre de la hoja del balance por Isapre>>",
+            "orientation": "entities_in_rows",
+            "header_row": "<<regex de la fila de encabezado>>",
+            "header_rows": 2,
+            "label_columns": 2,
+            "total_row": "<<regex de la fila del total del sistema>>",
+            "unit": {
+              "pattern": "<<regex de la unidad>>",
+              "to_mm_clp": "<<factor a millones de pesos>>",
+              "label": "MM$"
+            },
+            "sum_tolerance": 0,
+            "columns": {
+              "patrimonio.t": {
+                "pattern": "<<regex del encabezado normalizado de la columna: patrimonio total al cierre del trimestre del título>>",
+                "item": "patrimonio",
+                "period": "t"
+              }
+            }
+          }
+        },
+        "coverage_note": {
+          "sheet": "<<regex de la hoja 'Notas Explicativas'>>",
+          "pattern": "<<regex de la nota de cobertura que nombra a Esencial (celda A18 según Work6)>>"
+        }
+      },
+      "templates": {
+        "kicker": "{label}",
+        "headline": {
+          "default": "Isapres a {month_label}: {resultado}"
+        },
+        "kicker_meta": "datos a {period_label} · publicado por la SIS el {published_label} · {cadence_phrase}"
+      },
+      "tabs": [
+        {
+          "id": "resultados",
+          "label": "Resultados"
+        },
+        {
+          "id": "ingresos_costos",
+          "label": "Ingresos y costos"
+        },
+        {
+          "id": "siniestralidad",
+          "label": "Siniestralidad"
+        },
+        {
+          "id": "patrimonio",
+          "label": "Patrimonio"
+        }
+      ],
+      "builder_version": "f2_index_topic_v1",
       "kpis": {
         "siniestralidad": {
           "formula": "(costo de prestaciones + costo SIL) / ingresos por cotizaciones × 100",
