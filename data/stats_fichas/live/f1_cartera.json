@@ -1064,7 +1064,7 @@
       "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
       "sha256": "b1dc62eb1a40b0f34452f67e7fdecefb91adc175235ffc046b60a6e5e0c7e4ee",
       "published_at": "2026-10-02",
-      "fetched_at": "2026-10-28T21:30:21.243658+00:00",
+      "fetched_at": "2026-10-29T23:29:00.853094+00:00",
       "label": "SIS · Estadística mensual de cartera de beneficiarios 2026 (xlsx)",
       "role": "beneficiarios, cotizantes y cargas por Isapre, enero–agosto",
       "locator": "Enero…Agosto!C8:E19 · fila Total Sistema",
@@ -1091,7 +1091,7 @@
       "key": "suscripciones"
     }
   ],
-  "machine_note": "Ficha generada por la regla \"nuevo período\" (release del 2 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (sin modelo en esta corrida).",
+  "machine_note": "Ficha generada por la regla \"publicación vigente\" (release del 2 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (error del modelo).",
   "featured": true,
   "triggers": [
     "new_period",
@@ -1101,12 +1101,13 @@
   "late_release": null,
   "revisions": [],
   "lectura": {
-    "status": "not_attempted",
+    "status": "generation_error",
+    "reason": "RuntimeError:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)",
     "text": null,
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-10-29T13:30:45.510066+00:00",
+  "generated_at": "2026-10-29T23:50:12.485002+00:00",
   "builder_version": "f1_index_topic_v8",
   "verification": {
     "verdict": "PASS",
