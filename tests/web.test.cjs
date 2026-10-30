@@ -330,3 +330,17 @@ test('Global Alicanto summary (Dirección 29-oct): sources without translation r
  load([{...base,id:'t1',source:'cdc',summary_es:undefined,title:'CDC reports 3 cases',title_es:'Los CDC informan 3 casos',description:null,translation:{status:'translated',kind:'translation',verified:true,notice_es:'Traducción automática de Alicanto'}}]);
  const th=c.headlineDetail(c.entryFor('daily-t1'));assert.match(th,/Traducción automática de Alicanto\. Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores\./);assert.doesNotMatch(th,/verificada/);
 });
+test('staging audit 29-oct: Global opens on 90 days without a saved period; Chile stays 30; a saved period wins',()=>{
+ const load=stored=>{const c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:k=>k==='alicanto_global_filters'?stored:null,setItem:()=>{}},Date,Intl,Set,Map,URL};vm.createContext(c);vm.runInContext(fs.readFileSync('web/global.js','utf8').split('AlicantoRead.subscribe(')[0],c);return vm.runInContext('periodMode',c)};
+ assert.equal(load(null),'90');assert.equal(load(JSON.stringify({period:'30'})),'30');assert.equal(load(JSON.stringify({period:'7'})),'7');assert.equal(load(JSON.stringify({period:'all'})),'90');
+ assert.match(fs.readFileSync('web/global.html','utf8'),/<option value="90" selected>90 días<\/option>/);assert.doesNotMatch(fs.readFileSync('web/global.html','utf8'),/value="30" selected/);
+ assert.match(fs.readFileSync('web/global.js','utf8'),/globalReset'\)\.onclick=\(\)=>\{activePublishers\.clear\(\);periodMode=DEFAULT_PERIOD/);
+ assert.equal(vm.runInContext('periodMode',context()),'30');
+});
+test('staging audit 29-oct: the read-status live region is screen-reader only unless reads cannot be saved',()=>{
+ const css=fs.readFileSync('web/product-ui.css','utf8');assert.match(css,/html:not\(\[data-read-volatile\]\) \.read-status\{position:absolute;width:1px;height:1px;[^}]*clip:rect\(0,0,0,0\)/);
+ const listeners=[],attrs=new Set(),read={persistent:true,subscribe:fn=>listeners.push(fn)};
+ const c={AlicantoRead:read,document:{documentElement:{toggleAttribute:(n,on)=>on?attrs.add(n):attrs.delete(n)}}};c.window=c;vm.createContext(c);vm.runInContext(barSource.replace('typeof window!==\'undefined\'?window:globalThis','window'),c);
+ assert.equal(attrs.has('data-read-volatile'),false);read.persistent=false;listeners.forEach(fn=>fn());assert.equal(attrs.has('data-read-volatile'),true);
+ read.persistent=true;listeners.forEach(fn=>fn());assert.equal(attrs.has('data-read-volatile'),false);
+});

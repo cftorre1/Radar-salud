@@ -61,6 +61,14 @@ DETAIL_WINDOW_DAYS = 30  # article pages fetched only for entries that can still
 CHILE = ZoneInfo("America/Santiago")
 
 _ACT = re.compile(r"\b(Oficio\s+Circular|Circular|Resoluci[oó]n\s+Exenta)\s+(?:(IF|IP|SS)\s*[/\-]?\s*)?N?\s*[°º]?\s*(\d[\d\.]*)", re.I)
+# Page titles carry the site name ("… - Superintendencia de Salud"); the headline is what precedes it.
+_SITE_SUFFIX = re.compile(r"\s+[-–—|·:]\s*Superintendencia\s+de\s+Salud(?:\s*[-–—|·]\s*Gobierno\s+de\s+Chile)?\s*$", re.I)
+def clean_title(title: str | None) -> str:
+    """Headline without the trailing site-name suffix and extra whitespace (never reworded).
+    Only one suffix at the very end is removed; a title that is only the site name stays."""
+    t = " ".join(str(title or "").split())
+    stripped = _SITE_SUFFIX.sub("", t).strip()
+    return stripped or t
 
 
 def robots_allows(url: str, fetch: Callable[[str], str] | None = None) -> bool:
@@ -214,10 +222,12 @@ class SuperintendenciaNoticiasScout:
                 continue
             failures.pop(entry["url"], None)
             page_date = article["published"] or article["visible_date"]
+            title = clean_title(title)
             if article["title"]:
-                if _norm(article["title"]) != _norm(title):
+                headline = clean_title(article["title"])  # " - Superintendencia de Salud" is not part of it
+                if _norm(headline) != _norm(title):
                     meta["listing_title_mismatch"] = True  # listing paired another entry's title
-                title = article["title"]
+                title = headline
             if page_date and listed and page_date != listed:
                 meta["listing_date_conflict"] = {"listing": listed, "article": page_date}
             event_date = page_date or (listed if not meta.get("listing_title_mismatch") else None)
@@ -412,3 +422,14 @@ def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
                 continue
         out.append(c)
     return out
+
+
+def repair_stored_news(row: dict) -> dict:
+    """Stored SIS news rows captured before the suffix rule: drop the trailing site-name suffix
+    from the title (the original stays in ``source_page_title``). Nothing else changes."""
+    if row.get("source_name") != SOURCE_NAME or not str(row.get("source_url") or "").startswith(f"https://{HOST}/noticias/"):
+        return row
+    title = clean_title(row.get("title"))
+    if not title or title == row.get("title"):
+        return row
+    return dict(row, title=title, source_page_title=row.get("title"))

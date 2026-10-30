@@ -290,6 +290,8 @@ def _related_context(signals,resolve_external=True):
         if s.get("normative_minimal"):
             out.append(dict(s));continue  # Opción A: no automated relations on unreviewed acts
         r=dict(s);rels=[];seen=set();relmap=_relmap(r)
+        from radar_salud.normative_relations import issuer_prefix, target_key
+        issuer=issuer_prefix(str(r.get("normative_document_label") or r.get("title") or ""))
         for ref in r.get("related_reference_ids",[]) or []:
             k=_ref_key(ref);relationship=relmap.get(ref) or "Antecedente normativo citado por el documento actual."
             target=idx.get(k) if k else None
@@ -299,8 +301,9 @@ def _related_context(signals,resolve_external=True):
             else:item=resolve_reference(ref,relationship) if resolve_external else None
             if not item:item={"title":ref,"summary":None,"relationship":relationship,"url":None,"event_date":None,"verified":False}
             identity=item.get("url") or item.get("title")
-            if not identity or identity in seen or item.get("url")==r.get("source_url"):continue
-            seen.add(identity);rels.append(item)
+            act=target_key(str(item.get("title") or ""),issuer)  # N°/Nº/No. spellings of one act
+            if not identity or identity in seen or (act and act in seen) or item.get("url")==r.get("source_url"):continue
+            seen.add(identity);seen.add(act);rels.append(item)
         r["related_context"]=rels[:5]
         related_keys={_doc_key({"title":x.get("title","")}) for x in rels}
         r["source_alternatives"]=[x for x in (r.get("source_alternatives") or []) if _doc_key(x) not in related_keys and x.get("url") not in {y.get("url") for y in rels}]
@@ -426,16 +429,22 @@ def _late_related_documents(recent, history, index_path=Path("data/state/sis_nor
     """A resolution/suspension/appeal that arrives after the instruction it acts on left the
     visible window still links to it: our history record at any date, else the regulator's
     listing URL, else the bare identity (never an invented URL)."""
-    from radar_salud.normative_relations import related_documents, load_listing_index
+    from radar_salud.normative_relations import related_documents, load_listing_index, target_key, issuer_prefix
     index=load_listing_index(index_path);feed={s.get("source_url") for s in recent}
+    def act_key(x,issuer):
+        # "Circular IF/N°528" and "Circular IF/Nº528" are one act (N°/Nº/No./N.º); an id without
+        # issuer prefix takes the citing act's own (target_key's rule).
+        return target_key(str(x.get("target_id") or x.get("title") or ""),issuer)
     out=[]
     for s in recent:
         r=dict(s);docs=related_documents(r,history,index,feed)
         if docs:
             r["official_related_documents"]=docs
             if not r.get("normative_minimal"):
-                known={(x.get("url") or x.get("title")) for x in docs}
-                r["related_context"]=(docs+[x for x in (r.get("related_context") or []) if (x.get("url") or x.get("title")) not in known])[:6]
+                issuer=issuer_prefix(str(r.get("normative_document_label") or r.get("title") or ""))
+                known={(x.get("url") or x.get("title")) for x in docs};known_acts={k for k in (act_key(x,issuer) for x in docs) if k}
+                r["related_context"]=(docs+[x for x in (r.get("related_context") or [])
+                    if (x.get("url") or x.get("title")) not in known and act_key(x,issuer) not in known_acts])[:6]
         out.append(r)
     return out
 
@@ -514,7 +523,8 @@ def _document_inventory(s):
 
 def _statistical_value_ladder(s):
     """Always publish material public statistics at the highest supported value level."""
-    r=dict(s)
+    from radar_salud.sis_bulletins import apply_bulletin_period
+    r=apply_bulletin_period(dict(s))  # bulletin period from its documents, not the posting month
     if not _is_material_statistical_release(r):
         return r
     connected=bool(r.get("historical_connections") or r.get("related_context") or r.get("distinct_decision_value") is True)
@@ -711,9 +721,10 @@ def curate(signals,resolve_external=True,as_of=None):
     v3=[r for identity,r in approved.items() if identity not in conflicts]
     replacements={piece_id(r) for r in v3}|{alias for r in v3 for alias in r.get("read_aliases",[])}
     signals=[s for s in signals if str(s.get("editorial_schema_version"))!="3" and piece_id(s) not in replacements]
+    from radar_salud.sis_news import repair_stored_news
     normalized=[]
     for s in signals:
-        r=_normative_contract(_suseso_normative_upgrade(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(s)))))))
+        r=_normative_contract(_suseso_normative_upgrade(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(repair_stored_news(s))))))))
         ok,reason,q=publication_ready(r);r["publication_ready_score"]=q;r["publication_gate_reason"]=reason
         if ok:normalized.append(r)
     if not normalized:return v3
