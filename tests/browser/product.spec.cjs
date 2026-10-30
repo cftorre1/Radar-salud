@@ -355,7 +355,9 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(isapre).toHaveCount(1);
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 02 oct 2026');
  await isapre.locator('[data-detail]').first().click();
- await expect(page.locator('#detailBody .sf-kicker')).toContainText('datos a agosto 2026');
+ // Header as in the approved mockup (Dirección 29-oct): kicker + 'Destacada'; a two-line meta list under the headline.
+ await expect(page.locator('#detailBody .sf-kicker .sf-kick')).toHaveText('Cartera y movilidad');
+ expect(await page.locator('#detailBody .sf-meta li').allTextContents()).toEqual(['Datos a agosto 2026','Publicado por la SIS el 2 oct 2026']);
  await expect(page.locator('#detailBody .sf-dek')).toContainText('2.486.683');
  await expect(page.locator('#detailBody .sf-row')).toHaveCount(5);  // Dirección 29-oct: index of 5 topics
  await expect(page.locator('#detailBody .sf-notes')).toContainText('denominador solo las 7 Isapres abiertas');

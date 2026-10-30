@@ -41,9 +41,18 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
   await charts.first().locator('summary').click();
   await expect(charts.first().locator('table tbody tr').first()).toBeVisible();
   await charts.first().locator('summary').click();
-  for(const loc of [body.locator('.sf-pick'),body.locator('.sf-share')]){const box=await loc.boundingBox();expect(box.height).toBeGreaterThanOrEqual(44)}
-  await body.locator('.sf-share').click();
-  await expect(body.locator('.sf-share-status')).toHaveText('Enlace copiado.');
+  // Header as in the approved mockup (Dirección 29-oct): share icon in the top bar, no follow chips, source and read
+  // toggle at the foot, and the bar's back button reads 'Todos los temas' in topic mode.
+  const share=page.locator('#signalDetail .detail-top .sf-share');
+  await expect(share).toHaveAttribute('aria-label','Compartir informe');await expect(body.locator('.sf-share')).toHaveCount(0);
+  await expect(page.locator('#signalDetail .follow-chip')).toHaveCount(0);await expect(page.locator('#detailActs .act')).toHaveCount(0);
+  await expect(page.locator('#closeDetail')).toContainText('Todos los temas');
+  await expect(body.locator('#detailFoot #detailRead')).toHaveText('Marcar no leída');
+  expect(await body.locator('#detailFoot').locator('a,button').evaluateAll(xs=>xs.map(x=>x.textContent.trim()))).toEqual(['Fuente original ↗','Marcar no leída']);
+  expect(await body.locator('.sf-meta li').count()).toBe(2);
+  for(const loc of [body.locator('.sf-pick'),share]){const box=await loc.boundingBox();expect(box.height).toBeGreaterThanOrEqual(44)}
+  await share.click();
+  await expect(page.locator('#signalDetail .sf-share-status')).toHaveText('Enlace copiado.');
   expect(await page.evaluate(()=>window.__copied[0])).toMatch(new RegExp(`/data/fichas/${slug}\\.html$`));
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   expect(await page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1})).toBeTruthy();
@@ -82,5 +91,29 @@ for(const [slug,tabs] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre
   expect(await page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1})).toBeTruthy();
   fs.mkdirSync(SHOTS,{recursive:true});
   await page.screenshot({path:path.join(SHOTS,`${slug}-320.png`),fullPage:false});
+ });
+}
+
+// Compact header at 390×844 with DejaVu Sans, generic for every family: the first two index rows above the fold, and
+// the first topic's hero chart top half above the fold even with the ficha at its top.
+for(const slug of ['f4_ges','f6_prestadores']){
+ test(`${slug} compact header shows index rows and the hero chart above the fold at 390×844`,async({page})=>{
+  test.skip(test.info().project.name!=='mobile','390×844 runs once, in the mobile project');
+  await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});
+  const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));
+  await page.clock.setFixedTime(new Date('2026-10-29T12:00:00-03:00'));
+  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-29',generated_at:'2026-10-29T12:00:00Z',signals:[card]}}));
+  await page.goto('/');await selectPeriod(page,'90');
+  await page.addStyleTag({content:'*,svg text{font-family:"DejaVu Sans",sans-serif!important}'});
+  await page.locator('article[data-card]').filter({hasText:card.title}).locator('[data-detail]').first().click();
+  const body=page.locator('#detailBody');await expect(body.locator('.sf-index')).toBeVisible();
+  const m=sel=>page.evaluate(sel=>{const d=document.getElementById('signalDetail'),bottom=Math.min(innerHeight,d.getBoundingClientRect().bottom);
+   return {bottom,scroll:d.scrollTop,bar:d.querySelector('.detail-top').getBoundingClientRect().height,els:[...document.querySelectorAll(sel)].filter(e=>e.offsetParent).map(e=>{const b=e.getBoundingClientRect();return {bottom:b.bottom,mid:b.top+b.height/2}})}},sel);
+  const ix=await m('#detailBody .sf-row');
+  expect(ix.scroll).toBe(0);expect(ix.bar).toBeLessThanOrEqual(52);for(const r of ix.els)expect(r.bottom).toBeLessThanOrEqual(ix.bottom);
+  await body.locator('.sf-row').first().click();await expect(body.locator('.sf-topic')).toBeVisible();
+  await page.evaluate(()=>{document.getElementById('signalDetail').scrollTop=0});
+  const t=await m('#detailBody .sf-tpanel:not([hidden]) .sf-hero .sf-chart');
+  expect(t.scroll).toBe(0);expect(t.els[0].mid).toBeLessThanOrEqual(t.bottom);
  });
 }
