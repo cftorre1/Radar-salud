@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-10-29",
-  "generated_at": "2026-10-29T23:03:12.571963+00:00",
+  "as_of": "2026-10-30",
+  "generated_at": "2026-10-30T00:49:09.814493+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,9 +16,9 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-10-28",
-    "items_last_2_days": 3,
-    "items_last_7_days": 6,
-    "status": "fresh",
+    "items_last_2_days": 0,
+    "items_last_7_days": 5,
+    "status": "stale",
     "stale_after_days": 2
   },
   "sources": [
@@ -37,14 +37,21 @@
     [
       "fda",
       "FDA"
+    ],
+    [
+      "who",
+      "OMS"
     ]
   ],
   "held": {
     "feed_not_authorized_for_display": 17,
     "feed_not_enabled": 25,
+    "not_global_interest:no_global_interest_signal": 20,
+    "not_global_interest:source_rule_exclusion": 3,
+    "not_material_or_unverified": 111,
     "not_relevant_or_undated": 70,
-    "publication_activation_pending_paho": 544,
-    "publication_activation_pending_who": 242
+    "official_title_without_executive_keyword": 81,
+    "publication_activation_pending_paho": 551
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
@@ -62,21 +69,20 @@
       ]
     },
     {
-      "segment": "regulation",
-      "label_es": "Regulación",
-      "count": 2,
-      "item_ids": [
-        "718f8cdb059d564a272c",
-        "1e2dda4154b36b712837"
-      ]
-    },
-    {
       "segment": "healthtech",
       "label_es": "Salud digital y dispositivos",
       "count": 2,
       "item_ids": [
         "718f8cdb059d564a272c",
         "93ba694c2e268873ff20"
+      ]
+    },
+    {
+      "segment": "regulation",
+      "label_es": "Regulación",
+      "count": 1,
+      "item_ids": [
+        "718f8cdb059d564a272c"
       ]
     }
   ],
@@ -386,6 +392,90 @@
       }
     },
     {
+      "id": "f6ebc6837cc78103112e",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Call for Proposals for hosting the 20th International Conference of Drug Regulatory Authorities (ICDRA)",
+      "url": "https://www.who.int/news/item/20-10-2026-call-for-proposals-for-hosting-the-20th-international-conference-of-drug-regulatory-authorities-(icdra)",
+      "published_at": "2026-10-20",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "518ae8b745241b4f952f",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Development, management and support of care workers: towards an integrated health and care workforce: policy options",
+      "url": "https://www.who.int/publications/i/item/9789240124011",
+      "published_at": "2026-10-20",
+      "segments": [
+        "providers",
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
       "id": "363698bbe819db64daac",
       "source": "fda",
       "source_label": "FDA",
@@ -446,6 +536,46 @@
       }
     },
     {
+      "id": "81cc45fd813073f0a7c8",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Regional Workshop on Strengthening Paediatric Medicines Ecosystems in the ASEAN Region, Report of a WHO meeting, Kuala Lumpur, Malaysia, 11–13 May 2026",
+      "url": "https://www.who.int/publications/i/item/B09890",
+      "published_at": "2026-10-20",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
       "id": "e6174bc977b43ae3cc33",
       "source": "fda",
       "source_label": "FDA",
@@ -502,6 +632,93 @@
       }
     },
     {
+      "id": "b72d7214afd564ada8f3",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "One in four doctors nearing retirement age as WHO warns of global health workforce gap",
+      "url": "https://www.who.int/news/item/18-09-2026-one-in-four-doctors-nearing-retirement-age-as-who-warns-of-global-health-workforce-gap",
+      "published_at": "2026-10-19",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "895f64511344c997a2bc",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Early menopause: Why better research and global guidance matter for women’s health",
+      "url": "https://www.who.int/news/item/16-10-2026-early-menopause--why-better-research-and-global-guidance-matter-for-women-s-health",
+      "published_at": "2026-10-16",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "summary_es": "La menopausia precoz pone de relieve la importancia de mejorar la investigación y contar con orientaciones mundiales para la salud de las mujeres.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "767607cf4ec6568446f67144d2e9b858"
+      }
+    },
+    {
       "id": "075ea1273caa1acd719b",
       "source": "ec_health",
       "source_label": "Comisión Europea",
@@ -541,7 +758,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-10-29",
+      "first_seen_on": "2026-10-30",
       "title_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "description_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "translation": {
@@ -759,6 +976,133 @@
         "reason": "EMA legal notice grants reproduction and distribution 'totally or in part', commercial included, with acknowledgement, but says nothing about modification, adaptation or translation and names no open licence. Unclear -> keep the original (fail closed) until EMA confirms in writing; record the confirmation here and flip this flag.",
         "note_es": "Contenido en inglés (los términos de EMA no contemplan traducción)",
         "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "b1cec9334e573bd24e4a",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO guidelines on the integrated management of obesity in adolescents",
+      "url": "https://www.who.int/publications/i/item/9789240123878",
+      "published_at": "2026-10-07",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "76868a5aacebc358eb15",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO guidelines on the integrated management of obesity in children",
+      "url": "https://www.who.int/publications/i/item/9789240123397",
+      "published_at": "2026-10-07",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "444047af244f7312c9d4",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO issues first global guidelines on child and adolescent obesity",
+      "url": "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity",
+      "published_at": "2026-10-07",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "summary_es": "La WHO emite las primeras directrices mundiales sobre obesidad infantil y adolescente.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "0f8c03e2b71b2bef1b5d6fe9f1c848dc"
       }
     },
     {
@@ -990,6 +1334,166 @@
       }
     },
     {
+      "id": "a4fdf03c14452013938a",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO Expert Committee on Drug Dependence: forty-eighth report",
+      "url": "https://www.who.int/publications/i/item/9789240124714",
+      "published_at": "2026-09-24",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "1fe7798917d08ec8430f",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "New WHO report calls for stronger ethics oversight of AI-related health research",
+      "url": "https://www.who.int/news/item/21-09-2026-new-who-report-calls-for-stronger-ethics-oversight-of-ai-related-health-research",
+      "published_at": "2026-09-21",
+      "segments": [
+        "ai_in_health"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "IA en salud"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "6e17245bdcbdd6ce7534",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Patient safety at the heart of forthcoming WHO asthma guidelines",
+      "url": "https://www.who.int/news/item/17-09-2026-patient-safety-at-the-heart-of-forthcoming-who-asthma-guidelines",
+      "published_at": "2026-09-17",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "61cc17db990406c78d46",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "GLP1-receptor agonists landscape: manufacturer mapping and regulatory pathways",
+      "url": "https://www.who.int/publications/i/item/9789240125148",
+      "published_at": "2026-09-17",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
       "id": "463a07f32cd10e2546fc",
       "source": "fda",
       "source_label": "FDA",
@@ -1048,6 +1552,298 @@
       }
     },
     {
+      "id": "29c4af3a6942ffa52c35",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO calls for more research into traditional medicine to meet growing health needs",
+      "url": "https://www.who.int/news/item/17-09-2026-who-calls-for-more-research-into-traditional-medicine-to-meet-growing-health-needs",
+      "published_at": "2026-09-17",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "188020d7e3a2aab3464d",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO global research priorities and agenda for traditional, complementary and integrative medicine 2025–2034",
+      "url": "https://www.who.int/publications/i/item/9789240124738",
+      "published_at": "2026-09-16",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "f71b61d5d3ebbc6eddd1",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Committing to sexual and reproductive health and rights: investing in people through universal health coverage: an investment in people",
+      "url": "https://www.who.int/publications/i/item/B09881",
+      "published_at": "2026-09-15",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "summary_es": "El compromiso con la salud y los derechos sexuales y reproductivos se presenta como una inversión en las personas mediante la cobertura sanitaria universal.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "21e269e85baad85afa94712f57ae3d39"
+      }
+    },
+    {
+      "id": "0c45545c840494022d5c",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO and Commonwealth Secretariat renew partnership to strengthen health systems and advance universal health coverage",
+      "url": "https://www.who.int/news/item/15-09-2026-who-and-commonwealth-secretariat-renew-partnership-to-strengthen-health-systems-and-advance-universal-health-coverage",
+      "published_at": "2026-09-15",
+      "segments": [
+        "payers",
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento",
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "b25d62f15be813fe3d0c",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "New strategy to build a healthier market for childhood cancer medicines",
+      "url": "https://www.who.int/news/item/15-09-2026-new-strategy-to-build-a-healthier-market-for-childhood-cancer-medicines",
+      "published_at": "2026-09-15",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "5cc28754d130672533c2",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Closing the childhood cancer survival gap through sustainable access to essential medicines: market shaping strategy (2026–2030)",
+      "url": "https://www.who.int/publications/i/item/9789240125087",
+      "published_at": "2026-09-15",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "78c6485f030d4ad75096",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Vaccines, thiomersal and autism spectrum disorder: evidence review 2010-2025",
+      "url": "https://www.who.int/publications/i/item/9789240123533",
+      "published_at": "2026-09-03",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
       "id": "55f97ea4aaa05a231a6e",
       "source": "fda",
       "source_label": "FDA",
@@ -1094,18 +1890,348 @@
         "status": "pending",
         "reason": "no_api_key"
       }
+    },
+    {
+      "id": "7178c4ecf9894c615e2d",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Global initiative launched to improve access to mpox vaccines",
+      "url": "https://www.who.int/news/item/02-09-2026-global-initiative-launched-to-improve-access-to-mpox-vaccines",
+      "published_at": "2026-09-02",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "0e2cceea0cf02f02cd4d",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Monitoring progress on universal health coverage and the health-related Sustainable Development Goals in the South-East Asia Region, 2026",
+      "url": "https://www.who.int/publications/i/item/9789292800208",
+      "published_at": "2026-09-01",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "9d23be3b5b15c433c5a1",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO expands global regulatory capacity through new collaborating centre in Republic of Korea",
+      "url": "https://www.who.int/news/item/27-08-2026-who-expands-global-regulatory-capacity-through-new-collaborating-centre-in-republic-of-korea",
+      "published_at": "2026-08-27",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "a717a6b277d00bd7e22a",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO global technical consultation on public health and social measures during health emergencies: report of the third meeting, Geneva, Switzerland, 24-26 March 2026",
+      "url": "https://www.who.int/publications/i/item/9789240124318",
+      "published_at": "2026-08-27",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "20e0cdd174be04676529",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Essential functions of community health workforces for public health emergency risk management",
+      "url": "https://www.who.int/publications/i/item/9789292800130",
+      "published_at": "2026-08-25",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 95,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "481c0c92c15789d62f1f",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Mozambique strengthens regulation of medicines and imported vaccines, boosting health protection",
+      "url": "https://www.who.int/news/item/24-08-2026-mozambique-strengthens-regulation-of-medicines-and-imported-vaccines--boosting-health-protection",
+      "published_at": "2026-08-24",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "e7605b40470bb9da0daf",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Global guidance on monitoring public health and social measures policies during health emergencies, rev. ed., 2025.",
+      "url": "https://www.who.int/publications/i/item/9789240114562",
+      "published_at": "2026-08-03",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
+    },
+    {
+      "id": "06ce6ffa60be991cc41c",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Paediatric drug optimization for sickle cell disease: meeting report, 8-10 September 2025",
+      "url": "https://www.who.int/publications/i/item/B09861",
+      "published_at": "2026-08-03",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-10-29",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "no_api_key"
+      }
     }
   ],
   "translation": {
     "translated": 9,
-    "summarized": 2,
-    "from_cache": 11,
+    "summarized": 5,
+    "from_cache": 14,
     "verification_failed": 5,
     "review_failed": 0,
-    "not_allowed": 2,
+    "not_allowed": 26,
     "pending": 1,
     "source_in_spanish": 0
   },
-  "ai_text_items": 11,
+  "ai_text_items": 14,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget"
 }
