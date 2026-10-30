@@ -773,12 +773,7 @@ def curate(signals,resolve_external=True,as_of=None):
         card["editorial_decision"]="accept"
         card["editorial_committee"]=build_committee_artifact(card)
         return card["editorial_committee"].get("verdict")=="PASS"
-    from radar_salud.story_groups import same_title_groups
-    groups=load_groups()
-    # Same headline, same day, different official sources (e.g. Minsal and SIS publishing one
-    # joint release) is one story: an automatic lead group next to the configured ones.
-    groups=groups+same_title_groups(recent,groups)
-    recent,summaries=apply_story_groups(recent,groups,gate=story_gate)
+    recent,summaries=apply_story_groups(recent,load_groups(),gate=story_gate)
     recent.extend(summaries)
     # SIS news about an act with its own visible card folds into it (after every visibility gate).
     from radar_salud.sis_news import fold_news_into_acts

@@ -60,32 +60,15 @@ LEAD_MAX = 400
 DETAIL_WINDOW_DAYS = 30  # article pages fetched only for entries that can still be processed
 CHILE = ZoneInfo("America/Santiago")
 
-_ACT = re.compile(r"\b(Oficio\s+Circular|Circular|Resoluci[oó]n\s+Exenta)\s+(?:(IF|IP|SS)\s*[/\-]?\s*)?"
-                  r"(?:N(?:\s*\.?\s*[°º˚]|o\.?|\.)?|[°º˚])?\s*(\d[\d\.]*)", re.I)
+_ACT = re.compile(r"\b(Oficio\s+Circular|Circular|Resoluci[oó]n\s+Exenta)\s+(?:(IF|IP|SS)\s*[/\-]?\s*)?N?\s*[°º]?\s*(\d[\d\.]*)", re.I)
 # Page titles carry the site name ("… - Superintendencia de Salud"); the headline is what precedes it.
 _SITE_SUFFIX = re.compile(r"\s+[-–—|·:]\s*Superintendencia\s+de\s+Salud(?:\s*[-–—|·]\s*Gobierno\s+de\s+Chile)?\s*$", re.I)
-# Section labels used as page titles; they say nothing about the story (staging audit 29-oct).
-GENERIC_TITLES = {"comunicado de prensa", "comunicado", "comunicados", "noticias", "noticia", "nota de prensa",
-                  "prensa", "superintendencia de salud"}
-
-
 def clean_title(title: str | None) -> str:
     """Headline without the trailing site-name suffix and extra whitespace (never reworded).
     Only one suffix at the very end is removed; a title that is only the site name stays."""
     t = " ".join(str(title or "").split())
     stripped = _SITE_SUFFIX.sub("", t).strip()
     return stripped or t
-
-
-def is_generic_title(title: str | None) -> bool:
-    return _norm(clean_title(title)) in GENERIC_TITLES or not _norm(clean_title(title))
-
-
-def choose_title(*candidates: str | None) -> str | None:
-    """First informative headline among the candidates (article h1, og:title, page <title>,
-    listing title), each cleaned of the site suffix; a generic label only if nothing else exists."""
-    cleaned = [clean_title(c) for c in candidates if clean_title(c)]
-    return next((c for c in cleaned if not is_generic_title(c)), cleaned[0] if cleaned else None)
 
 
 def robots_allows(url: str, fetch: Callable[[str], str] | None = None) -> bool:
@@ -131,43 +114,9 @@ def parse_listing(html: str, page_url: str) -> list[dict]:
     return out
 
 
-def _headline_parser():
-    from .public_source_pipeline import _Meta
-
-    class _Headlines(_Meta):
-        """_Meta plus the page's <h1> texts and <title> (the article headline candidates)."""
-
-        def __init__(self):
-            super().__init__()
-            self.h1, self.page_title, self._in = [], "", None
-            self._buf = []
-
-        def handle_starttag(self, tag, attrs):
-            super().handle_starttag(tag, attrs)
-            if tag.lower() in ("h1", "title") and self._in is None:
-                self._in, self._buf = tag.lower(), []
-
-        def handle_data(self, data):
-            super().handle_data(data)
-            if self._in:
-                self._buf.append(data)
-
-        def handle_endtag(self, tag):
-            super().handle_endtag(tag)
-            if self._in and tag.lower() == self._in:
-                text = " ".join(" ".join(self._buf).split())
-                if text and self._in == "h1":
-                    self.h1.append(text)
-                elif text and not self.page_title:
-                    self.page_title = text
-                self._in = None
-
-    return _Headlines()
-
-
 def parse_article(html: str) -> dict:
-    from .public_source_pipeline import _date
-    meta = _headline_parser()
+    from .public_source_pipeline import _Meta, _date
+    meta = _Meta()
     meta.feed(html)
     text = " ".join(meta.text)
     published = _date(meta.published) if meta.published else None
@@ -178,10 +127,7 @@ def parse_article(html: str) -> dict:
     if not visible:
         visible = _date(text[:4000])
     lead = meta.description or next((t for t in meta.text if len(t) >= 60), "")
-    # Headline: og:title unless it is a section label ("COMUNICADO DE PRENSA"); then the page's own
-    # h1 (the newsroom h1 can also be just "Noticias"), then <title>. Site suffix removed.
-    title = choose_title(meta.ogtitle, *meta.h1, meta.page_title)
-    return {"title": title or None, "published": published, "visible_date": visible,
+    return {"title": meta.ogtitle or None, "published": published, "visible_date": visible,
             "description": meta.description, "lead": " ".join(lead.split())[:LEAD_MAX], "text": text}
 
 
@@ -278,11 +224,10 @@ class SuperintendenciaNoticiasScout:
             page_date = article["published"] or article["visible_date"]
             title = clean_title(title)
             if article["title"]:
-                if _norm(article["title"]) != _norm(title) and not is_generic_title(title) and not is_generic_title(article["title"]):
+                headline = clean_title(article["title"])  # " - Superintendencia de Salud" is not part of it
+                if _norm(headline) != _norm(title):
                     meta["listing_title_mismatch"] = True  # listing paired another entry's title
-                title = choose_title(article["title"], title)
-            if is_generic_title(title):
-                meta["generic_title"] = True  # no informative headline on the page or the listing
+                title = headline
             if page_date and listed and page_date != listed:
                 meta["listing_date_conflict"] = {"listing": listed, "article": page_date}
             event_date = page_date or (listed if not meta.get("listing_title_mismatch") else None)
@@ -450,34 +395,8 @@ def process_superintendencia_noticias(raw, cfg):
     return row
 
 
-# Words before an act ID that make it the object of another act or a passing reference, not the
-# story's subject ("modifica la Circular IF/N°534", "según la Circular …").
-_REFERENCE_CUE = re.compile(
-    r"\b(?:modific\w*|derog\w*|suspend\w*|suspensi[oó]n|deja\w*\s+sin\s+efecto|complement\w*|reemplaz\w*|"
-    r"sustitu\w*|rectific\w*|seg[uú]n|conforme|de\s+acuerdo|establecid[oa]s?\s+en|dispuest[oa]s?\s+en|"
-    r"contra|recurso\w*|referid[oa]|cita\w*|menciona\w*)\b[^.;:]{0,40}$", re.I)
-
-
-def headline_act(title: str | None) -> str | None:
-    """The one act a news headline is about (``circular-if-534``), or None.
-
-    Read from the item's own headline only (never the lead, summary, body or navigation). A
-    headline naming several acts, or naming the act as the object of another act or as a passing
-    reference, has no headline act: the news then stands on its own (review of PR #114)."""
-    from .normative_relations import normalize_id, target_key
-    text = clean_title(title)
-    found = list(_ACT.finditer(text))
-    keys = {target_key(normalize_id(m.group(1), m.group(2), m.group(3))) for m in found}
-    if len(found) != 1 or None in keys:
-        return None
-    m = found[0]
-    if _REFERENCE_CUE.search(text[:m.start()]):
-        return None
-    return keys.pop()
-
-
 def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
-    """A SIS news card about an act (named as the subject of its own headline, see ``headline_act``) that has its own *visible*
+    """A SIS news card about an act (named in its title or lead) that has its own *visible*
     normativa card is the same story: keep the act's card, attach the news as an official
     alternative source. Runs after the feed's visibility/editorial/story gates; when the act
     card is not in the feed the news stands on its own."""
@@ -493,8 +412,7 @@ def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
     out = []
     for c in cards:
         if str(c.get("source_url") or "").startswith(f"https://{HOST}/noticias/"):
-            key = headline_act(c.get("title"))
-            lead = acts.get(key) if key else None
+            lead = next((acts[k] for k in c.get("mentioned_acts") or [] if k in acts), None)
             if lead is not None:
                 alts = list(lead.get("source_alternatives") or [])
                 if c.get("source_url") not in {a.get("url") for a in alts}:
@@ -507,16 +425,11 @@ def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
 
 
 def repair_stored_news(row: dict) -> dict:
-    """Stored SIS news rows captured before the headline rules: drop the site-name suffix from
-    the title (kept in ``source_page_title``) and flag generic headlines. Nothing is added: no
-    act is read from the summary, so a generic item is shown as it is."""
+    """Stored SIS news rows captured before the suffix rule: drop the trailing site-name suffix
+    from the title (the original stays in ``source_page_title``). Nothing else changes."""
     if row.get("source_name") != SOURCE_NAME or not str(row.get("source_url") or "").startswith(f"https://{HOST}/noticias/"):
         return row
-    r = dict(row)
-    title = clean_title(r.get("title"))
-    if title and title != r.get("title"):
-        r["source_page_title"] = r.get("title")
-        r["title"] = title
-    if is_generic_title(title):
-        r["generic_title"] = True
-    return r
+    title = clean_title(row.get("title"))
+    if not title or title == row.get("title"):
+        return row
+    return dict(row, title=title, source_page_title=row.get("title"))

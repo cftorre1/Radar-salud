@@ -436,40 +436,7 @@ def sanction_card_title(r):
         full = f"{head} por {ground}"
         if len(full) <= TITLE_MAX:
             return full
-        # Raw legal text is never cut mid-clause ("…del Reglamento…"): a verbatim span of the same
-        # clause (the accreditation procedure and the provider it names), else only act, amount, entity.
-        for span in _procedure_spans(clause):
-            if len(head) + 2 + len(span) <= TITLE_MAX:
-                return f"{head}: {span}"
+        # A reason that does not fit is never cut or summarised (review of PR #114): the title is
+        # then "<acto> · Multa de X a <entidad>" with no partial clause.
         return head if len(head) <= TITLE_MAX else _cap_title(head, "")
     return None if needs_ground else _cap_title(head, "")
-
-
-# "procedimiento de Acreditación del prestador Institucional <nombre>": the provider name is the
-# text up to its natural end (a comma, ";", "." or the end of the regulator's clause).
-_PROCEDURE_RE = re.compile(
-    r"\b(procedimiento\s+de\s+(acreditaci[oó]n\s+del?\s+(?:la\s+)?prestador(?:a)?"
-    r"(?:\s+(?:institucional|individual))?\s+))", re.I)
-_PROVIDER_END_RE = re.compile(r",|;|\.(?:\s|$)|\s+lo\s+que\b|\s+y\s+", re.I)
-_AMBIGUOUS_END_RE = re.compile(r"\s+lo\s+que\b|\s+y\s+", re.I)
-PROVIDER_MAX_WORDS = 12
-
-
-def _procedure_spans(clause):
-    """Verbatim spans of the regulator's own clause, longest first; [] when the provider name has
-    no clean end. A name followed by " y " or " lo que" without a comma is ambiguous (the name
-    itself may contain "y"): no span, so the title falls back to "<acto> · Multa de X a <entidad>"."""
-    text = " ".join(str(clause or "").split())
-    m = _PROCEDURE_RE.search(text)
-    if not m:
-        return []
-    rest = text[m.end():]
-    end = _PROVIDER_END_RE.search(rest)
-    if end and _AMBIGUOUS_END_RE.match(end.group(0)):
-        return []
-    name = (rest[:end.start()] if end else rest).strip()
-    if not name or len(name.split()) > PROVIDER_MAX_WORDS or not name[:1].isupper():
-        return []
-    full = text[m.start(1):m.end()] + name
-    short = text[m.start(2):m.end()] + name
-    return [full, short]

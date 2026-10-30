@@ -1,3 +1,4 @@
+import pytest
 from radar_salud.superintendencia_fiscalizacion import parse_listing, PAGES, _amount
 
 
@@ -282,8 +283,8 @@ def test_bare_ip_sanction_title_uses_captured_entity_amount_and_ground():
     from radar_salud.superintendencia_fiscalizacion import sanction_card_title, is_bare_act_title
     assert is_bare_act_title('Resolución Exenta IP/N°7463')
     title = sanction_card_title(_qualis())
-    # The full clause is longer than 140 characters: raw legal text is never cut ("…del Reglamento…")
-    # and no reason is paraphrased; the verbatim procedure span does not fit either (review of #114).
+    # The full clause is longer than 140 characters: never cut ("…del Reglamento…"), never summarised
+    # (review of PR #114): act, amount and entity only.
     assert title == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA'
     assert len(title) <= 140
     assert not is_bare_act_title(title)
@@ -361,28 +362,33 @@ def test_title_cap_falls_back_to_label_and_action_without_boundary():
     assert long == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA'
 
 
-def test_long_accreditation_ground_uses_verbatim_procedure_span_never_a_paraphrase():
+_PROBE_BASE = ('Sancionase a la Entidad Qualis SpA con una multa de 20 Unidades de Fomento por haber infringido el articulo 27 '
+               'del Reglamento, y la Circular IP/N°48, de 19 de agosto de 2020, en el procedimiento de acreditación del prestador institucional ')
+
+
+@pytest.mark.parametrize("tail", ['Hospital Ovalle sin evaluadores.', 'Hospital Talca en que se constató.',
+                                  'Clínica Lircay por no constatar.', 'CESFAM Sr. Pérez, al omitir.',
+                                  'Hospital Y, lo que no constituye infracción adicional.',
+                                  'Clínica Dávila y Servicios Médicos S.A., al omitir.'])
+def test_long_ground_never_shows_a_cut_or_partial_clause(tail):
+    """Reviewer probes of PR #114 (probe114.py / probe114b.py): a reason that does not fit in 140
+    characters is dropped entirely; the title is act, amount and entity."""
+    from radar_salud.superintendencia_fiscalizacion import sanction_card_title
+    title = sanction_card_title(_qualis(what_happened=_PROBE_BASE + tail))
+    assert title == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA'
+    assert '…' not in title and 'procedimiento' not in title.lower() and 'acreditación' not in title.lower()
+
+
+def test_staging_qualis_8347_title_is_act_amount_and_entity():
     from radar_salud.superintendencia_fiscalizacion import sanction_card_title
     staging = _qualis(title='Resolución Exenta IP/N°8347', sanction_amount=10.0, what_happened=(
         'Sancionase a la Entidad Qualis SpA con una multa de 10 Unidades de Fomento por haber infringido el articulo 20, inciso 2°, '
         'y 27 del Reglamento, y la Circular IP/N°37, de 31 de mayo de 2017, en el procedimiento de Acreditación del prestador '
         'Institucional Centro de Salud Familiar Santa Cecilia Fecha de emisión: 21 de octubre de 2026.'))
-    title = sanction_card_title(staging)
-    assert title == 'Resolución Exenta IP/N°8347 · Multa de 10 UF a Qualis SpA: Acreditación del prestador Institucional Centro de Salud Familiar Santa Cecilia'
-    assert title.split(': ', 1)[1] in staging['what_happened'] and 'Infracción' not in title
-    base = ('Multa por haber infringido el articulo 27 del Reglamento, y la Circular IP/N°48, de 19 de agosto de 2020, '
-            'en el procedimiento de acreditación del prestador institucional ')
-    # The provider name ends at its comma: the trailing text never enters the title.
-    probe = sanction_card_title(_qualis(what_happened=base + 'Hospital Y, lo que no constituye infracción adicional.'))
-    assert probe == 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA: procedimiento de acreditación del prestador institucional Hospital Y'
-    # Ambiguous ends (" y ", " lo que" without a comma) and over-long names fall back to act, amount and entity.
-    head = 'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA'
-    assert sanction_card_title(_qualis(what_happened=base + 'Hospital San José y Anexos de la comuna.')) == head
-    assert sanction_card_title(_qualis(what_happened=base + 'Hospital Y lo que no constituye infracción.')) == head
-    assert sanction_card_title(_qualis(what_happened=base + ' '.join(['Hospital'] * 13) + '.')) == head
-    # Short grounds still read in full.
-    assert sanction_card_title(_qualis(what_happened='Multa por haber infringido la Ley 20.584.')).endswith('por haber infringido la Ley 20.584')
-
+    assert sanction_card_title(staging) == 'Resolución Exenta IP/N°8347 · Multa de 10 UF a Qualis SpA'
+    # A reason that fits is still shown in full.
+    assert sanction_card_title(_qualis(what_happened='Multa por haber infringido la Ley 20.584.')) == \
+        'Resolución Exenta IP/N°7463 · Multa de 20 UF a Qualis SpA por haber infringido la Ley 20.584'
 
 
 def test_amendment_fine_change_stated_in_captured_summary_is_titled():
