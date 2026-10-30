@@ -342,15 +342,19 @@ def test_replay_never_activates_or_writes_records(tmp_path):
 
 
 def test_current_staging_ledger_matches_the_recorded_activation():
-    # WHO met the two-daily-run rule on 30-oct (publication_activation.json); the replayed decision on the committed
-    # ledger must agree with that record for each source (PAHO not yet activated).
+    # The ledger grows with every daily run: a source activates once it earns the rule (WHO did on 30-oct-2026,
+    # runs 40767743948 + 40969336170). The recorded activation must be exactly what the rule decides.
     ledger = json.loads(Path("data/global_intelligence/ledger.json").read_text())
-    recorded = json.loads(Path("data/global_intelligence/publication_activation.json").read_text()).get("sources", {})
+    recorded = json.loads(Path("data/global_intelligence/publication_activation.json").read_text()).get("sources", {}) \
+        if Path("data/global_intelligence/publication_activation.json").exists() else {}
     last = ledger["runs"][-1]
     for source in ("who", "paho"):
         decision = publication_activation_decision({"runs": ledger["runs"][:-1]}, source, last["sources"][source], last["run_id"],
                                                    last["mode"], POLICY, last["sources"][source].get("coverage_contract_id"))
-        assert decision["activated"] == (source in recorded), (source, decision)
+        if source in recorded:  # sticky: once earned, it stays; the evidence must name two successful live runs
+            assert recorded[source]["rule"] == "two_consecutive_successful_daily_live_runs" and len(recorded[source]["evidence_run_ids"]) == 2
+        else:
+            assert not decision["activated"], (source, decision)
 
 
 def test_sticky_activation_exposes_earned_evidence_for_audits(tmp_path):

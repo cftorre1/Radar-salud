@@ -433,5 +433,10 @@ def sanction_card_title(r):
         ground = _DATE_FRAGMENT_RE.sub("", clause)
         ground = re.sub(r"\s+,", ",", re.sub(r",\s*,", ",", ground)).strip(" ,;:")
     if ground:
-        return _cap_title(head, f" por {ground}")
+        full = f"{head} por {ground}"
+        if len(full) <= TITLE_MAX:
+            return full
+        # A reason that does not fit is never cut or summarised (review of PR #114): the title is
+        # then "<acto> · Multa de X a <entidad>" with no partial clause.
+        return head if len(head) <= TITLE_MAX else _cap_title(head, "")
     return None if needs_ground else _cap_title(head, "")

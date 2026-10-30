@@ -134,6 +134,9 @@ test('Inbox shows every unread signal, supports direct read with undo and persis
  const deep=await rows.count();expect(deep).toBeGreaterThan(4);
  await page.locator('#markAllRead').click();await expect(rows).toHaveCount(0);await expect(page.locator('#local')).toContainText('Estás al día');
  await expect(page.locator('#local .feed-undo')).toContainText(`${deep} señales marcadas como leídas`);
+ // Staging audit 29-oct: the status line is announced to screen readers, never left as stray text under the footer.
+ await expect(page.locator('#readStatus')).toHaveText(`${deep} señales marcadas como leídas.`);
+ expect(await page.locator('#readStatus').evaluate(n=>n.getBoundingClientRect().height)).toBeLessThanOrEqual(1);
  await page.locator('#local .feed-undo').getByRole('button',{name:'Deshacer'}).click();await expect(rows).toHaveCount(deep);
 });
 test('operations dashboard loads without inventing measurements',async({page})=>{
@@ -352,7 +355,9 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(isapre).toHaveCount(1);
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 02 oct 2026');
  await isapre.locator('[data-detail]').first().click();
- await expect(page.locator('#detailBody .sf-kicker')).toContainText('datos a agosto 2026');
+ // Header as in the approved mockup (Dirección 29-oct): kicker + 'Destacada'; a two-line meta list under the headline.
+ await expect(page.locator('#detailBody .sf-kicker .sf-kick')).toHaveText('Cartera y movilidad');
+ expect(await page.locator('#detailBody .sf-meta li').allTextContents()).toEqual(['Datos a agosto 2026','Publicado por la SIS el 2 oct 2026']);
  await expect(page.locator('#detailBody .sf-dek')).toContainText('2.486.683');
  await expect(page.locator('#detailBody .sf-row')).toHaveCount(5);  // Dirección 29-oct: index of 5 topics
  await expect(page.locator('#detailBody .sf-notes')).toContainText('denominador solo las 7 Isapres abiertas');
@@ -387,13 +392,15 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.locator('#bigThings .big-feature.global .title-open[data-special-open]').first().click();
  await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
  await expect(page.getByRole('heading',{name:'Ponte al día en Global Intelligence'})).toBeVisible();
- await expect(page.locator('#globalPeriod')).toHaveValue('30');
+ // Staging audit 29-oct: Global is one 90-day inbox, so a viewer without a saved period starts on 90 días.
+ await expect(page.locator('#globalPeriod')).toHaveValue('90');
  await page.locator('#globalFilters summary').click();
  await expect(page.locator('#globalPublisher')).toBeVisible();
  // Dirección 28-oct 08:20: one inbox ordered by date like Chile; no relevance sort, Chile's period options.
  await expect(page.locator('#globalSort')).toHaveCount(0);
  expect(await page.locator('#globalPeriod option').evaluateAll(xs=>xs.map(x=>x.value))).toEqual(['last','7','14','30','60','90']);
- await page.locator('#globalPeriod').selectOption('90');await expect(page.locator('#globalFilters')).not.toHaveAttribute('open','');
+ await page.locator('#globalPeriod').selectOption('30');await expect(page.locator('#globalFilters')).not.toHaveAttribute('open','');
+ await page.locator('#globalFilters summary').click();await page.locator('#globalPeriod').selectOption('90');await expect(page.locator('#globalFilters')).not.toHaveAttribute('open','');
  // Bar A on Global (Dirección 27-oct 23:13): Todas shows every theme; Pendientes only the unread ones.
  await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(visibleCount);

@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "as_of": "2026-10-29",
-  "generated_at": "2026-10-30T01:16:17.869217+00:00",
+  "generated_at": "2026-10-30T01:52:37.223768+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -15,9 +15,9 @@
   "window_days": 90,
   "retention_days": 90,
   "freshness": {
-    "newest_published_at": "2026-10-29",
-    "items_last_2_days": 7,
-    "items_last_7_days": 11,
+    "newest_published_at": "2026-10-28",
+    "items_last_2_days": 3,
+    "items_last_7_days": 6,
     "status": "fresh",
     "stale_after_days": 2
   },
@@ -39,20 +39,17 @@
       "FDA"
     ],
     [
-      "the_conversation",
-      "The Conversation"
-    ],
-    [
       "who",
       "OMS"
     ]
   ],
   "held": {
     "feed_not_authorized_for_display": 17,
+    "feed_not_enabled": 25,
     "not_global_interest:no_global_interest_signal": 20,
     "not_global_interest:source_rule_exclusion": 3,
     "not_material_or_unverified": 111,
-    "not_relevant_or_undated": 89,
+    "not_relevant_or_undated": 70,
     "official_title_without_executive_keyword": 81,
     "publication_activation_pending_paho": 551
   },
@@ -64,9 +61,8 @@
     {
       "segment": "providers",
       "label_es": "Prestadores",
-      "count": 4,
+      "count": 3,
       "item_ids": [
-        "d7fb141a2959e3dd925b",
         "bfdd8633fe174ab8e461",
         "5bdb36cd4ca372a4d2e0",
         "0acfc72ecc068e88b4a6"
@@ -75,122 +71,23 @@
     {
       "segment": "regulation",
       "label_es": "Regulación",
-      "count": 3,
+      "count": 2,
       "item_ids": [
         "718f8cdb059d564a272c",
-        "1e2dda4154b36b712837",
-        "49b2954bae38e367d3c9"
+        "1e2dda4154b36b712837"
       ]
     },
     {
-      "segment": "pharma",
-      "label_es": "Medicamentos y farma",
+      "segment": "healthtech",
+      "label_es": "Salud digital y dispositivos",
       "count": 2,
       "item_ids": [
-        "1e2dda4154b36b712837",
-        "d7fb141a2959e3dd925b"
+        "718f8cdb059d564a272c",
+        "93ba694c2e268873ff20"
       ]
     }
   ],
   "items": [
-    {
-      "id": "49b2954bae38e367d3c9",
-      "source": "the_conversation",
-      "source_label": "The Conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Lindsey Murtagh, Distinguished Senior Fellow in Health Law, Brown University"
-      ],
-      "title": "How the law protecting Americans from surprise medical bills is driving up healthcare costs",
-      "url": "https://theconversation.com/how-the-law-protecting-americans-from-surprise-medical-bills-is-driving-up-healthcare-costs-293441",
-      "published_at": "2026-10-29",
-      "segments": [
-        "regulation"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Regulación"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 73,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "basis": "publisher_cc_by_nd_republishing_guidelines",
-        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
-        "license_url": null,
-        "license_label": null,
-        "attribution": "Author(s) + 'The Conversation' + link to the article",
-        "evidence_urls": [
-          "https://theconversation.com/republishing-guidelines"
-        ],
-        "verified_on": "2026-10-28"
-      },
-      "sections": [
-        "health_us"
-      ],
-      "first_seen_on": "2026-10-29",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "CC BY-ND 4.0 (NoDerivatives): a translation is an adaptation, which ND forbids. Title kept in English, verbatim.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)"
-      }
-    },
-    {
-      "id": "d7fb141a2959e3dd925b",
-      "source": "the_conversation",
-      "source_label": "The Conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Yashaswini Singh, Thomas J. and Alice M. Tisch Assistant Professor of Health Services, Policy and Practice, Brown University"
-      ],
-      "title": "Private equity is buying up more methadone clinics – access to the lifesaving drug isn’t getting easier",
-      "url": "https://theconversation.com/private-equity-is-buying-up-more-methadone-clinics-access-to-the-lifesaving-drug-isnt-getting-easier-286927",
-      "published_at": "2026-10-28",
-      "segments": [
-        "providers",
-        "pharma"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Prestadores",
-        "Medicamentos y farma"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 76,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "basis": "publisher_cc_by_nd_republishing_guidelines",
-        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
-        "license_url": null,
-        "license_label": null,
-        "attribution": "Author(s) + 'The Conversation' + link to the article",
-        "evidence_urls": [
-          "https://theconversation.com/republishing-guidelines"
-        ],
-        "verified_on": "2026-10-28"
-      },
-      "sections": [
-        "health_us"
-      ],
-      "first_seen_on": "2026-10-28",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "CC BY-ND 4.0 (NoDerivatives): a translation is an adaptation, which ND forbids. Title kept in English, verbatim.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)"
-      }
-    },
     {
       "id": "bfdd8633fe174ab8e461",
       "source": "ecdc",
@@ -247,54 +144,6 @@
       }
     },
     {
-      "id": "b8550acba599ef976ed9",
-      "source": "the_conversation",
-      "source_label": "The Conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Sujeong Park, Assistant Professor of Health Policy and Addiction Studies, Penn State"
-      ],
-      "title": "1 in 4 Pennsylvanians say they paid out of pocket for their annual checkup. Why isn’t insurance covering these preventive visits?",
-      "url": "https://theconversation.com/1-in-4-pennsylvanians-say-they-paid-out-of-pocket-for-their-annual-checkup-why-isnt-insurance-covering-these-preventive-visits-293410",
-      "published_at": "2026-10-28",
-      "segments": [
-        "payers"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Aseguradores y financiamiento"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 68,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "basis": "publisher_cc_by_nd_republishing_guidelines",
-        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
-        "license_url": null,
-        "license_label": null,
-        "attribution": "Author(s) + 'The Conversation' + link to the article",
-        "evidence_urls": [
-          "https://theconversation.com/republishing-guidelines"
-        ],
-        "verified_on": "2026-10-28"
-      },
-      "sections": [
-        "health_us"
-      ],
-      "first_seen_on": "2026-10-29",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "CC BY-ND 4.0 (NoDerivatives): a translation is an adaptation, which ND forbids. Title kept in English, verbatim.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)"
-      }
-    },
-    {
       "id": "5bdb36cd4ca372a4d2e0",
       "source": "ecdc",
       "source_label": "ECDC",
@@ -340,55 +189,6 @@
           "description:term_missing:Respiratory",
           "description:term_missing:Syncytial"
         ]
-      }
-    },
-    {
-      "id": "126eef38db166173c02a",
-      "source": "the_conversation",
-      "source_label": "The Conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Thomas Buchmueller, Professor of Business Economics and Public Policy, University of Michigan",
-        "Helen Levy, Research Professor in Health Management and Policy, University of Michigan"
-      ],
-      "title": "Plans with cheaper premiums are risky business for Americans seeking lower healthcare costs",
-      "url": "https://theconversation.com/plans-with-cheaper-premiums-are-risky-business-for-americans-seeking-lower-healthcare-costs-293327",
-      "published_at": "2026-10-28",
-      "segments": [
-        "payers"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Aseguradores y financiamiento"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 68,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "basis": "publisher_cc_by_nd_republishing_guidelines",
-        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
-        "license_url": null,
-        "license_label": null,
-        "attribution": "Author(s) + 'The Conversation' + link to the article",
-        "evidence_urls": [
-          "https://theconversation.com/republishing-guidelines"
-        ],
-        "verified_on": "2026-10-28"
-      },
-      "sections": [
-        "health_us"
-      ],
-      "first_seen_on": "2026-10-29",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "CC BY-ND 4.0 (NoDerivatives): a translation is an adaptation, which ND forbids. Title kept in English, verbatim.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)"
       }
     },
     {
@@ -490,54 +290,6 @@
         "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
         "change_notice_es": "Traducción de Alicanto",
         "cache_key": "92087ebac77818aa9b0727bc87ca3118"
-      }
-    },
-    {
-      "id": "dc8305754ff166ec9128",
-      "source": "the_conversation",
-      "source_label": "The Conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Robin Brewer, Associate Professor of Information, University of Michigan"
-      ],
-      "title": "AI chatbots can be a valuable health resource for older adults – if they embrace ‘informed skepticism’",
-      "url": "https://theconversation.com/ai-chatbots-can-be-a-valuable-health-resource-for-older-adults-if-they-embrace-informed-skepticism-283955",
-      "published_at": "2026-10-26",
-      "segments": [
-        "ai_in_health"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "IA en salud"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 78,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "basis": "publisher_cc_by_nd_republishing_guidelines",
-        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
-        "license_url": null,
-        "license_label": null,
-        "attribution": "Author(s) + 'The Conversation' + link to the article",
-        "evidence_urls": [
-          "https://theconversation.com/republishing-guidelines"
-        ],
-        "verified_on": "2026-10-28"
-      },
-      "sections": [
-        "health_us"
-      ],
-      "first_seen_on": "2026-10-29",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "CC BY-ND 4.0 (NoDerivatives): a translation is an adaptation, which ND forbids. Title kept in English, verbatim.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)"
       }
     },
     {
@@ -1128,54 +880,6 @@
           "description:term_missing:Unresponsive",
           "description:negation_added"
         ]
-      }
-    },
-    {
-      "id": "3dad2c8dacbbbbb95b3f",
-      "source": "the_conversation",
-      "source_label": "The Conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Fred D. Ledley, Director, Center for Integration of Science and Industry, Bentley University"
-      ],
-      "title": "Cystic fibrosis patients got their ‘miracle drug’ thanks to federal research funding – new Trump administration rules may cut future miracles short",
-      "url": "https://theconversation.com/cystic-fibrosis-patients-got-their-miracle-drug-thanks-to-federal-research-funding-new-trump-administration-rules-may-cut-future-miracles-short-293934",
-      "published_at": "2026-10-14",
-      "segments": [
-        "pharma"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Medicamentos y farma"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 68,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "basis": "publisher_cc_by_nd_republishing_guidelines",
-        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
-        "license_url": null,
-        "license_label": null,
-        "attribution": "Author(s) + 'The Conversation' + link to the article",
-        "evidence_urls": [
-          "https://theconversation.com/republishing-guidelines"
-        ],
-        "verified_on": "2026-10-28"
-      },
-      "sections": [
-        "health_us"
-      ],
-      "first_seen_on": "2026-10-29",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "CC BY-ND 4.0 (NoDerivatives): a translation is an adaptation, which ND forbids. Title kept in English, verbatim.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)"
       }
     },
     {
@@ -2525,7 +2229,7 @@
     "from_cache": 14,
     "verification_failed": 5,
     "review_failed": 0,
-    "not_allowed": 32,
+    "not_allowed": 26,
     "pending": 1,
     "source_in_spanish": 0
   },
