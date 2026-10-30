@@ -784,6 +784,43 @@
         "format": "PDF (4 documentos por boletín: acreditación, mediación, reclamos, RNPI)",
         "figures": "config/statistical_analysis_verified_v1.json (lectura independiente) + presencia de cada cifra en el texto del PDF capturado"
       },
+      "figure_templates": {
+        "_doc": "Plantillas ancladas por cifra (checker v2, Dirección 2026-10-29). Cada 'pattern' se aplica al texto normalizado (minúsculas, sin tildes, sin puntos de miles, espacios y saltos de línea colapsados) de las páginas citadas por la lectura independiente; debe calzar exactamente una vez y la cifra capturada debe igualar la verificada. '{caption}' se reemplaza por el texto literal de 'caption'. Una plantilla con marcador <<…>> o sin reviewed_by/reviewed_at (o con 'pendiente') no se usa: HOLD. Solo una persona marca la revisión, tras ver el texto real que imprime el test CI tests/test_stats_fichas_f6_real_pdf.py.",
+        "acreditacion": {
+          "with_observations": {
+            "pattern": "(?<![\\d])(\\d+) prestadores institucionales obtuvieron el resultado de acreditado con observaciones",
+            "groups": 1,
+            "figure_group": 1,
+            "pages_hint": [
+              2
+            ],
+            "source_quote": "de un total de 971 prestadores institucionales acreditados al 30 de junio , 101 prestadores institucionales obtuvieron el resultado de acreditado con observaciones, lo que equivale a un 10%",
+            "source": "boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf sha256 8b7f7c7a385e…, p.2; texto normalizado impreso por CI (PR #112, 30-oct-2026)",
+            "reviewed_by": "Dirección (cftorre1)",
+            "reviewed_at": "2026-10-30"
+          },
+          "pending_applications": {
+            "pattern": "numero de solicitudes de acreditacion que estan en tramitacion, al \\d{1,2} de [a-z]+ de \\d{4}, desagregadas por region del prestador y tipo(?:(?!total general \\d).)*?\\btotal general (\\d+) (\\d+) (\\d+)(?![\\d])",
+            "groups": 3,
+            "figure_group": 3,
+            "sum_of": [
+              1,
+              2
+            ],
+            "parts_equal": {
+              "1": "private_pending",
+              "2": "public_pending"
+            },
+            "pages_hint": [
+              8
+            ],
+            "source_quote": "numero de solicitudes de acreditacion que estan en tramitacion, al 30 de junio de 2026, desagregadas por region del prestador y tipo … total general 367 217 584",
+            "source": "boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf sha256 8b7f7c7a385e…, p.8; título de la tabla del texto normalizado impreso por CI (PR #112, 30-oct-2026); la fecha del corte queda variable",
+            "reviewed_by": "Dirección (cftorre1)",
+            "reviewed_at": "2026-10-30"
+          }
+        }
+      },
       "templates": {
         "kicker": "{label}",
         "headline": {
