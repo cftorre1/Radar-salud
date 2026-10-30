@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "as_of": "2026-10-29",
-  "generated_at": "2026-10-30T00:28:01.712895+00:00",
-  "run_id": "40969336170",
-  "network_requests": 19,
+  "as_of": "2026-10-30",
+  "generated_at": "2026-10-30T04:16:29.136301+00:00",
+  "run_id": "40994444412",
+  "network_requests": 17,
   "paid_ai_calls": 0,
   "publication_count": 0,
   "content_use": "metadata_and_link_only",
@@ -13,7 +13,7 @@
     "kff_health_news": {
       "name": "KFF Health News",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-10-30T00:27:42.113255+00:00",
+      "checked_at": "2026-10-30T04:16:11.388739+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -88,7 +88,7 @@
     "ema": {
       "name": "EMA (European Medicines Agency)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-10-30T00:27:46.097286+00:00",
+      "checked_at": "2026-10-30T04:16:15.052865+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -99,10 +99,10 @@
       "recurrent_operation_proven": false,
       "cadence_validation_pending": true,
       "counts": {
-        "30": 18,
+        "30": 17,
         "90": 18
       },
-      "recent_items": 18,
+      "recent_items": 17,
       "unique_items": 18,
       "material_items": 4,
       "relevant_items": 4,
@@ -159,7 +159,7 @@
     "fda": {
       "name": "US FDA (press releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-10-30T00:27:48.189079+00:00",
+      "checked_at": "2026-10-30T04:16:17.268447+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -170,10 +170,10 @@
       "recurrent_operation_proven": false,
       "cadence_validation_pending": true,
       "counts": {
-        "30": 10,
+        "30": 9,
         "90": 20
       },
-      "recent_items": 10,
+      "recent_items": 9,
       "unique_items": 20,
       "material_items": 6,
       "relevant_items": 6,
@@ -227,7 +227,7 @@
     "cdc": {
       "name": "US CDC (newsroom + MMWR)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-10-30T00:27:51.543345+00:00",
+      "checked_at": "2026-10-30T04:16:20.607670+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -370,7 +370,7 @@
     "ecdc": {
       "name": "ECDC",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-10-30T00:27:56.409920+00:00",
+      "checked_at": "2026-10-30T04:16:25.867204+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -441,7 +441,7 @@
     "ec_health": {
       "name": "European Commission (Public Health)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-10-30T00:27:59.104809+00:00",
+      "checked_at": "2026-10-30T04:16:28.891246+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -508,74 +508,6 @@
       "publication_activation": false,
       "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
       "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
-    },
-    "the_conversation": {
-      "name": "The Conversation (Health, US)",
-      "discovery_scope": "global_intelligence",
-      "checked_at": "2026-10-30T00:28:01.415767+00:00",
-      "status": "warning",
-      "technical_status": "ok",
-      "operation_mode": "licensed_feed_metadata_only",
-      "coverage_status": "feed_window_only",
-      "coverage_completeness": "feed_window_only_not_archive",
-      "coverage_window_days": 90,
-      "outcome": "FEED_METADATA_CAPTURED",
-      "recurrent_operation_proven": false,
-      "cadence_validation_pending": true,
-      "counts": {
-        "30": 25,
-        "90": 25
-      },
-      "recent_items": 25,
-      "unique_items": 25,
-      "material_items": 6,
-      "relevant_items": 6,
-      "excluded_items": 19,
-      "rejected": 19,
-      "deferred": 6,
-      "discovered": 25,
-      "new": 0,
-      "published": 0,
-      "pages_checked": 1,
-      "parser_routes": [
-        "health_us"
-      ],
-      "technical_failures": [],
-      "rights": {
-        "basis": "publisher_cc_by_nd_republishing_guidelines",
-        "license": "CC BY-ND 4.0; commercial pages (ads/paywall) allowed, selling the material on its own is not",
-        "evidence_urls": [
-          "https://theconversation.com/republishing-guidelines"
-        ],
-        "permitted_use": "metadata_title_link_byline_only",
-        "automated_access": "rss_offered_by_publisher",
-        "attribution": "Author(s) + 'The Conversation' + link to the article",
-        "restrictions": [
-          "NoDerivatives: headline verbatim, never translated or reworded",
-          "credit authors",
-          "no body/excerpt"
-        ],
-        "verified_on": "2026-10-28",
-        "verified_how": "republishing guidelines read via web fetch 28-oct; feed URL from public feed directories (feedspot); not fetched live; robots.txt enforced at runtime",
-        "paid_tier_requires_publisher_confirmation": false,
-        "description_basis": null,
-        "translation_allowed": false,
-        "translation_reason": "CC BY-ND 4.0 (NoDerivatives): a translation is an adaptation, which ND forbids. Title kept in English, verbatim.",
-        "translation_note_es": "Contenido en inglés (licencia no permite traducción)",
-        "translation_evidence": {
-          "basis": "CC BY-ND 4.0 NoDerivatives; restriction already recorded: 'headline verbatim, never translated or reworded'",
-          "evidence_urls": [
-            "https://theconversation.com/republishing-guidelines"
-          ],
-          "verified_on": "2026-10-29",
-          "verified_how": "Relies on the 28-oct read recorded above; 29-oct re-fetch blocked by the sandbox allowlist."
-        }
-      },
-      "attribution": "The Conversation",
-      "content_use": "metadata_and_link_only",
-      "publication_activation": false,
-      "publication_activation_basis": "not_authorized_by_direccion_feed_sources_are_discovery_only",
-      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review"
     }
   },
   "routes": {
@@ -590,7 +522,7 @@
       "capture": {
         "feed_url": "https://kffhealthnews.org/feed/",
         "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-        "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+        "fetched_at": "2026-10-30T04:16:10.359063+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -606,7 +538,7 @@
       "capture": {
         "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
         "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-        "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+        "fetched_at": "2026-10-30T04:16:11.388739+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -621,8 +553,8 @@
       "newest_entry": "2026-10-29",
       "capture": {
         "feed_url": "https://www.ema.europa.eu/en/news.xml",
-        "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-        "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+        "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+        "fetched_at": "2026-10-30T04:16:13.891158+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -637,8 +569,8 @@
       "newest_entry": "2026-10-16",
       "capture": {
         "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-        "body_sha256": "76f6a82ef1dd37defd5b71985e7daa028118d079c2ec4d1d771e8e158fca2f0b",
-        "fetched_at": "2026-10-30T00:27:46.097286+00:00",
+        "body_sha256": "4e53865480ea04a33fa58d279594d6b9995ce0e6b19887c45d49c589eb827b87",
+        "fetched_at": "2026-10-30T04:16:15.052865+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -654,7 +586,7 @@
       "capture": {
         "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
         "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-        "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+        "fetched_at": "2026-10-30T04:16:17.268447+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -670,7 +602,7 @@
       "capture": {
         "feed_url": "https://tools.cdc.gov/api/v2/resources/media/132608.rss",
         "body_sha256": "25637191064c0f340bd004ea76fe3cee62d20244beed2a9f921c3a1c8c525b8c",
-        "fetched_at": "2026-10-30T00:27:50.326048+00:00",
+        "fetched_at": "2026-10-30T04:16:19.363414+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -686,7 +618,7 @@
       "capture": {
         "feed_url": "https://tools.cdc.gov/api/v2/resources/media/342778.rss",
         "body_sha256": "293515e89ef9bc6b1b30277fafda4ce71d90f68e2a1bbbe44f70391dc40a9c01",
-        "fetched_at": "2026-10-30T00:27:51.543345+00:00",
+        "fetched_at": "2026-10-30T04:16:20.607670+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -709,7 +641,7 @@
       "capture": {
         "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
         "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-        "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+        "fetched_at": "2026-10-30T04:16:24.744764+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -725,7 +657,7 @@
       "capture": {
         "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
         "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-        "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+        "fetched_at": "2026-10-30T04:16:25.867204+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -741,23 +673,7 @@
       "capture": {
         "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
         "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-        "fetched_at": "2026-10-30T00:27:59.104809+00:00",
-        "http_status": 200,
-        "tls_verified": true
-      }
-    },
-    "the_conversation/health_us": {
-      "source": "the_conversation",
-      "section": "health_us",
-      "url": "https://theconversation.com/us/health/articles.atom",
-      "status": "ok",
-      "entries": 25,
-      "oldest_entry": "2026-10-09",
-      "newest_entry": "2026-10-29",
-      "capture": {
-        "feed_url": "https://theconversation.com/us/health/articles.atom",
-        "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-        "fetched_at": "2026-10-30T00:28:01.415767+00:00",
+        "fetched_at": "2026-10-30T04:16:28.891246+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -38502,1528 +38418,6 @@
   ],
   "items": [
     {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "How the law protecting Americans from surprise medical bills is driving up healthcare costs",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Lindsey Murtagh, Distinguished Senior Fellow in Health Law, Brown University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/293441",
-      "raw_publication_dates": [
-        "2026-10-29T12:23:23Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/how-the-law-protecting-americans-from-surprise-medical-bills-is-driving-up-healthcare-costs-293441",
-      "published_at": "2026-10-29",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "regulation"
-        ],
-        "priority": 73,
-        "category": "regulation",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "policy_or_system_reform",
-        "signals": [
-          "policy_or_system_reform",
-          "financing_and_payment"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "49b2954bae38e367d3c9"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Private equity is buying up more methadone clinics – access to the lifesaving drug isn’t getting easier",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Yashaswini Singh, Thomas J. and Alice M. Tisch Assistant Professor of Health Services, Policy and Practice, Brown University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/286927",
-      "raw_publication_dates": [
-        "2026-10-28T12:19:23Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/private-equity-is-buying-up-more-methadone-clinics-access-to-the-lifesaving-drug-isnt-getting-easier-286927",
-      "published_at": "2026-10-28",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "providers",
-          "pharma"
-        ],
-        "priority": 76,
-        "category": "providers",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "financing_and_payment",
-        "signals": [
-          "financing_and_payment"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "d7fb141a2959e3dd925b"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Plans with cheaper premiums are risky business for Americans seeking lower healthcare costs",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Thomas Buchmueller, Professor of Business Economics and Public Policy, University of Michigan",
-        "Helen Levy, Research Professor in Health Management and Policy, University of Michigan"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/293327",
-      "raw_publication_dates": [
-        "2026-10-28T12:22:42Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/plans-with-cheaper-premiums-are-risky-business-for-americans-seeking-lower-healthcare-costs-293327",
-      "published_at": "2026-10-28",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "payers"
-        ],
-        "priority": 68,
-        "category": "payers",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "financing_and_payment",
-        "signals": [
-          "financing_and_payment"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "126eef38db166173c02a"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "1 in 4 Pennsylvanians say they paid out of pocket for their annual checkup. Why isn’t insurance covering these preventive visits?",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Sujeong Park, Assistant Professor of Health Policy and Addiction Studies, Penn State"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/293410",
-      "raw_publication_dates": [
-        "2026-10-28T12:26:11Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/1-in-4-pennsylvanians-say-they-paid-out-of-pocket-for-their-annual-checkup-why-isnt-insurance-covering-these-preventive-visits-293410",
-      "published_at": "2026-10-28",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "payers"
-        ],
-        "priority": 68,
-        "category": "payers",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "financing_and_payment",
-        "signals": [
-          "financing_and_payment"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "b8550acba599ef976ed9"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Where humans build, mosquitoes follow – bringing dengue, West Nile and other diseases with them",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Kylee Rae Noel, Postdoctoral Research Associate in Entomology, University of Illinois Urbana-Champaign",
-        "Sadie Jane Ryan, Professor of Medical Geography, University of Florida"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/295000",
-      "raw_publication_dates": [
-        "2026-10-27T12:17:31Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/where-humans-build-mosquitoes-follow-bringing-dengue-west-nile-and-other-diseases-with-them-295000",
-      "published_at": "2026-10-27",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "d50f25dec94efc87c216"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Leave home with a plan: What to pack in your medical kit and when to seek care for symptoms abroad",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Andrés Henao, Professor of Medicine and Infectious Disease, University of Colorado Anschutz"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/293602",
-      "raw_publication_dates": [
-        "2026-10-27T12:18:33Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/leave-home-with-a-plan-what-to-pack-in-your-medical-kit-and-when-to-seek-care-for-symptoms-abroad-293602",
-      "published_at": "2026-10-27",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "e6f62d77779d3dca61a1"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Why do people still get polio in some countries and not in others?",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Katrine L. Wallace, Assistant Professor of Epidemiology and Biostatistics, University of Illinois Chicago"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/294010",
-      "raw_publication_dates": [
-        "2026-10-26T12:16:36Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/why-do-people-still-get-polio-in-some-countries-and-not-in-others-294010",
-      "published_at": "2026-10-26",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "international_study_or_trend",
-        "signals": [
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "2fb1c24870616f60525d"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "If Philadelphia Eagles quarterback Jalen Hurts can get dangerous blood clots, so can you – here’s how some states are trying to reduce the risk",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Ali Ataya, Professor of Medicine, University of Florida"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/294850",
-      "raw_publication_dates": [
-        "2026-10-26T12:50:51Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/if-philadelphia-eagles-quarterback-jalen-hurts-can-get-dangerous-blood-clots-so-can-you-heres-how-some-states-are-trying-to-reduce-the-risk-294850",
-      "published_at": "2026-10-26",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "44d358330c01ee473944"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "I composed music about infertility and pregnancy loss, then performed it in a Pittsburgh hospital",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Katherine Pukinskis, Assistant Professor of Music, Carnegie Mellon University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/292857",
-      "raw_publication_dates": [
-        "2026-10-26T12:15:43Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/i-composed-music-about-infertility-and-pregnancy-loss-then-performed-it-in-a-pittsburgh-hospital-292857",
-      "published_at": "2026-10-26",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "3f7ea5041ec07b6fdc7a"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "AI chatbots can be a valuable health resource for older adults – if they embrace ‘informed skepticism’",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Robin Brewer, Associate Professor of Information, University of Michigan"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/283955",
-      "raw_publication_dates": [
-        "2026-10-26T12:15:01Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/ai-chatbots-can-be-a-valuable-health-resource-for-older-adults-if-they-embrace-informed-skepticism-283955",
-      "published_at": "2026-10-26",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "ai_in_health"
-        ],
-        "priority": 78,
-        "category": "ai_in_health",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "ai_in_health",
-        "signals": [
-          "ai_in_health",
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "dc8305754ff166ec9128"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Surviving cancer starts at diagnosis and continues after treatment – earlier survivorship care can help patients feel better and live longer",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Marci Lee Nilsen, Professor of Otolaryngology, University of Pittsburgh"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/294431",
-      "raw_publication_dates": [
-        "2026-10-22T15:06:45Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/surviving-cancer-starts-at-diagnosis-and-continues-after-treatment-earlier-survivorship-care-can-help-patients-feel-better-and-live-longer-294431",
-      "published_at": "2026-10-22",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "09a8ca1a537561dc0097"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "I’m a Philly forensic psychologist who has conducted dozens of psychopathic evaluations – here’s why an evaluation of R.C. Horsch in the ‘80s didn’t identify him as a possible psychopath",
-      "attribution": "The Conversation",
-      "bylines": [
-        "David DeMatteo, Professor of Law and Psychology, Drexel University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/294035",
-      "raw_publication_dates": [
-        "2026-10-20T12:37:00Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/im-a-philly-forensic-psychologist-who-has-conducted-dozens-of-psychopathic-evaluations-heres-why-an-evaluation-of-r-c-horsch-in-the-80s-didnt-identify-him-as-a-possible-psychopath-294035",
-      "published_at": "2026-10-20",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "899aa54503bc6fd189c8"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "The science and politics behind the panic over ultraprocessed foods",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Garrett M. Broad, Professor of Communication Studies, Rowan University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/292661",
-      "raw_publication_dates": [
-        "2026-10-19T12:36:28Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/the-science-and-politics-behind-the-panic-over-ultraprocessed-foods-292661",
-      "published_at": "2026-10-19",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "out_of_scope_consumer_product",
-        "reason": "irrelevant_for_chilean_health_executives:out_of_scope_consumer_product",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:out_of_scope_consumer_product",
-      "item_id": "c4bd22e2aeef08f1477d"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Many vapes and e-cigarettes are now banned in Pennsylvania – here’s what Philly consumers and businesses need to know",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Ana Santos Rutschman, Professor of Law, Villanova University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/294103",
-      "raw_publication_dates": [
-        "2026-10-19T20:27:03Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/many-vapes-and-e-cigarettes-are-now-banned-in-pennsylvania-heres-what-philly-consumers-and-businesses-need-to-know-294103",
-      "published_at": "2026-10-19",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "8f6de748c5c539292bfd"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Treating depression during pregnancy may benefit baby’s brain development – new research",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Elysia Poggi Davis, Professor of Psychology, University of Denver",
-        "Benjamin L. Hankin, Professor of Psychology, University of Illinois Urbana-Champaign",
-        "Catherine Demers, Assistant Professor of Psychiatry, University of Colorado Anschutz"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/291260",
-      "raw_publication_dates": [
-        "2026-10-16T12:23:55Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/treating-depression-during-pregnancy-may-benefit-babys-brain-development-new-research-291260",
-      "published_at": "2026-10-16",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "b6a83f925f36b8ef242c"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Pennsylvania’s aging prisons weren’t built for today’s extreme weather – leaving women and seniors especially at risk of illness and death",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Jaquelyn Jahn, Assistant Professor of Epidemiology, Drexel University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/293079",
-      "raw_publication_dates": [
-        "2026-10-16T12:23:24Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/pennsylvanias-aging-prisons-werent-built-for-todays-extreme-weather-leaving-women-and-seniors-especially-at-risk-of-illness-and-death-293079",
-      "published_at": "2026-10-16",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "international_study_or_trend",
-        "signals": [
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "84f8b1bfcae5390c98c6"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Can social media bans protect young people’s mental health? Early research suggests that bans aren’t the answer",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Ari Lightman, Professor of Digital Media and Marketing, Carnegie Mellon University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/291629",
-      "raw_publication_dates": [
-        "2026-10-16T12:21:00Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/can-social-media-bans-protect-young-peoples-mental-health-early-research-suggests-that-bans-arent-the-answer-291629",
-      "published_at": "2026-10-16",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "international_study_or_trend",
-        "signals": [
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "a8c30a75e7a05a5c3be8"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Ketamine’s role in alleged Cornell rape highlights flood of psychoactive drugs on campus",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Christopher P. Holstege, Professor of Emergency Medicine and Pediatrics, University of Virginia"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/293512",
-      "raw_publication_dates": [
-        "2026-10-15T12:14:45Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/ketamines-role-in-alleged-cornell-rape-highlights-flood-of-psychoactive-drugs-on-campus-293512",
-      "published_at": "2026-10-15",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "20c110a5b92d2c21e63f"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Pope Leo XIV’s lung cancer highlights growing number of nonsmokers diagnosed with the disease – and younger people too",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Estelamari Rodriguez, Associate Director of Community Outreach in Thoracic Oncology, University of Miami"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/294348",
-      "raw_publication_dates": [
-        "2026-10-14T00:50:54Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/pope-leo-xivs-lung-cancer-highlights-growing-number-of-nonsmokers-diagnosed-with-the-disease-and-younger-people-too-294348",
-      "published_at": "2026-10-14",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "international_study_or_trend",
-        "signals": [
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "78c1a332170249e330e2"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "I’m a pediatrician and a mom - here’s how to treat lice without stigma",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Emily J. C. Wong, Associate Professor of Pediatrics, University of Virginia"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/291279",
-      "raw_publication_dates": [
-        "2026-10-14T12:18:23Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/im-a-pediatrician-and-a-mom-heres-how-to-treat-lice-without-stigma-291279",
-      "published_at": "2026-10-14",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-      "item_id": "02996bb7019da0b3e4c0"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Cystic fibrosis patients got their ‘miracle drug’ thanks to federal research funding – new Trump administration rules may cut future miracles short",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Fred D. Ledley, Director, Center for Integration of Science and Industry, Bentley University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/293934",
-      "raw_publication_dates": [
-        "2026-10-14T19:50:22Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/cystic-fibrosis-patients-got-their-miracle-drug-thanks-to-federal-research-funding-new-trump-administration-rules-may-cut-future-miracles-short-293934",
-      "published_at": "2026-10-14",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "pharma"
-        ],
-        "priority": 68,
-        "category": "pharma",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "policy_or_system_reform",
-        "signals": [
-          "policy_or_system_reform",
-          "financing_and_payment"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "3dad2c8dacbbbbb95b3f"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "That brightly packaged sexual enhancement pill at the gas station might be laced with dangerous drugs",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Andrew Yockey, Assistant Professor of Health and Kinesiology, University of Illinois Urbana-Champaign"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/293413",
-      "raw_publication_dates": [
-        "2026-10-13T12:18:10Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/that-brightly-packaged-sexual-enhancement-pill-at-the-gas-station-might-be-laced-with-dangerous-drugs-293413",
-      "published_at": "2026-10-13",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "73a2105c8dbf848a322d"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "Nicotine pouches, vaping or cigarettes: Which nicotine product is actually the least harmful?",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Emma Fenske, Assistant Professor of Medicine, Addiction Medicine, University of Colorado Anschutz; Oregon Health & Science University"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/290604",
-      "raw_publication_dates": [
-        "2026-10-13T12:18:36Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/nicotine-pouches-vaping-or-cigarettes-which-nicotine-product-is-actually-the-least-harmful-290604",
-      "published_at": "2026-10-13",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "out_of_scope_consumer_product",
-        "reason": "irrelevant_for_chilean_health_executives:out_of_scope_consumer_product",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "irrelevant_for_chilean_health_executives:out_of_scope_consumer_product",
-      "item_id": "cf890b23bdddd090f2d0"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "I teach doctors how to interpret test results – and the labels ‘normal’ and ‘abnormal’ often hide what matters most",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Amiran Baduashvili, Associate Professor of Medicine, University of Colorado Anschutz"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/291125",
-      "raw_publication_dates": [
-        "2026-10-12T12:19:18Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/i-teach-doctors-how-to-interpret-test-results-and-the-labels-normal-and-abnormal-often-hide-what-matters-most-291125",
-      "published_at": "2026-10-12",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "1421654992725f579989"
-    },
-    {
-      "source": "the_conversation",
-      "section": "health_us",
-      "feed_url": "https://theconversation.com/us/health/articles.atom",
-      "title": "When abortion and surrogacy law collide, contracts can’t answer the hardest questions",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Sonia Suter, Professor of Law, George Washington University",
-        "Naomi Cahn, Professor of Law, University of Virginia"
-      ],
-      "categories": [],
-      "guid": "tag:theconversation.com,2011:article/291832",
-      "raw_publication_dates": [
-        "2026-10-09T12:10:00Z"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://theconversation.com/when-abortion-and-surrogacy-law-collide-contracts-cant-answer-the-hardest-questions-291832",
-      "published_at": "2026-10-09",
-      "publication_date_error": null,
-      "sections": [
-        "health_us"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://theconversation.com/us/health/articles.atom",
-          "body_sha256": "6d20d5076a68b9e4fcb452ed96806938160cb654524bcd89eb7546ffa6576493",
-          "fetched_at": "2026-10-30T00:28:01.415767+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "the_conversation"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "9ab5ea2255471d337fd6"
-    },
-    {
       "source": "kff_health_news",
       "section": "all",
       "feed_url": "https://kffhealthnews.org/feed/",
@@ -40051,7 +38445,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40120,14 +38514,14 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40204,7 +38598,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40278,7 +38672,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40352,14 +38746,14 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40430,14 +38824,14 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40507,7 +38901,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40576,7 +38970,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40645,7 +39039,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40727,7 +39121,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "e442ca3d236c993eb64795360018e8cabfbb4971aec9424bdda1272fc1b63cc3",
-          "fetched_at": "2026-10-30T00:27:37.133224+00:00",
+          "fetched_at": "2026-10-30T04:16:10.359063+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40802,7 +39196,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40875,7 +39269,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40951,7 +39345,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41026,7 +39420,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41098,7 +39492,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41175,7 +39569,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41251,7 +39645,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9c1d56e167dc65f42cad8b8edc21753ed7e764342ea29c628b359beffd248bea",
-          "fetched_at": "2026-10-30T00:27:42.113255+00:00",
+          "fetched_at": "2026-10-30T04:16:11.388739+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41322,7 +39716,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41384,7 +39778,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41453,7 +39847,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41515,7 +39909,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41582,7 +39976,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41644,7 +40038,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41706,7 +40100,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41773,7 +40167,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41835,7 +40229,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41897,7 +40291,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41959,7 +40353,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42021,7 +40415,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42083,7 +40477,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42150,7 +40544,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42212,7 +40606,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42276,7 +40670,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42344,7 +40738,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42406,7 +40800,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42468,7 +40862,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42530,7 +40924,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "491c2612872b14583a4267adc90cfae1aa01d1fa7e416cfb1fe1f6fc529e1bd6",
-          "fetched_at": "2026-10-30T00:27:48.189079+00:00",
+          "fetched_at": "2026-10-30T04:16:17.268447+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42595,8 +40989,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42655,8 +41049,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42721,8 +41115,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42782,8 +41176,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "76f6a82ef1dd37defd5b71985e7daa028118d079c2ec4d1d771e8e158fca2f0b",
-          "fetched_at": "2026-10-30T00:27:46.097286+00:00",
+          "body_sha256": "4e53865480ea04a33fa58d279594d6b9995ce0e6b19887c45d49c589eb827b87",
+          "fetched_at": "2026-10-30T04:16:15.052865+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42843,8 +41237,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "76f6a82ef1dd37defd5b71985e7daa028118d079c2ec4d1d771e8e158fca2f0b",
-          "fetched_at": "2026-10-30T00:27:46.097286+00:00",
+          "body_sha256": "4e53865480ea04a33fa58d279594d6b9995ce0e6b19887c45d49c589eb827b87",
+          "fetched_at": "2026-10-30T04:16:15.052865+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42904,8 +41298,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "76f6a82ef1dd37defd5b71985e7daa028118d079c2ec4d1d771e8e158fca2f0b",
-          "fetched_at": "2026-10-30T00:27:46.097286+00:00",
+          "body_sha256": "4e53865480ea04a33fa58d279594d6b9995ce0e6b19887c45d49c589eb827b87",
+          "fetched_at": "2026-10-30T04:16:15.052865+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42965,8 +41359,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "76f6a82ef1dd37defd5b71985e7daa028118d079c2ec4d1d771e8e158fca2f0b",
-          "fetched_at": "2026-10-30T00:27:46.097286+00:00",
+          "body_sha256": "4e53865480ea04a33fa58d279594d6b9995ce0e6b19887c45d49c589eb827b87",
+          "fetched_at": "2026-10-30T04:16:15.052865+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43026,8 +41420,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "76f6a82ef1dd37defd5b71985e7daa028118d079c2ec4d1d771e8e158fca2f0b",
-          "fetched_at": "2026-10-30T00:27:46.097286+00:00",
+          "body_sha256": "4e53865480ea04a33fa58d279594d6b9995ce0e6b19887c45d49c589eb827b87",
+          "fetched_at": "2026-10-30T04:16:15.052865+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43087,8 +41481,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43147,8 +41541,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "76f6a82ef1dd37defd5b71985e7daa028118d079c2ec4d1d771e8e158fca2f0b",
-          "fetched_at": "2026-10-30T00:27:46.097286+00:00",
+          "body_sha256": "4e53865480ea04a33fa58d279594d6b9995ce0e6b19887c45d49c589eb827b87",
+          "fetched_at": "2026-10-30T04:16:15.052865+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43208,8 +41602,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43269,8 +41663,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43334,8 +41728,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43395,8 +41789,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43461,8 +41855,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43521,8 +41915,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43581,8 +41975,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43641,8 +42035,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "62ff7cddd6db1025f4a924ad211335810b53efe18b9785084ab046222b1619fd",
-          "fetched_at": "2026-10-30T00:27:44.892051+00:00",
+          "body_sha256": "c34150736a717573e92e1e9ce5aac566e9b6110fae5ed469b4e0bdfd9dfc433c",
+          "fetched_at": "2026-10-30T04:16:13.891158+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43710,7 +42104,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43772,7 +42166,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43839,7 +42233,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43901,7 +42295,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43968,7 +42362,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44030,7 +42424,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44092,7 +42486,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44154,7 +42548,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44216,7 +42610,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44278,7 +42672,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44340,7 +42734,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44403,7 +42797,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44466,7 +42860,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44528,7 +42922,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44590,7 +42984,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44652,7 +43046,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44715,7 +43109,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44777,7 +43171,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44841,7 +43235,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "1fa8703dfb6bc3bf64fd5d8d67a074774f64ef05dc7a5f79e3611db87e8d7553",
-          "fetched_at": "2026-10-30T00:27:55.268370+00:00",
+          "fetched_at": "2026-10-30T04:16:24.744764+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44903,7 +43297,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "f3a03d03e3a284a6e453a4ef4b7e8a396f62dc2a3e5272c4df497f1cbd4e32e5",
-          "fetched_at": "2026-10-30T00:27:56.409920+00:00",
+          "fetched_at": "2026-10-30T04:16:25.867204+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44971,7 +43365,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45038,7 +43432,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45103,7 +43497,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45169,7 +43563,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45235,7 +43629,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45302,7 +43696,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45367,7 +43761,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45433,7 +43827,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45508,7 +43902,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45580,7 +43974,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45646,7 +44040,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45714,7 +44108,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45781,7 +44175,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45849,7 +44243,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45919,7 +44313,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45990,7 +44384,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46056,7 +44450,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46123,7 +44517,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46189,7 +44583,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46255,7 +44649,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46321,7 +44715,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46389,7 +44783,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46461,7 +44855,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46529,7 +44923,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46595,7 +44989,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46662,7 +45056,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46730,7 +45124,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46797,7 +45191,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46865,7 +45259,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46938,7 +45332,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "e6133b5782eb9e75f928e013f6a82cb063824d72968ebbc35d892de10915c469",
-          "fetched_at": "2026-10-30T00:27:59.104809+00:00",
+          "fetched_at": "2026-10-30T04:16:28.891246+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -47319,79 +45713,6 @@
       ]
     },
     {
-      "item_id": "dc8305754ff166ec9128",
-      "source": "the_conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Robin Brewer, Associate Professor of Information, University of Michigan"
-      ],
-      "url": "https://theconversation.com/ai-chatbots-can-be-a-valuable-health-resource-for-older-adults-if-they-embrace-informed-skepticism-283955",
-      "title": "AI chatbots can be a valuable health resource for older adults – if they embrace ‘informed skepticism’",
-      "published_at": "2026-10-26",
-      "segments": [
-        "ai_in_health"
-      ],
-      "priority": 78,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "d7fb141a2959e3dd925b",
-      "source": "the_conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Yashaswini Singh, Thomas J. and Alice M. Tisch Assistant Professor of Health Services, Policy and Practice, Brown University"
-      ],
-      "url": "https://theconversation.com/private-equity-is-buying-up-more-methadone-clinics-access-to-the-lifesaving-drug-isnt-getting-easier-286927",
-      "title": "Private equity is buying up more methadone clinics – access to the lifesaving drug isn’t getting easier",
-      "published_at": "2026-10-28",
-      "segments": [
-        "providers",
-        "pharma"
-      ],
-      "priority": 76,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "49b2954bae38e367d3c9",
-      "source": "the_conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Lindsey Murtagh, Distinguished Senior Fellow in Health Law, Brown University"
-      ],
-      "url": "https://theconversation.com/how-the-law-protecting-americans-from-surprise-medical-bills-is-driving-up-healthcare-costs-293441",
-      "title": "How the law protecting Americans from surprise medical bills is driving up healthcare costs",
-      "published_at": "2026-10-29",
-      "segments": [
-        "regulation"
-      ],
-      "priority": 73,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
       "item_id": "9bc780b4e1cad9cb5067",
       "source": "kff_health_news",
       "attribution": "KFF Health News",
@@ -47543,55 +45864,6 @@
       "published_at": "2026-10-29",
       "segments": [
         "providers"
-      ],
-      "priority": 68,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "126eef38db166173c02a",
-      "source": "the_conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Thomas Buchmueller, Professor of Business Economics and Public Policy, University of Michigan",
-        "Helen Levy, Research Professor in Health Management and Policy, University of Michigan"
-      ],
-      "url": "https://theconversation.com/plans-with-cheaper-premiums-are-risky-business-for-americans-seeking-lower-healthcare-costs-293327",
-      "title": "Plans with cheaper premiums are risky business for Americans seeking lower healthcare costs",
-      "published_at": "2026-10-28",
-      "segments": [
-        "payers"
-      ],
-      "priority": 68,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "b8550acba599ef976ed9",
-      "source": "the_conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Sujeong Park, Assistant Professor of Health Policy and Addiction Studies, Penn State"
-      ],
-      "url": "https://theconversation.com/1-in-4-pennsylvanians-say-they-paid-out-of-pocket-for-their-annual-checkup-why-isnt-insurance-covering-these-preventive-visits-293410",
-      "title": "1 in 4 Pennsylvanians say they paid out of pocket for their annual checkup. Why isn’t insurance covering these preventive visits?",
-      "published_at": "2026-10-28",
-      "segments": [
-        "payers"
       ],
       "priority": 68,
       "status": "pending_editorial",
@@ -47758,30 +46030,6 @@
       "published_at": "2026-10-20",
       "segments": [
         "payers"
-      ],
-      "priority": 68,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "3dad2c8dacbbbbb95b3f",
-      "source": "the_conversation",
-      "attribution": "The Conversation",
-      "bylines": [
-        "Fred D. Ledley, Director, Center for Integration of Science and Industry, Bentley University"
-      ],
-      "url": "https://theconversation.com/cystic-fibrosis-patients-got-their-miracle-drug-thanks-to-federal-research-funding-new-trump-administration-rules-may-cut-future-miracles-short-293934",
-      "title": "Cystic fibrosis patients got their ‘miracle drug’ thanks to federal research funding – new Trump administration rules may cut future miracles short",
-      "published_at": "2026-10-14",
-      "segments": [
-        "pharma"
       ],
       "priority": 68,
       "status": "pending_editorial",

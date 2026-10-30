@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-10-29",
-  "generated_at": "2026-10-30T01:52:37.223768+00:00",
+  "as_of": "2026-10-30",
+  "generated_at": "2026-10-30T04:16:30.686716+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,9 +16,9 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-10-28",
-    "items_last_2_days": 3,
-    "items_last_7_days": 6,
-    "status": "fresh",
+    "items_last_2_days": 0,
+    "items_last_7_days": 5,
+    "status": "stale",
     "stale_after_days": 2
   },
   "sources": [
@@ -45,13 +45,12 @@
   ],
   "held": {
     "feed_not_authorized_for_display": 17,
-    "feed_not_enabled": 25,
     "not_global_interest:no_global_interest_signal": 20,
     "not_global_interest:source_rule_exclusion": 3,
     "not_material_or_unverified": 111,
     "not_relevant_or_undated": 70,
     "official_title_without_executive_keyword": 81,
-    "publication_activation_pending_paho": 551
+    "publication_activation_pending_paho": 548
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
@@ -69,21 +68,20 @@
       ]
     },
     {
-      "segment": "regulation",
-      "label_es": "Regulación",
-      "count": 2,
-      "item_ids": [
-        "718f8cdb059d564a272c",
-        "1e2dda4154b36b712837"
-      ]
-    },
-    {
       "segment": "healthtech",
       "label_es": "Salud digital y dispositivos",
       "count": 2,
       "item_ids": [
         "718f8cdb059d564a272c",
         "93ba694c2e268873ff20"
+      ]
+    },
+    {
+      "segment": "regulation",
+      "label_es": "Regulación",
+      "count": 1,
+      "item_ids": [
+        "718f8cdb059d564a272c"
       ]
     }
   ],
@@ -405,9 +403,9 @@
         "pharma",
         "regulation"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "1. Background and purposeThe International Conference of Drug Regulatory Authorities (ICDRA) is a flagship global regulatory forum co-convened by the World Health Organization (WHO). Since its inception in 1980, ICDRA has provided a unique platform for heads of national regulatory authorities for medical products (NRAs), senior regulators, policymakers, international organizations, and key stakeholders to exchange knowledge and experiences, strengthen international regulatory cooperation, and advance regulatory convergence and reliance.ICDRA plays a pivotal role in identifying and addressing…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma",
         "Regulación"
@@ -447,9 +445,9 @@
         "providers",
         "regulation"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "This resource provides evidence-informed policy options to help countries plan, develop, manage and support paid and unpaid care workers providing personal care in homes, health services and residential settings. Drawing on a realist synthesis literature review and advice from a global WHO Advisory Group, it covers 20 thematic areas across the entry, working and exit stages of the workforce lifespan. It also addresses gender equality, migrant status and employment settings as cross-cutting equity and human rights concerns. Intended for policy-makers and planners across health and related…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Prestadores",
         "Regulación"
@@ -473,7 +471,8 @@
         "status": "not_allowed",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
+        "summary_status": "pending",
+        "summary_reason": "malformed_output"
       }
     },
     {
@@ -548,9 +547,9 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
+      "description": "The Regional Workshop on Strengthening Paediatric Medicines Ecosystems in the ASEAN Region was convened in Kuala Lumpur, Malaysia, from 11–13 May 2026, under the auspices of WHO and the Global Accelerator for Paediatric Formulations (GAP-f), with support from the Temasek Foundation.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
@@ -644,14 +643,14 @@
       "segments": [
         "providers"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "The World Health Organization (WHO) has published the National health workforce accounts: health workforce levels and trends 2026, the first in an annual series of reports offering the most comprehensive global picture of health workforce levels, trends and challenges based on official country data shared through the National Health Workforce Accounts (NHWA). In the past two decades, health workforce density (medical doctors, nursing and midwifery personnel, dentists and pharmacists) has increased by 52% globally, from 44.8 per 10 000 population in 2006 to 67.9 in 2025. There are now more…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Prestadores"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 88,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -665,11 +664,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-10-29",
+      "summary_es": "Uno de cada cuatro médicos se acerca a la edad de jubilación y la WHO advierte de una brecha mundial de personal sanitario. La densidad mundial de personal sanitario aumentó 52%, de 44,8 por cada 10.000 habitantes en 2006 a 67,9 en 2025.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
+        "cache_key": "2b0f0585ec67e5a3db9d6ebbbc78d3f8"
       }
     },
     {
@@ -759,7 +765,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-10-29",
+      "first_seen_on": "2026-10-30",
       "title_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "description_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "translation": {
@@ -991,14 +997,14 @@
       "segments": [
         "regulation"
       ],
-      "description": null,
+      "description": "This WHO guideline provides practice- and science-informed global clinical and public health recommendations for the integrated management of obesity in adolescents aged 10–19 years, responding to the growing global burden of obesity and supporting improved case management and care pathways through a primary health care approach.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Regulación"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 90,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -1012,11 +1018,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-10-29",
+      "summary_es": "Una guía clínica y de salud pública mundial entrega recomendaciones integradas, basadas en la práctica y la evidencia científica, para manejar la obesidad en adolescentes de 10 a 19 años mediante un enfoque de atención primaria de salud.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
+        "cache_key": "c8957f8f1147c518541d86f28b819db3"
       }
     },
     {
@@ -1031,14 +1044,14 @@
       "segments": [
         "regulation"
       ],
-      "description": null,
+      "description": "This WHO guideline provides adoptable and adaptable, practice- and science-informed global clinical and public health recommendations on the integrated management of obesity in children aged 29 days to under 10 years, using a primary health care approach.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Regulación"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 90,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -1052,11 +1065,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-10-29",
+      "summary_es": "La guía de la WHO entrega recomendaciones clínicas y de salud pública, adaptables y basadas en la práctica y la evidencia, para el manejo integrado de la obesidad en niños de 29 días a menores de 10 años, desde la atención primaria.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
+        "cache_key": "f74492a1794adb9437993ce56a75e9d0"
       }
     },
     {
@@ -1346,9 +1366,9 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
+      "description": "The forty-eighth meeting of the World Health Organization (WHO)’s Expert Committee on Drug Dependence (ECDD) was convened from 20 to 22 October 2025 and was coordinated from WHO headquarters in Geneva.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
@@ -1386,14 +1406,14 @@
       "segments": [
         "ai_in_health"
       ],
-      "description": null,
+      "description": "A new WHO report, Artificial Intelligence-related health research: ethics review and oversight, provides recommendations for researchers, ethics committees, regulators, funders and policy-makers to help ensure that AI-enabled health research is conducted responsibly and for the benefit of all. The report was jointly developed by WHO experts working in research ethics, science and digital health and AI.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "IA en salud"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 75,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -1407,11 +1427,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-10-29",
+      "summary_es": "Un nuevo informe de WHO propone fortalecer la supervisión ética de la investigación en salud relacionada con la inteligencia artificial y recomienda realizarla responsablemente, en beneficio de todas las personas.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
+        "cache_key": "f6c0c4d8b703d831d190e65341e25450"
       }
     },
     {
@@ -1426,9 +1453,9 @@
       "segments": [
         "regulation"
       ],
-      "description": null,
+      "description": "The theme of World Patient Safety Day 2026 is \"Safe care for noncommunicable diseases\". For people living with long-term conditions, patient safety extends beyond hospitals and health facilities into daily life.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Regulación"
       ],
@@ -1466,9 +1493,9 @@
       "segments": [
         "regulation"
       ],
-      "description": null,
+      "description": "Publicaciones de la Organización Mundial de la Salud",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Regulación"
       ],
@@ -1564,14 +1591,14 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "Billions of people worldwide rely on traditional, complementary and integrative medicine (TCIM) as part of their health care, yet less than 1% of global health research funding is devoted to understanding where these approaches are safe, effective and appropriate. At a time when countries are seeking new solutions to reduce the growing burden of noncommunicable diseases (NCDs) – which kill more than 43 million people every year – and accelerate progress towards universal health coverage (UHC), this represents one of the largest evidence gaps in global health. Addressing this gap, the World…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 75,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -1585,11 +1612,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-10-29",
+      "summary_es": "WHO pide más investigación sobre la medicina tradicional, complementaria e integrativa, usada por miles de millones de personas. Menos del 1% del financiamiento mundial para investigación en salud aborda la seguridad, eficacia y pertinencia de estos enfoques.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
+        "cache_key": "01a221da196bf4bacef2551b46bc53e7"
       }
     },
     {
@@ -1604,14 +1638,14 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
+      "description": "WHO recognizes the growing role of traditional medicine worldwide and the need for evidence-based integration into health systems.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 75,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -1625,11 +1659,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-10-29",
+      "summary_es": "WHO reconoce el creciente papel mundial de la medicina tradicional y la necesidad de integrarla con base en evidencia a los sistemas de salud, mediante una agenda de investigación para 2025–2034 que abarca enfoques complementarios e integrativos.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
+        "cache_key": "bc8fdc64c0b5c9077f80208ce5ffb2ab"
       }
     },
     {
@@ -1692,9 +1733,9 @@
         "payers",
         "providers"
       ],
-      "description": null,
+      "description": "WHO and the Commonwealth Secretariat today reaffirmed their shared commitment to improving health and well-being across the Commonwealth’s 56 member countries, and strengthening collaboration to address pressing global health challenges.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Aseguradores y financiamiento",
         "Prestadores"
@@ -1733,9 +1774,9 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
+      "description": "On the occasion of childhood cancer awareness month, the World Health Organization (WHO) and partners in the Global Platform for Access to Childhood Cancer Medicines (Global Platform) launched today a new strategy to strengthen the global market and tackle one of the greatest barriers to survival for children with cancer in low- and middle-income countries.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
@@ -1759,7 +1800,7 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_reason": "malformed_output"
       }
     },
     {
@@ -1774,9 +1815,9 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
+      "description": "Developed through the Global Platform for Access to Childhood Cancer Medicines and informed by market analysis and stakeholder consultations, this publication presents WHO’s first market shaping strategy for childhood cancer medicines.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
@@ -1799,8 +1840,7 @@
         "status": "not_allowed",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_status": "verification_failed"
       }
     },
     {
@@ -1815,14 +1855,14 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "This systematic review provides a current assessment of peer-reviewed studies published between 2010 and August 2025 investigating potential associations between vaccines and autism spectrum disorder (ASD), with particular focus on the organomercury vaccine component thiomersal, and also considers studies reporting other neurodevelopmental disorders (NDD). It updates previous WHO reviews by assessing the methodological quality, strength of evidence and risk of bias of the available literature. The review finds that the most methodologically rigorous primary studies do not support a causal…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 85,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -1836,12 +1876,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-10-29",
+      "summary_es": "Una revisión sistemática de estudios publicados entre 2010 y agosto de 2025 evaluó posibles asociaciones entre vacunas y trastorno del espectro autista, con foco en thiomersal, y consideró otros trastornos del neurodesarrollo; los estudios más rigurosos no respaldan causalidad.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "cache_key": "3eaf7e8465357c4a01ecf9d96c0007c6"
       }
     },
     {
@@ -1865,7 +1911,7 @@
         "Regulación"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 81,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -1887,9 +1933,19 @@
         "press_releases"
       ],
       "first_seen_on": "2026-10-29",
+      "title_es": "La FDA aprueba el primer medicamento para tratar la enfermedad de Alexander",
+      "description_es": "La Administración de Alimentos y Medicamentos de EE. UU. ha aprobado la inyección de Zanvastro (zilganersen) para el tratamiento de la enfermedad de Alexander en pacientes pediátricos y adultos.",
       "translation": {
-        "status": "pending",
-        "reason": "no_api_key"
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": null,
+        "cache_key": "474738767e426d44dc6aa4eabe144724"
       }
     },
     {
@@ -1904,14 +1960,14 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "A global initiative to establish a stockpile of mpox vaccines was launched on 27 August, creating a long-term mechanism to ensure countries have access to vaccines when responding to mpox outbreaks. Set to begin operations later this month, this new global mpox vaccine stockpile that all countries can access is a resource that was approved by the Board of Gavi, the Vaccine Alliance (Gavi) in 2025, and is funded by Gavi and coordinated by the International Coordinating Group (ICG) on Vaccine Provision. The ICG partners are the International Federation of Red Cross and Red Crescent Societies…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 85,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -1925,12 +1981,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-10-29",
+      "summary_es": "El 27 de agosto se lanzó una iniciativa global para crear una reserva de vacunas contra mpox y asegurar acceso al responder a brotes. Comenzará a operar este mes, financiada por Gavi y coordinada por el ICG.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "cache_key": "4e7044da295bad4b4557765a87977384"
       }
     },
     {
@@ -1945,9 +2007,9 @@
       "segments": [
         "payers"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "The eleventh annual report on Monitoring progress on universal health coverage and the health-related Sustainable Development Goals in the South-East Asia Region – 2026 compiles the best and most recent scientific evidence on the regional and country-level trends of the health-related SDG indicators, alongside the revised monitoring framework for universal health coverage (UHC). It tracks progress across all 10 Member States, comparing achievements against global targets using the most recent data, highlighting areas of advancement as well as critical gaps to achieve the 2030 goals. The…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Aseguradores y financiamiento"
       ],
@@ -1971,7 +2033,7 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_reason": "run_cap"
       }
     },
     {
@@ -1986,9 +2048,9 @@
       "segments": [
         "regulation"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "The World Health Organization (WHO) has designated the Global Harmonization Centre (GHC) in the Republic of Korea as a WHO collaborating centre for health products regulatory system strengthening and training. Hosted by the National Institute of Food and Drug Safety Evaluation (NIFDS) under the Ministry of Food and Drug Safety (MFDS), the centre will help expand global regulatory capacity by supporting countries in building the expertise needed to ensure access to safe, effective and quality-assured health products. Effective regulatory systems are fundamental to protecting public health and…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Regulación"
       ],
@@ -2012,7 +2074,7 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_reason": "run_cap"
       }
     },
     {
@@ -2027,9 +2089,9 @@
       "segments": [
         "regulation"
       ],
-      "description": null,
+      "description": "WHO held its third global technical consultation on public health and social measures (PHSM) during health emergencies from 24 to 26 March 2026. The consultation brought together 133 experts from 31 Member States, representing ministries of health, national public health institutes, civil society, and international organizations.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Regulación"
       ],
@@ -2053,7 +2115,7 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_reason": "run_cap"
       }
     },
     {
@@ -2068,9 +2130,9 @@
       "segments": [
         "providers"
       ],
-      "description": null,
+      "description": "Consolidated guidance on suggested roles, tasks and competencies across the emergency risk management cycle",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Prestadores"
       ],
@@ -2094,7 +2156,7 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_reason": "run_cap"
       }
     },
     {
@@ -2110,9 +2172,9 @@
         "pharma",
         "regulation"
       ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
+      "description": "Mozambique has reached a major milestone in strengthening the regulation of medicines and imported vaccines, with its national regulatory authority recognized by the World Health Organization (WHO) as having a stable, well-functioning and integrated regulatory system.The Autoridade Nacional Reguladora de Medicamentos de Moçambique (ANARME) has achieved Maturity Level 3 (ML3) for the regulation of medicines and imported vaccines under WHO’s global classification of national regulatory authorities.Mozambique becomes the 10th country in Africa to reach ML3, joining Egypt, Ethiopia, Ghana…",
+      "description_truncated": true,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma",
         "Regulación"
@@ -2137,7 +2199,7 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_reason": "run_cap"
       }
     },
     {
@@ -2152,9 +2214,9 @@
       "segments": [
         "regulation"
       ],
-      "description": null,
+      "description": "This global guidance aims to facilitate systematic and harmonized data collection about, and monitoring of, public health and social measures (PHSM) policies implemented by governments during health emergencies.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Regulación"
       ],
@@ -2178,7 +2240,7 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_reason": "run_cap"
       }
     },
     {
@@ -2193,9 +2255,9 @@
       "segments": [
         "pharma"
       ],
-      "description": null,
+      "description": "This meeting report describes the priority-setting process and summarizes the consensus reached by participants on therapeutic priorities for paediatric SCD.",
       "description_truncated": false,
-      "description_source": null,
+      "description_source": "publisher_page_meta_description",
       "tags_es": [
         "Medicamentos y farma"
       ],
@@ -2219,20 +2281,20 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "summary_status": "pending",
-        "summary_reason": "no_api_key"
+        "summary_reason": "run_cap"
       }
     }
   ],
   "translation": {
-    "translated": 9,
-    "summarized": 5,
+    "translated": 10,
+    "summarized": 13,
     "from_cache": 14,
-    "verification_failed": 5,
-    "review_failed": 0,
-    "not_allowed": 26,
-    "pending": 1,
+    "verification_failed": 12,
+    "review_failed": 3,
+    "not_allowed": 18,
+    "pending": 0,
     "source_in_spanish": 0
   },
-  "ai_text_items": 14,
+  "ai_text_items": 23,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget"
 }

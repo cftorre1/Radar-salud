@@ -1,7 +1,7 @@
 {
   "schema_version": "stats_capture_v1",
   "kind": "boletin_ip",
-  "updated_at": "2026-10-29T23:50:12.482474+00:00",
+  "updated_at": "2026-10-30T03:42:08.602583+00:00",
   "releases": [
     {
       "period": "2025-06",
@@ -13,7 +13,18 @@
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/08/boletin-n2-2025-acreditacion-enero-junio-2025.pdf",
           "topic": "acreditacion",
-          "status": "not_fetched"
+          "sha256": "ed71c07d0615c344f53bd10deff37342bdb59e0351cfd1cbbbadc1c6594f7487",
+          "bytes": 359269,
+          "format": "pdf",
+          "fetched_at": "2026-10-30T03:42:08.046081+00:00",
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 8,
+            "text_sha256": "df40ddb1bdfc2e406836654f72c4261ad8167707cc8004478bb59601d3d1a230",
+            "checker_version": 2,
+            "templates_sha256": "e44cb9396e2e0584ae856588a7b4bd522f78189d785e104b0e699acb5f6649e5"
+          }
         },
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/08/boletin-n2-2025-mediacion-enero-junio-2025.pdf",
@@ -42,22 +53,66 @@
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/11/boletin-n3-2025-acreditacion-enero-septiembre-2025.pdf",
           "topic": "acreditacion",
-          "status": "not_fetched"
+          "sha256": "a06f75e1182602b6ca99999498523d1a9c788c39f7465f24cd62f45d137d74e6",
+          "bytes": 321529,
+          "format": "pdf",
+          "fetched_at": "2026-10-30T03:42:01.459576+00:00",
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 8,
+            "text_sha256": "fe5f910a230b04ec97e8df8254b9992e837d8d92fbfa18363f05cbdc58f42c67",
+            "checker_version": 2,
+            "templates_sha256": "e44cb9396e2e0584ae856588a7b4bd522f78189d785e104b0e699acb5f6649e5"
+          }
         },
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/11/boletin-n3-2025-mediacion-enero-septiembre-2025.pdf",
           "topic": "mediacion",
-          "status": "not_fetched"
+          "sha256": "f70b7a7ebd93bdc41b28d2372ff96091c10f06f1ddead713741d3ec225a0d4ca",
+          "bytes": 389289,
+          "format": "pdf",
+          "fetched_at": "2026-10-30T03:42:07.018741+00:00",
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 6,
+            "text_sha256": "b935692ab18a021e15082dc84892a1a6336eeaeebf91c8532437855d814558cc",
+            "checker_version": 1,
+            "templates_sha256": null
+          }
         },
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/11/boletin-n3-2025-reclamos-enero-septiembre-2025.pdf",
           "topic": "reclamos",
-          "status": "not_fetched"
+          "sha256": "91e201133905912ebab63b0a77833494d1893523a551fc23f8d25da2581f2176",
+          "bytes": 599238,
+          "format": "pdf",
+          "fetched_at": "2026-10-30T03:42:07.582086+00:00",
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 6,
+            "text_sha256": "f9663ffd0c42b509229857a3956bc900eb2f5861a9113718a7a4732fdac15cc1",
+            "checker_version": 1,
+            "templates_sha256": null
+          }
         },
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/11/boletin-n3-2025-rnpi-enero-septiembre-2025.pdf",
           "topic": "rnpi",
-          "status": "not_fetched"
+          "sha256": "a1fe0a82eb869cbd15cd8464ba7f4f77c1f9e46b370580897e90d12f596ab0a1",
+          "bytes": 551883,
+          "format": "pdf",
+          "fetched_at": "2026-10-30T03:42:07.761420+00:00",
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 7,
+            "text_sha256": "c0e41018a9c5665a1274865a46c3aa58fa5bfaada1f6beb782a655fd3dd76374",
+            "checker_version": 1,
+            "templates_sha256": null
+          }
         }
       ]
     },
@@ -207,6 +262,59 @@
           "fetched_at": "2026-10-29T14:21:25.604772+00:00",
           "status": "captured",
           "parse": {
+            "status": "verified",
+            "pages": 8,
+            "text_sha256": "ab3fa97e1c2a314772003678029f490a29a258400a12ec012c8832d91a13f97d",
+            "checker_version": 2,
+            "templates_sha256": "e44cb9396e2e0584ae856588a7b4bd522f78189d785e104b0e699acb5f6649e5",
+            "verified_present": {
+              "accredited_providers": true,
+              "with_observations": true,
+              "pending_applications": true,
+              "private_pending": true,
+              "public_pending": true
+            },
+            "pages_checked": [
+              1,
+              2,
+              7,
+              8
+            ],
+            "figure_rules": {
+              "accredited_providers": {
+                "rule": "context_window",
+                "page": 2
+              },
+              "with_observations": {
+                "rule": "template",
+                "page": 2,
+                "match": "101 prestadores institucionales obtuvieron el resultado de acreditado con observaciones",
+                "reviewed_by": "Dirección (cftorre1)",
+                "reviewed_at": "2026-10-30"
+              },
+              "pending_applications": {
+                "rule": "template",
+                "page": 8,
+                "match": "numero de solicitudes de acreditacion que estan en tramitacion, al 30 de junio de 2026, desagregadas por region del prestador y tipo estados de la sol … a y parinacota 3 8 11 region de atacama 3 2 5 region de aysen 1 4 5 region de magallanes 1 2 3 total general 367 217 584",
+                "reviewed_by": "Dirección (cftorre1)",
+                "reviewed_at": "2026-10-30",
+                "sum_check": "367 + 217 = 584",
+                "parts_equal": {
+                  "private_pending": 367,
+                  "public_pending": 217
+                }
+              },
+              "private_pending": {
+                "rule": "context_window",
+                "page": 7
+              },
+              "public_pending": {
+                "rule": "context_window",
+                "page": 7
+              }
+            }
+          },
+          "previous_parse": {
             "status": "verified_figure_missing",
             "pages": 8,
             "text_sha256": "ab3fa97e1c2a314772003678029f490a29a258400a12ec012c8832d91a13f97d",
@@ -223,7 +331,9 @@
               7,
               8
             ]
-          }
+          },
+          "rechecked_at": "2026-10-30T03:42:00.948311+00:00",
+          "rechecked_from_checker_version": 1
         },
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf",
