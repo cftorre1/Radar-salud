@@ -1,5 +1,7 @@
 # Statistics fichas: publication policy
 
+How to build a ficha, and where each design and truth rule is enforced, is in [PLAYBOOK.md](PLAYBOOK.md) (in Spanish).
+
 ## Decision
 
 - **Date:** 28-oct-2026
@@ -19,6 +21,8 @@
 - **Not covered:** newsletter, payments, other AI features, and radar candidates. They still follow CLAUDE.md item 3.
   - A planned family is not activated by this policy. Activating it requires its builder, tests and a PR to staging.
 - **F2 (FEFI):** no auto-publication while `HOLD_COVERAGE_ESENCIAL` is active (see `config/editorial_rules_v3.json`).
+  - Status: `planned`. The builder is `src/radar_salud/stats_ficha_f2.py`, and capture is `src/radar_salud/stats_capture_fefi.py`, which runs only with `--family F2`.
+  - The F2 ficha HOLDs until a person reviews `families.F2.parser_template`. The steps are in PLAYBOOK.md §7.
 
 ## Conditions to auto-publish (all are required)
 

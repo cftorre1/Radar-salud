@@ -16,10 +16,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from radar_salud import stats_capture, stats_ficha_f1, stats_ficha_f4, stats_ficha_f6, stats_fichas  # noqa: E402
+from radar_salud import (stats_capture, stats_capture_fefi, stats_ficha_f1, stats_ficha_f2, stats_ficha_f4,  # noqa: E402
+                         stats_ficha_f6, stats_fichas)
 
-BUILDERS = {"F1": stats_ficha_f1.run, "F4": stats_ficha_f4.run, "F6": stats_ficha_f6.run}
+BUILDERS = {"F1": stats_ficha_f1.run, "F2": stats_ficha_f2.run, "F4": stats_ficha_f4.run, "F6": stats_ficha_f6.run}
 CAPTURED = {"F4", "F6"}  # families whose documents are captured here (F1 reads the market lane's capture)
+# F2 is 'planned': it runs (and its workbook is captured) only with an explicit --family F2, never in the daily default.
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -41,6 +43,11 @@ def main(argv: list[str] | None = None) -> int:
             summary["capture"] = stats_capture.capture(args.root)
         except Exception as exc:  # a capture failure never blocks the other families
             summary["capture"] = {"error": f"{type(exc).__name__}:{exc}"[:200]}
+    if not args.no_capture and "F2" in families:
+        try:
+            summary["capture_fefi"] = stats_capture_fefi.capture_fefi(args.root)
+        except Exception as exc:
+            summary["capture_fefi"] = {"error": f"{type(exc).__name__}:{exc}"[:200]}
     for fam in families:
         result = BUILDERS[fam](args.root, today=today, registry=registry, llm=llm)
         written = stats_fichas.publish(result, args.root)

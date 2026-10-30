@@ -933,6 +933,9 @@ def lens_checks(ficha: dict, package: dict) -> dict:
     return out
 
 
+SIGNED_WITH_WORD = re.compile(r"(?<![\w.,])[−+-]\s?\d[\d.,]*\s?(?:%|pp\b)?\s+(?:menos|más|mas|mayor|menor)\b", re.I)
+
+
 def verify_ficha(ficha: dict, package: dict) -> dict:
     errors: list[str] = []
     for key in ("headline", "dek", "kpis", "facts", "sources"):
@@ -1011,6 +1014,10 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
     for text in displayed_texts(ficha):
         if re.search(r"\{[a-z_]+\}|lorem ipsum|placeholder|ejemplo ilustrativo|dato ilustrativo|\bn/d\b", text, re.I):
             errors.append(f"template_placeholder:{text[:40]}")
+        # Sign-aware wording (PLAYBOOK §2): a signed figure never carries a direction word ('−3,2% menos').
+        m = SIGNED_WITH_WORD.search(text)
+        if m:
+            errors.append(f"signed_figure_with_direction_word:{m.group(0)}")
     lenses = lens_checks(ficha, package)
     for lens, errs in lenses.items():
         errors += [f"{lens}:{e}" for e in errs]
