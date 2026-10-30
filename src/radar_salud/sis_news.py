@@ -67,17 +67,14 @@ _SITE_SUFFIX = re.compile(r"\s+[-–—|·:]\s*Superintendencia\s+de\s+Salud(?:\
 # Section labels used as page titles; they say nothing about the story (staging audit 29-oct).
 GENERIC_TITLES = {"comunicado de prensa", "comunicado", "comunicados", "noticias", "noticia", "nota de prensa",
                   "prensa", "superintendencia de salud"}
-GENERIC_LEAD_CHARS = 600
 
 
 def clean_title(title: str | None) -> str:
-    """Headline without the site-name suffix and extra whitespace (never reworded)."""
+    """Headline without the trailing site-name suffix and extra whitespace (never reworded).
+    Only one suffix at the very end is removed; a title that is only the site name stays."""
     t = " ".join(str(title or "").split())
-    while True:
-        stripped = _SITE_SUFFIX.sub("", t).strip()
-        if stripped == t:
-            return t
-        t = stripped
+    stripped = _SITE_SUFFIX.sub("", t).strip()
+    return stripped or t
 
 
 def is_generic_title(title: str | None) -> bool:
@@ -295,9 +292,7 @@ class SuperintendenciaNoticiasScout:
                 "article:published_time" if article["published"] else "article_visible_date" if article["visible_date"]
                 else "listing_date" if event_date else None))
             # Same act only when the title or the lead names it (not a passing mention in the body).
-            # A generic "COMUNICADO DE PRENSA" has no headline: its opening text stands in for it.
-            opening = article["text"][:GENERIC_LEAD_CHARS] if meta.get("generic_title") else ""
-            meta["mentioned_acts"] = mentioned_acts(" ".join([title, lead, opening]))
+            meta["mentioned_acts"] = mentioned_acts(" ".join([title, lead]))
             out.append(RawItem(SLUG, title, entry["url"], SOURCE_NAME, self.SOURCE_TYPE,
                                event_date=event_date, raw_text=excerpt, metadata=meta))
         # Ledger entries outside the 30-day window can never be processed again: pruned.
@@ -455,8 +450,34 @@ def process_superintendencia_noticias(raw, cfg):
     return row
 
 
+# Words before an act ID that make it the object of another act or a passing reference, not the
+# story's subject ("modifica la Circular IF/N°534", "según la Circular …").
+_REFERENCE_CUE = re.compile(
+    r"\b(?:modific\w*|derog\w*|suspend\w*|suspensi[oó]n|deja\w*\s+sin\s+efecto|complement\w*|reemplaz\w*|"
+    r"sustitu\w*|rectific\w*|seg[uú]n|conforme|de\s+acuerdo|establecid[oa]s?\s+en|dispuest[oa]s?\s+en|"
+    r"contra|recurso\w*|referid[oa]|cita\w*|menciona\w*)\b[^.;:]{0,40}$", re.I)
+
+
+def headline_act(title: str | None) -> str | None:
+    """The one act a news headline is about (``circular-if-534``), or None.
+
+    Read from the item's own headline only (never the lead, summary, body or navigation). A
+    headline naming several acts, or naming the act as the object of another act or as a passing
+    reference, has no headline act: the news then stands on its own (review of PR #114)."""
+    from .normative_relations import normalize_id, target_key
+    text = clean_title(title)
+    found = list(_ACT.finditer(text))
+    keys = {target_key(normalize_id(m.group(1), m.group(2), m.group(3))) for m in found}
+    if len(found) != 1 or None in keys:
+        return None
+    m = found[0]
+    if _REFERENCE_CUE.search(text[:m.start()]):
+        return None
+    return keys.pop()
+
+
 def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
-    """A SIS news card about an act (named in its title or lead) that has its own *visible*
+    """A SIS news card about an act (named as the subject of its own headline, see ``headline_act``) that has its own *visible*
     normativa card is the same story: keep the act's card, attach the news as an official
     alternative source. Runs after the feed's visibility/editorial/story gates; when the act
     card is not in the feed the news stands on its own."""
@@ -472,7 +493,8 @@ def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
     out = []
     for c in cards:
         if str(c.get("source_url") or "").startswith(f"https://{HOST}/noticias/"):
-            lead = next((acts[k] for k in c.get("mentioned_acts") or [] if k in acts), None)
+            key = headline_act(c.get("title"))
+            lead = acts.get(key) if key else None
             if lead is not None:
                 alts = list(lead.get("source_alternatives") or [])
                 if c.get("source_url") not in {a.get("url") for a in alts}:
@@ -484,14 +506,10 @@ def fold_news_into_acts(cards: Iterable[dict]) -> list[dict]:
     return out
 
 
-_FIRST_SENTENCE = re.compile(r"^(.+?[^\s.]{2}\.)(?:\s+[A-ZÁÉÍÓÚÑ]|$)", re.S)
-
-
 def repair_stored_news(row: dict) -> dict:
     """Stored SIS news rows captured before the headline rules: drop the site-name suffix from
-    the title, and for a generic title ("COMUNICADO DE PRENSA") read the act it is about from
-    the first sentence of the stored summary, so ``fold_news_into_acts`` can attach it to that
-    act's card. Nothing is invented: the title is only shortened, the act ID is read verbatim."""
+    the title (kept in ``source_page_title``) and flag generic headlines. Nothing is added: no
+    act is read from the summary, so a generic item is shown as it is."""
     if row.get("source_name") != SOURCE_NAME or not str(row.get("source_url") or "").startswith(f"https://{HOST}/noticias/"):
         return row
     r = dict(row)
@@ -501,11 +519,4 @@ def repair_stored_news(row: dict) -> dict:
         r["title"] = title
     if is_generic_title(title):
         r["generic_title"] = True
-        if not r.get("mentioned_acts"):
-            text = " ".join(str(r.get("what_happened") or "").split())
-            m = _FIRST_SENTENCE.match(text)
-            acts = mentioned_acts(m.group(1) if m else text[:300])
-            if acts:
-                r["mentioned_acts"] = acts
-                r["mentioned_acts_basis"] = "generic_title_summary_first_sentence"
     return r

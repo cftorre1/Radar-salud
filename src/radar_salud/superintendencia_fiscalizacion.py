@@ -436,28 +436,40 @@ def sanction_card_title(r):
         full = f"{head} por {ground}"
         if len(full) <= TITLE_MAX:
             return full
-        # Raw legal text is never cut mid-clause ("…del Reglamento…"): a short label read from the
-        # same clause (the accreditation procedure it names), else only the act, amount and entity.
-        for label in _infringement_labels(ground):
-            if len(head) + 2 + len(label) <= TITLE_MAX:
-                return f"{head}: {label}"
+        # Raw legal text is never cut mid-clause ("…del Reglamento…"): a verbatim span of the same
+        # clause (the accreditation procedure and the provider it names), else only act, amount, entity.
+        for span in _procedure_spans(clause):
+            if len(head) + 2 + len(span) <= TITLE_MAX:
+                return f"{head}: {span}"
         return head if len(head) <= TITLE_MAX else _cap_title(head, "")
     return None if needs_ground else _cap_title(head, "")
 
 
-_ACCREDITATION_PROCEDURE_RE = re.compile(
-    r"\ben\s+el\s+procedimiento\s+de\s+acreditaci[oó]n\s+(?:del?\s+)?(?:la\s+)?"
-    r"(?:prestador(?:a)?\s+(?:institucional|individual)\s+|prestador(?:a)?\s+)?(.+)$", re.I)
+# "procedimiento de Acreditación del prestador Institucional <nombre>": the provider name is the
+# text up to its natural end (a comma, ";", "." or the end of the regulator's clause).
+_PROCEDURE_RE = re.compile(
+    r"\b(procedimiento\s+de\s+(acreditaci[oó]n\s+del?\s+(?:la\s+)?prestador(?:a)?"
+    r"(?:\s+(?:institucional|individual))?\s+))", re.I)
+_PROVIDER_END_RE = re.compile(r",|;|\.(?:\s|$)|\s+lo\s+que\b|\s+y\s+", re.I)
+_AMBIGUOUS_END_RE = re.compile(r"\s+lo\s+que\b|\s+y\s+", re.I)
+PROVIDER_MAX_WORDS = 12
 
 
-def _infringement_labels(ground):
-    """Short infringement labels taken verbatim from the regulator's clause, best first.
-    Only the accreditation procedure (and the provider it names) is summarised; any other
-    clause yields none and the title stays "<acto> · Multa de X a <entidad>"."""
-    m = _ACCREDITATION_PROCEDURE_RE.search(ground or "")
+def _procedure_spans(clause):
+    """Verbatim spans of the regulator's own clause, longest first; [] when the provider name has
+    no clean end. A name followed by " y " or " lo que" without a comma is ambiguous (the name
+    itself may contain "y"): no span, so the title falls back to "<acto> · Multa de X a <entidad>"."""
+    text = " ".join(str(clause or "").split())
+    m = _PROCEDURE_RE.search(text)
     if not m:
         return []
-    provider = m.group(1).strip(" ,;:.")
-    if not provider or len(provider.split()) > 14:
+    rest = text[m.end():]
+    end = _PROVIDER_END_RE.search(rest)
+    if end and _AMBIGUOUS_END_RE.match(end.group(0)):
         return []
-    return [f"Infracción en la acreditación de {provider}", f"Acreditación de {provider}"]
+    name = (rest[:end.start()] if end else rest).strip()
+    if not name or len(name.split()) > PROVIDER_MAX_WORDS or not name[:1].isupper():
+        return []
+    full = text[m.start(1):m.end()] + name
+    short = text[m.start(2):m.end()] + name
+    return [full, short]

@@ -112,29 +112,32 @@ def normalize_id(kind: str, prefix: str | None, number: str) -> str:
     return f"{_kind(kind)} {prefix + '/' if prefix else ''}N°{number.rstrip('.')}"
 
 
-_QUOTE_PAIRS = (("“", "”"), ("«", "»"), ("‘", "’"))
+_DOUBLE_QUOTE_PAIRS = (("“", "”"), ("«", "»"))
 
 
 def clean_subject(text: str | None) -> str | None:
-    """Official subject text with whitespace collapsed and unpaired quotes removed.
+    """Official subject text with whitespace collapsed and unmatched *double* quotes removed.
 
     The SIS listing often quotes the title of the act inside its subject; when the excerpt
     starts or is cut inside that quote, a lone closing quote remains (``(TEA)" y cuyo``).
-    Only quote characters are removed; no word is added or changed."""
+    Only straight or typographic double quotes are touched: apostrophes (O’Higgins, ``'``) and
+    inch marks after a digit (``12"``) are never removed, and no word is added or changed."""
     s = " ".join(str(text or "").split())
     if not s:
         return None
-    for opening, closing in _QUOTE_PAIRS:
+    for opening, closing in _DOUBLE_QUOTE_PAIRS:
         if s.count(opening) != s.count(closing):
             if not s.count(opening):
                 s = s.replace(closing, "")
             elif not s.count(closing):
                 s = s.replace(opening, "")
-    if s.count('"') % 2:
-        first = s.index('"')
+    # Only an odd number of straight quotes means one is unpaired; it is never one after a digit.
+    quotes = [i for i, ch in enumerate(s) if ch == '"' and not (i and s[i - 1].isdigit())]
+    if s.count('"') % 2 and quotes:
+        first = quotes[0]
         # A first quote glued to the previous word (``(TEA)" y``) closes a quote that was never
         # opened: drop it; otherwise the last quote is the unpaired one.
-        lone = first if first and not s[first - 1].isspace() else s.rindex('"')
+        lone = first if first and not s[first - 1].isspace() else quotes[-1]
         s = s[:lone] + s[lone + 1:]
     s = re.sub(r"\s{2,}", " ", s).strip()
     return s or None

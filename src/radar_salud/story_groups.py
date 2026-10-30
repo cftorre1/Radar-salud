@@ -116,33 +116,72 @@ def _title_key(title: Any) -> str:
 
 
 AUTO_TITLE_MIN_WORDS = 6  # short labels ("Comunicado de prensa") never group by title
+# Words that never make two headlines the same story by themselves (institutional or agenda labels).
+GENERIC_TITLE_WORDS = frozenset("""
+comunicado comunicados prensa nota noticia noticias cuenta publica participativa institucion institucional
+autoridad autoridades sanitaria sanitario seminario seminarios jornada jornadas ceremonia actividad actividades
+reunion encuentro charla taller conversatorio aniversario saludo mensaje informa informan presenta presentan
+realiza realizan realizo participa participan participo anuncia anuncian superintendencia superintendente
+ministerio ministra ministro subsecretaria subsecretario minsal fonasa gobierno chile salud nacional
+""".split())
+_STOP = frozenset("a al ante con de del desde e el en entre la las lo los o para por se sin sobre su sus un una y que".split())
+
+
+def _specific(key: str) -> bool:
+    """A number, or a content word outside the generic list (review of PR #114)."""
+    return any(w.isdigit() or any(ch.isdigit() for ch in w) or (len(w) >= 4 and w not in _STOP and w not in GENERIC_TITLE_WORDS)
+               for w in key.split())
+
+
+def chile_day(value: Any) -> str | None:
+    """Calendar day in America/Santiago: a date stays as is; a timestamp is converted (a UTC
+    instant after 21:00 in winter is still the previous day in Chile)."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    text = str(value or "").strip()
+    if not text:
+        return None
+    if len(text) == 10:
+        try:
+            return date.fromisoformat(text).isoformat()
+        except ValueError:
+            return None
+    try:
+        moment = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if moment.tzinfo is None:
+        return moment.date().isoformat()  # naive: already a local reading
+    return moment.astimezone(ZoneInfo("America/Santiago")).date().isoformat()
 
 
 def same_title_groups(cards: list[dict[str, Any]], groups: list[dict[str, Any]] = ()) -> list[dict[str, Any]]:
-    """``lead`` groups for the same story published by different official sources the same day
-    under the same headline (normalized: accents, case, punctuation and the site-name suffix).
+    """``lead`` groups for the same story published by different official sources on the same
+    Chile day under the same headline (normalized: accents, case, punctuation, site-name suffix).
 
-    Only official sources, only identical normalized titles of at least AUTO_TITLE_MIN_WORDS words,
-    only cards not already in a configured group. Lead: the card with the higher radar score
-    (then the longer summary, then the URL, so the choice is deterministic)."""
+    Only official sources, only identical normalized titles of at least AUTO_TITLE_MIN_WORDS words
+    that carry a specific token (a number or a non-generic content word), only cards not already
+    in a configured group. Lead: higher radar score, then longer summary, then URL."""
+    import hashlib
     taken = {u for g in groups for u in g.get("member_urls") or []}
     buckets: dict[tuple[str, str], list[dict[str, Any]]] = {}
     for c in cards:
         url = c.get("source_url")
         key = _title_key(c.get("title"))
-        if (not url or url in taken or c.get("source_type") != "official" or not c.get("event_date")
-                or c.get("event_type") == "STORY_SUMMARY" or len(key.split()) < AUTO_TITLE_MIN_WORDS):
+        day = chile_day(c.get("event_date"))
+        if (not url or url in taken or c.get("source_type") != "official" or not day
+                or c.get("event_type") == "STORY_SUMMARY" or len(key.split()) < AUTO_TITLE_MIN_WORDS
+                or not _specific(key)):
             continue
-        buckets.setdefault((str(c["event_date"])[:10], key), []).append(c)
+        buckets.setdefault((day, key), []).append(c)
     out = []
     for (day, _), members in sorted(buckets.items()):
         if len({m.get("source_name") for m in members}) < 2:
             continue
         lead = max(members, key=lambda m: (m.get("radar_score") or 0, len(str(m.get("what_happened") or "")),
                                            str(m.get("source_url"))))
-        import hashlib
         digest = hashlib.sha1(str(lead["source_url"]).encode()).hexdigest()[:8]
         out.append({"id": f"auto-same-title-{day}-{digest}", "mode": "lead",
                     "lead_url": lead["source_url"], "member_urls": [m["source_url"] for m in members],
-                    "reason": "Mismo titular el mismo día en fuentes oficiales distintas (agrupación automática)."})
+                    "reason": "Mismo titular el mismo día (Chile) en fuentes oficiales distintas (agrupación automática)."})
     return out

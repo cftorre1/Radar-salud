@@ -10,8 +10,8 @@ from radar_salud import sis_news
 from radar_salud.normative_relations import clean_subject, related_documents, target_key
 from radar_salud.sis_bulletins import apply_bulletin_period, documents_period
 from radar_salud.sis_news import (SuperintendenciaNoticiasScout, choose_title, clean_title, fold_news_into_acts,
-                                  is_generic_title, parse_article, repair_stored_news)
-from radar_salud.story_groups import apply_story_groups, same_title_groups
+                                  headline_act, is_generic_title, parse_article, repair_stored_news)
+from radar_salud.story_groups import apply_story_groups, chile_day, same_title_groups
 
 SIS = "Superintendencia de Salud"
 FIX = Path(__file__).parent / "fixtures" / "sis"
@@ -37,6 +37,11 @@ def test_subject_cleaning_drops_only_the_unpaired_quote():
     assert clean_subject('Modifica la "Circular IF/N°1" vigente') == 'Modifica la "Circular IF/N°1" vigente'
     assert clean_subject("Texto «citado sin cierre") == "Texto citado sin cierre"
     assert clean_subject("  ") is None
+    # Apostrophes and inch marks are not quotes (review of #114).
+    assert clean_subject("Región de O’Higgins y la ‘norma’ de O'Higgins") == "Región de O’Higgins y la ‘norma’ de O'Higgins"
+    assert clean_subject('Monitor de 12" en la sala') == 'Monitor de 12" en la sala'
+    assert clean_subject('Monitor de 12" y (TEA)" cuyo') == 'Monitor de 12" y (TEA)" cuyo'  # even count: ambiguous, kept
+    assert clean_subject('Monitor de 12" (TEA)" y "x') == 'Monitor de 12" (TEA) y "x'
 
 
 def _resolution_11156(related_context):
@@ -78,6 +83,10 @@ def test_site_suffix_is_stripped_and_generic_labels_detected():
     assert clean_title("Seminario de Entidades Acreditadoras | Superintendencia de Salud") == "Seminario de Entidades Acreditadoras"
     # The institution's name inside the headline stays.
     assert clean_title("Superintendencia de Salud realizó Seminario") == "Superintendencia de Salud realizó Seminario"
+    assert clean_title("Isapres: Superintendencia de Salud instruye cobertura") == "Isapres: Superintendencia de Salud instruye cobertura"
+    assert clean_title("Bonos con cédula : Superintendencia de Salud") == "Bonos con cédula"
+    assert clean_title("A - Superintendencia de Salud - Superintendencia de Salud") == "A - Superintendencia de Salud"  # one suffix only
+    assert clean_title("Superintendencia de Salud") == "Superintendencia de Salud"
     assert is_generic_title("COMUNICADO DE PRENSA - Superintendencia de Salud") and is_generic_title("Noticias")
     assert choose_title("COMUNICADO DE PRENSA - Superintendencia de Salud", "Noticias",
                         "Isapres deberán emitir el bono con cédula") == "Isapres deberán emitir el bono con cédula"
@@ -98,12 +107,15 @@ def test_article_headline_prefers_informative_h1_over_generic_og_title():
     assert parse_article(page)["title"] == "Más de 62 millones de casos GES"
 
 
-def test_generic_comunicado_reads_act_from_opening_text_and_folds_into_act():
+ACT_534 = {"title": "Isapres deberán emitir bonos con cédula", "source_name": SIS, "signal_types": ["Normativa"],
+           "event_type": "REGULATION", "normative_document_label": "Circular IF/N°534",
+           "source_url": "https://www.superdesalud.gob.cl/normativa/circular-if-n534/"}
+COMUNICADO = "https://www.superdesalud.gob.cl/noticias/2026/09/comunicado-de-prensa-3/"
+
+
+def _discover_comunicado(page):
     listing = (FIX / "noticias_2026_listing_20261028.html").read_text(encoding="utf-8")
-    url = "https://www.superdesalud.gob.cl/noticias/2026/09/comunicado-de-prensa-3/"
-    body = "La Superintendencia de Salud dictó la Circular IF/N°534 sobre bonos electrónicos."
-    pages = {"https://www.superdesalud.gob.cl/noticias/2026/": listing,
-             url: _page("COMUNICADO DE PRENSA - Superintendencia de Salud", ["COMUNICADO DE PRENSA"], body=body)}
+    pages = {"https://www.superdesalud.gob.cl/noticias/2026/": listing, COMUNICADO: page}
 
     def fetch(u):
         if u == sis_news.ROBOTS:
@@ -112,29 +124,61 @@ def test_generic_comunicado_reads_act_from_opening_text_and_folds_into_act():
             return pages[u]
         raise OSError("not in fixture")
     scout = SuperintendenciaNoticiasScout(fetch=fetch, today=date(2026, 10, 28))
-    item = next(i for i in scout.discover() if i.url == url)
+    return next(i for i in scout.discover() if i.url == COMUNICADO)
+
+
+def _as_card(item):
+    return {"title": item.title, "source_name": SIS, "source_url": item.url, "event_date": item.event_date,
+            "signal_types": ["Noticias"], "mentioned_acts": item.metadata["mentioned_acts"]}
+
+
+def test_generic_comunicado_is_shown_as_is_and_never_folded_from_body_or_navigation():
+    # The act appears only in the body and in navigation text; the headline is generic.
+    page = ('<html><head><title>COMUNICADO DE PRENSA - Superintendencia de Salud</title>'
+            '<meta property="og:title" content="COMUNICADO DE PRENSA - Superintendencia de Salud">'
+            '<meta property="article:published_time" content="2026-09-30T12:00:00-03:00"></head><body>'
+            '<nav><a href="/normativa/circular-if-n534/">Circular IF/N°534</a></nav><h1>COMUNICADO DE PRENSA</h1>'
+            '<p>La Superintendencia de Salud dictó la Circular IF/N°534 sobre bonos electrónicos.</p></body></html>')
+    item = _discover_comunicado(page)
     assert item.title == "COMUNICADO DE PRENSA" and item.metadata["generic_title"] is True
     assert not item.metadata.get("listing_title_mismatch")
-    assert item.metadata["mentioned_acts"] == ["circular-if-534"]
+    out = fold_news_into_acts([ACT_534, _as_card(item)])
+    assert [c["source_url"] for c in out] == [ACT_534["source_url"], COMUNICADO]
+    assert not out[0].get("source_alternatives")
 
 
-def test_stored_generic_news_is_repaired_and_folded():
+def test_specific_h1_improves_the_headline_and_folds_only_when_it_names_the_act():
+    page = _page("COMUNICADO DE PRENSA - Superintendencia de Salud", ["Noticias", "Superintendencia dicta la Circular IF/N°534 sobre bonos con cédula"])
+    item = _discover_comunicado(page)
+    assert item.title == "Superintendencia dicta la Circular IF/N°534 sobre bonos con cédula"
+    out = fold_news_into_acts([ACT_534, _as_card(item)])
+    assert len(out) == 1 and out[0]["source_alternatives"][0]["url"] == COMUNICADO
+
+
+@pytest.mark.parametrize("headline", [
+    "Circular IF/N°540 modifica la Circular IF/N°534",          # modified by another act
+    "Superintendencia modifica la Circular IF/N°534 sobre bonos",  # object of a modification
+    "Isapres reportan alza de reclamos, según la Circular IF/N°534",  # passing mention
+    "Isapres presentan recursos contra la Circular IF/N°534",
+    "Isapres informan nuevos planes de salud",                    # no act in the headline
+])
+def test_headline_without_a_subject_act_never_folds(headline):
+    assert headline_act(headline) is None
+    news = {"title": headline, "source_name": SIS, "source_url": COMUNICADO, "event_date": "2026-09-30",
+            "signal_types": ["Noticias"], "mentioned_acts": ["circular-if-534"]}  # lead/body mentions never decide
+    assert len(fold_news_into_acts([ACT_534, news])) == 2
+
+
+def test_stored_generic_news_keeps_its_row_and_only_loses_the_suffix():
     news = {"title": "COMUNICADO DE PRENSA - Superintendencia de Salud", "source_name": SIS, "source_type": "official",
-            "source_url": "https://www.superdesalud.gob.cl/noticias/2026/09/comunicado-de-prensa-3/", "event_date": "2026-09-30",
-            "mentioned_acts": [], "signal_types": ["Noticias"],
-            "what_happened": "La Superintendencia de Salud dictó la Circular IF/N°534, que regirá desde el 1 de diciembre de 2026. "
-                             "Otra frase cita la Circular IF/N°99."}
+            "source_url": COMUNICADO, "event_date": "2026-09-30", "mentioned_acts": [], "signal_types": ["Noticias"],
+            "what_happened": "La Superintendencia de Salud dictó la Circular IF/N°534, que regirá desde el 1 de diciembre de 2026."}
     fixed = repair_stored_news(news)
     assert fixed["title"] == "COMUNICADO DE PRENSA" and fixed["source_page_title"] == news["title"]
-    assert fixed["mentioned_acts"] == ["circular-if-534"]  # first sentence only
-    act = {"title": "Isapres deberán emitir bonos con cédula", "source_name": SIS, "signal_types": ["Normativa"],
-           "event_type": "REGULATION", "normative_document_label": "Circular IF/N°534",
-           "source_url": "https://www.superdesalud.gob.cl/normativa/circular-if-n534/"}
-    out = fold_news_into_acts([act, fixed])
-    assert len(out) == 1 and out[0]["source_alternatives"][0]["url"] == news["source_url"]
-    # An informative stored headline only loses the site suffix; no act is read from its summary.
+    assert fixed["mentioned_acts"] == [] and fixed["generic_title"] is True  # nothing read from the summary
+    assert len(fold_news_into_acts([ACT_534, fixed])) == 2
     seminar = repair_stored_news(dict(news, title="Superintendencia de Salud realizó Seminario - Superintendencia de Salud"))
-    assert seminar["title"] == "Superintendencia de Salud realizó Seminario" and seminar["mentioned_acts"] == []
+    assert seminar["title"] == "Superintendencia de Salud realizó Seminario"
     other = {"title": "X - Superintendencia de Salud", "source_name": "Minsal", "source_url": "https://www.minsal.cl/x/"}
     assert repair_stored_news(other) is other
 
@@ -163,6 +207,28 @@ def test_same_headline_same_day_groups_official_sources():
     assert same_title_groups([sis, minsal], [{"member_urls": [minsal["source_url"]]}]) == []
     assert same_title_groups([_story(SIS, "a", "Comunicado de prensa"), _story("Ministerio de Salud", "b", "Comunicado de prensa")]) == []
     assert same_title_groups([sis, dict(sis, source_url="https://www.superdesalud.gob.cl/x/")]) == []
+
+
+@pytest.mark.parametrize("title", [
+    "Comunicado de prensa de la Superintendencia de Salud",           # only generic words
+    "Cuenta Pública Participativa de la Autoridad Sanitaria",          # institutional agenda label
+])
+def test_generic_identical_headlines_never_group(title):
+    a = _story(SIS, "https://www.superdesalud.gob.cl/noticias/a/", title)
+    b = _story("Ministerio de Salud", "https://www.minsal.cl/a/", title)
+    assert same_title_groups([a, b]) == []
+
+
+def test_grouping_uses_the_chile_calendar_day():
+    t = "Más de 62 millones de casos GES desde 2005: Salud presenta cifras actualizadas"
+    # 14-oct 23:30 in Santiago is 15-oct 02:30 UTC: the same Chile day as a 14-oct date.
+    late = _story(SIS, "https://www.superdesalud.gob.cl/noticias/late/", t, day="2026-10-15T02:30:00+00:00")
+    dated = _story("Ministerio de Salud", "https://www.minsal.cl/late/", t, day="2026-10-14")
+    assert chile_day(late["event_date"]) == "2026-10-14"
+    assert len(same_title_groups([late, dated])) == 1
+    # 15-oct 01:00 UTC vs a 15-oct date: different Chile days, no group.
+    early = _story(SIS, "https://www.superdesalud.gob.cl/noticias/e/", t, day="2026-10-15T01:00:00Z")
+    assert same_title_groups([early, _story("Ministerio de Salud", "https://www.minsal.cl/e/", t, day="2026-10-15")]) == []
 
 
 # --- 7. Bulletin period from its documents ---------------------------------------------------------
