@@ -2,6 +2,9 @@ from urllib.error import HTTPError
 from types import SimpleNamespace
 import pytest
 from radar_salud.provider_original_reader import read_provider_detail
+from datetime import date as _date, timedelta as _td
+# Recent publication date: a pinned '2026-08-01' fell outside the 90-day backfill horizon on 30-oct-2026.
+RECENT=(_date.today()-_td(days=10)).isoformat()
 
 URL='https://www.davila.cl/novedades/medicina-deportiva-llega-a-red-davila'
 
@@ -34,9 +37,9 @@ def test_unavailable_native_browser_preserves_denied_error(monkeypatch):
 
 def own_dom(canonical=URL,schema=URL):
     import json
-    return (f'<link rel="canonical" href="{canonical}"><meta property="article:published_time" content="2026-08-01">'
+    return (f'<link rel="canonical" href="{canonical}"><meta property="article:published_time" content="{RECENT}">'
         '<h1>Medicina Deportiva llega a Red Dávila</h1><p>Nuevas prestaciones en dos centros existentes.</p>'
-        '<script type="application/ld+json">'+json.dumps({'@type':'NewsArticle','url':schema,'datePublished':'2026-08-01'})+'</script>')
+        '<script type="application/ld+json">'+json.dumps({'@type':'NewsArticle','url':schema,'datePublished':RECENT})+'</script>')
 
 @pytest.mark.parametrize('dom',[own_dom(schema='https://other.example/press-copy'),
     own_dom(canonical='https://other.example/press-copy'),own_dom()+'<div>Just a moment cf-chl-</div>'])
@@ -49,7 +52,7 @@ def test_foreign_identity_and_challenge_dom_stop_before_paid_analysis(monkeypatc
     monkeypatch.setattr('radar_salud.provider_original_reader.subprocess.run',lambda *a,**k:SimpleNamespace(returncode=0,stdout=dom))
     monkeypatch.setattr('radar_salud.llm_analysis.analyze_news',lambda **kw:pytest.fail('Unverified identity must not consume AI'))
     raw=RawItem('red_davila','Medicina Deportiva llega a Red Dávila',URL,'Red Dávila','corporate',
-        '2026-08-01',metadata={'market_role':'provider','source_quality_gate':'passed','publication_date_source':'verified_article_header'})
+        RECENT,metadata={'market_role':'provider','source_quality_gate':'passed','publication_date_source':'verified_article_header'})
     with pytest.raises(DeferredProcessing,match='detail unavailable'):process_curated_beta_source(raw,{'slug':'red_davila'})
 
 @pytest.mark.parametrize('suffix',['?alternate=1','#related'])
