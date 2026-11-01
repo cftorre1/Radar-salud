@@ -64,8 +64,21 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
    - Límites: como máximo 9 por test, unos 3.000 caracteres cada una, escapadas, escritas con `capsys.disabled()`.
    - Tests: F6 `tests/test_stats_fichas_f6_real_pdf.py` (#112); F2 `tests/test_stats_ficha_f2_real_xls.py`.
    - Un solo test con anotaciones por PR: GitHub muestra unas 10 por paso.
-5. Una hoja o unidad que no se puede leer, un `.xls` sin `xlrd`, una fila sin listar o una suma que no calza
+5. Una hoja o unidad que no se puede leer, un `.xls` sin `xlrd`, una fila o columna sin listar o una suma que no calza
    significan HOLD con la razón registrada (`stats_capture_fefi.parse_fefi_workbook`).
+6. **Escalas (Dirección, 1 nov).** Se leen solo hojas cuyo encabezado dice "miles"; la conversión a millones la hace
+   Alicanto.
+   - Una hoja "en millones de $" se rechaza aunque la plantilla la nombre (`stats_capture_fefi.unit_refusal`). En la
+     FEFI sus celdas mezclan miles y millones, porque el formato de Excel las escala: Colmena tiene ingresos 267346818
+     junto a una ganancia bruta de 18049.008.
+   - En una hoja "miles", las Isapres suman la columna total con tolerancia ≤ 1 (`stats_capture_fefi.sum_tolerance`).
+   - Si, para una misma Isapre, ítems comparables difieren más de ×100, se rechaza (`stats_capture_fefi.common_guards`,
+     `magnitude_groups`). La misma función exige que los componentes sumen su total (`parts`).
+7. **Exclusión de una entidad.** Es una regla explícita de Dirección con fecha, guardada en
+   `config/editorial_rules_v3.json` → `rules`. Debe estar **condicionada al texto de la fuente** que la motiva y quedar
+   ligada a su localizador. Si el texto cambia, HOLD. La entidad excluida no entra al paquete; los totales se rotulan
+   "sin <entidad>" y se recalculan. El HOLD anterior se conserva en la historia (`hold_resolutions`). Ejemplo: Esencial
+   en F2 (`stats_ficha_f2.exclusion_applies`).
 
 ## 4. Tests
 
@@ -107,60 +120,57 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 6. **PR a `staging`.** Revisión independiente. Una persona llena y revisa la plantilla con el texto de CI.
    Dirección activa la familia.
 
-## 7. F2 FEFI (estado al 30 oct)
+## 7. F2 FEFI (estado al 1 nov)
 
 **Qué hace.**
-- `stats_capture_fefi`: lista las publicaciones FEFI desde `data/history/superintendencia_signals.json`, captura la
-  planilla (xls o xlsx, con hash) y la lee **solo** con `families.F2.parser_template`.
-  - Por tabla: una hoja, una fila de encabezado, una columna por (ítem, período) y una fila por Isapre.
-  - La unidad queda anclada.
-  - En cada columna las Isapres suman el "Total sistema".
-- `stats_ficha_f2`: elige los temas que los datos verificados sostienen, de una lista cerrada:
-  - resultados, ingresos y costos, siniestralidad, patrimonio;
-  - un tema sin sus columnas no aparece;
-  - con menos de tres temas, HOLD.
-- Aplica las reglas de pérdida a utilidad, redacción según el signo, umbral redondeado y denominador explícito.
-- La Lectura está apagada (`lectura_enabled: false`), así que no hay llamadas pagadas.
-- F2 sigue `planned`: la corrida diaria no la ejecuta ni descarga nada. Solo corre con `--family F2`.
+- **Captura.** `stats_capture_fefi` lista las publicaciones FEFI desde `data/history/superintendencia_signals.json`.
+  Captura primero la más reciente y después la del mismo trimestre del año anterior. Guarda el hash y lee **solo** con
+  `families.F2.parser_template`.
+- **Hojas que lee.** Solo "Ctas. de Resultados I. Abierta " (el espacio final viene de la SIS) y "Ctas. de Resultados
+  I. Cerradas", ambas en miles de $. Las cuentas van en filas; hay una columna por Isapre y una de total.
+  - El encabezado, cada columna de Isapre, la columna total y cada cuenta calzan exactamente una vez.
+  - Cada cuenta suma su total con tolerancia ≤ 1. Los componentes de los ingresos suman el total de ingresos.
+  - Las magnitudes mezcladas se rechazan.
+- **Esencial** (Dirección, 1 nov; regla `rules.fefi_esencial_exclusion`):
+  - la ficha muestra 9 Isapres y rotula cada total como "sistema sin Esencial", recalculado por Alicanto;
+  - una nota cita A18 textual con su localizador `Notas Explicativas!A18`;
+  - ninguna cifra de Esencial entra al paquete, a los gráficos, a las tablas ni a "Ver datos";
+  - la exclusión vale solo mientras A18, en la planilla más reciente, diga que sus cifras están en revisión para ese
+    período. Si no, HOLD (`esencial_exclusion_condition_not_met`).
+  - `holds.fefi_2026_03` se conserva sin cambios, y `hold_resolutions` registra que la regla lo reemplaza para F2.
+- **Temas.** Salen de una lista cerrada, según las cuentas leídas: resultados, ingresos (y su composición), costo de
+  ventas (prestaciones, SIL y otros componentes) y siniestralidad.
+  - La siniestralidad es (prestaciones + SIL) / total de ingresos de actividades ordinarias.
+  - Con menos de tres temas, HOLD.
+- **Comparación a/a.** Solo con la planilla del mismo trimestre del año anterior (2025-03), capturada y verificada con
+  la misma plantilla. Si falta, la ficha muestra solo los niveles de 2026-03, con la nota "Sin comparación".
+- La Lectura está apagada (`lectura_enabled: false`). F2 sigue `planned` y corre solo con `--family F2`.
 
 **Qué queda en HOLD y por qué.**
-1. `parser_template_placeholder`: la plantilla tiene marcadores `<<…>>` y `reviewed_by: "pendiente"`. Hoja, columnas y
-   filas no están verificadas contra el archivo real.
-2. `HOLD_COVERAGE_ESENCIAL` (`config/editorial_rules_v3.json` → `holds.fefi_2026_03`): la nota A18 contradice las filas
-   institucionales de Esencial.
-   - Mientras siga activo, los agregados del sistema y los rankings entre Isapres **no se calculan**.
-   - La ficha no se publica (POLICY.md: F2 sin auto-publicación).
+- `parser_template_placeholder`: la plantilla está llena desde las anotaciones (filas r1–r16), pero las filas r17 en
+  adelante tienen marcadores `<<…>>`:
+  - costo de ventas total y ganancia (pérdida), en ambas hojas;
+  - prestaciones en litigio de las cerradas.
+- `reviewed_by` sigue en "pendiente".
 
 **Pasos humanos para levantar el HOLD.**
-1. Mergear este PR. CI (job `tests`) corre `tests/test_stats_ficha_f2_real_xls.py` y publica como anotaciones:
-   - el formato, el sha256 y las hojas;
-   - las primeras filas de hasta 7 hojas;
-   - la nota de Esencial.
-
-   Si el archivo es `.xls`, CI lo lee con `xlrd` (dependencia nueva en `pyproject.toml`).
-2. Con ese texto, una persona reemplaza cada `<<…>>` de `families.F2.parser_template` por el patrón real:
-   - hoja y fila de encabezado;
-   - columnas (`item`/`period`, y `sign: -1` si los costos vienen negativos);
-   - filas de las 10 Isapres y "Total sistema";
-   - unidad (`to_mm_clp`) y nota de cobertura.
-
-   Borra las columnas que no existan, y pone `reviewed_by` y `reviewed_at`. Va en un PR a `staging`, con revisión
-   independiente.
-3. En ese PR, el test CI debe pasar con `verified`: plantilla revisada ⇒ el parse real calza exactamente una vez y
-   suma el total.
-4. Dirección lee la nota A18 en la anotación y decide sobre Esencial.
-   - Si la aclara, retira `holds.fefi_2026_03` de `config/editorial_rules_v3.json`, con fecha y razón (se conserva la
-     historia).
-   - Si no, la ficha sigue en HOLD.
-5. Dirección decide activar F2 (`status: "active"`) y, por separado, la Lectura (`lectura_enabled`).
-   - Primera corrida: `scripts/run_stats_fichas.py --family F2` captura una vez y re-chequea con la plantilla revisada.
+1. CI corre `tests/test_stats_ficha_f2_real_xls.py` y publica como anotaciones:
+   - las filas r17 en adelante de las dos hojas Ctas.;
+   - la nota A18;
+   - un estado simulado de la plantilla (sin las filas `<<…>>`) para 2026-03 y para 2025-03.
+2. Con ese texto, una persona llena o borra las cuentas con `<<…>>`, y Dirección aprueba la plantilla:
+   `reviewed_by` y `reviewed_at`, en un PR a `staging` con revisión independiente.
+3. En ese PR el test CI debe dar `verified`.
+4. Dirección activa F2 (`status: "active"`) y, por separado, la Lectura.
+   - `scripts/run_stats_fichas.py --family F2` re-chequea la planilla con la plantilla revisada, ligada al hash.
    - Se publica solo si la reconciliación y `verify_ficha` dan PASS.
-6. "En staging" se afirma solo después de ver la ficha en la página desplegada.
+5. "En staging" se afirma solo después de ver la ficha en la página desplegada.
 
 **Pendiente conocido.**
-- Montos nominales: el valor real (UF) requiere capturar la serie UF.
-- `margen_beneficiario` (registro) necesita el promedio de cartera F1.
-- F6 adopta `figure_templates` cuando se mergee #112 (misma semántica).
+- El valor real (UF) requiere capturar la serie UF.
+- `margen_beneficiario` necesita el promedio de cartera F1.
+- Patrimonio e indicadores necesitan una hoja "miles" aprobada.
+- F6 adopta `figure_templates` cuando se mergee #112.
 
 ## 8. Licencias (SUSESO/SIS) y otras: qué haría falta (no construido)
 

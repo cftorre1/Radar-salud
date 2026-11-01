@@ -40,8 +40,9 @@ HEADER_SCAN_ROWS = 80
 TITLE_KEY = "estadisticas financieras del sistema isapre"
 FORMATS = ("xls", "xlsx")
 # The only items a template may map (closed list, so a ficha topic can never be invented from a column name).
-ITEMS = ("resultado_ejercicio", "ingresos_operacionales", "costo_operacional", "ingresos_cotizaciones",
-         "costo_prestaciones", "costo_sil", "gav", "patrimonio")
+ITEMS = ("resultado_ejercicio", "ingresos_operacionales", "cotizacion_legal", "cotizacion_adicional", "aporte_adicional",
+         "fondo_compensacion", "ingresos_otros", "costo_operacional", "costo_prestaciones", "costo_sil",
+         "prestaciones_no_liquidadas", "prestaciones_litigio", "gav", "patrimonio", "ingresos_cotizaciones")
 PERIODS = ("t", "t_1")
 
 
@@ -192,6 +193,172 @@ def header_labels(rows: list[list], start: int, n: int) -> list[str]:
     return [" ".join(p) for p in parts]
 
 
+MILES_TOLERANCE = 1  # Dirección 1-nov: a 'miles' sheet's Isapre columns sum to its total within 1 (miles de pesos)
+MAGNITUDE_LIMIT = 100  # values of comparable items of one Isapre never differ by more than ×100
+
+
+def unit_refusal(sheet: dict) -> str | None:
+    """Sheets declared 'en millones de $' are refused whatever the template says (Dirección 1-nov): in the FEFI their
+    raw cells mix thousands and millions (the Excel display format scales them; Colmena's ingresos 267346818 next to a
+    ganancia bruta of 18049.008)."""
+    for r in sheet["rows"][:HEADER_SCAN_ROWS]:
+        if re.search(r"\ben millones\b", row_text(r)):
+            return "unit_millones_refused"
+    return None
+
+
+def unit_check(sheet: dict, table_id: str, unit: dict, comp, failures: list[str]) -> float | None:
+    """The unit line is anchored exactly once; the scale converts to millions of pesos (miles → × 0.001)."""
+    unit_rx, why = comp(unit.get("pattern"))
+    scale = unit.get("to_mm_clp")
+    if not unit_rx:
+        failures.append(f"{table_id}:unit_pattern_{why}")
+    elif not isinstance(scale, (int, float)) or isinstance(scale, bool) or scale <= 0:
+        failures.append(f"{table_id}:unit_scale_invalid")
+    else:
+        _, um, why = ft.match_once(unit_rx, [(i, row_text(r)) for i, r in enumerate(sheet["rows"])])
+        if um is None:
+            failures.append(f"{table_id}:unit_{why}")
+        elif "miles" in um.group(0) and scale != 0.001:
+            failures.append(f"{table_id}:unit_scale_not_miles")
+    return scale
+
+
+def sum_tolerance(tpl: dict) -> float:
+    """Declared tolerance, capped at 1 when the unit is miles (Dirección 1-nov)."""
+    tol = float(tpl.get("sum_tolerance") or 0)
+    return min(tol, MILES_TOLERANCE) if "miles" in str((tpl.get("unit") or {}).get("pattern") or "") else tol
+
+
+def common_guards(table_id: str, tpl: dict, values: dict[str, dict], fields: dict[str, dict]) -> list[str]:
+    """Declared decompositions add up per Isapre (``parts``: total item → part items, same period, within 1 miles) and
+    comparable items of one Isapre are of the same magnitude (``magnitude_groups``: max/min of the non-zero absolute
+    values ≤ MAGNITUDE_LIMIT), else the table is refused."""
+    out = []
+    by_item = {(f["item"], f["period"]): fid for fid, f in fields.items()}
+    scale = float((tpl.get("unit") or {}).get("to_mm_clp") or 1)
+    for total, parts in (tpl.get("parts") or {}).items():
+        for period in PERIODS:
+            if (total, period) not in by_item or not all((p, period) in by_item for p in parts):
+                continue
+            tv = values.get(by_item[(total, period)]) or {}
+            for code, x in tv.items():
+                got = sum((values.get(by_item[(p, period)]) or {}).get(code, 0.0) for p in parts)
+                if abs(got - x) > MILES_TOLERANCE * scale + 1e-9:
+                    out.append(f"{table_id}:parts_do_not_add_up:{total}.{period}:{code}")
+    for group in tpl.get("magnitude_groups") or []:
+        for period in PERIODS:
+            ids = [by_item[(i, period)] for i in group if (i, period) in by_item]
+            if len(ids) < 2:
+                continue
+            codes = set.intersection(*(set(values.get(i) or {}) for i in ids))
+            for code in sorted(codes):
+                mags = [abs(values[i][code]) for i in ids if values[i][code]]
+                if len(mags) >= 2 and max(mags) / min(mags) > MAGNITUDE_LIMIT:
+                    out.append(f"{table_id}:mixed_magnitudes:{code}:{','.join(group)}.{period}")
+    return out
+
+
+def apply_accounts_table(sheet: dict, table_id: str, tpl: dict, entities: dict[str, str], comp) -> tuple[dict | None, list[str]]:
+    """'accounts_in_rows' (the 'Ctas. de Resultados' sheets): one header row with one column per Isapre and a 'total'
+    column; accounts in rows, labelled by the first ``label_columns`` cells, the first of which (the section, e.g.
+    'ingresos de actividades ordinarias') carries down until the next section. Each Isapre column, the total column and
+    each account row match exactly once; in every account row the Isapre columns sum to the total column."""
+    fail = lambda why: (None, [f"{table_id}:{why}"])  # noqa: E731
+    rows = sheet["rows"]
+    hdr_rx, why = comp(tpl.get("header_row"))
+    if not hdr_rx:
+        return fail(f"header_pattern_{why}")
+    h, _, why = ft.match_once(hdr_rx, [(i, row_text(r)) for i, r in enumerate(rows[:HEADER_SCAN_ROWS])])
+    if h is None:
+        return fail(f"header_{why}")
+    header = [(j, ft.normalize_text(v)) for j, v in enumerate(rows[h]) if v is not None]
+    failures: list[str] = []
+    cols: dict[str, int] = {}
+    for code, pattern in [*entities.items(), ("total", tpl.get("total_column"))]:
+        rx, why = comp(pattern)
+        if not rx:
+            failures.append(f"{table_id}:entity_pattern_{why}:{code}")
+            continue
+        j, _, why = ft.match_once(rx, header, full=True)
+        if j is None:
+            failures.append(f"{table_id}:entity_{why}:{code}")
+            continue
+        if j in cols.values():
+            failures.append(f"{table_id}:entity_ambiguous_column:{code}")
+        cols[code] = j
+    label_cols = int(tpl.get("label_columns") or 1)
+    if any(j < label_cols for j in cols.values()):
+        failures.append(f"{table_id}:entity_column_inside_labels")
+    numeric_cols = {j for j, _ in header if j >= label_cols}
+    unlisted = sorted(numeric_cols - set(cols.values()))
+    if unlisted:  # an Isapre column the template does not list is never dropped silently
+        failures.append(f"{table_id}:unlisted_column:" + ",".join(col_letter(j) for j in unlisted))
+    unit = tpl.get("unit") or {}
+    scale = unit_check(sheet, table_id, unit, comp, failures)
+    if failures:
+        return None, failures
+    body, section = [], None
+    for i in range(h + 1, len(rows)):
+        r = rows[i]
+        cells = [ft.normalize_text(v) if v is not None else "" for v in r[:label_cols]]
+        if cells and cells[0]:
+            section = cells[0]
+        label = " ".join(x for x in ([section or ""] + cells[1:]) if x) if label_cols > 1 else (cells[0] if cells else "")
+        if cells and cells[0] and not any(cells[1:]):
+            label = cells[0]
+        body.append((i, label))
+    fields: dict[str, dict] = {}
+    for fid, spec in (tpl.get("accounts") or {}).items():
+        if spec.get("item") not in ITEMS or spec.get("period") not in PERIODS or spec.get("sign", 1) not in (1, -1):
+            failures.append(f"{table_id}:account_spec_invalid:{fid}")
+            continue
+        rx, why = comp(spec.get("pattern"))
+        if not rx:
+            failures.append(f"{table_id}:account_pattern_{why}:{fid}")
+            continue
+        i, _, why = ft.match_once(rx, [(i, lab) for i, lab in body if lab])
+        if i is None:
+            failures.append(f"{table_id}:account_{why}:{fid}")
+            continue
+        if any(f["index"] == i for f in fields.values()):
+            failures.append(f"{table_id}:account_ambiguous_row:{fid}")
+        fields[fid] = {"index": i, "row": i + 1, "label": dict(body)[i][:120], "item": spec["item"], "period": spec["period"],
+                       "sign": spec.get("sign", 1)}
+    if not fields:
+        failures.append(f"{table_id}:no_accounts")
+    if failures:
+        return None, failures
+    tol = sum_tolerance(tpl)
+    values, cells_ref, sums = {}, {}, {}
+    for fid, f in fields.items():
+        r = rows[f["index"]]
+        vals, refs = {}, {}
+        for code, j in cols.items():
+            x = numeric(r[j]) if j < len(r) else None
+            if x is None:
+                failures.append(f"{table_id}:non_numeric:{fid}:{code}:{col_letter(j)}{f['row']}")
+                continue
+            vals[code], refs[code] = x, f"{col_letter(j)}{f['row']}"
+        if len(vals) != len(cols):
+            continue
+        parts = sum(v for k, v in vals.items() if k != "total")
+        if abs(parts - vals["total"]) > tol:
+            failures.append(f"{table_id}:sum_mismatch:{fid}")
+            continue
+        sums[fid] = f"Σ Isapres {parts:g} = total {vals['total']:g} (tolerancia {tol:g})"
+        values[fid] = {k: v * scale * f["sign"] for k, v in vals.items()}
+        cells_ref[fid] = refs
+    if not failures:
+        failures += common_guards(table_id, tpl, values, fields)
+    if failures:
+        return None, failures
+    return {"sheet": sheet["name"], "header_row": h + 1, "unit": unit.get("label") or "MM$", "scale": scale,
+            "layout": "accounts_in_rows", "columns": {k: {kk: vv for kk, vv in f.items() if kk != "index"} for k, f in fields.items()},
+            "entity_columns": {code: col_letter(j) for code, j in cols.items()},
+            "values": values, "cells": cells_ref, "sum_check": sums}, []
+
+
 def apply_table(book: dict, table_id: str, tpl: dict, entities: dict[str, str],
                 subs: dict[str, str] | None = None) -> tuple[dict | None, list[str]]:
     """Read one table through its reviewed template. Returns (table, failures)."""
@@ -204,6 +371,11 @@ def apply_table(book: dict, table_id: str, tpl: dict, entities: dict[str, str],
     if idx is None:
         return fail(f"sheet_{why}")
     sheet = book["sheets"][idx]
+    refused = unit_refusal(sheet)
+    if refused:
+        return fail(refused)
+    if tpl.get("layout") == "accounts_in_rows":
+        return apply_accounts_table(sheet, table_id, tpl, entities, comp)
     rows = sheet["rows"]
     if tpl.get("orientation", "entities_in_rows") == "entities_in_columns":
         width = max((len(r) for r in rows), default=0)
@@ -266,16 +438,7 @@ def apply_table(book: dict, table_id: str, tpl: dict, entities: dict[str, str],
         if i not in found.values() and any(numeric(rows[i][j]) is not None for j in mapped if j < len(rows[i])):
             failures.append(f"{table_id}:unlisted_row:r{i + 1}:{lab[:40]}")
     unit = tpl.get("unit") or {}
-    unit_rx, why = comp(unit.get("pattern"))
-    scale = unit.get("to_mm_clp")
-    if not unit_rx:
-        failures.append(f"{table_id}:unit_pattern_{why}")
-    elif not isinstance(scale, (int, float)) or isinstance(scale, bool) or scale <= 0:
-        failures.append(f"{table_id}:unit_scale_invalid")
-    else:
-        _, um, why = ft.match_once(unit_rx, [(i, row_text(r)) for i, r in enumerate(sheet["rows"])])
-        if um is None:
-            failures.append(f"{table_id}:unit_{why}")
+    scale = unit_check(sheet, table_id, unit, comp, failures)
     if failures:
         return None, failures
 
@@ -286,7 +449,7 @@ def apply_table(book: dict, table_id: str, tpl: dict, entities: dict[str, str],
     values: dict[str, dict] = {}
     cells: dict[str, dict] = {}
     sums: dict[str, str] = {}
-    tol = float(tpl.get("sum_tolerance") or 0)
+    tol = sum_tolerance(tpl)
     for col_id, c in columns.items():
         j = c["index"]
         vals, refs = {}, {}
@@ -306,6 +469,7 @@ def apply_table(book: dict, table_id: str, tpl: dict, entities: dict[str, str],
         # 'sign' is declared by the reviewer (e.g. -1 for costs printed as negatives); the sum check runs on the printed values
         values[col_id] = {k: v * scale * c["sign"] for k, v in vals.items()}
         cells[col_id] = refs
+    failures += common_guards(table_id, tpl, values, columns)
     if failures:
         return None, failures
     return {"sheet": sheet["name"], "header_row": h + 1, "unit": unit.get("label") or "MM$", "scale": scale,
@@ -353,20 +517,22 @@ def parse_fefi_workbook(data: bytes, template: dict | None, period: str | None =
         return {**out, "status": f"template_{state}"}
     entities = {str(k): v for k, v in (template.get("entities") or {}).items()}
     tables, failures = {}, []
-    if not entities:
+    if not entities and not all((t or {}).get("entities") for t in (template.get("tables") or {}).values()):
         failures.append("entities_not_configured")
     for table_id, tpl in (template.get("tables") or {}).items():
-        table, errs = apply_table(book, table_id, tpl, entities, subs)
+        ents = {str(k): v for k, v in (tpl.get("entities") or entities).items()}
+        table, errs = apply_table(book, table_id, tpl, ents, subs)
         failures += errs
         if table:
             tables[table_id] = table
     if not template.get("tables"):
         failures.append("tables_not_configured")
     note, why = coverage_note(book, template.get("coverage_note"), subs)
-    if template.get("coverage_note") and not note:
+    if template.get("coverage_note") and not note and (template.get("coverage_note") or {}).get("required", True):
         failures.append(f"coverage_note:{why}")
     return {**out, "status": "verified" if not failures else "failed", "failures": failures[:40],
-            "tables": tables if not failures else {}, "coverage_note": note}
+            "tables": tables if not failures else {}, "coverage_note": note,
+            **({"coverage_note_status": why} if not note else {})}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -429,7 +595,8 @@ def _recheck_doc(prev: dict, *, fetch: Callable[[str], bytes], parse: Callable[[
 def capture_fefi(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new: int = 2,
                  time_budget_s: float = cap.TIME_BUDGET_S, clock: Callable[[], float] = time.monotonic,
                  stored: Callable[[dict], bytes | None] | None = None, template: dict | None = None) -> dict:
-    """Capture the listed FEFI workbooks (newest first, at most ``max_new`` downloads or re-checks per run)."""
+    """Capture the listed FEFI workbooks (the latest, then the same quarter one year earlier, then the rest newest first;
+    at most ``max_new`` downloads or re-checks per run)."""
     root = Path(root)
     deadline = clock() + time_budget_s
     fetch = fetch or cap.SisFetcher(deadline=deadline, clock=clock)
@@ -475,7 +642,13 @@ def capture_fefi(root: Path, *, fetch: Callable[[str], bytes] | None = None, max
             return days_since(last.get("at")) >= cap.RETRY_AFTER_DAYS
         return True
 
-    for rel in reversed(fefi_releases(root)):
+    rels = list(reversed(fefi_releases(root)))  # newest first
+    if rels:  # the same quarter one year earlier comes right after the latest: it is what a/a comparisons need
+        y, m = (int(x) for x in rels[0]["period"].split("-"))
+        prior = next((r for r in rels if r["period"] == f"{y - 1}-{m:02d}"), None)
+        if prior:
+            rels = [rels[0], prior] + [r for r in rels[1:] if r is not prior]
+    for rel in rels:
         old = known.get(rel["period"])
         old_doc = (old or {}).get("document")
         if old_doc and old_doc.get("url") != rel["documents"][0]["url"]:

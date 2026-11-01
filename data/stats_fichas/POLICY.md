@@ -20,9 +20,11 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
   - F4 and F6 documents are captured by `src/radar_salud/stats_capture.py` (run by `scripts/run_stats_fichas.py`; `--no-capture` skips it) into `data/stats_fichas/captures/` (URL, SHA-256, parsed values; never the binary). Each listed SIS document is downloaded once, at most 6 per kind and run, newest release first; failures are retried 3 times, then weekly; a file that downloads but fails to parse is recorded (`parse_failed`) and retried after 7 days. Fetches go only to `www.superdesalud.gob.cl` / `superdesalud.gob.cl` over HTTPS (redirects to any other host are blocked), honour robots.txt (shared `datos_gob_sources.load_robots_policy`: 401/403/429/5xx/network fail closed, 404 allowed), stop past 25 MB per response, use a 30 s request timeout and an 8-minute budget for the whole step.
 - **Not covered:** newsletter, payments, other AI features, and radar candidates. They still follow CLAUDE.md item 3.
   - A planned family is not activated by this policy. Activating it requires its builder, tests and a PR to staging.
-- **F2 (FEFI):** no auto-publication while `HOLD_COVERAGE_ESENCIAL` is active (see `config/editorial_rules_v3.json`).
+- **F2 (FEFI):** no auto-publication while an unresolved `HOLD_COVERAGE_ESENCIAL` is active (see `config/editorial_rules_v3.json`).
+  - On 1-nov-2026 Dirección replaced that blanket hold for F2 with `rules.fefi_esencial_exclusion`. Esencial is excluded, and totals are labelled "sistema sin Esencial" and recomputed from the other 9 Isapres.
+  - The exclusion is conditional on the text of Notas Explicativas!A18. If that text changes, F2 HOLDs. The original hold is kept as history.
   - Status: `planned`. The builder is `src/radar_salud/stats_ficha_f2.py`, and capture is `src/radar_salud/stats_capture_fefi.py`, which runs only with `--family F2`.
-  - The F2 ficha HOLDs until a person reviews `families.F2.parser_template`. The steps are in PLAYBOOK.md §7.
+  - The F2 ficha HOLDs until Dirección approves `families.F2.parser_template`. The steps are in PLAYBOOK.md §7.
 
 ## Conditions to auto-publish (all are required)
 
