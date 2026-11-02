@@ -1197,3 +1197,13 @@ def test_web_ages_and_sorts_by_feed_date():
     assert "function feedDate(s){return s.feed_date||s.event_date}" in app
     assert "Date.parse(String(feedDate(s)||'').slice(0,10)" in app  # ageDays → period filter, buckets, freshness
     assert "const raw=feedDate(s)||0" in app  # dateVal → date sort
+
+
+def test_feed_date_after_snapshot_day_is_ignored(root):
+    """A snapshot dated in the past (fixture as-of) must not get a future feed_date, which would hide the card."""
+    sf.publish(f1.run(root, today=TODAY, llm=False), root)
+    live = sf.live_fichas(root)[0]
+    live["first_verified_at"] = "2026-11-02T15:00:00+00:00"
+    live["published_at"] = "2026-10-02"
+    assert "feed_date" not in sf.apply_to_snapshot([], [live], root=root, as_of=date(2026, 10, 12))[0]
+    assert sf.apply_to_snapshot([], [live], root=root, as_of=date(2026, 11, 2))[0]["feed_date"] == "2026-11-02"

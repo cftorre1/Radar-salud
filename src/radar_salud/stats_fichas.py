@@ -1241,10 +1241,11 @@ def feed_day(ficha: dict, slug: str, root: Path) -> str | None:
 
 
 def apply_to_snapshot(cards: list[dict], fichas: list[dict], registry: dict | None = None,
-                      root: Path | None = None) -> list[dict]:
+                      root: Path | None = None, as_of: date | None = None) -> list[dict]:
     """One live ficha per family: add its card and drop the pulses and loose cards whose release it covers.
 
-    With ``root`` the card carries ``feed_date`` (first verification) so the inbox shows a newly verified release."""
+    With ``root`` the card carries ``feed_date`` (first verification) so the inbox shows a newly verified release. A
+    first verification after ``as_of`` (a snapshot dated in the past, e.g. a test fixture) is ignored."""
     registry = registry or load_registry()
     out = list(cards)
     for ficha in fichas:
@@ -1261,7 +1262,10 @@ def apply_to_snapshot(cards: list[dict], fichas: list[dict], registry: dict | No
             return _stat_family(c) in fams and ficha_covers(c, ficha)
 
         out = [c for c in out if not superseded(c)]
-        out.append(ficha_card(ficha, cfg, feed_day(ficha, cfg["slug"], root) if root is not None else None))
+        feed = feed_day(ficha, cfg["slug"], root) if root is not None else None
+        if feed and as_of and feed > as_of.isoformat():
+            feed = None
+        out.append(ficha_card(ficha, cfg, feed))
     return out
 
 
