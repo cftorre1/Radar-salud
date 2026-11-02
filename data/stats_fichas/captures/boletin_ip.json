@@ -1,7 +1,7 @@
 {
   "schema_version": "stats_capture_v1",
   "kind": "boletin_ip",
-  "updated_at": "2026-11-02T01:43:09.786608+00:00",
+  "updated_at": "2026-11-02T13:34:10.973135+00:00",
   "releases": [
     {
       "period": "2025-06",
@@ -298,6 +298,68 @@
             "status": "verified",
             "pages": 8,
             "text_sha256": "ab3fa97e1c2a314772003678029f490a29a258400a12ec012c8832d91a13f97d",
+            "checker_version": 3,
+            "templates_sha256": "e44cb9396e2e0584ae856588a7b4bd522f78189d785e104b0e699acb5f6649e5",
+            "reading_sha256": "72c18ed7830e543f3b45bbc8e6c29d165c7f74212622cfdeddc5f2232ec2fc1c",
+            "verified_present": {
+              "accredited_providers": true,
+              "with_observations": true,
+              "pending_applications": true,
+              "private_pending": true,
+              "public_pending": true
+            },
+            "pages_checked": [
+              1,
+              2,
+              7,
+              8
+            ],
+            "figure_rules": {
+              "accredited_providers": {
+                "rule": "context_window",
+                "page": 2
+              },
+              "with_observations": {
+                "rule": "template",
+                "page": 2,
+                "match": "101 prestadores institucionales obtuvieron el resultado de acreditado con observaciones",
+                "reviewed_by": "Dirección (cftorre1)",
+                "reviewed_at": "2026-10-30"
+              },
+              "pending_applications": {
+                "rule": "template",
+                "page": 8,
+                "match": "numero de solicitudes de acreditacion que estan en tramitacion, al 30 de junio de 2026, desagregadas por region del prestador y tipo estados de la sol … a y parinacota 3 8 11 region de atacama 3 2 5 region de aysen 1 4 5 region de magallanes 1 2 3 total general 367 217 584",
+                "reviewed_by": "Dirección (cftorre1)",
+                "reviewed_at": "2026-10-30",
+                "sum_check": "367 + 217 = 584",
+                "parts_equal": {
+                  "private_pending": 367,
+                  "public_pending": 217
+                }
+              },
+              "private_pending": {
+                "rule": "context_window",
+                "page": 7
+              },
+              "public_pending": {
+                "rule": "context_window",
+                "page": 7
+              }
+            }
+          },
+          "rechecked_at": "2026-11-02T13:34:10.966239+00:00",
+          "rechecked_from_checker_version": 2,
+          "text_receipt": {
+            "status": "written",
+            "path": "data/stats_fichas/text/8b7f7c7a385e4c09.json",
+            "bytes": 42122,
+            "truncated": false
+          },
+          "previous_parse": {
+            "status": "verified",
+            "pages": 8,
+            "text_sha256": "ab3fa97e1c2a314772003678029f490a29a258400a12ec012c8832d91a13f97d",
             "checker_version": 2,
             "templates_sha256": "e44cb9396e2e0584ae856588a7b4bd522f78189d785e104b0e699acb5f6649e5",
             "verified_present": {
@@ -346,27 +408,7 @@
                 "page": 7
               }
             }
-          },
-          "previous_parse": {
-            "status": "verified_figure_missing",
-            "pages": 8,
-            "text_sha256": "ab3fa97e1c2a314772003678029f490a29a258400a12ec012c8832d91a13f97d",
-            "verified_present": {
-              "accredited_providers": true,
-              "with_observations": false,
-              "pending_applications": false,
-              "private_pending": true,
-              "public_pending": true
-            },
-            "pages_checked": [
-              1,
-              2,
-              7,
-              8
-            ]
-          },
-          "rechecked_at": "2026-10-30T03:42:00.948311+00:00",
-          "rechecked_from_checker_version": 1
+          }
         },
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf",
@@ -434,6 +476,144 @@
               2,
               4
             ]
+          }
+        }
+      ]
+    },
+    {
+      "period": "2026-09",
+      "number": "N°3-2026",
+      "title": "PDF sueltos N°3-2026",
+      "release_url": null,
+      "published_at": null,
+      "first_detected_at": "2026-10-29T23:30:08.542961+00:00",
+      "basis": "listing_documents",
+      "listing_titles": [
+        "Boletin N°3-2026 RNPI enero- septiembre 2026",
+        "Boletín N°3-2026 Acreditación enero-septiembre 2026",
+        "Boletín N°3-2026 Mediación enero-septiembre 2026",
+        "Boletín N°3-2026 Reclamos enero- septiembre 2026"
+      ],
+      "documents": [
+        {
+          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-acreditacion-enero-septiembre-2026-1.pdf",
+          "topic": "acreditacion",
+          "sha256": "e59bc2e84bc9ebb396154f6938ec05e3d408c6f6ad5f21fa7a19b452983a79f3",
+          "bytes": 755547,
+          "format": "pdf",
+          "fetched_at": "2026-11-02T13:34:06.813392+00:00",
+          "text_receipt": {
+            "status": "written",
+            "path": "data/stats_fichas/text/e59bc2e84bc9ebb3.json",
+            "bytes": 42407,
+            "truncated": false
+          },
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 8,
+            "text_sha256": "2366331455864195d23965e6193c340aef0b23d845dd4deb1d21e2293117c4f6",
+            "checker_version": 3,
+            "templates_sha256": "e44cb9396e2e0584ae856588a7b4bd522f78189d785e104b0e699acb5f6649e5",
+            "reading_sha256": null,
+            "template_precheck": {
+              "pending_applications": {
+                "status": "ok",
+                "pages_hint": [
+                  8
+                ],
+                "pages": [
+                  8
+                ],
+                "page": 8,
+                "on_hint": true,
+                "figures": [
+                  357,
+                  217,
+                  574
+                ]
+              },
+              "with_observations": {
+                "status": "ok",
+                "pages_hint": [
+                  2
+                ],
+                "pages": [
+                  2
+                ],
+                "page": 2,
+                "on_hint": true,
+                "figures": [
+                  124
+                ]
+              }
+            }
+          }
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-mediacion-enero-septiembre-2026.pdf",
+          "topic": "mediacion",
+          "sha256": "1ce27b6b262a9c19064a299be06849993d5021e0b35b1ea62a84b48d6aba6a12",
+          "bytes": 870896,
+          "format": "pdf",
+          "fetched_at": "2026-11-02T13:34:08.370714+00:00",
+          "text_receipt": {
+            "status": "written",
+            "path": "data/stats_fichas/text/1ce27b6b262a9c19.json",
+            "bytes": 21252,
+            "truncated": false
+          },
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 6,
+            "text_sha256": "27c727b00e25292c92c7902696018afeb356bd5e497c4d9da3fb6f1ea45374c1",
+            "checker_version": 1,
+            "templates_sha256": null
+          }
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-reclamos-enero-septiembre-2026-1.pdf",
+          "topic": "reclamos",
+          "sha256": "482c85c9c5fd1594cd9c7d702dcfa31d45e73197492645134fbefa2b3a24bc92",
+          "bytes": 681021,
+          "format": "pdf",
+          "fetched_at": "2026-11-02T13:34:08.879930+00:00",
+          "text_receipt": {
+            "status": "written",
+            "path": "data/stats_fichas/text/482c85c9c5fd1594.json",
+            "bytes": 17441,
+            "truncated": false
+          },
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 6,
+            "text_sha256": "864c879e799913ac5dc695dc3a9f3cebd9daaf4dac7961c77c698bcc5e344d98",
+            "checker_version": 1,
+            "templates_sha256": null
+          }
+        },
+        {
+          "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-rnpi-enero-septiembre-2026-1.pdf",
+          "topic": "rnpi",
+          "sha256": "577ae14006d30abfcdb074fdf7459d3fd185c6b48af422faf7f286ae5f382564",
+          "bytes": 1384449,
+          "format": "pdf",
+          "fetched_at": "2026-11-02T13:34:09.341285+00:00",
+          "text_receipt": {
+            "status": "written",
+            "path": "data/stats_fichas/text/577ae14006d30abf.json",
+            "bytes": 11610,
+            "truncated": false
+          },
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 7,
+            "text_sha256": "a997407abe949db3b7af5e3672703870889cd74b7da4ac2cfd369473a23ba06b",
+            "checker_version": 1,
+            "templates_sha256": null
           }
         }
       ]
