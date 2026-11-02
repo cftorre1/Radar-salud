@@ -47,7 +47,8 @@ def historical_draft():
 
 
 def approved_weekly():
-    return json.loads((ROOT / "data/weekly_insight/editorial_approved.json").read_text(encoding="utf-8"))["weekly_insight"]
+    # Fixture: the 23-oct licencias insight (archived when the 2-nov insight was published).
+    return json.loads((ROOT / "data/weekly_insight/archive/2026-10-23.json").read_text(encoding="utf-8"))["weekly_insight"]
 
 
 def draft():
@@ -106,7 +107,7 @@ def test_pass_publishes_monday_insight_and_archives_previous(pipeline, tmp_path)
     assert weekly["anchor_kind"] == "monday" and weekly["schema_version"] == "weekly_insight_a_v1"
     folder = tmp_path / "data/weekly_insight"
     folder.mkdir(parents=True)
-    (folder / "editorial_approved.json").write_text((ROOT / "data/weekly_insight/editorial_approved.json").read_text())
+    (folder / "editorial_approved.json").write_text((ROOT / "data/weekly_insight/archive/2026-10-23.json").read_text())
     written = gen.publish(result, tmp_path)
     assert written["published"] and (folder / "archive/2026-10-23.json").exists()
     payload = json.loads((folder / "editorial_approved.json").read_text())

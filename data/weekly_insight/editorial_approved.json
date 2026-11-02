@@ -1,147 +1,113 @@
 {
   "status": "pass",
-  "generated_at": "2026-10-27T10:56:57.336734+00:00",
-  "source_head": "645781d2f310fea2bb6b6c7b5385a93ea538c879",
+  "generated_at": "2026-11-01T23:30:00+00:00",
+  "source_head": null,
   "top3": [
     {
-      "url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
-      "title": "SUSESO · Emisión de licencias médicas disminuyó 12,3% (ene–sep 2026) · 23 oct"
+      "url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
+      "title": "Minsal · Minsal buscó y vacunó a más de 44 mil niños contra el sarampión · 28 oct"
     },
     {
-      "url": "https://www.suseso.gob.cl/605/w3-article-792305.html",
-      "title": "SUSESO · Avances en fiscalización ante Comisión de Salud del Senado · 19 oct"
+      "url": "https://www.paho.org/es/noticias/1-7-2026-chile-sale-busqueda-mas-143-mil-ninas-ninos-con-vacunacion-incompleta-contra",
+      "title": "OPS · Chile sale a la búsqueda de niños con vacunación incompleta · 1 jul"
     },
     {
-      "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
-      "title": "SUSESO · Registro de sanciones a emisores de licencias"
+      "url": "https://www.paho.org/sites/default/files/2026/10/ops-sarampion-sitrep14-es.pdf",
+      "title": "OPS · Informe de situación de sarampión en las Américas · 22 oct"
     }
   ],
   "weekly_insight": {
-    "id": "weekly-insight:2026-10-23:licencias-control-y-costo",
-    "title": "Licencias médicas caen 12,3% en plena ofensiva de control: la caída se modera y eso importa para 2027",
-    "insight_title": "Licencias médicas caen 12,3% en plena ofensiva de control: la caída se modera y eso importa para 2027",
-    "event_date": "2026-10-23",
-    "freshness_anchor_date": "2026-10-23",
-    "expires_on": "2026-11-02",
+    "id": "weekly-insight:2026-11-02:sarampion-rezago",
+    "title": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
+    "insight_title": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
+    "event_date": "2026-10-28",
+    "freshness_anchor_date": "2026-11-02",
+    "anchor_kind": "monday",
+    "expires_on": "2026-11-09",
     "editorial_review_pass": true,
-    "source_name": "SUSESO · registro de sanciones · DF y La Tercera",
-    "source_url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
+    "source_name": "Minsal · OPS · prensa (Presupuesto 2027)",
+    "source_url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
     "schema_version": "weekly_insight_a_v1",
-    "headline": "Las licencias médicas caen 12,3%, pero la caída ya se frena: 2027 no debería presupuestarse con el ahorro de 2026",
-    "dek": "Entre enero y septiembre se emitieron 5.155.495 licencias médicas electrónicas, 12,3% menos que en 2025. Un mes antes, la baja acumulada era de 14%.",
-    "dek_emphasis": "5.155.495 licencias médicas electrónicas",
+    "headline": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
+    "dek": "Desde julio, el Minsal vacunó a 44.386 niños con el esquema contra el sarampión incompleto. Aun así, quedan más de 140 mil, frente a más de 143 mil en julio.",
+    "dek_emphasis": "44.386 niños",
     "estimates": [
       {
-        "id": "dias_reposo",
-        "label": "días totales de reposo",
-        "value": -21.9,
-        "unit": "%",
-        "display": "≈ −22%",
-        "formula": "(0.877 * 0.891 - 1) * 100",
+        "id": "crecimiento_casos",
+        "label": "veces que crecieron los casos confirmados en las Américas",
+        "value": 2.54,
+        "unit": "veces",
+        "display": "≈ 2,5 veces",
+        "formula": "56753 / 22324",
         "inputs": [
-          "licencias -12,3%",
-          "días promedio 12,8→11,4"
+          "22.324 casos al 18 de junio",
+          "56.753 casos al 17 de octubre"
         ],
-        "note_ref": "n1"
+        "note_ref": "n4"
       },
       {
-        "id": "moderacion_total",
-        "label": "moderación de la caída acumulada, Total",
-        "value": 1.7,
-        "unit": "pp",
-        "formula": "-12.3 - (-14.0)"
+        "id": "sin_dosis_pct",
+        "label": "porcentaje de rezagados sin ninguna dosis",
+        "value": 33,
+        "unit": "%",
+        "formula": "27 + 6"
       },
       {
-        "id": "moderacion_fonasa",
-        "label": "moderación de la caída acumulada, Fonasa",
-        "value": 1.0,
-        "unit": "pp",
-        "formula": "-13.4 - (-14.4)"
-      },
-      {
-        "id": "moderacion_isapres",
-        "label": "moderación de la caída acumulada, Isapres",
-        "value": 1.3,
-        "unit": "pp",
-        "formula": "-12.2 - (-13.5)"
+        "id": "sin_dosis",
+        "label": "niños rezagados sin ninguna dosis, octubre",
+        "value": 46.2,
+        "unit": "miles",
+        "display": "≈ 46 mil",
+        "formula": "140 * (27 + 6) / 100",
+        "inputs": [
+          "más de 140 mil",
+          "27% + 6%"
+        ],
+        "note_ref": "n2"
       }
     ],
     "charts": [
       {
-        "id": "moderacion",
-        "form": "paired_bars",
-        "headline": "La caída se achica en todos los seguros",
-        "subtitle": "Variación interanual acumulada de licencias emitidas",
-        "unit": "%",
-        "series": [
-          {
-            "key": "ago",
-            "label": "ene–ago",
-            "emphasis": false
-          },
-          {
-            "key": "sep",
-            "label": "ene–sep",
-            "emphasis": true
-          }
-        ],
+        "id": "rezago",
+        "form": "columns",
+        "headline": "El rezago casi no se mueve",
+        "subtitle": "Niños con el esquema contra el sarampión incompleto, en miles (cifra mínima informada)",
+        "unit": "miles",
         "rows": [
           {
-            "label": "Total",
-            "values": {
-              "ago": -14.0,
-              "sep": -12.3
-            },
+            "label": "1 jul",
+            "value": 143
+          },
+          {
+            "label": "28 oct",
+            "value": 140,
             "strong": true
-          },
-          {
-            "label": "Fonasa",
-            "values": {
-              "ago": -14.4,
-              "sep": -13.4
-            }
-          },
-          {
-            "label": "Isapres",
-            "values": {
-              "ago": -13.5,
-              "sep": -12.2
-            }
           }
         ],
-        "delta": {
-          "from": "ago",
-          "to": "sep",
-          "unit": "pp",
-          "label": "se modera"
-        },
-        "footnote": "Barra más corta = caída menor · pp = puntos porcentuales",
-        "source": "SUSESO (ene–sep, 23 oct) y datos SUSESO citados por Pulso (ene–ago, 9 oct).",
-        "note_refs": []
+        "footnote": "Entre ambas fechas se vacunó a 44.386 niños rezagados.",
+        "source": "OPS (1 jul) y Minsal (28 oct).",
+        "note_refs": [
+          "n1"
+        ]
       },
       {
-        "id": "sanciones",
+        "id": "casos_americas",
         "form": "columns",
-        "headline": "Más de 30 sanciones a emisores al mes",
-        "subtitle": "Oficios de sanción a emisores de licencias, por mes",
-        "unit": "oficios",
+        "headline": "Los casos de la región se multiplicaron por 2,5",
+        "subtitle": "Casos confirmados de sarampión en las Américas, acumulados desde enero",
+        "unit": "casos",
         "rows": [
           {
-            "label": "Ago",
-            "value": 36
+            "label": "al 18 jun",
+            "value": 22324
           },
           {
-            "label": "Sep",
-            "value": 32
-          },
-          {
-            "label": "Oct",
-            "value": 15,
-            "style": "partial",
-            "partial_label": "parcial · al día 16"
+            "label": "al 17 oct",
+            "value": 56753,
+            "strong": true
           }
         ],
-        "source": "Registro de sanciones SUSESO capturado por Alicanto.",
+        "source": "OPS: nota del 1 jul e informe de situación del 22 oct.",
         "note_refs": [
           "n4"
         ]
@@ -151,152 +117,122 @@
       "facts": {
         "heading": "Qué pasó",
         "paragraphs": [
-          "La baja es pareja entre seguros, sexo y sector. Los reposos también son más cortos, con 11,4 días promedio frente a 12,8 un año antes. Las licencias por trastornos mentales caen 24,3%. Todo ocurre en el ciclo de control más intenso registrado: la SUSESO observó 190.219 licencias de 114.099 personas por posibles usos indebidos, con un techo bruto de más de $85 mil millones en subsidios,[^n5] abrió 312 investigaciones a emisores y, desde el 23 de octubre, limita qué diagnósticos pueden certificar dentistas y matronas. La SUSESO no atribuye la baja a una sola causa."
+          "El Minsal informó que, desde julio, vacunó a 44.386 niños de hasta 6 años que tenían una dosis o ninguna. De los que siguen pendientes, 27% necesita ambas dosis y casi 62 mil viven en la Región Metropolitana. Chile no tiene transmisión comunitaria desde 1993 y este año confirmó tres casos importados.",
+          "En la región, la OPS registra 81 muertes en 2026 y Perú suma 2.698 casos. Según el Minsal, la OPS califica de \"muy alto\" el riesgo en los eventos masivos de la visita del Papa León XIV a Argentina, Perú y Uruguay, entre el 6 y el 17 de noviembre. El proyecto de Presupuesto 2027 recorta 5,3% real el Programa Nacional de Inmunizaciones, unos $9 mil millones según la Subsecretaría. La subsecretaria Pizarro aseguró que \"no le va a faltar vacuna a nadie\".[^n3]"
         ]
       },
       "reading": {
         "heading": "Lectura Alicanto",
         "paragraphs": [
-          "Para quien paga el subsidio, la cifra que importa son los días, no las licencias. Combinando menos licencias y reposos más cortos, estimamos que los días de reposo cayeron en torno a 22%.[^n1]",
-          "Ese ahorro es real, pero no es una tendencia. La caída perdió casi dos puntos en un mes, y agosto ya mostró un alza interanual de 4,6% por baja base de comparación. Si el control explica parte de la baja,[^n2] su efecto podría estar tocando piso. Las Isapres, cuyos planes más baratos la prensa atribuye en parte al menor gasto en licencias,[^n3] harían mal en proyectar a 2027 la caída de 2026.",
-          "La baja en salud mental pide cautela: puede mezclar abuso corregido con reposos legítimos que dejaron de otorgarse."
+          "Lo que importa es cuánto bajó el rezago: muy poco. Y los niños sin ninguna dosis no muestran una baja. Eran alrededor de 43 mil en julio; estimamos unos 46 mil en octubre.[^n2] Una explicación compatible con los datos: el rezago se repone con niños que llegan a la edad de cada dosis sin recibirla.[^n5]",
+          "Si es así, el cuello de botella no está en la compra de dosis, sino en encontrar y citar a cada niño: trabajo de atención primaria, municipios y colegios que el debate sobre la línea de vacunas no mide. Para clínicas y aseguradoras, un caso importado tras los viajes de noviembre podría significar aislamientos, rastreo y presión sobre urgencias pediátricas."
         ]
       }
     },
     "watch_heading": "Qué mirar en las próximas semanas",
     "watch": [
       {
-        "headline": "Cifras de licencias de octubre a diciembre.",
-        "explanation": "Si vuelven a superar a las del mismo mes de 2025, el efecto del control habría tocado piso y el ahorro de 2026 no se repetiría."
+        "headline": "Viajes por la gira del Papa León XIV.",
+        "explanation": "La OPS califica de muy alto el riesgo de propagación ante eventos religiosos masivos en Sudamérica; un caso importado al regreso pondría a prueba la vigilancia y la red pediátrica."
       },
       {
-        "headline": "Rechazos por competencia profesional.",
-        "explanation": "Desde el 23 de octubre, Isapres y COMPIN deben rechazar licencias de dentistas y matronas por diagnósticos que ya no pueden certificar (Circular 3931)."
+        "headline": "La próxima cifra de rezago del Minsal.",
+        "explanation": "Si sigue sobre 140 mil pese a la búsqueda activa, entran niños al rezago casi tan rápido como salen y la estrategia necesitaría otro diseño."
       },
       {
-        "headline": "Precios de planes Isapre 2027.",
-        "explanation": "Conviene revisar si cada aseguradora explica cuánto pesa el gasto en licencias en su tarifa."
+        "headline": "La votación de la partida de Salud en el Congreso.",
+        "explanation": "El recorte de 5,3% real al Programa Nacional de Inmunizaciones todavía puede cambiar antes de que el presupuesto se convierta en ley."
       }
     ],
     "notes": [
       {
         "id": "n1",
-        "kind": "estimate",
-        "text": "Estimación Alicanto: 0,877 × 0,891 ≈ 0,78. Licencias emitidas y días autorizados tienen denominadores distintos; es un orden de magnitud, no una cifra oficial."
+        "kind": "coverage",
+        "text": "Ambas cifras son mínimas (\"más de\") y describen niños con esquema incompleto; ninguna fuente precisa la fecha de corte ni el rango de edad de cada una, así que la comparación es aproximada. La de julio la publicó la OPS; la de octubre, el Minsal. Ninguna informa cuántos niños entraron al rezago en el período."
       },
       {
         "id": "n2",
-        "kind": "causality",
-        "text": "La coincidencia entre fiscalización y menor emisión es temporal; no está demostrado que una cause la otra."
+        "kind": "estimate",
+        "text": "Estimación Alicanto: 27% que necesita ambas dosis más 6% de menores de 3 años sin la primera, aplicado a 140 mil (≈ 46 mil). Los porcentajes vienen redondeados y 140 mil es un mínimo; es un orden de magnitud, no una cifra oficial."
       },
       {
         "id": "n3",
         "kind": "press",
-        "text": "El vínculo entre gasto en licencias y precio de planes proviene de prensa, no de estados financieros verificados."
+        "text": "El recorte proviene de prensa: Radio Universidad de Chile informa una reducción de $9.696 millones y Diario Estrategia, citando a la Subsecretaría de Salud Pública, un recorte de 5,3% real (unos $9 mil millones). Ninguna fuente aclara si los $9.696 millones son reales o nominales. Es un proyecto en discusión en el Congreso; todavía no es ley."
       },
       {
         "id": "n4",
         "kind": "coverage",
-        "text": "El registro es una ventana móvil de 90 días. Octubre es parcial (hasta el día 16) y julio se excluye por posible cobertura incompleta."
+        "text": "Casos confirmados acumulados desde el 4 de enero. La OPS advierte que la falta de notificación y los retrasos pueden subestimar el total de casos."
       },
       {
         "id": "n5",
-        "kind": "non_final",
-        "text": "Las licencias observadas por fiscalización no son resoluciones firmes; el monto es un techo bruto entre todos los pagadores."
+        "kind": "causality",
+        "text": "Es una inferencia de Alicanto: el Minsal no publica cuántos niños se suman al rezago cada mes, así que no se puede separar el avance de la campaña de la reposición."
       }
     ],
     "reading_time_min": 2,
-    "summary": "Entre enero y septiembre de 2026 se emitieron 5.155.495 licencias médicas electrónicas, 12,3% menos que en 2025 (Fonasa -13,4%, Isapres -12,2%), con reposos más cortos (11,4 días promedio vs 12,8). Combinando ambas cifras, los días de reposo habrían caído en torno a 22%, la variable que mueve el costo del subsidio. Pero la caída se está moderando: a agosto era de 14% y ese mes las licencias subieron 4,6% por baja base de comparación. Ocurre en el ciclo de fiscalización más intenso registrado (VigIA, sanciones a emisores, causas penales), sin que la SUSESO atribuya la baja a una sola causa.",
-    "insight_teaser": "−12,3% en licencias y ≈ −22% en días de reposo, pero la caída se modera: qué significa para Isapres, Fonasa y prestadores en 2027.",
+    "summary": "Desde julio, el Minsal vacunó a 44.386 niños rezagados contra el sarampión, pero el rezago pasó de más de 143 mil (julio) a más de 140 mil (octubre), y los niños sin ninguna dosis no muestran una baja (≈ 46 mil en octubre frente a unos 43 mil en julio, estimación Alicanto). Ocurre mientras los casos confirmados en las Américas crecieron ≈ 2,5 veces entre junio y octubre, la OPS califica de muy alto el riesgo en la gira del Papa León XIV (6 al 17 de noviembre) y el proyecto de Presupuesto 2027 recorta 5,3% real el Programa Nacional de Inmunizaciones.",
+    "insight_teaser": "Chile vacunó a 44.386 niños rezagados contra el sarampión, pero el rezago sigue sobre 140 mil: el desafío parece ser encontrarlos, no comprar dosis.",
     "key_figures": [
-      "5.155.495 licencias electrónicas entre enero y septiembre de 2026: -12,3% interanual (Fonasa -13,4%, Isapres -12,2%).",
-      "Días promedio autorizados: de 12,8 a 11,4. Estimación Alicanto: días totales de reposo ≈ -22% (0,877 × 0,891; aproximado, porque licencias emitidas y días autorizados tienen denominadores distintos).",
-      "La caída se modera: -14% a agosto (Fonasa -14,4%, Isapres -13,5%) vs -12,3% a septiembre; agosto subió 4,6% interanual por baja base de comparación.",
-      "Trastornos mentales: -24,3% a septiembre (cerca de -26% a agosto); pasaron de 32,1% a 27,8% del total a agosto.",
-      "Fiscalización 2025–2026: 190.219 licencias de 114.099 personas observadas por posibles usos indebidos; techo bruto estimado de más de $85 mil millones en subsidios, entre todos los pagadores. 312 investigaciones a emisores con VigIA.",
-      "Registro de sanciones a emisores capturado por Alicanto: entre agosto y septiembre, 32–36 oficios mensuales; octubre lleva 15 al día 16."
-    ],
-    "actors": [
-      "Isapres y Fonasa: pagadores del subsidio por incapacidad laboral de origen común.",
-      "Médicos, dentistas y matronas emisores, y los prestadores donde emiten.",
-      "COMPIN y contralorías médicas de las Isapres, que dictaminan y ahora deben rechazar licencias fuera de competencia.",
-      "Empleadores públicos y privados."
-    ],
-    "insight_reading": [
-      "Hecho: la baja es transversal por seguro, sexo y sector, y viene con reposos más cortos y menos personas usuarias.",
-      "Inferencia Alicanto: ese patrón es consistente con un cambio en la conducta de emisión y autorización, no solo con menos enfermedad; la SUSESO no lo atribuye a una sola causa.",
-      "Hecho: el control cambió de escala en 2026 (cruces masivos con VigIA, oficios de sanción mensuales, derivaciones al Ministerio Público y condenas por emisión fraudulenta), y desde el 23 de octubre la Circular 3931 limita los diagnósticos que pueden certificar dentistas y matronas.",
-      "Inferencia Alicanto: la moderación de la caída sugiere que el ajuste de 2026 podría estar tocando su piso. Para las Isapres, cuya baja de precios de planes la prensa atribuye a la ley corta y a un gasto SIL 13,6% menor entre 2024 y 2025, proyectar a 2027 la misma intensidad de caída sería arriesgado.",
-      "Inferencia Alicanto: la caída en salud mental (-24,3%) es la cifra que requiere más cuidado: puede combinar uso indebido corregido con barreras a reposos legítimos."
-    ],
-    "decision_use": [
-      "Isapres: modelar el costo SIL 2027 por días (≈ -22% en 2026), no solo por número de licencias, y con un escenario de caída moderándose.",
-      "Prestadores y redes: revisar los perfiles de emisión de sus profesionales frente al registro de sanciones y a la Circular 3931; la exposición reputacional ya no es teórica.",
-      "Fonasa y empleadores públicos: priorizar la recuperación sobre el techo bruto observado y el seguimiento de los 5.646 funcionarios que viajaron durante su licencia.",
-      "COMPIN e Isapres: ajustar procesos para rechazar, con motivo explícito, licencias fuera de competencia profesional desde el 23 de octubre."
-    ],
-    "what_to_watch": [
-      "Cifras de octubre a diciembre: si la variación interanual vuelve a terreno positivo, el efecto del control habría tocado piso.",
-      "Aplicación de la Circular 3931 y rechazos por competencia; la Circular 3926 regirá el procedimiento del artículo 30 del DS 3 desde el 4 de enero de 2027.",
-      "Resultados de las 312 investigaciones VigIA: sanciones, suspensiones y casos penales.",
-      "Tarifas y planes de Isapres para 2027 y si explicitan el gasto en licencias."
-    ],
-    "uncertainties": [
-      "La relación entre fiscalización y caída de emisión es temporal, no causal demostrada.",
-      "La estimación de días (≈ -22%) combina dos indicadores con denominadores distintos; es un orden de magnitud, no una cifra oficial.",
-      "El registro de sanciones es una ventana móvil de 90 días; julio puede estar incompleto y no se usa para comparar.",
-      "El vínculo entre gasto en licencias y precios de planes proviene de prensa, no de estados financieros verificados.",
-      "Las licencias observadas por fiscalización no son resoluciones firmes."
+      "Minsal (28 oct): más de 44 mil niños vacunados; 44.386 niños de hasta 6 años con una dosis o ninguna, inmunizados desde julio.",
+      "Minsal (28 oct): más de 140 mil niños con esquema incompleto; casi 62 mil en la Región Metropolitana; cerca de 7 de cada 10 son mayores de 3 años a quienes solo les falta la segunda dosis; 27% requiere ambas dosis; 6% son menores de 3 años sin primera dosis.",
+      "OPS (1 jul): más de 143 mil niños con vacunación incompleta; alrededor de 43 mil sin primera dosis y cerca de 100 mil con la segunda pendiente.",
+      "Minsal (28 oct): sin transmisión comunitaria desde 1993; 460 casos sospechosos y tres casos importados confirmados en 2026; según el Minsal, citando a la OPS, los contagios en las Américas son los más altos en 22 años.",
+      "OPS (1 jul): 22.324 casos confirmados y 38 fallecimientos en las Américas al 18 de junio.",
+      "OPS, informe de situación (22 oct): 56.753 casos confirmados y 81 muertes en 2026, al 17 de octubre; Perú 2.698 casos; Bolivia 120; aumento de 4,8 veces frente a 2025.",
+      "OPS (9 oct): riesgo de propagación muy alto ante eventos religiosos masivos; Minsal (28 oct): gira del Papa León XIV por Argentina, Perú y Uruguay entre el 6 y el 17 de noviembre.",
+      "Proyecto de Presupuesto 2027: Programa Nacional de Inmunizaciones con un recorte de 5,3% real, unos 9 mil millones de pesos (Subsecretaría de Salud Pública, vía Diario Estrategia, 20 oct); Radio Universidad de Chile (19 oct) informa una reducción de 9.696 millones de pesos, sin precisar si es real o nominal."
     ],
     "source_refs": [
-      "https://www.suseso.gob.cl/605/w3-article-792643.html",
-      "https://www.suseso.gob.cl/605/w3-article-792305.html",
-      "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
-      "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
-      "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
-      "https://www.suseso.gob.cl/605/w3-article-792754.html"
+      "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
+      "https://www.paho.org/es/noticias/1-7-2026-chile-sale-busqueda-mas-143-mil-ninas-ninos-con-vacunacion-incompleta-contra",
+      "https://www.paho.org/sites/default/files/2026/10/ops-sarampion-sitrep14-es.pdf",
+      "https://www.paho.org/es/noticias/9-10-2026-ops-evalua-como-muy-alto-riesgo-propagacion-sarampion-ante-proximos-eventos",
+      "https://radio.uchile.cl/2026/10/19/presupuesto-de-salud-2027-recortes-a-la-ley-ricarte-soto-y-al-plan-de-vacunas-abren-debate-en-el-congreso/",
+      "https://www.diarioestrategia.cl/texto-diario/mostrar/6058803/recortes-asignaciones-salud-concitan-debate-tercera-subcomision-mixta-presupuestos"
     ],
     "sources": [
       {
-        "label": "SUSESO · Emisión de licencias médicas disminuyó 12,3% (ene–sep 2026) · 23 oct",
-        "url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
-        "role": "Fuente primaria de volumen, días promedio y variación por seguro y diagnóstico.",
-        "short_label": "SUSESO · Emisión de licencias médicas disminuyó 12,3% (23 oct)",
-        "short_role": "volumen, días y variación por seguro"
+        "label": "Minsal · Minsal buscó y vacunó a más de 44 mil niños contra el sarampión · 28 oct",
+        "url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
+        "role": "Fuente primaria de la noticia: vacunados, rezago de octubre, casos en Chile y gira del Papa.",
+        "short_label": "Minsal · vacunación contra el sarampión (28 oct)",
+        "short_role": "noticia gatillante"
       },
       {
-        "label": "SUSESO · Avances en fiscalización ante Comisión de Salud del Senado · 19 oct",
-        "url": "https://www.suseso.gob.cl/605/w3-article-792305.html",
-        "role": "Fuente primaria de licencias observadas, gasto estimado e investigaciones VigIA.",
-        "short_label": "SUSESO · Avances en fiscalización ante el Senado (19 oct)",
-        "short_role": "licencias observadas, VigIA"
+        "label": "OPS · Chile sale a la búsqueda de niños con vacunación incompleta · 1 jul",
+        "url": "https://www.paho.org/es/noticias/1-7-2026-chile-sale-busqueda-mas-143-mil-ninas-ninos-con-vacunacion-incompleta-contra",
+        "role": "Fuente primaria del rezago de julio y de los casos regionales al 18 de junio.",
+        "short_label": "OPS · búsqueda de niños rezagados (1 jul)",
+        "short_role": "rezago de julio"
       },
       {
-        "label": "SUSESO · Registro de sanciones a emisores de licencias",
-        "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
-        "role": "Oficios de sanción capturados por Alicanto (registro de 90 días).",
-        "short_label": "SUSESO · Registro de sanciones a emisores",
-        "short_role": "oficios mensuales"
+        "label": "OPS · Informe de situación de sarampión en las Américas · 22 oct",
+        "url": "https://www.paho.org/sites/default/files/2026/10/ops-sarampion-sitrep14-es.pdf",
+        "role": "Fuente primaria de casos y muertes por país al 17 de octubre.",
+        "short_label": "OPS · informe de situación (22 oct)",
+        "short_role": "casos por país"
       },
       {
-        "label": "SUSESO · Circular 3931: diagnósticos que pueden certificar dentistas y matronas (vigente desde 23 oct)",
-        "url": "https://www.suseso.gob.cl/605/w3-article-792754.html",
-        "role": "Fuente primaria de la nueva regla de emisión.",
-        "short_label": "SUSESO · Circular 3931 (vigente desde 23 oct)",
-        "short_role": "nueva regla de emisión"
+        "label": "OPS · Riesgo muy alto de propagación ante eventos masivos · 9 oct",
+        "url": "https://www.paho.org/es/noticias/9-10-2026-ops-evalua-como-muy-alto-riesgo-propagacion-sarampion-ante-proximos-eventos",
+        "role": "Fuente primaria de la evaluación de riesgo.",
+        "short_label": "OPS · evaluación de riesgo (9 oct)",
+        "short_role": "riesgo en eventos masivos"
       },
       {
-        "label": "La Tercera/Pulso · Licencias anotan en agosto su mayor alza en año y medio · 9 oct",
-        "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
-        "role": "Prensa: contrapunto de corto plazo por baja base de comparación.",
-        "short_label": "La Tercera/Pulso · Licencias anotan en agosto su mayor alza (9 oct)",
+        "label": "Radio Universidad de Chile · Recortes a la Ley Ricarte Soto y al plan de vacunas · 19 oct",
+        "url": "https://radio.uchile.cl/2026/10/19/presupuesto-de-salud-2027-recortes-a-la-ley-ricarte-soto-y-al-plan-de-vacunas-abren-debate-en-el-congreso/",
+        "role": "Prensa: monto del recorte al Programa Nacional de Inmunizaciones y respuesta de la subsecretaria.",
+        "short_label": "Radio U. de Chile · recorte al plan de vacunas (19 oct)",
         "short_role": "prensa"
       },
       {
-        "label": "La Tercera/Pulso · Isapres ofrecen los planes más baratos en cinco años · 30 ago",
-        "url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
-        "role": "Prensa: vínculo informado entre menor gasto en licencias y precios de planes.",
-        "short_label": "La Tercera/Pulso · Isapres ofrecen los planes más baratos en cinco años (30 ago)",
+        "label": "Diario Estrategia · Recortes y asignaciones en Salud (Subcomisión Mixta de Presupuestos) · 20 oct",
+        "url": "https://www.diarioestrategia.cl/texto-diario/mostrar/6058803/recortes-asignaciones-salud-concitan-debate-tercera-subcomision-mixta-presupuestos",
+        "role": "Prensa: recorte en términos reales al Programa Nacional de Inmunizaciones.",
+        "short_label": "Diario Estrategia · debate de la partida de Salud (20 oct)",
         "short_role": "prensa"
       }
     ],
@@ -304,99 +240,44 @@
     "model_trace": {
       "mode": "senior_editorial_work_session",
       "api_call": false,
-      "model": "claude-opus-5-5 (sesión de orquestación)",
-      "note": "Redactado desde señales verificadas del historial y fuentes primarias SUSESO; revisión independiente aparte."
-    },
-    "legacy_charts": [
-      {
-        "type": "bars",
-        "title": "La caída se modera: variación acumulada de licencias emitidas",
-        "unit": "%",
-        "rows": [
-          {
-            "label": "Total ene–ago",
-            "value": -14.0
-          },
-          {
-            "label": "Total ene–sep",
-            "value": -12.3
-          },
-          {
-            "label": "Fonasa ene–ago",
-            "value": -14.4
-          },
-          {
-            "label": "Fonasa ene–sep",
-            "value": -13.4
-          },
-          {
-            "label": "Isapres ene–ago",
-            "value": -13.5
-          },
-          {
-            "label": "Isapres ene–sep",
-            "value": -12.2
-          }
-        ],
-        "source": "SUSESO (ene–sep, 23 oct) y datos SUSESO citados por Pulso (ene–ago, 9 oct)"
-      },
-      {
-        "type": "bars",
-        "title": "Oficios de sanción a emisores de licencias por mes",
-        "unit": "oficios",
-        "rows": [
-          {
-            "label": "Ago",
-            "value": 36
-          },
-          {
-            "label": "Sep",
-            "value": 32
-          },
-          {
-            "label": "Oct (al 16)",
-            "value": 15,
-            "style": "partial"
-          }
-        ],
-        "source": "Registro SUSESO capturado por Alicanto (ventana de 90 días); octubre parcial"
-      }
-    ],
-    "editorial_notes": [
-      "27-oct: vigencia extendida al lunes 2-nov (paso a insight semanal de los lunes, Dirección 27-oct)."
-    ]
+      "model": "claude-opus-5-5 (sesión editorial programada)",
+      "note": "Redactado desde fuentes primarias Minsal y OPS, con prensa declarada; revisión independiente aparte."
+    }
   },
   "freshness_gate": {
-    "anchor": "2026-10-23",
-    "expires_on": "2026-10-30"
+    "anchor": "2026-11-02",
+    "anchor_kind": "monday",
+    "expires_on": "2026-11-09"
   },
   "audit": {
     "verdict": "PASS",
     "editorial_business_review_pass": true,
-    "reviewer": "Claude (sesión editorial) + revisor independiente (PASS_WITH_NOTES; 6 correcciones incorporadas)",
+    "reviewer": "Claude (sesión editorial programada, autorrevisión escéptica) + subagente revisor independiente (PASS_WITH_CORRECTIONS; 6 correcciones incorporadas)",
     "independent_second_reviewer": true,
-    "lenses": {
-      "editorial": "PASS: tesis cruzada con cifras primarias",
-      "health_business": "PASS: decisiones por actor",
-      "data": "PASS: cifras literales de SUSESO; serie de sanciones acotada a cobertura completa",
-      "evidence": "PASS: fuentes primarias SUSESO + prensa declarada como tal",
-      "decision_intelligence": "PASS: qué observar con fechas"
+    "deterministic_verification": {
+      "verify_candidate": "PASS",
+      "presentation_a_errors": [],
+      "evidence_numbers": 34,
+      "allowed_urls": 6
     },
     "corrections_incorporated": [
-      "Circular 3931 vigente como hecho",
-      "serie de sanciones acotada",
-      "título sin causalidad",
-      "inferencias rotuladas",
-      "techo bruto de $85 mil millones",
-      "estimación de días y moderación ene–ago vs ene–sep",
-      "revisión PR #72 (N6): 'Qué mirar' 3 completo y teaser unificado en ≈ −22%"
+      "n3 sin 'aprobado en subcomisión' ni 'nota del Senado'",
+      "5,3% real separado de $9.696 millones (real/nominal no informado)",
+      "n1: comparación jul/oct aproximada",
+      "titular y teaser con 'parece ser'",
+      "'no muestran una baja' en vez de 'no disminuyeron'",
+      "riesgo por la gira del Papa atribuido al Minsal citando a la OPS"
     ],
     "presentation": {
       "format": "weekly_insight_a_v1",
       "approved_by": "Dirección",
-      "approved_on": "2026-10-27",
-      "note": "Presentación A (titular → gráficos → ensayo → qué mirar → notas). Texto tomado de design/insight/proposal-a.html; cifras sin cambios respecto de key_figures. decision_use, actors, insight_reading y uncertainties se conservan como registro, pero no se renderizan."
+      "approved_on": "2026-10-27"
     }
   },
-  "integration_reassessment": null
+  "model": {
+    "mode": "senior_editorial_work_session",
+    "api_call": false,
+    "model": "claude-opus-5-5 (sesión editorial programada)",
+    "note": "Redactado desde fuentes primarias Minsal y OPS, con prensa declarada; revisión independiente aparte."
+  }
 }
