@@ -196,3 +196,27 @@ test('the meta list is the builder\'s own words: data period, publication with i
  assert.deepEqual(m('serie anual · se actualiza cada año','2026-01-01'),{lines:[],rest:['Serie anual','Se actualiza cada año']});
  assert.deepEqual(m(undefined,undefined),{lines:[],rest:[]});
 });
+
+// Dirección 2-nov (F2): MM$ display as whole numbers with thousand separators; the rows keep full precision.
+test('charts with digits round their labels like the builder: whole MM$ in diverging, columns and bars',()=>{
+ const F=load(),rows=[{label:'Mar 2025',value:1215.2849999999994},{label:'Mar 2026',value:34120.35800000001,emphasis:true},{label:'Isalud',value:-754.4}];
+ for(const form of ['diverging','columns_signed']){
+  const html=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'r',form,unit:'MM$',digits:0,headline:'x',rows}]}]});
+  assert.match(html,/\+1\.215</);assert.match(html,/\+34\.120</);assert.match(html,/−754</);
+  assert.doesNotMatch(html,/1\.215,285|34\.120,358|754,4/,form);
+ }
+ const bars=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'b',form:'bars',unit:'MM$',digits:0,headline:'x',rows:[{label:'Cotización legal',value:739841.307},{label:'Otros',value:1316.1}]}]}]});
+ assert.match(bars,/>739\.841</);assert.match(bars,/>1\.316</);assert.doesNotMatch(bars,/739\.841,307|1\.316,1/);
+ // Without digits (F1/F6 integer counts) the labels are unchanged.
+ const plain=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'p',form:'diverging',headline:'x',rows:[{label:'A',value:-27355},{label:'B',value:120}]}]}]});
+ assert.match(plain,/−27\.355</);assert.match(plain,/\+120</);
+});
+
+test('a coverage footnote (F2 Esencial) is one visible line right above Notas y fuentes, never in the header',()=>{
+ const F=load(),note='Cifras del sistema sin Isapre Esencial: según la SIS (nota A18), sus cifras a marzo 2026 están en revisión. Los totales suman las otras 9 Isapres.';
+ const html=F.render({...pub,scope_note:note});
+ const at=html.indexOf('<p class="sf-scope">'),notes=html.indexOf('<details class="sf-notes">');
+ assert.ok(at>0&&at<notes&&html.indexOf('sf-topic')<at,'footnote after the topics, before the collapsed notes');
+ assert.ok(html.indexOf('sf-headline')<at&&!html.slice(0,html.indexOf('sf-dek')).includes('Esencial'));
+ assert.doesNotMatch(F.render(pub),/sf-scope/);
+});

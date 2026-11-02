@@ -234,6 +234,7 @@ def test_real_fefi_ficha_note_and_template_rule(real_books, capsys, tmp_path, mo
         assert fi["kicker"] == f"Estados financieros Isapres · {sf.month_label(fi['period'])}"
         if any(n["id"] == "n0" for n in fi["notes"]):  # Esencial excluded by the A18 rule
             assert not any(".108." in vid for vid in fi["evidence"]["values"])
-            assert all(k["label"].endswith("(sistema sin Esencial)") for k in fi["kpis"])
+            assert not any("Esencial" in k["label"] for k in fi["kpis"]) and "Esencial" in fi["scope_note"]
+            assert "Esencial" not in fi["headline"]
     else:
         assert res.get("errors")  # a HOLD always says why (printed above); it never publishes

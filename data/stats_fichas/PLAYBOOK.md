@@ -35,7 +35,9 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 | Las descomposiciones suman (cotizantes + cargas = cambio; privadas + públicas = trámite; Isapres = total sistema). Si no, HOLD. | F1 `table_cot_plus_cargas` y reconciliación; F6 `privadas_mas_publicas_distinto_de_tramite`; F2 `stats_capture_fefi.apply_table` `sum_mismatch` |
 | Denominadores explícitos (en notas, fuente del gráfico y pool de la Lectura). | `lens_checks` `denominator_not_stated`; `sf.pool_entry` `share_or_rate_without_base`; `lectura_verifier.BASES` |
 | Redacción según el signo: se escribe "3,2% menos", nunca "−3,2% menos". | `sf.SIGNED_WITH_WORD` en `verify_ficha` (`signed_figure_with_direction_word`); F6 `rec_clause`; F2 `result_phrase` |
-| De pérdida a utilidad (o al revés): delta absoluto y variación % N/A. Nunca un % sobre base negativa. | `stats_ficha_f2.change` (`pct=None`), `pct_cell` → "N/A"; contexto en `docs/CLAUDE_PROJECT_CONTEXT_2026_10_24.md` |
+| De pérdida a utilidad (o al revés): delta absoluto y redacción según el signo. Nunca un % sobre base negativa. | `stats_ficha_f2.change` (`pct=None`), `pct_cell` → "N/A"; contexto en `docs/CLAUDE_PROJECT_CONTEXT_2026_10_24.md` |
+| Un resultado (ganancia, antes de impuestos, ganancia bruta) nunca lleva variación %, aunque la base sea positiva: una base chica la vuelve engañosa ("2.707,6% más" sobre 1.215 MM$). Se muestran ambos niveles ("utilidad de 34.120 MM$ frente a 1.215 MM$ en marzo 2025") y el cambio absoluto en "Ver datos". Ingresos y costos conservan su % solo con base positiva (Dirección, 2 nov). | `stats_ficha_f2.RESULT_ITEMS`, `stats_ficha_f2.change`, `stats_ficha_f2.result_phrase` |
+| Montos en MM$ se muestran enteros con separador de miles ("+1.215", "739.841"); % y pp con un decimal. La evidencia conserva la precisión completa; solo la vista redondea, y lo redondeado traza a la evidencia con el redondeo del verificador. | gráficos: `digits` (`stats_ficha_f2.MM_DIGITS`; `js` `dec`/`sgd` en `bars`, `diverging`, `columns`); tablas: `sf.fmt_int`; `sf.verify_ficha` `chart_digits_invalid` |
 | Los umbrales se evalúan sobre el valor redondeado que se muestra. | F4 `ges.p.*.yoy_pct` (redondeo a 1 decimal antes del 15%); F1 `mezcla.delta_shown`; F2 siniestralidad 90/95 |
 | Los conteos van atados a su afirmación ("tres crecen", "9 de 10 con utilidad"). | `sf.COUNT_CLAIM`, `chart_headline_count_not_in_evidence`, `count_phrase`; F2 `conteo.*` citados en `index_refs` |
 | Un stock nunca se suma entre cortes, y un flujo se rotula con su período. | `lens_checks` `stock_rule_not_stated`; F6 n1; F2 n1 |
@@ -142,7 +144,13 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
   - Las filas de E. Resultados se anclan por código y rótulo reales: 30030, 30170, 30180 y 23070. La fila 30190
     "procedente de operaciones continuadas" repite el resultado y no se lee.
 - **Esencial** (Dirección, 1 nov; regla `rules.fefi_esencial_exclusion`):
-  - la ficha muestra 9 Isapres y rotula cada total como "sistema sin Esencial", recalculado por Alicanto;
+  - la ficha muestra 9 Isapres y cada total del sistema lo recalcula Alicanto sin Esencial. Rótulo (Dirección, 2 nov):
+    una sola nota al pie, siempre visible, sobre "Notas y fuentes" (`stats_ficha_f2.scope_note` → campo `scope_note`;
+    `js` `.sf-scope`), que parafrasea A18. Esencial no va en el titular, el antetítulo, las etiquetas KPI ni las líneas
+    índice; solo los subtítulos de gráficos que dibujan un total del sistema dicen "sin Esencial", y la fila total de
+    "Ver datos" se llama "Sistema sin Esencial";
+  - titular natural y según el signo, con ambos niveles y sin % (`stats_ficha_f2.headline_lead`): "Las Isapres ganan
+    34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes";
   - una nota cita A18 textual con su localizador `Notas Explicativas!A18`;
   - ninguna cifra de Esencial entra al paquete, a los gráficos, a las tablas ni a "Ver datos";
   - la exclusión vale solo mientras A18, en la planilla más reciente, diga que sus cifras están en revisión para ese
