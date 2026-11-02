@@ -163,7 +163,9 @@ def test_qa_must_differ_from_implementer_and_reviewer(roles, approved):
 
 
 def test_weekly_reviews_revoke_the_self_qa_and_keep_only_allowed_text():
-    for path in ("data/weekly_insight/latest.json", "data/weekly_insight/archive/2026-10-10.json"):
+    # The San Carlos insight of 10-oct carries the 4th-review rights records; latest.json moves on every Monday, so
+    # the historical record is checked in the archive and latest.json by rule (test_latest_weekly_passes_rights_check).
+    for path in ("data/weekly_insight/archive/2026-10-10.json",):
         doc = _json(path)
         san_carlos, labs, weekly = doc["top3"][0], doc["top3"][2], doc["weekly_insight"]
         for node in (san_carlos, labs, weekly):
@@ -325,3 +327,15 @@ def test_2_nov_candidate_is_on_hold_with_traced_minsal_figures_restored():
     removed = next(r for r in insight["rights_redactions"] if r["field"] == "key_figures")
     assert insight["rights_restorations"][0]["receipt_of_removed_list"] == removed["sha256"]
     assert redact_public_payload(doc) == doc
+
+
+def test_latest_weekly_passes_rights_check():
+    """Whatever insight is current: every public node survives the public-rights redaction unchanged, and a node that
+    carries a rights review must have independent QA and field hashes that still match its text."""
+    doc = _json("data/weekly_insight/latest.json")
+    for node in [doc["weekly_insight"], *doc.get("top3", [])]:
+        assert redact_public_payload(node) == node
+        if "rights_review" in node:
+            review = node["rights_review"]
+            assert review_qa_approved(review)
+            assert all(sha == _field_sha(node[f]) for f, sha in review["fields"].items())

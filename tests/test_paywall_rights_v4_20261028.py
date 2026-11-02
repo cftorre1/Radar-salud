@@ -331,7 +331,9 @@ def test_rights_review_bypasses_the_public_text_check_only_after_independent_qa(
 
 
 def test_weekly_rights_reviews_record_independent_qa_and_evidence():
-    for path in ("data/weekly_insight/latest.json", "data/weekly_insight/archive/2026-10-10.json"):
+    # The San Carlos insight of 10-oct carries the 4th-review rights records; latest.json moves on every Monday, so
+    # the historical record is checked in the archive and latest.json by rule (test_latest_weekly_passes_rights_check).
+    for path in ("data/weekly_insight/archive/2026-10-10.json",):
         doc = json.loads((ROOT / path).read_text(encoding="utf-8"))
         nodes = [doc["top3"][0], doc["top3"][2], doc["weekly_insight"]]
         for node in nodes:
