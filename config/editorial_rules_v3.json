@@ -11,5 +11,34 @@
     "respiratory_se37": "HOLD_CONTRADICTORY_INDICATOR: preserve historical uncertainty; no invented series."
   },
   "paid_pipeline_calls_authorized_by_this_change": 0,
-  "model_routing": "Existing economic defaults and budgets retained; powerful route requires explicit availability, material complexity and monetary reserve."
+  "model_routing": "Existing economic defaults and budgets retained; powerful route requires explicit availability, material complexity and monetary reserve.",
+  "hold_resolutions": {
+    "fefi_2026_03": {
+      "original_hold": "HOLD_COVERAGE_ESENCIAL: Notas Explicativas A18 contradicts institutional rows; dependent aggregates/rankings disabled.",
+      "status": "superseded_for_F2",
+      "by_rule": "fefi_esencial_exclusion",
+      "decided_by": "Dirección",
+      "decided_at": "2026-11-01",
+      "note": "La entrada holds.fefi_2026_03 se conserva sin cambios (historia y tarjeta FEFI heredada). Para la ficha F2 la reemplaza la regla fefi_esencial_exclusion."
+    }
+  },
+  "rules": {
+    "fefi_esencial_exclusion": {
+      "family": "F2",
+      "decided_by": "Dirección",
+      "decided_at": "2026-11-01",
+      "action": "exclude_entity",
+      "entity": "Esencial",
+      "entity_code": 108,
+      "system_label": "sistema sin Esencial",
+      "summary": "La ficha F2 muestra las otras 9 Isapres; todo total del sistema se rotula 'sistema sin Esencial' y lo recalcula Alicanto con esas 9. Ninguna cifra de Esencial se publica (gráficos, tablas, 'Ver datos'). Una nota cita A18 textual con su localizador.",
+      "condition": {
+        "locator": "Notas Explicativas!A18",
+        "text_pattern": "^la isapre esencial no presenta informacion a {t_month} {t_year}, dado que sus cifras se encuentran en proceso de revision\\.?$",
+        "quote_2026_03": "La Isapre Esencial no presenta información a marzo 2026, dado que sus cifras se encuentran en proceso de revisión.",
+        "source": "finan_ifrs_mar_2026_web_v2.xls sha256 e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065, anotación CI del PR #117"
+      },
+      "on_condition_not_met": "HOLD: si la nota de cobertura de la planilla más reciente ya no dice que Esencial está en revisión (o no está), la exclusión no se aplica sola; una persona vuelve a decidir."
+    }
+  }
 }
