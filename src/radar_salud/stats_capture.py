@@ -131,7 +131,7 @@ def loose_boletin_releases(signals: list[dict]) -> tuple[dict[str, dict], list[d
         if sig.get("source_name") != LOOSE_SOURCE or sig.get("source_documents") or not url.startswith("https://"):
             continue
         d = doc_release(url)
-        if not d:
+        if not d or not url.lower().split("?")[0].endswith(".pdf"):
             continue
         g = groups.setdefault((d["number"], d["period"]), {"docs": {}, "titles": [], "detected": []})
         g["docs"].setdefault(d["topic"], set()).add(url)
@@ -140,7 +140,15 @@ def loose_boletin_releases(signals: list[dict]) -> tuple[dict[str, dict], list[d
         if day:
             g["detected"].append(day)
     ok, rejected = {}, []
+    numbers_by_period: dict[str, set] = {}
+    for (number, period) in groups:
+        numbers_by_period.setdefault(period, set()).add(number)
     for (number, period), g in sorted(groups.items(), key=lambda kv: kv[0][1]):
+        # Two bulletin numbers claiming one period (review 2-nov): never pick one silently; every group is rejected.
+        if len(numbers_by_period[period]) > 1:
+            rejected.append({"title": f"PDF sueltos {number}", "release_url": None, "reasons": ["multiple_bulletin_numbers_for_period"],
+                             "document_periods": [period], "listing_titles": sorted(set(g["titles"]))})
+            continue
         if sorted(g["docs"]) != sorted(TOPICS) or any(len(u) != 1 for u in g["docs"].values()):
             rejected.append({"title": f"PDF sueltos {number}", "release_url": None, "reasons": ["listing_documents_not_one_per_topic"],
                              "document_periods": [period], "listing_titles": sorted(set(g["titles"]))})
@@ -186,7 +194,8 @@ def boletin_releases(root: Path) -> tuple[list[dict], list[dict]]:
     loose, loose_rejected = loose_boletin_releases(signals)
     for period, rel in loose.items():
         ok.setdefault(period, rel)
-    rejected += [r for r in loose_rejected if r["document_periods"][0] not in ok]
+    rejected += [r for r in loose_rejected
+                 if r["document_periods"][0] not in ok or "multiple_bulletin_numbers_for_period" in r["reasons"]]
     return [ok[k] for k in sorted(ok)], rejected
 
 

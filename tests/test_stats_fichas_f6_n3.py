@@ -306,3 +306,25 @@ def test_title_without_a_series_page_in_history_falls_back_to_the_file_names():
     c = sb.collapse_loose_bulletins([dict(s) for s in LOOSE], history=[], fichas=[])[0]
     assert c["title"] == "Boletín N°3-2026 · enero–septiembre 2026" and c["loose_bulletin"]["series_name_basis"] == "none"
     assert "live_ficha" not in c["bulletin_status"]
+
+
+def test_two_bulletin_numbers_for_one_period_give_no_release_and_keep_the_rejection():
+    # Review 2-nov: N°3 complete plus a stray (or complete) N°4 for 2026-09 must not resolve silently.
+    from radar_salud.stats_capture import loose_boletin_releases, LOOSE_SOURCE, TOPICS
+    def sig(n, topic):
+        return {"source_name": LOOSE_SOURCE, "title": f"Boletín N°{n}-2026 {topic}",
+                "source_url": f"https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n{n}-2026-{topic}-enero-septiembre-2026.pdf"}
+    n3 = [sig(3, t) for t in TOPICS]
+    for extra in ([sig(4, TOPICS[0])], [sig(4, t) for t in TOPICS]):
+        ok, rejected = loose_boletin_releases(n3 + extra)
+        assert "2026-09" not in ok
+        assert any("multiple_bulletin_numbers_for_period" in r["reasons"] for r in rejected)
+
+
+def test_a_non_pdf_listing_file_never_forms_a_release():
+    from radar_salud.stats_capture import loose_boletin_releases, LOOSE_SOURCE, TOPICS
+    sigs = [{"source_name": LOOSE_SOURCE, "title": t, "source_url":
+             f"https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-{t}-enero-septiembre-2026.{'xlsx' if i == 0 else 'pdf'}"}
+            for i, t in enumerate(TOPICS)]
+    ok, _ = loose_boletin_releases(sigs)
+    assert "2026-09" not in ok
