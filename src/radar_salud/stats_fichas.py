@@ -1068,6 +1068,35 @@ def publish(result: dict, root: Path) -> dict:
     return {"published": False}
 
 
+def release_hold_reasons(root: Path, family: str, registry: dict | None = None) -> dict[str, list[str]]:
+    """Recorded HOLD reasons by period for one family (``hold/<slug>-<period>.json``); {} when none."""
+    registry = registry or load_registry()
+    slug = registry["families"][family]["slug"]
+    out = {}
+    for path in sorted(paths(Path(root), slug)["hold"].glob(f"{slug}-*.json")):
+        try:
+            rec = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if isinstance(rec, dict) and rec.get("period"):
+            out[str(rec["period"])] = [str(x) for x in rec.get("errors") or []]
+    return out
+
+
+def publish_release_holds(result: dict, root: Path) -> list[str]:
+    """A newer release that fails verification while the live ficha keeps the last verified one (F6 N°3, 1-nov) is
+    written to ``hold/<slug>-<period>.json`` for the coordinator. The live ficha is not touched."""
+    out = []
+    for h in result.get("release_holds") or []:
+        path = paths(root, result["slug"])["hold"] / f"{result['slug']}-{h['period']}.json"
+        _write(path, {"status": "hold", "family": result.get("family"), "period": h["period"],
+                      "generated_at": result.get("generated_at"), "live_period": result.get("period"),
+                      "errors": h["errors"], "decision": {"decision": "HOLD", "holds": h["errors"],
+                                                          "note": "release newer than the live ficha"}})
+        out.append(str(path))
+    return out
+
+
 # ---------------------------------------------------------------------------------------------
 # Web snapshot
 
@@ -1075,7 +1104,7 @@ def publish(result: dict, root: Path) -> dict:
 PUBLIC_KEYS = ("schema_version", "id", "family", "family_label", "period", "published_at", "generated_at",
                "release_key", "featured", "triggers", "kicker", "kicker_meta", "headline", "headline_type", "dek",
                "dek_emphasis", "kpis", "tabs", "charts", "facts", "lectura", "watch", "notes", "sources", "machine_note",
-               "status", "late_release", "revisions")
+               "status", "late_release", "revisions", "date_basis")
 
 
 def live_fichas(root: Path = Path("."), registry: dict | None = None) -> list[dict]:
@@ -1106,7 +1135,11 @@ def ficha_card(ficha: dict, cfg: dict) -> dict:
         "source_name": cfg.get("source_name") or "Superintendencia de Salud", "source_type": "official",
             # Only a captured source (URL + SHA-256 in the evidence package) may back the card link.
         "source_url": (ficha.get("sources") or [{}])[0].get("url"),
-        "event_date": ficha["published_at"], "publication_date": ficha["published_at"],
+        "event_date": ficha["published_at"],
+        # A release whose source exposes no publication date is dated by first detection, never as publication.
+        "publication_date": None if ficha.get("date_basis") == "first_detected" else ficha["published_at"],
+        **({"date_basis": "first_detected", "first_detected_at": ficha["published_at"]}
+           if ficha.get("date_basis") == "first_detected" else {}),
         "validation_date": str(ficha.get("generated_at") or "")[:10] or None,
         "data_period": ficha["period"], "event_type": "DATA_PULSE", "category": "Datos sectoriales",
         "signal_types": ["Datos"], "scopes": list(cfg.get("scopes") or ["Isapres"]), "ingestion_mode": "BACKFILL",
@@ -1124,6 +1157,8 @@ def ficha_card(ficha: dict, cfg: dict) -> dict:
 
 
 def _stat_family(s: dict) -> str | None:
+    if s.get("stat_family") and "Datos" in (s.get("signal_types") or []):  # e.g. the collapsed loose Boletín IP PDFs
+        return str(s["stat_family"])
     if s.get("source_name") != "Superintendencia de Salud" or "Datos" not in (s.get("signal_types") or []):
         return None
     t = str(s.get("title") or "").lower()
@@ -1143,7 +1178,16 @@ def _stat_family(s: dict) -> str | None:
 
 
 def loose_card_period(card: dict) -> str | None:
-    """Data period of a loose SIS statistics card: '… – Agosto 2026' → '2026-08'; None for yearly files."""
+    """Data period of a loose SIS statistics card: '… – Agosto 2026' → '2026-08'; None for yearly files.
+
+    ``stat_period`` (the cut-off read from the documents' file names, sis_bulletins) wins over the posting month of the
+    title: the 'Septiembre 2026' page that links the enero–junio PDFs covers 2026-06."""
+    if card.get("stat_period"):
+        try:
+            period_parts(card["stat_period"])
+            return card["stat_period"]
+        except ValueError:
+            pass
     if card.get("data_period"):
         try:
             period_parts(card["data_period"])

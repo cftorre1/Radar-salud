@@ -1,7 +1,7 @@
 {
   "schema_version": "stats_capture_v1",
   "kind": "boletin_ip",
-  "updated_at": "2026-10-30T03:42:08.602583+00:00",
+  "updated_at": "2026-11-02T01:43:09.786608+00:00",
   "releases": [
     {
       "period": "2025-06",
@@ -29,17 +29,50 @@
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/08/boletin-n2-2025-mediacion-enero-junio-2025.pdf",
           "topic": "mediacion",
-          "status": "not_fetched"
+          "sha256": "8219d8d24c85773cca0b4d539140ecae270dd8de6f9ec8fc56416e1f31b8bfba",
+          "bytes": 418043,
+          "format": "pdf",
+          "fetched_at": "2026-11-02T01:43:07.758662+00:00",
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 6,
+            "text_sha256": "09e6fceec89758a12c97df477b0025d317abea3b0ee9b8b276aa0f9abe17850b",
+            "checker_version": 1,
+            "templates_sha256": null
+          }
         },
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/08/boletin-n2-2025-reclamos-enero-junio-2025.pdf",
           "topic": "reclamos",
-          "status": "not_fetched"
+          "sha256": "13ef2a02143cf3aab3f3172e040068386f9c41619569b789d2c97a7078fe0c50",
+          "bytes": 600839,
+          "format": "pdf",
+          "fetched_at": "2026-11-02T01:43:08.422798+00:00",
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 6,
+            "text_sha256": "808602242925b418ff82f532c29d1df4a5caea242162e9373a803cdab9d51b6f",
+            "checker_version": 1,
+            "templates_sha256": null
+          }
         },
         {
           "url": "https://www.superdesalud.gob.cl/app/uploads/2025/08/boletin-n2-2025-rnpi-enero-junio-2025.pdf",
           "topic": "rnpi",
-          "status": "not_fetched"
+          "sha256": "e22ee19f6e8881b6cc0b6e73eda0e3cc9e5d844f35743408f073cec7d933fa2e",
+          "bytes": 888731,
+          "format": "pdf",
+          "fetched_at": "2026-11-02T01:43:09.446236+00:00",
+          "status": "captured",
+          "parse": {
+            "status": "no_verified_metrics",
+            "pages": 7,
+            "text_sha256": "4f389894a1a3fc18c8688c093889c5b6f9cc401dc0a7ecce920df1e9069f8f06",
+            "checker_version": 1,
+            "templates_sha256": null
+          }
         }
       ]
     },

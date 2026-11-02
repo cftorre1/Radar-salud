@@ -59,6 +59,8 @@ def main(argv: list[str] | None = None) -> int:
             summary[fam] = {"status": "error", "errors": [f"{type(exc).__name__}:{exc}"[:200]]}
             continue
         written = stats_fichas.publish(result, args.root)
+        if result.get("release_holds"):
+            written["release_holds"] = stats_fichas.publish_release_holds(result, args.root)
         lect = ((result.get("ficha") or {}).get("lectura") or {})
         summary[fam] = {"status": result["status"], "period": result.get("period"),
                         "triggers": (result.get("decision") or {}).get("triggers"),

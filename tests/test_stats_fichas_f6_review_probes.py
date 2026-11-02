@@ -267,10 +267,13 @@ def test_review_probe_is_rejected(tag, name, text, n, ctx, templates):
     tpl = real.REPO_TEMPLATES if templates == "repo_reviewed" else real.placeholder_copy()
     v1 = cap.figure_evidence([text], [1], n, ctx, 1)
     v2 = cap.figure_evidence([text], [1], n, ctx, 2, KEY.get(ctx), tpl, VERIFIED)
+    v3 = cap.figure_evidence([text], [1], n, ctx, 3, KEY.get(ctx), tpl, VERIFIED)
     if name in WINDOW_ACCEPTED:
         assert v1 == v2 == {"rule": "context_window", "page": 1}
     else:
         assert v1 is None and v2 is None, v2
+    # Checker v3: a metric with a template is placed only by it, so no probe passes for those metrics, window or not.
+    assert v3 is None if KEY.get(ctx) in tpl else v3 == v2
     if KEY.get(ctx) in tpl:  # the template itself, applied directly, never matches a probe
         assert cap.template_evidence([text], [1], n, tpl[KEY[ctx]], VERIFIED)[0] is None
 
@@ -287,7 +290,7 @@ def test_uncited_page_page_boundary_and_other_topics():
     assert cap.figure_evidence([head, "obtuvieron el resultado de acreditado" + tail], [1, 2], 101, OBS, 2,
                                "with_observations", tpl, VERIFIED) is None  # a template never spans pages
     assert [cap.checker_version(t) for t in ("mediacion", "rnpi", "reclamos", None)] == [1, 1, 1, 1]
-    assert cap.checker_version("acreditacion") == 2
+    assert cap.checker_version("acreditacion") == 3  # v3 (1-nov): a metric with a template is placed only by it
     assert cap.figure_evidence([p2], [1], 101, OBS, 1, "with_observations", tpl, VERIFIED) is None  # v1: no templates
 
 
