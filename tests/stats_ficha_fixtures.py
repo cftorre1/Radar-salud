@@ -104,6 +104,7 @@ LABELS = {"accredited_providers": "Prestadores acreditados", "with_observations"
           "pending_applications": "Solicitudes en tramite", "private_pending": "Solicitudes de prestadores privados",
           "public_pending": "Solicitudes de prestadores publicos", "registered_mediators": "Mediadores inscritos",
           "cumulative_requests_2019_to_june2026": "Solicitudes de mediacion acumuladas",
+          "cumulative_requests_2019_to_september2026": "Solicitudes de mediacion acumuladas",
           "monthly_average_2026": "Promedio mensual de reclamos 2026", "monthly_average_2025": "Promedio mensual de reclamos 2025",
           "reported_growth_percent_rounded": "Aumento de reclamos (%)", "registered_titles": "Titulos inscritos",
           "records_without_birth_date": "Registros sin fecha de nacimiento"}
@@ -119,6 +120,18 @@ def boletin_pdf(url: str, root: Path) -> bytes:
     metrics = info.get("metrics") or {}
     first = min(info.get("pages_1based") or [1])
     body = [f"Boletin fixture {url.rsplit('/', 1)[-1]}", *(figure_line(k, v) for k, v in metrics.items())]
+    rel = cap.doc_release(url)
+    if rel and rel["topic"] == "acreditacion":
+        # Checker v3: these two figures are placed only by the approved templates, so the fixture carries the SIS
+        # wording they anchor on (p.2 sentence; p.8 table title with its cut-off date and the 'total general' row).
+        month = MONTHS[int(rel["period"][5:]) - 1]
+        if "with_observations" in metrics:
+            body.append(f"{metrics['with_observations']} prestadores institucionales obtuvieron el resultado de acreditado "
+                        "con observaciones")
+        if {"pending_applications", "private_pending", "public_pending"} <= set(metrics):
+            body += [f"Numero de solicitudes de acreditacion que estan en tramitacion, al 30 de {month} de {rel['period'][:4]}, "
+                     "desagregadas por region del prestador y tipo",
+                     f"Total general {metrics['private_pending']} {metrics['public_pending']} {metrics['pending_applications']}"]
     return pdf_with_text([], pages=[[f"Pagina {i}"] for i in range(1, first)] + [body])
 
 

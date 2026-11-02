@@ -110,7 +110,7 @@ def test_repo_templates_are_reviewed_and_verify_the_real_layout():
                for v in REPO_TEMPLATES.values())
     assert all(cap.template_pattern(v)[1] == "ok" for v in REPO_TEMPLATES.values())
     res = parse()
-    assert res["checker_version"] == 2 and res["status"] == "verified", res.get("template_status")
+    assert res["checker_version"] == cap.checker_version("acreditacion") == 3 and res["status"] == "verified", res.get("template_status")
     obs, tra = res["figure_rules"]["with_observations"], res["figure_rules"]["pending_applications"]
     assert obs["rule"] == "template" and obs["page"] == 2 and obs["match"] == SENTENCE_P2
     assert obs["reviewed_by"] == "Dirección (cftorre1)"

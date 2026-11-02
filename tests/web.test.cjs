@@ -377,3 +377,45 @@ test('Global Spanish only (Dirección 30-oct): English-only, pending and failed 
  assert.deepEqual(await run({...feed,display:{spanish_only:true}}),['sum','tr','es']);
  assert.equal((await run({...feed,display:{spanish_only:false}})).length,items.length);
 });
+test('news ficha sources line is compact: curated abbreviation, one dated kind, no year-only period (Dirección 1-nov-2026)',()=>{const c=context();
+ const s={title:'Boletín N°3-2026 Acreditación enero-septiembre 2026',source_name:'Superintendencia de Salud · Intendencia de Prestadores',source_url:'https://www.superdesalud.gob.cl/app/uploads/2026/10/b.pdf',event_date:'2026-10-29',first_detected_at:'2026-10-29T23:30:08Z',date_basis:'first_detected',data_period:'2026'};
+ const line=c.originLine(s);
+ assert.match(line,/^<p class='source'>SIS · Intendencia de Prestadores · 29 oct\.? 2026 \(detección\) · <a href='https:\/\/www\.superdesalud\.gob\.cl\/app\/uploads\/2026\/10\/b\.pdf' target='_blank' rel='noopener'>Fuente original ↗<\/a><\/p>$/);
+ assert.doesNotMatch(line,/Período de datos|fecha de publicación no informada|Detectado el|Superintendencia de Salud/);
+ // Publication only when the source gives it; unknown institutions stay in full; the curated map only.
+ assert.match(c.originLine({title:'Nota',source_name:'Ministerio de Salud',event_date:'2026-10-20'}),/^<p class='source'>Minsal · 20 oct\.? 2026 \(publicación\)<\/p>$/);
+ assert.match(c.originLine({title:'Nota',source_name:'Diario Financiero',event_date:'2026-10-20'}),/>Diario Financiero · /);
+ assert.match(c.originLine({title:'Nota',source_name:'Superintendencia de Seguridad Social (SUSESO)',event_date:'2026-10-20'}),/>SUSESO · /);
+ assert.match(c.originLine({title:'Ley',source_name:'Diario Oficial',event_date:'2026-10-20'}),/>DO · /);
+ assert.match(c.originLine({title:'Ley',source_name:'Congreso Nacional · Tramitación (Senado, datos abiertos)',event_date:'2026-10-20'}),/>Congreso · Tramitación \(Senado, datos abiertos\) · /);
+ assert.match(c.originLine({title:'Caso',source_name:'Fiscalía Nacional Económica',event_date:'2026-10-20'}),/>FNE · /);
+ assert.equal(c.shortSource('Superintendencia de Salud Animal'),'Superintendencia de Salud Animal');
+ assert.equal(c.shortSource('Fondo Nacional de Salud · Instituto de Salud Pública'),'Fonasa · ISP');
+ // A fiscalization act without a publication date shows its detection, never "publicación".
+ const fis={title:'Sanción',source_name:'Superintendencia de Salud',signal_types:['Fiscalización'],emission_date:'2026-10-01',event_date:'2026-10-01',detected_at:'2026-10-03T10:00:00Z'};
+ assert.match(c.originLine(fis),/3 oct\.? 2026 \(detección\)/);assert.match(c.originLine({...fis,publication_date:'2026-10-02'}),/2 oct\.? 2026 \(publicación\)/);
+ assert.match(c.originLine({title:'DEIS',source_name:'DEIS',event_date:'2026-10-07',data_release_date:'2026-10-07',date_basis:'data_release'}),/7 oct\.? 2026 \(actualización\)/);
+ // A period that says more than the year stays, unless the title already states it.
+ assert.match(c.originLine({...s,data_period:'2019–2024'}),/Período de datos: 2019–2024/);
+ assert.doesNotMatch(c.originLine({...s,title:'Boletín IP N°3 · enero–septiembre 2026',data_period:'enero–septiembre 2026'}),/Período de datos/);
+ // Escaping holds for every part.
+ const bad=c.originLine({title:'x',source_name:'<img src=x onerror=alert(1)>',event_date:'2026-10-20',data_period:'<b>2020–2021</b>'});
+ assert.doesNotMatch(bad,/<img|<b>/);assert.match(bad,/&lt;img/);
+ // The news ficha uses this line under Fuentes.
+ assert.match(c.detailHtml(s),/<section class="ficha-sources"><h3 class="ficha-h">Fuentes<\/h3><p class='source'>SIS · Intendencia de Prestadores · /);
+});
+test('collapsed Boletín card says plainly that figures are being verified and links the live ficha and the PDFs',()=>{const c=context();
+ const docs=['acreditacion','mediacion','reclamos','rnpi'].map(t=>({url:`https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-${t}-enero-septiembre-2026.pdf`,title:`Boletín N°3-2026 ${t} enero-septiembre 2026 (PDF)`}));
+ const s={title:'Boletín Estadístico Informativo IP N°3 · enero–septiembre 2026',display_title:'Boletín Estadístico Informativo IP N°3 · enero–septiembre 2026',source_name:'Superintendencia de Salud · Intendencia de Prestadores',source_url:docs[0].url,source_documents:docs,event_date:'2026-10-29',first_detected_at:'2026-10-29T23:30:08Z',date_basis:'first_detected',data_period:'enero–septiembre 2026',signal_types:['Datos'],
+  what_happened:'La Intendencia de Prestadores de la Superintendencia de Salud tiene disponible el Boletín N°3-2026 (enero–septiembre 2026) en 4 PDF: acreditación, mediación, reclamos y RNPI.',
+  bulletin_status:{status:'verifying',text:'Alicanto está verificando las cifras de este boletín en los PDF originales.',live_ficha:{id:'stats-ficha:F6:2026-06',label:'Ver la ficha vigente: Boletín IP N°2-2026 · datos a junio 2026'}}};
+ const h=c.detailHtml(s);
+ assert.match(h,/<p class="bulletin-status">Alicanto está verificando las cifras/);
+ assert.match(h,/<a class="bulletin-live" href="\?abrir=1#sig-stats-ficha:F6:2026-06" data-open-signal="stats-ficha:F6:2026-06">Ver la ficha vigente: Boletín IP N°2-2026 · datos a junio 2026 ›<\/a>/);
+ for(const d of docs)assert.ok(h.includes(`href='${d.url}'`));
+ assert.ok(h.indexOf('bulletin-status')<h.indexOf('ficha-sources'));
+ assert.doesNotMatch(h,/Período de datos/);
+ // An unexpected id is never linked; no status, no block.
+ assert.doesNotMatch(c.detailHtml({...s,bulletin_status:{...s.bulletin_status,live_ficha:{id:'javascript:alert(1)',label:'x'}}}),/bulletin-live/);
+ assert.doesNotMatch(c.detailHtml({...s,bulletin_status:null}),/bulletin-status/);
+});

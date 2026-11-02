@@ -56,6 +56,11 @@
 - **F4 top problems:** a year-on-year change of 15 % or more, over a base of at least 500 cases in the same quarter one year earlier.
 - **F4 supersedes** the loose GES card (`stat_families: ges`) only while the F4 ficha is live in PASS; until then that card stays in HOLD.
 - **F6 stocks** (acreditados, solicitudes en tramitación, mediadores, títulos) are never summed across releases. Quarter-on-quarter comparisons need two verified releases and stay "pendiente" otherwise. RNPI counts titles, not unique professionals.
+- **F6 new releases (Dirección, 1-nov-2026, Boletín N°3-2026):**
+  - A release may also arrive as loose PDFs of the Intendencia de Prestadores listing (one history record per PDF, no release page). One PDF per topic with the same number and period in the file names forms the release (`stats_capture.loose_boletin_releases`). It is captured with the same fetcher and limits and dated by first detection, never as a publication.
+  - Checker v3 (acreditación): a metric with an approved figure template is placed only by that template, which must match exactly once on the cited pages (the cut-off date in the template is variable). Without an independent reading, the capture records a template pre-check for the reviewer; it never verifies a figure. A reading added later re-checks the document once.
+  - Until the new release passes, the ficha keeps the last verified release and the new one is written to `hold/<slug>-<period>.json` (`release_holds`).
+  - Meanwhile its loose PDF cards are shown as **one** card titled from the documents ("Boletín Estadístico Informativo IP N°3 · enero–septiembre 2026", `sis_bulletins.collapse_loose_bulletins`). It lists the PDFs, says the figures are being verified and links the live ficha; it shows no figure. Once the ficha covers that release, the card is absorbed like any loose card of the family (`stat_period` read from the file names).
 
 ## HOLD (never publishes)
 

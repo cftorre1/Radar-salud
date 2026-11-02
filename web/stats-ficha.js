@@ -86,7 +86,7 @@
  const cap=x=>x?x[0].toUpperCase()+x.slice(1):'';
  function metaLines(f){
   const parts=String(f.kicker_meta||'').split(' · ').map(x=>x.trim()).filter(Boolean),y=/^(\d{4})-\d{2}-\d{2}/.exec(String(f.published_at||''));
-  const data=parts.find(x=>/^datos\b/i.test(x)),pub=parts.find(x=>/^publicad[oa]\b/i.test(x));
+  const data=parts.find(x=>/^datos\b/i.test(x)),pub=parts.find(x=>/^(?:publicad[oa]|detectad[oa])\b/i.test(x));
   const pubLine=pub&&y&&/ el \d{1,2} \p{L}+\.?$/u.test(pub)?`${pub} ${y[1]}`:pub;
   return{lines:[data,pubLine].filter(Boolean).map(cap),rest:parts.filter(x=>x!==data&&x!==pub).map(cap)};
  }
