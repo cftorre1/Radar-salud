@@ -1058,6 +1058,15 @@ def publish(result: dict, root: Path) -> dict:
     if result.get("status") == "pass" and result.get("ficha"):
         previous = load_live(root, slug)
         archived = None
+        ficha = result["ficha"]
+        # First-verification stamp (Dirección 2-nov-2026: the weekly Insight counts a release as new in the week
+        # from the day Alicanto first verified it). A rebuild of the same release keeps the original stamp; a
+        # legacy live file without one is left unstamped so the reader falls back to the git history.
+        same_release = bool(previous) and previous.get("release_key") == ficha.get("release_key")
+        if same_release and previous.get("first_verified_at"):
+            ficha["first_verified_at"] = previous["first_verified_at"]
+        elif not same_release and not ficha.get("first_verified_at"):
+            ficha["first_verified_at"] = ficha.get("generated_at") or datetime.now(timezone.utc).isoformat()
         if previous and previous.get("release_key") != result["ficha"].get("release_key"):
             key = re.sub(r"[^0-9A-Za-z_-]+", "-", f"{previous.get('period')}-{previous.get('release_key', '')}")
             archived = p["archive"] / f"{key}.json"

@@ -2,6 +2,9 @@
 
 Pipeline (one run per Monday, fail-closed):
 
+0. stats anchor        a statistics-family ficha with a NEW period in the week (PASS) is the primary
+                          candidate (Dirección 2-nov; ``weekly_insight_stats_anchor``). Its draft must also
+                          pass the ficha-vs-Insight contract; otherwise the run falls back to step 1.
 1. ``select_topic``      deterministic ranking of the feed in the 7 days before the anchor Monday (Dirección 28-oct).
 2. ``build_evidence``    candidate + related signals + deterministic statistical series from the
                           repo; every number available to the writer is collected in ``numbers``.
@@ -420,11 +423,11 @@ def worst_case_cost(model: str, prompt: str, max_output_tokens: int) -> float:
 
 
 def estimate_run_cost(evidence: dict, routes: dict[str, str] | None = None, *, draft_output_tokens: int = 3500,
-                      review_output_tokens: int = 1200, anchor: date | None = None) -> dict:
+                      review_output_tokens: int = 1200, anchor: date | None = None, prompt: str | None = None) -> dict:
     """Expected (typical output) and worst case (full max_output on every call) for one Monday run."""
     routes = routes or _routes()
     anchor = anchor or date(2026, 11, 2)
-    dp = draft_prompt(evidence, anchor)
+    dp = prompt or draft_prompt(evidence, anchor)
     din = math.ceil(len(dp) / CHARS_PER_TOKEN)
     rin = din + 3500  # review prompt carries the evidence plus the draft
     draft, review = routes[DRAFT_ROUTE], routes[REVIEW_ROUTE]
@@ -461,9 +464,18 @@ def _default_monthly_budget(root: Path = ROOT) -> dict | None:
 monthly_budget: Callable[[], dict | None] = _default_monthly_budget
 
 
+def stats_anchor_plan(signals: list[dict], anchor: date, *, root: Path, previous: dict | None) -> dict:
+    """Stats-release anchor (Dirección 2-nov-2026); see ``weekly_insight_stats_anchor``. Overridable in tests."""
+    from . import weekly_insight_stats_anchor as sa
+    return sa.plan(signals, anchor, root=root, previous=previous)
+
+
 def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path = ROOT,
                  model_call: Callable[..., Any] | None = None, previous: dict | None = None,
-                 max_run_usd: float = MAX_RUN_USD) -> dict:
+                 max_run_usd: float = MAX_RUN_USD, stats_anchor: dict | bool | None = None) -> dict:
+    """``stats_anchor``: None computes the stats-release plan from ``root``; False skips it; a dict is a
+    precomputed plan (``weekly_insight_stats_anchor.plan``)."""
+    from . import weekly_insight_stats_anchor as sa
     as_of = as_of or chile_today()
     # Paywalled press: the model sees only title + public lead (Dirección 28-oct-2026).
     from .source_rights import redact_public_payload
@@ -473,15 +485,29 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
     ranked = select_topic(signals, anchor, recent_urls=set(prev.get("source_refs") or []),
                           recent_scopes=list((previous or {}).get("recent_scopes") or []),
                           recent_text=" ".join(str(prev.get(k) or "") for k in ("headline", "dek", "summary")))
+    if stats_anchor is False:
+        selected = {"rule": sa.RULE_ID, "status": "disabled", "reason": "run_parameter"}
+    elif isinstance(stats_anchor, dict):
+        selected = stats_anchor
+    else:
+        selected = stats_anchor_plan(signals, anchor, root=root, previous=previous)
     base = {"anchor_date": anchor.isoformat(), "expires_on": (anchor + timedelta(days=WINDOW_DAYS)).isoformat(),
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "topic_ranking": [{"score": r["score"], "title": r["signal"].get("title"), "url": r["signal"].get("source_url"),
-                               "event_date": r["signal"].get("event_date"), "related": len(r["related"])} for r in ranked[:5]]}
-    if not ranked:
+                               "event_date": r["signal"].get("event_date"), "related": len(r["related"])} for r in ranked[:5]],
+            "topic_selection": sa.summary(selected)}
+    stats_mode = selected.get("status") == "selected"
+    if not ranked and not stats_mode:
         return {**base, "status": "no_candidate", "weekly_insight": None}
-    evidence = build_evidence(ranked[0], root)
     routes = _routes()
-    base["cost_estimate"] = estimate_run_cost(evidence, routes, anchor=anchor)
+    if stats_mode:
+        evidence = sa.build_evidence(selected, root)
+        evidence["stats_anchor"]["brief_id"] = sa.brief_id_for(evidence, anchor)
+        prompt = sa.draft_prompt(evidence, anchor)
+    else:
+        evidence = build_evidence(ranked[0], root)
+        prompt = draft_prompt(evidence, anchor)
+    base["cost_estimate"] = estimate_run_cost(evidence, routes, anchor=anchor, prompt=prompt)
     base["evidence"] = evidence
     model_call = model_call or _default_model_call
     spent, calls = 0.0, []
@@ -512,37 +538,70 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
                       "response_id": getattr(result, "response_id", None)})
         return result
 
-    try:
-        drafted = call(DRAFT_ROUTE, draft_prompt(evidence, anchor), "weekly_insight_a_draft", DRAFT_MAX_OUTPUT)
-    except Exception as exc:  # budget, provider or parse error: nothing is published
+    def draft_and_verify(evidence: dict, prompt: str, feature: str):
+        drafted = call(DRAFT_ROUTE, prompt, feature, DRAFT_MAX_OUTPUT)
+        weekly = normalize_draft(drafted.output, evidence, anchor)
+        verification = verify_candidate(weekly, evidence, anchor)
+        if evidence.get("mode") == "stats_anchor":
+            weekly["stats_anchor"] = evidence["stats_anchor"]
+            contract = sa.contract_check(weekly, evidence)
+            verification["stats_anchor_contract"] = contract
+            if contract["verdict"] != "PASS":
+                verification["errors"] = list(verification["errors"]) + [f"stats_contract:{e}" for e in contract["errors"]]
+                verification["verdict"] = "FAIL"
+        return weekly, verification
+
+    def generation_error(exc: Exception) -> dict:  # budget, provider or parse error: nothing is published
         return {**base, "status": "generation_error", "error": f"{type(exc).__name__}:{exc}"[:300],
                 "weekly_insight": None, "model_calls": calls, "total_cost_usd": round(spent, 6)}
-    weekly = normalize_draft(drafted.output, evidence, anchor)
-    verification = verify_candidate(weekly, evidence, anchor)
+
+    feature = "weekly_insight_a_stats_draft" if stats_mode else "weekly_insight_a_draft"
+    try:
+        weekly, verification = draft_and_verify(evidence, prompt, feature)
+    except Exception as exc:
+        return generation_error(exc)
+    if stats_mode and verification["verdict"] != "PASS":
+        # Contract (or format-A) FAIL on the stats anchor: never publish a weak Insight. Fall back to
+        # the normal topic selection, inside the same run cap and monthly budget.
+        base["stats_anchor_attempt"] = {"status": "deterministic_fail", "candidate": weekly, "verification": verification}
+        base["topic_selection"] = {**base["topic_selection"], "status": "fallback", "reason": "stats_anchor_contract_fail"}
+        if not ranked or not (selected.get("config") or {}).get("fallback_redraft_after_contract_fail", True):
+            return {**base, "candidate": weekly, "verification": verification, "model_calls": calls,
+                    "total_cost_usd": round(spent, 6), "status": "deterministic_fail", "weekly_insight": None,
+                    "review": {"verdict": "NOT_RUN", "reason": "deterministic_fail"}}
+        stats_mode = False
+        evidence = build_evidence(ranked[0], root)
+        base["evidence"] = evidence
+        try:
+            weekly, verification = draft_and_verify(evidence, draft_prompt(evidence, anchor), "weekly_insight_a_draft")
+        except Exception as exc:
+            return generation_error(exc)
     out = {**base, "candidate": weekly, "verification": verification, "model_calls": calls,
            "total_cost_usd": round(spent, 6)}
     if verification["verdict"] != "PASS":
         return {**out, "status": "deterministic_fail", "weekly_insight": None,
                 "review": {"verdict": "NOT_RUN", "reason": "deterministic_fail"}}
     try:
-        reviewed = call(REVIEW_ROUTE, review_prompt(weekly, evidence, verification), "weekly_insight_a_review", REVIEW_MAX_OUTPUT)
+        rprompt = review_prompt(weekly, evidence, verification) + (sa.REVIEW_SUFFIX if stats_mode else "")
+        reviewed = call(REVIEW_ROUTE, rprompt, "weekly_insight_a_review", REVIEW_MAX_OUTPUT)
         review = reviewed.output if isinstance(reviewed.output, dict) else {}
     except Exception as exc:
         return {**out, "status": "review_error", "weekly_insight": None, "model_calls": calls,
                 "total_cost_usd": round(spent, 6), "review": {"verdict": "NOT_RUN", "reason": f"{type(exc).__name__}:{exc}"[:300]}}
     blockers = [i for i in review.get("issues") or [] if isinstance(i, dict) and i.get("severity") == "blocker"]
     review_model = calls[-1]["model"]
-    independent = review_model != calls[0]["model"]
+    draft_model = calls[-2]["model"]  # the draft that was reviewed (a stats-anchor fallback adds an earlier one)
+    independent = review_model != draft_model
     passed = review.get("verdict") == "PASS" and not blockers and independent
     out.update(review=review, model_calls=calls, total_cost_usd=round(spent, 6))
     if not passed:
         return {**out, "status": "review_fail", "weekly_insight": None}
-    weekly["model_trace"] = {"api_call": True, "draft_model": calls[0]["model"], "review_model": review_model,
+    weekly["model_trace"] = {"api_call": True, "draft_model": draft_model, "review_model": review_model,
                              "response_ids": [c["response_id"] for c in calls], "estimated_cost_usd": round(spent, 6)}
     weekly["editorial_review_pass"] = True
     out.update(status="pass", weekly_insight=weekly, audit={
         "verdict": "PASS", "editorial_business_review_pass": True, "independent_second_reviewer": True,
-        "reviewer": f"{review_model} (revisor independiente del redactor {calls[0]['model']})",
+        "reviewer": f"{review_model} (revisor independiente del redactor {draft_model})",
         "deterministic_verification": verification, "lenses": review.get("lenses") or {},
         "minor_issues": [i for i in review.get("issues") or [] if isinstance(i, dict) and i.get("severity") != "blocker"],
         "presentation": {"format": SCHEMA, "approved_by": "pipeline (verificación determinista + revisor independiente)"}})
@@ -579,14 +638,27 @@ def publish(result: dict, root: Path = ROOT) -> dict:
                    "weekly_insight": weekly, "audit": result["audit"],
                    "freshness_gate": {"anchor": weekly["freshness_anchor_date"], "anchor_kind": "monday",
                                       "expires_on": weekly["expires_on"]},
-                   "model": weekly.get("model_trace")}
+                   "model": weekly.get("model_trace"), "topic_selection": result.get("topic_selection")}
         approved_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        return {"published": True, "approved": str(approved_path), "archived": str(archived) if archived else None}
+        contract_record = None
+        if weekly.get("stats_anchor") and (result.get("evidence") or {}).get("mode") == "stats_anchor":
+            # Same gate as editorial sessions (Dirección 2-nov, decision 3): brief + contract-check record.
+            from . import weekly_insight_stats_anchor as sa
+            ts = result.get("topic_selection") or {}
+            brief = sa.build_brief({"reason": ts.get("reason"), "considered": ts.get("considered"),
+                                    "tried": ts.get("tried"), "authorization": ts.get("authorization")},
+                                   result["evidence"], date.fromisoformat(anchor))
+            brief_path = folder / "candidates" / f"{anchor}-stats-brief.json"
+            brief_path.parent.mkdir(parents=True, exist_ok=True)
+            brief_path.write_text(json.dumps(brief, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            contract_record = sa.write_contract_record(root, weekly, brief, brief_path.resolve(), checked_by="pipeline")["path"]
+        return {"published": True, "approved": str(approved_path), "archived": str(archived) if archived else None,
+                "contract_record": contract_record}
     out = folder / "candidates" / f"{anchor}-candidate.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     record = {k: result.get(k) for k in ("status", "anchor_date", "expires_on", "generated_at", "topic_ranking",
                                           "cost_estimate", "candidate", "verification", "review", "model_calls",
-                                          "total_cost_usd", "error")}
+                                          "total_cost_usd", "error", "topic_selection", "stats_anchor_attempt")}
     record["coordinator_note"] = ("No publicado: el insight aprobado anterior se mantiene en editorial_approved.json "
                                   "y vence por la regla del lunes; requiere revisión del coordinador.")
     out.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -31,3 +31,50 @@
 - The attempt is saved to `candidates/<monday>-candidate.json` for the coordinator.
 - A paid FAIL is not retried automatically for the same Monday (`--force` is required). This
   prevents paying twice.
+
+## Ficha vs. Insight: stats-release anchor (Dirección, 2-nov-2026)
+
+The product rule, the selection rule and the contract live in
+[`data/stats_fichas/PLAYBOOK.md` §9](../stats_fichas/PLAYBOOK.md) (moved there when #117 merged). In short:
+
+- A stats-family ficha whose new period Alicanto **first verified** in the 7 days before the Monday, with a SIS
+  publication at most 30 days old on that Monday, is the primary candidate. The selection reason records both dates.
+- The Insight must not repeat the ficha. It must cross it with ≥ 2 other sources and pass `contract_check`.
+- If the anchored draft fails the contract, the pipeline writes a second draft on the normal topic inside the same
+  $1 run cap (`MAX_RUN_USD`) and monthly budget. If that draft does not fit the cap, nothing is paid and the
+  attempt stays as a candidate.
+
+## Editorial sessions: brief and contract check are mandatory (Dirección, 2-nov-2026)
+
+Most Insights are written by hand in scheduled editorial sessions, not by the workflow. When the Monday is
+anchored on a stats ficha, the session **must** follow these steps. CI enforces them.
+
+1. **Get the brief.** Run `python scripts/run_weekly_insight_a.py --offline --as-of <monday>`. If a stats anchor
+   qualifies, it writes `data/weekly_insight/candidates/<monday>-stats-brief.json`. The brief holds the anchor
+   with both dates, the cross-references with links and why each is relevant, the allowed anchor figures, the
+   ficha text not to repeat, the contract, and a `brief_id`. If no brief is written, the Monday is not anchored:
+   write on the normal topic and skip steps 3–4.
+2. **Write the Insight** from the brief in `editorial_approved.json` (format A). Declare
+   `weekly_insight.stats_anchor = {"ficha_id": …, "brief_id": …}`, as the brief's `insight_must_declare` shows.
+3. **Run the contract check** as the last edit:
+   `python scripts/check_weekly_insight_contract.py --brief data/weekly_insight/candidates/<monday>-stats-brief.json --write`.
+   This writes `data/weekly_insight/contract_checks/<insight id>.json`, which holds the brief id, the check result,
+   the Insight's sha256 and the source sha. Exit code 1 means FAIL: fix the draft and rerun. If the Insight cannot
+   pass, write it on the normal topic instead (decision 2), and drop the `stats_anchor` field.
+4. **Commit together** the Insight, the brief and the record, in the editorial PR toward `staging`.
+
+**The gate.** `tests/test_weekly_insight_stats_anchor.py::test_committed_weekly_insights_pass_the_contract_gate`
+runs in the PR QA workflow (full `pytest`) and in the weekly-insight guards. It calls `contract_gate`, which you can
+also run as `python scripts/check_weekly_insight_contract.py --gate`. For every Insight in `editorial_approved.json`
+and `archive/` that is anchored on a stats ficha, it fails unless all of these hold:
+
+- a record exists;
+- its verdict is PASS;
+- its sha256 matches the committed Insight, so any edit after the check invalidates it;
+- the brief exists, and its id matches its frozen contract inputs;
+- the contract, rerun on those inputs, still passes.
+
+An Insight counts as anchored when it declares `stats_anchor`, when its `topic_selection` selected the stats rule,
+or when its primary `source_url` is a stats ficha's source file. Insights on a normal topic are not blocked, even
+when they cite a stats file as a secondary source. The automated pipeline writes the same brief and record when it
+publishes an anchored Insight.

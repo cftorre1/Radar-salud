@@ -3,6 +3,15 @@
   python scripts/run_weekly_insight_a.py              # live: draft + verify + review + publish/candidate
   python scripts/run_weekly_insight_a.py --offline    # no AI: topic ranking, evidence and cost estimate only
   python scripts/run_weekly_insight_a.py --as-of 2026-11-02 --offline
+
+Offline also evaluates the stats-release anchor (Dirección 2-nov-2026). When a statistics ficha
+published a new period in the week, it writes the drafter brief to
+data/weekly_insight/candidates/<monday>-stats-brief.json (anchor, cross-references with links,
+allowed figures and the ficha-vs-Insight contract) for a human or session drafter. "New in the week"
+is the day Alicanto first verified the period, with a SIS publication at most 30 days old.
+
+Editorial sessions anchored on that brief must then run scripts/check_weekly_insight_contract.py
+--brief <brief> --write and commit the record (data/weekly_insight/POLICY.md; CI gate).
 """
 from __future__ import annotations
 
@@ -13,6 +22,7 @@ from pathlib import Path
 
 from radar_salud.weekly_freshness import (chile_today, freshness_gate, monday_anchor,
                                           reconcile_weekly_publication, reviewed_weekly)
+from radar_salud import weekly_insight_stats_anchor as stats_anchor
 from radar_salud.weekly_insight_a import (build_evidence, estimate_run_cost, publish, run_weekly_a,
                                           select_topic)
 
@@ -83,11 +93,23 @@ def main() -> int:
                                      "event_date": r["signal"].get("event_date"), "related": [x.get("title") for x in r["related"]]}
                                     for r in ranked[:5]],
                   "evidence": evidence, "cost_estimate": estimate_run_cost(evidence, anchor=anchor) if evidence else None}
+        from radar_salud.source_rights import redact_public_payload
+        selected = stats_anchor.plan(redact_public_payload(list(signals)), anchor, root=ROOT, previous=approved)
+        record["topic_selection"] = stats_anchor.summary(selected)
         out = ROOT / "data/weekly_insight/candidates" / f"{anchor.isoformat()}-evidence.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        brief_file = None
+        if selected.get("status") == "selected":
+            evidence_s = stats_anchor.build_evidence(selected, ROOT)
+            brief = stats_anchor.build_brief(selected, evidence_s, anchor)
+            brief_file = ROOT / "data/weekly_insight/candidates" / f"{anchor.isoformat()}-stats-brief.json"
+            brief_file.write_text(json.dumps(brief, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"status": record["status"], "anchor": anchor.isoformat(), "file": str(out.relative_to(ROOT)),
-                          "top": record["topic_ranking"][:1], "cost": record["cost_estimate"]}, ensure_ascii=False))
+                          "top": record["topic_ranking"][:1], "cost": record["cost_estimate"],
+                          "stats_anchor": {"status": selected.get("status"), "reason": selected.get("reason"),
+                                           "brief": str(brief_file.relative_to(ROOT)) if brief_file else None}},
+                         ensure_ascii=False))
         return 0
     if current and current.get("anchor_kind") == "monday" and current.get("freshness_anchor_date") == anchor.isoformat() and not args.force:
         print(json.dumps({"status": "already_published_for_monday", "id": current.get("id")}, ensure_ascii=False))

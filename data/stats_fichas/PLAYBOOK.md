@@ -215,3 +215,53 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 **F5 Reclamos/fiscalización, F7 Financiamiento público, F8 Presión asistencial.** Siguen la receta del §6.
 - Antes de proponer temas, verificar la fuente: FONASA responde HTTP 403 e ISP falla en TLS (bloqueos externos).
 - No inventar series: un tema existe solo si una columna revisada lo sostiene.
+
+## 9. Ficha vs. Insight: el Insight semanal anclado en una publicación estadística (Dirección, 2 nov)
+
+Movido desde `data/weekly_insight/POLICY.md` al mergear #117. El procedimiento editorial obligatorio queda en
+POLICY.md (sección "Editorial sessions"); aquí van la regla de producto, la selección y el contrato.
+
+**Dos productos distintos.**
+- **Ficha** (familias estadísticas F1 Cartera, F2 FEFI, F4 GES, F6 Boletín IP): la noticia de la publicación, con el
+  análisis de sus propios datos. La construye el código; solo la Lectura de 60 palabras puede escribirla un modelo.
+- **Insight** (lunes, formato A): **no** repite la ficha. Cruza el dato ancla con otro material relevante, los asocia y
+  propone una tesis: qué está pasando y qué mirar. Material para cruzar: otras fichas (p. ej. resultados FEFI vs.
+  tendencia de cartera F1), licencias médicas, circulares y sanciones SIS recientes, proyectos en el Congreso, casos FNE,
+  temas Global pertinentes, prensa.
+
+**Regla de selección** (`src/radar_salud/weekly_insight_stats_anchor.py`, flag en `config/weekly_insight_stats_anchor_v1.json`).
+1. Es la **candidata principal** una ficha de familia configurada cuyo archivo vivo tiene `status: PASS` (verificación PASS,
+   conciliación sin fallo) y `new_period` en sus triggers, cuando:
+   - **Alicanto verificó por primera vez ese período** en los 7 días previos al lunes, `[lunes − 7, lunes)`, en día
+     calendario de Santiago (Dirección 2-nov, decisión 1); y
+   - la **publicación SIS** (`published_at`) tiene **como máximo 30 días** al lunes (`sis_max_age_days`).
+2. **Fecha de primera verificación**, en este orden:
+   1. `first_verified_at` de la ficha viva. `stats_fichas.publish` la estampa en el primer PASS de cada `release_key` y la
+      conserva en las reconstrucciones del mismo release;
+   2. si falta (fichas publicadas antes del sello), el historial git del archivo vivo: el `generated_at` de la primera
+      versión commiteada en PASS con el mismo `release_key`. Un clon superficial lo marca `:shallow`;
+   3. si no hay historial, el `generated_at` de la ficha viva, rotulado como cota superior.
+3. La razón de selección (`topic_selection`, archivo aprobado, registro del candidato y brief) **registra ambas fechas**:
+   publicación SIS (con días al lunes) y primera verificación (con su base de registro).
+4. Desempate: materialidad primero (`threshold_crossed` o destacada = nivel 2; período nuevo simple = nivel 1); luego la
+   publicación SIS más reciente; luego el orden de familias del config.
+5. La misma ficha no ancla dos lunes seguidos. Una ficha en HOLD nunca califica, porque no tiene archivo vivo PASS.
+
+**Contrato** (determinista, `contract_check`).
+- ≥ 2 fuentes de cruce distintas, de los últimos 90 días de nuestros datos y tomadas del brief. Cada una va en `sources`
+  con URL, etiqueta y rol. Las tarjetas sueltas y pulsos de la misma serie del ancla no cuentan.
+- ≤ 2 cifras del ancla, cada una entre las cifras permitidas del brief (valores o líneas KPI con sus refs de evidencia).
+- Toda cifra mostrada (texto, gráficos, notas) trazada a una fuente con nombre vía `figure_sources`, o a una estimación
+  recalculada.
+- Ningún párrafo que solo reescriba cifras y vocabulario de la ficha.
+- `essay.reading` es la **Tesis**; `watch` (≥ 2 ítems) es **Qué mirar**.
+- Ninguna frase con Jaccard de raíces ≥ 0,5 contra una frase, titular o bajada de cualquier ficha viva.
+
+**Si no se cumple** (Dirección 2-nov, decisión 2: se mantiene).
+- Menos de 2 cruces: se usa la selección normal de tema antes de cualquier llamada a modelo.
+- El borrador anclado falla el contrato: se escribe **un segundo borrador sobre el tema normal**, con el mismo redactor y
+  revisor, dentro del mismo tope `MAX_RUN_USD` (1 USD) y del presupuesto mensual pautado. Si no cabe en el tope, no se
+  paga y queda el candidato (`stats_anchor_attempt`). Nunca se publica un Insight débil.
+  `fallback_redraft_after_contract_fail: false` lo desactiva.
+- En sesiones editoriales rige lo mismo: si el contrato no pasa, se escribe el Insight sobre el tema normal (sin ancla,
+  sin registro de contrato).
