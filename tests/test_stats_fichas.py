@@ -1194,8 +1194,9 @@ def test_card_feed_date_is_first_verification_not_sis_publication(root):
 
 def test_web_ages_and_sorts_by_feed_date():
     app = Path("web/app.js").read_text(encoding="utf-8")
-    assert "function feedDate(s){return s.feed_date||s.event_date}" in app
-    assert "Date.parse(String(feedDate(s)||'').slice(0,10)" in app  # ageDays → period filter, buckets, freshness
+    assert "function feedDate(s,now=new Date()){if(!s.feed_date)return s.event_date;" in app
+    assert "<=today?s.feed_date:s.event_date" in app  # a future feed_date never hides the card
+    assert "Date.parse(String(feedDate(s,now)||'').slice(0,10)" in app  # ageDays → period filter, buckets, freshness
     assert "const raw=feedDate(s)||0" in app  # dateVal → date sort
 
 
