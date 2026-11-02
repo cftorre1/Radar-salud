@@ -32468,8 +32468,8 @@
     },
     {
       "piece_id": "stats-ficha:F2:2026-03",
-      "title": "Isapres sin Esencial a marzo 2026: utilidad de 34.120 MM$, 2.707,6% más que en marzo 2025",
-      "display_title": "Isapres sin Esencial a marzo 2026: utilidad de 34.120 MM$, 2.707,6% más que en marzo 2025",
+      "title": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
+      "display_title": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
       "source_name": "Superintendencia de Salud",
       "source_type": "official",
       "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls",
@@ -32505,36 +32505,37 @@
         "family_label": "Resultados financieros de aseguradores",
         "period": "2026-03",
         "published_at": "2026-07-07",
-        "generated_at": "2026-11-02T13:34:12.048907+00:00",
+        "generated_at": "2026-11-02T15:15:47.447028+00:00",
         "release_key": "2026-03:e3c4f7b3cfee9a6e",
         "featured": false,
         "triggers": [
-          "new_period"
+          "new_period",
+          "format_update"
         ],
         "kicker": "Estados financieros Isapres · marzo 2026",
         "kicker_meta": "datos a marzo 2026 · publicado por la SIS el 7 jul · se actualiza cada trimestre",
-        "headline": "Isapres sin Esencial a marzo 2026: utilidad de 34.120 MM$, 2.707,6% más que en marzo 2025",
+        "headline": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
         "headline_type": "default",
         "dek": "La cotización legal aporta el 67,8% de los ingresos. Por Isapre, la siniestralidad va de 75,7% (Nueva Masvida) a 100,4% (Isalud).",
+        "scope_note": "Cifras del sistema sin Isapre Esencial: según la SIS (nota A18), sus cifras a marzo 2026 están en revisión. Los totales suman las otras 9 Isapres.",
         "dek_emphasis": null,
         "kpis": [
           {
             "id": "resultado",
-            "label": "Resultado del ejercicio (sistema sin Esencial)",
+            "label": "Resultado del ejercicio",
             "value": "34.120 MM$",
             "prov": "C",
             "lines": [
-              "marzo 2025: 1.215 MM$ · variación % +2.707,6%"
+              "marzo 2025: 1.215 MM$"
             ],
             "refs": [
               "resultado_ejercicio.sistema.2026-03",
-              "resultado_ejercicio.sistema.2025-03",
-              "resultado_ejercicio.sistema.pct"
+              "resultado_ejercicio.sistema.2025-03"
             ]
           },
           {
             "id": "ingresos",
-            "label": "Ingresos (sistema sin Esencial)",
+            "label": "Ingresos",
             "value": "1.091.349 MM$",
             "prov": "C",
             "lines": [
@@ -32548,7 +32549,7 @@
           },
           {
             "id": "costo_salud",
-            "label": "Prestaciones y SIL (sistema sin Esencial)",
+            "label": "Prestaciones y SIL",
             "value": "905.146 MM$",
             "prov": "C",
             "lines": [
@@ -32562,7 +32563,7 @@
           },
           {
             "id": "gav",
-            "label": "Gastos de administración (sistema sin Esencial)",
+            "label": "Gastos de administración",
             "value": "98.582 MM$",
             "prov": "C",
             "lines": [
@@ -32575,7 +32576,7 @@
           },
           {
             "id": "siniestralidad",
-            "label": "Siniestralidad (sistema sin Esencial)",
+            "label": "Siniestralidad",
             "value": "82,9%",
             "prov": "C",
             "lines": [
@@ -32598,17 +32599,18 @@
                 "id": "f2-resultado",
                 "form": "diverging",
                 "unit": "MM$",
-                "headline": "Resultado del ejercicio, sistema sin Esencial",
-                "subtitle": "Millones de pesos, enero–marzo de cada año",
+                "digits": 0,
+                "headline": "Resultado del ejercicio de las Isapres",
+                "subtitle": "Millones de pesos, enero–marzo de cada año, sin Esencial",
                 "rows": [
                   {
                     "label": "Mar 2025",
-                    "value": 1215.2849999999994,
+                    "value": 1215.2849999999992,
                     "ref": "resultado_ejercicio.sistema.2025-03"
                   },
                   {
                     "label": "Mar 2026",
-                    "value": 34120.35800000001,
+                    "value": 34120.358,
                     "ref": "resultado_ejercicio.sistema.2026-03",
                     "emphasis": true
                   }
@@ -32630,19 +32632,16 @@
                     [
                       "Cambio",
                       "+32.905"
-                    ],
-                    [
-                      "Variación %",
-                      "+2.707,6%"
                     ]
                   ]
                 },
-                "source": "SIS. La variación % no se calcula si algún período tiene pérdida."
+                "source": "SIS. Los resultados se comparan por niveles y cambio absoluto, sin variación %."
               },
               {
                 "id": "f2-resultado-isapres",
                 "form": "diverging",
                 "unit": "MM$",
+                "digits": 0,
                 "headline": "Resultado por Isapre",
                 "subtitle": "Millones de pesos, enero–marzo 2026",
                 "rows": [
@@ -32706,79 +32705,68 @@
                     "Isapre",
                     "Mar 2026",
                     "Mar 2025",
-                    "Cambio",
-                    "Variación %"
+                    "Cambio"
                   ],
                   "rows": [
                     [
                       "Consalud",
                       "18.040",
                       "3.056",
-                      "+14.985",
-                      "+490,4%"
+                      "+14.985"
                     ],
                     [
                       "Cruz Blanca",
                       "6.782",
                       "−3.614",
-                      "+10.396",
-                      "N/A"
+                      "+10.396"
                     ],
                     [
                       "Banmédica",
                       "3.918",
                       "−8.800",
-                      "+12.718",
-                      "N/A"
+                      "+12.718"
                     ],
                     [
                       "Isalud",
                       "2.027",
                       "−7",
-                      "+2.035",
-                      "N/A"
+                      "+2.035"
                     ],
                     [
                       "Nueva Masvida",
                       "1.704",
                       "3.576",
-                      "−1.872",
-                      "−52,3%"
+                      "−1.872"
                     ],
                     [
                       "Colmena",
                       "1.484",
                       "2.946",
-                      "−1.462",
-                      "−49,6%"
+                      "−1.462"
                     ],
                     [
                       "Fundación",
                       "759",
                       "569",
-                      "+190",
-                      "+33,5%"
+                      "+190"
                     ],
                     [
                       "Cruz del Norte",
                       "31",
                       "33",
-                      "−2",
-                      "−7,3%"
+                      "−2"
                     ],
                     [
                       "Vida Tres",
                       "−625",
                       "3.457",
-                      "−4.082",
-                      "N/A"
+                      "−4.082"
                     ],
                     [
                       "Sistema sin Esencial",
                       "34.120",
                       "1.215",
-                      "+32.905",
-                      "+2.707,6%"
+                      "+32.905"
                     ]
                   ]
                 },
@@ -32807,8 +32795,9 @@
                 "id": "f2-ingresos-composicion",
                 "form": "bars",
                 "unit": "MM$",
+                "digits": 0,
                 "headline": "De dónde vienen los ingresos",
-                "subtitle": "Millones de pesos, enero–marzo 2026, sistema sin Esencial",
+                "subtitle": "Millones de pesos, enero–marzo 2026, sin Esencial",
                 "rows": [
                   {
                     "label": "Cotización legal",
@@ -32830,7 +32819,7 @@
                   },
                   {
                     "label": "Fondo compens.",
-                    "value": 1316.1000000000001,
+                    "value": 1316.1,
                     "ref": "fondo_compensacion.sistema.2026-03",
                     "emphasis": false
                   }
@@ -32873,6 +32862,7 @@
                 "id": "f2-ingresos-isapres",
                 "form": "bars",
                 "unit": "MM$",
+                "digits": 0,
                 "headline": "Ingresos por Isapre",
                 "subtitle": "Total ingresos de actividades ordinarias, millones de pesos, enero–marzo 2026",
                 "rows": [
@@ -33049,8 +33039,9 @@
                 "id": "f2-costos-composicion",
                 "form": "bars",
                 "unit": "MM$",
+                "digits": 0,
                 "headline": "Costo de ventas por componente",
-                "subtitle": "Millones de pesos, enero–marzo 2026, sistema sin Esencial",
+                "subtitle": "Millones de pesos, enero–marzo 2026, sin Esencial",
                 "rows": [
                   {
                     "label": "Prestaciones",
@@ -33066,7 +33057,7 @@
                   },
                   {
                     "label": "Ocurridas no liq.",
-                    "value": 29616.345000000005,
+                    "value": 29616.345,
                     "ref": "prestaciones_no_liquidadas.sistema.2026-03",
                     "emphasis": false
                   },
@@ -33131,6 +33122,7 @@
                 "id": "f2-costos-isapres",
                 "form": "bars",
                 "unit": "MM$",
+                "digits": 0,
                 "headline": "Prestaciones y SIL por Isapre",
                 "subtitle": "Millones de pesos, enero–marzo 2026",
                 "rows": [
@@ -33306,8 +33298,9 @@
                 "id": "f2-gastos-composicion",
                 "form": "bars",
                 "unit": "MM$",
+                "digits": 0,
                 "headline": "Gastos de administración por componente",
-                "subtitle": "Millones de pesos, enero–marzo 2026, sistema sin Esencial",
+                "subtitle": "Millones de pesos, enero–marzo 2026, sin Esencial",
                 "rows": [
                   {
                     "label": "Remuneraciones",
@@ -33316,7 +33309,7 @@
                   },
                   {
                     "label": "Remun. ventas",
-                    "value": 31250.806999999997,
+                    "value": 31250.807,
                     "ref": "gav_remuneraciones_ventas.sistema.2026-03"
                   },
                   {
@@ -33527,8 +33520,8 @@
                 "form": "bars",
                 "unit": "%",
                 "digits": 1,
-                "headline": "Siniestralidad, sistema sin Esencial",
-                "subtitle": "% de los ingresos, enero–marzo de cada año",
+                "headline": "Siniestralidad de las Isapres",
+                "subtitle": "% de los ingresos, enero–marzo de cada año, sin Esencial",
                 "rows": [
                   {
                     "label": "Mar 2025",
@@ -33704,8 +33697,8 @@
         "facts": {
           "heading": "Qué muestran los datos",
           "paragraphs": [
-            "Entre enero y marzo, el sistema sin Esencial registró una utilidad de 34.120 MM$, 2.707,6% más que en marzo 2025.",
-            "La siniestralidad del sistema sin Esencial (prestaciones y SIL sobre ingresos) fue 82,9% entre enero y marzo."
+            "Entre enero y marzo, las Isapres registraron una utilidad de 34.120 MM$ frente a 1.215 MM$ en marzo 2025.",
+            "La siniestralidad de las Isapres (prestaciones y SIL sobre ingresos) fue 82,9% entre enero y marzo."
           ],
           "rendered_in_tabs": true
         },
@@ -33727,7 +33720,7 @@
           },
           {
             "id": "n2",
-            "text": "Denominadores: la siniestralidad divide prestaciones y SIL por el total de ingresos de actividades ordinarias del mismo período, igual que los gastos de administración; la variación % usa el valor del año anterior y no se calcula (N/A) si un resultado cambia de signo."
+            "text": "Denominadores: la siniestralidad divide prestaciones y SIL por el total de ingresos de actividades ordinarias del mismo período, igual que los gastos de administración. La variación % de ingresos usa el valor del año anterior como base; los resultados no llevan variación % y se comparan por sus niveles y el cambio absoluto."
           },
           {
             "id": "n3",
@@ -33779,7 +33772,7 @@
           "evidence_research"
         ],
         "materiality_decision": "accept",
-        "public_title": "Isapres sin Esencial a marzo 2026: utilidad de 34.120 MM$, 2.707,6% más que en marzo 2025",
+        "public_title": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
         "what_happened": "La cotización legal aporta el 67,8% de los ingresos. Por Isapre, la siniestralidad va de 75,7% (Nueva Masvida) a 100,4% (Isalud).",
         "why_it_matters": "",
         "evidence_map": [

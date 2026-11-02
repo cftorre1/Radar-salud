@@ -35,7 +35,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F2"
-BUILDER_VERSION = "f2_index_topic_v3"
+BUILDER_VERSION = "f2_index_topic_v4"
 CAPTURE = fc.STORE
 EDITORIAL_RULES = Path("config/editorial_rules_v3.json")
 ESENCIAL_HOLD = "HOLD_COVERAGE_ESENCIAL"
@@ -58,6 +58,10 @@ GAV_PARTS = (("gav_remuneraciones", "Remuneraciones"), ("gav_remuneraciones_vent
 BRIDGE = (("ganancia_bruta", "Ganancia bruta", 1), ("resultado_antes_impuestos", "Antes de impuestos", 1),
           ("gasto_impuestos", "Impuestos", -1), ("resultado_ejercicio", "Ganancia", 1))
 MM = "MM$"
+# Result items (Dirección, 2-nov-2026): never a % variation, whatever the base; both levels are shown instead. A small
+# positive base makes a valid % misleading ('2.707,6% más' on 1.215 MM$). Ingresos and costos keep their % (positive base).
+RESULT_ITEMS = frozenset({"resultado_ejercicio", "resultado_antes_impuestos", "ganancia_bruta"})
+MM_DIGITS = 0  # MM$ are displayed as whole numbers (charts: 'digits'; tables: fmt_int); the evidence keeps full precision
 
 
 def _rules(root: Path) -> dict | None:
@@ -100,7 +104,7 @@ def exclusion_applies(rule: dict, note: dict | None, period: str) -> bool:
 
 
 def change(prev: float, cur: float, *, result: bool) -> dict:
-    """Δ and Δ% with the sign rule: a % only when the base is positive and (for a result) the sign does not change."""
+    """Δ and Δ%: a % only for a non-result item with a positive base; a result never gets a % (``RESULT_ITEMS``)."""
     delta = cur - prev
     if result:
         if prev < 0 <= cur:
@@ -111,7 +115,7 @@ def change(prev: float, cur: float, *, result: bool) -> dict:
             kind = "loss_smaller" if abs(cur) < abs(prev) else ("loss_larger" if abs(cur) > abs(prev) else "same")
         else:
             kind = "profit_up" if cur > prev else ("profit_down" if cur < prev else "same")
-        pct = delta / prev * 100 if prev > 0 and cur >= 0 else None
+        pct = None
     else:
         kind = "up" if delta > 0 else ("down" if delta < 0 else "same")
         pct = delta / prev * 100 if prev > 0 else None
@@ -123,7 +127,7 @@ def level_phrase(cur: float) -> str:
 
 
 def result_phrase(prev: float, cur: float, when_prev: str) -> str:
-    """'utilidad de 34.091 MM$, tras una pérdida de 273 MM$ en marzo 2025': sign-aware, no signed percentage."""
+    """'utilidad de 34.091 MM$, tras una pérdida de 273 MM$ en marzo 2025': sign-aware, both levels, never a %."""
     c = change(prev, cur, result=True)
     k = c["transition"]
     if k == "loss_to_profit":
@@ -133,10 +137,31 @@ def result_phrase(prev: float, cur: float, when_prev: str) -> str:
     if cur < 0:
         word = {"loss_smaller": "menor que", "loss_larger": "mayor que", "same": "igual a"}[k]
         return f"pérdida de {fmt_int(abs(cur))} {MM}, {word} la de {fmt_int(abs(prev))} {MM} en {when_prev}"
-    if c["pct"] is None:
-        return f"utilidad de {fmt_int(cur)} {MM} ({fmt_int(prev)} {MM} en {when_prev})"
-    word = "más" if c["delta"] > 0 else "menos"
-    return f"utilidad de {fmt_int(cur)} {MM}, {fmt_dec(abs(c['pct']), 1)}% {word} que en {when_prev}"
+    return f"utilidad de {fmt_int(cur)} {MM} frente a {fmt_int(prev)} {MM} en {when_prev}"
+
+
+def headline_lead(prev: float | None, cur: float, span: str) -> str:
+    """Natural, sign-aware headline (Dirección, 2-nov-2026): both levels, never a %, no 'sin Esencial' (that is the
+    footnote's job). 'Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes'."""
+    verb = f"Las Isapres ganan {fmt_int(cur)} {MM}" if cur >= 0 else f"Las Isapres pierden {fmt_int(abs(cur))} {MM}"
+    head = f"{verb} en {span}"
+    if prev is None:
+        return head
+    k = change(prev, cur, result=True)["transition"]
+    if k == "loss_to_profit":
+        return f"{head}, tras perder {fmt_int(abs(prev))} {MM} un año antes"
+    if k == "profit_to_loss":
+        return f"{head}, tras ganar {fmt_int(prev)} {MM} un año antes"
+    if cur < 0:
+        word = {"loss_smaller": "menos que", "loss_larger": "más que", "same": "lo mismo que"}[k]
+        return f"{head}, {word} los {fmt_int(abs(prev))} {MM} de un año antes"
+    return f"{head}, frente a {fmt_int(prev)} {MM} un año antes"
+
+
+def scope_note(cell: str, period_label: str, n: int) -> str:
+    """The one always-visible footnote on Esencial (Dirección, 2-nov-2026), paraphrasing the A18 note the rule matched."""
+    return (f"Cifras del sistema sin Isapre Esencial: según la SIS (nota {cell}), sus cifras a {period_label} están en "
+            f"revisión. Los totales suman las otras {n} Isapres.")
 
 
 def pct_cell(pct: float | None) -> str:
@@ -330,12 +355,12 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                 "cotización legal / total ingresos de actividades ordinarias × 100",
                 [f"cotizacion_legal.sistema.{t}", f"ingresos_operacionales.sistema.{t}"], "%")
     for item in sorted(yoy & {"ingresos_operacionales", "resultado_ejercicio"}):
-        res = item == "resultado_ejercicio"
+        res = item in RESULT_ITEMS
         for w in whos:
             c = change(V(f"{item}.{w}.{t1}"), V(f"{item}.{w}.{t}"), result=res)
             derived(f"{item}.{w}.delta", c["delta"], f"{item}(t) − {item}(t−12)", [f"{item}.{w}.{t}", f"{item}.{w}.{t1}"], MM)
             if c["pct"] is not None:
-                derived(f"{item}.{w}.pct", c["pct"], "Δ / valor(t−12) × 100 (solo base positiva y sin cambio de signo)",
+                derived(f"{item}.{w}.pct", c["pct"], "Δ / valor(t−12) × 100 (solo base positiva; nunca para un resultado)",
                         [f"{item}.{w}.delta", f"{item}.{w}.{t1}"], "%")
         if res and change(V(f"{item}.sistema.{t1}"), V(f"{item}.sistema.{t}"), result=True)["transition"] in ("loss_to_profit", "profit_to_loss"):
             findings.append({"type": "sign_change", "kpi": "resultado", "crossed": True, "strength": 1.0})
@@ -376,23 +401,22 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     short = lambda p: f"{sf.month_short(p)} {p[:4]}"  # noqa: E731
     topics = package["topics"]
     excl = bool(k["excluded"])
-    sys_row = "Sistema sin Esencial" if excl else "Sistema"
-    sys_phrase = SYSTEM if excl else "sistema"
-    scope = f" ({SYSTEM})" if excl else ""
+    sys_row = "Sistema sin Esencial" if excl else "Sistema"  # 'Ver datos' total row: names what it sums
+    sin = ", sin Esencial" if excl else ""  # chart subtitles where a system total is drawn; nowhere else (Dirección, 2-nov)
+    # KPI labels and index lines carry no Esencial label: the footnote (scope_note) covers the whole ficha.
     kpis, tabs, paragraphs = [], [], []
 
     def order(item: str) -> list[str]:
         return sorted(codes, key=lambda c: (-V(f"{item}.{c}.{t}"), names[c]))
 
-    def cmp_line(item: str, res: bool = False) -> str:
+    def cmp_line(item: str) -> str:
         if item not in yoy:
             return f"{ytd} {t[:4]}; sin comparación a/a"
-        c = change(V(f"{item}.sistema.{t1}"), V(f"{item}.sistema.{t}"), result=res)
-        why = {"loss_to_profit": "N/A (cambia de signo)", "profit_to_loss": "N/A (cambia de signo)",
-               "loss_smaller": "N/A (pérdida en ambos años)", "loss_larger": "N/A (pérdida en ambos años)",
-               "same": "N/A (pérdida en ambos años)"}.get(c["transition"], "N/A (base no positiva)")
-        return f"{plabel}: {fmt_int(V(f'{item}.sistema.{t1}'))} {MM} · variación % " + (
-            why if c["pct"] is None and res else pct_cell(c["pct"]))
+        prev_level = f"{plabel}: {fmt_int(V(f'{item}.sistema.{t1}'))} {MM}"
+        if item in RESULT_ITEMS:  # both levels, never a %
+            return prev_level
+        c = change(V(f"{item}.sistema.{t1}"), V(f"{item}.sistema.{t}"), result=False)
+        return f"{prev_level} · variación % " + (pct_cell(c["pct"]) if c["pct"] is not None else "N/A (base no positiva)")
 
     def cmp_refs(item: str) -> list[str]:
         if item not in yoy:
@@ -403,14 +427,14 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         R = V(f"resultado_ejercicio.sistema.{t}")
         n_pos, n = int(V("conteo.isapres_con_utilidad")), int(V("conteo.isapres"))
         ry = "resultado_ejercicio" in yoy
-        kpis.append({"id": "resultado", "label": f"Resultado del ejercicio{scope}", "value": f"{fmt_int(R)} {MM}", "prov": "C",
-                     "lines": [cmp_line("resultado_ejercicio", True)],
+        kpis.append({"id": "resultado", "label": "Resultado del ejercicio", "value": f"{fmt_int(R)} {MM}", "prov": "C",
+                     "lines": [cmp_line("resultado_ejercicio")],
                      "refs": [f"resultado_ejercicio.sistema.{t}"] + cmp_refs("resultado_ejercicio")})
         charts = []
         bridge = [(i, lab, sg) for i, lab, sg in BRIDGE if i in complete]
         if not ry and len(bridge) == len(BRIDGE):  # levels only: from ganancia bruta to the result, same period
-            charts.append({"id": "f2-resultado-puente", "form": "diverging", "unit": MM, "headline": "De la ganancia bruta al resultado",
-                           "subtitle": f"Millones de pesos, {ytd} {t[:4]}, {sys_phrase}",
+            charts.append({"id": "f2-resultado-puente", "form": "diverging", "unit": MM, "digits": MM_DIGITS, "headline": "De la ganancia bruta al resultado",
+                           "subtitle": f"Millones de pesos, {ytd} {t[:4]}{sin}",
                            "rows": [{"label": lab, "value": sg * V(f"{i}.sistema.{t}"), "ref": f"{i}.sistema.{t}", "sign": sg,
                                      "emphasis": i == "resultado_ejercicio"} for i, lab, sg in bridge],
                            "table": {"columns": ["Concepto", MM],
@@ -419,39 +443,37 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                      "resultado antes de impuestos incluye gastos de administración y otros ítems."})
         if ry:
             R1 = V(f"resultado_ejercicio.sistema.{t1}")
-            charts.append({"id": "f2-resultado", "form": "diverging", "unit": MM, "headline": f"Resultado del ejercicio, {sys_phrase}",
-                           "subtitle": f"Millones de pesos, {ytd} de cada año",
+            charts.append({"id": "f2-resultado", "form": "diverging", "unit": MM, "digits": MM_DIGITS, "headline": "Resultado del ejercicio de las Isapres",
+                           "subtitle": f"Millones de pesos, {ytd} de cada año{sin}",
                            "rows": [{"label": short(t1), "value": R1, "ref": f"resultado_ejercicio.sistema.{t1}"},
                                     {"label": short(t), "value": R, "ref": f"resultado_ejercicio.sistema.{t}", "emphasis": True}],
                            "table": {"columns": ["Período", f"Resultado ({MM})"],
                                      "rows": [[short(t1), fmt_int(R1)], [short(t), fmt_int(R)],
-                                              ["Cambio", sf.fmt_signed(V("resultado_ejercicio.sistema.delta"))],
-                                              ["Variación %", pct_cell((v.get("resultado_ejercicio.sistema.pct") or {}).get("value"))]]},
-                           "source": "SIS. La variación % no se calcula si algún período tiene pérdida."})
+                                              ["Cambio", sf.fmt_signed(V("resultado_ejercicio.sistema.delta"))]]},
+                           "source": "SIS. Los resultados se comparan por niveles y cambio absoluto, sin variación %."})
 
         def rrow(w, lab):
             out = [lab, fmt_int(V(f"resultado_ejercicio.{w}.{t}"))]
             if ry:
-                out += [fmt_int(V(f"resultado_ejercicio.{w}.{t1}")), sf.fmt_signed(V(f"resultado_ejercicio.{w}.delta")),
-                        pct_cell((v.get(f"resultado_ejercicio.{w}.pct") or {}).get("value"))]
+                out += [fmt_int(V(f"resultado_ejercicio.{w}.{t1}")), sf.fmt_signed(V(f"resultado_ejercicio.{w}.delta"))]
             return out
         ordr = order("resultado_ejercicio")
-        charts.append({"id": "f2-resultado-isapres", "form": "diverging", "unit": MM, "headline": "Resultado por Isapre",
+        charts.append({"id": "f2-resultado-isapres", "form": "diverging", "unit": MM, "digits": MM_DIGITS, "headline": "Resultado por Isapre",
                        "subtitle": f"Millones de pesos, {ytd} {t[:4]}",
                        "rows": [{"label": names[c], "value": V(f"resultado_ejercicio.{c}.{t}"), "ref": f"resultado_ejercicio.{c}.{t}",
                                  "emphasis": V(f"resultado_ejercicio.{c}.{t}") < 0} for c in ordr],
-                       "table": {"columns": ["Isapre", short(t)] + ([short(t1), "Cambio", "Variación %"] if ry else []),
+                       "table": {"columns": ["Isapre", short(t)] + ([short(t1), "Cambio"] if ry else []),
                                  "rows": [rrow(c, names[c]) for c in ordr] + [rrow("sistema", sys_row)]},
                        "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."})
         tab = {"id": "resultados", "label": "Resultados", "charts": charts, "text": [], "dek": None}
         sf.topic_fields(tab, f"{fmt_int(R)} {MM} · {n_pos} de {n} Isapres con utilidad",
                         index_refs=[f"resultado_ejercicio.sistema.{t}", "conteo.isapres_con_utilidad", "conteo.isapres"], kpis=[])
         tabs.append(tab)
-        paragraphs.append(f"Entre enero y {month}, el {sys_phrase} registró una "
+        paragraphs.append(f"Entre enero y {month}, las Isapres registraron una "
                           + (result_phrase(V(f"resultado_ejercicio.sistema.{t1}"), R, plabel) if ry else level_phrase(R)) + ".")
     if "ingresos" in topics:
         I = V(f"ingresos_operacionales.sistema.{t}")
-        kpis.append({"id": "ingresos", "label": f"Ingresos{scope}", "value": f"{fmt_int(I)} {MM}", "prov": "C",
+        kpis.append({"id": "ingresos", "label": "Ingresos", "value": f"{fmt_int(I)} {MM}", "prov": "C",
                      "lines": [cmp_line("ingresos_operacionales")],
                      "refs": [f"ingresos_operacionales.sistema.{t}"] + cmp_refs("ingresos_operacionales")})
         parts = [(i, lab) for i, lab in INGRESOS_PARTS if i in complete]
@@ -459,13 +481,13 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         comp_rows = [{"label": lab, "value": V(f"{i}.sistema.{t}"), "ref": f"{i}.sistema.{t}", "emphasis": i == "cotizacion_legal"}
                      for i, lab in parts if V(f"{i}.sistema.{t}") != 0]
         if len(comp_rows) >= 2:  # stock of the period first: where the income comes from
-            charts.append({"id": "f2-ingresos-composicion", "form": "bars", "unit": MM, "headline": "De dónde vienen los ingresos",
-                           "subtitle": f"Millones de pesos, {ytd} {t[:4]}, {sys_phrase}", "rows": comp_rows,
+            charts.append({"id": "f2-ingresos-composicion", "form": "bars", "unit": MM, "digits": MM_DIGITS, "headline": "De dónde vienen los ingresos",
+                           "subtitle": f"Millones de pesos, {ytd} {t[:4]}{sin}", "rows": comp_rows,
                            "table": {"columns": ["Componente", MM],
                                      "rows": [[lab, fmt_int(V(f"{i}.sistema.{t}"))] for i, lab in parts] + [["Total ingresos", fmt_int(I)]]},
                            "source": "SIS, apertura de cuentas de resultados (miles de $ convertidos a millones). Los componentes suman el total."})
         ordr = order("ingresos_operacionales")
-        charts.append({"id": "f2-ingresos-isapres", "form": "bars", "unit": MM, "headline": "Ingresos por Isapre",
+        charts.append({"id": "f2-ingresos-isapres", "form": "bars", "unit": MM, "digits": MM_DIGITS, "headline": "Ingresos por Isapre",
                        "subtitle": f"Total ingresos de actividades ordinarias, millones de pesos, {ytd} {t[:4]}",
                        "rows": [{"label": names[c], "value": V(f"ingresos_operacionales.{c}.{t}"), "ref": f"ingresos_operacionales.{c}.{t}"} for c in ordr],
                        "table": {"columns": ["Isapre", "Total"] + [lab for _, lab in parts],
@@ -482,20 +504,20 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         tabs.append(tab)
     if "costos" in topics:
         CS = V(f"costo_salud.sistema.{t}")
-        kpis.append({"id": "costo_salud", "label": f"Prestaciones y SIL{scope}", "value": f"{fmt_int(CS)} {MM}", "prov": "C",
+        kpis.append({"id": "costo_salud", "label": "Prestaciones y SIL", "value": f"{fmt_int(CS)} {MM}", "prov": "C",
                      "lines": [f"prestaciones {fmt_int(V(f'costo_prestaciones.sistema.{t}'))} · SIL {fmt_int(V(f'costo_sil.sistema.{t}'))}"],
                      "refs": [f"costo_salud.sistema.{t}", f"costo_prestaciones.sistema.{t}", f"costo_sil.sistema.{t}"]})
         parts = [(i, lab) for i, lab in COSTO_PARTS if i in complete]
         signed = any(V(f"{i}.sistema.{t}") < 0 for i, _ in parts)
         ordr = order("costo_salud")
-        charts = [{"id": "f2-costos-composicion", "form": "diverging" if signed else "bars", "unit": MM,
-                   "headline": "Costo de ventas por componente", "subtitle": f"Millones de pesos, {ytd} {t[:4]}, {sys_phrase}",
+        charts = [{"id": "f2-costos-composicion", "form": "diverging" if signed else "bars", "unit": MM, "digits": MM_DIGITS,
+                   "headline": "Costo de ventas por componente", "subtitle": f"Millones de pesos, {ytd} {t[:4]}{sin}",
                    "rows": [{"label": lab, "value": V(f"{i}.sistema.{t}"), "ref": f"{i}.sistema.{t}", "emphasis": i == "costo_prestaciones"}
                             for i, lab in parts],
                    "table": {"columns": ["Componente", MM], "rows": [[lab, fmt_int(V(f"{i}.sistema.{t}"))] for i, lab in parts]
                              + ([["Total costo de ventas", fmt_int(V(f"costo_operacional.sistema.{t}"))]] if "costo_operacional" in complete else [])},
                    "source": "SIS, apertura de cuentas de resultados. Los componentes suman el total del costo de ventas."},
-                  {"id": "f2-costos-isapres", "form": "bars", "unit": MM, "headline": "Prestaciones y SIL por Isapre",
+                  {"id": "f2-costos-isapres", "form": "bars", "unit": MM, "digits": MM_DIGITS, "headline": "Prestaciones y SIL por Isapre",
                    "subtitle": f"Millones de pesos, {ytd} {t[:4]}",
                    "rows": [{"label": names[c], "value": V(f"costo_salud.{c}.{t}"), "ref": f"costo_salud.{c}.{t}"} for c in ordr],
                    "table": {"columns": ["Isapre"] + [lab for _, lab in parts],
@@ -507,15 +529,15 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         tabs.append(tab)
     if "gastos" in topics:
         G, GP = V(f"gav.sistema.{t}"), V(f"gav_pct.sistema.{t}")
-        kpis.append({"id": "gav", "label": f"Gastos de administración{scope}", "value": f"{fmt_int(G)} {MM}", "prov": "C",
+        kpis.append({"id": "gav", "label": "Gastos de administración", "value": f"{fmt_int(G)} {MM}", "prov": "C",
                      "lines": [f"{fmt_dec(GP, 1)}% de los ingresos"], "refs": [f"gav.sistema.{t}", f"gav_pct.sistema.{t}"]})
         parts = [(i, lab) for i, lab in GAV_PARTS if i in complete]
         ordr = sorted(codes, key=lambda c: (-V(f"gav_pct.{c}.{t}"), names[c]))
         charts = []
         if len(parts) >= 2:
             charts.append({"id": "f2-gastos-composicion", "form": "diverging" if any(V(f"{i}.sistema.{t}") < 0 for i, _ in parts) else "bars",
-                           "unit": MM, "headline": "Gastos de administración por componente",
-                           "subtitle": f"Millones de pesos, {ytd} {t[:4]}, {sys_phrase}",
+                           "unit": MM, "digits": MM_DIGITS, "headline": "Gastos de administración por componente",
+                           "subtitle": f"Millones de pesos, {ytd} {t[:4]}{sin}",
                            "rows": [{"label": lab, "value": V(f"{i}.sistema.{t}"), "ref": f"{i}.sistema.{t}"} for i, lab in parts],
                            "table": {"columns": ["Componente", MM],
                                      "rows": [[lab, fmt_int(V(f"{i}.sistema.{t}"))] for i, lab in parts] + [["Total", fmt_int(G)]]},
@@ -535,7 +557,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     if "siniestralidad" in topics:
         S = V(f"siniestralidad.sistema.{t}")
         pp = (v.get("siniestralidad.sistema.pp") or {}).get("value")
-        kpis.append({"id": "siniestralidad", "label": f"Siniestralidad{scope}", "value": fmt_dec(S, 1) + "%", "prov": "C",
+        kpis.append({"id": "siniestralidad", "label": "Siniestralidad", "value": fmt_dec(S, 1) + "%", "prov": "C",
                      "lines": ["prestaciones y SIL sobre ingresos"]
                      + ([f"{plabel}: {fmt_dec(V(f'siniestralidad.sistema.{t1}'), 1)}% ({fmt_dec(pp, 1, signed=True)} pp)"] if pp is not None else []),
                      "refs": [f"siniestralidad.sistema.{t}"] + ([f"siniestralidad.sistema.{t1}", "siniestralidad.sistema.pp"] if pp is not None else [])})
@@ -549,8 +571,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                       for w in [*ordr, "sistema"]]},
                    "source": "Denominador: total ingresos de actividades ordinarias de cada Isapre, mismo período acumulado."}]
         if pp is not None:
-            charts.insert(0, {"id": "f2-siniestralidad", "form": "bars", "unit": "%", "digits": 1, "headline": f"Siniestralidad, {sys_phrase}",
-                              "subtitle": f"% de los ingresos, {ytd} de cada año",
+            charts.insert(0, {"id": "f2-siniestralidad", "form": "bars", "unit": "%", "digits": 1, "headline": "Siniestralidad de las Isapres",
+                              "subtitle": f"% de los ingresos, {ytd} de cada año{sin}",
                               "rows": [{"label": short(t1), "value": V(f"siniestralidad.sistema.{t1}"), "ref": f"siniestralidad.sistema.{t1}"},
                                        {"label": short(t), "value": S, "ref": f"siniestralidad.sistema.{t}", "emphasis": True}],
                               "table": {"columns": ["Período", "Siniestralidad"],
@@ -560,18 +582,17 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         line = f"{fmt_dec(S, 1)}% de los ingresos" + (f" · {fmt_dec(pp, 1, signed=True)} pp" if pp is not None else "")
         sf.topic_fields(tab, line, index_refs=[f"siniestralidad.sistema.{t}"] + (["siniestralidad.sistema.pp"] if pp is not None else []), kpis=[])
         tabs.append(tab)
-        paragraphs.append(f"La siniestralidad del {sys_phrase} (prestaciones y SIL sobre ingresos) fue {fmt_dec(S, 1)}% entre enero y {month}.")
+        paragraphs.append(f"La siniestralidad de las Isapres (prestaciones y SIL sobre ingresos) fue {fmt_dec(S, 1)}% entre enero y {month}.")
 
+    span = f"{ytd} {t[:4]}"  # 'enero–marzo 2026', the same span as the chart subtitles
     if "resultados" in topics:
-        lead = (result_phrase(V(f"resultado_ejercicio.sistema.{t1}"), V(f"resultado_ejercicio.sistema.{t}"), plabel)
-                if "resultado_ejercicio" in yoy else level_phrase(V(f"resultado_ejercicio.sistema.{t}")) + f" entre enero y {month}")
+        lead = headline_lead(V(f"resultado_ejercicio.sistema.{t1}") if "resultado_ejercicio" in yoy else None,
+                             V(f"resultado_ejercicio.sistema.{t}"), span)
     elif "siniestralidad" in topics:
-        lead = f"siniestralidad de {fmt_dec(V(f'siniestralidad.sistema.{t}'), 1)}% de los ingresos entre enero y {month}"
+        lead = f"La siniestralidad de las Isapres es {fmt_dec(V(f'siniestralidad.sistema.{t}'), 1)}% de los ingresos en {span}"
     else:
-        lead = f"ingresos de {fmt_int(V(f'ingresos_operacionales.sistema.{t}'))} {MM} entre enero y {month}"
+        lead = f"Las Isapres ingresan {fmt_int(V(f'ingresos_operacionales.sistema.{t}'))} {MM} en {span}"
     headline = tpl["headline"]["default"].format(month_label=mlabel, lead=lead)
-    if not excl:
-        headline = headline.replace("Isapres sin Esencial", "Isapres")
     # The dek adds what the KPI cards do not show: where income comes from and the spread across Isapres.
     dek_parts = []
     if has("cotizacion_legal.sistema.share"):
@@ -601,7 +622,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         {"id": "n1", "text": f"Ingresos, costos y resultados son flujos acumulados de enero a {month}, no stocks. Montos nominales: la SIS "
                              "los publica en miles de pesos y Alicanto los convierte a millones; el valor real (UF) queda pendiente."},
         {"id": "n2", "text": "Denominadores: la siniestralidad divide prestaciones y SIL por el total de ingresos de actividades ordinarias "
-                             "del mismo período, igual que los gastos de administración; la variación % usa el valor del año anterior y no se calcula (N/A) si un resultado cambia de signo."},
+                             "del mismo período, igual que los gastos de administración. La variación % de ingresos usa el valor del año anterior "
+                             "como base; los resultados no llevan variación % y se comparan por sus niveles y el cambio absoluto."},
         {"id": "n3", "text": "Cada cifra se lee de las hojas de apertura de cuentas de resultados "
                              "y del estado de resultados por función (en miles de $) de la planilla capturada (hash en Fuentes), con una plantilla "
                              "revisada por una persona; en cada cuenta las Isapres suman la columna total y los componentes su total; ingresos menos "
@@ -612,6 +634,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                           "La ficha muestra solo los niveles del período."})
     notes.append({"id": "n6", "text": "Ningún dato de esta ficha establece por qué cambian los ingresos, los costos o la siniestralidad."})
     sources = [{**src, "key": key} for key, src in package["sources"].items()]
+    footnote = (scope_note(str(k["coverage_note"]["locator"]).rsplit("!", 1)[-1], mlabel, len(codes)) if excl else None)
     triggers = (decision or {}).get("triggers") or []
     rule = "nuevo período" if "new_period" in triggers else ("revisión" if "revision" in triggers else "publicación vigente")
     machine = (f"Ficha generada por la regla \"{rule}\" (publicación del {sf.day_label(package['published_at'])}). Las cifras vienen del "
@@ -623,6 +646,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "kicker_meta": tpl["kicker_meta"].format(period_label=mlabel, published_label=sf.day_label(package["published_at"]),
                                                  cadence_phrase=cfg["cadence_phrase"]),
         "headline": headline[0].upper() + headline[1:], "headline_type": "default", "dek": dek, "dek_emphasis": None,
+        "scope_note": footnote,
         "kpis": kpis[:5], "tabs": tabs,
         "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs or [dek], "rendered_in_tabs": True},
         "watch": watch, "notes": notes, "sources": sources, "machine_note": machine,

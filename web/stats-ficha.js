@@ -10,6 +10,10 @@
  const arr=x=>Array.isArray(x)?x:[];
  const nf=v=>new Intl.NumberFormat('es-CL').format(Math.abs(Number(v)));
  const sg=v=>(Number(v)>0?'+':Number(v)<0?'−':'')+nf(v);
+ const dec=(v,d)=>Number(v).toLocaleString('es-CL',{minimumFractionDigits:d,maximumFractionDigits:d}).replace(/^-/,'−');
+ // Signed value at the chart's precision: with c.digits (F2 MM$: digits 0 → '+1.215') the label rounds like the
+ // builder's fmt_int/fmt_dec; without it, the integer counts of F1/F6 keep sg(). The sign follows the rounded value.
+ const sgd=(v,d)=>{if(!Number.isInteger(d))return sg(v);const q=Number(Number(v).toFixed(d));return(q>0?'+':q<0?'−':'')+dec(Math.abs(q),d)};
  const https=u=>/^https:\/\//.test(String(u||''));
  function fmtDay(raw){const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw||'')?raw+'T12:00:00Z':raw);return Number.isNaN(d.getTime())?esc(raw):new Intl.DateTimeFormat('es-CL',{day:'numeric',month:'short',year:'numeric',timeZone:'America/Santiago'}).format(d)}
  function table(t){if(!t||!arr(t.columns).length)return'';return`<table class="sf-table"><thead><tr>${t.columns.map((c,i)=>`<th scope="col" class="${i?'n':''}">${esc(c)}</th>`).join('')}</tr></thead><tbody>${arr(t.rows).map(r=>`<tr>${arr(r).map((c,i)=>i?`<td class="n">${esc(c)}</td>`:`<th scope="row">${esc(c)}</th>`).join('')}</tr>`).join('')}</tbody></table>`}
@@ -17,27 +21,26 @@
  function columns(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';
   const vals=rows.map(r=>Number(r.value)),hi=Math.max(0,...vals),lo=Math.min(0,...vals),span=(hi-lo)||1,W=360,top=34,H=150,zero=top+H*hi/span,bw=Math.min(40,(W-20)/rows.length-10),gap=(W-20-rows.length*bw)/Math.max(1,rows.length-1);
-  const peak=vals.reduce((a,v,i)=>Math.abs(v)>Math.abs(vals[a])?i:a,0);
+  const peak=vals.reduce((a,v,i)=>Math.abs(v)>Math.abs(vals[a])?i:a,0),f=v=>sgd(v,c.digits);
   let s=`<line x1="10" y1="${zero.toFixed(1)}" x2="${W}" y2="${zero.toFixed(1)}" stroke="${C.axis}"/><text x="1.5" y="${(zero+4).toFixed(1)}" font-size="11" fill="${C.ink50}">0</text>`;
   rows.forEach((r,i)=>{const v=Number(r.value),x=10+i*(bw+gap),h=Math.max(Math.abs(v)/span*H,2),y=v<0?zero:zero-h,last=Boolean(r.emphasis);
-   s+=`<g class="sf-mark"><title>${esc(r.label)}: ${sg(v)}</title><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${last?C.accent:C.ink}"/></g>`;
+   s+=`<g class="sf-mark"><title>${esc(r.label)}: ${f(v)}</title><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${last?C.accent:C.ink}"/></g>`;
    s+=`<text x="${(x+bw/2).toFixed(1)}" y="${(v<0?zero-8:zero+16).toFixed(1)}" font-size="12" text-anchor="middle" fill="${C.ink70}">${esc(r.label)}</text>`;
-   if(last||i===peak||i===0)s+=`<text x="${(x+bw/2).toFixed(1)}" y="${(v<0?y+h+15:y-6).toFixed(1)}" font-size="${last?13.5:12}" font-weight="${last?700:500}" text-anchor="middle" fill="${C.ink}">${sg(v)}</text>`});
-  const desc=rows.map(r=>`${r.label} ${sg(r.value)}`).join(', ');
+   if(last||i===peak||i===0)s+=`<text x="${(x+bw/2).toFixed(1)}" y="${(v<0?y+h+15:y-6).toFixed(1)}" font-size="${last?13.5:12}" font-weight="${last?700:500}" text-anchor="middle" fill="${C.ink}">${f(v)}</text>`});
+  const desc=rows.map(r=>`${r.label} ${f(r.value)}`).join(', ');
   return`<svg viewBox="0 0 ${W} ${top+H+44}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${desc}.`)}">${s}${c.legend?`<text x="1.5" y="${top+H+40}" font-size="11" fill="${C.ink50}">${esc(c.legend)}</text>`:''}</svg>`;
  }
  // Diverging bars by actor: ink loses, accent gains; bold labels for ≥ 5.000 personas.
  function diverging(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';
-  const vals=rows.map(r=>Number(r.value)),lo=Math.min(0,...vals),hi=Math.max(0,...vals),W=360,row=26,top=8,x0=162,x1=356,k=(x1-x0)/((hi-lo)||1),z=x0+(-lo)*k,H=top+rows.length*row+24;
+  const vals=rows.map(r=>Number(r.value)),lo=Math.min(0,...vals),hi=Math.max(0,...vals),W=360,row=26,top=8,x0=162,x1=356,k=(x1-x0)/((hi-lo)||1),z=x0+(-lo)*k,H=top+rows.length*row+24,f=v=>sgd(v,c.digits);
   let s=`<line x1="${z.toFixed(1)}" y1="${top-4}" x2="${z.toFixed(1)}" y2="${top+rows.length*row}" stroke="${C.axis}"/>`;
   rows.forEach((r,i)=>{const v=Number(r.value),y=top+i*row,w=Math.max(Math.abs(v)*k,2),x=v<0?z-w:z,strong=Math.abs(v)>=5000;
-   s+=`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text><text x="${x0-8}" y="${y+15}" font-size="12.5" text-anchor="end" font-weight="${strong?700:400}" fill="${C.ink}">${sg(v)}</text>`;
-   s+=`<g class="sf-mark"><title>${esc(r.label)}: ${sg(v)}</title><rect x="${x.toFixed(1)}" y="${y+5}" width="${w.toFixed(1)}" height="14" rx="3" fill="${v<0?C.ink:C.accent}"/></g>`});
-  const desc=rows.map(r=>`${r.label} ${sg(r.value)}`).join(', ');
+   s+=`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text><text x="${x0-8}" y="${y+15}" font-size="12.5" text-anchor="end" font-weight="${strong?700:400}" fill="${C.ink}">${f(v)}</text>`;
+   s+=`<g class="sf-mark"><title>${esc(r.label)}: ${f(v)}</title><rect x="${x.toFixed(1)}" y="${y+5}" width="${w.toFixed(1)}" height="14" rx="3" fill="${v<0?C.ink:C.accent}"/></g>`});
+  const desc=rows.map(r=>`${r.label} ${f(r.value)}`).join(', ');
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${desc}.`)}">${s}${c.legend?`<text x="1.5" y="${H-4}" font-size="11" fill="${C.ink50}">${esc(c.legend)}</text>`:''}</svg>`;
  }
- const dec=(v,d)=>Number(v).toLocaleString('es-CL',{minimumFractionDigits:d,maximumFractionDigits:d}).replace(/^-/,'−');
  // Line for stocks and ratios: the axis does not start at zero; last point in accent.
  function line(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(rows.length<2)return'';const d=Number.isInteger(c.digits)?c.digits:0;
@@ -175,6 +178,8 @@
    (mt.lines.length?`<ul class="sf-meta" aria-label="Datos de la publicación">${mt.lines.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'')+
    `<p class="sf-dek">${dek(f)}</p>`+body+
    (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+
+   // Coverage footnote (F2 Esencial, Dirección 2-nov): one short line, always visible, right above 'Notas y fuentes'.
+   (f.scope_note?`<p class="sf-scope">${esc(f.scope_note)}</p>`:'')+
    `<details class="sf-notes"><summary>Notas y fuentes</summary>${mt.rest.length?`<p class="sf-cadence">${esc(mt.rest.join(' · '))}.</p>`:''}${arr(f.notes).length?`<h3>Notas sobre la evidencia</h3><ol>${arr(f.notes).map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`:''}`+
    `<h3>Fuentes</h3><ul>${sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a> <span class="sf-role">· ${esc(s.role||'')}</span><br><code>sha256 ${esc(String(s.sha256||'').slice(0,12))}… · ${esc(s.locator||'')}${s.fetched_at?` · capturado ${fmtDay(String(s.fetched_at).slice(0,10))}`:''}</code></li>`).join('')}</ul>`+
    (f.machine_note?`<p class="sf-machine">${esc(f.machine_note)}</p>`:'')+`</details></article>`;
