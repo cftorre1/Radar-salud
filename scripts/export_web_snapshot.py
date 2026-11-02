@@ -824,7 +824,7 @@ def main():
     # the documents, until the F6 ficha covers that release (then apply_to_snapshot absorbs it, as for N°2).
     from radar_salud.sis_bulletins import collapse_loose_bulletins
     cards=collapse_loose_bulletins(cards,history=signals,fichas=fichas,holds=stats_fichas.release_hold_reasons(Path("."),"F6"))
-    cards=stats_fichas.apply_to_snapshot(cards,fichas)
+    cards=stats_fichas.apply_to_snapshot(cards,fichas,root=Path("."))
     # WATCH (Dirección 27-oct): every card carries explicit entity refs; aggregates inherit their acts.
     from radar_salud import entity_watch
     entity_watch.apply(cards,history=signals)

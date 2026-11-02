@@ -1175,3 +1175,25 @@ def test_registry_declares_f1_rules():
     assert f2cfg["status"] == "active" and f2cfg["lectura_enabled"] is False and "blocked_by" not in f2cfg
     assert f2cfg["parser_template"]["reviewed_by"] not in ("", "pendiente", None) and f2cfg["parser_template"]["reviewed_at"]
     assert reg["lectura"]["max_words"] == 60 <= 90  # short Lectura
+
+
+def test_card_feed_date_is_first_verification_not_sis_publication(root):
+    """A release the SIS published months ago enters the inbox the day Alicanto first verifies it (Dirección 2-nov:
+    FEFI March, out 7-jul, verified 2-nov, was hidden by the 30-day filter). The card keeps the SIS date."""
+    sf.publish(f1.run(root, today=TODAY, llm=False), root)
+    live = sf.live_fichas(root)[0]
+    live["first_verified_at"] = "2026-11-02T03:30:00+00:00"  # 2-nov 00:30 in Santiago
+    live["published_at"] = "2026-07-07"
+    card = sf.apply_to_snapshot([], [live], root=root)[0]
+    assert card["event_date"] == "2026-07-07" and card["feed_date"] == "2026-11-02"
+    # Never earlier than the SIS publication, and absent without a root (no record to read).
+    live["first_verified_at"] = "2026-07-01T12:00:00+00:00"
+    assert "feed_date" not in sf.apply_to_snapshot([], [live], root=root)[0]
+    assert "feed_date" not in sf.apply_to_snapshot([], [live])[0]
+
+
+def test_web_ages_and_sorts_by_feed_date():
+    app = Path("web/app.js").read_text(encoding="utf-8")
+    assert "function feedDate(s){return s.feed_date||s.event_date}" in app
+    assert "Date.parse(String(feedDate(s)||'').slice(0,10)" in app  # ageDays → period filter, buckets, freshness
+    assert "const raw=feedDate(s)||0" in app  # dateVal → date sort
