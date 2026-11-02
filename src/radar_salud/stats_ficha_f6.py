@@ -34,6 +34,7 @@ MONTH_EN = {m: i for i, m in enumerate(("january", "february", "march", "april",
                                          "october", "november", "december"), 1)}
 TOPIC_LABEL = {"acreditacion": "Acreditación", "mediacion": "Mediación", "reclamos": "Reclamos", "rnpi": "RNPI"}
 HIDDEN_TOPICS = ("rnpi",)  # checked with the release, never shown (Dirección 2-nov-2026)
+COMPARABLE_TOPICS = ("acreditacion",)  # quarter-on-quarter only where both texts confirm the same definition
 
 
 def _metric_id(topic: str, key: str, period: str) -> tuple[str, dict] | None:
@@ -96,9 +97,12 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                 for key, pre in sorted(((d.get("parse") or {}).get("template_precheck") or {}).items()):
                     if pre.get("status") != "ok":
                         why.append(f"template_precheck:{topic}:{key}:{pre.get('status')}")
-            elif (d.get("parse") or {}).get("status") == "no_verified_metrics":
-                # The reading was added after the capture (N°3 on 2-nov): the next capture run re-checks the hashed
-                # document once against it (``stats_capture.capture`` → ``needs_recheck``). Until then, HOLD.
+            elif (d.get("parse") or {}).get("reading_sha256") != cap.reading_sha256(
+                    verified[d["url"]].get("metrics"), verified[d["url"]].get("pages_1based")):
+                # The parse was not made against the current reading (added after the capture, as N°3 on 2-nov; edited
+                # since; or a parse from before reading hashes): the next capture run re-checks the hashed document once
+                # against it (``stats_capture.capture`` → ``needs_recheck``). Until then, HOLD: no figure of a reading
+                # that was not checked against the document is ever shown.
                 why.append(f"reading_awaits_document_recheck:{topic}")
             elif (d.get("parse") or {}).get("status") != "verified":
                 missing = [k for k, ok in ((d.get("parse") or {}).get("verified_present") or {}).items() if not ok]
@@ -113,7 +117,15 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     read = [r for r in store["releases"] if any(d.get("url") in verified for d in r.get("documents") or [])]
     rel = max(usable, key=lambda r: r["period"]) if usable else (max(read, key=lambda r: r["period"]) if read else latest)
     if not usable:
-        failures += [f"{p}:{w}" for p in sorted(states) if p >= rel["period"] for w in states[p]] or ["no_verified_release"]
+        read_periods = {r["period"] for r in read}  # older releases with a reading report why they are not usable too
+        failures += [f"{p}:{w}" for p in sorted(states) if p >= rel["period"] or p in read_periods
+                     for w in states[p]] or ["no_verified_release"]
+    else:
+        # The previous bulletin with a reading is waiting for its re-check: HOLD rather than publish this release
+        # without the quarter-on-quarter comparison (a later PASS of the same release would not republish it).
+        prev_read = max((r for r in read if r["period"] < rel["period"]), key=lambda r: r["period"], default=None)
+        if prev_read and any(w.startswith("reading_awaits_document_recheck:") for w in states[prev_read["period"]]):
+            failures += [f"{prev_read['period']}:previous_release_{w}" for w in states[prev_read["period"]]]
     t = rel["period"]
     values: dict[str, dict] = {}
     sources: dict[str, dict] = {}
@@ -176,6 +188,8 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                                        label=f"SIS · Boletín IP {rel.get('number')} · {TOPIC_LABEL[topic]} (PDF)",
                                        role=f"{TOPIC_LABEL[topic].lower()}: cifras verificadas en el PDF capturado",
                                        locator="págs. " + ", ".join(str(p) for p in info.get("pages_1based") or []))
+        if topic in HIDDEN_TOPICS:
+            continue  # checked with the release, never shown: its figures stay out of the package (and number pool)
         for key, val in info["metrics"].items():
             mapped = _metric_id(topic, key, t)
             if not mapped:
@@ -230,6 +244,11 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     if older:
         prev = older[-1]
         for topic, d in {x["topic"]: x for x in prev["documents"]}.items():
+            # Only stocks whose definition is confirmed identical in both bulletins from committed evidence: the
+            # acreditación texts of N°2 and N°3 (receipts 8b7f…, e59b…; same templates). Mediación has no committed N°2
+            # text to confirm 'mediadores vigentes inscritos' (review 2-nov): its level is shown, not a change.
+            if topic not in COMPARABLE_TOPICS:
+                continue
             for key, val in verified[d["url"]]["metrics"].items():
                 mapped = _metric_id(topic, key, prev["period"])
                 if mapped and mapped[1]["kind"] == "stock_at" and mapped[0] in values:
@@ -337,7 +356,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     rec_clause = (f"Los reclamos promediaron {fmt_int(V(f'rec.promedio.{y}'))} al mes entre enero y {month}, "
                   f"{fmt_dec(abs(V('rec.pct')), 1)}% {'más' if V('rec.delta') >= 0 else 'menos'} que el promedio mensual de {y - 1}."
                   if k["has_rec"] else "")
-    dek = tpl["dek"].format(rec_clause=rec_clause, tramite=fmt_int(tram), mediadores=fmt_int(V("med.mediadores"))).strip()
+    dek = tpl["dek"].format(rec_clause=rec_clause, mediadores=fmt_int(V("med.mediadores"))).strip()
+    tram_vs = f", {_vs(qoq['acr.tramite'], prev)}" if "acr.tramite" in qoq else ""
 
     def qoq_line(vid):
         return (f"{sf.fmt_signed(qoq[vid])} vs. {sf.month_label(prev)}" if vid in qoq else "vs. boletín anterior: pendiente")
@@ -357,12 +377,14 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                      "lines": [f"promedio enero–{month}", f"{fmt_dec(V('rec.pct'), 1, signed=True)}% vs. {y - 1} ({fmt_int(V(f'rec.promedio.{y - 1}'))})"],
                      "refs": [f"rec.promedio.{y}", "rec.pct", f"rec.promedio.{y - 1}"]})
     kpis.append({"id": "mediadores", "label": "Mediadores inscritos", "value": fmt_int(V("med.mediadores")), "prov": "C",
-                 "lines": [qoq_line("med.mediadores")], "refs": ["med.mediadores"]})
+                 "lines": [f"al cierre de {mlabel}"], "refs": ["med.mediadores"]})
 
     pending_qoq = ("La comparación con el boletín anterior queda pendiente: ese boletín no tiene cifras verificadas en un "
                    "documento capturado.")
     c_tram = {"id": "f6-tramite", "form": "bars", "unit": "solicitudes", "headline": "Solicitudes en tramitación por sector",
-              "subtitle": f"Solicitudes de acreditación en tramitación al cierre de {mlabel}",
+              # The total and its change go with the chart whose source line carries the reading's footnote: a figure
+              # whose source table does not add up is never shown without its note (Dirección 2-nov).
+              "subtitle": f"Solicitudes de acreditación en tramitación al cierre de {mlabel}: {fmt_int(tram)}{tram_vs}",
               "rows": [{"label": "Privados", "value": priv, "ref": "acr.tramite.privadas", "emphasis": True},
                        {"label": "Públicos", "value": pub, "ref": "acr.tramite.publicas"}],
               "table": {"columns": ["Sector", "Solicitudes", "% del total"],
@@ -406,8 +428,6 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                          "Prestadores acreditados"))
     else:
         acr_text.append(f"Al cierre de {mlabel} había {fmt_int(acc)} prestadores acreditados.")
-    tram_vs = f", {_vs(qoq['acr.tramite'], prev)}" if "acr.tramite" in qoq else ""
-    acr_text.append(f"Las solicitudes de acreditación en tramitación suman {fmt_int(tram)}{tram_vs}.")
     if not qoq:
         acr_text.append(pending_qoq)
     tabs = [{"id": "acreditacion", "label": "Acreditación", "charts": acr_charts, "text": acr_text}]
@@ -458,7 +478,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     # Index → topic layout (Dirección 29-oct): one index line per topic, from verified values.
     pv =lambda vid: f" · {sf.fmt_signed(qoq[vid])} vs. {sf.month_name(prev)}" if vid in qoq else ""  # noqa: E731
     lines = {"acreditacion": (f"{fmt_int(acc)} prestadores acreditados{pv('acr.acreditados')}" if "acr.acreditados" in qoq
-                              else f"{fmt_int(acc)} prestadores acreditados · {fmt_int(tram)} solicitudes en trámite"),
+                              else f"{fmt_int(acc)} prestadores acreditados"),
              "observaciones": (f"{fmt_int(obs)} con observaciones ({fmt_dec(obs_pct, 1)}%) · "
                                f"{fmt_int(V(f'acr.con_observaciones.{prev}'))} en {sf.month_name(prev)}"
                                if "acr.con_observaciones" in qoq else
@@ -466,7 +486,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
              "reclamos": (f"{fmt_int(V(f'rec.promedio.{y}'))} reclamos al mes · {fmt_dec(V('rec.pct'), 1, signed=True)}% vs. {y - 1}"
                           if k["has_rec"] else None),
              "mediacion": f"{fmt_int(V('med.mediadores'))} mediadores inscritos{pv('med.mediadores')}"}
-    line_refs = {"acreditacion": ["acr.acreditados", "acr.acreditados.qoq" if "acr.acreditados" in qoq else "acr.tramite"],
+    line_refs = {"acreditacion": ["acr.acreditados", *(["acr.acreditados.qoq"] if "acr.acreditados" in qoq else [])],
                  "observaciones": ["acr.con_observaciones", "acr.observaciones_pct",
                                    *([f"acr.con_observaciones.{prev}"] if "acr.con_observaciones" in qoq else [])],
                  "reclamos": [f"rec.promedio.{y}", "rec.pct"] if k["has_rec"] else [],

@@ -21,8 +21,8 @@
  "distribution": "archive",
  "radar_score": 72,
  "confidence_score": 100,
- "what_happened": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. Las solicitudes de acreditación en trámite suman 584.",
- "card_what": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. Las solicitudes de acreditación en trámite suman 584.",
+ "what_happened": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. La SIS registra 175 mediadores inscritos.",
+ "card_what": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. La SIS registra 175 mediadores inscritos.",
  "card_why_optional": true,
  "why_it_matters": "",
  "statistical_value_level": "stats_ficha",
@@ -37,7 +37,7 @@
   "family_label": "Prestadores: Boletín IP",
   "period": "2026-06",
   "published_at": "2026-08-03",
-  "generated_at": "2026-11-02T18:48:21.582361+00:00",
+  "generated_at": "2026-11-02T19:21:36.206265+00:00",
   "release_key": "2026-06:237669c079bc0550",
   "featured": false,
   "triggers": [
@@ -47,7 +47,7 @@
   "kicker_meta": "datos a junio 2026 · publicado por la SIS el 3 ago · se actualiza cada trimestre",
   "headline": "Prestadores acreditados suman 971 a junio; 101 con observaciones",
   "headline_type": "default",
-  "dek": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. Las solicitudes de acreditación en trámite suman 584.",
+  "dek": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. La SIS registra 175 mediadores inscritos.",
   "dek_emphasis": "1.996 al mes",
   "kpis": [
    {
@@ -97,7 +97,7 @@
     "value": "175",
     "prov": "C",
     "lines": [
-     "vs. boletín anterior: pendiente"
+     "al cierre de junio 2026"
     ],
     "refs": [
      "med.mediadores"
@@ -114,7 +114,7 @@
       "form": "bars",
       "unit": "solicitudes",
       "headline": "Solicitudes en tramitación por sector",
-      "subtitle": "Solicitudes de acreditación en tramitación al cierre de junio 2026",
+      "subtitle": "Solicitudes de acreditación en tramitación al cierre de junio 2026: 584",
       "rows": [
        {
         "label": "Privados",
@@ -152,22 +152,20 @@
         ]
        ]
       },
-      "source": "SIS, Boletín IP, acreditación. Denominador del %: solicitudes en tramitación."
+      "source": "SIS, Boletín IP, acreditación. Denominador del %: solicitudes en tramitación. En el boletín, las solicitudes por etapa del proceso suman una menos que el total informado (584) y que el de públicas (217)."
      }
     ],
     "text": [
      "Al cierre de junio 2026 había 971 prestadores acreditados.",
-     "Las solicitudes de acreditación en tramitación suman 584.",
      "La comparación con el boletín anterior queda pendiente: ese boletín no tiene cifras verificadas en un documento capturado."
     ],
     "spark": {
      "chart": "f6-tramite",
      "form": "bars"
     },
-    "index_line": "971 prestadores acreditados · 584 solicitudes en trámite",
+    "index_line": "971 prestadores acreditados",
     "index_refs": [
-     "acr.acreditados",
-     "acr.tramite"
+     "acr.acreditados"
     ],
     "kpis": []
    },
@@ -364,7 +362,7 @@
     "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf",
     "sha256": "237669c079bc055031526b0a5a1b83ff3a9f7a434f5b4453bf772e5f06e9556d",
     "published_at": "2026-08-03",
-    "fetched_at": "2026-11-02T18:48:20.319531+00:00",
+    "fetched_at": "2026-11-02T19:21:34.899952+00:00",
     "label": "SIS · Boletín IP N°2-2026 · Acreditación (PDF)",
     "role": "acreditación: cifras verificadas en el PDF capturado",
     "locator": "págs. 1, 2, 7, 8",
@@ -374,7 +372,7 @@
     "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf",
     "sha256": "00aea14f20e6de0432e4377eb386ec80f36508a49af5a7b110aeff975d49f687",
     "published_at": "2026-08-03",
-    "fetched_at": "2026-11-02T18:48:20.323543+00:00",
+    "fetched_at": "2026-11-02T19:21:34.907670+00:00",
     "label": "SIS · Boletín IP N°2-2026 · Mediación (PDF)",
     "role": "mediación: cifras verificadas en el PDF capturado",
     "locator": "págs. 2, 5, 6",
@@ -384,7 +382,7 @@
     "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-reclamos-enero-junio-2026.pdf",
     "sha256": "a80750b8b80f2d1c86b1f7e48021862a88a56325e80cdb23dc564a9f1b375349",
     "published_at": "2026-08-03",
-    "fetched_at": "2026-11-02T18:48:20.487377+00:00",
+    "fetched_at": "2026-11-02T19:21:35.150387+00:00",
     "label": "SIS · Boletín IP N°2-2026 · Reclamos (PDF)",
     "role": "reclamos: cifras verificadas en el PDF capturado",
     "locator": "págs. 2",
@@ -411,7 +409,7 @@
   ],
   "materiality_decision": "accept",
   "public_title": "Prestadores acreditados suman 971 a junio; 101 con observaciones",
-  "what_happened": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. Las solicitudes de acreditación en trámite suman 584.",
+  "what_happened": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. La SIS registra 175 mediadores inscritos.",
   "why_it_matters": "",
   "evidence_map": [
    {

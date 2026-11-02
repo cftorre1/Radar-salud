@@ -9,10 +9,10 @@
   "release_key": "2026-06:8b7f7c7a385e4c09",
   "kicker": "Prestadores: Boletín IP",
   "kicker_meta": "datos a junio 2026 · publicado por la SIS el 3 ago · se actualiza cada trimestre",
-  "headline": "Prestadores acreditados suman 971 a junio; 101 con observaciones",
+  "headline": "Boletín IP a junio 2026: 971 prestadores acreditados y 584 solicitudes de acreditación en trámite",
   "headline_type": "default",
-  "dek": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. Las solicitudes de acreditación en trámite suman 584.",
-  "dek_emphasis": "1.996 al mes",
+  "dek": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. El RNPI suma 1.004.982 títulos inscritos, que no son profesionales únicos.",
+  "dek_emphasis": "971 prestadores acreditados",
   "kpis": [
     {
       "id": "acreditados",
@@ -20,24 +20,28 @@
       "value": "971",
       "prov": "C",
       "lines": [
+        "101 con observaciones (10,4%)",
         "vs. boletín anterior: pendiente"
       ],
       "refs": [
-        "acr.acreditados"
+        "acr.acreditados",
+        "acr.con_observaciones",
+        "acr.observaciones_pct"
       ]
     },
     {
-      "id": "observaciones",
-      "label": "Con observaciones",
-      "value": "101",
+      "id": "tramite",
+      "label": "Solicitudes en trámite",
+      "value": "584",
       "prov": "C",
       "lines": [
-        "10,4% de los acreditados",
+        "367 privadas · 217 públicas",
         "vs. boletín anterior: pendiente"
       ],
       "refs": [
-        "acr.con_observaciones",
-        "acr.observaciones_pct"
+        "acr.tramite",
+        "acr.tramite.privadas",
+        "acr.tramite.publicas"
       ]
     },
     {
@@ -56,15 +60,16 @@
       ]
     },
     {
-      "id": "mediadores",
-      "label": "Mediadores inscritos",
-      "value": "175",
+      "id": "rnpi",
+      "label": "Títulos en el RNPI",
+      "value": "1.004.982",
       "prov": "C",
       "lines": [
+        "títulos, no profesionales únicos",
         "vs. boletín anterior: pendiente"
       ],
       "refs": [
-        "med.mediadores"
+        "rnpi.titulos"
       ]
     }
   ],
@@ -117,28 +122,7 @@
             ]
           },
           "source": "SIS, Boletín IP, acreditación. Denominador del %: solicitudes en tramitación."
-        }
-      ],
-      "text": [
-        "Al cierre de junio 2026 había 971 prestadores acreditados.",
-        "Las solicitudes de acreditación en tramitación suman 584.",
-        "La comparación con el boletín anterior queda pendiente: ese boletín no tiene cifras verificadas en un documento capturado."
-      ],
-      "spark": {
-        "chart": "f6-tramite",
-        "form": "bars"
-      },
-      "index_line": "971 prestadores acreditados · 584 solicitudes en trámite",
-      "index_refs": [
-        "acr.acreditados",
-        "acr.tramite"
-      ],
-      "kpis": []
-    },
-    {
-      "id": "observaciones",
-      "label": "Con observaciones",
-      "charts": [
+        },
         {
           "id": "f6-observaciones",
           "form": "bars",
@@ -186,16 +170,33 @@
         }
       ],
       "text": [
-        "Al cierre de junio 2026, 101 de los 971 prestadores acreditados tenían observaciones: el 10,4%."
+        "Al cierre de junio 2026 había 971 prestadores acreditados; 101 tenían observaciones, el 10,4% de los acreditados.",
+        "De las 584 solicitudes en tramitación, 367 eran de prestadores privados y 217 de públicos. La división pública/privada del stock acreditado no está verificada.",
+        "La comparación con el boletín anterior queda pendiente: ese boletín no tiene cifras verificadas en un documento capturado."
       ],
       "spark": {
-        "chart": "f6-observaciones",
+        "chart": "f6-tramite",
         "form": "bars"
       },
-      "index_line": "101 con observaciones · 10,4% de los acreditados",
+      "index_line": "971 prestadores acreditados · 584 solicitudes en trámite",
       "index_refs": [
-        "acr.con_observaciones",
-        "acr.observaciones_pct"
+        "acr.acreditados",
+        "acr.tramite"
+      ],
+      "kpis": []
+    },
+    {
+      "id": "mediacion",
+      "label": "Mediación",
+      "charts": [],
+      "text": [
+        "La SIS registraba 175 mediadores inscritos al cierre de junio 2026.",
+        "Las solicitudes de mediación acumuladas desde enero de 2019 suman 12.067: es un flujo acumulado, no un stock, y no se divide por el número de mediadores."
+      ],
+      "spark": null,
+      "index_line": "175 mediadores inscritos",
+      "index_refs": [
+        "med.mediadores"
       ],
       "kpis": []
     },
@@ -261,17 +262,17 @@
       "kpis": []
     },
     {
-      "id": "mediacion",
-      "label": "Mediación",
+      "id": "rnpi",
+      "label": "RNPI",
       "charts": [],
       "text": [
-        "La SIS registraba 175 mediadores inscritos al cierre de junio 2026.",
-        "Las solicitudes de mediación acumuladas desde enero de 2019 suman 12.067: es un flujo acumulado, no un stock, y no se divide por el número de mediadores."
+        "El Registro Nacional de Prestadores Individuales tenía 1.004.982 títulos inscritos al cierre de junio 2026. Son títulos, no profesionales únicos: una persona puede tener más de uno.",
+        "4.036 registros no tienen fecha de nacimiento."
       ],
       "spark": null,
-      "index_line": "175 mediadores inscritos",
+      "index_line": "1.004.982 títulos inscritos",
       "index_refs": [
-        "med.mediadores"
+        "rnpi.titulos"
       ],
       "kpis": []
     }
@@ -279,10 +280,9 @@
   "facts": {
     "heading": "Qué muestran los datos",
     "paragraphs": [
-      "Al cierre de junio 2026 había 971 prestadores acreditados.",
-      "Al cierre de junio 2026, 101 de los 971 prestadores acreditados tenían observaciones: el 10,4%.",
-      "Entre enero y junio ingresaron en promedio 1.996 reclamos al mes, frente a 1.530 en 2025: 466 más al mes.",
-      "La SIS registraba 175 mediadores inscritos al cierre de junio 2026."
+      "Al cierre de junio 2026 había 971 prestadores acreditados; 101 tenían observaciones, el 10,4% de los acreditados.",
+      "De las 584 solicitudes en tramitación, 367 eran de prestadores privados y 217 de públicos. La división pública/privada del stock acreditado no está verificada.",
+      "El Registro Nacional de Prestadores Individuales tenía 1.004.982 títulos inscritos al cierre de junio 2026. Son títulos, no profesionales únicos: una persona puede tener más de uno."
     ],
     "rendered_in_tabs": true
   },
@@ -299,7 +299,7 @@
   "notes": [
     {
       "id": "n1",
-      "text": "Acreditados, acreditados con observaciones, solicitudes en tramitación y mediadores son stocks al cierre del boletín: se comparan entre boletines, nunca se suman. Los reclamos son un promedio mensual de un flujo."
+      "text": "Acreditados, solicitudes en tramitación, mediadores y títulos son stocks al cierre del boletín: nunca se suman entre boletines. Los reclamos son un promedio mensual de un flujo."
     },
     {
       "id": "n2",
@@ -311,7 +311,7 @@
     },
     {
       "id": "n4",
-      "text": "La división pública/privada del stock de acreditados no está verificada y no se muestra."
+      "text": "RNPI: cuenta títulos, no personas; otros registros del boletín usan otro denominador."
     },
     {
       "id": "n5",
@@ -352,6 +352,16 @@
       "role": "reclamos: cifras verificadas en el PDF capturado",
       "locator": "págs. 2",
       "key": "reclamos"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-rnpi-enero-junio-2026.pdf",
+      "sha256": "060ed3a6d8954ba7dace42ee94be5b2bf3bd9d7e00491d46f4913b857af4da36",
+      "published_at": "2026-08-03",
+      "fetched_at": "2026-10-29T14:21:27.990726+00:00",
+      "label": "SIS · Boletín IP N°2-2026 · RNPI (PDF)",
+      "role": "rnpi: cifras verificadas en el PDF capturado",
+      "locator": "págs. 1, 2, 4",
+      "key": "rnpi"
     }
   ],
   "machine_note": "Ficha generada por la regla \"nuevo período\" (boletín N°2-2026, publicado el 3 ago). Las cifras vienen del paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (error del modelo).",
@@ -369,8 +379,8 @@
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-11-02T18:52:01.586060+00:00",
-  "builder_version": "f6_index_topic_v5",
+  "generated_at": "2026-11-02T13:34:12.232853+00:00",
+  "builder_version": "f6_index_topic_v4",
   "verification": {
     "verdict": "PASS",
     "errors": [],
@@ -391,7 +401,6 @@
       "un documento revisado con una versión nueva del verificador conserva su SHA-256",
       "privadas + públicas = solicitudes en tramitación",
       "con observaciones ≤ acreditados",
-      "una cifra cuya tabla de origen no cuadra se muestra solo con la nota de la lectura",
       "variación de reclamos calculada = variación informada (redondeada)",
       "los stocks no se suman entre boletines"
     ]
@@ -789,6 +798,38 @@
         "value": 175,
         "unit": "mediadores",
         "metric": "mediadores",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "rnpi.titulos",
+        "value": 1004982,
+        "unit": "titulos",
+        "metric": "titulos",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "rnpi.sin_fecha_nacimiento",
+        "value": 4036,
+        "unit": "titulos",
+        "metric": "titulos",
         "entity": null,
         "signed": false,
         "periods": [

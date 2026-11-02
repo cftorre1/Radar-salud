@@ -73,7 +73,8 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
   - Topics: Acreditación, Con observaciones, Reclamos, Mediación. The RNPI PDF stays in the release check (captured, hashed, its reading verified), but no RNPI topic, figure or source is shown.
   - Headline generated from verified values: "Prestadores acreditados llegan a 1.009 a septiembre, 38 más que en junio; 124 con observaciones" (wording by the sign of the verified change; the level only without a verified previous bulletin).
   - "Mostrar con nota": a figure whose source table does not add up is shown only with the reading's short footnote (`source_notes` in `config/statistical_analysis_verified_v1.json`, placeholders filled from that document's verified figures). SIS numbers are never corrected; a note naming an unknown figure HOLDs (`source_note_invalid`).
-  - A reading added after the capture HOLDs the release (`reading_awaits_document_recheck`) until the capture run re-checks the hashed PDFs once against it.
+  - Every parse records the hash of the reading it checked (`reading_sha256`, all checker versions). A parse whose reading was added or edited after it, or that carries no hash (parses from before 2-nov), HOLDs its release (`reading_awaits_document_recheck`) until the capture run re-checks the hashed PDF once against the current reading. A release whose previous bulletin is in that state also HOLDs (`previous_release_reading_awaits_document_recheck`), so it is never published without its comparison. A HOLD leaves the live ficha as it is.
+  - Quarter-on-quarter comparisons only for acreditación stocks, whose definition both committed texts confirm; mediación shows its level only. A figure shown with a note (e.g. solicitudes en tramitación) appears only in the chart that carries the note, never in the dek or topic text.
 
 ## Text receipts
 

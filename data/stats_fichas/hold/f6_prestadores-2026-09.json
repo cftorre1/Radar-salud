@@ -2,22 +2,46 @@
   "status": "hold",
   "family": "F6",
   "period": "2026-09",
-  "generated_at": "2026-11-02T18:52:01.586060+00:00",
-  "live_period": "2026-06",
-  "errors": [
-    "2026-09:reading_awaits_document_recheck:acreditacion",
-    "2026-09:reading_awaits_document_recheck:mediacion",
-    "2026-09:reading_awaits_document_recheck:reclamos",
-    "2026-09:reading_awaits_document_recheck:rnpi"
-  ],
+  "generated_at": "2026-11-02T19:25:21.832669+00:00",
   "decision": {
     "decision": "HOLD",
     "holds": [
-      "2026-09:reading_awaits_document_recheck:acreditacion",
-      "2026-09:reading_awaits_document_recheck:mediacion",
-      "2026-09:reading_awaits_document_recheck:reclamos",
-      "2026-09:reading_awaits_document_recheck:rnpi"
+      "HOLD_RECONCILIATION:2026-06:reading_awaits_document_recheck:mediacion,2026-06:reading_awaits_document_recheck:reclamos,2026-06:reading_awaits_document_recheck:rnpi,2026-09:reading_awaits_document_recheck:acreditacion,2026-09:reading_awaits_document_recheck:mediacion,2026-09:reading_awaits_document_recheck:reclamos,2026-09:reading_awaits_document_recheck:rnpi"
     ],
-    "note": "release newer than the live ficha"
+    "triggers": [
+      "new_period"
+    ],
+    "featured": false,
+    "late_release": null,
+    "material_revisions": []
+  },
+  "verification": null,
+  "errors": [
+    "HOLD_RECONCILIATION:2026-06:reading_awaits_document_recheck:mediacion,2026-06:reading_awaits_document_recheck:reclamos,2026-06:reading_awaits_document_recheck:rnpi,2026-09:reading_awaits_document_recheck:acreditacion,2026-09:reading_awaits_document_recheck:mediacion,2026-09:reading_awaits_document_recheck:reclamos,2026-09:reading_awaits_document_recheck:rnpi"
+  ],
+  "candidate": {
+    "reconciliation": {
+      "ok": false,
+      "failures": [
+        "2026-06:reading_awaits_document_recheck:mediacion",
+        "2026-06:reading_awaits_document_recheck:reclamos",
+        "2026-06:reading_awaits_document_recheck:rnpi",
+        "2026-09:reading_awaits_document_recheck:acreditacion",
+        "2026-09:reading_awaits_document_recheck:mediacion",
+        "2026-09:reading_awaits_document_recheck:reclamos",
+        "2026-09:reading_awaits_document_recheck:rnpi"
+      ],
+      "checks": [
+        "un PDF por tema (acreditación, mediación, reclamos, RNPI) del mismo boletín y período",
+        "cada documento capturado con SHA-256 y formato PDF",
+        "cada cifra viene de la lectura independiente y aparece en el texto del PDF capturado, en una página citada: junto a su palabra de contexto (80 caracteres) o, en acreditación (versión 2), por una plantilla anclada al texto real, revisada por una persona, que calza una sola vez",
+        "un documento revisado con una versión nueva del verificador conserva su SHA-256",
+        "privadas + públicas = solicitudes en tramitación",
+        "con observaciones ≤ acreditados",
+        "una cifra cuya tabla de origen no cuadra se muestra solo con la nota de la lectura",
+        "variación de reclamos calculada = variación informada (redondeada)",
+        "los stocks no se suman entre boletines"
+      ]
+    }
   }
 }

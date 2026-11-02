@@ -284,7 +284,9 @@ def test_f6_figures_and_denominators_recomputed(root):
     assert v["acr.tramite.privadas"] + v["acr.tramite.publicas"] == v["acr.tramite"] == 584
     assert v["acr.privadas_pct"] == pytest.approx(367 / 584 * 100)  # denominator: applications in process
     assert v["rec.pct"] == pytest.approx((1996 - 1530) / 1530 * 100) and round(v["rec.pct"]) == m["reported_growth_percent_rounded"]
-    assert v["rnpi.titulos"] == 1004982 and v["med.mediadores"] == 175 and v["med.solicitudes_acumuladas"] == 12067
+    assert v["med.mediadores"] == 175 and v["med.solicitudes_acumuladas"] == 12067
+    # RNPI gates the release (its PDF and reading are checked) but its figures never enter the package or number pool.
+    assert not any(k.startswith("rnpi.") for k in v) and 1004982 not in sf.number_pool(p) and "rnpi" in p["sources"]
     # Stocks are never summed across releases: no derived value adds two cuts.
     assert not any("Σ" in str(e.get("formula") or "") for e in p["values"].values())
     assert p["kpis"]["comparisons"] == {}  # only one verified release: quarter-on-quarter stays pending
@@ -334,7 +336,8 @@ def test_f6_quarter_on_quarter_compares_stocks_between_two_verified_releases(roo
     p = f6.build_package(root, reg())
     assert p["reconciliation"]["ok"], p["reconciliation"]
     c = p["kpis"]["comparisons"]
-    assert c["acr.acreditados"] == 971 - 950 and c["acr.tramite"] == 584 - 600 and c["rnpi.titulos"] == 1004982 - 990000
+    assert c["acr.acreditados"] == 971 - 950 and c["acr.tramite"] == 584 - 600
+    assert not any(k.startswith(("rnpi.", "med.")) for k in c)  # hidden RNPI; mediación shows its level only
     fi = f6.compose(p, reg(), today=TODAY)
     assert "+21 vs. marzo 2026" in fi["kpis"][0]["lines"]
     # The headline wording follows the sign of the verified change; a fall reads 'bajan … menos', never '−21 más'.
