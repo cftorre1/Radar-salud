@@ -1053,8 +1053,11 @@ def test_snapshot_keeps_releases_newer_than_the_ficha(root):
 
 def test_repo_snapshot_has_august_ficha_and_no_wrong_ges_finding():
     rows = json.loads((REPO / "web/data/radar_today.json").read_text(encoding="utf-8"))["signals"]
-    fichas = [s for s in rows if s.get("stats_ficha")]
+    # One live ficha per family (F6 Boletín IP joined F1 on 30-oct-2026): F1 is the August 2026 one.
+    fichas = [s for s in rows if (s.get("stats_ficha") or {}).get("family") == "F1"]
     assert len(fichas) == 1 and fichas[0]["data_period"] == "2026-08"
+    families = [s["stats_ficha"]["family"] for s in rows if s.get("stats_ficha")]
+    assert len(families) == len(set(families))
     assert not any(str(s.get("title", "")).startswith("Pulso Isapre") for s in rows)
     ges = next(s for s in rows if "casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026" in str(s.get("source_url")))
     assert ges["data_insights"] == [] and ges["statistical_view"]["publication_status"] == "HOLD"
