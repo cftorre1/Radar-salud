@@ -295,8 +295,8 @@ def test_committed_template_verifies_and_publishes_the_f2_ficha(tmp_path):
     assert res["status"] == "pass", res.get("errors")
     fi = res["ficha"]
     assert fi["kicker"] == "Estados financieros Isapres · marzo 2026" and fi["period"] == "2026-03"
-    assert "marzo 2025" in fi["headline"] and {s["key"] for s in fi["sources"]} == {"fefi", "fefi_prev"}
-    assert all(k["label"].endswith("(sistema sin Esencial)") for k in fi["kpis"])
+    assert "un año antes" in fi["headline"] and {s["key"] for s in fi["sources"]} == {"fefi", "fefi_prev"}
+    assert not any("Esencial" in k["label"] for k in fi["kpis"]) and "Esencial" in fi["scope_note"]
     assert any(n["id"] == "n0" and "Notas Explicativas!A18" in n["text"] for n in fi["notes"])
     assert not any(".108." in vid for vid in fi["evidence"]["values"])
     assert fi["lectura"]["status"] == "not_attempted"
@@ -465,10 +465,10 @@ def test_ficha_shows_nine_isapres_and_recomputes_the_system_without_esencial(tmp
     s = (sin_esencial("prest") + sin_esencial("sil")) / sin_esencial("ingresos") * 100
     assert ev["siniestralidad.sistema.2026-03"]["value"] == pytest.approx(s)
     k = {x["id"]: x for x in fi["kpis"]}
-    assert k["ingresos"]["label"] == "Ingresos (sistema sin Esencial)" and k["ingresos"]["value"] == "1.091.349 MM$"
+    assert k["ingresos"]["label"] == "Ingresos" and k["ingresos"]["value"] == "1.091.349 MM$"
     assert k["siniestralidad"]["value"] == "82,9%"
     gan = sin_esencial("gan")
-    assert fi["headline"] == f"Isapres sin Esencial a marzo 2026: utilidad de {sf.fmt_int(gan)} MM$ entre enero y marzo"
+    assert fi["headline"] == f"Las Isapres ganan {sf.fmt_int(gan)} MM$ en enero–marzo 2026"
     bridge = next(c for c in sf.all_charts(fi) if c["id"] == "f2-resultado-puente")
     assert [r["label"] for r in bridge["rows"]] == ["Ganancia bruta", "Antes de impuestos", "Impuestos", "Ganancia"]
     assert bridge["rows"][2]["value"] == pytest.approx(-sin_esencial("imp")) and bridge["rows"][3]["value"] == pytest.approx(gan)
@@ -538,8 +538,9 @@ def test_unresolved_esencial_hold_still_holds_everything(tmp_path):
 
 def test_without_rule_or_hold_all_ten_isapres_are_published(tmp_path):
     _, fi = published(tmp_path, mode="none")
-    assert len(fi["evidence"]["entity_codes"]) == 10 and fi["headline"].startswith("Isapres a marzo 2026:")
-    assert not any(n["id"] == "n0" for n in fi["notes"])
+    assert len(fi["evidence"]["entity_codes"]) == 10 and fi["headline"].startswith("Las Isapres ganan ")
+    assert not any(n["id"] == "n0" for n in fi["notes"]) and fi["scope_note"] is None
+    assert "sin Esencial" not in " ".join(sf.displayed_texts(fi))  # Esencial is one more Isapre: no footnote, no label
 
 
 def test_unreadable_editorial_rules_fail_closed(tmp_path):
@@ -599,16 +600,17 @@ def test_loss_to_profit_uses_absolute_change_and_na(tmp_path):
     r_t = sum(x for i, x in enumerate(cur) if i != ESENCIAL) / 1000
     r_1 = sum(x for i, x in enumerate(old) if i != ESENCIAL) / 1000
     assert r_1 < 0 < r_t
-    assert fi["headline"] == (f"Isapres sin Esencial a marzo 2026: utilidad de {sf.fmt_int(r_t)} MM$, tras una pérdida de "
-                              f"{sf.fmt_int(abs(r_1))} MM$ en marzo 2025")
+    assert fi["headline"] == (f"Las Isapres ganan {sf.fmt_int(r_t)} MM$ en enero–marzo 2026, tras perder "
+                              f"{sf.fmt_int(abs(r_1))} MM$ un año antes")
     k = {x["id"]: x for x in fi["kpis"]}
-    assert "N/A (cambia de signo)" in k["resultado"]["lines"][0]
+    assert k["resultado"]["lines"] == [f"marzo 2025: {sf.fmt_int(r_1)} MM$"]  # both levels, no variación % / N/A
     ev = fi["evidence"]["values"]
     assert "resultado_ejercicio.sistema.pct" not in ev and ev["resultado_ejercicio.sistema.delta"]["value"] == pytest.approx(r_t - r_1)
     assert ev["resultado_ejercicio.67.delta"]["value"] == pytest.approx(15_000) and "resultado_ejercicio.67.pct" not in ev
-    assert ev["resultado_ejercicio.78.pct"]["value"] == pytest.approx(700)
-    table = next(c for c in sf.all_charts(fi) if c["id"] == "f2-resultado-isapres")["table"]["rows"]
-    assert table[-1][0] == "Sistema sin Esencial" and table[-1][-1] == "N/A"
+    assert "resultado_ejercicio.78.pct" not in ev  # 100 → 800 MM$: positive base, still no % for a result
+    chart = next(c for c in sf.all_charts(fi) if c["id"] == "f2-resultado-isapres")
+    assert chart["table"]["columns"] == ["Isapre", "Mar 2026", "Mar 2025", "Cambio"]
+    assert chart["table"]["rows"][-1][0] == "Sistema sin Esencial"
     assert fi["tabs"][0]["index_line"] == f"{sf.fmt_int(r_t)} MM$ · 9 de 9 Isapres con utilidad"
     for text in sf.displayed_texts(fi):
         assert not sf.SIGNED_WITH_WORD.search(text), text
@@ -686,14 +688,18 @@ def test_capture_only_talks_to_the_sis_fetcher_by_default(tmp_path, monkeypatch)
     (500.0, -200.0, "pérdida de 200 MM$, tras una utilidad de 500 MM$ en marzo 2025", None),
     (-500.0, -200.0, "pérdida de 200 MM$, menor que la de 500 MM$ en marzo 2025", None),
     (-200.0, -500.0, "pérdida de 500 MM$, mayor que la de 200 MM$ en marzo 2025", None),
-    (1000.0, 968.0, "utilidad de 968 MM$, 3,2% menos que en marzo 2025", -3.2),
-    (1000.0, 1032.0, "utilidad de 1.032 MM$, 3,2% más que en marzo 2025", 3.2),
+    (1000.0, 968.0, "utilidad de 968 MM$ frente a 1.000 MM$ en marzo 2025", None),
+    (1000.0, 1032.0, "utilidad de 1.032 MM$ frente a 1.000 MM$ en marzo 2025", None),
+    (1215.285, 34120.358, "utilidad de 34.120 MM$ frente a 1.215 MM$ en marzo 2025", None),  # live F2, 2-nov-2026
 ])
 def test_result_wording_follows_the_sign(prev, cur, expected, pct):
     assert f2.result_phrase(prev, cur, "marzo 2025") == expected
     c = f2.change(prev, cur, result=True)
-    assert (c["pct"] is None) == (pct is None) and (pct is None or round(c["pct"], 1) == pct)
+    assert c["pct"] is None and "%" not in expected  # a result never gets a % variation (Dirección, 2-nov)
     assert not sf.SIGNED_WITH_WORD.search(expected)
+    # Non-result items keep their % only with a positive base.
+    assert round(f2.change(1000.0, 1032.0, result=False)["pct"], 1) == 3.2
+    assert f2.change(-10.0, 5.0, result=False)["pct"] is None and f2.change(0.0, 5.0, result=False)["pct"] is None
 
 
 def test_verify_ficha_rejects_a_signed_figure_with_a_direction_word(tmp_path):
@@ -743,8 +749,8 @@ def test_daily_default_runs_and_captures_f2_with_no_paid_call(tmp_path, monkeypa
     assert f2s["status"] == "pass" and f2s["published"] and f2s["lectura"] == "not_attempted" and not f2s["cost_usd"]
     assert lectura_enabled and not any(lectura_enabled)
     live = json.loads(Path(f2s["live"]).read_text(encoding="utf-8"))
-    assert live["kicker"] == "Estados financieros Isapres · marzo 2026" and "marzo 2025" in live["headline"]
-    assert all("sistema sin Esencial" in k["label"] for k in live["kpis"])
+    assert live["kicker"] == "Estados financieros Isapres · marzo 2026" and "un año antes" in live["headline"]
+    assert not any("Esencial" in k["label"] for k in live["kpis"]) and "nota A18" in live["scope_note"]
     # --no-capture never downloads
     assert runner.main(["--root", str(root), "--as-of", TODAY.isoformat(), "--family", "F2", "--no-capture"]) == 0
     assert len(fefi_calls) == 1
@@ -792,9 +798,7 @@ def test_result_kpi_line_never_says_sign_change_when_both_years_are_losses():
     from radar_salud.stats_ficha_f2 import change
     c = change(-8040.0, -3265.0, result=True)
     assert c["pct"] is None and c["transition"] == "loss_smaller"
-    import inspect, radar_salud.stats_ficha_f2 as m
-    src = inspect.getsource(m)
-    assert '"loss_smaller": "N/A (pérdida en ambos años)"' in src
+    assert f2.result_phrase(-8040.0, -3265.0, "marzo 2025") == "pérdida de 3.265 MM$, menor que la de 8.040 MM$ en marzo 2025"
 
 
 def test_runner_reports_a_family_crash_and_keeps_going(tmp_path, monkeypatch):
@@ -812,3 +816,101 @@ def test_runner_reports_a_family_crash_and_keeps_going(tmp_path, monkeypatch):
             monkeypatch.setattr(mod, fn, lambda *a, **k: {})
     assert rsf.main(["--root", str(tmp_path), "--no-llm"] if "--no-llm" in open(spec.origin).read() else ["--root", str(tmp_path)]) == 0
     assert calls  # the families after the crashing one still ran
+
+
+# ---------------------------------------------------------------------------------------------
+# Presentation (Dirección, 2-nov-2026): no result %, whole MM$, one 'sin Esencial' scope line
+
+
+def yoy_ficha(tmp_path):
+    root = make_root(tmp_path, prev=True)
+    capture(root, files={URL: workbook(), URL_PREV: workbook(prev_data(), year="2025")}, max_new=2)
+    res = run(root)
+    assert res["status"] == "pass", res.get("errors")
+    return root, res["ficha"]
+
+
+RESULT_WORDS = re.compile(r"utilidad|p[ée]rdida|resultado|ganancia", re.I)
+
+
+def test_no_result_ever_shows_a_percentage_variation(tmp_path):
+    root, fi = yoy_ficha(tmp_path)
+    ev = fi["evidence"]["values"]
+    assert not any(vid.split(".")[0] in f2.RESULT_ITEMS and vid.endswith(".pct") for vid in ev)
+    assert "ingresos_operacionales.sistema.pct" in ev  # non-result items keep their % (positive base)
+    r_t, r_1 = ev["resultado_ejercicio.sistema.2026-03"]["value"], ev["resultado_ejercicio.sistema.2025-03"]["value"]
+    assert r_t > 0 and r_1 > 0  # same sign and positive base: the case where a % used to appear
+    assert fi["headline"] == f"Las Isapres ganan {sf.fmt_int(r_t)} MM$ en enero–marzo 2026, frente a {sf.fmt_int(r_1)} MM$ un año antes"
+    # headline, dek, KPI lines, index lines, topic deks, chart notes and tables: no % next to a result
+    k = {x["id"]: x for x in fi["kpis"]}
+    texts = [fi["headline"], fi["dek"], *k["resultado"]["lines"], k["resultado"]["value"]]
+    for tab in fi["tabs"]:
+        texts += [tab.get("index_line"), tab.get("dek")]
+    for c in sf.all_charts(fi):
+        if c["id"].startswith("f2-resultado"):
+            texts += [c["headline"], c["subtitle"], *(str(x) for row in c["table"]["rows"] for x in row), *c["table"]["columns"]]
+    texts += [p for p in fi["facts"]["paragraphs"] if RESULT_WORDS.search(p)]
+    for text in filter(None, texts):
+        if RESULT_WORDS.search(text) or text in k["resultado"]["lines"]:
+            assert not re.search(r"\d\s?%|variaci[oó]n %", text), text
+    assert k["resultado"]["lines"] == [f"marzo 2025: {sf.fmt_int(r_1)} MM$"]
+    assert any("frente a" in p for p in fi["facts"]["paragraphs"])
+    sysc = next(c for c in sf.all_charts(fi) if c["id"] == "f2-resultado")
+    assert [r[0] for r in sysc["table"]["rows"]] == ["Mar 2025", "Mar 2026", "Cambio"]
+    assert "sin variación %" in sysc["source"]
+    assert fi["verification"]["verdict"] == "PASS"
+
+
+def test_mm_charts_display_whole_numbers_and_traces_to_the_evidence(tmp_path):
+    root, fi = yoy_ficha(tmp_path)
+    pkg = f2.build_package(root, registry())
+    pool = sf.number_pool(pkg)
+    mm = [c for c in sf.all_charts(fi) if c["unit"] == "MM$"]
+    assert mm and all(c.get("digits") == 0 for c in mm)
+    assert all(c.get("digits") == 1 for c in sf.all_charts(fi) if c["unit"] == "%")
+    for c in mm:
+        for row in c["rows"]:  # the row keeps full precision; the page shows it rounded to 'digits'
+            assert row["value"] == pkg["values"][row["ref"]]["value"] * row.get("sign", 1)
+            shown = sf.fmt_dec(row["value"], c["digits"]) if c["digits"] else sf.fmt_int(row["value"])
+            assert "," not in shown and not sf.text_numbers_trace(shown, pool), (c["id"], shown)
+        for row in c["table"]["rows"]:  # 'Ver datos': whole MM$ (thousand separators), % at one decimal
+            for cell in row[1:]:
+                assert not re.search(r"\d,\d{2,}", str(cell)), (c["id"], cell)
+                assert not re.fullmatch(r"[−+]?[\d.]+,\d", str(cell)), (c["id"], cell)
+    bad = copy.deepcopy(fi)
+    sf.all_charts(bad)[0]["digits"] = 1.5
+    assert any(e.startswith("chart_digits_invalid:") for e in sf.verify_ficha(bad, pkg)["errors"])
+
+
+@pytest.mark.parametrize("prev,cur,expected", [
+    (1215.285, 34120.358, "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes"),
+    (-273.285, 34090.653, "Las Isapres ganan 34.091 MM$ en enero–marzo 2026, tras perder 273 MM$ un año antes"),
+    (500.0, -200.0, "Las Isapres pierden 200 MM$ en enero–marzo 2026, tras ganar 500 MM$ un año antes"),
+    (-500.0, -200.0, "Las Isapres pierden 200 MM$ en enero–marzo 2026, menos que los 500 MM$ de un año antes"),
+    (-200.0, -500.0, "Las Isapres pierden 500 MM$ en enero–marzo 2026, más que los 200 MM$ de un año antes"),
+    (None, 34120.358, "Las Isapres ganan 34.120 MM$ en enero–marzo 2026"),
+    (None, -200.0, "Las Isapres pierden 200 MM$ en enero–marzo 2026"),
+])
+def test_headline_is_natural_sign_aware_and_never_a_percentage(prev, cur, expected):
+    text = f2.headline_lead(prev, cur, "enero–marzo 2026")
+    assert text == expected and "%" not in text and "Esencial" not in text and not sf.SIGNED_WITH_WORD.search(text)
+
+
+def test_esencial_is_one_visible_footnote_not_a_label(tmp_path):
+    root, fi = yoy_ficha(tmp_path)
+    assert "Esencial" not in fi["headline"] and "Esencial" not in fi["kicker"] and "Esencial" not in fi["kicker_meta"]
+    assert not any("Esencial" in k["label"] for k in fi["kpis"])
+    assert all("Esencial" not in t["index_line"] for t in fi["tabs"])
+    assert fi["scope_note"] == ("Cifras del sistema sin Isapre Esencial: según la SIS (nota A18), sus cifras a marzo 2026 "
+                                "están en revisión. Los totales suman las otras 9 Isapres.")
+    n0 = next(n for n in fi["notes"] if n["id"] == "n0")["text"]
+    assert f'Notas Explicativas!A18: "{A18}"' in n0  # the footnote paraphrases the A18 text quoted verbatim in Notas
+    # Only chart subtitles over a system total say 'sin Esencial'; per-Isapre charts do not.
+    for c in sf.all_charts(fi):
+        system_drawn = any(".sistema." in str(r.get("ref")) for r in c["rows"])
+        assert ("sin Esencial" in c["subtitle"]) == system_drawn, c["id"]
+        assert "Esencial" not in c["headline"]
+    pkg = f2.build_package(root, registry())
+    bad = copy.deepcopy(fi)
+    bad["scope_note"] = bad["scope_note"].replace("9 Isapres", "10 Isapres")
+    assert any(e.startswith("number_not_in_evidence:10") for e in sf.verify_ficha(bad, pkg)["errors"])

@@ -806,7 +806,7 @@ def all_charts(ficha: dict) -> list[dict]:
 
 
 def displayed_texts(ficha: dict, include_lectura: bool = True) -> list[str]:
-    out = [ficha.get("headline"), ficha.get("dek")]
+    out = [ficha.get("headline"), ficha.get("dek"), ficha.get("scope_note")]
     for k in ficha.get("kpis") or []:
         out += [k.get("value"), *(k.get("lines") or []), k.get("badge")]
     out += list((ficha.get("facts") or {}).get("paragraphs") or [])
@@ -992,6 +992,11 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
                       or spark.get("form") not in set(SPARK_FORMS.values())):
             errors.append(f"spark_not_a_topic_chart:{tab.get('id')}")
     for chart in all_charts(ficha):
+        # The page rounds a chart's values to 'digits' (web/stats-ficha.js dec/sgd); the rows keep full precision, so
+        # what is shown is the evidence rounded half-up, as number_traces checks. Only a small whole number is valid.
+        dg = chart.get("digits")
+        if dg is not None and (isinstance(dg, bool) or not isinstance(dg, int) or not 0 <= dg <= 3):
+            errors.append(f"chart_digits_invalid:{chart.get('id')}")
         for row in chart.get("rows") or []:
             for key, ref_key in (("value", "ref"), ("base", "base_ref")):
                 ref = row.get(ref_key)
@@ -1111,7 +1116,7 @@ def publish_release_holds(result: dict, root: Path) -> list[str]:
 
 
 PUBLIC_KEYS = ("schema_version", "id", "family", "family_label", "period", "published_at", "generated_at",
-               "release_key", "featured", "triggers", "kicker", "kicker_meta", "headline", "headline_type", "dek",
+               "release_key", "featured", "triggers", "kicker", "kicker_meta", "headline", "headline_type", "dek", "scope_note",
                "dek_emphasis", "kpis", "tabs", "charts", "facts", "lectura", "watch", "notes", "sources", "machine_note",
                "status", "late_release", "revisions", "date_basis")
 
