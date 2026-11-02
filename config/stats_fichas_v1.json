@@ -433,7 +433,7 @@
         "sis_caec",
         "cmf_holdings"
       ],
-      "blocked_by": "plantilla FEFI pendiente de aprobación de Dirección (reviewed_by pendiente; filas finales de E. Resultados por confirmar); Esencial excluida por regla condicionada a la nota A18 (editorial_rules_v3 rules.fefi_esencial_exclusion)",
+      "blocked_by": "plantilla FEFI completa pendiente de aprobación de Dirección (reviewed_by pendiente); Esencial excluida por regla condicionada a la nota A18 (editorial_rules_v3 rules.fefi_esencial_exclusion)",
       "cadence_phrase": "se actualiza cada trimestre",
       "primary_series": "sis_estadisticas_financieras",
       "release_page": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/",
@@ -459,8 +459,8 @@
       "lectura_enabled": false,
       "esencial_code": 108,
       "parser_template": {
-        "_doc": "Plantilla de la planilla FEFI (Dirección 1-nov-2026). Solo se leen las hojas 'Ctas. de Resultados I. Abierta ' (con espacio final; el texto normalizado lo quita) y 'Ctas. de Resultados I. Cerradas', ambas 'en miles de $': cuentas en filas, una columna por Isapre y 'total'. Las hojas 'en millones de $' ('E. Resultados por rubros', '… comparado por Isa') están prohibidas: sus celdas mezclan miles y millones (el formato de Excel las escala). Cada patrón es una regex sobre texto normalizado (figure_templates.normalize_text) y calza exactamente una vez: 'header_row' contra las filas (celdas unidas con ' | '); cada columna de Isapre y 'total_column' contra una celda completa de esa fila; cada cuenta contra la etiqueta de su fila (sección de la columna A arrastrada hacia abajo + columna B). En cada cuenta las Isapres suman el total con tolerancia ≤ 1 (miles); 'parts' debe sumar su total por Isapre; 'magnitude_groups' rechaza magnitudes mezcladas (> ×100). 'period' 't' es el trimestre del título. Además se leen 'E. Resultados I. Abiertas' y '… I. Cerradas' (cuadros 1.6/1.7, en miles de $; columnas cod | cuentas | Isapres | total), solo las filas ganancia bruta, ganancia (pérdida) antes de impuestos, gasto por impuestos y ganancia (pérdida); su etiqueta incluye el código de la columna A. 'cross_checks' exige, por Isapre y con tolerancia ≤ 1 miles, ingresos − costo de ventas (Ctas.) = ganancia bruta (E. Resultados) y antes de impuestos − impuestos = ganancia. Las tres filas finales de E. Resultados (antes de impuestos, impuestos, ganancia) se escribieron con los rótulos de 'E. Resultados por rubros' y quedan por confirmar con las anotaciones CI. Con reviewed_by pendiente la ficha queda en HOLD. Esencial (108) se lee para las sumas de control y nunca se publica (config/editorial_rules_v3.json rules.fefi_esencial_exclusion).",
-        "source": "Anotaciones CI del PR #117 sobre finan_ifrs_mar_2026_web_v2.xls (sha256 e3c4f7b3cfee9a6e…): hojas Ctas. completas (r1–r28) y E. Resultados I. r1–r16; filas finales de E. Resultados por confirmar.",
+        "_doc": "Plantilla de la planilla FEFI (Dirección 1-nov-2026). Solo se leen las hojas 'Ctas. de Resultados I. Abierta ' (con espacio final; el texto normalizado lo quita) y 'Ctas. de Resultados I. Cerradas', ambas 'en miles de $': cuentas en filas, una columna por Isapre y 'total'. Las hojas 'en millones de $' ('E. Resultados por rubros', '… comparado por Isa') están prohibidas: sus celdas mezclan miles y millones (el formato de Excel las escala). Cada patrón es una regex sobre texto normalizado (figure_templates.normalize_text) y calza exactamente una vez: 'header_row' contra las filas (celdas unidas con ' | '); cada columna de Isapre y 'total_column' contra una celda completa de esa fila; cada cuenta contra la etiqueta de su fila (sección de la columna A arrastrada hacia abajo + columna B). En cada cuenta las Isapres suman el total con tolerancia ≤ 1 (miles); 'parts' debe sumar su total por Isapre; 'magnitude_groups' rechaza magnitudes mezcladas (> ×100). 'period' 't' es el trimestre del título. Además se leen 'E. Resultados I. Abiertas' y '… I. Cerradas' (cuadros 1.6/1.7, en miles de $; columnas cod | cuentas | Isapres | total), solo las filas ganancia bruta, ganancia (pérdida) antes de impuestos, gasto por impuestos y ganancia (pérdida); su etiqueta incluye el código de la columna A. 'cross_checks' exige, por Isapre y con tolerancia ≤ 1 miles, ingresos − costo de ventas (Ctas.) = ganancia bruta (E. Resultados) y antes de impuestos − impuestos = ganancia. Las filas de E. Resultados se anclan por código y rótulo reales (anotación CI de b3019747): 30030 ganancia bruta, 30170 'ganancia (perdida), antes de impuestos', 30180 gasto por impuestos, 23070 ganancia (perdida); 30190 'procedente de operaciones continuadas' no se lee. Con reviewed_by pendiente la ficha queda en HOLD. Esencial (108) se lee para las sumas de control y nunca se publica (config/editorial_rules_v3.json rules.fefi_esencial_exclusion).",
+        "source": "Anotaciones CI del PR #117 sobre finan_ifrs_mar_2026_web_v2.xls (sha256 e3c4f7b3cfee9a6e…): hojas Ctas. completas (r1–r28) y E. Resultados I. completas (r1–r29, commit b3019747).",
         "reviewed_by": "pendiente",
         "reviewed_at": null,
         "tables": {
@@ -802,17 +802,17 @@
                 "period": "t"
               },
               "resultado_antes_impuestos.t": {
-                "pattern": "^\\d+(?:\\.0)? ganancia \\(perdida\\) antes de impuestos$",
+                "pattern": "^30170(?:\\.0)? ganancia \\(perdida\\), antes de impuestos$",
                 "item": "resultado_antes_impuestos",
                 "period": "t"
               },
               "gasto_impuestos.t": {
-                "pattern": "^\\d+(?:\\.0)? gasto por impuestos a las ganancias \\(menos\\)$",
+                "pattern": "^30180(?:\\.0)? gasto por impuestos a las ganancias \\(menos\\)$",
                 "item": "gasto_impuestos",
                 "period": "t"
               },
               "resultado_ejercicio.t": {
-                "pattern": "^\\d+(?:\\.0)? ganancia \\(perdida\\)$",
+                "pattern": "^23070(?:\\.0)? ganancia \\(perdida\\)$",
                 "item": "resultado_ejercicio",
                 "period": "t"
               }
@@ -848,17 +848,17 @@
                 "period": "t"
               },
               "resultado_antes_impuestos.t": {
-                "pattern": "^\\d+(?:\\.0)? ganancia \\(perdida\\) antes de impuestos$",
+                "pattern": "^30170(?:\\.0)? ganancia \\(perdida\\), antes de impuestos$",
                 "item": "resultado_antes_impuestos",
                 "period": "t"
               },
               "gasto_impuestos.t": {
-                "pattern": "^\\d+(?:\\.0)? gasto por impuestos a las ganancias \\(menos\\)$",
+                "pattern": "^30180(?:\\.0)? gasto por impuestos a las ganancias \\(menos\\)$",
                 "item": "gasto_impuestos",
                 "period": "t"
               },
               "resultado_ejercicio.t": {
-                "pattern": "^\\d+(?:\\.0)? ganancia \\(perdida\\)$",
+                "pattern": "^23070(?:\\.0)? ganancia \\(perdida\\)$",
                 "item": "resultado_ejercicio",
                 "period": "t"
               }

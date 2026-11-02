@@ -51,13 +51,13 @@ CTAS_ROWS = [(ING, "Cotización legal (7%)", "legal"), (None, "Cotización adici
 PARTS = {"ingresos": ("legal", "adicional", "aporte", "fondo", "otros"),
          "costo": ("prest", "sil", "ocurridas", "litigio", "egresos", "otroscostos"),
          "gav": ("publicidad", "detcot", "detpres", "remun", "remventas", "gotros")}
-# E. Resultados rows: (code, label, key); 'bruta' = ingresos − costo unless fixed. Rows 30170–30190 are not yet confirmed by CI:
-# their labels follow 'E. Resultados por rubros' and their values are that sheet's figures rescaled to miles (fixture).
+# E. Resultados rows: (code, label, key); 'bruta' = ingresos − costo unless fixed. Real codes and labels (CI annotation on
+# b3019747); 30190 'continuadas' repeats the result and must not be read (the template anchors 23070).
 ERES_ROWS = [(30010, "Ingresos de actividades ordinarias", "ingresos"), (30020, "Costo de ventas (menos)", "costo"),
              (30030, "Ganancia bruta", "bruta"), (30060, "Otros ingresos, por función", "otrosing"),
              (30080, "Gasto de administración (menos)", "gav"), (30090, "Otros gastos, por función (menos)", "otrosgastos"),
-             (30170, "Ganancia (pérdida) antes de impuestos", "antes"), (30180, "Gasto por impuestos a las ganancias (menos)", "imp"),
-             (30190, "Ganancia (pérdida)", "gan")]
+             (30170, "Ganancia (pérdida), antes de impuestos", "antes"), (30180, "Gasto por impuestos a las ganancias (menos)", "imp"),
+             (30190, "Ganancia (pérdida) procedente de operaciones continuadas", "gan"), (23070, "Ganancia (pérdida)", "gan")]
 # Values per Isapre in miles de $, order OPEN + CLOSED. Real (CI annotations on PR #117) unless marked.
 REAL = {
     "legal": [186844880, 118341178, 37846717, 89708775, 152605566, 132430126, 15743566, 12905476, 8874426, 284163],
@@ -79,9 +79,9 @@ REAL = {
     "gotros": [6254837, 6944809, 1516386, 6152909, 5177658, 3265667, 2363241, 1037310, 539128, 63553],
     "otrosing": [2374226, 115859, 252440, 1414756, 2396218, 1657291, 51613, 5603788, 523243, 33],
     "otrosgastos": [2363903, 606234, 45116, 15686, -130, 150907, 0, 199866, 82629, 0],
-    "antes": [1976441, 9291788, -708959, 2273475, 5421031, 24711719, -62835, 2005553, 952296, 100000],  # rubros; CdN fixture
-    "imp": [492529, 2509427, -83597, 569676, 1502878, 6671227, -33130, -21713, 193194, 27000],  # rubros; CdN fixture
-    "gan": [1483912, 6782361, -625362, 1703799, 3918153, 18040492, -29705, 2027266, 759102, 73000],  # rubros; CdN fixture
+    "antes": [1976441, 9291788, -708959, 2273475, 5421031, 24711719, -62835, 2005553, 952296, 52888],
+    "imp": [492529, 2509427, -83597, 569676, 1502878, 6671227, -33130, -21713, 193194, 22253],
+    "gan": [1483912, 6782361, -625362, 1703799, 3918153, 18040492, -29705, 2027266, 759102, 30635],
 }
 CODES = OPEN + CLOSED
 ESENCIAL = CODES.index("108")

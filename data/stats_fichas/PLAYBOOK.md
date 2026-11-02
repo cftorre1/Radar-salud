@@ -139,8 +139,8 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
   - Las magnitudes mezcladas se rechazan.
   - Cruces entre hojas, por Isapre (≤ 1): ingresos − costo de ventas (Ctas.) = ganancia bruta (E. Resultados);
     antes de impuestos − impuestos = ganancia (`stats_capture_fefi.cross_checks`).
-  - Las tres filas finales de E. Resultados se escribieron con los rótulos de "E. Resultados por rubros" y quedan por
-    confirmar con las anotaciones CI.
+  - Las filas de E. Resultados se anclan por código y rótulo reales: 30030, 30170, 30180 y 23070. La fila 30190
+    "procedente de operaciones continuadas" repite el resultado y no se lee.
 - **Esencial** (Dirección, 1 nov; regla `rules.fefi_esencial_exclusion`):
   - la ficha muestra 9 Isapres y rotula cada total como "sistema sin Esencial", recalculado por Alicanto;
   - una nota cita A18 textual con su localizador `Notas Explicativas!A18`;
@@ -165,15 +165,15 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 **Qué queda en HOLD y por qué.**
 - `parser_template_unreviewed`: la plantilla está completa, sin marcadores `<<…>>`, pero `reviewed_by` sigue en
   "pendiente" hasta que Dirección la apruebe.
-- Las etiquetas de las filas finales de E. Resultados deben confirmarse con las anotaciones.
+- Todas las filas leídas están ancladas al texto real que imprimió CI.
 
 **Pasos humanos para levantar el HOLD.**
 1. CI corre `tests/test_stats_ficha_f2_real_xls.py` y publica como anotaciones:
    - todas las filas de las dos hojas E. Resultados I.;
    - la nota A18;
    - un estado simulado de la plantilla para 2026-03 y para 2025-03.
-2. Con ese texto, una persona confirma o corrige las etiquetas de las filas finales de E. Resultados, y Dirección aprueba
-   la plantilla: `reviewed_by` y `reviewed_at`, en un PR a `staging` con revisión independiente.
+2. Dirección revisa la plantilla con ese texto y la aprueba: `reviewed_by` y `reviewed_at`, en un PR a `staging` con
+   revisión independiente.
 3. En ese PR el test CI debe dar `verified`.
 4. Dirección activa F2 (`status: "active"`) y, por separado, la Lectura.
    - `scripts/run_stats_fichas.py --family F2` re-chequea la planilla con la plantilla revisada, ligada al hash.
