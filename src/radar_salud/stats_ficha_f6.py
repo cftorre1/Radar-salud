@@ -22,7 +22,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F6"
-BUILDER_VERSION = "f6_index_topic_v3"
+BUILDER_VERSION = "f6_index_topic_v4"
 CAPTURE = Path("data/stats_fichas/captures/boletin_ip.json")
 MONTH_EN = {m: i for i, m in enumerate(("january", "february", "march", "april", "may", "june", "july", "august", "september",
                                          "october", "november", "december"), 1)}
@@ -84,6 +84,11 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                 why.append(f"format_{d.get('format')}:{topic}")
             elif d.get("url") not in verified:
                 why.append(f"not_verified:{topic}")
+                # No independent reading yet (e.g. N°3 on 1-nov): the template pre-check says whether the approved
+                # templates already match the new document; it never verifies a figure.
+                for key, pre in sorted(((d.get("parse") or {}).get("template_precheck") or {}).items()):
+                    if pre.get("status") != "ok":
+                        why.append(f"template_precheck:{topic}:{key}:{pre.get('status')}")
             elif (d.get("parse") or {}).get("status") != "verified":
                 missing = [k for k, ok in ((d.get("parse") or {}).get("verified_present") or {}).items() if not ok]
                 why.append(f"verified_figure_not_in_document:{topic}:{','.join(missing) or (d.get('parse') or {}).get('status')}")
@@ -92,16 +97,24 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     states = {rel["period"]: release_state(rel) for rel in store["releases"]}
     usable = [rel for rel in store["releases"] if not states[rel["period"]]]
     latest = max(store["releases"], key=lambda r: r["period"])
-    rel = max(usable, key=lambda r: r["period"]) if usable else latest
+    # With no usable release, the HOLD reports the newest release that has an independent reading (the one that should
+    # have passed), then any newer release still waiting for its reading (e.g. N°3 captured on 1-nov).
+    read = [r for r in store["releases"] if any(d.get("url") in verified for d in r.get("documents") or [])]
+    rel = max(usable, key=lambda r: r["period"]) if usable else (max(read, key=lambda r: r["period"]) if read else latest)
     if not usable:
-        failures += [f"{rel['period']}:{w}" for w in states[rel["period"]]] or ["no_verified_release"]
+        failures += [f"{p}:{w}" for p in sorted(states) if p >= rel["period"] for w in states[p]] or ["no_verified_release"]
     t = rel["period"]
     values: dict[str, dict] = {}
     sources: dict[str, dict] = {}
     docs = {d["topic"]: d for d in rel.get("documents") or [] if d.get("topic")}
     primary = docs.get("acreditacion") or {}
+    # Loose listing PDFs (N°3-2026) expose no publication date: the release is dated by first detection, never as a
+    # publication.
+    detected = not rel.get("published_at") and bool(rel.get("first_detected_at"))
     package: dict[str, Any] = {
-        "family": FAMILY, "period": t, "periods": [t], "published_at": rel.get("published_at"),
+        "family": FAMILY, "period": t, "periods": [t],
+        "published_at": rel.get("published_at") or (str(rel["first_detected_at"])[:10] if detected else None),
+        "date_basis": "first_detected" if detected else "publication",
         "release_key": sf.release_key(t, primary.get("sha256") or "0" * 16),
         "primary_source": {"url": primary.get("url"), "sha256": primary.get("sha256")}, "sources": sources,
         "values": values, "entities": [], "entity_codes": [], "entity_keys": [], "causal_note": None,
@@ -205,10 +218,12 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                         locator="págs. " + ", ".join(str(p) for p in verified[d["url"]].get("pages_1based") or [])))
     since = (meta.get("med.solicitudes_acumuladas") or {}).get("since")
     newer = sorted(p for p in states if p > t)
+    pending = [{"period": r["period"], "number": r.get("number")} for r in sorted(store["releases"], key=lambda r: r["period"])
+               if r["period"] > t]
     package.update(findings=[], revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
                    constants=[30, 2, 100], periods=sorted({t, f"{y}-01", f"{y - 1}-01", f"{y - 1}-12"}),
                    kpis={"y": y, "has_rec": has_rec, "comparisons": comparisons,
-                         "prev": older[-1]["period"] if older else None, "since": since, "newer": newer,
+                         "prev": older[-1]["period"] if older else None, "since": since, "newer": newer, "pending": pending,
                          "unverified": sorted(p for p, w in states.items() if w and p != t), "meta": meta})
     _lectura_material(package, values)
     return package
@@ -375,8 +390,17 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     expected = date.fromordinal(published.toordinal() + int(cfg["calendar"]["expected_release_interval_days"]))
     nxt = sf.shift_period(t, 3)
     late = (decision or {}).get("late_release")
-    rejected_next = [r for r in package.get("rejected_releases") or [] if "documents_belong_to_other_release" in r.get("reasons", [])]
-    if rejected_next:
+    pending = k.get("pending") or []
+    rejected_next = [r for r in package.get("rejected_releases") or [] if "documents_belong_to_other_release" in r.get("reasons", [])
+                     and not any(sf.month_label(x["period"]).casefold() in str(r.get("title") or "").casefold() for x in pending)]
+    if pending:
+        # A newer bulletin is captured but its figures are not verified (Dirección 1-nov, N°3): the ficha stays on this
+        # release and says so; no figure of the new bulletin is shown.
+        x = pending[-1]
+        watch = [{"headline": f"Nuevo boletín (datos a {sf.month_label(x['period'])}): cifras en verificación.",
+                  "explanation": f"La ficha sigue con el boletín de {mlabel} hasta que las cifras del nuevo boletín se "
+                                 "verifiquen en los PDF capturados."}]
+    elif rejected_next:
         r = rejected_next[-1]
         watch = [{"headline": f"{r['title'].split('–')[-1].strip()}: la página publicada enlaza los documentos de otro boletín.",
                   "explanation": f"Alicanto no la usa hasta que la SIS publique los PDF de enero a {sf.month_name(nxt)}."}]
@@ -405,15 +429,18 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     sources = [{**src, "key": key} for key, src in package["sources"].items()]
     triggers = (decision or {}).get("triggers") or []
     rule = "nuevo período" if "new_period" in triggers else ("revisión" if "revision" in triggers else "publicación vigente")
-    machine = (f"Ficha generada por la regla \"{rule}\" (boletín {package.get('number')}, publicado el "
+    detected = package.get("date_basis") == "first_detected"
+    machine = (f"Ficha generada por la regla \"{rule}\" (boletín {package.get('number')}, "
+               f"{'detectado por Alicanto el' if detected else 'publicado el'} "
                f"{sf.day_label(package['published_at'])}). Las cifras vienen del paquete de evidencia; solo la Lectura Alicanto "
                "puede escribirla un modelo, y pasa por un verificador.")
     return {
         "schema_version": sf.SCHEMA, "id": f"stats-ficha:{FAMILY}:{t}", "family": FAMILY, "family_label": cfg["label"],
         "slug": cfg["slug"], "period": t, "published_at": package["published_at"], "release_key": package["release_key"],
         "kicker": tpl["kicker"].format(label=cfg["label"]),
-        "kicker_meta": tpl["kicker_meta"].format(period_label=mlabel, published_label=sf.day_label(package["published_at"]),
-                                                 cadence_phrase=cfg["cadence_phrase"]),
+        "kicker_meta": tpl["kicker_meta_detected" if detected else "kicker_meta"].format(
+            period_label=mlabel, published_label=sf.day_label(package["published_at"]), cadence_phrase=cfg["cadence_phrase"]),
+        **({"date_basis": "first_detected"} if detected else {}),
         "headline": headline, "headline_type": "default", "dek": dek, "dek_emphasis": f"{fmt_int(acc)} prestadores acreditados",
         "kpis": kpis, "tabs": tabs,
         "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs, "rendered_in_tabs": True},
@@ -423,7 +450,24 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     }
 
 
+def release_holds(package: dict) -> list[dict]:
+    """Releases newer than the ficha's whose figures are not verified: each one is a HOLD of its own (N°3 on 1-nov)
+    while the ficha keeps the last verified release."""
+    t = package.get("period") or ""
+    return [{"period": p, "errors": [f"{p}:{w}" for w in why]}
+            for p, why in sorted((package.get("releases_state") or {}).items()) if p > t and why != ["ok"]]
+
+
 def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = True,
         model_call: Callable[..., Any] | None = None, budget: Callable[[float], tuple[bool, str]] | None = None) -> dict:
-    return sf.run_family(FAMILY, builder_version=BUILDER_VERSION, build_package=build_package, compose=compose, root=Path(root),
-                         today=today, registry=registry, llm=llm, model_call=model_call, budget=budget)
+    seen: dict[str, dict] = {}
+
+    def package(root, registry=None, previous_live=None):
+        seen["package"] = build_package(root, registry, previous_live)
+        return seen["package"]
+    result = sf.run_family(FAMILY, builder_version=BUILDER_VERSION, build_package=package, compose=compose, root=Path(root),
+                           today=today, registry=registry, llm=llm, model_call=model_call, budget=budget)
+    holds = release_holds(seen.get("package") or {}) if result.get("status") != "hold" else []
+    if holds:
+        result["release_holds"] = holds
+    return result

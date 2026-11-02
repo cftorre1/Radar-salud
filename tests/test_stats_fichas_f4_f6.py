@@ -301,7 +301,9 @@ def test_f6_ficha_tabs_and_rejected_release(root):
     store = json.loads((root / "data/stats_fichas/captures/boletin_ip.json").read_text(encoding="utf-8"))
     rej = store["rejected_releases"]
     assert rej and rej[0]["title"].endswith("Septiembre 2026") and "documents_belong_to_other_release" in rej[0]["reasons"]
-    assert fi["watch"][0]["headline"].startswith("Septiembre 2026")
+    # N°3-2026 (enero–septiembre) arrived as loose listing PDFs (1-nov): captured, not verified, so the watch item says
+    # the new bulletin is being verified instead of repeating the September page rejection.
+    assert fi["watch"][0]["headline"] == "Nuevo boletín (datos a septiembre 2026): cifras en verificación."
     assert all(d["format"] == "pdf" for r in store["releases"] for d in r["documents"] if d.get("status") == "captured")
 
 
@@ -388,7 +390,9 @@ def test_capture_downloads_once_and_stores_hashes_not_binaries(tmp_path):
     fetch = fx.fetcher(r)
     fx.capture_all(r, fetch)
     n = len(fetch.calls)
-    assert n == len(fx.GES_CUTS) + 5 * 4  # 4 GES files + 5 Boletines × 4 PDFs (the mislabeled release is never fetched)
+    # 4 GES files + 6 Boletines × 4 PDFs: five release pages and N°3-2026 from the loose listing PDFs (1-nov); the
+    # mislabeled 'Septiembre 2026' page is never fetched.
+    assert n == len(fx.GES_CUTS) + 6 * 4
     fx.capture_all(r, fetch)
     assert len(fetch.calls) == n  # already captured: never downloaded again
     for name in ("ges_quarterly.json", "boletin_ip.json"):

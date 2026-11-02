@@ -14,6 +14,9 @@ hash to the recorded SHA-256.
   present in the captured document's text (``verified_present``) and under which rule (``figure_rules``: the
   context window or, for acreditación, a human-reviewed anchored template). Releases whose documents belong to another
   release (e.g. a 'Septiembre 2026' page listing the 'enero-junio-2026' PDFs) are rejected, never relabelled.
+  A release can also be listed as loose PDFs (the Intendencia de Prestadores listing, one history record per PDF,
+  e.g. N°3-2026 detected on 29-oct-2026): one PDF per topic with the same number and period in the file names forms
+  the release; it has no publication date (dated by first detection).
 """
 from __future__ import annotations
 
@@ -114,10 +117,49 @@ def doc_release(url: str) -> dict | None:
     return {"number": f"N°{m['n']}-{m['y']}", "topic": m["topic"], "period": f"{m['y']}-{MONTHS.index(m['m']) + 1:02d}"}
 
 
-def boletin_releases(root: Path) -> tuple[list[dict], list[dict]]:
-    """Releases with exactly one document per topic whose file names carry the release's own period."""
+LOOSE_SOURCE = "Superintendencia de Salud · Intendencia de Prestadores"
+
+
+def loose_boletin_releases(signals: list[dict]) -> tuple[dict[str, dict], list[dict]]:
+    """Releases formed by the loose PDF records of the Prestadores listing (one record per PDF, no release page).
+
+    Grouped by the number and period in the file names; a group is a release only with exactly one PDF per topic.
+    No publication date is exposed by that listing: ``published_at`` stays None and ``first_detected_at`` dates it."""
+    groups: dict[tuple, dict] = {}
+    for sig in signals:
+        url = str(sig.get("source_url") or "")
+        if sig.get("source_name") != LOOSE_SOURCE or sig.get("source_documents") or not url.startswith("https://"):
+            continue
+        d = doc_release(url)
+        if not d:
+            continue
+        g = groups.setdefault((d["number"], d["period"]), {"docs": {}, "titles": [], "detected": []})
+        g["docs"].setdefault(d["topic"], set()).add(url)
+        g["titles"].append(" ".join(str(sig.get("title") or "").split()))
+        day = str(sig.get("first_detected_at") or sig.get("detected_at") or sig.get("event_date") or "")
+        if day:
+            g["detected"].append(day)
     ok, rejected = {}, []
-    for sig in _signals(root):
+    for (number, period), g in sorted(groups.items(), key=lambda kv: kv[0][1]):
+        if sorted(g["docs"]) != sorted(TOPICS) or any(len(u) != 1 for u in g["docs"].values()):
+            rejected.append({"title": f"PDF sueltos {number}", "release_url": None, "reasons": ["listing_documents_not_one_per_topic"],
+                             "document_periods": [period], "listing_titles": sorted(set(g["titles"]))})
+            continue
+        ok[period] = {"period": period, "number": number, "title": f"PDF sueltos {number}", "release_url": None,
+                      "published_at": None, "first_detected_at": min(g["detected"]) if g["detected"] else None,
+                      "basis": "listing_documents", "listing_titles": sorted(set(g["titles"])),
+                      "documents": [{"url": next(iter(g["docs"][t])), "topic": t} for t in sorted(g["docs"])]}
+    return ok, rejected
+
+
+def boletin_releases(root: Path) -> tuple[list[dict], list[dict]]:
+    """Releases with exactly one document per topic whose file names carry the release's own period.
+
+    A release page wins over loose listing PDFs of the same period; loose PDFs fill a period no valid page covers
+    (e.g. N°3-2026, whose 'Septiembre 2026' page still linked the N°2 PDFs)."""
+    ok, rejected = {}, []
+    signals = _signals(root)
+    for sig in signals:
         title = str(sig.get("title") or "")
         if "boletin estadistico informativo ip" not in _fold(title):
             continue
@@ -141,6 +183,10 @@ def boletin_releases(root: Path) -> tuple[list[dict], list[dict]]:
         ok[period] = {"period": period, "number": number, "title": title, "release_url": sig.get("source_url"),
                       "published_at": str(sig.get("event_date") or "")[:10] or None,
                       "documents": [{"url": u, "topic": d["topic"]} for u, d in sorted(docs, key=lambda x: x[1]["topic"])]}
+    loose, loose_rejected = loose_boletin_releases(signals)
+    for period, rel in loose.items():
+        ok.setdefault(period, rel)
+    rejected += [r for r in loose_rejected if r["document_periods"][0] not in ok]
     return [ok[k] for k in sorted(ok)], rejected
 
 
@@ -172,7 +218,7 @@ METRIC_CONTEXT = {
     "private_pending": ("privad",),
     "public_pending": ("public",),
     "registered_mediators": ("mediador",),
-    "cumulative_requests_2019_to_june2026": ("solicitud", "mediacion"),
+    "cumulative_requests_2019_to_june2026": ("solicitud", "mediacion"),  # any '…_to_<month><year>': see metric_context
     "monthly_average_2026": ("reclamo",),
     "monthly_average_2025": ("reclamo",),
     "reported_growth_percent_rounded": ("reclamo", "aument", "variacion", "increment"),
@@ -180,6 +226,17 @@ METRIC_CONTEXT = {
     "records_without_birth_date": ("nacimiento",),
 }
 CONTEXT_CHARS = 80
+
+
+def metric_context(key: str) -> tuple[str, ...]:
+    """Context words of a verified metric; keys carrying a period are matched by pattern (N°3: '…_to_september2026')."""
+    if key in METRIC_CONTEXT:
+        return METRIC_CONTEXT[key]
+    if re.fullmatch(r"cumulative_requests_20\d{2}_to_[a-z]+20\d{2}", key):
+        return ("solicitud", "mediacion")
+    if re.fullmatch(r"monthly_average_20\d{2}", key):
+        return ("reclamo",)
+    return GENERIC_CONTEXT
 
 
 def present_in(text: str, n: int | float, context: tuple[str, ...] = GENERIC_CONTEXT, window: int = CONTEXT_CHARS) -> bool:
@@ -200,7 +257,12 @@ def present_in(text: str, n: int | float, context: tuple[str, ...] = GENERIC_CON
 # Version 1 = context window only. Version 2 (acreditación, Dirección 2026-10-29) adds per-figure anchored templates
 # declared in ``config/stats_fichas_v1.json`` (families.F6.figure_templates) and reviewed by a human; the context
 # window is unchanged. No generic sentence or table heuristic is used.
-CHECKER_VERSIONS = {"acreditacion": 2}
+# Version 3 (acreditación, Dirección 2026-11-01, Boletín N°3): a metric that has a figure template is placed ONLY by
+# that template (it must match exactly once on the cited pages; the context window no longer substitutes for it), and
+# a document without an independent reading yet records a template pre-check (``template_precheck``: status, page,
+# whether it is the hinted page, and matched figures per template, over the whole document) for the reviewer. The
+# pre-check never verifies a figure.
+CHECKER_VERSIONS = {"acreditacion": 3}
 DEFAULT_CHECKER_VERSION = 1
 REGISTRY = Path("config/stats_fichas_v1.json")
 PLACEHOLDER = re.compile(r"<<[^>]*>>")
@@ -292,13 +354,50 @@ def figure_evidence(pages: list[str], cited: list[int], n: int | float, context:
                     version: int = DEFAULT_CHECKER_VERSION, key: str | None = None, templates: dict | None = None,
                     metrics: dict | None = None) -> dict | None:
     """Which rule places the figure on a cited page: 'context_window' (all versions), then, from v2, the reviewed
-    anchored 'template' of the metric (``templates[key]``). Nothing else."""
+    anchored 'template' of the metric (``templates[key]``). From v3 a metric with a template is placed only by it.
+    Nothing else."""
+    if version >= 3 and key and (templates or {}).get(key):
+        return template_evidence(pages, cited, n, templates[key], metrics)[0]
     for p in cited:
         if present_in(pages[p - 1], n, context):
             return {"rule": "context_window", "page": p}
     if version < 2 or not key:
         return None
     return template_evidence(pages, cited, n, (templates or {}).get(key), metrics)[0]
+
+
+def template_precheck(pages: list[str], templates: dict | None) -> dict:
+    """Without an independent reading: does each approved template match exactly once in the document? Records the
+    status, the page (and whether it is the template's ``pages_hint`` page) and the matched figures for the reviewer who
+    writes the reading; never a verified figure (the reading's cited pages decide, see ``template_evidence``)."""
+    out = {}
+    for key, tpl in sorted((templates or {}).items()):
+        pat, why = template_pattern(tpl)
+        hint = [p for p in tpl.get("pages_hint") or [] if isinstance(p, int)]
+        if not pat:
+            out[key] = {"status": why, "pages_hint": hint}
+            continue
+        hits = [(i, m) for i, text in enumerate(pages, 1) for m in pat.finditer(normalize_page(text))]
+        rec = {"status": "ok" if len(hits) == 1 else ("no_match" if not hits else f"multiple_matches:{len(hits)}"),
+               "pages_hint": hint}
+        if hits:
+            rec["pages"] = sorted({i for i, _ in hits})
+        if len(hits) == 1:
+            page, m = hits[0]
+            groups = [int(g) for g in m.groups()]
+            rec.update(page=page, on_hint=page in hint, figures=groups)
+            if tpl.get("sum_of") and sum(groups[i - 1] for i in tpl["sum_of"]) != groups[int(tpl.get("figure_group") or 1) - 1]:
+                rec["status"] = "sum_mismatch"
+        out[key] = rec
+    return out
+
+
+def reading_sha256(metrics: dict | None, pages_1based: list | None) -> str | None:
+    """Hash of the independent reading of one document (figures and cited pages); None without a reading."""
+    if not metrics:
+        return None
+    return hashlib.sha256(json.dumps({"metrics": metrics, "pages": pages_1based or []}, sort_keys=True,
+                                     ensure_ascii=False).encode("utf-8")).hexdigest()
 
 
 def pdf_pages(data: bytes) -> list[str]:
@@ -322,7 +421,8 @@ def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int]
     apply ('not_configured', 'placeholder', 'unreviewed', 'no_match', 'multiple_matches:N', …)."""
     version = checker_version(topic)
     templates = templates if version >= 2 else None
-    base = {"checker_version": version, "templates_sha256": templates_sha256(templates)}
+    base = {"checker_version": version, "templates_sha256": templates_sha256(templates),
+            **({"reading_sha256": reading_sha256(metrics, pages_1based)} if version >= 3 else {})}
     try:
         pages = pdf_pages(data)
     except Exception as exc:  # unreadable PDF: captured hash, no verification
@@ -330,14 +430,15 @@ def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int]
     text = "\n".join(pages)
     out = {"status": "no_verified_metrics", "pages": len(pages),
            "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), **base}
+    if not metrics and version >= 3 and templates:
+        out["template_precheck"] = template_precheck(pages, templates)
     if metrics:
         cited = [p for p in (pages_1based or []) if isinstance(p, int) and 1 <= p <= len(pages)]
         evidence, status = {}, {}
         for k, v in metrics.items():
             if not isinstance(v, (int, float)):
                 continue
-            evidence[k] = figure_evidence(pages, cited, v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT), version, k,
-                                          templates, metrics)
+            evidence[k] = figure_evidence(pages, cited, v, metric_context(k), version, k, templates, metrics)
             if evidence[k] is None and version >= 2:
                 status[k] = template_evidence(pages, cited, v, (templates or {}).get(k), metrics)[1]
         present = {k: e is not None for k, e in evidence.items()}
@@ -533,14 +634,18 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
             return True
         return days_since(old) >= RETRY_AFTER_DAYS
 
-    def needs_recheck(old: dict | None, topic: str | None, has_metrics: bool, templates: dict) -> bool:
-        if not old or old.get("status") != "captured" or old.get("format") != "pdf" or not has_metrics:
+    def needs_recheck(old: dict | None, topic: str | None, info: dict, templates: dict) -> bool:
+        if not old or old.get("status") != "captured" or old.get("format") != "pdf" or not info.get("metrics"):
             return False
         parsed = old.get("parse") or {}
         version = checker_version(topic)
         recorded = int(parsed.get("checker_version") or DEFAULT_CHECKER_VERSION)
         current_tpl = templates_sha256(templates) if version >= 2 else None
-        if recorded >= version and parsed.get("templates_sha256") == current_tpl:
+        # An independent reading added (or changed) after the capture: the document is read again once (e.g. N°3,
+        # captured before its reading existed). Parses from before v3 carry no reading hash and are left alone.
+        reading_changed = parsed.get("status") == "no_verified_metrics" or (
+            "reading_sha256" in parsed and parsed["reading_sha256"] != reading_sha256(info.get("metrics"), info.get("pages_1based")))
+        if recorded >= version and parsed.get("templates_sha256") == current_tpl and not reading_changed:
             return False
         last = old.get("recheck") or {}
         if last.get("status") == "fetch_failed" and int(last.get("attempts") or 0) >= MAX_ATTEMPTS:
@@ -592,12 +697,14 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
             if needs(prev) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
                 docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf", parse=parse))
-            elif needs_recheck(prev, d.get("topic"), bool(info.get("metrics")), tpl) and budget["left"] > 0 and has_time():
+            elif needs_recheck(prev, d.get("topic"), info, tpl) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
                 docs.append(_recheck_doc({**prev, **d}, fetch=fetch, parse=parse, stored=stored))
             else:
                 docs.append(prev or {**d, "status": "not_fetched"})
-        known[rel["period"]] = {k: rel[k] for k in ("period", "number", "title", "release_url", "published_at")} | {"documents": docs}
+        known[rel["period"]] = ({k: rel[k] for k in ("period", "number", "title", "release_url", "published_at")}
+                                | {k: rel[k] for k in ("first_detected_at", "basis", "listing_titles") if k in rel}
+                                | {"documents": docs})
     store = {"schema_version": SCHEMA, "kind": "boletin_ip", "updated_at": _now(),
              "releases": [known[k] for k in sorted(known)], "rejected_releases": rejected}
     _write(path, store)

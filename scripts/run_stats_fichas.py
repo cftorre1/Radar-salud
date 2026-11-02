@@ -44,6 +44,8 @@ def main(argv: list[str] | None = None) -> int:
     for fam in families:
         result = BUILDERS[fam](args.root, today=today, registry=registry, llm=llm)
         written = stats_fichas.publish(result, args.root)
+        if result.get("release_holds"):
+            written["release_holds"] = stats_fichas.publish_release_holds(result, args.root)
         lect = ((result.get("ficha") or {}).get("lectura") or {})
         summary[fam] = {"status": result["status"], "period": result.get("period"),
                         "triggers": (result.get("decision") or {}).get("triggers"),
