@@ -7,6 +7,10 @@ again (no backfill: only the releases already in the history are read, at most `
 the Boletín checker version or the figure templates of its topic change: then it is re-checked and must
 hash to the recorded SHA-256.
 
+Text receipts (2-nov-2026): each captured or re-checked document also leaves its extracted text in
+``data/stats_fichas/text/<sha256[:16]>.json`` (once per sha256, capped), for the reviewer who writes the independent
+reading; a captured document of the newest release of each kind without one is downloaded once more for it.
+
 - GES (xlsx): ``data_insights.parse_ges_workbook`` — the corrected parser: the sheet of the reporting year is
   pinned and the rows must add up to the declared total, else HOLD.
 - Boletín IP (PDF): the text is never interpreted by a model. The figures come from the independent reading in
@@ -556,7 +560,199 @@ def default_fetch(url: str) -> bytes:
     return SisFetcher()(url)
 
 
-def _capture_doc(doc: dict, *, fetch: Callable[[str], bytes], parse: Callable[[bytes], dict], expected: str) -> dict:
+# Text receipts (Dirección 2-nov-2026, data/stats_fichas/POLICY.md "Text receipts"). The reviewer who writes the
+# independent reading of a new release needs the documents' text, and only the daily run can download SIS files. Each
+# captured (or re-checked) SIS document leaves data/stats_fichas/text/<sha256[:16]>.json: url, sha256, extracted_at,
+# extractor, and per page the raw extracted text and the template-normalized text (``normalize_page``). For xlsx: the
+# sheet names and the first TEXT_XLSX_ROWS rows of each sheet. Public SIS statistics only (``sis_url_ok``); written once
+# per sha256; capped at TEXT_MAX_UNITS pages (sheets) and TEXT_MAX_BYTES of JSON per document.
+TEXT_STORE = Path("data/stats_fichas/text")
+TEXT_SCHEMA = "stats_text_receipt_v1"
+TEXT_MAX_UNITS = 60
+TEXT_MAX_BYTES = 200 * 1024
+TEXT_XLSX_ROWS = 40
+TEXT_BASIS = ("public_government_statistics: Superintendencia de Salud (superdesalud.gob.cl) statistics bulletin, "
+              "data/stats_fichas/POLICY.md")
+# Receipt states after which the document is never downloaded again for its text (``needs_text_backfill``).
+TEXT_DONE = frozenset({"written", "exists", "extract_failed", "refused", "hash_mismatch", "prefix_collision",
+                       "unsupported_format"})
+# Backfill reaches only the newest captured release(s) of each kind: the one awaiting an independent reading.
+TEXT_BACKFILL_RELEASES = 1
+
+
+def text_receipt_path(sha256: str) -> Path:
+    return TEXT_STORE / f"{str(sha256)[:16]}.json"
+
+
+def _cell_text(v) -> str:
+    if v is None:
+        return ""
+    if isinstance(v, float) and v.is_integer():
+        return str(int(v))
+    return str(v)
+
+
+def _pdf_units(data: bytes) -> tuple[dict, int, list[str]]:
+    import pypdf
+    reader = pypdf.PdfReader(io.BytesIO(data))
+    total = len(reader.pages)
+    raws = [(reader.pages[i].extract_text() or "") for i in range(min(total, TEXT_MAX_UNITS))]
+    return {"name": "pypdf", "version": getattr(pypdf, "__version__", None)}, total, raws
+
+
+def _xlsx_units(data: bytes) -> tuple[dict, int, list[str], list[str]]:
+    import openpyxl
+    wb = openpyxl.load_workbook(io.BytesIO(data), read_only=True, data_only=True)
+    try:
+        names = list(wb.sheetnames)
+        raws = []
+        for name in names[:TEXT_MAX_UNITS]:
+            rows = []
+            for row in wb[name].iter_rows(min_row=1, max_row=TEXT_XLSX_ROWS, values_only=True):
+                cells = [_cell_text(v) for v in row]
+                while cells and not cells[-1]:
+                    cells.pop()
+                rows.append("\t".join(cells))
+            while rows and not rows[-1]:
+                rows.pop()
+            raws.append("\n".join(rows))
+    finally:
+        wb.close()
+    return {"name": "openpyxl", "version": getattr(openpyxl, "__version__", None)}, len(names), raws, names
+
+
+def _dump(payload: dict) -> bytes:
+    return (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+
+
+def build_text_receipt(url: str, data: bytes, fmt: str | None = None, *, now: str | None = None) -> dict:
+    """The receipt of one document's bytes (no I/O). Raises on unreadable bytes; the caller records the failure."""
+    fmt = fmt or file_format(data)
+    if fmt == "pdf":
+        extractor, total, raws = _pdf_units(data)
+        names, unit = None, "pages"
+    elif fmt == "xlsx":
+        extractor, total, raws, names = _xlsx_units(data)
+        unit = "sheets"
+    else:
+        raise ValueError(f"unsupported_format:{fmt}")
+    receipt = {"schema_version": TEXT_SCHEMA, "url": url, "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data),
+               "format": fmt, "extracted_at": now or _now(), "extractor": extractor,
+               "normalization": "stats_capture.normalize_page: casefold, accents folded, thousands dots removed, "
+                                "whitespace collapsed",
+               "basis": TEXT_BASIS,
+               "limits": {"max_units": TEXT_MAX_UNITS, "max_bytes": TEXT_MAX_BYTES,
+                          **({"rows_per_sheet": TEXT_XLSX_ROWS} if fmt == "xlsx" else {})},
+               f"{unit}_total": total, **({"sheet_names": names} if names is not None else {}),
+               "truncated": total > TEXT_MAX_UNITS, "truncated_reasons": (["max_units"] if total > TEXT_MAX_UNITS else []),
+               f"{unit}_kept": 0, unit: []}
+    key = "page" if unit == "pages" else "sheet"
+    for i, raw in enumerate(raws, 1):
+        entry = {key: i, **({"name": names[i - 1]} if names is not None else {}),
+                 "text_normalized": normalize_page(raw), "text_raw": raw}
+        receipt[unit].append(entry)
+        receipt[f"{unit}_kept"] = len(receipt[unit])
+        if len(_dump(receipt)) <= TEXT_MAX_BYTES:
+            continue
+        # This unit overflows the byte cap: keep the longest prefix of its texts that fits, then stop.
+        receipt[unit].pop()
+        receipt[f"{unit}_kept"] = len(receipt[unit]) + 1  # the truncated prefix below (dropped again if it is empty)
+        receipt["truncated"] = True
+        receipt["truncated_reasons"] = sorted(set(receipt["truncated_reasons"]) | {"max_bytes"})
+        lo, hi = 0, max(len(raw), len(entry["text_normalized"]))
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            receipt[unit].append({**entry, "text_normalized": entry["text_normalized"][:mid], "text_raw": raw[:mid],
+                                  "text_truncated": True})
+            fits = len(_dump(receipt)) <= TEXT_MAX_BYTES
+            receipt[unit].pop()
+            lo, hi = (mid, hi) if fits else (lo, mid - 1)
+        if lo > 0:
+            receipt[unit].append({**entry, "text_normalized": entry["text_normalized"][:lo], "text_raw": raw[:lo],
+                                  "text_truncated": True})
+        break
+    receipt[f"{unit}_kept"] = len(receipt[unit])
+    if len(_dump(receipt)) > TEXT_MAX_BYTES:  # only when even the header does not fit (never for SIS documents)
+        raise ValueError("receipt_header_over_max_bytes")
+    return receipt
+
+
+def write_text_receipt(root: Path, url: str, data: bytes, fmt: str | None = None, *, now: str | None = None) -> dict:
+    """Write the text receipt of ``data`` once per sha256; returns the state recorded on the capture record.
+
+    Refused (nothing written) for any URL outside the SIS allowlist: only public SIS statistics bulletins are kept as
+    text; never another host, a paywalled or a non-government source."""
+    if not sis_url_ok(url):
+        return {"status": "refused", "reason": "host_not_allowlisted"}
+    sha = hashlib.sha256(data).hexdigest()
+    rel = text_receipt_path(sha)
+    path = Path(root) / rel
+    old = _load(path, None)
+    if isinstance(old, dict):
+        if old.get("sha256") == sha:
+            return {"status": "exists", "path": rel.as_posix()}
+        return {"status": "prefix_collision", "path": rel.as_posix(), "other_sha256": old.get("sha256")}
+    fmt = fmt or file_format(data)
+    if fmt not in ("pdf", "xlsx"):
+        return {"status": "unsupported_format", "format": fmt}
+    try:
+        receipt = build_text_receipt(url, data, fmt, now=now)
+    except Exception as exc:  # unreadable bytes: recorded, never retried for the same sha
+        return {"status": "extract_failed", "error": f"{type(exc).__name__}:{exc}"[:160]}
+    payload = _dump(receipt)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(payload)
+    return {"status": "written", "path": rel.as_posix(), "bytes": len(payload), "truncated": receipt["truncated"]}
+
+
+def needs_text_backfill(root: Path, doc: dict | None) -> bool:
+    """A document captured before text receipts existed (or whose download for it failed) gets its receipt once."""
+    if not doc or doc.get("status") != "captured" or doc.get("format") not in ("pdf", "xlsx"):
+        return False
+    if not doc.get("sha256") or not sis_url_ok(doc.get("url")):
+        return False
+    if (Path(root) / text_receipt_path(doc["sha256"])).exists():
+        return False
+    last = doc.get("text_receipt") or {}
+    if last.get("status") in TEXT_DONE:
+        return False
+    if last.get("status") == "fetch_failed" and int(last.get("attempts") or 0) >= MAX_ATTEMPTS:
+        try:
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(str(last.get("at")))).total_seconds() / 86400
+        except ValueError:
+            return True
+        return age >= RETRY_AFTER_DAYS
+    return True
+
+
+def _backfill_text(root: Path, doc: dict, *, fetch: Callable[[str], bytes],
+                   stored: Callable[[dict], bytes | None] | None = None) -> dict:
+    """Obtain the bytes of a captured document again (same fetcher and limits), check they hash to the recorded
+    SHA-256 and write its text receipt. The capture record itself (status, parse) is left unchanged."""
+    attempts = int((doc.get("text_receipt") or {}).get("attempts") or 0) + 1
+    try:
+        data = (stored(doc) if stored else None) or fetch(doc["url"])
+    except Exception as exc:
+        return {**doc, "text_receipt": {"status": "fetch_failed", "error": f"{type(exc).__name__}:{exc}"[:160],
+                                        "attempts": attempts, "at": _now(), "backfill": True}}
+    sha = hashlib.sha256(data).hexdigest()
+    if sha != doc.get("sha256"):
+        return {**doc, "text_receipt": {"status": "hash_mismatch", "recorded_sha256": doc.get("sha256"),
+                                        "fetched_sha256": sha, "at": _now(), "backfill": True}}
+    return {**doc, "text_receipt": {**write_text_receipt(root, doc["url"], data, doc.get("format")), "backfill": True}}
+
+
+def _receipt(text: Callable[[str, bytes, str], dict] | None, url: str, data: bytes, fmt: str) -> dict:
+    if not text:
+        return {}
+    try:
+        return {"text_receipt": text(url, data, fmt)}
+    except Exception as exc:  # a receipt failure never fails the capture
+        return {"text_receipt": {"status": "write_failed", "error": f"{type(exc).__name__}:{exc}"[:160]}}
+
+
+def _capture_doc(doc: dict, *, fetch: Callable[[str], bytes], parse: Callable[[bytes], dict], expected: str,
+                 text: Callable[[str, bytes, str], dict] | None = None) -> dict:
     try:
         data = fetch(doc["url"])
     except Exception as exc:
@@ -567,6 +763,7 @@ def _capture_doc(doc: dict, *, fetch: Callable[[str], bytes], parse: Callable[[b
            "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data), "format": fmt, "fetched_at": _now()}
     if fmt != expected:
         return {**rec, "status": "unexpected_format", "parse": None}
+    rec.update(_receipt(text, doc["url"], data, fmt))
     try:
         parsed = parse(data)
     except Exception as exc:  # one bad file never aborts the capture; recorded and retried after RETRY_AFTER_DAYS
@@ -576,7 +773,8 @@ def _capture_doc(doc: dict, *, fetch: Callable[[str], bytes], parse: Callable[[b
 
 
 def _recheck_doc(prev: dict, *, fetch: Callable[[str], bytes], parse: Callable[[bytes], dict],
-                 stored: Callable[[dict], bytes | None] | None = None) -> dict:
+                 stored: Callable[[dict], bytes | None] | None = None,
+                 text: Callable[[str, bytes, str], dict] | None = None) -> dict:
     """Re-check a document already captured with an older checker version. The bytes come from ``stored`` when it
     has them (this module never stores binaries, so by default they are downloaded again through ``fetch``, i.e. the
     same allowlist / robots / size / time limits). They must hash to the recorded SHA-256: on mismatch the document
@@ -598,6 +796,7 @@ def _recheck_doc(prev: dict, *, fetch: Callable[[str], bytes], parse: Callable[[
         return {**prev, "recheck": {"status": "parse_failed", "error": f"{type(exc).__name__}:{exc}"[:160],
                                     "attempts": attempts, "at": _now()}}
     rest = {k: v for k, v in prev.items() if k not in ("recheck", "previous_parse")}
+    rest.update(_receipt(text, prev["url"], data, prev.get("format") or file_format(data)))
     return {**rest, "status": "captured", "parse": parsed, "previous_parse": prev.get("parse"), "rechecked_at": _now(),
             "rechecked_from_checker_version": int((prev.get("parse") or {}).get("checker_version") or DEFAULT_CHECKER_VERSION)}
 
@@ -612,11 +811,16 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
 
     A Boletín document already captured whose parse carries an older ``checker_version`` than the code's, or other
     ``templates_sha256`` than its topic's current figure templates (and that has verified figures to check), is
-    re-checked once (``_recheck_doc``); it uses the same download budget and limits."""
+    re-checked once (``_recheck_doc``); it uses the same download budget and limits.
+
+    Every capture and re-check also writes the document's text receipt (``write_text_receipt``, once per sha256). A
+    captured document of the newest ``TEXT_BACKFILL_RELEASES`` release(s) of each kind that has no receipt yet is
+    downloaded once more for it (``_backfill_text``), after captures and re-checks, within the same budget and limits."""
     root = Path(root)
     deadline = clock() + time_budget_s
     fetch = fetch or SisFetcher(deadline=deadline, clock=clock)
     budget = {"left": max_new}
+    text = lambda url, data, fmt: write_text_receipt(root, url, data, fmt)  # noqa: E731
     summary: dict = {"time_budget_s": time_budget_s, "time_budget_exhausted": False}
 
     def has_time() -> bool:
@@ -676,16 +880,24 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
             budget["left"] -= 1
             title = rel["title"]
             doc = _capture_doc({**(old_doc or {}), "url": rel["documents"][0]["url"]}, fetch=fetch, expected="xlsx",
-                               parse=lambda b, t=title: data_insights.parse_ges_workbook(b, t))
+                               parse=lambda b, t=title: data_insights.parse_ges_workbook(b, t), text=text)
             known[rel["period"]] = {k: rel[k] for k in ("period", "title", "release_url", "published_at")} | {"document": doc}
         elif old:
             known[rel["period"]] = {**old, **{k: rel[k] for k in ("title", "release_url", "published_at")}}
+    text_backfills = 0
+    for period in sorted(known, reverse=True)[:TEXT_BACKFILL_RELEASES]:
+        doc = known[period].get("document")
+        if needs_text_backfill(root, doc) and budget["left"] > 0 and has_time():
+            budget["left"] -= 1
+            text_backfills += 1
+            known[period] = {**known[period], "document": _backfill_text(root, doc, fetch=fetch, stored=stored)}
     store = {"schema_version": SCHEMA, "kind": "ges", "updated_at": _now(), "releases": [known[k] for k in sorted(known)]}
     _write(path, store)
     used = max_new - budget["left"]
     budget["left"] = max_new
     summary["ges"] = {"releases": len(store["releases"]), "downloads": used,
-                      "captured": sum(1 for r in store["releases"] if (r.get("document") or {}).get("status") == "captured")}
+                      "captured": sum(1 for r in store["releases"] if (r.get("document") or {}).get("status") == "captured"),
+                      "text_backfills": text_backfills}
 
     # Boletín IP
     path = root / STORE / "boletin_ip.json"
@@ -705,19 +917,30 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
                      parse_boletin_pdf(b, m, pg, t, tp))
             if needs(prev) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
-                docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf", parse=parse))
+                docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf", parse=parse, text=text))
             elif needs_recheck(prev, d.get("topic"), info, tpl) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
-                docs.append(_recheck_doc({**prev, **d}, fetch=fetch, parse=parse, stored=stored))
+                docs.append(_recheck_doc({**prev, **d}, fetch=fetch, parse=parse, stored=stored, text=text))
             else:
                 docs.append(prev or {**d, "status": "not_fetched"})
         known[rel["period"]] = ({k: rel[k] for k in ("period", "number", "title", "release_url", "published_at")}
                                 | {k: rel[k] for k in ("first_detected_at", "basis", "listing_titles") if k in rel}
                                 | {"documents": docs})
+    text_backfills = 0
+    for period in sorted(known, reverse=True)[:TEXT_BACKFILL_RELEASES]:
+        docs = []
+        for doc in known[period].get("documents") or []:
+            if needs_text_backfill(root, doc) and budget["left"] > 0 and has_time():
+                budget["left"] -= 1
+                text_backfills += 1
+                doc = _backfill_text(root, doc, fetch=fetch, stored=stored)
+            docs.append(doc)
+        known[period] = {**known[period], "documents": docs}
     store = {"schema_version": SCHEMA, "kind": "boletin_ip", "updated_at": _now(),
              "releases": [known[k] for k in sorted(known)], "rejected_releases": rejected}
     _write(path, store)
-    summary["boletin_ip"] = {"releases": len(store["releases"]), "rejected": len(rejected), "downloads": max_new - budget["left"]}
+    summary["boletin_ip"] = {"releases": len(store["releases"]), "rejected": len(rejected), "downloads": max_new - budget["left"],
+                             "text_backfills": text_backfills}
     return summary
 
 
