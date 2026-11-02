@@ -427,8 +427,11 @@ def test_runner_wires_f4_f6_capture_and_daily_workflow_needs_no_change(root, mon
     assert runner.main(["--root", str(root), "--as-of", "2026-10-29", "--family", "F4", "--no-capture"]) == 0
     assert len(seen) == 1
     reg_ = reg()
-    assert {f for f, c in reg_["families"].items() if c["status"] == "active"} == {"F1", "F4", "F6"}
-    assert set(runner.BUILDERS) == {"F1", "F4", "F6"}
+    active = {f for f, c in reg_["families"].items() if c["status"] == "active"}
+    # Every active family has a builder and runs in the daily default; F4/F6 documents go through stats_capture and
+    # F2 (active since 2-nov-2026) through stats_capture_fefi (tests/test_stats_ficha_f2.py covers that run).
+    assert {"F4", "F6"} <= active <= set(runner.BUILDERS) and runner.CAPTURED == {"F4", "F6"}
+    assert "F2" in active and runner.FEFI_CAPTURED == {"F2"} and reg_["families"]["F2"]["lectura_enabled"] is False
     # The daily workflow (main) runs the script without arguments and commits data/stats_fichas.
     wf = (REPO / ".github/workflows/daily-radar.yml").read_text(encoding="utf-8")
     assert "run: python scripts/run_stats_fichas.py\n" in wf and "git add data/stats_fichas" in wf

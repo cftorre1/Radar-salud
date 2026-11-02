@@ -1,0 +1,2596 @@
+{
+  "schema_version": "stats_capture_v1",
+  "kind": "fefi",
+  "updated_at": "2026-11-02T13:34:11.941657+00:00",
+  "template_sha256": "e55654be262fc8611b69e0c99c1cf47079a4850695082ae9dd57be04478e4f6b",
+  "releases": [
+    {
+      "period": "2025-03",
+      "title": "Estadísticas Financieras del Sistema Isapre a marzo 2025",
+      "release_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2025/",
+      "published_at": "2025-06-16",
+      "document": {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2025/06/finan_ifrs_mar_2025_web.xls",
+        "sha256": "da1e4c62d96af40abc54e371af167543127c4e7b497937cecd1ac9f011df04e5",
+        "bytes": 251392,
+        "format": "xls",
+        "fetched_at": "2026-11-02T13:34:11.911654+00:00",
+        "status": "captured",
+        "parse": {
+          "checker_version": 1,
+          "template_sha256": "e55654be262fc8611b69e0c99c1cf47079a4850695082ae9dd57be04478e4f6b",
+          "period": "2025-03",
+          "format": "xls",
+          "sheet_names": [
+            "Indice",
+            "Metodología de Presentación",
+            "Notas Explicativas",
+            "Result. Financieros comparados",
+            "E. Sit. Fin. comparado por Isap",
+            "E. Resultados comparado por Isa",
+            "Indic. Fin. comparados por Isap",
+            "E. Sit. Fin. por rubros",
+            "E. Resultados por rubros",
+            "E. Flujo Efectivo por rubros",
+            "E. Sit. Fin. I. Abiertas",
+            "E. Sit. Fin. I. Cerradas",
+            "E. Resultados I. Abiertas",
+            "E. Resultados I. Cerradas",
+            "Ctas. de Resultados I. Abierta ",
+            "Ctas. de Resultados I. Cerradas",
+            "E. Flujo Efectivo I. Abiertas",
+            "E. Flujo Efectivo I. Cerradas",
+            "Estándares Legales comparados",
+            "Estándares Legales por Isapre"
+          ],
+          "status": "verified",
+          "failures": [],
+          "tables": {
+            "ctas_abiertas": {
+              "sheet": "Ctas. de Resultados I. Abierta ",
+              "header_row": 5,
+              "unit": "MM$",
+              "scale": 0.001,
+              "layout": "accounts_in_rows",
+              "columns": {
+                "cotizacion_legal.t": {
+                  "row": 7,
+                  "label": "ingresos de actividades ordinarias cotizacion legal (7%)",
+                  "item": "cotizacion_legal",
+                  "period": "t",
+                  "sign": 1
+                },
+                "cotizacion_adicional.t": {
+                  "row": 8,
+                  "label": "ingresos de actividades ordinarias cotizacion adicional voluntaria",
+                  "item": "cotizacion_adicional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "aporte_adicional.t": {
+                  "row": 9,
+                  "label": "ingresos de actividades ordinarias aporte adicional",
+                  "item": "aporte_adicional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "fondo_compensacion.t": {
+                  "row": 10,
+                  "label": "ingresos de actividades ordinarias ingresos por fondo de compensacion",
+                  "item": "fondo_compensacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "ingresos_otros.t": {
+                  "row": 11,
+                  "label": "ingresos de actividades ordinarias otros",
+                  "item": "ingresos_otros",
+                  "period": "t",
+                  "sign": 1
+                },
+                "ingresos_operacionales.t": {
+                  "row": 12,
+                  "label": "ingresos de actividades ordinarias total ingresos de actividades ordinarias",
+                  "item": "ingresos_operacionales",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_prestaciones.t": {
+                  "row": 13,
+                  "label": "costo de ventas costos por prestaciones de salud",
+                  "item": "costo_prestaciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_sil.t": {
+                  "row": 14,
+                  "label": "costo de ventas subsidios por incapacidad laboral",
+                  "item": "costo_sil",
+                  "period": "t",
+                  "sign": 1
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "row": 15,
+                  "label": "costo de ventas prestaciones ocurridas y no liquidadas",
+                  "item": "prestaciones_no_liquidadas",
+                  "period": "t",
+                  "sign": 1
+                },
+                "prestaciones_litigio.t": {
+                  "row": 16,
+                  "label": "costo de ventas prestaciones en litigio",
+                  "item": "prestaciones_litigio",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_operacional.t": {
+                  "row": 19,
+                  "label": "costo de ventas total costo de ventas",
+                  "item": "costo_operacional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "egresos_fondo_compensacion.t": {
+                  "row": 17,
+                  "label": "costo de ventas egresos por fondo de compensacion",
+                  "item": "egresos_fondo_compensacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "otros_costos_operacion.t": {
+                  "row": 18,
+                  "label": "costo de ventas otros costos de operacion",
+                  "item": "otros_costos_operacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_publicidad.t": {
+                  "row": 20,
+                  "label": "gastos de administracion y otros gastos por funcion publicidad",
+                  "item": "gav_publicidad",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "row": 21,
+                  "label": "gastos de administracion y otros gastos por funcion deterioro por deudores de cotizaciones",
+                  "item": "gav_deterioro_cotizaciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_deterioro_prestamos.t": {
+                  "row": 22,
+                  "label": "gastos de administracion y otros gastos por funcion deterioro por deudores de prestamos de salud",
+                  "item": "gav_deterioro_prestamos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_remuneraciones.t": {
+                  "row": 23,
+                  "label": "gastos de administracion y otros gastos por funcion remuneraciones del personal",
+                  "item": "gav_remuneraciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "row": 24,
+                  "label": "gastos de administracion y otros gastos por funcion remuneraciones y comisiones del personal de ventas",
+                  "item": "gav_remuneraciones_ventas",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_otros.t": {
+                  "row": 25,
+                  "label": "gastos de administracion y otros gastos por funcion otros",
+                  "item": "gav_otros",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav.t": {
+                  "row": 26,
+                  "label": "gastos de administracion y otros gastos por funcion total gastos de administracion y otros gastos por funcion",
+                  "item": "gav",
+                  "period": "t",
+                  "sign": 1
+                }
+              },
+              "entity_columns": {
+                "67": "C",
+                "78": "D",
+                "80": "E",
+                "81": "F",
+                "99": "G",
+                "107": "H",
+                "108": "I",
+                "total": "J"
+              },
+              "values": {
+                "cotizacion_legal.t": {
+                  "67": 176662.632,
+                  "78": 133645.621,
+                  "80": 36162.387,
+                  "81": 82307.196,
+                  "99": 151336.48500000002,
+                  "107": 128775.069,
+                  "108": 11781.79,
+                  "total": 720671.18
+                },
+                "cotizacion_adicional.t": {
+                  "67": 72643.621,
+                  "78": 37067.05,
+                  "80": 29542.505,
+                  "81": 23173.957000000002,
+                  "99": 71806.713,
+                  "107": 60594.925,
+                  "108": 8939.019,
+                  "total": 303767.79
+                },
+                "aporte_adicional.t": {
+                  "67": 30.319,
+                  "78": 121.008,
+                  "80": 0.0,
+                  "81": 0.0,
+                  "99": 646.57,
+                  "107": 563.078,
+                  "108": 0.0,
+                  "total": 1360.9750000000001
+                },
+                "fondo_compensacion.t": {
+                  "67": 0.0,
+                  "78": 0.0,
+                  "80": 610.357,
+                  "81": 0.0,
+                  "99": 394.532,
+                  "107": 296.309,
+                  "108": 0.0,
+                  "total": 1301.198
+                },
+                "ingresos_otros.t": {
+                  "67": 0.0,
+                  "78": 0.0,
+                  "80": 0.0,
+                  "81": 0.0,
+                  "99": 0.0,
+                  "107": 0.0,
+                  "108": 0.0,
+                  "total": 0.0
+                },
+                "ingresos_operacionales.t": {
+                  "67": 249336.57200000001,
+                  "78": 170833.679,
+                  "80": 66315.249,
+                  "81": 105481.153,
+                  "99": 224184.30000000002,
+                  "107": 190229.381,
+                  "108": 20720.809,
+                  "total": 1027101.143
+                },
+                "costo_prestaciones.t": {
+                  "67": 172511.268,
+                  "78": 129499.179,
+                  "80": 47508.089,
+                  "81": 56009.324,
+                  "99": 171300.405,
+                  "107": 128355.29400000001,
+                  "108": 15998.487000000001,
+                  "total": 721182.046
+                },
+                "costo_sil.t": {
+                  "67": 45567.552,
+                  "78": 29619.681,
+                  "80": 6689.811,
+                  "81": 24353.350000000002,
+                  "99": 40436.229,
+                  "107": 40112.368,
+                  "108": 1753.412,
+                  "total": 188532.403
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "67": 1772.41,
+                  "78": 1672.421,
+                  "80": -601.573,
+                  "81": 764.442,
+                  "99": 3411.4230000000002,
+                  "107": 3125.001,
+                  "108": 653.505,
+                  "total": 10797.629
+                },
+                "prestaciones_litigio.t": {
+                  "67": -789.187,
+                  "78": -92.14,
+                  "80": -25.536,
+                  "81": -329.19100000000003,
+                  "99": -93.265,
+                  "107": 261.106,
+                  "108": 0.0,
+                  "total": -1068.213
+                },
+                "costo_operacional.t": {
+                  "67": 219062.043,
+                  "78": 161724.922,
+                  "80": 57783.907,
+                  "81": 86106.18400000001,
+                  "99": 224273.695,
+                  "107": 171853.769,
+                  "108": 18548.056,
+                  "total": 939352.576
+                },
+                "egresos_fondo_compensacion.t": {
+                  "67": 0.0,
+                  "78": 67.239,
+                  "80": 0.0,
+                  "81": 284.928,
+                  "99": 0.0,
+                  "107": 0.0,
+                  "108": 142.65200000000002,
+                  "total": 494.819
+                },
+                "otros_costos_operacion.t": {
+                  "67": 0.0,
+                  "78": 958.542,
+                  "80": 4213.116,
+                  "81": 5023.331,
+                  "99": 9218.903,
+                  "107": 0.0,
+                  "108": 0.0,
+                  "total": 19413.892
+                },
+                "gav_publicidad.t": {
+                  "67": 85.361,
+                  "78": 32.001,
+                  "80": 70.447,
+                  "81": 77.309,
+                  "99": 168.965,
+                  "107": 146.304,
+                  "108": 243.466,
+                  "total": 823.8530000000001
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "67": -43.323,
+                  "78": 63.391,
+                  "80": 180.387,
+                  "81": 0.0,
+                  "99": 655.3100000000001,
+                  "107": 428.559,
+                  "108": 0.0,
+                  "total": 1284.324
+                },
+                "gav_deterioro_prestamos.t": {
+                  "67": 607.595,
+                  "78": 6.94,
+                  "80": 81.139,
+                  "81": 0.0,
+                  "99": 272.669,
+                  "107": 1.12,
+                  "108": 0.0,
+                  "total": 969.463
+                },
+                "gav_remuneraciones.t": {
+                  "67": 6480.365,
+                  "78": 4305.484,
+                  "80": 2233.06,
+                  "81": 2364.725,
+                  "99": 4902.523,
+                  "107": 7255.834,
+                  "108": 1532.807,
+                  "total": 29074.798
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "67": 4183.112,
+                  "78": 3240.236,
+                  "80": 1312.4180000000001,
+                  "81": 9262.303,
+                  "99": 5292.6320000000005,
+                  "107": 4761.329,
+                  "108": 1263.277,
+                  "total": 29315.307
+                },
+                "gav_otros.t": {
+                  "67": 6128.683,
+                  "78": 6569.93,
+                  "80": 1495.864,
+                  "81": 3292.659,
+                  "99": 4868.679,
+                  "107": 4800.341,
+                  "108": 1210.163,
+                  "total": 28366.319
+                },
+                "gav.t": {
+                  "67": 17441.793,
+                  "78": 14217.982,
+                  "80": 5373.3150000000005,
+                  "81": 14996.996000000001,
+                  "99": 16160.778,
+                  "107": 17393.487,
+                  "108": 4249.713,
+                  "total": 89834.064
+                }
+              },
+              "cells": {
+                "cotizacion_legal.t": {
+                  "67": "C7",
+                  "78": "D7",
+                  "80": "E7",
+                  "81": "F7",
+                  "99": "G7",
+                  "107": "H7",
+                  "108": "I7",
+                  "total": "J7"
+                },
+                "cotizacion_adicional.t": {
+                  "67": "C8",
+                  "78": "D8",
+                  "80": "E8",
+                  "81": "F8",
+                  "99": "G8",
+                  "107": "H8",
+                  "108": "I8",
+                  "total": "J8"
+                },
+                "aporte_adicional.t": {
+                  "67": "C9",
+                  "78": "D9",
+                  "80": "E9",
+                  "81": "F9",
+                  "99": "G9",
+                  "107": "H9",
+                  "108": "I9",
+                  "total": "J9"
+                },
+                "fondo_compensacion.t": {
+                  "67": "C10",
+                  "78": "D10",
+                  "80": "E10",
+                  "81": "F10",
+                  "99": "G10",
+                  "107": "H10",
+                  "108": "I10",
+                  "total": "J10"
+                },
+                "ingresos_otros.t": {
+                  "67": "C11",
+                  "78": "D11",
+                  "80": "E11",
+                  "81": "F11",
+                  "99": "G11",
+                  "107": "H11",
+                  "108": "I11",
+                  "total": "J11"
+                },
+                "ingresos_operacionales.t": {
+                  "67": "C12",
+                  "78": "D12",
+                  "80": "E12",
+                  "81": "F12",
+                  "99": "G12",
+                  "107": "H12",
+                  "108": "I12",
+                  "total": "J12"
+                },
+                "costo_prestaciones.t": {
+                  "67": "C13",
+                  "78": "D13",
+                  "80": "E13",
+                  "81": "F13",
+                  "99": "G13",
+                  "107": "H13",
+                  "108": "I13",
+                  "total": "J13"
+                },
+                "costo_sil.t": {
+                  "67": "C14",
+                  "78": "D14",
+                  "80": "E14",
+                  "81": "F14",
+                  "99": "G14",
+                  "107": "H14",
+                  "108": "I14",
+                  "total": "J14"
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "67": "C15",
+                  "78": "D15",
+                  "80": "E15",
+                  "81": "F15",
+                  "99": "G15",
+                  "107": "H15",
+                  "108": "I15",
+                  "total": "J15"
+                },
+                "prestaciones_litigio.t": {
+                  "67": "C16",
+                  "78": "D16",
+                  "80": "E16",
+                  "81": "F16",
+                  "99": "G16",
+                  "107": "H16",
+                  "108": "I16",
+                  "total": "J16"
+                },
+                "costo_operacional.t": {
+                  "67": "C19",
+                  "78": "D19",
+                  "80": "E19",
+                  "81": "F19",
+                  "99": "G19",
+                  "107": "H19",
+                  "108": "I19",
+                  "total": "J19"
+                },
+                "egresos_fondo_compensacion.t": {
+                  "67": "C17",
+                  "78": "D17",
+                  "80": "E17",
+                  "81": "F17",
+                  "99": "G17",
+                  "107": "H17",
+                  "108": "I17",
+                  "total": "J17"
+                },
+                "otros_costos_operacion.t": {
+                  "67": "C18",
+                  "78": "D18",
+                  "80": "E18",
+                  "81": "F18",
+                  "99": "G18",
+                  "107": "H18",
+                  "108": "I18",
+                  "total": "J18"
+                },
+                "gav_publicidad.t": {
+                  "67": "C20",
+                  "78": "D20",
+                  "80": "E20",
+                  "81": "F20",
+                  "99": "G20",
+                  "107": "H20",
+                  "108": "I20",
+                  "total": "J20"
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "67": "C21",
+                  "78": "D21",
+                  "80": "E21",
+                  "81": "F21",
+                  "99": "G21",
+                  "107": "H21",
+                  "108": "I21",
+                  "total": "J21"
+                },
+                "gav_deterioro_prestamos.t": {
+                  "67": "C22",
+                  "78": "D22",
+                  "80": "E22",
+                  "81": "F22",
+                  "99": "G22",
+                  "107": "H22",
+                  "108": "I22",
+                  "total": "J22"
+                },
+                "gav_remuneraciones.t": {
+                  "67": "C23",
+                  "78": "D23",
+                  "80": "E23",
+                  "81": "F23",
+                  "99": "G23",
+                  "107": "H23",
+                  "108": "I23",
+                  "total": "J23"
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "67": "C24",
+                  "78": "D24",
+                  "80": "E24",
+                  "81": "F24",
+                  "99": "G24",
+                  "107": "H24",
+                  "108": "I24",
+                  "total": "J24"
+                },
+                "gav_otros.t": {
+                  "67": "C25",
+                  "78": "D25",
+                  "80": "E25",
+                  "81": "F25",
+                  "99": "G25",
+                  "107": "H25",
+                  "108": "I25",
+                  "total": "J25"
+                },
+                "gav.t": {
+                  "67": "C26",
+                  "78": "D26",
+                  "80": "E26",
+                  "81": "F26",
+                  "99": "G26",
+                  "107": "H26",
+                  "108": "I26",
+                  "total": "J26"
+                }
+              },
+              "sum_check": {
+                "cotizacion_legal.t": "Σ Isapres 7.20671e+08 = total 7.20671e+08 (tolerancia 1)",
+                "cotizacion_adicional.t": "Σ Isapres 3.03768e+08 = total 3.03768e+08 (tolerancia 1)",
+                "aporte_adicional.t": "Σ Isapres 1.36098e+06 = total 1.36098e+06 (tolerancia 1)",
+                "fondo_compensacion.t": "Σ Isapres 1.3012e+06 = total 1.3012e+06 (tolerancia 1)",
+                "ingresos_otros.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "ingresos_operacionales.t": "Σ Isapres 1.0271e+09 = total 1.0271e+09 (tolerancia 1)",
+                "costo_prestaciones.t": "Σ Isapres 7.21182e+08 = total 7.21182e+08 (tolerancia 1)",
+                "costo_sil.t": "Σ Isapres 1.88532e+08 = total 1.88532e+08 (tolerancia 1)",
+                "prestaciones_no_liquidadas.t": "Σ Isapres 1.07976e+07 = total 1.07976e+07 (tolerancia 1)",
+                "prestaciones_litigio.t": "Σ Isapres -1.06821e+06 = total -1.06821e+06 (tolerancia 1)",
+                "costo_operacional.t": "Σ Isapres 9.39353e+08 = total 9.39353e+08 (tolerancia 1)",
+                "egresos_fondo_compensacion.t": "Σ Isapres 494819 = total 494819 (tolerancia 1)",
+                "otros_costos_operacion.t": "Σ Isapres 1.94139e+07 = total 1.94139e+07 (tolerancia 1)",
+                "gav_publicidad.t": "Σ Isapres 823853 = total 823853 (tolerancia 1)",
+                "gav_deterioro_cotizaciones.t": "Σ Isapres 1.28432e+06 = total 1.28432e+06 (tolerancia 1)",
+                "gav_deterioro_prestamos.t": "Σ Isapres 969463 = total 969463 (tolerancia 1)",
+                "gav_remuneraciones.t": "Σ Isapres 2.90748e+07 = total 2.90748e+07 (tolerancia 1)",
+                "gav_remuneraciones_ventas.t": "Σ Isapres 2.93153e+07 = total 2.93153e+07 (tolerancia 1)",
+                "gav_otros.t": "Σ Isapres 2.83663e+07 = total 2.83663e+07 (tolerancia 1)",
+                "gav.t": "Σ Isapres 8.98341e+07 = total 8.98341e+07 (tolerancia 1)"
+              }
+            },
+            "ctas_cerradas": {
+              "sheet": "Ctas. de Resultados I. Cerradas",
+              "header_row": 6,
+              "unit": "MM$",
+              "scale": 0.001,
+              "layout": "accounts_in_rows",
+              "columns": {
+                "cotizacion_legal.t": {
+                  "row": 8,
+                  "label": "ingresos de actividades ordinarias cotizacion legal (7%)",
+                  "item": "cotizacion_legal",
+                  "period": "t",
+                  "sign": 1
+                },
+                "cotizacion_adicional.t": {
+                  "row": 9,
+                  "label": "ingresos de actividades ordinarias cotizacion adicional voluntaria",
+                  "item": "cotizacion_adicional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "aporte_adicional.t": {
+                  "row": 10,
+                  "label": "ingresos de actividades ordinarias aporte adicional",
+                  "item": "aporte_adicional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "fondo_compensacion.t": {
+                  "row": 11,
+                  "label": "ingresos de actividades ordinarias ingresos por fondo de compensacion",
+                  "item": "fondo_compensacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "ingresos_otros.t": {
+                  "row": 12,
+                  "label": "ingresos de actividades ordinarias otros",
+                  "item": "ingresos_otros",
+                  "period": "t",
+                  "sign": 1
+                },
+                "ingresos_operacionales.t": {
+                  "row": 13,
+                  "label": "ingresos de actividades ordinarias total ingresos de actividades ordinarias",
+                  "item": "ingresos_operacionales",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_prestaciones.t": {
+                  "row": 14,
+                  "label": "costo de ventas costos por prestaciones de salud",
+                  "item": "costo_prestaciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_sil.t": {
+                  "row": 15,
+                  "label": "costo de ventas subsidios por incapacidad laboral",
+                  "item": "costo_sil",
+                  "period": "t",
+                  "sign": 1
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "row": 16,
+                  "label": "costo de ventas prestaciones ocurridas y no liquidadas",
+                  "item": "prestaciones_no_liquidadas",
+                  "period": "t",
+                  "sign": 1
+                },
+                "prestaciones_litigio.t": {
+                  "row": 17,
+                  "label": "costo de ventas prestaciones en litigio",
+                  "item": "prestaciones_litigio",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_operacional.t": {
+                  "row": 20,
+                  "label": "costo de ventas total costo de ventas",
+                  "item": "costo_operacional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "egresos_fondo_compensacion.t": {
+                  "row": 18,
+                  "label": "costo de ventas egresos por fondo de compensacion",
+                  "item": "egresos_fondo_compensacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "otros_costos_operacion.t": {
+                  "row": 19,
+                  "label": "costo de ventas otros costos de operacion",
+                  "item": "otros_costos_operacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_publicidad.t": {
+                  "row": 21,
+                  "label": "gastos de administracion y otros gastos por funcion publicidad",
+                  "item": "gav_publicidad",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "row": 22,
+                  "label": "gastos de administracion y otros gastos por funcion deterioro por deudores de cotizaciones",
+                  "item": "gav_deterioro_cotizaciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_deterioro_prestamos.t": {
+                  "row": 23,
+                  "label": "gastos de administracion y otros gastos por funcion deterioro por deudores de prestamos de salud",
+                  "item": "gav_deterioro_prestamos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_remuneraciones.t": {
+                  "row": 24,
+                  "label": "gastos de administracion y otros gastos por funcion remuneraciones del personal",
+                  "item": "gav_remuneraciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "row": 25,
+                  "label": "gastos de administracion y otros gastos por funcion remuneraciones y comisiones del personal de ventas",
+                  "item": "gav_remuneraciones_ventas",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_otros.t": {
+                  "row": 26,
+                  "label": "gastos de administracion y otros gastos por funcion otros",
+                  "item": "gav_otros",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav.t": {
+                  "row": 27,
+                  "label": "gastos de administracion y otros gastos por funcion total gastos de administracion y otros gastos por funcion",
+                  "item": "gav",
+                  "period": "t",
+                  "sign": 1
+                }
+              },
+              "entity_columns": {
+                "63": "C",
+                "76": "D",
+                "94": "E",
+                "total": "F"
+              },
+              "values": {
+                "cotizacion_legal.t": {
+                  "63": 11396.625,
+                  "76": 7804.567,
+                  "94": 299.57800000000003,
+                  "total": 19500.77
+                },
+                "cotizacion_adicional.t": {
+                  "63": 2051.654,
+                  "76": 602.408,
+                  "94": 50.208,
+                  "total": 2704.27
+                },
+                "aporte_adicional.t": {
+                  "63": 20420.36,
+                  "76": 2483.172,
+                  "94": 848.0,
+                  "total": 23751.532
+                },
+                "fondo_compensacion.t": {
+                  "63": 0.0,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 0.0
+                },
+                "ingresos_otros.t": {
+                  "63": 0.0,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 0.0
+                },
+                "ingresos_operacionales.t": {
+                  "63": 33868.639,
+                  "76": 10890.147,
+                  "94": 1197.786,
+                  "total": 45956.572
+                },
+                "costo_prestaciones.t": {
+                  "63": 30400.683,
+                  "76": 6885.271,
+                  "94": 743.774,
+                  "total": 38029.728
+                },
+                "costo_sil.t": {
+                  "63": 2788.627,
+                  "76": 2053.971,
+                  "94": 237.747,
+                  "total": 5080.345
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "63": 366.788,
+                  "76": -123.312,
+                  "94": -74.75,
+                  "total": 168.726
+                },
+                "prestaciones_litigio.t": {
+                  "63": 12.965,
+                  "76": -6.297,
+                  "94": 0.0,
+                  "total": 6.668
+                },
+                "costo_operacional.t": {
+                  "63": 33687.451,
+                  "76": 8809.633,
+                  "94": 906.7710000000001,
+                  "total": 43403.855
+                },
+                "egresos_fondo_compensacion.t": {
+                  "63": 0.0,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 0.0
+                },
+                "otros_costos_operacion.t": {
+                  "63": 118.388,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 118.388
+                },
+                "gav_publicidad.t": {
+                  "63": 0.0,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 0.0
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "63": 0.0,
+                  "76": -0.641,
+                  "94": 0.0,
+                  "total": -0.641
+                },
+                "gav_deterioro_prestamos.t": {
+                  "63": 0.0,
+                  "76": 172.305,
+                  "94": 5.033,
+                  "total": 177.338
+                },
+                "gav_remuneraciones.t": {
+                  "63": 1702.538,
+                  "76": 871.317,
+                  "94": 71.615,
+                  "total": 2645.4700000000003
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "63": 192.142,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 192.142
+                },
+                "gav_otros.t": {
+                  "63": 1014.7710000000001,
+                  "76": 507.855,
+                  "94": 177.448,
+                  "total": 1700.074
+                },
+                "gav.t": {
+                  "63": 2909.451,
+                  "76": 1550.836,
+                  "94": 254.096,
+                  "total": 4714.383
+                }
+              },
+              "cells": {
+                "cotizacion_legal.t": {
+                  "63": "C8",
+                  "76": "D8",
+                  "94": "E8",
+                  "total": "F8"
+                },
+                "cotizacion_adicional.t": {
+                  "63": "C9",
+                  "76": "D9",
+                  "94": "E9",
+                  "total": "F9"
+                },
+                "aporte_adicional.t": {
+                  "63": "C10",
+                  "76": "D10",
+                  "94": "E10",
+                  "total": "F10"
+                },
+                "fondo_compensacion.t": {
+                  "63": "C11",
+                  "76": "D11",
+                  "94": "E11",
+                  "total": "F11"
+                },
+                "ingresos_otros.t": {
+                  "63": "C12",
+                  "76": "D12",
+                  "94": "E12",
+                  "total": "F12"
+                },
+                "ingresos_operacionales.t": {
+                  "63": "C13",
+                  "76": "D13",
+                  "94": "E13",
+                  "total": "F13"
+                },
+                "costo_prestaciones.t": {
+                  "63": "C14",
+                  "76": "D14",
+                  "94": "E14",
+                  "total": "F14"
+                },
+                "costo_sil.t": {
+                  "63": "C15",
+                  "76": "D15",
+                  "94": "E15",
+                  "total": "F15"
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "63": "C16",
+                  "76": "D16",
+                  "94": "E16",
+                  "total": "F16"
+                },
+                "prestaciones_litigio.t": {
+                  "63": "C17",
+                  "76": "D17",
+                  "94": "E17",
+                  "total": "F17"
+                },
+                "costo_operacional.t": {
+                  "63": "C20",
+                  "76": "D20",
+                  "94": "E20",
+                  "total": "F20"
+                },
+                "egresos_fondo_compensacion.t": {
+                  "63": "C18",
+                  "76": "D18",
+                  "94": "E18",
+                  "total": "F18"
+                },
+                "otros_costos_operacion.t": {
+                  "63": "C19",
+                  "76": "D19",
+                  "94": "E19",
+                  "total": "F19"
+                },
+                "gav_publicidad.t": {
+                  "63": "C21",
+                  "76": "D21",
+                  "94": "E21",
+                  "total": "F21"
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "63": "C22",
+                  "76": "D22",
+                  "94": "E22",
+                  "total": "F22"
+                },
+                "gav_deterioro_prestamos.t": {
+                  "63": "C23",
+                  "76": "D23",
+                  "94": "E23",
+                  "total": "F23"
+                },
+                "gav_remuneraciones.t": {
+                  "63": "C24",
+                  "76": "D24",
+                  "94": "E24",
+                  "total": "F24"
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "63": "C25",
+                  "76": "D25",
+                  "94": "E25",
+                  "total": "F25"
+                },
+                "gav_otros.t": {
+                  "63": "C26",
+                  "76": "D26",
+                  "94": "E26",
+                  "total": "F26"
+                },
+                "gav.t": {
+                  "63": "C27",
+                  "76": "D27",
+                  "94": "E27",
+                  "total": "F27"
+                }
+              },
+              "sum_check": {
+                "cotizacion_legal.t": "Σ Isapres 1.95008e+07 = total 1.95008e+07 (tolerancia 1)",
+                "cotizacion_adicional.t": "Σ Isapres 2.70427e+06 = total 2.70427e+06 (tolerancia 1)",
+                "aporte_adicional.t": "Σ Isapres 2.37515e+07 = total 2.37515e+07 (tolerancia 1)",
+                "fondo_compensacion.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "ingresos_otros.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "ingresos_operacionales.t": "Σ Isapres 4.59566e+07 = total 4.59566e+07 (tolerancia 1)",
+                "costo_prestaciones.t": "Σ Isapres 3.80297e+07 = total 3.80297e+07 (tolerancia 1)",
+                "costo_sil.t": "Σ Isapres 5.08034e+06 = total 5.08034e+06 (tolerancia 1)",
+                "prestaciones_no_liquidadas.t": "Σ Isapres 168726 = total 168726 (tolerancia 1)",
+                "prestaciones_litigio.t": "Σ Isapres 6668 = total 6668 (tolerancia 1)",
+                "costo_operacional.t": "Σ Isapres 4.34039e+07 = total 4.34039e+07 (tolerancia 1)",
+                "egresos_fondo_compensacion.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "otros_costos_operacion.t": "Σ Isapres 118388 = total 118388 (tolerancia 1)",
+                "gav_publicidad.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "gav_deterioro_cotizaciones.t": "Σ Isapres -641 = total -641 (tolerancia 1)",
+                "gav_deterioro_prestamos.t": "Σ Isapres 177338 = total 177338 (tolerancia 1)",
+                "gav_remuneraciones.t": "Σ Isapres 2.64547e+06 = total 2.64547e+06 (tolerancia 1)",
+                "gav_remuneraciones_ventas.t": "Σ Isapres 192142 = total 192142 (tolerancia 1)",
+                "gav_otros.t": "Σ Isapres 1.70007e+06 = total 1.70007e+06 (tolerancia 1)",
+                "gav.t": "Σ Isapres 4.71438e+06 = total 4.71438e+06 (tolerancia 1)"
+              }
+            },
+            "eres_abiertas": {
+              "sheet": "E. Resultados I. Abiertas",
+              "header_row": 5,
+              "unit": "MM$",
+              "scale": 0.001,
+              "layout": "accounts_in_rows",
+              "columns": {
+                "ganancia_bruta.t": {
+                  "row": 9,
+                  "label": "30030.0 ganancia bruta",
+                  "item": "ganancia_bruta",
+                  "period": "t",
+                  "sign": 1
+                },
+                "resultado_antes_impuestos.t": {
+                  "row": 23,
+                  "label": "30170.0 ganancia (perdida), antes de impuestos",
+                  "item": "resultado_antes_impuestos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gasto_impuestos.t": {
+                  "row": 24,
+                  "label": "30180.0 gasto por impuestos a las ganancias (menos)",
+                  "item": "gasto_impuestos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "resultado_ejercicio.t": {
+                  "row": 27,
+                  "label": "23070.0 ganancia (perdida)",
+                  "item": "resultado_ejercicio",
+                  "period": "t",
+                  "sign": 1
+                }
+              },
+              "entity_columns": {
+                "67": "C",
+                "78": "D",
+                "80": "E",
+                "81": "F",
+                "99": "G",
+                "107": "H",
+                "108": "I",
+                "total": "J"
+              },
+              "values": {
+                "ganancia_bruta.t": {
+                  "67": 30274.529000000002,
+                  "78": 9108.757,
+                  "80": 8531.342,
+                  "81": 19374.969,
+                  "99": -89.395,
+                  "107": 18375.612,
+                  "108": 2172.753,
+                  "total": 87748.567
+                },
+                "resultado_antes_impuestos.t": {
+                  "67": 3671.097,
+                  "78": -5310.683,
+                  "80": 4574.644,
+                  "81": 4728.465,
+                  "99": -12677.107,
+                  "107": 3414.059,
+                  "108": -2113.594,
+                  "total": -3713.119
+                },
+                "gasto_impuestos.t": {
+                  "67": 724.7,
+                  "78": -1696.689,
+                  "80": 1118.008,
+                  "81": 1152.907,
+                  "99": -3877.587,
+                  "107": 358.249,
+                  "108": -625.024,
+                  "total": -2845.436
+                },
+                "resultado_ejercicio.t": {
+                  "67": 2946.397,
+                  "78": -3613.994,
+                  "80": 3456.636,
+                  "81": 3575.558,
+                  "99": -8799.52,
+                  "107": 3055.81,
+                  "108": -1488.57,
+                  "total": -867.683
+                }
+              },
+              "cells": {
+                "ganancia_bruta.t": {
+                  "67": "C9",
+                  "78": "D9",
+                  "80": "E9",
+                  "81": "F9",
+                  "99": "G9",
+                  "107": "H9",
+                  "108": "I9",
+                  "total": "J9"
+                },
+                "resultado_antes_impuestos.t": {
+                  "67": "C23",
+                  "78": "D23",
+                  "80": "E23",
+                  "81": "F23",
+                  "99": "G23",
+                  "107": "H23",
+                  "108": "I23",
+                  "total": "J23"
+                },
+                "gasto_impuestos.t": {
+                  "67": "C24",
+                  "78": "D24",
+                  "80": "E24",
+                  "81": "F24",
+                  "99": "G24",
+                  "107": "H24",
+                  "108": "I24",
+                  "total": "J24"
+                },
+                "resultado_ejercicio.t": {
+                  "67": "C27",
+                  "78": "D27",
+                  "80": "E27",
+                  "81": "F27",
+                  "99": "G27",
+                  "107": "H27",
+                  "108": "I27",
+                  "total": "J27"
+                }
+              },
+              "sum_check": {
+                "ganancia_bruta.t": "Σ Isapres 8.77486e+07 = total 8.77486e+07 (tolerancia 1)",
+                "resultado_antes_impuestos.t": "Σ Isapres -3.71312e+06 = total -3.71312e+06 (tolerancia 1)",
+                "gasto_impuestos.t": "Σ Isapres -2.84544e+06 = total -2.84544e+06 (tolerancia 1)",
+                "resultado_ejercicio.t": "Σ Isapres -867683 = total -867683 (tolerancia 1)"
+              }
+            },
+            "eres_cerradas": {
+              "sheet": "E. Resultados I. Cerradas",
+              "header_row": 6,
+              "unit": "MM$",
+              "scale": 0.001,
+              "layout": "accounts_in_rows",
+              "columns": {
+                "ganancia_bruta.t": {
+                  "row": 10,
+                  "label": "30030.0 ganancia bruta",
+                  "item": "ganancia_bruta",
+                  "period": "t",
+                  "sign": 1
+                },
+                "resultado_antes_impuestos.t": {
+                  "row": 24,
+                  "label": "30170.0 ganancia (perdida), antes de impuestos",
+                  "item": "resultado_antes_impuestos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gasto_impuestos.t": {
+                  "row": 25,
+                  "label": "30180.0 gasto por impuestos a las ganancias (menos)",
+                  "item": "gasto_impuestos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "resultado_ejercicio.t": {
+                  "row": 28,
+                  "label": "23070.0 ganancia (perdida)",
+                  "item": "resultado_ejercicio",
+                  "period": "t",
+                  "sign": 1
+                }
+              },
+              "entity_columns": {
+                "63": "C",
+                "76": "D",
+                "94": "E",
+                "total": "F"
+              },
+              "values": {
+                "ganancia_bruta.t": {
+                  "63": 181.18800000000002,
+                  "76": 2080.514,
+                  "94": 291.015,
+                  "total": 2552.717
+                },
+                "resultado_antes_impuestos.t": {
+                  "63": -123.305,
+                  "76": 771.9780000000001,
+                  "94": 58.953,
+                  "total": 707.626
+                },
+                "gasto_impuestos.t": {
+                  "63": -116.057,
+                  "76": 203.363,
+                  "94": 25.922,
+                  "total": 113.22800000000001
+                },
+                "resultado_ejercicio.t": {
+                  "63": -7.248,
+                  "76": 568.615,
+                  "94": 33.031,
+                  "total": 594.398
+                }
+              },
+              "cells": {
+                "ganancia_bruta.t": {
+                  "63": "C10",
+                  "76": "D10",
+                  "94": "E10",
+                  "total": "F10"
+                },
+                "resultado_antes_impuestos.t": {
+                  "63": "C24",
+                  "76": "D24",
+                  "94": "E24",
+                  "total": "F24"
+                },
+                "gasto_impuestos.t": {
+                  "63": "C25",
+                  "76": "D25",
+                  "94": "E25",
+                  "total": "F25"
+                },
+                "resultado_ejercicio.t": {
+                  "63": "C28",
+                  "76": "D28",
+                  "94": "E28",
+                  "total": "F28"
+                }
+              },
+              "sum_check": {
+                "ganancia_bruta.t": "Σ Isapres 2.55272e+06 = total 2.55272e+06 (tolerancia 1)",
+                "resultado_antes_impuestos.t": "Σ Isapres 707626 = total 707626 (tolerancia 1)",
+                "gasto_impuestos.t": "Σ Isapres 113228 = total 113228 (tolerancia 1)",
+                "resultado_ejercicio.t": "Σ Isapres 594398 = total 594398 (tolerancia 1)"
+              }
+            }
+          },
+          "coverage_note": null,
+          "coverage_note_status": "no_match"
+        }
+      }
+    },
+    {
+      "period": "2026-03",
+      "title": "Estadísticas Financieras del Sistema ISAPRE a marzo 2026",
+      "release_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/",
+      "published_at": "2026-07-07",
+      "document": {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls",
+        "sha256": "e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065",
+        "bytes": 349184,
+        "format": "xls",
+        "fetched_at": "2026-11-02T13:34:11.840651+00:00",
+        "status": "captured",
+        "parse": {
+          "checker_version": 1,
+          "template_sha256": "e55654be262fc8611b69e0c99c1cf47079a4850695082ae9dd57be04478e4f6b",
+          "period": "2026-03",
+          "format": "xls",
+          "sheet_names": [
+            "Indice",
+            "Metodología de Presentación",
+            "Notas Explicativas",
+            "Result. Financieros comparados",
+            "E. Sit. Fin. comparado por Isap",
+            "E. Resultados comparado por Isa",
+            "Indic. Fin. comparados por Isap",
+            "E. Sit. Fin. por rubros",
+            "E. Resultados por rubros",
+            "E. Flujo Efectivo por rubros",
+            "E. Sit. Fin. I. Abiertas",
+            "E. Sit. Fin. I. Cerradas",
+            "E. Resultados I. Abiertas",
+            "E. Resultados I. Cerradas",
+            "Ctas. de Resultados I. Abierta ",
+            "Ctas. de Resultados I. Cerradas",
+            "E. Flujo Efectivo I. Abiertas",
+            "E. Flujo Efectivo I. Cerradas",
+            "Estándares Legales comparados",
+            "Estándares Legales por Isapre"
+          ],
+          "status": "verified",
+          "failures": [],
+          "tables": {
+            "ctas_abiertas": {
+              "sheet": "Ctas. de Resultados I. Abierta ",
+              "header_row": 5,
+              "unit": "MM$",
+              "scale": 0.001,
+              "layout": "accounts_in_rows",
+              "columns": {
+                "cotizacion_legal.t": {
+                  "row": 7,
+                  "label": "ingresos de actividades ordinarias cotizacion legal (7%)",
+                  "item": "cotizacion_legal",
+                  "period": "t",
+                  "sign": 1
+                },
+                "cotizacion_adicional.t": {
+                  "row": 8,
+                  "label": "ingresos de actividades ordinarias cotizacion adicional voluntaria",
+                  "item": "cotizacion_adicional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "aporte_adicional.t": {
+                  "row": 9,
+                  "label": "ingresos de actividades ordinarias aporte adicional",
+                  "item": "aporte_adicional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "fondo_compensacion.t": {
+                  "row": 10,
+                  "label": "ingresos de actividades ordinarias ingresos por fondo de compensacion",
+                  "item": "fondo_compensacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "ingresos_otros.t": {
+                  "row": 11,
+                  "label": "ingresos de actividades ordinarias otros",
+                  "item": "ingresos_otros",
+                  "period": "t",
+                  "sign": 1
+                },
+                "ingresos_operacionales.t": {
+                  "row": 12,
+                  "label": "ingresos de actividades ordinarias total ingresos de actividades ordinarias",
+                  "item": "ingresos_operacionales",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_prestaciones.t": {
+                  "row": 13,
+                  "label": "costo de ventas costos por prestaciones de salud",
+                  "item": "costo_prestaciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_sil.t": {
+                  "row": 14,
+                  "label": "costo de ventas subsidios por incapacidad laboral",
+                  "item": "costo_sil",
+                  "period": "t",
+                  "sign": 1
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "row": 15,
+                  "label": "costo de ventas prestaciones ocurridas y no liquidadas",
+                  "item": "prestaciones_no_liquidadas",
+                  "period": "t",
+                  "sign": 1
+                },
+                "prestaciones_litigio.t": {
+                  "row": 16,
+                  "label": "costo de ventas prestaciones en litigio",
+                  "item": "prestaciones_litigio",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_operacional.t": {
+                  "row": 19,
+                  "label": "costo de ventas total costo de ventas",
+                  "item": "costo_operacional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "egresos_fondo_compensacion.t": {
+                  "row": 17,
+                  "label": "costo de ventas egresos por fondo de compensacion",
+                  "item": "egresos_fondo_compensacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "otros_costos_operacion.t": {
+                  "row": 18,
+                  "label": "costo de ventas otros costos de operacion",
+                  "item": "otros_costos_operacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_publicidad.t": {
+                  "row": 20,
+                  "label": "gastos de administracion y otros gastos por funcion publicidad",
+                  "item": "gav_publicidad",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "row": 21,
+                  "label": "gastos de administracion y otros gastos por funcion deterioro por deudores de cotizaciones",
+                  "item": "gav_deterioro_cotizaciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_deterioro_prestamos.t": {
+                  "row": 22,
+                  "label": "gastos de administracion y otros gastos por funcion deterioro por deudores de prestamos de salud",
+                  "item": "gav_deterioro_prestamos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_remuneraciones.t": {
+                  "row": 23,
+                  "label": "gastos de administracion y otros gastos por funcion remuneraciones del personal",
+                  "item": "gav_remuneraciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "row": 24,
+                  "label": "gastos de administracion y otros gastos por funcion remuneraciones y comisiones del personal de ventas",
+                  "item": "gav_remuneraciones_ventas",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_otros.t": {
+                  "row": 25,
+                  "label": "gastos de administracion y otros gastos por funcion otros",
+                  "item": "gav_otros",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav.t": {
+                  "row": 26,
+                  "label": "gastos de administracion y otros gastos por funcion total gastos de administracion y otros gastos por funcion",
+                  "item": "gav",
+                  "period": "t",
+                  "sign": 1
+                }
+              },
+              "entity_columns": {
+                "67": "C",
+                "78": "D",
+                "80": "E",
+                "81": "F",
+                "99": "G",
+                "107": "H",
+                "108": "I",
+                "total": "J"
+              },
+              "values": {
+                "cotizacion_legal.t": {
+                  "67": 186844.88,
+                  "78": 118341.178,
+                  "80": 37846.717000000004,
+                  "81": 89708.77500000001,
+                  "99": 152605.566,
+                  "107": 132430.126,
+                  "108": 15743.566,
+                  "total": 733520.808
+                },
+                "cotizacion_adicional.t": {
+                  "67": 80469.918,
+                  "78": 53035.972,
+                  "80": 29474.781,
+                  "81": 25808.0,
+                  "99": 76927.265,
+                  "107": 59959.413,
+                  "108": 13319.092,
+                  "total": 338994.441
+                },
+                "aporte_adicional.t": {
+                  "67": 32.02,
+                  "78": 107.104,
+                  "80": 0.0,
+                  "81": 0.0,
+                  "99": 368.801,
+                  "107": 649.3480000000001,
+                  "108": 0.0,
+                  "total": 1157.273
+                },
+                "fondo_compensacion.t": {
+                  "67": 0.0,
+                  "78": 0.0,
+                  "80": 604.038,
+                  "81": 0.0,
+                  "99": 477.479,
+                  "107": 234.583,
+                  "108": 0.0,
+                  "total": 1316.1000000000001
+                },
+                "ingresos_otros.t": {
+                  "67": 0.0,
+                  "78": 0.0,
+                  "80": 0.0,
+                  "81": 0.0,
+                  "99": 0.0,
+                  "107": 0.0,
+                  "108": 0.0,
+                  "total": 0.0
+                },
+                "ingresos_operacionales.t": {
+                  "67": 267346.818,
+                  "78": 171484.25400000002,
+                  "80": 67925.53600000001,
+                  "81": 115516.77500000001,
+                  "99": 230379.111,
+                  "107": 193273.47,
+                  "108": 29062.658,
+                  "total": 1074988.622
+                },
+                "costo_prestaciones.t": {
+                  "67": 183534.521,
+                  "78": 121258.868,
+                  "80": 56275.124,
+                  "81": 69201.925,
+                  "99": 169301.377,
+                  "107": 120357.57800000001,
+                  "108": 21377.883,
+                  "total": 741307.2760000001
+                },
+                "costo_sil.t": {
+                  "67": 33779.167,
+                  "78": 21306.464,
+                  "80": 5693.076,
+                  "81": 18235.811,
+                  "99": 30972.36,
+                  "107": 32399.738,
+                  "108": 2248.012,
+                  "total": 144634.628
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "67": 22959.294,
+                  "78": 27.987000000000002,
+                  "80": 395.204,
+                  "81": 955.716,
+                  "99": 4885.409,
+                  "107": 252.621,
+                  "108": -383.536,
+                  "total": 29092.695
+                },
+                "prestaciones_litigio.t": {
+                  "67": -754.415,
+                  "78": -337.914,
+                  "80": 38.744,
+                  "81": 260.992,
+                  "99": 79.162,
+                  "107": 2046.748,
+                  "108": 0.0,
+                  "total": 1333.317
+                },
+                "costo_operacional.t": {
+                  "67": 249297.81,
+                  "78": 149503.25400000002,
+                  "80": 65076.527,
+                  "81": 95114.081,
+                  "99": 210806.828,
+                  "107": 155200.521,
+                  "108": 23607.295000000002,
+                  "total": 948606.316
+                },
+                "egresos_fondo_compensacion.t": {
+                  "67": 0.0,
+                  "78": 67.239,
+                  "80": 0.0,
+                  "81": 466.89,
+                  "99": 0.0,
+                  "107": 0.0,
+                  "108": 336.182,
+                  "total": 870.311
+                },
+                "otros_costos_operacion.t": {
+                  "67": 9779.243,
+                  "78": 7180.610000000001,
+                  "80": 2674.379,
+                  "81": 5992.747,
+                  "99": 5568.52,
+                  "107": 143.836,
+                  "108": 28.754,
+                  "total": 31368.089
+                },
+                "gav_publicidad.t": {
+                  "67": 514.183,
+                  "78": 239.47,
+                  "80": 101.496,
+                  "81": 52.007,
+                  "99": 306.541,
+                  "107": 176.989,
+                  "108": 298.473,
+                  "total": 1689.159
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "67": 162.946,
+                  "78": 82.60300000000001,
+                  "80": 135.737,
+                  "81": 0.0,
+                  "99": 584.8580000000001,
+                  "107": 424.231,
+                  "108": 0.0,
+                  "total": 1390.375
+                },
+                "gav_deterioro_prestamos.t": {
+                  "67": 442.431,
+                  "78": 1.246,
+                  "80": 202.924,
+                  "81": 0.0,
+                  "99": 363.378,
+                  "107": 19.811,
+                  "108": 0.0,
+                  "total": 1029.79
+                },
+                "gav_remuneraciones.t": {
+                  "67": 7487.225,
+                  "78": 4825.805,
+                  "80": 1695.779,
+                  "81": 2819.201,
+                  "99": 5821.111,
+                  "107": 6971.415,
+                  "108": 1967.621,
+                  "total": 31588.157
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "67": 5656.9400000000005,
+                  "78": 2623.064,
+                  "80": 881.9250000000001,
+                  "81": 11245.376,
+                  "99": 5626.456,
+                  "107": 5007.995,
+                  "108": 776.356,
+                  "total": 31818.112
+                },
+                "gav_otros.t": {
+                  "67": 6254.837,
+                  "78": 6944.809,
+                  "80": 1516.386,
+                  "81": 6152.909000000001,
+                  "99": 5177.658,
+                  "107": 3265.667,
+                  "108": 2363.241,
+                  "total": 31675.507
+                },
+                "gav.t": {
+                  "67": 20518.562,
+                  "78": 14716.997000000001,
+                  "80": 4534.247,
+                  "81": 20269.493000000002,
+                  "99": 17880.002,
+                  "107": 15866.108,
+                  "108": 5405.691,
+                  "total": 99191.1
+                }
+              },
+              "cells": {
+                "cotizacion_legal.t": {
+                  "67": "C7",
+                  "78": "D7",
+                  "80": "E7",
+                  "81": "F7",
+                  "99": "G7",
+                  "107": "H7",
+                  "108": "I7",
+                  "total": "J7"
+                },
+                "cotizacion_adicional.t": {
+                  "67": "C8",
+                  "78": "D8",
+                  "80": "E8",
+                  "81": "F8",
+                  "99": "G8",
+                  "107": "H8",
+                  "108": "I8",
+                  "total": "J8"
+                },
+                "aporte_adicional.t": {
+                  "67": "C9",
+                  "78": "D9",
+                  "80": "E9",
+                  "81": "F9",
+                  "99": "G9",
+                  "107": "H9",
+                  "108": "I9",
+                  "total": "J9"
+                },
+                "fondo_compensacion.t": {
+                  "67": "C10",
+                  "78": "D10",
+                  "80": "E10",
+                  "81": "F10",
+                  "99": "G10",
+                  "107": "H10",
+                  "108": "I10",
+                  "total": "J10"
+                },
+                "ingresos_otros.t": {
+                  "67": "C11",
+                  "78": "D11",
+                  "80": "E11",
+                  "81": "F11",
+                  "99": "G11",
+                  "107": "H11",
+                  "108": "I11",
+                  "total": "J11"
+                },
+                "ingresos_operacionales.t": {
+                  "67": "C12",
+                  "78": "D12",
+                  "80": "E12",
+                  "81": "F12",
+                  "99": "G12",
+                  "107": "H12",
+                  "108": "I12",
+                  "total": "J12"
+                },
+                "costo_prestaciones.t": {
+                  "67": "C13",
+                  "78": "D13",
+                  "80": "E13",
+                  "81": "F13",
+                  "99": "G13",
+                  "107": "H13",
+                  "108": "I13",
+                  "total": "J13"
+                },
+                "costo_sil.t": {
+                  "67": "C14",
+                  "78": "D14",
+                  "80": "E14",
+                  "81": "F14",
+                  "99": "G14",
+                  "107": "H14",
+                  "108": "I14",
+                  "total": "J14"
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "67": "C15",
+                  "78": "D15",
+                  "80": "E15",
+                  "81": "F15",
+                  "99": "G15",
+                  "107": "H15",
+                  "108": "I15",
+                  "total": "J15"
+                },
+                "prestaciones_litigio.t": {
+                  "67": "C16",
+                  "78": "D16",
+                  "80": "E16",
+                  "81": "F16",
+                  "99": "G16",
+                  "107": "H16",
+                  "108": "I16",
+                  "total": "J16"
+                },
+                "costo_operacional.t": {
+                  "67": "C19",
+                  "78": "D19",
+                  "80": "E19",
+                  "81": "F19",
+                  "99": "G19",
+                  "107": "H19",
+                  "108": "I19",
+                  "total": "J19"
+                },
+                "egresos_fondo_compensacion.t": {
+                  "67": "C17",
+                  "78": "D17",
+                  "80": "E17",
+                  "81": "F17",
+                  "99": "G17",
+                  "107": "H17",
+                  "108": "I17",
+                  "total": "J17"
+                },
+                "otros_costos_operacion.t": {
+                  "67": "C18",
+                  "78": "D18",
+                  "80": "E18",
+                  "81": "F18",
+                  "99": "G18",
+                  "107": "H18",
+                  "108": "I18",
+                  "total": "J18"
+                },
+                "gav_publicidad.t": {
+                  "67": "C20",
+                  "78": "D20",
+                  "80": "E20",
+                  "81": "F20",
+                  "99": "G20",
+                  "107": "H20",
+                  "108": "I20",
+                  "total": "J20"
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "67": "C21",
+                  "78": "D21",
+                  "80": "E21",
+                  "81": "F21",
+                  "99": "G21",
+                  "107": "H21",
+                  "108": "I21",
+                  "total": "J21"
+                },
+                "gav_deterioro_prestamos.t": {
+                  "67": "C22",
+                  "78": "D22",
+                  "80": "E22",
+                  "81": "F22",
+                  "99": "G22",
+                  "107": "H22",
+                  "108": "I22",
+                  "total": "J22"
+                },
+                "gav_remuneraciones.t": {
+                  "67": "C23",
+                  "78": "D23",
+                  "80": "E23",
+                  "81": "F23",
+                  "99": "G23",
+                  "107": "H23",
+                  "108": "I23",
+                  "total": "J23"
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "67": "C24",
+                  "78": "D24",
+                  "80": "E24",
+                  "81": "F24",
+                  "99": "G24",
+                  "107": "H24",
+                  "108": "I24",
+                  "total": "J24"
+                },
+                "gav_otros.t": {
+                  "67": "C25",
+                  "78": "D25",
+                  "80": "E25",
+                  "81": "F25",
+                  "99": "G25",
+                  "107": "H25",
+                  "108": "I25",
+                  "total": "J25"
+                },
+                "gav.t": {
+                  "67": "C26",
+                  "78": "D26",
+                  "80": "E26",
+                  "81": "F26",
+                  "99": "G26",
+                  "107": "H26",
+                  "108": "I26",
+                  "total": "J26"
+                }
+              },
+              "sum_check": {
+                "cotizacion_legal.t": "Σ Isapres 7.33521e+08 = total 7.33521e+08 (tolerancia 1)",
+                "cotizacion_adicional.t": "Σ Isapres 3.38994e+08 = total 3.38994e+08 (tolerancia 1)",
+                "aporte_adicional.t": "Σ Isapres 1.15727e+06 = total 1.15727e+06 (tolerancia 1)",
+                "fondo_compensacion.t": "Σ Isapres 1.3161e+06 = total 1.3161e+06 (tolerancia 1)",
+                "ingresos_otros.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "ingresos_operacionales.t": "Σ Isapres 1.07499e+09 = total 1.07499e+09 (tolerancia 1)",
+                "costo_prestaciones.t": "Σ Isapres 7.41307e+08 = total 7.41307e+08 (tolerancia 1)",
+                "costo_sil.t": "Σ Isapres 1.44635e+08 = total 1.44635e+08 (tolerancia 1)",
+                "prestaciones_no_liquidadas.t": "Σ Isapres 2.90927e+07 = total 2.90927e+07 (tolerancia 1)",
+                "prestaciones_litigio.t": "Σ Isapres 1.33332e+06 = total 1.33332e+06 (tolerancia 1)",
+                "costo_operacional.t": "Σ Isapres 9.48606e+08 = total 9.48606e+08 (tolerancia 1)",
+                "egresos_fondo_compensacion.t": "Σ Isapres 870311 = total 870311 (tolerancia 1)",
+                "otros_costos_operacion.t": "Σ Isapres 3.13681e+07 = total 3.13681e+07 (tolerancia 1)",
+                "gav_publicidad.t": "Σ Isapres 1.68916e+06 = total 1.68916e+06 (tolerancia 1)",
+                "gav_deterioro_cotizaciones.t": "Σ Isapres 1.39038e+06 = total 1.39038e+06 (tolerancia 1)",
+                "gav_deterioro_prestamos.t": "Σ Isapres 1.02979e+06 = total 1.02979e+06 (tolerancia 1)",
+                "gav_remuneraciones.t": "Σ Isapres 3.15882e+07 = total 3.15882e+07 (tolerancia 1)",
+                "gav_remuneraciones_ventas.t": "Σ Isapres 3.18181e+07 = total 3.18181e+07 (tolerancia 1)",
+                "gav_otros.t": "Σ Isapres 3.16755e+07 = total 3.16755e+07 (tolerancia 1)",
+                "gav.t": "Σ Isapres 9.91911e+07 = total 9.91911e+07 (tolerancia 1)"
+              }
+            },
+            "ctas_cerradas": {
+              "sheet": "Ctas. de Resultados I. Cerradas",
+              "header_row": 6,
+              "unit": "MM$",
+              "scale": 0.001,
+              "layout": "accounts_in_rows",
+              "columns": {
+                "cotizacion_legal.t": {
+                  "row": 8,
+                  "label": "ingresos de actividades ordinarias cotizacion legal (7%)",
+                  "item": "cotizacion_legal",
+                  "period": "t",
+                  "sign": 1
+                },
+                "cotizacion_adicional.t": {
+                  "row": 9,
+                  "label": "ingresos de actividades ordinarias cotizacion adicional voluntaria",
+                  "item": "cotizacion_adicional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "aporte_adicional.t": {
+                  "row": 10,
+                  "label": "ingresos de actividades ordinarias aporte adicional",
+                  "item": "aporte_adicional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "fondo_compensacion.t": {
+                  "row": 11,
+                  "label": "ingresos de actividades ordinarias ingresos por fondo de compensacion",
+                  "item": "fondo_compensacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "ingresos_otros.t": {
+                  "row": 12,
+                  "label": "ingresos de actividades ordinarias otros",
+                  "item": "ingresos_otros",
+                  "period": "t",
+                  "sign": 1
+                },
+                "ingresos_operacionales.t": {
+                  "row": 13,
+                  "label": "ingresos de actividades ordinarias total ingresos de actividades ordinarias",
+                  "item": "ingresos_operacionales",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_prestaciones.t": {
+                  "row": 14,
+                  "label": "costo de ventas costos por prestaciones de salud",
+                  "item": "costo_prestaciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_sil.t": {
+                  "row": 15,
+                  "label": "costo de ventas subsidios por incapacidad laboral",
+                  "item": "costo_sil",
+                  "period": "t",
+                  "sign": 1
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "row": 16,
+                  "label": "costo de ventas prestaciones ocurridas y no liquidadas",
+                  "item": "prestaciones_no_liquidadas",
+                  "period": "t",
+                  "sign": 1
+                },
+                "prestaciones_litigio.t": {
+                  "row": 17,
+                  "label": "costo de ventas prestaciones en litigio",
+                  "item": "prestaciones_litigio",
+                  "period": "t",
+                  "sign": 1
+                },
+                "costo_operacional.t": {
+                  "row": 20,
+                  "label": "costo de ventas total costo de ventas",
+                  "item": "costo_operacional",
+                  "period": "t",
+                  "sign": 1
+                },
+                "egresos_fondo_compensacion.t": {
+                  "row": 18,
+                  "label": "costo de ventas egresos por fondo de compensacion",
+                  "item": "egresos_fondo_compensacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "otros_costos_operacion.t": {
+                  "row": 19,
+                  "label": "costo de ventas otros costos de operacion",
+                  "item": "otros_costos_operacion",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_publicidad.t": {
+                  "row": 21,
+                  "label": "gastos de administracion y otros gastos por funcion publicidad",
+                  "item": "gav_publicidad",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "row": 22,
+                  "label": "gastos de administracion y otros gastos por funcion deterioro por deudores de cotizaciones",
+                  "item": "gav_deterioro_cotizaciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_deterioro_prestamos.t": {
+                  "row": 23,
+                  "label": "gastos de administracion y otros gastos por funcion deterioro por deudores de prestamos de salud",
+                  "item": "gav_deterioro_prestamos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_remuneraciones.t": {
+                  "row": 24,
+                  "label": "gastos de administracion y otros gastos por funcion remuneraciones del personal",
+                  "item": "gav_remuneraciones",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "row": 25,
+                  "label": "gastos de administracion y otros gastos por funcion remuneraciones y comisiones del personal de ventas",
+                  "item": "gav_remuneraciones_ventas",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav_otros.t": {
+                  "row": 26,
+                  "label": "gastos de administracion y otros gastos por funcion otros",
+                  "item": "gav_otros",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gav.t": {
+                  "row": 27,
+                  "label": "gastos de administracion y otros gastos por funcion total gastos de administracion y otros gastos por funcion",
+                  "item": "gav",
+                  "period": "t",
+                  "sign": 1
+                }
+              },
+              "entity_columns": {
+                "63": "C",
+                "76": "D",
+                "94": "E",
+                "total": "F"
+              },
+              "values": {
+                "cotizacion_legal.t": {
+                  "63": 12905.476,
+                  "76": 8874.426,
+                  "94": 284.163,
+                  "total": 22064.065
+                },
+                "cotizacion_adicional.t": {
+                  "63": 2031.083,
+                  "76": 727.92,
+                  "94": 42.757,
+                  "total": 2801.76
+                },
+                "aporte_adicional.t": {
+                  "63": 17512.276,
+                  "76": 2573.264,
+                  "94": 472.0,
+                  "total": 20557.54
+                },
+                "fondo_compensacion.t": {
+                  "63": 0.0,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 0.0
+                },
+                "ingresos_otros.t": {
+                  "63": 0.0,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 0.0
+                },
+                "ingresos_operacionales.t": {
+                  "63": 32448.835,
+                  "76": 12175.61,
+                  "94": 798.9200000000001,
+                  "total": 45423.365
+                },
+                "costo_prestaciones.t": {
+                  "63": 30477.935,
+                  "76": 7930.026,
+                  "94": 507.976,
+                  "total": 38915.937
+                },
+                "costo_sil.t": {
+                  "63": 2109.658,
+                  "76": 1618.265,
+                  "94": 186.351,
+                  "total": 3914.274
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "63": 0.0,
+                  "76": 201.286,
+                  "94": -61.172000000000004,
+                  "total": 140.114
+                },
+                "prestaciones_litigio.t": {
+                  "63": 0.0,
+                  "76": -2.507,
+                  "94": 0.0,
+                  "total": -2.507
+                },
+                "costo_operacional.t": {
+                  "63": 32870.546,
+                  "76": 10309.232,
+                  "94": 633.155,
+                  "total": 43812.933000000005
+                },
+                "egresos_fondo_compensacion.t": {
+                  "63": 0.0,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 0.0
+                },
+                "otros_costos_operacion.t": {
+                  "63": 282.95300000000003,
+                  "76": 562.162,
+                  "94": 0.0,
+                  "total": 845.115
+                },
+                "gav_publicidad.t": {
+                  "63": 0.0,
+                  "76": 8.511000000000001,
+                  "94": 0.0,
+                  "total": 8.511000000000001
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "63": 0.0,
+                  "76": 1.825,
+                  "94": 0.0,
+                  "total": 1.825
+                },
+                "gav_deterioro_prestamos.t": {
+                  "63": 0.0,
+                  "76": 148.086,
+                  "94": 5.298,
+                  "total": 153.38400000000001
+                },
+                "gav_remuneraciones.t": {
+                  "63": 1805.662,
+                  "76": 915.205,
+                  "94": 62.974000000000004,
+                  "total": 2783.841
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "63": 209.05100000000002,
+                  "76": 0.0,
+                  "94": 0.0,
+                  "total": 209.05100000000002
+                },
+                "gav_otros.t": {
+                  "63": 1037.31,
+                  "76": 539.128,
+                  "94": 63.553000000000004,
+                  "total": 1639.991
+                },
+                "gav.t": {
+                  "63": 3052.023,
+                  "76": 1612.755,
+                  "94": 131.825,
+                  "total": 4796.603
+                }
+              },
+              "cells": {
+                "cotizacion_legal.t": {
+                  "63": "C8",
+                  "76": "D8",
+                  "94": "E8",
+                  "total": "F8"
+                },
+                "cotizacion_adicional.t": {
+                  "63": "C9",
+                  "76": "D9",
+                  "94": "E9",
+                  "total": "F9"
+                },
+                "aporte_adicional.t": {
+                  "63": "C10",
+                  "76": "D10",
+                  "94": "E10",
+                  "total": "F10"
+                },
+                "fondo_compensacion.t": {
+                  "63": "C11",
+                  "76": "D11",
+                  "94": "E11",
+                  "total": "F11"
+                },
+                "ingresos_otros.t": {
+                  "63": "C12",
+                  "76": "D12",
+                  "94": "E12",
+                  "total": "F12"
+                },
+                "ingresos_operacionales.t": {
+                  "63": "C13",
+                  "76": "D13",
+                  "94": "E13",
+                  "total": "F13"
+                },
+                "costo_prestaciones.t": {
+                  "63": "C14",
+                  "76": "D14",
+                  "94": "E14",
+                  "total": "F14"
+                },
+                "costo_sil.t": {
+                  "63": "C15",
+                  "76": "D15",
+                  "94": "E15",
+                  "total": "F15"
+                },
+                "prestaciones_no_liquidadas.t": {
+                  "63": "C16",
+                  "76": "D16",
+                  "94": "E16",
+                  "total": "F16"
+                },
+                "prestaciones_litigio.t": {
+                  "63": "C17",
+                  "76": "D17",
+                  "94": "E17",
+                  "total": "F17"
+                },
+                "costo_operacional.t": {
+                  "63": "C20",
+                  "76": "D20",
+                  "94": "E20",
+                  "total": "F20"
+                },
+                "egresos_fondo_compensacion.t": {
+                  "63": "C18",
+                  "76": "D18",
+                  "94": "E18",
+                  "total": "F18"
+                },
+                "otros_costos_operacion.t": {
+                  "63": "C19",
+                  "76": "D19",
+                  "94": "E19",
+                  "total": "F19"
+                },
+                "gav_publicidad.t": {
+                  "63": "C21",
+                  "76": "D21",
+                  "94": "E21",
+                  "total": "F21"
+                },
+                "gav_deterioro_cotizaciones.t": {
+                  "63": "C22",
+                  "76": "D22",
+                  "94": "E22",
+                  "total": "F22"
+                },
+                "gav_deterioro_prestamos.t": {
+                  "63": "C23",
+                  "76": "D23",
+                  "94": "E23",
+                  "total": "F23"
+                },
+                "gav_remuneraciones.t": {
+                  "63": "C24",
+                  "76": "D24",
+                  "94": "E24",
+                  "total": "F24"
+                },
+                "gav_remuneraciones_ventas.t": {
+                  "63": "C25",
+                  "76": "D25",
+                  "94": "E25",
+                  "total": "F25"
+                },
+                "gav_otros.t": {
+                  "63": "C26",
+                  "76": "D26",
+                  "94": "E26",
+                  "total": "F26"
+                },
+                "gav.t": {
+                  "63": "C27",
+                  "76": "D27",
+                  "94": "E27",
+                  "total": "F27"
+                }
+              },
+              "sum_check": {
+                "cotizacion_legal.t": "Σ Isapres 2.20641e+07 = total 2.20641e+07 (tolerancia 1)",
+                "cotizacion_adicional.t": "Σ Isapres 2.80176e+06 = total 2.80176e+06 (tolerancia 1)",
+                "aporte_adicional.t": "Σ Isapres 2.05575e+07 = total 2.05575e+07 (tolerancia 1)",
+                "fondo_compensacion.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "ingresos_otros.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "ingresos_operacionales.t": "Σ Isapres 4.54234e+07 = total 4.54234e+07 (tolerancia 1)",
+                "costo_prestaciones.t": "Σ Isapres 3.89159e+07 = total 3.89159e+07 (tolerancia 1)",
+                "costo_sil.t": "Σ Isapres 3.91427e+06 = total 3.91427e+06 (tolerancia 1)",
+                "prestaciones_no_liquidadas.t": "Σ Isapres 140114 = total 140114 (tolerancia 1)",
+                "prestaciones_litigio.t": "Σ Isapres -2507 = total -2507 (tolerancia 1)",
+                "costo_operacional.t": "Σ Isapres 4.38129e+07 = total 4.38129e+07 (tolerancia 1)",
+                "egresos_fondo_compensacion.t": "Σ Isapres 0 = total 0 (tolerancia 1)",
+                "otros_costos_operacion.t": "Σ Isapres 845115 = total 845115 (tolerancia 1)",
+                "gav_publicidad.t": "Σ Isapres 8511 = total 8511 (tolerancia 1)",
+                "gav_deterioro_cotizaciones.t": "Σ Isapres 1825 = total 1825 (tolerancia 1)",
+                "gav_deterioro_prestamos.t": "Σ Isapres 153384 = total 153384 (tolerancia 1)",
+                "gav_remuneraciones.t": "Σ Isapres 2.78384e+06 = total 2.78384e+06 (tolerancia 1)",
+                "gav_remuneraciones_ventas.t": "Σ Isapres 209051 = total 209051 (tolerancia 1)",
+                "gav_otros.t": "Σ Isapres 1.63999e+06 = total 1.63999e+06 (tolerancia 1)",
+                "gav.t": "Σ Isapres 4.7966e+06 = total 4.7966e+06 (tolerancia 1)"
+              }
+            },
+            "eres_abiertas": {
+              "sheet": "E. Resultados I. Abiertas",
+              "header_row": 5,
+              "unit": "MM$",
+              "scale": 0.001,
+              "layout": "accounts_in_rows",
+              "columns": {
+                "ganancia_bruta.t": {
+                  "row": 9,
+                  "label": "30030.0 ganancia bruta",
+                  "item": "ganancia_bruta",
+                  "period": "t",
+                  "sign": 1
+                },
+                "resultado_antes_impuestos.t": {
+                  "row": 23,
+                  "label": "30170.0 ganancia (perdida), antes de impuestos",
+                  "item": "resultado_antes_impuestos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gasto_impuestos.t": {
+                  "row": 24,
+                  "label": "30180.0 gasto por impuestos a las ganancias (menos)",
+                  "item": "gasto_impuestos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "resultado_ejercicio.t": {
+                  "row": 27,
+                  "label": "23070.0 ganancia (perdida)",
+                  "item": "resultado_ejercicio",
+                  "period": "t",
+                  "sign": 1
+                }
+              },
+              "entity_columns": {
+                "67": "C",
+                "78": "D",
+                "80": "E",
+                "81": "F",
+                "99": "G",
+                "107": "H",
+                "108": "I",
+                "total": "J"
+              },
+              "values": {
+                "ganancia_bruta.t": {
+                  "67": 18049.008,
+                  "78": 21981.0,
+                  "80": 2849.009,
+                  "81": 20402.694,
+                  "99": 19572.283,
+                  "107": 38072.949,
+                  "108": 5455.363,
+                  "total": 126382.306
+                },
+                "resultado_antes_impuestos.t": {
+                  "67": 1976.441,
+                  "78": 9291.788,
+                  "80": -708.9590000000001,
+                  "81": 2273.475,
+                  "99": 5421.031,
+                  "107": 24711.719,
+                  "108": -62.835,
+                  "total": 42902.66
+                },
+                "gasto_impuestos.t": {
+                  "67": 492.529,
+                  "78": 2509.427,
+                  "80": -83.59700000000001,
+                  "81": 569.676,
+                  "99": 1502.878,
+                  "107": 6671.227,
+                  "108": -33.13,
+                  "total": 11629.01
+                },
+                "resultado_ejercicio.t": {
+                  "67": 1483.912,
+                  "78": 6782.361,
+                  "80": -625.362,
+                  "81": 1703.799,
+                  "99": 3918.1530000000002,
+                  "107": 18040.492000000002,
+                  "108": -29.705000000000002,
+                  "total": 31273.65
+                }
+              },
+              "cells": {
+                "ganancia_bruta.t": {
+                  "67": "C9",
+                  "78": "D9",
+                  "80": "E9",
+                  "81": "F9",
+                  "99": "G9",
+                  "107": "H9",
+                  "108": "I9",
+                  "total": "J9"
+                },
+                "resultado_antes_impuestos.t": {
+                  "67": "C23",
+                  "78": "D23",
+                  "80": "E23",
+                  "81": "F23",
+                  "99": "G23",
+                  "107": "H23",
+                  "108": "I23",
+                  "total": "J23"
+                },
+                "gasto_impuestos.t": {
+                  "67": "C24",
+                  "78": "D24",
+                  "80": "E24",
+                  "81": "F24",
+                  "99": "G24",
+                  "107": "H24",
+                  "108": "I24",
+                  "total": "J24"
+                },
+                "resultado_ejercicio.t": {
+                  "67": "C27",
+                  "78": "D27",
+                  "80": "E27",
+                  "81": "F27",
+                  "99": "G27",
+                  "107": "H27",
+                  "108": "I27",
+                  "total": "J27"
+                }
+              },
+              "sum_check": {
+                "ganancia_bruta.t": "Σ Isapres 1.26382e+08 = total 1.26382e+08 (tolerancia 1)",
+                "resultado_antes_impuestos.t": "Σ Isapres 4.29027e+07 = total 4.29027e+07 (tolerancia 1)",
+                "gasto_impuestos.t": "Σ Isapres 1.1629e+07 = total 1.1629e+07 (tolerancia 1)",
+                "resultado_ejercicio.t": "Σ Isapres 3.12736e+07 = total 3.12736e+07 (tolerancia 1)"
+              }
+            },
+            "eres_cerradas": {
+              "sheet": "E. Resultados I. Cerradas",
+              "header_row": 6,
+              "unit": "MM$",
+              "scale": 0.001,
+              "layout": "accounts_in_rows",
+              "columns": {
+                "ganancia_bruta.t": {
+                  "row": 10,
+                  "label": "30030.0 ganancia bruta",
+                  "item": "ganancia_bruta",
+                  "period": "t",
+                  "sign": 1
+                },
+                "resultado_antes_impuestos.t": {
+                  "row": 24,
+                  "label": "30170.0 ganancia (perdida), antes de impuestos",
+                  "item": "resultado_antes_impuestos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "gasto_impuestos.t": {
+                  "row": 25,
+                  "label": "30180.0 gasto por impuestos a las ganancias (menos)",
+                  "item": "gasto_impuestos",
+                  "period": "t",
+                  "sign": 1
+                },
+                "resultado_ejercicio.t": {
+                  "row": 28,
+                  "label": "23070.0 ganancia (perdida)",
+                  "item": "resultado_ejercicio",
+                  "period": "t",
+                  "sign": 1
+                }
+              },
+              "entity_columns": {
+                "63": "C",
+                "76": "D",
+                "94": "E",
+                "total": "F"
+              },
+              "values": {
+                "ganancia_bruta.t": {
+                  "63": -421.711,
+                  "76": 1866.378,
+                  "94": 165.76500000000001,
+                  "total": 1610.432
+                },
+                "resultado_antes_impuestos.t": {
+                  "63": 2005.553,
+                  "76": 952.296,
+                  "94": 52.888,
+                  "total": 3010.737
+                },
+                "gasto_impuestos.t": {
+                  "63": -21.713,
+                  "76": 193.19400000000002,
+                  "94": 22.253,
+                  "total": 193.734
+                },
+                "resultado_ejercicio.t": {
+                  "63": 2027.266,
+                  "76": 759.102,
+                  "94": 30.635,
+                  "total": 2817.003
+                }
+              },
+              "cells": {
+                "ganancia_bruta.t": {
+                  "63": "C10",
+                  "76": "D10",
+                  "94": "E10",
+                  "total": "F10"
+                },
+                "resultado_antes_impuestos.t": {
+                  "63": "C24",
+                  "76": "D24",
+                  "94": "E24",
+                  "total": "F24"
+                },
+                "gasto_impuestos.t": {
+                  "63": "C25",
+                  "76": "D25",
+                  "94": "E25",
+                  "total": "F25"
+                },
+                "resultado_ejercicio.t": {
+                  "63": "C28",
+                  "76": "D28",
+                  "94": "E28",
+                  "total": "F28"
+                }
+              },
+              "sum_check": {
+                "ganancia_bruta.t": "Σ Isapres 1.61043e+06 = total 1.61043e+06 (tolerancia 1)",
+                "resultado_antes_impuestos.t": "Σ Isapres 3.01074e+06 = total 3.01074e+06 (tolerancia 1)",
+                "gasto_impuestos.t": "Σ Isapres 193734 = total 193734 (tolerancia 1)",
+                "resultado_ejercicio.t": "Σ Isapres 2.817e+06 = total 2.817e+06 (tolerancia 1)"
+              }
+            }
+          },
+          "coverage_note": {
+            "sheet": "Notas Explicativas",
+            "cell": "A18",
+            "text": "La Isapre Esencial no presenta información a marzo 2026, dado que sus cifras se encuentran en proceso de revisión.",
+            "text_sha256": "f4af8022b0905f82a837cdeee3e3eef44b11f7ef592117de8e0895670e0b6ab8"
+          }
+        }
+      }
+    }
+  ]
+}

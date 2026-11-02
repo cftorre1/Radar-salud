@@ -1170,4 +1170,8 @@ def test_registry_declares_f1_rules():
     f1cfg = reg["families"]["F1"]
     assert f1cfg["status"] == "active" and len(f1cfg["open_codes"]) == 7
     assert "abiertas" in f1cfg["kpis"]["participacion"]["denominator"].lower()
-    assert reg["families"]["F2"]["status"] == "planned" and reg["lectura"]["max_words"] == 60 <= 90  # short Lectura
+    # F2 is active since 2-nov-2026 with a reviewed template; its paid Lectura stays off until Dirección enables it.
+    f2cfg = reg["families"]["F2"]
+    assert f2cfg["status"] == "active" and f2cfg["lectura_enabled"] is False and "blocked_by" not in f2cfg
+    assert f2cfg["parser_template"]["reviewed_by"] not in ("", "pendiente", None) and f2cfg["parser_template"]["reviewed_at"]
+    assert reg["lectura"]["max_words"] == 60 <= 90  # short Lectura
