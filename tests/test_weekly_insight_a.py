@@ -80,6 +80,14 @@ class FakeModels:
                                response_id=f"fake-{len(self.calls)}", fallback_used=False)
 
 
+@pytest.fixture(autouse=True)
+def no_stats_anchor(monkeypatch):
+    """These tests cover the normal topic path; the stats-release anchor (Dirección 2-nov) has its own
+    tests and must not change with whatever ficha is live in the repo."""
+    monkeypatch.setattr(gen, "stats_anchor_plan", lambda *a, **kw: {"rule": "stats_anchor_v1", "status": "disabled",
+                                                                     "reason": "test"})
+
+
 @pytest.fixture
 def pipeline(monkeypatch):
     main, related = ageing_signals()

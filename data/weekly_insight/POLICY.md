@@ -31,3 +31,51 @@
 - The attempt is saved to `candidates/<monday>-candidate.json` for the coordinator.
 - A paid FAIL is not retried automatically for the same Monday (`--force` is required). This
   prevents paying twice.
+
+## Ficha vs. Insight: stats-release anchor (Dirección, 2-nov-2026)
+
+> This section belongs in `data/stats_fichas/PLAYBOOK.md`. The playbook is not on `staging` yet
+> (PR #117 is still open), so it lives here until then; move it as a new playbook section once #117 merges.
+
+### Two different products
+
+- **Ficha** (statistics family: F1 Cartera, F2 FEFI, F4 GES, F6 Boletín IP): the news of the release,
+  with the analysis of its own data. Built by code; only the 60-word Lectura can be written by a model.
+- **Insight** (Monday, format A): does **not** repeat the ficha. It crosses the anchor release with other
+  relevant material, associates them and offers a thesis: what is happening and what to watch.
+  Material to cross with: other fichas (e.g. FEFI results vs. F1 cartera trend), licencias médicas,
+  recent SIS circulars and sanctions, Congreso bills, FNE cases, relevant Global themes, press.
+
+### Selection rule (`src/radar_salud/weekly_insight_stats_anchor.py`, flag in `config/weekly_insight_stats_anchor_v1.json`)
+
+1. A ficha of a configured family whose live file is `status: PASS` (verification PASS, reconciliation
+   not failed), has `new_period` in its triggers and a `published_at` in the 7 days before the Monday
+   (same window as the normal rule) is the **primary candidate**.
+2. Ties: materiality first (`threshold_crossed` or featured = level 2, plain new period = level 1), then
+   the most recent publication, then the family order of the config.
+3. The same ficha is not anchored two Mondays in a row. A ficha in HOLD (e.g. F2 FEFI while
+   `HOLD_COVERAGE_ESENCIAL` is active) never qualifies, because it has no live PASS file.
+4. The reason is recorded in `topic_selection` (approved file and candidate record).
+
+### Contract (deterministic, `contract_check`)
+
+- ≥ 2 distinct cross-reference sources from the last 90 days of our data, from the brief, each in
+  `sources` with URL, label and role. The anchor family's own loose cards and pulses do not count.
+- ≤ 2 anchor figures, each one of the brief's allowed figures (KPI values or lines with their evidence refs).
+- Every displayed figure (text, charts, notes) traced to a named source via `figure_sources`, or to a
+  recomputed estimate.
+- No paragraph that only restates ficha figures and vocabulary.
+- `essay.reading` is the **Tesis**; `watch` (≥ 2 items) is **Qué mirar**.
+- No sentence whose stem Jaccard against a ficha sentence, headline or dek (any live ficha) is ≥ 0,5.
+
+If fewer than 2 cross-references exist, the run uses the normal topic selection before any model call.
+If the stats-anchored draft fails the contract, the run falls back to the normal topic selection (same
+writer, reviewer, `MAX_RUN_USD` cap and monthly budget; the fallback draft is paid only if it fits the
+cap). A weak Insight is never published.
+
+### Drafter brief
+
+`python scripts/run_weekly_insight_a.py --offline` writes
+`data/weekly_insight/candidates/<monday>-stats-brief.json` when a stats anchor qualifies: anchor,
+cross-references with links and why each is relevant, allowed anchor figures, ficha text not to repeat
+and the contract. A session or human drafter works from it and runs `contract_check` before publishing.

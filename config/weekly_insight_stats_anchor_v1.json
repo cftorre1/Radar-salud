@@ -1,0 +1,45 @@
+{
+  "schema_version": "weekly_insight_stats_anchor_v1",
+  "enabled": true,
+  "authorization": {
+    "by": "Dirección",
+    "date": "2026-11-02",
+    "note": "Cuando una ficha de familia estadística (F1 Cartera, F2 FEFI, F4 GES, F6 Boletín IP) publica un período NUEVO durante la semana y pasa verificación, es la candidata principal del Insight del lunes siguiente. Ficha e Insight son productos distintos: el Insight no repite la ficha; cruza el dato ancla con otro material relevante (otras fichas, licencias, circulares y sanciones SIS, Congreso, FNE, temas Global) y ofrece una tesis y qué mirar. Si no cumple el contrato, se vuelve a la selección normal de tema.",
+    "scope": "Solo cambia la selección del tema y agrega un contrato verificable. Mismo modelo redactor, mismo revisor, mismo tope por corrida (MAX_RUN_USD) y mismo presupuesto mensual pautado; no activa gasto nuevo."
+  },
+  "families": ["F1", "F2", "F4", "F6"],
+  "window_days": 7,
+  "materiality": {
+    "rule": "Gana el nivel de materialidad más alto; dentro del nivel, la publicación más reciente; luego el orden de families.",
+    "levels": {
+      "2": "threshold_crossed en triggers o ficha destacada (featured)",
+      "1": "período nuevo sin umbral cruzado"
+    }
+  },
+  "cross_lookback_days": 90,
+  "min_cross_sources": 2,
+  "max_cross_candidates": 6,
+  "min_relevance": 2,
+  "max_anchor_figures": 2,
+  "sentence_jaccard_max": 0.5,
+  "restatement_coverage": 0.7,
+  "fallback_redraft_after_contract_fail": true,
+  "related_families": {
+    "F1": ["F2", "F4"],
+    "F2": ["F1", "F4"],
+    "F4": ["F1", "F6"],
+    "F6": ["F4"]
+  },
+  "family_keywords": {
+    "F1": ["isapre", "isapres", "cartera", "beneficiario", "beneficiarios", "cotizante", "cotizantes", "afiliado", "afiliados",
+           "fonasa", "plan de salud", "planes de salud", "precio base", "alza de precios", "tabla de factores", "ley corta",
+           "movilidad", "traspaso", "desafiliacion"],
+    "F2": ["isapre", "isapres", "resultado financiero", "resultados financieros", "utilidad", "utilidades", "perdida", "perdidas",
+           "patrimonio", "solvencia", "deuda", "garantia", "fefi", "indicadores financieros", "excedentes", "ley corta"],
+    "F4": ["ges", "auge", "garantias explicitas", "garantia de oportunidad", "problema de salud", "problemas de salud",
+           "decreto ges", "canasta", "cancer", "lista de espera", "listas de espera", "garantias retrasadas"],
+    "F6": ["acreditacion", "acreditados", "prestador", "prestadores", "reclamo", "reclamos", "mediacion", "rnpi",
+           "intendencia de prestadores", "clinica", "clinicas", "hospital", "hospitales", "registro nacional de prestadores"]
+  },
+  "source_name": "Superintendencia de Salud"
+}
