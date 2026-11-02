@@ -1140,7 +1140,10 @@ def public_ficha(ficha: dict) -> dict:
     return pub
 
 
-def ficha_card(ficha: dict, cfg: dict) -> dict:
+def ficha_card(ficha: dict, cfg: dict, feed_date: str | None = None) -> dict:
+    """``feed_date``: day Alicanto first verified this release (Santiago). The inbox ages and sorts a ficha by it, so a
+    release the SIS published months ago (FEFI March, out 7-jul) is new in the feed the day Alicanto verifies it; the
+    card and ficha keep showing the SIS publication date (``event_date``)."""
     from .editorial_committee import build_committee_artifact
     pub = public_ficha(ficha)
     card = {
@@ -1155,6 +1158,7 @@ def ficha_card(ficha: dict, cfg: dict) -> dict:
         **({"date_basis": "first_detected", "first_detected_at": ficha["published_at"]}
            if ficha.get("date_basis") == "first_detected" else {}),
         "validation_date": str(ficha.get("generated_at") or "")[:10] or None,
+        **({"feed_date": feed_date} if feed_date and feed_date > str(ficha["published_at"])[:10] else {}),
         "data_period": ficha["period"], "event_type": "DATA_PULSE", "category": "Datos sectoriales",
         "signal_types": ["Datos"], "scopes": list(cfg.get("scopes") or ["Isapres"]), "ingestion_mode": "BACKFILL",
         "distribution": "archive",
@@ -1228,8 +1232,20 @@ def ficha_covers(card: dict, ficha: dict) -> bool:
     return bool(day) and day <= str(ficha.get("published_at") or "")[:10]
 
 
-def apply_to_snapshot(cards: list[dict], fichas: list[dict], registry: dict | None = None) -> list[dict]:
-    """One live ficha per family: add its card and drop the pulses and loose cards whose release it covers."""
+def feed_day(ficha: dict, slug: str, root: Path) -> str | None:
+    """Santiago day Alicanto first verified the ficha's release (same record as the weekly Insight anchor)."""
+    from .weekly_insight_stats_anchor import first_verified, local_day
+    fv = first_verified({**ficha, "slug": ficha.get("slug") or slug}, Path(root))
+    day = local_day(fv.get("at")) if fv.get("at") else None
+    return day.isoformat() if day else None
+
+
+def apply_to_snapshot(cards: list[dict], fichas: list[dict], registry: dict | None = None,
+                      root: Path | None = None, as_of: date | None = None) -> list[dict]:
+    """One live ficha per family: add its card and drop the pulses and loose cards whose release it covers.
+
+    With ``root`` the card carries ``feed_date`` (first verification) so the inbox shows a newly verified release. A
+    first verification after ``as_of`` (a snapshot dated in the past, e.g. a test fixture) is ignored."""
     registry = registry or load_registry()
     out = list(cards)
     for ficha in fichas:
@@ -1246,7 +1262,10 @@ def apply_to_snapshot(cards: list[dict], fichas: list[dict], registry: dict | No
             return _stat_family(c) in fams and ficha_covers(c, ficha)
 
         out = [c for c in out if not superseded(c)]
-        out.append(ficha_card(ficha, cfg))
+        feed = feed_day(ficha, cfg["slug"], root) if root is not None else None
+        if feed and as_of and feed > as_of.isoformat():
+            feed = None
+        out.append(ficha_card(ficha, cfg, feed))
     return out
 
 
