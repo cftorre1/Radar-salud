@@ -52,7 +52,12 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as exc:
             summary["capture_fefi"] = {"error": f"{type(exc).__name__}:{exc}"[:200]}
     for fam in families:
-        result = BUILDERS[fam](args.root, today=today, registry=registry, llm=llm)
+        # One family's crash never stops the others (review 2-nov): it is reported and nothing is published for it.
+        try:
+            result = BUILDERS[fam](args.root, today=today, registry=registry, llm=llm)
+        except Exception as exc:
+            summary[fam] = {"status": "error", "errors": [f"{type(exc).__name__}:{exc}"[:200]]}
+            continue
         written = stats_fichas.publish(result, args.root)
         lect = ((result.get("ficha") or {}).get("lectura") or {})
         summary[fam] = {"status": result["status"], "period": result.get("period"),

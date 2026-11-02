@@ -23,6 +23,7 @@ test: the daily workflow runs this suite before collecting, and an external chan
 not stop the daily run. Only one annotation-emitting test should run per PR: GitHub keeps about 10 notices per step.
 """
 import hashlib
+PINNED_2026_03 = "e3c4f7b3cfee"  # sha256 prefix of finan_ifrs_mar_2026_web_v2.xls, the file the template was approved on
 import json
 import os
 import re
@@ -217,12 +218,15 @@ def test_real_fefi_ficha_note_and_template_rule(real_books, capsys, tmp_path, mo
     res = build_ficha(tmp_path, latest, data, prior, prior_data) if reviewed else {"status": "hold", "period": latest["period"],
                                                                                    "errors": ["plantilla sin revisar"]}
     emit(annotation_lines(meta, ficha_text(res), note, "\n".join(status)), capsys)
-    assert len(eres) == 2, names
     parse = fc.parse_fefi_workbook(data, template, latest["period"])
     if not reviewed:
         assert parse["status"] in ("template_placeholder", "template_unreviewed")
         return
-    assert parse["status"] == "verified", parse.get("failures")  # a reviewed template must read the real workbook exactly
+    # A new SIS workbook that the template refuses must HOLD the ficha, never stop the daily run (review 2-nov):
+    # the exact-read assertions apply only to the file the template was approved on.
+    if hashlib.sha256(data).hexdigest().startswith(PINNED_2026_03):
+        assert len(eres) == 2, names
+        assert parse["status"] == "verified", parse.get("failures")  # the approved file must read exactly
     assert res["status"] in ("pass", "hold"), res
     if res["status"] == "pass":
         fi = res["ficha"]

@@ -388,8 +388,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         if item not in yoy:
             return f"{ytd} {t[:4]}; sin comparación a/a"
         c = change(V(f"{item}.sistema.{t1}"), V(f"{item}.sistema.{t}"), result=res)
+        why = {"loss_to_profit": "N/A (cambia de signo)", "profit_to_loss": "N/A (cambia de signo)",
+               "loss_smaller": "N/A (pérdida en ambos años)", "loss_larger": "N/A (pérdida en ambos años)",
+               "same": "N/A (pérdida en ambos años)"}.get(c["transition"], "N/A (base no positiva)")
         return f"{plabel}: {fmt_int(V(f'{item}.sistema.{t1}'))} {MM} · variación % " + (
-            "N/A (cambia de signo)" if c["pct"] is None and res else pct_cell(c["pct"]))
+            why if c["pct"] is None and res else pct_cell(c["pct"]))
 
     def cmp_refs(item: str) -> list[str]:
         if item not in yoy:

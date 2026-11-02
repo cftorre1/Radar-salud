@@ -785,3 +785,30 @@ def test_playbook_is_linked_and_its_code_references_exist():
         if "*" in path or path.endswith("test_stats_fichas_f6_real_pdf.py"):
             continue
         assert (REPO / path).exists(), path
+
+
+def test_result_kpi_line_never_says_sign_change_when_both_years_are_losses():
+    # Review 2-nov: −8.040 → −3.265 MM$ is a loss in both years, not a sign change.
+    from radar_salud.stats_ficha_f2 import change
+    c = change(-8040.0, -3265.0, result=True)
+    assert c["pct"] is None and c["transition"] == "loss_smaller"
+    import inspect, radar_salud.stats_ficha_f2 as m
+    src = inspect.getsource(m)
+    assert '"loss_smaller": "N/A (pérdida en ambos años)"' in src
+
+
+def test_runner_reports_a_family_crash_and_keeps_going(tmp_path, monkeypatch):
+    import importlib.util, json
+    spec = importlib.util.spec_from_file_location("rsf", Path(__file__).resolve().parents[1] / "scripts/run_stats_fichas.py")
+    rsf = importlib.util.module_from_spec(spec); spec.loader.exec_module(rsf)
+    calls = []
+    def boom(*a, **k): raise RuntimeError("compose failed")
+    def ok(*a, **k): calls.append(1); return {"status": "hold", "period": "2026-06", "errors": ["x"]}
+    monkeypatch.setattr(rsf, "BUILDERS", {fam: (boom if i == 0 else ok) for i, fam in enumerate(rsf.BUILDERS)})
+    monkeypatch.setattr(rsf.stats_fichas, "publish", lambda result, root: {})
+    for name in [n for n in dir(rsf) if n.startswith("stats_capture")]:
+        mod = getattr(rsf, name)
+        for fn in [f for f in dir(mod) if f.startswith("capture")]:
+            monkeypatch.setattr(mod, fn, lambda *a, **k: {})
+    assert rsf.main(["--root", str(tmp_path), "--no-llm"] if "--no-llm" in open(spec.origin).read() else ["--root", str(tmp_path)]) == 0
+    assert calls  # the families after the crashing one still ran
