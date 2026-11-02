@@ -56,7 +56,8 @@ test('every Chile and Global row type carries Ver ficha, its source link when it
   return {kind:s.stats_ficha?'stats':/diario oficial/i.test(s.source_name||'')?'diario':tags.includes('Normativa')?'normativa':tags.includes('Datos')||s.event_type==='DATA_PULSE'?'datos':'news',
    link:Boolean(originalLink(s)),labels:[...r.querySelectorAll('.row-acts .act')].map(a=>a.textContent.trim())}}));
  const kinds=new Set(rows.map(r=>r.kind));
- for(const k of ['news','normativa','datos','stats'])expect(kinds.has(k),k).toBeTruthy();
+ // 'datos' rows may all be absorbed into family fichas (F6 since 30-oct-2026); the row contract below covers them when present.
+ for(const k of ['news','normativa','stats'])expect(kinds.has(k),k).toBeTruthy();
  for(const r of rows){expect(r.labels,r.kind).toEqual(r.link?ORDER:['Ver ficha','Compartir'])}
  await page.goto('/global.html');await expect(page.locator('#themes article.item').first()).toBeVisible();
  const g=await page.locator('#themes article.item').evaluateAll(rs=>rs.map(r=>[...r.querySelectorAll('.row-acts .act')].map(a=>a.textContent.trim())));

@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-10-30",
-  "generated_at": "2026-10-30T04:16:30.686716+00:00",
+  "as_of": "2026-11-01",
+  "generated_at": "2026-11-02T02:04:57.181991+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -37,20 +37,13 @@
     [
       "fda",
       "FDA"
-    ],
-    [
-      "who",
-      "OMS"
     ]
   ],
   "held": {
-    "feed_not_authorized_for_display": 17,
-    "not_global_interest:no_global_interest_signal": 20,
-    "not_global_interest:source_rule_exclusion": 3,
-    "not_material_or_unverified": 111,
+    "feed_not_authorized_for_display": 15,
     "not_relevant_or_undated": 70,
-    "official_title_without_executive_keyword": 81,
-    "publication_activation_pending_paho": 548
+    "publication_activation_pending_paho": 560,
+    "publication_activation_pending_who": 251
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
@@ -313,101 +306,6 @@
       }
     },
     {
-      "id": "b72d7214afd564ada8f3",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "One in four doctors nearing retirement age as WHO warns of global health workforce gap",
-      "url": "https://www.who.int/news/item/18-09-2026-one-in-four-doctors-nearing-retirement-age-as-who-warns-of-global-health-workforce-gap",
-      "published_at": "2026-10-19",
-      "segments": [
-        "providers"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Prestadores"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 88,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "Uno de cada cuatro médicos se acerca a la edad de jubilación y la WHO advierte de una brecha mundial de personal sanitario. La densidad mundial de personal sanitario aumentó 52%, de 44,8 por cada 10.000 habitantes en 2006 a 67,9 en 2025.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "2b0f0585ec67e5a3db9d6ebbbc78d3f8"
-      },
-      "summary_input": "publisher_page_meta_description"
-    },
-    {
-      "id": "895f64511344c997a2bc",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "Early menopause: Why better research and global guidance matter for women’s health",
-      "url": "https://www.who.int/news/item/16-10-2026-early-menopause--why-better-research-and-global-guidance-matter-for-women-s-health",
-      "published_at": "2026-10-16",
-      "segments": [
-        "regulation"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Regulación"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 75,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "La menopausia precoz pone de relieve la importancia de mejorar la investigación y contar con orientaciones mundiales para la salud de las mujeres.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "767607cf4ec6568446f67144d2e9b858"
-      }
-    },
-    {
       "id": "075ea1273caa1acd719b",
       "source": "ec_health",
       "source_label": "Comisión Europea",
@@ -447,7 +345,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-10-30",
+      "first_seen_on": "2026-11-01",
       "title_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "description_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "translation": {
@@ -517,149 +415,6 @@
         "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
         "change_notice_es": "Traducción de Alicanto",
         "cache_key": "b044be63d18ebd17f0b52b428fcfffec"
-      }
-    },
-    {
-      "id": "b1cec9334e573bd24e4a",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "WHO guidelines on the integrated management of obesity in adolescents",
-      "url": "https://www.who.int/publications/i/item/9789240123878",
-      "published_at": "2026-10-07",
-      "segments": [
-        "regulation"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Regulación"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 90,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "Una guía clínica y de salud pública mundial entrega recomendaciones integradas, basadas en la práctica y la evidencia científica, para manejar la obesidad en adolescentes de 10 a 19 años mediante un enfoque de atención primaria de salud.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "c8957f8f1147c518541d86f28b819db3"
-      },
-      "summary_input": "publisher_page_meta_description"
-    },
-    {
-      "id": "76868a5aacebc358eb15",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "WHO guidelines on the integrated management of obesity in children",
-      "url": "https://www.who.int/publications/i/item/9789240123397",
-      "published_at": "2026-10-07",
-      "segments": [
-        "regulation"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Regulación"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 90,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "La guía de la WHO entrega recomendaciones clínicas y de salud pública, adaptables y basadas en la práctica y la evidencia, para el manejo integrado de la obesidad en niños de 29 días a menores de 10 años, desde la atención primaria.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "f74492a1794adb9437993ce56a75e9d0"
-      },
-      "summary_input": "publisher_page_meta_description"
-    },
-    {
-      "id": "444047af244f7312c9d4",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "WHO issues first global guidelines on child and adolescent obesity",
-      "url": "https://www.who.int/news/item/07-10-2026-who-issues-first-global-guidelines-on-child-and-adolescent-obesity",
-      "published_at": "2026-10-07",
-      "segments": [
-        "regulation"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Regulación"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 90,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "La WHO emite las primeras directrices mundiales sobre obesidad infantil y adolescente.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "0f8c03e2b71b2bef1b5d6fe9f1c848dc"
       }
     },
     {
@@ -891,54 +646,6 @@
       }
     },
     {
-      "id": "1fe7798917d08ec8430f",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "New WHO report calls for stronger ethics oversight of AI-related health research",
-      "url": "https://www.who.int/news/item/21-09-2026-new-who-report-calls-for-stronger-ethics-oversight-of-ai-related-health-research",
-      "published_at": "2026-09-21",
-      "segments": [
-        "ai_in_health"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "IA en salud"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 75,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "Un nuevo informe de WHO propone fortalecer la supervisión ética de la investigación en salud relacionada con la inteligencia artificial y recomienda realizarla responsablemente, en beneficio de todas las personas.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "f6c0c4d8b703d831d190e65341e25450"
-      },
-      "summary_input": "publisher_page_meta_description"
-    },
-    {
       "id": "463a07f32cd10e2546fc",
       "source": "fda",
       "source_label": "FDA",
@@ -997,197 +704,6 @@
       }
     },
     {
-      "id": "29c4af3a6942ffa52c35",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "WHO calls for more research into traditional medicine to meet growing health needs",
-      "url": "https://www.who.int/news/item/17-09-2026-who-calls-for-more-research-into-traditional-medicine-to-meet-growing-health-needs",
-      "published_at": "2026-09-17",
-      "segments": [
-        "pharma"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Medicamentos y farma"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 75,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "WHO pide más investigación sobre la medicina tradicional, complementaria e integrativa, usada por miles de millones de personas. Menos del 1% del financiamiento mundial para investigación en salud aborda la seguridad, eficacia y pertinencia de estos enfoques.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "01a221da196bf4bacef2551b46bc53e7"
-      },
-      "summary_input": "publisher_page_meta_description"
-    },
-    {
-      "id": "188020d7e3a2aab3464d",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "WHO global research priorities and agenda for traditional, complementary and integrative medicine 2025–2034",
-      "url": "https://www.who.int/publications/i/item/9789240124738",
-      "published_at": "2026-09-16",
-      "segments": [
-        "pharma"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Medicamentos y farma"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 75,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "WHO reconoce el creciente papel mundial de la medicina tradicional y la necesidad de integrarla con base en evidencia a los sistemas de salud, mediante una agenda de investigación para 2025–2034 que abarca enfoques complementarios e integrativos.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "bc8fdc64c0b5c9077f80208ce5ffb2ab"
-      },
-      "summary_input": "publisher_page_meta_description"
-    },
-    {
-      "id": "f71b61d5d3ebbc6eddd1",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "Committing to sexual and reproductive health and rights: investing in people through universal health coverage: an investment in people",
-      "url": "https://www.who.int/publications/i/item/B09881",
-      "published_at": "2026-09-15",
-      "segments": [
-        "payers"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Aseguradores y financiamiento"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 88,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "El compromiso con la salud y los derechos sexuales y reproductivos se presenta como una inversión en las personas mediante la cobertura sanitaria universal.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "21e269e85baad85afa94712f57ae3d39"
-      }
-    },
-    {
-      "id": "78c6485f030d4ad75096",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "Vaccines, thiomersal and autism spectrum disorder: evidence review 2010-2025",
-      "url": "https://www.who.int/publications/i/item/9789240123533",
-      "published_at": "2026-09-03",
-      "segments": [
-        "pharma"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Medicamentos y farma"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 85,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "Una revisión sistemática de estudios publicados entre 2010 y agosto de 2025 evaluó posibles asociaciones entre vacunas y trastorno del espectro autista, con foco en thiomersal, y consideró otros trastornos del neurodesarrollo; los estudios más rigurosos no respaldan causalidad.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "3eaf7e8465357c4a01ecf9d96c0007c6"
-      },
-      "summary_input": "publisher_page_meta_description"
-    },
-    {
       "id": "55f97ea4aaa05a231a6e",
       "source": "fda",
       "source_label": "FDA",
@@ -1244,74 +760,26 @@
         "change_notice_es": null,
         "cache_key": "474738767e426d44dc6aa4eabe144724"
       }
-    },
-    {
-      "id": "7178c4ecf9894c615e2d",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "Global initiative launched to improve access to mpox vaccines",
-      "url": "https://www.who.int/news/item/02-09-2026-global-initiative-launched-to-improve-access-to-mpox-vaccines",
-      "published_at": "2026-09-02",
-      "segments": [
-        "pharma"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Medicamentos y farma"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 85,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-10-29",
-      "summary_es": "El 27 de agosto se lanzó una iniciativa global para crear una reserva de vacunas contra mpox y asegurar acceso al responder a brotes. Comenzará a operar este mes, financiada por Gavi y coordinada por el ICG.",
-      "translation": {
-        "status": "summarized",
-        "kind": "summary",
-        "method": "alicanto_summary_es_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
-        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "cache_key": "4e7044da295bad4b4557765a87977384"
-      },
-      "summary_input": "publisher_page_meta_description"
     }
   ],
   "translation": {
     "translated": 10,
-    "summarized": 13,
-    "from_cache": 14,
-    "verification_failed": 12,
-    "review_failed": 3,
-    "not_allowed": 18,
+    "summarized": 2,
+    "from_cache": 12,
+    "verification_failed": 5,
+    "review_failed": 0,
+    "not_allowed": 2,
     "pending": 0,
     "source_in_spanish": 0
   },
-  "ai_text_items": 23,
+  "ai_text_items": 12,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget",
   "display": {
     "spanish_only": true,
-    "shown": 23,
-    "hidden": 23,
+    "shown": 12,
+    "hidden": 7,
     "hidden_by_reason": {
-      "not_allowed_without_verified_summary": 18,
+      "not_allowed_without_verified_summary": 2,
       "translation_verification_failed": 5
     },
     "authorized_by": "Dirección (cftorre1)",
