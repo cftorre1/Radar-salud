@@ -147,8 +147,9 @@ test('weekly freshness expires at Chile midnight and rejects invalid or recycled
 // Dirección 27-oct-2026 approved presentation A for the weekly insight: headline → charts → short essay
 // (facts | Lectura Alicanto) → Qué mirar → numbered evidence notes → sources. The old list sections
 // (Actores, Decisiones que cambia, Límites de la evidencia…) are no longer rendered when the new fields exist.
+// Fixture: the 23-oct licencias insight (paired bars + partial month), archived when the 2-nov insight was published.
 test('approved insight renders presentation A with charts, footnoted limits and all evidence links',()=>{
- const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight,body={innerHTML:''};
+ const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/archive/2026-10-23.json')).weekly_insight,body={innerHTML:''};
  c.document={getElementById:id=>body};c.renderWeeklyDetail(w);
  const html=body.innerHTML;
  assert.ok(html.includes(w.headline.slice(0,40)));
@@ -164,8 +165,18 @@ test('approved insight renders presentation A with charts, footnoted limits and 
  assert.match(html,/parcial · al día 16/);assert.match(html,/stroke-dasharray="4 3"/);
  assert.match(html,/lectura de 2 min/);
 });
-test('older list-schema insights keep their original sections',()=>{
+test('current approved insight renders presentation A: two zero-based charts, resolved notes, every source',()=>{
  const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight,body={innerHTML:''};
+ c.document={getElementById:id=>body};c.renderWeeklyDetail(w);
+ const html=body.innerHTML;
+ assert.ok(html.includes(w.headline.slice(0,40)));
+ assert.equal((html.match(/<svg /g)||[]).length,w.charts.length);
+ assert.doesNotMatch(html,/\[\^n\d+\]/);
+ for(const n of w.notes)assert.ok(html.includes(`id="wi-note-${n.id}"`));
+ for(const url of w.source_refs)assert.ok(html.includes(url));
+});
+test('older list-schema insights keep their original sections',()=>{
+ const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/archive/2026-10-23.json')).weekly_insight,body={innerHTML:''};
  const legacy={...w,charts:w.legacy_charts};for(const k of ['headline','dek','essay','watch','notes','estimates'])delete legacy[k];
  c.document={getElementById:id=>body};c.renderWeeklyDetail(legacy);
  for(const label of ['Cifras y alcance','Actores','Lectura Alicanto:','Decisiones que cambia','Qué observar','Límites de la evidencia'])assert.ok(body.innerHTML.includes(label));

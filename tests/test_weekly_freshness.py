@@ -10,8 +10,11 @@ from radar_salud import weekly_insight_v2 as pipeline
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Fixture: the human-reviewed licencias insight of 23-oct (archived when the 2-nov insight was published).
+FIXTURE = ROOT/'data/weekly_insight/archive/2026-10-23.json'
+
 def approved():
-    payload=json.loads((ROOT/'data/weekly_insight/editorial_approved.json').read_text())
+    payload=json.loads(FIXTURE.read_text())
     payload['weekly_insight'].update(event_date='2026-10-07',freshness_anchor_date='2026-10-07',expires_on='2026-10-14')
     return payload
 
