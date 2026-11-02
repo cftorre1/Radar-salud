@@ -172,6 +172,14 @@ def test_real_acreditacion_pdfs_templates(real_pdf, capsys, tmp_path, monkeypatc
     acr = next(d for r in store["releases"] for d in r["documents"] if d["url"] == ACR)
     assert acr["sha256"] == sha
     acr.update(status="captured", parse=res)
+    # SIMULATED stand-in for the daily re-check of the other three N°2 PDFs (verified before reading hashes existed;
+    # this test downloads only acreditación): their recorded 'verified' parse is bound to the unchanged N°2 reading.
+    verified = cap.verified_metrics(root)
+    for d in next(r for r in store["releases"] if r["period"] == "2026-06")["documents"]:
+        if d["url"] != ACR and (d.get("parse") or {}).get("reading_sha256") is None:
+            info = verified[d["url"]]
+            assert d["parse"]["status"] == "verified" and set(d["parse"]["verified_present"]) == set(info["metrics"])
+            d["parse"]["reading_sha256"] = cap.reading_sha256(info["metrics"], info["pages_1based"])
     n3 = n3_release(root)
     if n3 and not any(r["period"] == N3_PERIOD for r in store["releases"]):
         store["releases"].append({**n3, "documents": [n3_doc if n3_doc and d["topic"] == "acreditacion" else {**d, "status": "not_fetched"}
