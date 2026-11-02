@@ -132,7 +132,7 @@ test('GES correction: the row tag and the detail note use the same date label',(
 // F4 (GES) and F6 (Boletín IP) fichas: fixture cards built by tests/stats_ficha_fixtures.py (fixture hashes; F4 values
 // are synthetic, F6 values are the verified N°2-2026 reading). Layout only: every number comes from the package.
 for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral'],5,0],
-                                      ['f6_prestadores',['Acreditación','Mediación','Reclamos','RNPI'],3,0]]){
+                                      ['f6_prestadores',['Acreditación','Con observaciones','Reclamos','Mediación'],3,0]]){
  test(`${slug}: index of topics, topic text, collapsed notes and Option-B share`,()=>{
   const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));const f=card.stats_ficha;
   assert.equal(f.evidence,undefined);assert.equal(f.status,'PASS');
@@ -161,10 +161,11 @@ test('F4 shows tasa bruta, Fonasa rate not available and percent bars with one d
  assert.match(html,/aria-label="Problemas que crecen: variación a\/a de casos[^"]*Cáncer de mama en… 35,5%/);
  assert.match(html,/Dos problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
 });
-test('F6 keeps stocks and titles labelled and shows the claims change',()=>{
+test('F6 keeps stocks labelled, shows the claims change and no RNPI (Dirección 2-nov)',()=>{
  const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f6_prestadores.card.json','utf8')).stats_ficha;const html=load().render(f);
- assert.match(html,/971/);assert.match(html,/1\.004\.982/);assert.match(html,/no profesionales únicos/);assert.match(html,/\+30,5%/);
- assert.match(html,/nunca se suman entre boletines/);
+ assert.match(html,/971/);assert.match(html,/\+30,5%/);assert.match(html,/101 con observaciones/);
+ assert.doesNotMatch(html,/RNPI|1\.004\.982|títulos inscritos/);
+ assert.match(html,/nunca se suman/);
 });
 test('line axis labels thin out for many quarters; F1 monthly labels keep every position',()=>{
  const F=load();const xs=svg=>[...svg.matchAll(/<text class="sf-xlab" x="([\d.]+)"[^>]*>([^<]+)</g)].map(m=>[Number(m[1]),m[2]]);

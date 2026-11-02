@@ -69,6 +69,12 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
   - Until the new release passes, the ficha keeps the last verified release and the new one is written to `hold/<slug>-<period>.json` (`release_holds`).
   - Meanwhile its loose PDF cards are shown as **one** card titled from the documents ("Boletín Estadístico Informativo IP N°3 · enero–septiembre 2026", `sis_bulletins.collapse_loose_bulletins`). It lists the PDFs, says the figures are being verified and links the live ficha; it shows no figure. Once the ficha covers that release, the card is absorbed like any loose card of the family (`stat_period` read from the file names).
 
+- **F6 topics and N°3 (Dirección, 2-nov-2026):**
+  - Topics: Acreditación, Con observaciones, Reclamos, Mediación. The RNPI PDF stays in the release check (captured, hashed, its reading verified), but no RNPI topic, figure or source is shown.
+  - Headline generated from verified values: "Prestadores acreditados llegan a 1.009 a septiembre, 38 más que en junio; 124 con observaciones" (wording by the sign of the verified change; the level only without a verified previous bulletin).
+  - "Mostrar con nota": a figure whose source table does not add up is shown only with the reading's short footnote (`source_notes` in `config/statistical_analysis_verified_v1.json`, placeholders filled from that document's verified figures). SIS numbers are never corrected; a note naming an unknown figure HOLDs (`source_note_invalid`).
+  - A reading added after the capture HOLDs the release (`reading_awaits_document_recheck`) until the capture run re-checks the hashed PDFs once against it.
+
 ## Text receipts
 
 - **Purpose:** the reviewer who writes the independent reading of a new release (e.g. Boletín IP N°3-2026, period 2026-09: acreditación, mediación, reclamos, RNPI) reads the documents' text from the repository; only the daily run can download SIS files. A receipt is reference text for that reviewer. It never verifies a figure: figures are still checked against the hashed document (`parse_boletin_pdf`).

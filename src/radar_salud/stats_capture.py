@@ -210,7 +210,10 @@ def verified_metrics(root: Path) -> dict[str, dict]:
     for doc in (cfg.get("primary_review") or {}).get("documents") or []:
         if doc.get("url") and isinstance(doc.get("verified_metrics"), dict):
             out[doc["url"]] = {"metrics": doc["verified_metrics"], "pages_1based": doc.get("pages_1based"),
-                               "reviewed_at": cfg.get("reviewed_at"), "unit_caution": doc.get("unit_caution")}
+                               "reviewed_at": cfg.get("reviewed_at"), "unit_caution": doc.get("unit_caution"),
+                               # Short footnotes on figures whose source tables do not add up (Dirección 2-nov,
+                               # 'mostrar con nota'): metric key → text with {metric} placeholders; never a fix.
+                               "source_notes": doc.get("source_notes") if isinstance(doc.get("source_notes"), dict) else {}}
     return out
 
 
