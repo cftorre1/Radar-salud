@@ -34,48 +34,47 @@
 
 ## Ficha vs. Insight: stats-release anchor (Dirección, 2-nov-2026)
 
-> This section belongs in `data/stats_fichas/PLAYBOOK.md`. The playbook is not on `staging` yet
-> (PR #117 is still open), so it lives here until then; move it as a new playbook section once #117 merges.
+The product rule, the selection rule and the contract live in
+[`data/stats_fichas/PLAYBOOK.md` §9](../stats_fichas/PLAYBOOK.md) (moved there when #117 merged). In short:
 
-### Two different products
+- A stats-family ficha whose new period Alicanto **first verified** in the 7 days before the Monday, with a SIS
+  publication at most 30 days old on that Monday, is the primary candidate. The selection reason records both dates.
+- The Insight must not repeat the ficha. It must cross it with ≥ 2 other sources and pass `contract_check`.
+- If the anchored draft fails the contract, the pipeline writes a second draft on the normal topic inside the same
+  $1 run cap (`MAX_RUN_USD`) and monthly budget. If that draft does not fit the cap, nothing is paid and the
+  attempt stays as a candidate.
 
-- **Ficha** (statistics family: F1 Cartera, F2 FEFI, F4 GES, F6 Boletín IP): the news of the release,
-  with the analysis of its own data. Built by code; only the 60-word Lectura can be written by a model.
-- **Insight** (Monday, format A): does **not** repeat the ficha. It crosses the anchor release with other
-  relevant material, associates them and offers a thesis: what is happening and what to watch.
-  Material to cross with: other fichas (e.g. FEFI results vs. F1 cartera trend), licencias médicas,
-  recent SIS circulars and sanctions, Congreso bills, FNE cases, relevant Global themes, press.
+## Editorial sessions: brief and contract check are mandatory (Dirección, 2-nov-2026)
 
-### Selection rule (`src/radar_salud/weekly_insight_stats_anchor.py`, flag in `config/weekly_insight_stats_anchor_v1.json`)
+Most Insights are written by hand in scheduled editorial sessions, not by the workflow. When the Monday is
+anchored on a stats ficha, the session **must** follow these steps. CI enforces them.
 
-1. A ficha of a configured family whose live file is `status: PASS` (verification PASS, reconciliation
-   not failed), has `new_period` in its triggers and a `published_at` in the 7 days before the Monday
-   (same window as the normal rule) is the **primary candidate**.
-2. Ties: materiality first (`threshold_crossed` or featured = level 2, plain new period = level 1), then
-   the most recent publication, then the family order of the config.
-3. The same ficha is not anchored two Mondays in a row. A ficha in HOLD (e.g. F2 FEFI while
-   `HOLD_COVERAGE_ESENCIAL` is active) never qualifies, because it has no live PASS file.
-4. The reason is recorded in `topic_selection` (approved file and candidate record).
+1. **Get the brief.** Run `python scripts/run_weekly_insight_a.py --offline --as-of <monday>`. If a stats anchor
+   qualifies, it writes `data/weekly_insight/candidates/<monday>-stats-brief.json`. The brief holds the anchor
+   with both dates, the cross-references with links and why each is relevant, the allowed anchor figures, the
+   ficha text not to repeat, the contract, and a `brief_id`. If no brief is written, the Monday is not anchored:
+   write on the normal topic and skip steps 3–4.
+2. **Write the Insight** from the brief in `editorial_approved.json` (format A). Declare
+   `weekly_insight.stats_anchor = {"ficha_id": …, "brief_id": …}`, as the brief's `insight_must_declare` shows.
+3. **Run the contract check** as the last edit:
+   `python scripts/check_weekly_insight_contract.py --brief data/weekly_insight/candidates/<monday>-stats-brief.json --write`.
+   This writes `data/weekly_insight/contract_checks/<insight id>.json`, which holds the brief id, the check result,
+   the Insight's sha256 and the source sha. Exit code 1 means FAIL: fix the draft and rerun. If the Insight cannot
+   pass, write it on the normal topic instead (decision 2), and drop the `stats_anchor` field.
+4. **Commit together** the Insight, the brief and the record, in the editorial PR toward `staging`.
 
-### Contract (deterministic, `contract_check`)
+**The gate.** `tests/test_weekly_insight_stats_anchor.py::test_committed_weekly_insights_pass_the_contract_gate`
+runs in the PR QA workflow (full `pytest`) and in the weekly-insight guards. It calls `contract_gate`, which you can
+also run as `python scripts/check_weekly_insight_contract.py --gate`. For every Insight in `editorial_approved.json`
+and `archive/` that is anchored on a stats ficha, it fails unless all of these hold:
 
-- ≥ 2 distinct cross-reference sources from the last 90 days of our data, from the brief, each in
-  `sources` with URL, label and role. The anchor family's own loose cards and pulses do not count.
-- ≤ 2 anchor figures, each one of the brief's allowed figures (KPI values or lines with their evidence refs).
-- Every displayed figure (text, charts, notes) traced to a named source via `figure_sources`, or to a
-  recomputed estimate.
-- No paragraph that only restates ficha figures and vocabulary.
-- `essay.reading` is the **Tesis**; `watch` (≥ 2 items) is **Qué mirar**.
-- No sentence whose stem Jaccard against a ficha sentence, headline or dek (any live ficha) is ≥ 0,5.
+- a record exists;
+- its verdict is PASS;
+- its sha256 matches the committed Insight, so any edit after the check invalidates it;
+- the brief exists, and its id matches its frozen contract inputs;
+- the contract, rerun on those inputs, still passes.
 
-If fewer than 2 cross-references exist, the run uses the normal topic selection before any model call.
-If the stats-anchored draft fails the contract, the run falls back to the normal topic selection (same
-writer, reviewer, `MAX_RUN_USD` cap and monthly budget; the fallback draft is paid only if it fits the
-cap). A weak Insight is never published.
-
-### Drafter brief
-
-`python scripts/run_weekly_insight_a.py --offline` writes
-`data/weekly_insight/candidates/<monday>-stats-brief.json` when a stats anchor qualifies: anchor,
-cross-references with links and why each is relevant, allowed anchor figures, ficha text not to repeat
-and the contract. A session or human drafter works from it and runs `contract_check` before publishing.
+An Insight counts as anchored when it declares `stats_anchor`, when its `topic_selection` selected the stats rule,
+or when its primary `source_url` is a stats ficha's source file. Insights on a normal topic are not blocked, even
+when they cite a stats file as a secondary source. The automated pipeline writes the same brief and record when it
+publishes an anchored Insight.

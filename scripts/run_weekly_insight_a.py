@@ -7,7 +7,11 @@
 Offline also evaluates the stats-release anchor (Dirección 2-nov-2026). When a statistics ficha
 published a new period in the week, it writes the drafter brief to
 data/weekly_insight/candidates/<monday>-stats-brief.json (anchor, cross-references with links,
-allowed figures and the ficha-vs-Insight contract) for a human or session drafter.
+allowed figures and the ficha-vs-Insight contract) for a human or session drafter. "New in the week"
+is the day Alicanto first verified the period, with a SIS publication at most 30 days old.
+
+Editorial sessions anchored on that brief must then run scripts/check_weekly_insight_contract.py
+--brief <brief> --write and commit the record (data/weekly_insight/POLICY.md; CI gate).
 """
 from __future__ import annotations
 

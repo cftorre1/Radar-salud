@@ -502,6 +502,7 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
     routes = _routes()
     if stats_mode:
         evidence = sa.build_evidence(selected, root)
+        evidence["stats_anchor"]["brief_id"] = sa.brief_id_for(evidence, anchor)
         prompt = sa.draft_prompt(evidence, anchor)
     else:
         evidence = build_evidence(ranked[0], root)
@@ -639,7 +640,20 @@ def publish(result: dict, root: Path = ROOT) -> dict:
                                       "expires_on": weekly["expires_on"]},
                    "model": weekly.get("model_trace"), "topic_selection": result.get("topic_selection")}
         approved_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        return {"published": True, "approved": str(approved_path), "archived": str(archived) if archived else None}
+        contract_record = None
+        if weekly.get("stats_anchor") and (result.get("evidence") or {}).get("mode") == "stats_anchor":
+            # Same gate as editorial sessions (Dirección 2-nov, decision 3): brief + contract-check record.
+            from . import weekly_insight_stats_anchor as sa
+            ts = result.get("topic_selection") or {}
+            brief = sa.build_brief({"reason": ts.get("reason"), "considered": ts.get("considered"),
+                                    "tried": ts.get("tried"), "authorization": ts.get("authorization")},
+                                   result["evidence"], date.fromisoformat(anchor))
+            brief_path = folder / "candidates" / f"{anchor}-stats-brief.json"
+            brief_path.parent.mkdir(parents=True, exist_ok=True)
+            brief_path.write_text(json.dumps(brief, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            contract_record = sa.write_contract_record(root, weekly, brief, brief_path.resolve(), checked_by="pipeline")["path"]
+        return {"published": True, "approved": str(approved_path), "archived": str(archived) if archived else None,
+                "contract_record": contract_record}
     out = folder / "candidates" / f"{anchor}-candidate.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     record = {k: result.get(k) for k in ("status", "anchor_date", "expires_on", "generated_at", "topic_ranking",

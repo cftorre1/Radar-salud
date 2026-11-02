@@ -66,7 +66,7 @@ jobs:
           if [ "$JOB_OK" = "true" ]; then
             # Publication files only when generation, verification and the reviewer step passed.
             for p in data/weekly_insight/editorial_approved.json data/weekly_insight/latest.json \
-                     data/weekly_insight/archive web/data/free_value.json; do
+                     data/weekly_insight/archive data/weekly_insight/contract_checks web/data/free_value.json; do
               if [ -e "$p" ]; then git add "$p"; fi
             done
           fi

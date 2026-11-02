@@ -9,6 +9,9 @@
   },
   "families": ["F1", "F2", "F4", "F6"],
   "window_days": 7,
+  "week_date_basis": "first_verified",
+  "week_date_note": "Dirección 2-nov-2026 (decisión 1): cuenta como nueva en la semana la fecha en que Alicanto verificó por primera vez el período (first_verified_at de la ficha viva o, si falta, el primer PASS del mismo release_key en el historial git del archivo vivo), siempre que la publicación SIS tenga como máximo sis_max_age_days días al lunes. La razón de selección registra ambas fechas.",
+  "sis_max_age_days": 30,
   "materiality": {
     "rule": "Gana el nivel de materialidad más alto; dentro del nivel, la publicación más reciente; luego el orden de families.",
     "levels": {
@@ -24,6 +27,7 @@
   "sentence_jaccard_max": 0.5,
   "restatement_coverage": 0.7,
   "fallback_redraft_after_contract_fail": true,
+  "fallback_note": "Dirección 2-nov-2026 (decisión 2): se mantiene. Si el borrador anclado falla el contrato, se escribe un segundo borrador sobre el tema normal dentro del mismo tope MAX_RUN_USD (1 USD) y del presupuesto mensual; si no cabe, queda candidato y no se publica.",
   "related_families": {
     "F1": ["F2", "F4"],
     "F2": ["F1", "F4"],
