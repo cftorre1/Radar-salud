@@ -511,6 +511,8 @@ test('F1 ficha presents stock KPIs with separate contracts and mobility views',a
      expect(signal,needle+' must leave the feed when its actual publication date expires').toBeUndefined();
      continue;
    }
+   // A loose release absorbed by its live family ficha (F6 Boletín IP since 30-oct-2026) leaves the feed by design.
+   if(!signal&&url===STATISTICAL_URLS.bulletin&&radar.signals.some(x=>x.stats_ficha?.family==='F6'))continue;
    expect(signal,needle+' missing from snapshot').toBeTruthy();
    expect(signal.summary_table?.rows?.length||0,needle+' table').toBeGreaterThan(0);
    const card=page.locator('article[data-card]').filter({hasText:needle});
@@ -674,6 +676,7 @@ test('priority statistical releases use compact tables and collapsed traceabilit
      expect(s,needle+' must leave the feed when its actual publication date expires').toBeUndefined();
      continue;
    }
+   if(!s&&url===STATISTICAL_URLS.bulletin&&radar.signals.some(x=>x.stats_ficha?.family==='F6'))continue;  // absorbed by the F6 ficha
    expect(s,needle+' missing').toBeTruthy();
    expect((s.data_insights||[]).length,needle+' repeated insight list').toBe(0);
    expect(s.summary_table?.rows?.length||0,needle+' table').toBeGreaterThanOrEqual(minRows);
