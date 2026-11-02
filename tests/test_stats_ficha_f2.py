@@ -153,10 +153,22 @@ def committed_template():
 
 
 def reviewed_template():
-    """The committed template as a reviewer would approve it (only the review fields change)."""
+    """The committed template, reviewed by Dirección on 2-nov-2026: every fixture is read through it as it is."""
     tpl = committed_template()
-    tpl.update(reviewed_by="Fixture reviewer", reviewed_at="2026-11-01")
     assert ft.review_state(tpl) == "ok"
+    return tpl
+
+
+def pending_template():
+    """A copy in the pre-approval state (reviewed_by 'pendiente', no date): the HOLD it must cause stays covered."""
+    return {**committed_template(), "reviewed_by": "pendiente", "reviewed_at": None}
+
+
+def placeholder_template():
+    """A copy with one row back to a ``<<…>>`` placeholder (review fields kept): still HOLD."""
+    tpl = committed_template()
+    acc = next(iter(tpl["tables"]["ctas_abiertas"]["accounts"].values()))
+    acc["pattern"] = "<<fila por confirmar>>"
     return tpl
 
 
@@ -242,12 +254,16 @@ def isolated_ledgers(tmp_path, monkeypatch):
 # Committed state
 
 
-def test_committed_template_reads_only_the_ctas_sheets_and_stays_pending():
+def test_committed_template_is_reviewed_f2_is_active_and_reads_only_the_miles_sheets():
     cfg = sf.load_registry()["families"]["F2"]
     tpl = cfg["parser_template"]
-    assert cfg["status"] == "planned" and cfg["lectura_enabled"] is False
-    assert tpl["reviewed_by"] == "pendiente" and tpl["reviewed_at"] is None
-    assert ft.review_state(tpl) == "unreviewed"  # every row is written; Dirección has not approved it yet
+    # Dirección approved the template and activated F2 on 2-nov-2026; the Lectura (paid) stays off.
+    assert cfg["status"] == "active" and "blocked_by" not in cfg and cfg["lectura_enabled"] is False
+    assert cfg["activated_by"].startswith("Dirección") and date.fromisoformat(cfg["activated_at"])
+    assert tpl["reviewed_by"].startswith("Dirección") and date.fromisoformat(tpl["reviewed_at"]) <= date.fromisoformat(cfg["activated_at"])
+    assert ft.review_state(tpl) == "ok" and not ft.has_placeholder({k: v for k, v in tpl.items() if k != "_doc"})
+    assert "A18" in tpl["review_note"] and "Esencial" in tpl["review_note"]
+    assert cfg["templates"]["kicker"].format(label=cfg["label"], period_label="marzo 2026") == "Estados financieros Isapres · marzo 2026"
     assert {t["sheet"] for t in tpl["tables"].values()} == {
         r"^ctas\. de resultados i\. abierta$", r"^ctas\. de resultados i\. cerradas$",
         r"^e\. resultados i\. abiertas$", r"^e\. resultados i\. cerradas$"}  # never a sheet 'en millones', never E. Sit. Fin.
@@ -271,12 +287,29 @@ def test_committed_rules_record_the_decision_and_keep_the_old_hold():
     assert f2.esencial_hold(REPO) is None and f2.exclusion_rule(REPO)[0] == "fefi_esencial_exclusion"
 
 
-def test_committed_template_parses_nothing_and_holds(tmp_path):
-    root = make_root(tmp_path, template=committed_template())
-    capture(root, template=committed_template())
-    assert stored_doc(root)["parse"]["status"] == "template_unreviewed"
+def test_committed_template_verifies_and_publishes_the_f2_ficha(tmp_path):
+    root = make_root(tmp_path, template=committed_template(), prev=True)
+    capture(root, template=committed_template(), files={URL: workbook(), URL_PREV: workbook(prev_data(), year="2025")})
+    assert stored_doc(root)["parse"]["status"] == "verified" and stored_doc(root, "2025-03")["parse"]["status"] == "verified"
     res = run(root, template=committed_template())
-    assert res["status"] == "hold" and any("parser_template_unreviewed" in e for e in res["errors"])
+    assert res["status"] == "pass", res.get("errors")
+    fi = res["ficha"]
+    assert fi["kicker"] == "Estados financieros Isapres · marzo 2026" and fi["period"] == "2026-03"
+    assert "marzo 2025" in fi["headline"] and {s["key"] for s in fi["sources"]} == {"fefi", "fefi_prev"}
+    assert all(k["label"].endswith("(sistema sin Esencial)") for k in fi["kpis"])
+    assert any(n["id"] == "n0" and "Notas Explicativas!A18" in n["text"] for n in fi["notes"])
+    assert not any(".108." in vid for vid in fi["evidence"]["values"])
+    assert fi["lectura"]["status"] == "not_attempted"
+
+
+@pytest.mark.parametrize("make,state", [(pending_template, "unreviewed"), (placeholder_template, "placeholder")])
+def test_pending_or_placeholder_copies_of_the_template_parse_nothing_and_hold(tmp_path, make, state):
+    tpl = make()
+    root = make_root(tmp_path, template=tpl)
+    capture(root, template=tpl)
+    assert stored_doc(root)["parse"]["status"] == f"template_{state}" and not stored_doc(root)["parse"].get("tables")
+    res = run(root, template=tpl)
+    assert res["status"] == "hold" and any(f"parser_template_{state}" in e for e in res["errors"])
 
 
 @pytest.mark.parametrize("patch,state", [({"reviewed_by": "pendiente"}, "unreviewed"), ({"reviewed_by": ""}, "unreviewed"),
@@ -603,15 +636,17 @@ def test_threshold_is_evaluated_on_the_rounded_value_shown(tmp_path):
 
 
 def test_template_change_triggers_one_hash_bound_recheck_and_keeps_the_previous_parse(tmp_path):
-    root = make_root(tmp_path, template=committed_template())
+    # A workbook captured under the pending template (as before 2-nov) is re-checked once under the approved one.
+    root = make_root(tmp_path, template=pending_template())
     data = workbook()
-    assert len(capture(root, data, template=committed_template()).calls) == 1
-    assert len(capture(root, data, template=committed_template()).calls) == 0  # downloaded once
-    assert len(capture(root, data, template=reviewed_template()).calls) == 1  # template changed: one re-check
+    assert len(capture(root, data, template=pending_template()).calls) == 1
+    assert len(capture(root, data, template=pending_template()).calls) == 0  # downloaded once
+    assert len(capture(root, data, template=committed_template()).calls) == 1  # template changed: one re-check
     doc = stored_doc(root)
     assert doc["parse"]["status"] == "verified" and doc["previous_parse"]["status"] == "template_unreviewed" and doc["rechecked_at"]
-    assert len(capture(root, data, template=reviewed_template()).calls) == 0
-    tpl2 = {**reviewed_template(), "reviewed_at": "2026-11-02"}
+    assert doc["parse"]["template_sha256"] == ft.templates_sha256(committed_template())
+    assert len(capture(root, data, template=committed_template()).calls) == 0
+    tpl2 = {**committed_template(), "reviewed_at": "2026-11-03"}
     capture(root, workbook(note=A18 + " "), template=tpl2)  # other bytes on the re-check
     doc = stored_doc(root)
     assert doc["status"] == "hash_mismatch" and doc["recheck"]["recorded_sha256"] == hashlib.sha256(data).hexdigest()
@@ -676,6 +711,43 @@ def test_f2_never_calls_a_model_while_lectura_is_disabled(tmp_path):
     res = f2.run(root, today=TODAY, registry=registry(), llm=True, model_call=lambda *a, **k: calls.append(1),
                  budget=lambda w: (True, "ok"))
     assert res["status"] == "pass" and calls == [] and res["ficha"]["lectura"]["status"] == "not_attempted"
+
+
+def test_daily_default_runs_and_captures_f2_with_no_paid_call(tmp_path, monkeypatch, capsys):
+    """scripts/run_stats_fichas.py without --family (what the daily workflow runs) now includes F2: it captures the latest
+    FEFI workbook and the same quarter a year earlier, publishes on PASS, and never asks for a Lectura even with a key."""
+    sys.path.insert(0, str(REPO / "scripts"))
+    import run_stats_fichas as runner
+    reg = sf.load_registry()
+    root = make_root(tmp_path, prev=True)
+    fetch = fetcher({URL: workbook(), URL_PREV: workbook(prev_data(), year="2025")})
+    real_capture = runner.stats_capture_fefi.capture_fefi
+    fefi_calls = []
+    monkeypatch.setattr(runner.stats_capture_fefi, "capture_fefi", lambda r: fefi_calls.append(r) or real_capture(r, fetch=fetch))
+    monkeypatch.setattr(runner.stats_capture, "capture", lambda r: {"stub": True})
+    others = []
+    for fam in set(runner.BUILDERS) - {"F2"}:  # the other families are covered by their own suites
+        monkeypatch.setitem(runner.BUILDERS, fam, lambda r, fam=fam, **kw: others.append(fam) or
+                            {"status": "no_change", "family": fam, "slug": reg["families"][fam]["slug"], "period": None})
+    lectura_enabled = []
+    real_lectura = sf.generate_lectura
+    monkeypatch.setattr(sf, "generate_lectura", lambda *a, **kw: lectura_enabled.append(kw.get("enabled")) or real_lectura(*a, **kw))
+    monkeypatch.setenv("OPENAI_API_KEY", "fixture-not-a-key")  # the daily job has a key: F2 must still make no paid call
+    active = {f for f, c in reg["families"].items() if c.get("status") == "active"}
+    assert "F2" in active and active <= set(runner.BUILDERS)
+    assert runner.main(["--root", str(root), "--as-of", TODAY.isoformat()]) == 0
+    summary = json.loads(capsys.readouterr().out)
+    assert fefi_calls and fetch.calls == [URL, URL_PREV] and summary["capture_fefi"]["verified"] >= 2
+    assert set(others) == active - {"F2"}
+    f2s = summary["F2"]
+    assert f2s["status"] == "pass" and f2s["published"] and f2s["lectura"] == "not_attempted" and not f2s["cost_usd"]
+    assert lectura_enabled and not any(lectura_enabled)
+    live = json.loads(Path(f2s["live"]).read_text(encoding="utf-8"))
+    assert live["kicker"] == "Estados financieros Isapres · marzo 2026" and "marzo 2025" in live["headline"]
+    assert all("sistema sin Esencial" in k["label"] for k in live["kpis"])
+    # --no-capture never downloads
+    assert runner.main(["--root", str(root), "--as-of", TODAY.isoformat(), "--family", "F2", "--no-capture"]) == 0
+    assert len(fefi_calls) == 1
 
 
 # ---------------------------------------------------------------------------------------------

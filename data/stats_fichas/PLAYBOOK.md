@@ -120,7 +120,7 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 6. **PR a `staging`.** Revisión independiente. Una persona llena y revisa la plantilla con el texto de CI.
    Dirección activa la familia.
 
-## 7. F2 FEFI (estado al 1 nov)
+## 7. F2 FEFI (estado al 2 nov: plantilla aprobada, F2 activa)
 
 **Qué hace.**
 - **Captura.** `stats_capture_fefi` lista las publicaciones FEFI desde `data/history/superintendencia_signals.json`.
@@ -160,24 +160,26 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
   - Con menos de tres temas, HOLD.
 - **Comparación a/a.** Solo con la planilla del mismo trimestre del año anterior (2025-03), capturada y verificada con
   la misma plantilla. Si falta, la ficha muestra solo los niveles de 2026-03, con la nota "Sin comparación".
-- La Lectura está apagada (`lectura_enabled: false`). F2 sigue `planned` y corre solo con `--family F2`.
+- La Lectura está apagada (`lectura_enabled: false`): ninguna llamada pagada, aunque la corrida diaria tenga clave.
+- **Activa desde el 2 nov.** Dirección aprobó la plantilla (`reviewed_by`, `reviewed_at`, `review_note`) y activó F2
+  (`status: "active"`, `activated_by`, `activated_at`). `scripts/run_stats_fichas.py` sin argumentos (la corrida diaria)
+  la incluye: captura la planilla más reciente y la del mismo trimestre del año anterior (≤ 2 descargas o re-chequeos por
+  corrida) y publica solo con PASS. Antetítulo: "Estados financieros Isapres · <mes año>".
 
-**Qué queda en HOLD y por qué.**
-- `parser_template_unreviewed`: la plantilla está completa, sin marcadores `<<…>>`, pero `reviewed_by` sigue en
-  "pendiente" hasta que Dirección la apruebe.
-- Todas las filas leídas están ancladas al texto real que imprimió CI.
+**Qué sigue en HOLD y por qué.**
+- Una copia de la plantilla con `reviewed_by` "pendiente", sin fecha o con un marcador `<<…>>` no lee nada
+  (`parser_template_unreviewed` / `parser_template_placeholder`); los tests lo cubren sobre copias.
+- Una planilla leída con otra versión de la plantilla se re-chequea una vez, ligada al hash; si los bytes cambian, HOLD.
+- Si A18 deja de decir que Esencial está en revisión para ese período, HOLD.
 
-**Pasos humanos para levantar el HOLD.**
-1. CI corre `tests/test_stats_ficha_f2_real_xls.py` y publica como anotaciones:
-   - todas las filas de las dos hojas E. Resultados I.;
-   - la nota A18;
-   - un estado simulado de la plantilla para 2026-03 y para 2025-03.
-2. Dirección revisa la plantilla con ese texto y la aprueba: `reviewed_by` y `reviewed_at`, en un PR a `staging` con
-   revisión independiente.
-3. En ese PR el test CI debe dar `verified`.
-4. Dirección activa F2 (`status: "active"`) y, por separado, la Lectura.
-   - `scripts/run_stats_fichas.py --family F2` re-chequea la planilla con la plantilla revisada, ligada al hash.
-   - Se publica solo si la reconciliación y `verify_ficha` dan PASS.
+**Pasos humanos (hechos y pendientes).**
+1. Hecho (1–2 nov): CI imprimió las filas reales, la nota A18 y la lectura de prueba; Dirección aprobó la plantilla y
+   activó F2.
+2. Antes de la primera publicación: `tests/test_stats_ficha_f2_real_xls.py` arma en CI la ficha con las planillas reales
+   y publica como anotaciones el antetítulo, titular, bajada, tarjetas KPI y temas (o los motivos del HOLD), la nota A18
+   y el estado de la lectura de ambas planillas. Dirección lee ese texto.
+3. La corrida diaria captura las planillas y publica solo si la reconciliación y `verify_ficha` dan PASS.
+4. La Lectura se activa por separado (`lectura_enabled`), solo por decisión de Dirección.
 5. "En staging" se afirma solo después de ver la ficha en la página desplegada.
 
 **Pendiente conocido.**

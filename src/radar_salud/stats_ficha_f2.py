@@ -616,7 +616,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     return {
         "schema_version": sf.SCHEMA, "id": f"stats-ficha:{FAMILY}:{t}", "family": FAMILY, "family_label": cfg["label"],
         "slug": cfg["slug"], "period": t, "published_at": package["published_at"], "release_key": package["release_key"],
-        "kicker": tpl["kicker"].format(label=cfg["label"]),
+        "kicker": tpl["kicker"].format(label=cfg["label"], period_label=mlabel),  # 'Estados financieros Isapres · marzo 2026'
         "kicker_meta": tpl["kicker_meta"].format(period_label=mlabel, published_label=sf.day_label(package["published_at"]),
                                                  cadence_phrase=cfg["cadence_phrase"]),
         "headline": headline[0].upper() + headline[1:], "headline_type": "default", "dek": dek, "dek_emphasis": None,

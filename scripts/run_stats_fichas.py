@@ -20,8 +20,11 @@ from radar_salud import (stats_capture, stats_capture_fefi, stats_ficha_f1, stat
                          stats_ficha_f6, stats_fichas)
 
 BUILDERS = {"F1": stats_ficha_f1.run, "F2": stats_ficha_f2.run, "F4": stats_ficha_f4.run, "F6": stats_ficha_f6.run}
-CAPTURED = {"F4", "F6"}  # families whose documents are captured here (F1 reads the market lane's capture)
-# F2 is 'planned': it runs (and its workbook is captured) only with an explicit --family F2, never in the daily default.
+CAPTURED = {"F4", "F6"}  # families whose documents are captured by stats_capture (F1 reads the market lane's capture)
+FEFI_CAPTURED = {"F2"}  # FEFI workbooks (stats_capture_fefi): the latest release, then the same quarter one year earlier
+# F2 is active since 2-nov-2026 and runs in the daily default like F1/F4/F6. Its capture is bounded (≤ 2 downloads or
+# re-checks per run, SIS fetcher limits, step deadline). Its Lectura stays off, so no paid call is made, until Dirección
+# sets families.F2.lectura_enabled, whatever OPENAI_API_KEY says (stats_ficha_f2.run).
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -30,7 +33,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--as-of", type=date.fromisoformat, default=None)
     ap.add_argument("--no-llm", action="store_true", help="Skip the Lectura Alicanto model call")
     ap.add_argument("--family", action="append", choices=sorted(BUILDERS), help="Default: every active family")
-    ap.add_argument("--no-capture", action="store_true", help="Do not download new F4/F6 documents (offline runs, tests)")
+    ap.add_argument("--no-capture", action="store_true", help="Do not download new F2/F4/F6 documents (offline runs, tests)")
     args = ap.parse_args(argv)
     from radar_salud.weekly_freshness import chile_today
     today = args.as_of or chile_today()
@@ -43,7 +46,7 @@ def main(argv: list[str] | None = None) -> int:
             summary["capture"] = stats_capture.capture(args.root)
         except Exception as exc:  # a capture failure never blocks the other families
             summary["capture"] = {"error": f"{type(exc).__name__}:{exc}"[:200]}
-    if not args.no_capture and "F2" in families:
+    if not args.no_capture and FEFI_CAPTURED & set(families):
         try:
             summary["capture_fefi"] = stats_capture_fefi.capture_fefi(args.root)
         except Exception as exc:
