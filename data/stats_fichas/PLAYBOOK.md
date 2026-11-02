@@ -126,11 +126,21 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 - **Captura.** `stats_capture_fefi` lista las publicaciones FEFI desde `data/history/superintendencia_signals.json`.
   Captura primero la más reciente y después la del mismo trimestre del año anterior. Guarda el hash y lee **solo** con
   `families.F2.parser_template`.
-- **Hojas que lee.** Solo "Ctas. de Resultados I. Abierta " (el espacio final viene de la SIS) y "Ctas. de Resultados
-  I. Cerradas", ambas en miles de $. Las cuentas van en filas; hay una columna por Isapre y una de total.
+- **Hojas que lee.** Todas en miles de $, con cuentas en filas, una columna por Isapre y una de total:
+  - "Ctas. de Resultados I. Abierta " (el espacio final viene de la SIS) y "Ctas. de Resultados I. Cerradas": ingresos y
+    sus componentes, costo de ventas y sus componentes con su total, y gastos de administración con su total;
+  - "E. Resultados I. Abiertas" y "E. Resultados I. Cerradas" (cuadros 1.6/1.7): solo ganancia bruta, ganancia (pérdida)
+    antes de impuestos, gasto por impuestos y ganancia (pérdida). La ganancia no está en las hojas Ctas.
+
+  Guardas:
   - El encabezado, cada columna de Isapre, la columna total y cada cuenta calzan exactamente una vez.
-  - Cada cuenta suma su total con tolerancia ≤ 1. Los componentes de los ingresos suman el total de ingresos.
+  - En cada cuenta las Isapres suman el total, con tolerancia ≤ 1.
+  - Los componentes de ingresos, de costo de ventas y de gastos de administración suman su total (≤ 1).
   - Las magnitudes mezcladas se rechazan.
+  - Cruces entre hojas, por Isapre (≤ 1): ingresos − costo de ventas (Ctas.) = ganancia bruta (E. Resultados);
+    antes de impuestos − impuestos = ganancia (`stats_capture_fefi.cross_checks`).
+  - Las tres filas finales de E. Resultados se escribieron con los rótulos de "E. Resultados por rubros" y quedan por
+    confirmar con las anotaciones CI.
 - **Esencial** (Dirección, 1 nov; regla `rules.fefi_esencial_exclusion`):
   - la ficha muestra 9 Isapres y rotula cada total como "sistema sin Esencial", recalculado por Alicanto;
   - una nota cita A18 textual con su localizador `Notas Explicativas!A18`;
@@ -138,8 +148,14 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
   - la exclusión vale solo mientras A18, en la planilla más reciente, diga que sus cifras están en revisión para ese
     período. Si no, HOLD (`esencial_exclusion_condition_not_met`).
   - `holds.fefi_2026_03` se conserva sin cambios, y `hold_resolutions` registra que la regla lo reemplaza para F2.
-- **Temas.** Salen de una lista cerrada, según las cuentas leídas: resultados, ingresos (y su composición), costo de
-  ventas (prestaciones, SIL y otros componentes) y siniestralidad.
+- **Temas.** Salen de una lista cerrada, según las cuentas leídas:
+  - resultados: de la ganancia bruta a la ganancia, y por Isapre;
+  - ingresos y su composición;
+  - costo de ventas y sus componentes;
+  - gastos de administración, también como % de los ingresos;
+  - siniestralidad.
+
+  Patrimonio queda fuera mientras ninguna hoja "E. Sit. Fin. I." esté verificada en miles.
   - La siniestralidad es (prestaciones + SIL) / total de ingresos de actividades ordinarias.
   - Con menos de tres temas, HOLD.
 - **Comparación a/a.** Solo con la planilla del mismo trimestre del año anterior (2025-03), capturada y verificada con
@@ -147,19 +163,17 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 - La Lectura está apagada (`lectura_enabled: false`). F2 sigue `planned` y corre solo con `--family F2`.
 
 **Qué queda en HOLD y por qué.**
-- `parser_template_placeholder`: la plantilla está llena desde las anotaciones (filas r1–r16), pero las filas r17 en
-  adelante tienen marcadores `<<…>>`:
-  - costo de ventas total y ganancia (pérdida), en ambas hojas;
-  - prestaciones en litigio de las cerradas.
-- `reviewed_by` sigue en "pendiente".
+- `parser_template_unreviewed`: la plantilla está completa, sin marcadores `<<…>>`, pero `reviewed_by` sigue en
+  "pendiente" hasta que Dirección la apruebe.
+- Las etiquetas de las filas finales de E. Resultados deben confirmarse con las anotaciones.
 
 **Pasos humanos para levantar el HOLD.**
 1. CI corre `tests/test_stats_ficha_f2_real_xls.py` y publica como anotaciones:
-   - las filas r17 en adelante de las dos hojas Ctas.;
+   - todas las filas de las dos hojas E. Resultados I.;
    - la nota A18;
-   - un estado simulado de la plantilla (sin las filas `<<…>>`) para 2026-03 y para 2025-03.
-2. Con ese texto, una persona llena o borra las cuentas con `<<…>>`, y Dirección aprueba la plantilla:
-   `reviewed_by` y `reviewed_at`, en un PR a `staging` con revisión independiente.
+   - un estado simulado de la plantilla para 2026-03 y para 2025-03.
+2. Con ese texto, una persona confirma o corrige las etiquetas de las filas finales de E. Resultados, y Dirección aprueba
+   la plantilla: `reviewed_by` y `reviewed_at`, en un PR a `staging` con revisión independiente.
 3. En ese PR el test CI debe dar `verified`.
 4. Dirección activa F2 (`status: "active"`) y, por separado, la Lectura.
    - `scripts/run_stats_fichas.py --family F2` re-chequea la planilla con la plantilla revisada, ligada al hash.
@@ -169,7 +183,7 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 **Pendiente conocido.**
 - El valor real (UF) requiere capturar la serie UF.
 - `margen_beneficiario` necesita el promedio de cartera F1.
-- Patrimonio e indicadores necesitan una hoja "miles" aprobada.
+- Patrimonio e indicadores necesitan una hoja "E. Sit. Fin. I." verificada en miles.
 - F6 adopta `figure_templates` cuando se mergee #112.
 
 ## 8. Licencias (SUSESO/SIS) y otras: qué haría falta (no construido)

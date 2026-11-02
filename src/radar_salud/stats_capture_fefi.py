@@ -40,9 +40,12 @@ HEADER_SCAN_ROWS = 80
 TITLE_KEY = "estadisticas financieras del sistema isapre"
 FORMATS = ("xls", "xlsx")
 # The only items a template may map (closed list, so a ficha topic can never be invented from a column name).
-ITEMS = ("resultado_ejercicio", "ingresos_operacionales", "cotizacion_legal", "cotizacion_adicional", "aporte_adicional",
-         "fondo_compensacion", "ingresos_otros", "costo_operacional", "costo_prestaciones", "costo_sil",
-         "prestaciones_no_liquidadas", "prestaciones_litigio", "gav", "patrimonio", "ingresos_cotizaciones")
+ITEMS = ("resultado_ejercicio", "ganancia_bruta", "resultado_antes_impuestos", "gasto_impuestos",
+         "ingresos_operacionales", "cotizacion_legal", "cotizacion_adicional", "aporte_adicional", "fondo_compensacion",
+         "ingresos_otros", "costo_operacional", "costo_prestaciones", "costo_sil", "prestaciones_no_liquidadas",
+         "prestaciones_litigio", "egresos_fondo_compensacion", "otros_costos_operacion", "gav", "gav_publicidad",
+         "gav_deterioro_cotizaciones", "gav_deterioro_prestamos", "gav_remuneraciones", "gav_remuneraciones_ventas",
+         "gav_otros", "patrimonio", "ingresos_cotizaciones")
 PERIODS = ("t", "t_1")
 
 
@@ -478,6 +481,31 @@ def apply_table(book: dict, table_id: str, tpl: dict, entities: dict[str, str],
             "values": values, "cells": cells, "sum_check": sums}, []
 
 
+def cross_checks(tables: dict, checks: list[dict]) -> list[str]:
+    """Identities across sheets, per Isapre and within 1 miles (Dirección 1-nov), e.g. Ctas. ingresos − Ctas. total
+    costo de ventas = E. Resultados ganancia bruta. ``lhs`` is [[item, coefficient], …]; ``rhs`` an item (period t)."""
+    by: dict[str, dict[str, float]] = {}
+    for tab in tables.values():
+        for fid, f in (tab.get("columns") or {}).items():
+            if f.get("period") == "t":
+                for code, x in (tab.get("values") or {}).get(fid, {}).items():
+                    if code != "total":
+                        by.setdefault(f["item"], {})[code] = x
+    out = []
+    for chk in checks:
+        name, rhs, lhs = chk.get("name") or chk.get("rhs"), chk.get("rhs"), chk.get("lhs") or []
+        if rhs not in by or not lhs or any(i not in by for i, _ in lhs):
+            out.append(f"cross_check_items_missing:{name}")
+            continue
+        tol = MILES_TOLERANCE * 0.001 + 1e-6  # values are already in millions
+        for code, want in sorted(by[rhs].items()):
+            if any(code not in by[i] for i, _ in lhs):
+                out.append(f"cross_check_isapre_missing:{name}:{code}")
+            elif abs(sum(float(c) * by[i][code] for i, c in lhs) - want) > tol:
+                out.append(f"cross_check_failed:{name}:{code}")
+    return out
+
+
 def coverage_note(book: dict, spec: dict | None, subs: dict[str, str] | None = None) -> tuple[dict | None, str]:
     """The note on coverage that names Esencial (FEFI 'Notas Explicativas'), read through its reviewed pattern."""
     if not spec:
@@ -527,6 +555,8 @@ def parse_fefi_workbook(data: bytes, template: dict | None, period: str | None =
             tables[table_id] = table
     if not template.get("tables"):
         failures.append("tables_not_configured")
+    if not failures:
+        failures += cross_checks(tables, template.get("cross_checks") or [])
     note, why = coverage_note(book, template.get("coverage_note"), subs)
     if template.get("coverage_note") and not note and (template.get("coverage_note") or {}).get("required", True):
         failures.append(f"coverage_note:{why}")

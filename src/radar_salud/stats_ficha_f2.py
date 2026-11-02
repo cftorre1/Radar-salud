@@ -35,7 +35,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F2"
-BUILDER_VERSION = "f2_index_topic_v2"
+BUILDER_VERSION = "f2_index_topic_v3"
 CAPTURE = fc.STORE
 EDITORIAL_RULES = Path("config/editorial_rules_v3.json")
 ESENCIAL_HOLD = "HOLD_COVERAGE_ESENCIAL"
@@ -44,12 +44,19 @@ TOPICS = {  # topic → accounts it needs (latest period) for every published Is
     "resultados": ("Resultados", ("resultado_ejercicio",)),
     "ingresos": ("Ingresos", ("ingresos_operacionales",)),
     "costos": ("Costo de ventas", ("costo_prestaciones", "costo_sil")),
+    "gastos": ("Gastos de administración", ("gav", "ingresos_operacionales")),
     "siniestralidad": ("Siniestralidad", ("costo_prestaciones", "costo_sil", "ingresos_operacionales")),
 }
 INGRESOS_PARTS = (("cotizacion_legal", "Cotización legal"), ("cotizacion_adicional", "Cot. adicional"),
                   ("aporte_adicional", "Aporte adicional"), ("fondo_compensacion", "Fondo compens."), ("ingresos_otros", "Otros"))
 COSTO_PARTS = (("costo_prestaciones", "Prestaciones"), ("costo_sil", "SIL"),
-               ("prestaciones_no_liquidadas", "Ocurridas no liq."), ("prestaciones_litigio", "En litigio"))
+               ("prestaciones_no_liquidadas", "Ocurridas no liq."), ("prestaciones_litigio", "En litigio"),
+               ("egresos_fondo_compensacion", "Egresos fondo"), ("otros_costos_operacion", "Otros costos oper."))
+GAV_PARTS = (("gav_remuneraciones", "Remuneraciones"), ("gav_remuneraciones_ventas", "Remun. ventas"),
+             ("gav_publicidad", "Publicidad"), ("gav_deterioro_cotizaciones", "Deterioro cotiz."),
+             ("gav_deterioro_prestamos", "Deter. préstamos"), ("gav_otros", "Otros"))
+BRIDGE = (("ganancia_bruta", "Ganancia bruta", 1), ("resultado_antes_impuestos", "Antes de impuestos", 1),
+          ("gasto_impuestos", "Impuestos", -1), ("resultado_ejercicio", "Ganancia", 1))
 MM = "MM$"
 
 
@@ -313,6 +320,11 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
             for lvl in levels:
                 if (s_t >= lvl) != (s_1 >= lvl):
                     findings.append({"type": "threshold_crossed", "kpi": "siniestralidad", "level": lvl, "crossed": True, "strength": 1.0})
+    if "gastos" in topics:
+        for w in whos:
+            derived(f"gav_pct.{w}.{t}", V(f"gav.{w}.{t}") / V(f"ingresos_operacionales.{w}.{t}") * 100,
+                    "gastos de administración / total ingresos de actividades ordinarias × 100",
+                    [f"gav.{w}.{t}", f"ingresos_operacionales.{w}.{t}"], "%")
     if "ingresos" in topics and "cotizacion_legal" in complete:
         derived("cotizacion_legal.sistema.share", V(f"cotizacion_legal.sistema.{t}") / V(f"ingresos_operacionales.sistema.{t}") * 100,
                 "cotización legal / total ingresos de actividades ordinarias × 100",
@@ -392,6 +404,16 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                      "lines": [cmp_line("resultado_ejercicio", True)],
                      "refs": [f"resultado_ejercicio.sistema.{t}"] + cmp_refs("resultado_ejercicio")})
         charts = []
+        bridge = [(i, lab, sg) for i, lab, sg in BRIDGE if i in complete]
+        if not ry and len(bridge) == len(BRIDGE):  # levels only: from ganancia bruta to the result, same period
+            charts.append({"id": "f2-resultado-puente", "form": "diverging", "unit": MM, "headline": "De la ganancia bruta al resultado",
+                           "subtitle": f"Millones de pesos, {ytd} {t[:4]}, {sys_phrase}",
+                           "rows": [{"label": lab, "value": sg * V(f"{i}.sistema.{t}"), "ref": f"{i}.sistema.{t}", "sign": sg,
+                                     "emphasis": i == "resultado_ejercicio"} for i, lab, sg in bridge],
+                           "table": {"columns": ["Concepto", MM],
+                                     "rows": [[lab, fmt_int(sg * V(f"{i}.sistema.{t}"))] for i, lab, sg in bridge]},
+                           "source": "SIS, estado de resultados por función (miles de $ convertidos a millones). El tramo entre ganancia bruta y "
+                                     "resultado antes de impuestos incluye gastos de administración y otros ítems."})
         if ry:
             R1 = V(f"resultado_ejercicio.sistema.{t1}")
             charts.append({"id": "f2-resultado", "form": "diverging", "unit": MM, "headline": f"Resultado del ejercicio, {sys_phrase}",
@@ -467,8 +489,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                    "headline": "Costo de ventas por componente", "subtitle": f"Millones de pesos, {ytd} {t[:4]}, {sys_phrase}",
                    "rows": [{"label": lab, "value": V(f"{i}.sistema.{t}"), "ref": f"{i}.sistema.{t}", "emphasis": i == "costo_prestaciones"}
                             for i, lab in parts],
-                   "table": {"columns": ["Componente", MM], "rows": [[lab, fmt_int(V(f"{i}.sistema.{t}"))] for i, lab in parts]},
-                   "source": "SIS, apertura de cuentas de resultados. Solo los componentes leídos con la plantilla revisada."},
+                   "table": {"columns": ["Componente", MM], "rows": [[lab, fmt_int(V(f"{i}.sistema.{t}"))] for i, lab in parts]
+                             + ([["Total costo de ventas", fmt_int(V(f"costo_operacional.sistema.{t}"))]] if "costo_operacional" in complete else [])},
+                   "source": "SIS, apertura de cuentas de resultados. Los componentes suman el total del costo de ventas."},
                   {"id": "f2-costos-isapres", "form": "bars", "unit": MM, "headline": "Prestaciones y SIL por Isapre",
                    "subtitle": f"Millones de pesos, {ytd} {t[:4]}",
                    "rows": [{"label": names[c], "value": V(f"costo_salud.{c}.{t}"), "ref": f"costo_salud.{c}.{t}"} for c in ordr],
@@ -478,6 +501,33 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                    "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."}]
         tab = {"id": "costos", "label": "Costo de ventas", "charts": charts, "text": [], "dek": None}
         sf.topic_fields(tab, f"Prestaciones y SIL: {fmt_int(CS)} {MM}", index_refs=[f"costo_salud.sistema.{t}"], kpis=[])
+        tabs.append(tab)
+    if "gastos" in topics:
+        G, GP = V(f"gav.sistema.{t}"), V(f"gav_pct.sistema.{t}")
+        kpis.append({"id": "gav", "label": f"Gastos de administración{scope}", "value": f"{fmt_int(G)} {MM}", "prov": "C",
+                     "lines": [f"{fmt_dec(GP, 1)}% de los ingresos"], "refs": [f"gav.sistema.{t}", f"gav_pct.sistema.{t}"]})
+        parts = [(i, lab) for i, lab in GAV_PARTS if i in complete]
+        ordr = sorted(codes, key=lambda c: (-V(f"gav_pct.{c}.{t}"), names[c]))
+        charts = []
+        if len(parts) >= 2:
+            charts.append({"id": "f2-gastos-composicion", "form": "diverging" if any(V(f"{i}.sistema.{t}") < 0 for i, _ in parts) else "bars",
+                           "unit": MM, "headline": "Gastos de administración por componente",
+                           "subtitle": f"Millones de pesos, {ytd} {t[:4]}, {sys_phrase}",
+                           "rows": [{"label": lab, "value": V(f"{i}.sistema.{t}"), "ref": f"{i}.sistema.{t}"} for i, lab in parts],
+                           "table": {"columns": ["Componente", MM],
+                                     "rows": [[lab, fmt_int(V(f"{i}.sistema.{t}"))] for i, lab in parts] + [["Total", fmt_int(G)]]},
+                           "source": "SIS, apertura de cuentas de resultados. Los componentes suman el total."})
+        charts.append({"id": "f2-gastos-isapres", "form": "bars", "unit": "%", "digits": 1, "headline": "Gastos de administración por Isapre",
+                       "subtitle": f"% de los ingresos de cada Isapre, {ytd} {t[:4]}",
+                       "rows": [{"label": names[c], "value": V(f"gav_pct.{c}.{t}"), "ref": f"gav_pct.{c}.{t}"} for c in ordr],
+                       "table": {"columns": ["Isapre", f"Gastos ({MM})", f"Ingresos ({MM})", "% de los ingresos"],
+                                 "rows": [[names[w] if w != "sistema" else sys_row, fmt_int(V(f"gav.{w}.{t}")),
+                                           fmt_int(V(f"ingresos_operacionales.{w}.{t}")), fmt_dec(V(f"gav_pct.{w}.{t}"), 1) + "%"]
+                                          for w in [*ordr, "sistema"]]},
+                       "source": "Denominador: total ingresos de actividades ordinarias de cada Isapre, mismo período."})
+        tab = {"id": "gastos", "label": "Gastos de administración", "charts": charts, "text": [], "dek": None}
+        sf.topic_fields(tab, f"{fmt_int(G)} {MM} · {fmt_dec(GP, 1)}% de los ingresos",
+                        index_refs=[f"gav.sistema.{t}", f"gav_pct.sistema.{t}"], kpis=[])
         tabs.append(tab)
     if "siniestralidad" in topics:
         S = V(f"siniestralidad.sistema.{t}")
@@ -548,10 +598,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         {"id": "n1", "text": f"Ingresos, costos y resultados son flujos acumulados de enero a {month}, no stocks. Montos nominales: la SIS "
                              "los publica en miles de pesos y Alicanto los convierte a millones; el valor real (UF) queda pendiente."},
         {"id": "n2", "text": "Denominadores: la siniestralidad divide prestaciones y SIL por el total de ingresos de actividades ordinarias "
-                             "del mismo período; la variación % usa el valor del año anterior y no se calcula (N/A) si un resultado cambia de signo."},
-        {"id": "n3", "text": "Cada cifra se lee de las hojas de apertura de cuentas de resultados (en miles de $) de la planilla capturada "
-                             "(hash en Fuentes), con una plantilla revisada por una persona; en cada cuenta las Isapres suman la columna total. "
-                             "Las hojas en millones no se usan: mezclan escalas."},
+                             "del mismo período, igual que los gastos de administración; la variación % usa el valor del año anterior y no se calcula (N/A) si un resultado cambia de signo."},
+        {"id": "n3", "text": "Cada cifra se lee de las hojas de apertura de cuentas de resultados "
+                             "y del estado de resultados por función (en miles de $) de la planilla capturada (hash en Fuentes), con una plantilla "
+                             "revisada por una persona; en cada cuenta las Isapres suman la columna total y los componentes su total; ingresos menos "
+                             "costo de ventas igualan la ganancia bruta. Las hojas en millones no se usan: mezclan escalas."},
     ]
     if not yoy:
         notes.append({"id": "n5", "text": f"Sin comparación con {plabel}: esa planilla no está capturada y verificada con la misma plantilla. "

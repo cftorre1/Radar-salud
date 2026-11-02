@@ -433,7 +433,7 @@
         "sis_caec",
         "cmf_holdings"
       ],
-      "blocked_by": "plantilla FEFI pendiente de aprobación (filas r17+ de las hojas Ctas. con marcadores <<…>>, reviewed_by pendiente); Esencial excluida por regla condicionada a la nota A18 (editorial_rules_v3 rules.fefi_esencial_exclusion)",
+      "blocked_by": "plantilla FEFI pendiente de aprobación de Dirección (reviewed_by pendiente; filas finales de E. Resultados por confirmar); Esencial excluida por regla condicionada a la nota A18 (editorial_rules_v3 rules.fefi_esencial_exclusion)",
       "cadence_phrase": "se actualiza cada trimestre",
       "primary_series": "sis_estadisticas_financieras",
       "release_page": "https://www.superdesalud.gob.cl/biblioteca-digital/estadisticas-financieras-del-sistema-isapre-a-marzo-2026/",
@@ -453,14 +453,14 @@
       "capture": {
         "store": "data/stats_fichas/captures/fefi.json",
         "format": "xls/xlsx (una planilla por trimestre; .xls se lee con xlrd)",
-        "figures": "solo hojas 'Ctas. de Resultados I. Abierta/Cerradas' (en miles de $) con la plantilla revisada families.F2.parser_template",
+        "figures": "hojas 'Ctas. de Resultados I.' y 'E. Resultados I.' (en miles de $) con la plantilla revisada families.F2.parser_template; nunca hojas en millones",
         "comparison": "a/a solo con la planilla del mismo trimestre del año anterior (p. ej. 2025-03) capturada y verificada con la misma plantilla; si no, solo niveles"
       },
       "lectura_enabled": false,
       "esencial_code": 108,
       "parser_template": {
-        "_doc": "Plantilla de la planilla FEFI (Dirección 1-nov-2026). Solo se leen las hojas 'Ctas. de Resultados I. Abierta ' (con espacio final; el texto normalizado lo quita) y 'Ctas. de Resultados I. Cerradas', ambas 'en miles de $': cuentas en filas, una columna por Isapre y 'total'. Las hojas 'en millones de $' ('E. Resultados por rubros', '… comparado por Isa') están prohibidas: sus celdas mezclan miles y millones (el formato de Excel las escala). Cada patrón es una regex sobre texto normalizado (figure_templates.normalize_text) y calza exactamente una vez: 'header_row' contra las filas (celdas unidas con ' | '); cada columna de Isapre y 'total_column' contra una celda completa de esa fila; cada cuenta contra la etiqueta de su fila (sección de la columna A arrastrada hacia abajo + columna B). En cada cuenta las Isapres suman el total con tolerancia ≤ 1 (miles); 'parts' debe sumar su total por Isapre; 'magnitude_groups' rechaza magnitudes mezcladas (> ×100). 'period' 't' es el trimestre del título. Las filas que las anotaciones no mostraron (r17 en adelante) quedan con marcador <<…>>: se llenan con el texto que imprime tests/test_stats_ficha_f2_real_xls.py o se borran. Con cualquier marcador, o sin reviewed_by/reviewed_at, la ficha queda en HOLD. Esencial (108) se lee para la suma de control y nunca se publica (config/editorial_rules_v3.json rules.fefi_esencial_exclusion).",
-        "source": "Anotaciones CI del PR #117 sobre finan_ifrs_mar_2026_web_v2.xls (sha256 e3c4f7b3cfee9a6e…): filas r1–r16 de ambas hojas Ctas.",
+        "_doc": "Plantilla de la planilla FEFI (Dirección 1-nov-2026). Solo se leen las hojas 'Ctas. de Resultados I. Abierta ' (con espacio final; el texto normalizado lo quita) y 'Ctas. de Resultados I. Cerradas', ambas 'en miles de $': cuentas en filas, una columna por Isapre y 'total'. Las hojas 'en millones de $' ('E. Resultados por rubros', '… comparado por Isa') están prohibidas: sus celdas mezclan miles y millones (el formato de Excel las escala). Cada patrón es una regex sobre texto normalizado (figure_templates.normalize_text) y calza exactamente una vez: 'header_row' contra las filas (celdas unidas con ' | '); cada columna de Isapre y 'total_column' contra una celda completa de esa fila; cada cuenta contra la etiqueta de su fila (sección de la columna A arrastrada hacia abajo + columna B). En cada cuenta las Isapres suman el total con tolerancia ≤ 1 (miles); 'parts' debe sumar su total por Isapre; 'magnitude_groups' rechaza magnitudes mezcladas (> ×100). 'period' 't' es el trimestre del título. Además se leen 'E. Resultados I. Abiertas' y '… I. Cerradas' (cuadros 1.6/1.7, en miles de $; columnas cod | cuentas | Isapres | total), solo las filas ganancia bruta, ganancia (pérdida) antes de impuestos, gasto por impuestos y ganancia (pérdida); su etiqueta incluye el código de la columna A. 'cross_checks' exige, por Isapre y con tolerancia ≤ 1 miles, ingresos − costo de ventas (Ctas.) = ganancia bruta (E. Resultados) y antes de impuestos − impuestos = ganancia. Las tres filas finales de E. Resultados (antes de impuestos, impuestos, ganancia) se escribieron con los rótulos de 'E. Resultados por rubros' y quedan por confirmar con las anotaciones CI. Con reviewed_by pendiente la ficha queda en HOLD. Esencial (108) se lee para las sumas de control y nunca se publica (config/editorial_rules_v3.json rules.fefi_esencial_exclusion).",
+        "source": "Anotaciones CI del PR #117 sobre finan_ifrs_mar_2026_web_v2.xls (sha256 e3c4f7b3cfee9a6e…): hojas Ctas. completas (r1–r28) y E. Resultados I. r1–r16; filas finales de E. Resultados por confirmar.",
         "reviewed_by": "pendiente",
         "reviewed_at": null,
         "tables": {
@@ -537,13 +537,53 @@
                 "period": "t"
               },
               "costo_operacional.t": {
-                "pattern": "<<fila r17+ no visible en las anotaciones: total del costo de ventas; borrar si no existe>>",
+                "pattern": "(?:^| )total costo de ventas$",
                 "item": "costo_operacional",
                 "period": "t"
               },
-              "resultado_ejercicio.t": {
-                "pattern": "<<fila r17+ no visible: ganancia (pérdida) del ejercicio, si esta hoja la tiene; si no, borrar>>",
-                "item": "resultado_ejercicio",
+              "egresos_fondo_compensacion.t": {
+                "pattern": "^costo de ventas egresos por fondo de compensacion$",
+                "item": "egresos_fondo_compensacion",
+                "period": "t"
+              },
+              "otros_costos_operacion.t": {
+                "pattern": "^costo de ventas otros costos de operacion$",
+                "item": "otros_costos_operacion",
+                "period": "t"
+              },
+              "gav_publicidad.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion publicidad$",
+                "item": "gav_publicidad",
+                "period": "t"
+              },
+              "gav_deterioro_cotizaciones.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion deterioro por deudores de cotizaciones$",
+                "item": "gav_deterioro_cotizaciones",
+                "period": "t"
+              },
+              "gav_deterioro_prestamos.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion deterioro por deudores de prestamos de salud$",
+                "item": "gav_deterioro_prestamos",
+                "period": "t"
+              },
+              "gav_remuneraciones.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion remuneraciones del personal$",
+                "item": "gav_remuneraciones",
+                "period": "t"
+              },
+              "gav_remuneraciones_ventas.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion remuneraciones y comisiones del personal de ventas$",
+                "item": "gav_remuneraciones_ventas",
+                "period": "t"
+              },
+              "gav_otros.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion otros$",
+                "item": "gav_otros",
+                "period": "t"
+              },
+              "gav.t": {
+                "pattern": "(?:^| )total gastos de administracion y otros gastos por funcion$",
+                "item": "gav",
                 "period": "t"
               }
             },
@@ -554,13 +594,30 @@
                 "aporte_adicional",
                 "fondo_compensacion",
                 "ingresos_otros"
+              ],
+              "costo_operacional": [
+                "costo_prestaciones",
+                "costo_sil",
+                "prestaciones_no_liquidadas",
+                "prestaciones_litigio",
+                "egresos_fondo_compensacion",
+                "otros_costos_operacion"
+              ],
+              "gav": [
+                "gav_publicidad",
+                "gav_deterioro_cotizaciones",
+                "gav_deterioro_prestamos",
+                "gav_remuneraciones",
+                "gav_remuneraciones_ventas",
+                "gav_otros"
               ]
             },
             "magnitude_groups": [
               [
                 "ingresos_operacionales",
                 "cotizacion_legal",
-                "costo_prestaciones"
+                "costo_prestaciones",
+                "costo_operacional"
               ]
             ]
           },
@@ -628,18 +685,58 @@
                 "period": "t"
               },
               "prestaciones_litigio.t": {
-                "pattern": "<<fila r17 no visible: prestaciones en litigio de las cerradas; borrar si no existe>>",
+                "pattern": "^costo de ventas prestaciones en litigio$",
                 "item": "prestaciones_litigio",
                 "period": "t"
               },
               "costo_operacional.t": {
-                "pattern": "<<fila r17+ no visible en las anotaciones: total del costo de ventas; borrar si no existe>>",
+                "pattern": "(?:^| )total costo de ventas$",
                 "item": "costo_operacional",
                 "period": "t"
               },
-              "resultado_ejercicio.t": {
-                "pattern": "<<fila r17+ no visible: ganancia (pérdida) del ejercicio, si esta hoja la tiene; si no, borrar>>",
-                "item": "resultado_ejercicio",
+              "egresos_fondo_compensacion.t": {
+                "pattern": "^costo de ventas egresos por fondo de compensacion$",
+                "item": "egresos_fondo_compensacion",
+                "period": "t"
+              },
+              "otros_costos_operacion.t": {
+                "pattern": "^costo de ventas otros costos de operacion$",
+                "item": "otros_costos_operacion",
+                "period": "t"
+              },
+              "gav_publicidad.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion publicidad$",
+                "item": "gav_publicidad",
+                "period": "t"
+              },
+              "gav_deterioro_cotizaciones.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion deterioro por deudores de cotizaciones$",
+                "item": "gav_deterioro_cotizaciones",
+                "period": "t"
+              },
+              "gav_deterioro_prestamos.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion deterioro por deudores de prestamos de salud$",
+                "item": "gav_deterioro_prestamos",
+                "period": "t"
+              },
+              "gav_remuneraciones.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion remuneraciones del personal$",
+                "item": "gav_remuneraciones",
+                "period": "t"
+              },
+              "gav_remuneraciones_ventas.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion remuneraciones y comisiones del personal de ventas$",
+                "item": "gav_remuneraciones_ventas",
+                "period": "t"
+              },
+              "gav_otros.t": {
+                "pattern": "^gastos de administracion y otros gastos por funcion otros$",
+                "item": "gav_otros",
+                "period": "t"
+              },
+              "gav.t": {
+                "pattern": "(?:^| )total gastos de administracion y otros gastos por funcion$",
+                "item": "gav",
                 "period": "t"
               }
             },
@@ -650,13 +747,126 @@
                 "aporte_adicional",
                 "fondo_compensacion",
                 "ingresos_otros"
+              ],
+              "costo_operacional": [
+                "costo_prestaciones",
+                "costo_sil",
+                "prestaciones_no_liquidadas",
+                "prestaciones_litigio",
+                "egresos_fondo_compensacion",
+                "otros_costos_operacion"
+              ],
+              "gav": [
+                "gav_publicidad",
+                "gav_deterioro_cotizaciones",
+                "gav_deterioro_prestamos",
+                "gav_remuneraciones",
+                "gav_remuneraciones_ventas",
+                "gav_otros"
               ]
             },
             "magnitude_groups": [
               [
                 "ingresos_operacionales",
                 "cotizacion_legal",
-                "costo_prestaciones"
+                "costo_prestaciones",
+                "costo_operacional"
+              ]
+            ]
+          },
+          "eres_abiertas": {
+            "sheet": "^e\\. resultados i\\. abiertas$",
+            "layout": "accounts_in_rows",
+            "header_row": "^cod \\| cuentas \\| colmena golden cross \\| cruz blanca \\| vida tres \\| nueva masvida \\| banmedica \\| consalud \\| esencial \\| total$",
+            "label_columns": 2,
+            "entities": {
+              "67": "colmena golden cross",
+              "78": "cruz blanca",
+              "80": "vida tres",
+              "81": "nueva masvida",
+              "99": "banmedica",
+              "107": "consalud",
+              "108": "esencial"
+            },
+            "total_column": "total",
+            "unit": {
+              "pattern": "^en miles de \\$$",
+              "to_mm_clp": 0.001,
+              "label": "MM$"
+            },
+            "sum_tolerance": 1,
+            "accounts": {
+              "ganancia_bruta.t": {
+                "pattern": "^30030(?:\\.0)? ganancia bruta$",
+                "item": "ganancia_bruta",
+                "period": "t"
+              },
+              "resultado_antes_impuestos.t": {
+                "pattern": "^\\d+(?:\\.0)? ganancia \\(perdida\\) antes de impuestos$",
+                "item": "resultado_antes_impuestos",
+                "period": "t"
+              },
+              "gasto_impuestos.t": {
+                "pattern": "^\\d+(?:\\.0)? gasto por impuestos a las ganancias \\(menos\\)$",
+                "item": "gasto_impuestos",
+                "period": "t"
+              },
+              "resultado_ejercicio.t": {
+                "pattern": "^\\d+(?:\\.0)? ganancia \\(perdida\\)$",
+                "item": "resultado_ejercicio",
+                "period": "t"
+              }
+            },
+            "magnitude_groups": [
+              [
+                "resultado_antes_impuestos",
+                "resultado_ejercicio"
+              ]
+            ]
+          },
+          "eres_cerradas": {
+            "sheet": "^e\\. resultados i\\. cerradas$",
+            "layout": "accounts_in_rows",
+            "header_row": "^cod \\| cuentas \\| isalud \\| fundacion \\| cruz del norte \\| total$",
+            "label_columns": 2,
+            "entities": {
+              "63": "isalud",
+              "76": "fundacion",
+              "94": "cruz del norte"
+            },
+            "total_column": "total",
+            "unit": {
+              "pattern": "^en miles de \\$$",
+              "to_mm_clp": 0.001,
+              "label": "MM$"
+            },
+            "sum_tolerance": 1,
+            "accounts": {
+              "ganancia_bruta.t": {
+                "pattern": "^30030(?:\\.0)? ganancia bruta$",
+                "item": "ganancia_bruta",
+                "period": "t"
+              },
+              "resultado_antes_impuestos.t": {
+                "pattern": "^\\d+(?:\\.0)? ganancia \\(perdida\\) antes de impuestos$",
+                "item": "resultado_antes_impuestos",
+                "period": "t"
+              },
+              "gasto_impuestos.t": {
+                "pattern": "^\\d+(?:\\.0)? gasto por impuestos a las ganancias \\(menos\\)$",
+                "item": "gasto_impuestos",
+                "period": "t"
+              },
+              "resultado_ejercicio.t": {
+                "pattern": "^\\d+(?:\\.0)? ganancia \\(perdida\\)$",
+                "item": "resultado_ejercicio",
+                "period": "t"
+              }
+            },
+            "magnitude_groups": [
+              [
+                "resultado_antes_impuestos",
+                "resultado_ejercicio"
               ]
             ]
           }
@@ -665,7 +875,39 @@
           "sheet": "^notas explicativas$",
           "pattern": "\\bisapre esencial\\b",
           "required": false
-        }
+        },
+        "cross_checks": [
+          {
+            "name": "ganancia_bruta",
+            "lhs": [
+              [
+                "ingresos_operacionales",
+                1
+              ],
+              [
+                "costo_operacional",
+                -1
+              ]
+            ],
+            "rhs": "ganancia_bruta",
+            "doc": "Ctas.: total ingresos − total costo de ventas = E. Resultados: ganancia bruta (cada Isapre, ≤ 1 miles)"
+          },
+          {
+            "name": "impuestos",
+            "lhs": [
+              [
+                "resultado_antes_impuestos",
+                1
+              ],
+              [
+                "gasto_impuestos",
+                -1
+              ]
+            ],
+            "rhs": "resultado_ejercicio",
+            "doc": "E. Resultados: antes de impuestos − gasto por impuestos (menos) = ganancia (pérdida)"
+          }
+        ]
       },
       "templates": {
         "kicker": "{label}",
@@ -688,11 +930,15 @@
           "label": "Costo de ventas"
         },
         {
+          "id": "gastos",
+          "label": "Gastos de administración"
+        },
+        {
           "id": "siniestralidad",
           "label": "Siniestralidad"
         }
       ],
-      "builder_version": "f2_index_topic_v2",
+      "builder_version": "f2_index_topic_v3",
       "kpis": {
         "siniestralidad": {
           "formula": "(costo de prestaciones de salud + subsidios por incapacidad laboral) / total ingresos de actividades ordinarias × 100",
@@ -735,8 +981,8 @@
           ]
         },
         "gav": {
-          "formula": "GAV / ingresos por cotizaciones",
-          "denominator": "Ingresos por cotizaciones",
+          "formula": "gastos de administración y otros gastos por función / total ingresos de actividades ordinarias × 100",
+          "denominator": "Total ingresos de actividades ordinarias del mismo período (sin Esencial)",
           "period_rule": "YTD a/a",
           "threshold": {
             "pp": 0.5

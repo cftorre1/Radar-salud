@@ -9,6 +9,7 @@ Every figure asserted below is recomputed here from these inputs.
 import copy
 import hashlib
 import json
+import re
 import shutil
 import sys
 import types
@@ -33,39 +34,80 @@ OPEN_NAMES = ("Colmena Golden Cross", "Cruz Blanca", "Vida Tres", "Nueva Masvida
 CLOSED = ("63", "76", "94")
 CLOSED_NAMES = ("Isalud", "Fundación", "Cruz del Norte")
 ING = "Ingresos de actividades ordinarias"
-# (section in column A, account in column B, key); values per Isapre in miles de $ (real, CI annotation r7–r16 / r8–r16)
-ROWS = [(ING, "Cotización legal (7%)", "legal"), (None, "Cotización adicional voluntaria", "adicional"),
-        (None, "Aporte adicional", "aporte"), (None, "Ingresos por fondo de compensación", "fondo"), (None, "Otros", "otros"),
-        ("Total ingresos de actividades ordinarias", None, "ingresos"),
-        ("Costo de ventas", "Costos por prestaciones de salud", "prest"), (None, "Subsidios por incapacidad laboral", "sil"),
-        (None, "Prestaciones ocurridas y no liquidadas", "ocurridas"), (None, "Prestaciones en litigio", "litigio")]
+GAV = "Gastos de administración y otros gastos por función"
+# Ctas. rows: (section in column A, account in column B, key). Totals ('ingresos', 'costo', 'gav') are computed from their
+# parts unless ``fixed`` overrides them, so a test that edits one component keeps or breaks the identity on purpose.
+CTAS_ROWS = [(ING, "Cotización legal (7%)", "legal"), (None, "Cotización adicional voluntaria", "adicional"),
+             (None, "Aporte adicional", "aporte"), (None, "Ingresos por fondo de compensación", "fondo"), (None, "Otros", "otros"),
+             ("Total ingresos de actividades ordinarias", None, "ingresos"),
+             ("Costo de ventas", "Costos por prestaciones de salud", "prest"), (None, "Subsidios por incapacidad laboral", "sil"),
+             (None, "Prestaciones ocurridas y no liquidadas", "ocurridas"), (None, "Prestaciones en litigio", "litigio"),
+             (None, "Egresos por fondo de compensación", "egresos"), (None, "Otros costos de operación", "otroscostos"),
+             ("Total costo de ventas", None, "costo"),
+             (GAV, "Publicidad", "publicidad"), (None, "Deterioro por deudores de cotizaciones", "detcot"),
+             (None, "Deterioro por deudores de préstamos de salud", "detpres"), (None, "Remuneraciones del personal", "remun"),
+             (None, "Remuneraciones y comisiones del personal de ventas", "remventas"), (None, "Otros", "gotros"),
+             ("Total gastos de administración y otros gastos por función", None, "gav")]
+PARTS = {"ingresos": ("legal", "adicional", "aporte", "fondo", "otros"),
+         "costo": ("prest", "sil", "ocurridas", "litigio", "egresos", "otroscostos"),
+         "gav": ("publicidad", "detcot", "detpres", "remun", "remventas", "gotros")}
+# E. Resultados rows: (code, label, key); 'bruta' = ingresos − costo unless fixed. Rows 30170–30190 are not yet confirmed by CI:
+# their labels follow 'E. Resultados por rubros' and their values are that sheet's figures rescaled to miles (fixture).
+ERES_ROWS = [(30010, "Ingresos de actividades ordinarias", "ingresos"), (30020, "Costo de ventas (menos)", "costo"),
+             (30030, "Ganancia bruta", "bruta"), (30060, "Otros ingresos, por función", "otrosing"),
+             (30080, "Gasto de administración (menos)", "gav"), (30090, "Otros gastos, por función (menos)", "otrosgastos"),
+             (30170, "Ganancia (pérdida) antes de impuestos", "antes"), (30180, "Gasto por impuestos a las ganancias (menos)", "imp"),
+             (30190, "Ganancia (pérdida)", "gan")]
+# Values per Isapre in miles de $, order OPEN + CLOSED. Real (CI annotations on PR #117) unless marked.
 REAL = {
     "legal": [186844880, 118341178, 37846717, 89708775, 152605566, 132430126, 15743566, 12905476, 8874426, 284163],
     "adicional": [80469918, 53035972, 29474781, 25808000, 76927265, 59959413, 13319092, 2031083, 727920, 42757],
     "aporte": [32020, 107104, 0, 0, 368801, 649348, 0, 17512276, 2573264, 472000],
     "fondo": [0, 0, 604038, 0, 477479, 234583, 0, 0, 0, 0],
     "otros": [0] * 10,
-    "ingresos": [267346818, 171484254, 67925536, 115516775, 230379111, 193273470, 29062658, 32448835, 12175610, 798920],
     "prest": [183534521, 121258868, 56275124, 69201925, 169301377, 120357578, 21377883, 30477935, 7930026, 507976],
     "sil": [33779167, 21306464, 5693076, 18235811, 30972360, 32399738, 2248012, 2109658, 1618265, 186351],
     "ocurridas": [22959294, 27987, 395204, 955716, 4885409, 252621, -383536, 0, 201286, -61172],
-    "litigio": [-754415, -337914, 38744, 260992, 79162, 2046748, 0, 0, 0, 0],  # cerradas: fixture (r17 not shown by CI)
+    "litigio": [-754415, -337914, 38744, 260992, 79162, 2046748, 0, 0, -2507, 0],
+    "egresos": [0, 67239, 0, 466890, 0, 0, 336182, 0, 0, 0],
+    "otroscostos": [9779243, 7180610, 2674379, 5992747, 5568520, 143836, 28754, 282953, 562162, 0],
+    "publicidad": [514183, 239470, 101496, 52007, 306541, 176989, 298473, 0, 8511, 0],
+    "detcot": [162946, 82603, 135737, 0, 584858, 424231, 0, 0, 1825, 0],
+    "detpres": [442431, 1246, 202924, 0, 363378, 19811, 0, 0, 148086, 5298],
+    "remun": [7487225, 4825805, 1695779, 2819201, 5821111, 6971415, 1967621, 1805662, 915205, 62974],
+    "remventas": [5656940, 2623064, 881925, 11245376, 5626456, 5007995, 776356, 209051, 0, 0],
+    "gotros": [6254837, 6944809, 1516386, 6152909, 5177658, 3265667, 2363241, 1037310, 539128, 63553],
+    "otrosing": [2374226, 115859, 252440, 1414756, 2396218, 1657291, 51613, 5603788, 523243, 33],
+    "otrosgastos": [2363903, 606234, 45116, 15686, -130, 150907, 0, 199866, 82629, 0],
+    "antes": [1976441, 9291788, -708959, 2273475, 5421031, 24711719, -62835, 2005553, 952296, 100000],  # rubros; CdN fixture
+    "imp": [492529, 2509427, -83597, 569676, 1502878, 6671227, -33130, -21713, 193194, 27000],  # rubros; CdN fixture
+    "gan": [1483912, 6782361, -625362, 1703799, 3918153, 18040492, -29705, 2027266, 759102, 73000],  # rubros; CdN fixture
 }
 CODES = OPEN + CLOSED
 ESENCIAL = CODES.index("108")
 
 
+def full(data=None, fixed=None) -> dict:
+    """The fixture values with totals computed from their parts (``fixed`` overrides any key)."""
+    d = copy.deepcopy(data or REAL)
+    for total, parts in PARTS.items():
+        d[total] = [sum(d[p][i] for p in parts) for i in range(10)]
+    d["bruta"] = [d["ingresos"][i] - d["costo"][i] for i in range(10)]
+    d.update(copy.deepcopy(fixed or {}))
+    return d
+
+
 def sin_esencial(key, data=None):
-    vals = (data or REAL)[key]
+    vals = full(data)[key]
     return sum(x for i, x in enumerate(vals) if i != ESENCIAL) / 1000  # MM$
 
 
-def workbook(data=None, *, note=A18, extra_col=False, total_delta=0, total_in_b=False, resultado=None, year="2026",
+def workbook(data=None, *, fixed=None, note=A18, extra_col=False, total_delta=0, total_in_b=False, year="2026",
              delta_key=None) -> bytes:
-    """``total_delta`` shifts the prestaciones total; ``delta_key`` shifts that account's total by 7 (Isapres no longer
-    add up); ``resultado`` adds a 'Ganancia (pérdida)' row (values per Isapre, miles de $)."""
+    """``total_delta`` shifts the prestaciones total column; ``delta_key`` shifts that account's total column by 7 (the
+    Isapres no longer add up); ``fixed`` overrides values (e.g. a total that no longer equals its parts)."""
     from openpyxl import Workbook
-    data = data or REAL
+    d = full(data, fixed)
     wb = Workbook()
     ws = wb.active
     ws.title = "Indice"
@@ -74,34 +116,33 @@ def workbook(data=None, *, note=A18, extra_col=False, total_delta=0, total_in_b=
     ws["A12"] = "Nota general (fixture)."
     ws["A18"] = note
     ws = wb.create_sheet("E. Resultados comparado por Isa")
-    ws.append([])
-    ws.append(["Cuadro N° 1.1 b"])
-    ws.append(["Principales rubros del estado de resultados por función por Isapre al 31 de marzo"])
-    ws.append(["En millones de $"])
-    ws.append(["Cod.", "Isapres", "Ingresos de actividades ordinarias", "Costo de ventas (menos)"])
-    ws.append([67, "Colmena Golden Cross", 267346818, 249297.81])  # mixed scales (display format), never read
-    for name, codes, names in (("Ctas. de Resultados I. Abierta ", OPEN, OPEN_NAMES),
-                               ("Ctas. de Resultados I. Cerradas", CLOSED, CLOSED_NAMES)):
-        ws = wb.create_sheet(name)
+    for row in ([], ["Cuadro N° 1.1 b"], ["Principales rubros del estado de resultados por función por Isapre al 31 de marzo"],
+                ["En millones de $"], ["Cod.", "Isapres", "Ingresos de actividades ordinarias", "Costo de ventas (menos)"],
+                [67, "Colmena Golden Cross", 267346818, 249297.81]):  # mixed scales (display format), never read
+        ws.append(row)
+    for kind, codes, names in (("abiertas", OPEN, OPEN_NAMES), ("cerradas", CLOSED, CLOSED_NAMES)):
         idx = [CODES.index(c) for c in codes]
         extra = [0] if extra_col and codes == OPEN else []
-        ws.append([])
-        ws.append([f"Cuadro N° 1.{8 if codes == OPEN else 9}"])
-        ws.append([f"Apertura de cuentas de resultados por función de las Isapres {'abiertas' if codes == OPEN else 'cerradas'}"])
-        if codes == CLOSED:
-            ws.append([f"Al 31 de marzo de {year}"])
-        ws.append(["En miles de $"])
-        ws.append(["Cuentas", None, *names, *(["Isapre Nueva"] if extra else []), "Total"])
-        ws.append([])
-        for sec, acc, key in ROWS:
-            vals = [data[key][i] for i in idx]
-            tot = sum(vals) + (total_delta if key == "prest" else 0) + (7 if key == delta_key else 0)
-            if total_in_b and key == "ingresos":
-                sec, acc = None, "Total ingresos de actividades ordinarias"
-            ws.append([sec, acc, *vals, *extra, tot])
-        if resultado is not None:
-            vals = [resultado[i] for i in idx]
-            ws.append(["Ganancia (pérdida)", None, *vals, *extra, sum(vals)])
+        for sheet, rows, cuadro in ((f"Ctas. de Resultados I. {'Abierta ' if kind == 'abiertas' else 'Cerradas'}", CTAS_ROWS,
+                                     8 if kind == "abiertas" else 9),
+                                    (f"E. Resultados I. {kind.capitalize()}", ERES_ROWS, 6 if kind == "abiertas" else 7)):
+            ws = wb.create_sheet(sheet)
+            ws.append([])
+            ws.append([f"Cuadro N° 1.{cuadro}"])
+            ws.append([f"Cuentas de resultados de las Isapres {kind}"])
+            if kind == "cerradas":
+                ws.append([f"Al 31 de marzo de {year}"])
+            ws.append(["En miles de $"])
+            first = ["Cuentas", None] if rows is CTAS_ROWS else ["Cod", "Cuentas"]
+            ws.append([*first, *names, *(["Isapre Nueva"] if extra else []), "Total"])
+            ws.append([])
+            for a, b, key in rows:
+                vals = [d[key][i] for i in idx]
+                tot = sum(vals) + (total_delta if key == "prest" else 0) + (7 if key == delta_key and rows is CTAS_ROWS else 0)
+                if total_in_b and key == "ingresos" and rows is CTAS_ROWS:
+                    a, b = None, "Total ingresos de actividades ordinarias"
+                ws.append([a, b, *vals, *extra, tot])
+            ws.append(["Fuente: Superintendencia de Salud, ficha económica financiera de Isapres al 31/03/2026"])
     buf = BytesIO()
     wb.save(buf)
     return buf.getvalue()
@@ -111,15 +152,9 @@ def committed_template():
     return copy.deepcopy(sf.load_registry()["families"]["F2"]["parser_template"])
 
 
-def reviewed_template(resultado=False):
-    """The committed template with the not-yet-visible rows resolved as a reviewer would for this fixture."""
+def reviewed_template():
+    """The committed template as a reviewer would approve it (only the review fields change)."""
     tpl = committed_template()
-    for tab in tpl["tables"].values():
-        tab["accounts"].pop("costo_operacional.t")
-        tab["accounts"].pop("resultado_ejercicio.t")
-        if resultado:
-            tab["accounts"]["resultado_ejercicio.t"] = {"pattern": r"^ganancia \(perdida\)$", "item": "resultado_ejercicio", "period": "t"}
-    tpl["tables"]["ctas_cerradas"]["accounts"]["prestaciones_litigio.t"]["pattern"] = "^costo de ventas prestaciones en litigio$"
     tpl.update(reviewed_by="Fixture reviewer", reviewed_at="2026-11-01")
     assert ft.review_state(tpl) == "ok"
     return tpl
@@ -212,12 +247,16 @@ def test_committed_template_reads_only_the_ctas_sheets_and_stays_pending():
     tpl = cfg["parser_template"]
     assert cfg["status"] == "planned" and cfg["lectura_enabled"] is False
     assert tpl["reviewed_by"] == "pendiente" and tpl["reviewed_at"] is None
-    assert ft.review_state(tpl) == "placeholder"  # rows r17+ are not visible yet
-    assert {t["sheet"] for t in tpl["tables"].values()} == {r"^ctas\. de resultados i\. abierta$", r"^ctas\. de resultados i\. cerradas$"}
+    assert ft.review_state(tpl) == "unreviewed"  # every row is written; Dirección has not approved it yet
+    assert {t["sheet"] for t in tpl["tables"].values()} == {
+        r"^ctas\. de resultados i\. abierta$", r"^ctas\. de resultados i\. cerradas$",
+        r"^e\. resultados i\. abiertas$", r"^e\. resultados i\. cerradas$"}  # never a sheet 'en millones', never E. Sit. Fin.
     assert all(t["unit"]["pattern"] == r"^en miles de \$$" and t["unit"]["to_mm_clp"] == 0.001 for t in tpl["tables"].values())
-    placeholders = sorted(f"{tid}.{a}" for tid, t in tpl["tables"].items() for a, s in t["accounts"].items() if ft.has_placeholder(s))
-    assert placeholders == ["ctas_abiertas.costo_operacional.t", "ctas_abiertas.resultado_ejercicio.t",
-                            "ctas_cerradas.costo_operacional.t", "ctas_cerradas.prestaciones_litigio.t", "ctas_cerradas.resultado_ejercicio.t"]
+    assert {i for t in ("eres_abiertas", "eres_cerradas") for i in (a["item"] for a in tpl["tables"][t]["accounts"].values())} == {
+        "ganancia_bruta", "resultado_antes_impuestos", "gasto_impuestos", "resultado_ejercicio"}
+    assert set(tpl["tables"]["ctas_abiertas"]["parts"]) == {"ingresos_operacionales", "costo_operacional", "gav"}
+    assert [c["name"] for c in tpl["cross_checks"]] == ["ganancia_bruta", "impuestos"]
+    assert not any("patrimonio" == a["item"] for t in tpl["tables"].values() for a in t["accounts"].values())
     assert all(s["item"] in fc.ITEMS for t in tpl["tables"].values() for s in t["accounts"].values())
 
 
@@ -235,9 +274,9 @@ def test_committed_rules_record_the_decision_and_keep_the_old_hold():
 def test_committed_template_parses_nothing_and_holds(tmp_path):
     root = make_root(tmp_path, template=committed_template())
     capture(root, template=committed_template())
-    assert stored_doc(root)["parse"]["status"] == "template_placeholder"
+    assert stored_doc(root)["parse"]["status"] == "template_unreviewed"
     res = run(root, template=committed_template())
-    assert res["status"] == "hold" and any("parser_template_placeholder" in e for e in res["errors"])
+    assert res["status"] == "hold" and any("parser_template_unreviewed" in e for e in res["errors"])
 
 
 @pytest.mark.parametrize("patch,state", [({"reviewed_by": "pendiente"}, "unreviewed"), ({"reviewed_by": ""}, "unreviewed"),
@@ -268,6 +307,11 @@ def test_reviewed_template_reads_the_real_ctas_layout():
     assert ce["header_row"] == 6 and ce["cells"]["costo_sil.t"]["94"] == "E15"
     assert p["coverage_note"] == {"sheet": "Notas Explicativas", "cell": "A18", "text": A18,
                                   "text_sha256": hashlib.sha256(A18.encode()).hexdigest()}
+    er = p["tables"]["eres_abiertas"]
+    assert er["sheet"] == "E. Resultados I. Abiertas" and er["cells"]["ganancia_bruta.t"]["67"] == "C9"
+    assert er["values"]["ganancia_bruta.t"]["67"] == pytest.approx(18049.008)  # 267346818 − 249297810 miles
+    assert ab["values"]["costo_operacional.t"]["67"] == pytest.approx(249297.81) and ab["values"]["gav.t"]["total"] == pytest.approx(99191.1)
+    assert p["tables"]["eres_cerradas"]["values"]["resultado_ejercicio.t"]["63"] == pytest.approx(2027.266)
     assert "E. Resultados comparado por Isa" in p["sheet_names"]
     assert "E. Resultados comparado por Isa" not in {t["sheet"] for t in p["tables"].values()}
 
@@ -301,8 +345,36 @@ def test_mixed_magnitudes_are_refused():
 def test_components_must_add_up_to_total_ingresos():
     data = copy.deepcopy(REAL)
     data["aporte"][1] += 5000  # the component changes, Total ingresos does not
-    p = fc.parse_fefi_workbook(workbook(data), reviewed_template(), "2026-03")
+    p = fc.parse_fefi_workbook(workbook(data, fixed={"ingresos": full()["ingresos"]}), reviewed_template(), "2026-03")
     assert "ctas_abiertas:parts_do_not_add_up:ingresos_operacionales.t:78" in p["failures"]
+    data = copy.deepcopy(REAL)
+    data["remun"][8] += 10  # an admin component of Fundación (cerradas), total kept
+    p = fc.parse_fefi_workbook(workbook(data, fixed={"gav": full()["gav"]}), reviewed_template(), "2026-03")
+    assert "ctas_cerradas:parts_do_not_add_up:gav.t:76" in p["failures"]
+    data = copy.deepcopy(REAL)
+    data["otroscostos"][0] += 2
+    p = fc.parse_fefi_workbook(workbook(data, fixed={"costo": full()["costo"]}), reviewed_template(), "2026-03")
+    assert "ctas_abiertas:parts_do_not_add_up:costo_operacional.t:67" in p["failures"]
+
+
+def test_ganancia_bruta_and_taxes_cross_check_across_sheets():
+    bruta = full()["bruta"]
+    bruta[0] += 2  # E. Resultados ganancia bruta of Colmena no longer equals Ctas. ingresos − costo de ventas
+    p = fc.parse_fefi_workbook(workbook(fixed={"bruta": bruta}), reviewed_template(), "2026-03")
+    assert p["failures"] == ["cross_check_failed:ganancia_bruta:67"]
+    gan = list(REAL["gan"])
+    gan[7] += 5  # Isalud: antes de impuestos − impuestos ≠ ganancia
+    p = fc.parse_fefi_workbook(workbook(fixed={"gan": gan}), reviewed_template(), "2026-03")
+    assert p["failures"] == ["cross_check_failed:impuestos:63"]
+
+
+def test_e_resultados_millones_or_mixed_magnitudes_are_refused():
+    gan = list(REAL["gan"])
+    gan[1] = 6782.361  # Cruz Blanca's result in millions next to miles (and its antes de impuestos in miles)
+    antes, imp = list(REAL["antes"]), list(REAL["imp"])
+    imp[1] = antes[1] - gan[1]
+    p = fc.parse_fefi_workbook(workbook(fixed={"gan": gan, "imp": imp}), reviewed_template(), "2026-03")
+    assert any(f.startswith("eres_abiertas:mixed_magnitudes:78:") for f in p["failures"]), p["failures"]
 
 
 @pytest.mark.parametrize("kwargs,why", [({"extra_col": True}, "ctas_abiertas:header_no_match"),
@@ -362,17 +434,27 @@ def test_ficha_shows_nine_isapres_and_recomputes_the_system_without_esencial(tmp
     k = {x["id"]: x for x in fi["kpis"]}
     assert k["ingresos"]["label"] == "Ingresos (sistema sin Esencial)" and k["ingresos"]["value"] == "1.091.349 MM$"
     assert k["siniestralidad"]["value"] == "82,9%"
-    assert fi["headline"] == "Isapres sin Esencial a marzo 2026: siniestralidad de 82,9% de los ingresos entre enero y marzo"
+    gan = sin_esencial("gan")
+    assert fi["headline"] == f"Isapres sin Esencial a marzo 2026: utilidad de {sf.fmt_int(gan)} MM$ entre enero y marzo"
+    bridge = next(c for c in sf.all_charts(fi) if c["id"] == "f2-resultado-puente")
+    assert [r["label"] for r in bridge["rows"]] == ["Ganancia bruta", "Antes de impuestos", "Impuestos", "Ganancia"]
+    assert bridge["rows"][2]["value"] == pytest.approx(-sin_esencial("imp")) and bridge["rows"][3]["value"] == pytest.approx(gan)
+    assert ev["gav_pct.sistema.2026-03"]["value"] == pytest.approx(sin_esencial("gav") / sin_esencial("ingresos") * 100)
+    costs = next(c for c in sf.all_charts(fi) if c["id"] == "f2-costos-composicion")
+    assert costs["table"]["rows"][-1] == ["Total costo de ventas", sf.fmt_int(sin_esencial("costo"))]
     n0 = next(n for n in fi["notes"] if n["id"] == "n0")["text"]
     assert f'Notas Explicativas!A18: "{A18}"' in n0 and "1 nov 2026" in n0 and "otras 9 Isapres" in n0
     shown = " ".join(sf.displayed_texts(fi))
-    for key in ("legal", "adicional", "ingresos", "prest", "sil", "ocurridas"):  # no Esencial figure in charts, tables, 'Ver datos'
-        x = REAL[key][ESENCIAL] / 1000
-        assert sf.fmt_int(x) not in shown, (key, sf.fmt_int(x))
+    esencial = full()
+    for key in esencial:  # no Esencial figure in charts, tables, 'Ver datos'
+        x = esencial[key][ESENCIAL] / 1000
+        if abs(x) >= 100:
+            tok = re.compile(r"(?<![\d.,])" + re.escape(sf.fmt_int(abs(x))) + r"(?![\d]|[.,]\d)")
+            assert not tok.search(shown), (key, sf.fmt_int(x))
     for c in sf.all_charts(fi):
         assert "Esencial" not in [r["label"] for r in c["rows"]] and all(r["label"] != "Sistema" for r in c["rows"])
         assert all("Esencial" not in str(row[0]) or row[0] == "Sistema sin Esencial" for row in c["table"]["rows"])
-    assert [t["id"] for t in fi["tabs"]] == ["ingresos", "costos", "siniestralidad"]  # resultados rows not read yet
+    assert [t["id"] for t in fi["tabs"]] == ["resultados", "ingresos", "costos", "gastos", "siniestralidad"]  # no patrimonio
     assert fi["verification"]["verdict"] == "PASS" and fi["lectura"]["status"] == "not_attempted"
 
 
@@ -439,7 +521,7 @@ def test_unreadable_editorial_rules_fail_closed(tmp_path):
 
 def prev_data(scale=0.9):
     out = {k: [round(x * scale) for x in v] for k, v in REAL.items()}
-    out["ingresos"] = [sum(out[p][i] for p in ("legal", "adicional", "aporte", "fondo", "otros")) for i in range(10)]
+    out["imp"] = [out["antes"][i] - out["gan"][i] for i in range(10)]  # keep the tax identity exact after rounding
     return out
 
 
@@ -465,19 +547,20 @@ def test_year_on_year_needs_the_previous_file_verified_with_the_same_template(tm
     root2 = make_root(tmp_path / "b", prev=True)
     bad = prev_data()
     bad["aporte"][0] += 99_000
-    capture(root2, files={URL: workbook(), URL_PREV: workbook(bad, year="2025")}, max_new=2)
+    capture(root2, files={URL: workbook(), URL_PREV: workbook(bad, fixed={"ingresos": full(prev_data())["ingresos"]}, year="2025")},
+            max_new=2)
     assert stored_doc(root2, "2025-03")["parse"]["status"] == "failed"
     assert not any(v.endswith(".pct") for v in run(root2)["ficha"]["evidence"]["values"])
 
 
 def test_loss_to_profit_uses_absolute_change_and_na(tmp_path):
-    tpl = reviewed_template(resultado=True)
     cur = [12_000_000, 8_000_000, 1_000_000, 2_500_000, 9_000_000, 1_500_000, -2_000_000, 500_000, 1_090_653, 500_000]
     old = [-3_000_000, 1_000_000, 200_000, -500_000, 2_000_000, -1_000_000, -500_000, 300_000, 226_715, 200_000]
-    root = make_root(tmp_path, template=tpl, prev=True)
-    capture(root, template=tpl, files={URL: workbook(resultado=cur), URL_PREV: workbook(prev_data(), resultado=old, year="2025")},
+    res_rows = lambda g: {"gan": g, "antes": g, "imp": [0] * 10}  # noqa: E731
+    root = make_root(tmp_path, prev=True)
+    capture(root, files={URL: workbook(fixed=res_rows(cur)), URL_PREV: workbook(prev_data(), fixed=res_rows(old), year="2025")},
             max_new=2)
-    res = run(root, template=tpl)
+    res = run(root)
     assert res["status"] == "pass", res.get("errors")
     fi = res["ficha"]
     r_t = sum(x for i, x in enumerate(cur) if i != ESENCIAL) / 1000
@@ -526,7 +609,7 @@ def test_template_change_triggers_one_hash_bound_recheck_and_keeps_the_previous_
     assert len(capture(root, data, template=committed_template()).calls) == 0  # downloaded once
     assert len(capture(root, data, template=reviewed_template()).calls) == 1  # template changed: one re-check
     doc = stored_doc(root)
-    assert doc["parse"]["status"] == "verified" and doc["previous_parse"]["status"] == "template_placeholder" and doc["rechecked_at"]
+    assert doc["parse"]["status"] == "verified" and doc["previous_parse"]["status"] == "template_unreviewed" and doc["rechecked_at"]
     assert len(capture(root, data, template=reviewed_template()).calls) == 0
     tpl2 = {**reviewed_template(), "reviewed_at": "2026-11-02"}
     capture(root, workbook(note=A18 + " "), template=tpl2)  # other bytes on the re-check
