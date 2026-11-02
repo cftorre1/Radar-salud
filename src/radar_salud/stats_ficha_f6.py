@@ -76,7 +76,9 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         if sorted(docs) != sorted(cap.TOPICS):
             why.append("documents_not_one_per_topic")
         for topic, d in sorted(docs.items()):
-            if d.get("status") != "captured" or not sf.HEX64.fullmatch(str(d.get("sha256") or "")):
+            if d.get("status") == "hash_mismatch":
+                why.append(f"sha256_mismatch_on_recheck:{topic}")
+            elif d.get("status") != "captured" or not sf.HEX64.fullmatch(str(d.get("sha256") or "")):
                 why.append(f"not_captured:{topic}")
             elif d.get("format") != "pdf":
                 why.append(f"format_{d.get('format')}:{topic}")
@@ -115,7 +117,10 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         "reconciliation": {"ok": False, "failures": failures,
                            "checks": ["un PDF por tema (acreditación, mediación, reclamos, RNPI) del mismo boletín y período",
                                       "cada documento capturado con SHA-256 y formato PDF",
-                                      "cada cifra viene de la lectura independiente y aparece en el texto del PDF capturado",
+                                      "cada cifra viene de la lectura independiente y aparece en el texto del PDF capturado, en una página citada: "
+                                      "junto a su palabra de contexto (80 caracteres) o, en acreditación (versión 2), por una "
+                                      "plantilla anclada al texto real, revisada por una persona, que calza una sola vez",
+                                      "un documento revisado con una versión nueva del verificador conserva su SHA-256",
                                       "privadas + públicas = solicitudes en tramitación",
                                       "con observaciones ≤ acreditados",
                                       "variación de reclamos calculada = variación informada (redondeada)",

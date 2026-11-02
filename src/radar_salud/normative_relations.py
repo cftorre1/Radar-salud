@@ -36,7 +36,9 @@ TARGET_MAX_WORDS = 15
 
 _ID = re.compile(
     r"\b(Oficio\s+Circular|Oficio\s+Ord(?:inario)?\.?|Circular|Resoluci[oó]n\s+Exenta)\s+"
-    r"(?:(IF|IP|SS)\s*[/\-]?\s*)?N?\s*[°º]?\s*(\d[\d\.]*)", re.I)
+    r"(?:(IF|IP|SS)\s*[/\-]?\s*)?" + r"(?:N(?:\s*\.?\s*[°º˚]|o\.?|\.)?|[°º˚])?" + r"\s*(\d[\d\.]*)", re.I)
+# Number marks seen in official text for the same act: N°, Nº, N˚, No., N.º, N. (staging audit 29-oct:
+# "Circular IF/N°528" and "Circular IF/Nº528" are one act).
 _TARGET_KINDS = ("circular", "oficio circular")
 _EFFECTS = r"(?:los\s+)?efectos\s+de"
 _ADJ = r"(?:(?:transitoria|temporal|provisoria)\s+)?"  # "suspensión transitoria de los efectos de"
@@ -108,6 +110,37 @@ def _kind(raw: str) -> str:
 def normalize_id(kind: str, prefix: str | None, number: str) -> str:
     prefix = (prefix or "").upper()
     return f"{_kind(kind)} {prefix + '/' if prefix else ''}N°{number.rstrip('.')}"
+
+
+_DOUBLE_QUOTE_PAIRS = (("“", "”"), ("«", "»"))
+
+
+def clean_subject(text: str | None) -> str | None:
+    """Official subject text with whitespace collapsed and unmatched *double* quotes removed.
+
+    The SIS listing often quotes the title of the act inside its subject; when the excerpt
+    starts or is cut inside that quote, a lone closing quote remains (``(TEA)" y cuyo``).
+    Only straight or typographic double quotes are touched: apostrophes (O’Higgins, ``'``) and
+    inch marks after a digit (``12"``) are never removed, and no word is added or changed."""
+    s = " ".join(str(text or "").split())
+    if not s:
+        return None
+    for opening, closing in _DOUBLE_QUOTE_PAIRS:
+        if s.count(opening) != s.count(closing):
+            if not s.count(opening):
+                s = s.replace(closing, "")
+            elif not s.count(closing):
+                s = s.replace(opening, "")
+    # Only an odd number of straight quotes means one is unpaired; it is never one after a digit.
+    quotes = [i for i, ch in enumerate(s) if ch == '"' and not (i and s[i - 1].isdigit())]
+    if s.count('"') % 2 and quotes:
+        first = quotes[0]
+        # A first quote glued to the previous word (``(TEA)" y``) closes a quote that was never
+        # opened: drop it; otherwise the last quote is the unpaired one.
+        lone = first if first and not s[first - 1].isspace() else quotes[-1]
+        s = s[:lone] + s[lone + 1:]
+    s = re.sub(r"\s{2,}", " ", s).strip()
+    return s or None
 
 
 def issuer_prefix(norm_id: str) -> str | None:
@@ -307,14 +340,14 @@ def related_documents(card: dict[str, Any], history: Iterable[dict[str, Any]],
         listed = (index or {}).get(key)
         if original and original.get("source_url") != card.get("source_url"):
             out.append({"title": original.get("display_title") or original.get("title") or rel["target_id"],
-                        "summary": original.get("official_subject") or (listed or {}).get("official_subject"),
+                        "summary": clean_subject(original.get("official_subject") or (listed or {}).get("official_subject")),
                         "relationship": text, "url": original["source_url"], "event_date": original.get("event_date"),
                         "verified": True, "basis": "history_record", "target_id": rel["target_id"],
                         "history_ficha": {"title": original.get("title"), "event_date": original.get("event_date"),
                                           "source_url": original["source_url"],
                                           "in_feed": original["source_url"] in feed}})
         elif listed and listed.get("url"):
-            out.append({"title": listed.get("id") or rel["target_id"], "summary": listed.get("official_subject"),
+            out.append({"title": listed.get("id") or rel["target_id"], "summary": clean_subject(listed.get("official_subject")),
                         "relationship": text, "url": listed["url"], "event_date": listed.get("event_date"),
                         "verified": True, "basis": "official_listing_index", "target_id": rel["target_id"]})
         else:

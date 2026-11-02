@@ -2,14 +2,17 @@
 
 The SIS releases are listed in ``data/history/superintendencia_signals.json`` (title, release page and document
 URLs). This module downloads each document once, stores its SHA-256 and the parsed, reconciled values in
-``data/stats_fichas/captures/<kind>.json`` and never stores the binary. A document already captured is never
-downloaded again (no backfill: only the releases already in the history are read, at most ``max_new`` per run).
+``data/stats_fichas/captures/<kind>.json`` and never stores the binary. A document already captured is not downloaded
+again (no backfill: only the releases already in the history are read, at most ``max_new`` per run), except once when
+the Boletín checker version or the figure templates of its topic change: then it is re-checked and must
+hash to the recorded SHA-256.
 
 - GES (xlsx): ``data_insights.parse_ges_workbook`` — the corrected parser: the sheet of the reporting year is
   pinned and the rows must add up to the declared total, else HOLD.
 - Boletín IP (PDF): the text is never interpreted by a model. The figures come from the independent reading in
   ``config/statistical_analysis_verified_v1.json`` and the capture only records whether each verified figure is
-  present in the captured document's text (``verified_present``). Releases whose documents belong to another
+  present in the captured document's text (``verified_present``) and under which rule (``figure_rules``: the
+  context window or, for acreditación, a human-reviewed anchored template). Releases whose documents belong to another
   release (e.g. a 'Septiembre 2026' page listing the 'enero-junio-2026' PDFs) are rejected, never relabelled.
 """
 from __future__ import annotations
@@ -190,6 +193,114 @@ def present_in(text: str, n: int | float, context: tuple[str, ...] = GENERIC_CON
     return False
 
 
+# Checker version of the Boletín IP parse, per topic (recorded as ``checker_version`` in every parse result). A captured
+# document whose recorded version is older than the code's, or whose recorded ``templates_sha256`` differs from the
+# current figure templates of its topic, is re-checked on the next run (``capture``): the bytes are obtained again
+# within the same limits, must hash to the recorded SHA-256 (else HOLD: status 'hash_mismatch') and are re-parsed.
+# Version 1 = context window only. Version 2 (acreditación, Dirección 2026-10-29) adds per-figure anchored templates
+# declared in ``config/stats_fichas_v1.json`` (families.F6.figure_templates) and reviewed by a human; the context
+# window is unchanged. No generic sentence or table heuristic is used.
+CHECKER_VERSIONS = {"acreditacion": 2}
+DEFAULT_CHECKER_VERSION = 1
+REGISTRY = Path("config/stats_fichas_v1.json")
+PLACEHOLDER = re.compile(r"<<[^>]*>>")
+UNREVIEWED = frozenset({"", "pendiente", "pending", "todo"})
+
+
+def checker_version(topic: str | None) -> int:
+    return CHECKER_VERSIONS.get(str(topic or ""), DEFAULT_CHECKER_VERSION)
+
+
+def figure_templates(root: Path, topic: str | None) -> dict:
+    """The topic's figure templates (``families.F6.figure_templates.<topic>``) of the root's registry; {} if none."""
+    reg = _load(Path(root) / REGISTRY, {})
+    fam = ((reg.get("families") or {}).get("F6") or {}) if isinstance(reg, dict) else {}
+    out = (fam.get("figure_templates") or {}).get(str(topic or "")) or {}
+    return {k: v for k, v in out.items() if isinstance(v, dict)}
+
+
+def templates_sha256(templates: dict | None) -> str | None:
+    if not templates:
+        return None
+    return hashlib.sha256(json.dumps(templates, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
+
+
+def normalize_page(text: str) -> str:
+    """Template text: case and accents folded, thousands dots removed ('1.004.982' → '1004982'), all whitespace
+    (newlines included) collapsed to single spaces."""
+    t = _fold(text)
+    t = re.sub(r"(?<=\d)\.(?=\d{3}(?!\d))", "", t)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def template_pattern(tpl: dict) -> tuple[re.Pattern | None, str]:
+    """Compile a template, or say why it is not usable ('placeholder', 'unreviewed', 'invalid')."""
+    caption = tpl.get("caption")
+    raw = str(tpl.get("pattern") or "")
+    if not raw or PLACEHOLDER.search(raw) or (caption is not None and (not str(caption).strip()
+                                                                       or PLACEHOLDER.search(str(caption)))):
+        return None, "placeholder"
+    if str(tpl.get("reviewed_by") or "").strip().casefold() in UNREVIEWED or not str(tpl.get("reviewed_at") or "").strip():
+        return None, "unreviewed"
+    if "{caption}" in raw:
+        if caption is None:
+            return None, "placeholder"
+        raw = raw.replace("{caption}", re.escape(normalize_page(str(caption))))
+    try:
+        pat = re.compile(raw)
+    except re.error:
+        return None, "invalid"
+    if pat.groups != int(tpl.get("groups") or 1) or not 1 <= int(tpl.get("figure_group") or 1) <= pat.groups:
+        return None, "invalid"
+    return pat, "ok"
+
+
+def template_evidence(pages: list[str], cited: list[int], n: int | float, tpl: dict | None,
+                      metrics: dict | None = None) -> tuple[dict | None, str]:
+    """Apply one reviewed template to the cited pages: it must match exactly once across them, the captured figure
+    must equal the independent reading's ``n``, and the optional ``sum_of`` / ``parts_equal`` checks must hold."""
+    if not tpl:
+        return None, "not_configured"
+    pat, why = template_pattern(tpl)
+    if not pat:
+        return None, why
+    hits = [(p, m) for p in cited for m in pat.finditer(normalize_page(pages[p - 1]))]
+    if len(hits) != 1:
+        return None, "no_match" if not hits else f"multiple_matches:{len(hits)}"
+    page, m = hits[0]
+    groups = [int(g) for g in m.groups()]
+    if groups[int(tpl.get("figure_group") or 1) - 1] != int(n):
+        return None, "figure_mismatch"
+    text = m[0] if len(m[0]) <= 300 else f"{m[0][:150]} … {m[0][-120:]}"  # both anchors kept
+    ev = {"rule": "template", "page": page, "match": text, "reviewed_by": tpl.get("reviewed_by"),
+          "reviewed_at": tpl.get("reviewed_at")}
+    if tpl.get("sum_of"):
+        parts = [groups[i - 1] for i in tpl["sum_of"]]
+        if sum(parts) != int(n):
+            return None, "sum_mismatch"
+        ev["sum_check"] = " + ".join(map(str, parts)) + f" = {int(n)}"
+    for g, key in (tpl.get("parts_equal") or {}).items():
+        want = (metrics or {}).get(key)
+        if not isinstance(want, (int, float)) or groups[int(g) - 1] != int(want):
+            return None, f"part_mismatch:{key}"
+    if tpl.get("parts_equal"):
+        ev["parts_equal"] = {key: groups[int(g) - 1] for g, key in tpl["parts_equal"].items()}
+    return ev, "ok"
+
+
+def figure_evidence(pages: list[str], cited: list[int], n: int | float, context: tuple[str, ...],
+                    version: int = DEFAULT_CHECKER_VERSION, key: str | None = None, templates: dict | None = None,
+                    metrics: dict | None = None) -> dict | None:
+    """Which rule places the figure on a cited page: 'context_window' (all versions), then, from v2, the reviewed
+    anchored 'template' of the metric (``templates[key]``). Nothing else."""
+    for p in cited:
+        if present_in(pages[p - 1], n, context):
+            return {"rule": "context_window", "page": p}
+    if version < 2 or not key:
+        return None
+    return template_evidence(pages, cited, n, (templates or {}).get(key), metrics)[0]
+
+
 def pdf_pages(data: bytes) -> list[str]:
     from pypdf import PdfReader
     reader = PdfReader(io.BytesIO(data))
@@ -201,24 +312,39 @@ def pdf_text(data: bytes) -> tuple[str, int]:
     return "\n".join(pages), len(pages)
 
 
-def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int] | None = None) -> dict:
+def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int] | None = None,
+                      topic: str | None = None, templates: dict | None = None) -> dict:
     """Hash-bound check of verified figures; no figure is read from the PDF by guesswork.
 
-    A figure counts as present only on the pages cited by the independent reading (``pages_1based``) and next to a
-    context word of its metric; without cited pages nothing is verified (fail closed)."""
+    A figure counts as present only on the pages cited by the independent reading (``pages_1based``): next to a
+    context word of its metric, or (checker v2) through its reviewed anchored template. Without cited pages nothing is
+    verified (fail closed). ``figure_rules`` records the rule per figure, ``template_status`` why a template did not
+    apply ('not_configured', 'placeholder', 'unreviewed', 'no_match', 'multiple_matches:N', …)."""
+    version = checker_version(topic)
+    templates = templates if version >= 2 else None
+    base = {"checker_version": version, "templates_sha256": templates_sha256(templates)}
     try:
         pages = pdf_pages(data)
     except Exception as exc:  # unreadable PDF: captured hash, no verification
-        return {"status": "pdf_unreadable", "error": f"{type(exc).__name__}"[:80]}
+        return {"status": "pdf_unreadable", "error": f"{type(exc).__name__}"[:80], **base}
     text = "\n".join(pages)
     out = {"status": "no_verified_metrics", "pages": len(pages),
-           "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest()}
+           "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), **base}
     if metrics:
         cited = [p for p in (pages_1based or []) if isinstance(p, int) and 1 <= p <= len(pages)]
-        present = {k: any(present_in(pages[p - 1], v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT)) for p in cited)
-                   for k, v in metrics.items() if isinstance(v, (int, float))}
+        evidence, status = {}, {}
+        for k, v in metrics.items():
+            if not isinstance(v, (int, float)):
+                continue
+            evidence[k] = figure_evidence(pages, cited, v, METRIC_CONTEXT.get(k, GENERIC_CONTEXT), version, k,
+                                          templates, metrics)
+            if evidence[k] is None and version >= 2:
+                status[k] = template_evidence(pages, cited, v, (templates or {}).get(k), metrics)[1]
+        present = {k: e is not None for k, e in evidence.items()}
         out.update(status="verified" if present and all(present.values()) else "verified_figure_missing",
-                   verified_present=present, pages_checked=cited)
+                   verified_present=present, pages_checked=cited, figure_rules=evidence)
+        if status:
+            out["template_status"] = status
     return out
 
 
@@ -339,12 +465,44 @@ def _capture_doc(doc: dict, *, fetch: Callable[[str], bytes], parse: Callable[[b
     return {**rec, "status": "captured", "parse": parsed}
 
 
+def _recheck_doc(prev: dict, *, fetch: Callable[[str], bytes], parse: Callable[[bytes], dict],
+                 stored: Callable[[dict], bytes | None] | None = None) -> dict:
+    """Re-check a document already captured with an older checker version. The bytes come from ``stored`` when it
+    has them (this module never stores binaries, so by default they are downloaded again through ``fetch``, i.e. the
+    same allowlist / robots / size / time limits). They must hash to the recorded SHA-256: on mismatch the document
+    goes to HOLD ('hash_mismatch', recorded hash and parse kept, never re-captured automatically). A failed download or
+    parse leaves the previous record in place and notes the attempt in ``recheck``."""
+    attempts = int((prev.get("recheck") or {}).get("attempts") or 0) + 1
+    try:
+        data = (stored(prev) if stored else None) or fetch(prev["url"])
+    except Exception as exc:
+        return {**prev, "recheck": {"status": "fetch_failed", "error": f"{type(exc).__name__}:{exc}"[:160],
+                                    "attempts": attempts, "at": _now()}}
+    sha = hashlib.sha256(data).hexdigest()
+    if sha != prev.get("sha256"):
+        return {**prev, "status": "hash_mismatch", "recheck": {"status": "hash_mismatch", "recorded_sha256": prev.get("sha256"),
+                                                              "fetched_sha256": sha, "bytes": len(data), "at": _now()}}
+    try:
+        parsed = parse(data)
+    except Exception as exc:
+        return {**prev, "recheck": {"status": "parse_failed", "error": f"{type(exc).__name__}:{exc}"[:160],
+                                    "attempts": attempts, "at": _now()}}
+    rest = {k: v for k, v in prev.items() if k not in ("recheck", "previous_parse")}
+    return {**rest, "status": "captured", "parse": parsed, "previous_parse": prev.get("parse"), "rechecked_at": _now(),
+            "rechecked_from_checker_version": int((prev.get("parse") or {}).get("checker_version") or DEFAULT_CHECKER_VERSION)}
+
+
 def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new: int = 6,
-            time_budget_s: float = TIME_BUDGET_S, clock: Callable[[], float] = time.monotonic) -> dict:
+            time_budget_s: float = TIME_BUDGET_S, clock: Callable[[], float] = time.monotonic,
+            stored: Callable[[dict], bytes | None] | None = None) -> dict:
     """Download each listed document once (at most ``max_new`` per kind and run, newest release first); store hashes
     and parsed values, never binaries. A failed download is retried up to MAX_ATTEMPTS times, then once a week; a file
     that downloads but fails to parse is retried after RETRY_AFTER_DAYS. The whole step stops starting downloads once
-    ``time_budget_s`` has elapsed (documents left for the next run stay 'not_fetched')."""
+    ``time_budget_s`` has elapsed (documents left for the next run stay 'not_fetched').
+
+    A Boletín document already captured whose parse carries an older ``checker_version`` than the code's, or other
+    ``templates_sha256`` than its topic's current figure templates (and that has verified figures to check), is
+    re-checked once (``_recheck_doc``); it uses the same download budget and limits."""
     root = Path(root)
     deadline = clock() + time_budget_s
     fetch = fetch or SisFetcher(deadline=deadline, clock=clock)
@@ -374,6 +532,22 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         if int(old.get("attempts") or 0) < MAX_ATTEMPTS:
             return True
         return days_since(old) >= RETRY_AFTER_DAYS
+
+    def needs_recheck(old: dict | None, topic: str | None, has_metrics: bool, templates: dict) -> bool:
+        if not old or old.get("status") != "captured" or old.get("format") != "pdf" or not has_metrics:
+            return False
+        parsed = old.get("parse") or {}
+        version = checker_version(topic)
+        recorded = int(parsed.get("checker_version") or DEFAULT_CHECKER_VERSION)
+        current_tpl = templates_sha256(templates) if version >= 2 else None
+        if recorded >= version and parsed.get("templates_sha256") == current_tpl:
+            return False
+        last = old.get("recheck") or {}
+        if last.get("status") == "fetch_failed" and int(last.get("attempts") or 0) >= MAX_ATTEMPTS:
+            return days_since({"fetched_at": last.get("at")}) >= RETRY_AFTER_DAYS
+        if last.get("status") == "parse_failed":
+            return days_since({"fetched_at": last.get("at")}) >= RETRY_AFTER_DAYS
+        return True
 
     # GES
     path = root / STORE / "ges_quarterly.json"
@@ -411,12 +585,16 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         docs = []
         for d in rel["documents"]:
             prev = old_docs.get(d["url"])
+            info = verified.get(d["url"]) or {}
+            tpl = figure_templates(root, d.get("topic"))
+            parse = (lambda b, m=info.get("metrics"), pg=info.get("pages_1based"), t=d.get("topic"), tp=tpl:
+                     parse_boletin_pdf(b, m, pg, t, tp))
             if needs(prev) and budget["left"] > 0 and has_time():
                 budget["left"] -= 1
-                info = verified.get(d["url"]) or {}
-                docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf",
-                                         parse=lambda b, m=info.get("metrics"), pg=info.get("pages_1based"):
-                                         parse_boletin_pdf(b, m, pg)))
+                docs.append(_capture_doc({**(prev or {}), **d}, fetch=fetch, expected="pdf", parse=parse))
+            elif needs_recheck(prev, d.get("topic"), bool(info.get("metrics")), tpl) and budget["left"] > 0 and has_time():
+                budget["left"] -= 1
+                docs.append(_recheck_doc({**prev, **d}, fetch=fetch, parse=parse, stored=stored))
             else:
                 docs.append(prev or {**d, "status": "not_fetched"})
         known[rel["period"]] = {k: rel[k] for k in ("period", "number", "title", "release_url", "published_at")} | {"documents": docs}

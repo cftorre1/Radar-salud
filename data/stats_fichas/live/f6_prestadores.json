@@ -1,0 +1,993 @@
+{
+  "schema_version": "stats_ficha_v1",
+  "id": "stats-ficha:F6:2026-06",
+  "family": "F6",
+  "family_label": "Prestadores: Boletín IP",
+  "slug": "f6_prestadores",
+  "period": "2026-06",
+  "published_at": "2026-08-03",
+  "release_key": "2026-06:8b7f7c7a385e4c09",
+  "kicker": "Prestadores: Boletín IP",
+  "kicker_meta": "datos a junio 2026 · publicado por la SIS el 3 ago · se actualiza cada trimestre",
+  "headline": "Boletín IP a junio 2026: 971 prestadores acreditados y 584 solicitudes de acreditación en trámite",
+  "headline_type": "default",
+  "dek": "Los reclamos promediaron 1.996 al mes entre enero y junio, 30,5% más que el promedio mensual de 2025. El RNPI suma 1.004.982 títulos inscritos, que no son profesionales únicos.",
+  "dek_emphasis": "971 prestadores acreditados",
+  "kpis": [
+    {
+      "id": "acreditados",
+      "label": "Prestadores acreditados",
+      "value": "971",
+      "prov": "C",
+      "lines": [
+        "101 con observaciones (10,4%)",
+        "vs. boletín anterior: pendiente"
+      ],
+      "refs": [
+        "acr.acreditados",
+        "acr.con_observaciones",
+        "acr.observaciones_pct"
+      ]
+    },
+    {
+      "id": "tramite",
+      "label": "Solicitudes en trámite",
+      "value": "584",
+      "prov": "C",
+      "lines": [
+        "367 privadas · 217 públicas",
+        "vs. boletín anterior: pendiente"
+      ],
+      "refs": [
+        "acr.tramite",
+        "acr.tramite.privadas",
+        "acr.tramite.publicas"
+      ]
+    },
+    {
+      "id": "reclamos",
+      "label": "Reclamos al mes",
+      "value": "1.996",
+      "prov": "C",
+      "lines": [
+        "promedio enero–junio",
+        "+30,5% vs. 2025 (1.530)"
+      ],
+      "refs": [
+        "rec.promedio.2026",
+        "rec.pct",
+        "rec.promedio.2025"
+      ]
+    },
+    {
+      "id": "rnpi",
+      "label": "Títulos en el RNPI",
+      "value": "1.004.982",
+      "prov": "C",
+      "lines": [
+        "títulos, no profesionales únicos",
+        "vs. boletín anterior: pendiente"
+      ],
+      "refs": [
+        "rnpi.titulos"
+      ]
+    }
+  ],
+  "tabs": [
+    {
+      "id": "acreditacion",
+      "label": "Acreditación",
+      "charts": [
+        {
+          "id": "f6-tramite",
+          "form": "bars",
+          "unit": "solicitudes",
+          "headline": "Solicitudes en tramitación por sector",
+          "subtitle": "Solicitudes de acreditación en tramitación al cierre de junio 2026",
+          "rows": [
+            {
+              "label": "Privados",
+              "value": 367,
+              "ref": "acr.tramite.privadas",
+              "emphasis": true
+            },
+            {
+              "label": "Públicos",
+              "value": 217,
+              "ref": "acr.tramite.publicas"
+            }
+          ],
+          "table": {
+            "columns": [
+              "Sector",
+              "Solicitudes",
+              "% del total"
+            ],
+            "rows": [
+              [
+                "Privados",
+                "367",
+                "62,8%"
+              ],
+              [
+                "Públicos",
+                "217",
+                "37,2%"
+              ],
+              [
+                "Total",
+                "584",
+                "100%"
+              ]
+            ]
+          },
+          "source": "SIS, Boletín IP, acreditación. Denominador del %: solicitudes en tramitación."
+        },
+        {
+          "id": "f6-observaciones",
+          "form": "bars",
+          "unit": "prestadores",
+          "headline": "Prestadores acreditados y observaciones",
+          "subtitle": "Prestadores acreditados al cierre de junio 2026",
+          "rows": [
+            {
+              "label": "Sin observaciones",
+              "value": 870,
+              "ref": "acr.sin_observaciones"
+            },
+            {
+              "label": "Con observaciones",
+              "value": 101,
+              "ref": "acr.con_observaciones",
+              "emphasis": true
+            }
+          ],
+          "table": {
+            "columns": [
+              "Situación",
+              "Prestadores",
+              "% de los acreditados"
+            ],
+            "rows": [
+              [
+                "Sin observaciones",
+                "870",
+                "89,6%"
+              ],
+              [
+                "Con observaciones",
+                "101",
+                "10,4%"
+              ],
+              [
+                "Acreditados",
+                "971",
+                "100%"
+              ]
+            ]
+          },
+          "source": "SIS, Boletín IP, acreditación. Denominador del %: prestadores acreditados."
+        }
+      ],
+      "text": [
+        "Al cierre de junio 2026 había 971 prestadores acreditados; 101 tenían observaciones, el 10,4% de los acreditados.",
+        "De las 584 solicitudes en tramitación, 367 eran de prestadores privados y 217 de públicos. La división pública/privada del stock acreditado no está verificada.",
+        "La comparación con el boletín anterior queda pendiente: ese boletín no tiene cifras verificadas en un documento capturado."
+      ],
+      "spark": {
+        "chart": "f6-tramite",
+        "form": "bars"
+      },
+      "index_line": "971 prestadores acreditados · 584 solicitudes en trámite",
+      "index_refs": [
+        "acr.acreditados",
+        "acr.tramite"
+      ],
+      "kpis": []
+    },
+    {
+      "id": "mediacion",
+      "label": "Mediación",
+      "charts": [],
+      "text": [
+        "La SIS registraba 175 mediadores inscritos al cierre de junio 2026.",
+        "Las solicitudes de mediación acumuladas desde enero de 2019 suman 12.067: es un flujo acumulado, no un stock, y no se divide por el número de mediadores."
+      ],
+      "spark": null,
+      "index_line": "175 mediadores inscritos",
+      "index_refs": [
+        "med.mediadores"
+      ],
+      "kpis": []
+    },
+    {
+      "id": "reclamos",
+      "label": "Reclamos",
+      "charts": [
+        {
+          "id": "f6-reclamos",
+          "form": "bars",
+          "unit": "reclamos",
+          "headline": "Promedio mensual de reclamos",
+          "subtitle": "Reclamos por mes: promedio de 2025 y de enero a junio de 2026",
+          "rows": [
+            {
+              "label": "2025",
+              "value": 1530,
+              "ref": "rec.promedio.2025"
+            },
+            {
+              "label": "Ene–jun 2026",
+              "value": 1996,
+              "ref": "rec.promedio.2026",
+              "emphasis": true
+            }
+          ],
+          "table": {
+            "columns": [
+              "Período",
+              "Reclamos al mes"
+            ],
+            "rows": [
+              [
+                "2025",
+                "1.530"
+              ],
+              [
+                "Enero–junio 2026",
+                "1.996"
+              ],
+              [
+                "Variación",
+                "+30,5%"
+              ]
+            ]
+          },
+          "source": "SIS, Boletín IP, reclamos. Promedios mensuales de un flujo; la SIS informa la variación redondeada."
+        }
+      ],
+      "text": [
+        "Entre enero y junio ingresaron en promedio 1.996 reclamos al mes, frente a 1.530 en 2025: 466 más al mes.",
+        "La SIS informa la variación redondeada (30%); Alicanto la recalcula con los promedios publicados (+30,5%)."
+      ],
+      "spark": {
+        "chart": "f6-reclamos",
+        "form": "bars"
+      },
+      "index_line": "1.996 reclamos al mes · +30,5% vs. 2025",
+      "index_refs": [
+        "rec.promedio.2026",
+        "rec.pct"
+      ],
+      "kpis": []
+    },
+    {
+      "id": "rnpi",
+      "label": "RNPI",
+      "charts": [],
+      "text": [
+        "El Registro Nacional de Prestadores Individuales tenía 1.004.982 títulos inscritos al cierre de junio 2026. Son títulos, no profesionales únicos: una persona puede tener más de uno.",
+        "4.036 registros no tienen fecha de nacimiento."
+      ],
+      "spark": null,
+      "index_line": "1.004.982 títulos inscritos",
+      "index_refs": [
+        "rnpi.titulos"
+      ],
+      "kpis": []
+    }
+  ],
+  "facts": {
+    "heading": "Qué muestran los datos",
+    "paragraphs": [
+      "Al cierre de junio 2026 había 971 prestadores acreditados; 101 tenían observaciones, el 10,4% de los acreditados.",
+      "De las 584 solicitudes en tramitación, 367 eran de prestadores privados y 217 de públicos. La división pública/privada del stock acreditado no está verificada.",
+      "El Registro Nacional de Prestadores Individuales tenía 1.004.982 títulos inscritos al cierre de junio 2026. Son títulos, no profesionales únicos: una persona puede tener más de uno."
+    ],
+    "rendered_in_tabs": true
+  },
+  "watch": [
+    {
+      "headline": "Septiembre 2026: la página publicada enlaza los documentos de otro boletín.",
+      "explanation": "Alicanto no la usa hasta que la SIS publique los PDF de enero a septiembre."
+    },
+    {
+      "headline": "Comparación entre boletines.",
+      "explanation": "Se activa cuando un segundo boletín tenga sus cifras verificadas en el documento capturado."
+    }
+  ],
+  "notes": [
+    {
+      "id": "n1",
+      "text": "Acreditados, solicitudes en tramitación, mediadores y títulos son stocks al cierre del boletín: nunca se suman entre boletines. Los reclamos son un promedio mensual de un flujo."
+    },
+    {
+      "id": "n2",
+      "text": "Denominadores: el % con observaciones usa los prestadores acreditados; el % privado usa las solicitudes en tramitación; la variación de reclamos usa el promedio mensual del año anterior."
+    },
+    {
+      "id": "n3",
+      "text": "Las cifras vienen de una lectura independiente de los PDF de la SIS y cada una se comprueba en el texto del PDF capturado (hash en Fuentes). Nada se lee del PDF por inferencia."
+    },
+    {
+      "id": "n4",
+      "text": "RNPI: cuenta títulos, no personas; otros registros del boletín usan otro denominador."
+    },
+    {
+      "id": "n5",
+      "text": "Ningún dato de esta ficha establece por qué cambian la acreditación, los reclamos o la mediación."
+    },
+    {
+      "id": "n6",
+      "text": "Boletines capturados sin cifras verificadas (no se usan): junio 2025, septiembre 2025, diciembre 2025, marzo 2026."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf",
+      "sha256": "8b7f7c7a385e4c0997033137adfe604d08ea148a3f01282553d07722b4569a2b",
+      "published_at": "2026-08-03",
+      "fetched_at": "2026-10-29T14:21:25.604772+00:00",
+      "label": "SIS · Boletín IP N°2-2026 · Acreditación (PDF)",
+      "role": "acreditación: cifras verificadas en el PDF capturado",
+      "locator": "págs. 1, 2, 7, 8",
+      "key": "acreditacion"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf",
+      "sha256": "a5a7701b81ad161de172e53ff7060adefeacd2f1739ac3b770c1ed7f1336005c",
+      "published_at": "2026-08-03",
+      "fetched_at": "2026-10-29T14:21:26.918736+00:00",
+      "label": "SIS · Boletín IP N°2-2026 · Mediación (PDF)",
+      "role": "mediación: cifras verificadas en el PDF capturado",
+      "locator": "págs. 2, 5, 6",
+      "key": "mediacion"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-reclamos-enero-junio-2026.pdf",
+      "sha256": "b87c551c7aee9fd7d28c05c1ed9c8cce46d3a1e466bee62e98ae63ac86681f48",
+      "published_at": "2026-08-03",
+      "fetched_at": "2026-10-29T14:21:27.364394+00:00",
+      "label": "SIS · Boletín IP N°2-2026 · Reclamos (PDF)",
+      "role": "reclamos: cifras verificadas en el PDF capturado",
+      "locator": "págs. 2",
+      "key": "reclamos"
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-rnpi-enero-junio-2026.pdf",
+      "sha256": "060ed3a6d8954ba7dace42ee94be5b2bf3bd9d7e00491d46f4913b857af4da36",
+      "published_at": "2026-08-03",
+      "fetched_at": "2026-10-29T14:21:27.990726+00:00",
+      "label": "SIS · Boletín IP N°2-2026 · RNPI (PDF)",
+      "role": "rnpi: cifras verificadas en el PDF capturado",
+      "locator": "págs. 1, 2, 4",
+      "key": "rnpi"
+    }
+  ],
+  "machine_note": "Ficha generada por la regla \"nuevo período\" (boletín N°2-2026, publicado el 3 ago). Las cifras vienen del paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (error del modelo).",
+  "featured": false,
+  "triggers": [
+    "new_period"
+  ],
+  "late_release": null,
+  "revisions": [],
+  "lectura": {
+    "status": "generation_error",
+    "reason": "RuntimeError:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)",
+    "text": null,
+    "cost_usd": 0.0
+  },
+  "status": "PASS",
+  "generated_at": "2026-10-30T03:42:08.659744+00:00",
+  "builder_version": "f6_index_topic_v3",
+  "verification": {
+    "verdict": "PASS",
+    "errors": [],
+    "lenses": {
+      "data": "PASS",
+      "editorial": "PASS",
+      "ui": "PASS",
+      "business": "PASS"
+    }
+  },
+  "reconciliation": {
+    "ok": true,
+    "failures": [],
+    "checks": [
+      "un PDF por tema (acreditación, mediación, reclamos, RNPI) del mismo boletín y período",
+      "cada documento capturado con SHA-256 y formato PDF",
+      "cada cifra viene de la lectura independiente y aparece en el texto del PDF capturado, en una página citada: junto a su palabra de contexto (80 caracteres) o, en acreditación (versión 2), por una plantilla anclada al texto real, revisada por una persona, que calza una sola vez",
+      "un documento revisado con una versión nueva del verificador conserva su SHA-256",
+      "privadas + públicas = solicitudes en tramitación",
+      "con observaciones ≤ acreditados",
+      "variación de reclamos calculada = variación informada (redondeada)",
+      "los stocks no se suman entre boletines"
+    ]
+  },
+  "evidence": {
+    "values": {
+      "acr.acreditados": {
+        "id": "acr.acreditados",
+        "value": 971,
+        "unit": "prestadores",
+        "period": "2026-06",
+        "source": "acreditacion",
+        "locator": "págs. 1,2,7,8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "acr.con_observaciones": {
+        "id": "acr.con_observaciones",
+        "value": 101,
+        "unit": "prestadores",
+        "period": "2026-06",
+        "source": "acreditacion",
+        "locator": "págs. 1,2,7,8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "acr.tramite": {
+        "id": "acr.tramite",
+        "value": 584,
+        "unit": "solicitudes",
+        "period": "2026-06",
+        "source": "acreditacion",
+        "locator": "págs. 1,2,7,8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "acr.tramite.privadas": {
+        "id": "acr.tramite.privadas",
+        "value": 367,
+        "unit": "solicitudes",
+        "period": "2026-06",
+        "source": "acreditacion",
+        "locator": "págs. 1,2,7,8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "acr.tramite.publicas": {
+        "id": "acr.tramite.publicas",
+        "value": 217,
+        "unit": "solicitudes",
+        "period": "2026-06",
+        "source": "acreditacion",
+        "locator": "págs. 1,2,7,8",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "med.mediadores": {
+        "id": "med.mediadores",
+        "value": 175,
+        "unit": "mediadores",
+        "period": "2026-06",
+        "source": "mediacion",
+        "locator": "págs. 2,5,6",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "med.solicitudes_acumuladas": {
+        "id": "med.solicitudes_acumuladas",
+        "value": 12067,
+        "unit": "solicitudes",
+        "period": "2026-06",
+        "source": "mediacion",
+        "locator": "págs. 2,5,6",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "rec.promedio.2026": {
+        "id": "rec.promedio.2026",
+        "value": 1996,
+        "unit": "reclamos",
+        "period": "2026-06",
+        "source": "reclamos",
+        "locator": "págs. 2",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "rec.promedio.2025": {
+        "id": "rec.promedio.2025",
+        "value": 1530,
+        "unit": "reclamos",
+        "period": "2026-06",
+        "source": "reclamos",
+        "locator": "págs. 2",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "rec.pct_informado": {
+        "id": "rec.pct_informado",
+        "value": 30,
+        "unit": "%",
+        "period": "2026-06",
+        "source": "reclamos",
+        "locator": "págs. 2",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "rnpi.titulos": {
+        "id": "rnpi.titulos",
+        "value": 1004982,
+        "unit": "titulos",
+        "period": "2026-06",
+        "source": "rnpi",
+        "locator": "págs. 1,2,4",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "rnpi.sin_fecha_nacimiento": {
+        "id": "rnpi.sin_fecha_nacimiento",
+        "value": 4036,
+        "unit": "titulos",
+        "period": "2026-06",
+        "source": "rnpi",
+        "locator": "págs. 1,2,4",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null
+      },
+      "acr.sin_observaciones": {
+        "id": "acr.sin_observaciones",
+        "value": 870,
+        "unit": "prestadores",
+        "period": "2026-06",
+        "source": null,
+        "locator": null,
+        "formula": "acreditados − con observaciones",
+        "inputs": [
+          "acr.acreditados",
+          "acr.con_observaciones"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "acr.observaciones_pct": {
+        "id": "acr.observaciones_pct",
+        "value": 10.401647785787848,
+        "unit": "%",
+        "period": "2026-06",
+        "source": null,
+        "locator": null,
+        "formula": "con observaciones / acreditados × 100",
+        "inputs": [
+          "acr.con_observaciones",
+          "acr.acreditados"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "acr.privadas_pct": {
+        "id": "acr.privadas_pct",
+        "value": 62.84246575342466,
+        "unit": "%",
+        "period": "2026-06",
+        "source": null,
+        "locator": null,
+        "formula": "privadas / en tramitación × 100",
+        "inputs": [
+          "acr.tramite.privadas",
+          "acr.tramite"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "rec.delta": {
+        "id": "rec.delta",
+        "value": 466,
+        "unit": "reclamos",
+        "period": "2026-06",
+        "source": null,
+        "locator": null,
+        "formula": "promedio(t) − promedio(año anterior)",
+        "inputs": [
+          "rec.promedio.2026",
+          "rec.promedio.2025"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "rec.pct": {
+        "id": "rec.pct",
+        "value": 30.45751633986928,
+        "unit": "%",
+        "period": "2026-06",
+        "source": null,
+        "locator": null,
+        "formula": "Δ / promedio mensual del año anterior × 100",
+        "inputs": [
+          "rec.delta",
+          "rec.promedio.2025"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "acr.publicas_pct": {
+        "id": "acr.publicas_pct",
+        "value": 37.15753424657534,
+        "unit": "%",
+        "period": "2026-06",
+        "source": null,
+        "locator": null,
+        "formula": "100 − % privadas",
+        "inputs": [
+          "acr.privadas_pct"
+        ],
+        "kind": "derived",
+        "revised": null
+      },
+      "acr.sin_observaciones_pct": {
+        "id": "acr.sin_observaciones_pct",
+        "value": 89.59835221421216,
+        "unit": "%",
+        "period": "2026-06",
+        "source": null,
+        "locator": null,
+        "formula": "100 − % con observaciones",
+        "inputs": [
+          "acr.observaciones_pct"
+        ],
+        "kind": "derived",
+        "revised": null
+      }
+    },
+    "constants": [
+      30,
+      2,
+      100
+    ],
+    "entity_codes": [],
+    "entity_keys": [],
+    "release_key": "2026-06:8b7f7c7a385e4c09",
+    "period": "2026-06",
+    "lectura_pool": [
+      {
+        "id": "acr.acreditados",
+        "value": 971,
+        "unit": "prestadores",
+        "metric": "prestadores",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "acr.con_observaciones",
+        "value": 101,
+        "unit": "prestadores",
+        "metric": "prestadores",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "acr.sin_observaciones",
+        "value": 870,
+        "unit": "prestadores",
+        "metric": "prestadores",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "acr.observaciones_pct",
+        "value": 10.401647785787848,
+        "unit": "%",
+        "metric": null,
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": "acreditados"
+      },
+      {
+        "id": "acr.tramite",
+        "value": 584,
+        "unit": "solicitudes",
+        "metric": "solicitudes",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "acr.tramite.privadas",
+        "value": 367,
+        "unit": "solicitudes",
+        "metric": "solicitudes",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "private",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "acr.tramite.publicas",
+        "value": 217,
+        "unit": "solicitudes",
+        "metric": "solicitudes",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "public",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "acr.privadas_pct",
+        "value": 62.84246575342466,
+        "unit": "%",
+        "metric": null,
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "private",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": "solicitudes_en_tramite"
+      },
+      {
+        "id": "med.mediadores",
+        "value": 175,
+        "unit": "mediadores",
+        "metric": "mediadores",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "rnpi.titulos",
+        "value": 1004982,
+        "unit": "titulos",
+        "metric": "titulos",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "rnpi.sin_fecha_nacimiento",
+        "value": 4036,
+        "unit": "titulos",
+        "metric": "titulos",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "med.solicitudes_acumuladas",
+        "value": 12067,
+        "unit": "solicitudes",
+        "metric": "solicitudes",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2019-01",
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "interval",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "rec.promedio.2026",
+        "value": 1996,
+        "unit": "reclamos",
+        "metric": "reclamos",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-01",
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "ytd",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "rec.delta",
+        "value": 466,
+        "unit": "reclamos",
+        "metric": "reclamos",
+        "entity": null,
+        "signed": true,
+        "periods": [
+          "2026-01",
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "ytd",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "rec.pct",
+        "value": 30.45751633986928,
+        "unit": "%",
+        "metric": null,
+        "entity": null,
+        "signed": true,
+        "periods": [
+          "2026-01",
+          "2026-06"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "ytd",
+        "trivial": false,
+        "base": "promedio_mensual_anio_anterior"
+      },
+      {
+        "id": "rec.promedio.2025",
+        "value": 1530,
+        "unit": "reclamos",
+        "metric": "reclamos",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2025-01",
+          "2025-12"
+        ],
+        "requires_period": false,
+        "scope": "system",
+        "period_kind": "interval",
+        "trivial": false,
+        "base": null
+      }
+    ],
+    "derived_ratios": [
+      {
+        "id": "ratio.privadas_por_publica",
+        "value": 1.6912442396313363,
+        "unit": "x",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "formula": "privadas / públicas",
+        "inputs": [
+          "acr.tramite.privadas",
+          "acr.tramite.publicas"
+        ],
+        "scope": "private",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": null
+      },
+      {
+        "id": "fraccion.observaciones",
+        "value": 0.10401647785787847,
+        "unit": "share",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-06"
+        ],
+        "requires_period": false,
+        "formula": "con observaciones / acreditados",
+        "inputs": [
+          "acr.observaciones_pct"
+        ],
+        "scope": "system",
+        "period_kind": "stock_at",
+        "trivial": false,
+        "base": "acreditados"
+      },
+      {
+        "id": "ratio.reclamos_vs_anio_anterior",
+        "value": 1.3045751633986928,
+        "unit": "x",
+        "entity": null,
+        "signed": false,
+        "periods": [
+          "2026-01",
+          "2026-06"
+        ],
+        "requires_period": false,
+        "formula": "promedio(t) / promedio(año anterior)",
+        "inputs": [
+          "rec.promedio.2026",
+          "rec.promedio.2025"
+        ],
+        "scope": "system",
+        "period_kind": "ytd",
+        "trivial": false,
+        "base": null
+      }
+    ],
+    "ranks": []
+  }
+}

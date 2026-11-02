@@ -38,7 +38,9 @@ FEED_ACCEPT = "application/rss+xml,application/atom+xml,application/xml;q=0.9,te
 ROBOTS_ACCEPT = "text/plain,*/*;q=0.1"
 
 
-def run(root: Path, captures: Path, as_of: date, run_id: str, client=None) -> dict:
+def run(root: Path, captures: Path, as_of: date, run_id: str, client=None, live_pages: bool | None = None) -> dict:
+    # Page meta descriptions are fetched only on a live run (no injected/replay feed client), never in tests.
+    live_pages = client is None if live_pages is None else live_pages
     config = json.loads((root / "config/global_discovery.json").read_text())
     if config["paid_ai_calls"] != 0 or config["content_use"] != "metadata_and_link_only" or config["reuters"]["enabled"]:
         raise ValueError("Global discovery/publication/license contract changed")
@@ -80,9 +82,15 @@ def run(root: Path, captures: Path, as_of: date, run_id: str, client=None) -> di
     mirror_feed_health(root, health)
     # Daily Global headlines (web/data/global_feed.json): feeds + activated WHO/PAHO, rights-gated. Discovery uses no AI;
     # the export translates titles/summaries to Spanish where rights allow it (budgeted, verified, cached).
-    daily = export_daily_feed(root, as_of)
+    # Dirección 30-oct: WHO/EMA items without a feed description get the page's own meta description (robots.txt,
+    # host allowlist, size/time caps, per-run cap, URL cache) as input for Alicanto's Spanish summary.
+    page_client = None
+    if live_pages:
+        from radar_salud.global_page_meta import make_client
+        page_client = make_client(captures / "pages", root, config)
+    daily = export_daily_feed(root, as_of, page_client=page_client)
     print(json.dumps({"run_id": run_id, "items": len(items), "candidates": len(payload["editorial_candidates"]),
-                      "network_requests": client.network_requests, "daily_feed_items": len(daily["items"]),
+                      "network_requests": client.network_requests, "page_requests": getattr(page_client, "network_requests", 0), "daily_feed_items": len(daily["items"]),
                       "daily_feed_freshness": daily["freshness"]["status"], "translation": daily.get("translation"), "status": {k: v["technical_status"] for k, v in health.items()}}))
     return payload
 

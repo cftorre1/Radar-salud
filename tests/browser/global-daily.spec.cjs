@@ -3,7 +3,9 @@
 const {test,expect,FIXTURE_AS_OF}=require('./fixtures.cjs');
 const fs=require('fs');
 function day(offset=0){const d=new Date(Date.parse(FIXTURE_AS_OF+'T12:00:00Z')-offset*86400000);return d.toISOString().slice(0,10)}
-function feed(enabled=true){return {schema_version:2,enabled,content_use:'metadata_and_link_only',window_days:90,freshness:{status:'fresh',newest_published_at:day()},
+// These layout fixtures carry English-only rows, so they turn the Spanish-only rule off (display.spanish_only:false);
+// the rule itself is covered by the last test of this file.
+function feed(enabled=true){return {schema_version:2,enabled,content_use:'metadata_and_link_only',window_days:90,display:{spanish_only:false},freshness:{status:'fresh',newest_published_at:day()},
  items:[...Array(10)].map((_,i)=>({id:`d${i}`,source:i%2?'fda':'ema',source_label:i%2?'FDA':'EMA',attribution:i%2?'U.S. Food and Drug Administration':'European Medicines Agency',bylines:i===0?['Zoe Z','Al A','Mo M']:[],rights_basis:i===1?{license_label:'CC BY 4.0',license_url:'https://creativecommons.org/licenses/by/4.0/'}:{},
   title:`Headline number ${i} about drug approval and coverage policy`,url:`https://www.ema.europa.eu/en/news/item-${i}`,published_at:day(i*3),first_seen_on:day(i*3),
   tags_es:['Regulación','Medicamentos y farma'],summary_es:'Regulador. Relevante para: Regulación.',priority:80})).concat([
@@ -46,4 +48,21 @@ test('without an authorized feed Global lists only the themes and hides the attr
  await expect(page.locator('#themes .daily-item')).toHaveCount(0);await expect(page.locator('#globalAttribution')).toBeHidden();
  await page.unroute('**/data/global_feed.json');await page.route('**/data/global_feed.json',r=>r.fulfill({status:404,body:''}));
  await page.reload();await expect(page.locator('#themes .theme').first()).toBeVisible();await expect(page.locator('#themes .daily-item')).toHaveCount(0);await expect(page.locator('#globalAttribution')).toBeHidden();
+});
+// Dirección 30-oct: Global lists only what it can present in Spanish (the exporter filters; global.js does it again).
+test('Spanish only: English-only, pending and failed headlines are not listed; summaries, translations and PAHO /es/ are',async({page})=>{
+ const base={source_label:'OMS',attribution:'Organización Mundial de la Salud (OMS)',bylines:[],rights_basis:{},published_at:day(1),first_seen_on:day(1),tags_es:[],priority:80};
+ const items=[
+  {...base,id:'en',source:'who',title:'WHO English only headline',url:'https://www.who.int/news/item/en',translation:{status:'not_allowed',note_es:'Contenido en inglés (licencia no permite traducción)'}},
+  {...base,id:'pend',source:'cdc',source_label:'CDC',title:'CDC pending headline',url:'https://www.cdc.gov/p',translation:{status:'pending'}},
+  {...base,id:'fail',source:'cdc',source_label:'CDC',title:'CDC failed headline',url:'https://www.cdc.gov/f',translation:{status:'verification_failed'}},
+  {...base,id:'sum',source:'who',title:'WHO summarized headline',url:'https://www.who.int/news/item/sum',summary_es:'La OMS publicó una guía.',translation:{status:'summarized',kind:'summary',verified:true}},
+  {...base,id:'tr',source:'cdc',source_label:'CDC',title:'CDC reports cases',title_es:'Los CDC informan casos',url:'https://www.cdc.gov/t',translation:{status:'translated',kind:'translation',verified:true}},
+  {...base,id:'es',source:'paho',source_label:'OPS',title:'La OPS informa',url:'https://www.paho.org/es/noticias/x',translation:{status:'source_in_spanish'}}];
+ await page.route('**/data/global_feed.json',r=>r.fulfill({json:{schema_version:2,enabled:true,content_use:'metadata_and_link_only',window_days:90,display:{spanish_only:true},freshness:{status:'fresh',newest_published_at:day()},items}}));
+ await page.goto('/global.html');await expect(page.locator('#daily-sum')).toBeVisible();
+ await page.locator('#globalLanes [data-lane="t"]').click();
+ expect((await page.locator('#themes .daily-item').evaluateAll(xs=>xs.map(x=>x.id))).sort()).toEqual(['daily-es','daily-sum','daily-tr']);
+ await expect(page.locator('#themes')).not.toContainText(/English only|pending headline|failed headline/);
+ await expect(page.locator('#daily-tr')).toContainText('Los CDC informan casos');
 });

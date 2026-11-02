@@ -5,7 +5,8 @@ const {test,expect,FIXTURE_AS_OF}=require('./fixtures.cjs');
 function day(offset=0){const d=new Date(Date.parse(FIXTURE_AS_OF+'T12:00:00Z')-offset*86400000);return d.toISOString().slice(0,10)}
 const OGL='https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/';
 const ogl={basis:'uk_open_government_licence_v3',license_label:'OGL v3.0',license_url:OGL,attribution:'Contains public sector information licensed under the Open Government Licence v3.0 (MHRA, GOV.UK), with link'};
-function feed(items){return {schema_version:2,enabled:true,content_use:'metadata_and_link_only',window_days:90,retention_days:90,freshness:{status:'fresh',newest_published_at:day()},duplicates:[],duplicates_merged:1,items}}
+// English-only layout fixtures: the Spanish-only rule (Dirección 30-oct) is off here and tested in global-daily.spec.cjs.
+function feed(items){return {schema_version:2,enabled:true,content_use:'metadata_and_link_only',window_days:90,display:{spanish_only:false},retention_days:90,freshness:{status:'fresh',newest_published_at:day()},duplicates:[],duplicates_merged:1,items}}
 const mhra={id:'mhra1',source:'uk_mhra',source_label:'MHRA (Reino Unido)',attribution:'Medicines and Healthcare products Regulatory Agency',bylines:[],rights_basis:ogl,
  title:'MHRA approves a new treatment for children',url:'https://www.gov.uk/government/news/mhra-approves',published_at:day(1),first_seen_on:day(1),
  description:'Children <5 years and adults >65 are at risk. The approval covers the first indication',description_truncated:true,description_source:'publisher_summary',

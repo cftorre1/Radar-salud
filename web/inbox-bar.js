@@ -84,5 +84,7 @@
  // The newsletter invitation is a slim row inside the feed, after the 7th row (or at its end), on both pages.
  const STRIP_AFTER=7;
  function placeStrip(host,rowSelector,fallback){const strip=document.querySelector('.newsletter-strip');if(!strip||!host)return;const rows=host.querySelectorAll(rowSelector),after=rows[Math.min(STRIP_AFTER,rows.length)-1];if(after)after.after(strip);else(fallback||host).append(strip)}
+ // #readStatus is a screen-reader live region; the page shows it only while reads cannot be saved (data-read-volatile on <html>).
+ if(root.AlicantoRead&&typeof root.AlicantoRead.subscribe==='function'&&root.document){const syncVolatile=()=>root.document.documentElement.toggleAttribute('data-read-volatile',!root.AlicantoRead.persistent);root.AlicantoRead.subscribe(syncVolatile);syncVolatile()}
  root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS};
 })(typeof window!=='undefined'?window:globalThis);

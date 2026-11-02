@@ -9,7 +9,7 @@ const figs=html=>[...html.matchAll(/<figure class="sf-chart" data-chart="([^"]+)
 const panel=(html,id)=>{const a=html.indexOf(`data-sf-id="${id}"`);const b=html.indexOf('<section class="sf-tpanel"',a+1);return html.slice(a,b<0?html.indexOf('</section></div></section>',a):b)};
 test('ficha opens as an index of topics and renders each topic with the hero chart first',()=>{
  const html=load().render(pub,{shareId:'sig-stats-ficha:F1:2026-08',shareUrl:'data/fichas/f1_cartera.html'});
- const order=['sf-kicker','sf-headline','sf-dek','sf-share','sf-index','sf-topic','sf-notes'];
+ const order=['sf-kicker','sf-headline','sf-meta','sf-dek','sf-index','sf-topic','sf-notes','sf-cadence'];
  const at=order.map(k=>html.indexOf(k));assert.ok(at.every(i=>i>=0),JSON.stringify(at));assert.deepEqual([...at].sort((a,b)=>a-b),at);
  // No KPI strip, 'Qué mirar' or facts section outside the topics; notes and sources behind one collapsed toggle.
  assert.doesNotMatch(html,/aria-label="Indicadores clave"/);assert.doesNotMatch(html,/class="sf-watch"/);assert.doesNotMatch(html,/class="sf-facts"/);
@@ -19,11 +19,14 @@ test('ficha opens as an index of topics and renders each topic with the hero cha
  assert.match(load().render(pub),/<a class="sf-row" href="#tema=total" data-sf-row="0">/);assert.doesNotMatch(load().render(pub),/data-sf-sig=/);
  assert.match(html,/<article class="sf sf-cb" data-sf-sig="sig-stats-ficha:F1:2026-08"/);
  // Index: 5 rows with label, one line and a sparkline (no number under it); Regional is pending.
- const rows=[...html.matchAll(/<a class="sf-row" href="#sig-stats-ficha%3AF1%3A2026-08&amp;tema=([\w-]+)" data-sf-row="\d"><span class="sf-row-txt"><span class="sf-row-label">([^<]+)(?:<span class="sf-pending">pendiente<\/span>)?<\/span><span class="sf-row-line">([^<]+)<\/span><\/span><span class="sf-spark">(<svg[^]*?<\/svg>|<span class="sf-spark-pend">pendiente<\/span>)<\/span>/g)];
+ const rows=[...html.matchAll(/<a class="sf-row" href="#sig-stats-ficha%3AF1%3A2026-08&amp;tema=([\w-]+)" data-sf-row="\d"><span class="sf-row-txt"><span class="sf-row-label">([^<]+)<\/span><span class="sf-row-line">([^<]+)<\/span><\/span><span class="sf-spark">(<svg[^]*?<\/svg>|<span class="sf-spark-pend">pendiente<\/span>)<\/span>/g)];
  assert.deepEqual(rows.map(m=>[m[1],m[2],m[3]]),[['total','Cartera total','2.486.683 beneficiarios · menor baja del año'],
   ['isapres','Por Isapre','Banmédica: 77% de la baja · 3 Isapres crecen'],['mezcla','Cotizantes y cargas','Cotizantes suben por segundo mes'],
   ['movilidad','Movilidad y desahucios','Salen más de los que entran · dato a julio'],['regional','Regional','Enlace a la SIS · cifras aún no extraídas']]);
  assert.equal(rows.filter(m=>m[4].startsWith('<svg')).length,4);assert.match(rows[4][4],/pendiente/);
+ // 'pendiente' shows once per pending row: in the sparkline slot, never also as a badge next to the label (mockup).
+ const idx=html.slice(html.indexOf('<section class="sf-index"'),html.indexOf('<section class="sf-topic"'));
+ assert.equal((idx.match(/pendiente/g)||[]).length,1);assert.doesNotMatch(idx,/sf-pending/);
  for(const m of rows)assert.doesNotMatch(m[4],/<b>|<text/);
  // Topic mode: select-only combobox with 'Todos los temas' first, step buttons, one hidden panel per topic.
  assert.match(html,/<button type="button" class="sf-pick" aria-haspopup="listbox" aria-expanded="false" aria-controls="(sf\d+)-list">/);
@@ -52,7 +55,19 @@ test('ficha opens as an index of topics and renders each topic with the hero cha
  assert.doesNotMatch(panel(html,'movilidad'),/sf-tdek|class="sf-kpi"/);
  // Regional (no 'dek' from the builder) falls back to its tab text and links; the last topic has no 'Siguiente tema'.
  const reg=panel(html,'regional');assert.match(reg,/sf-tdek">Alicanto aún no extrae/);assert.match(reg,/a-nivel-regional-agosto-2026/);assert.doesNotMatch(reg,/Siguiente tema/);
- assert.match(html,/Compartir informe/);assert.match(html,/data-share-url="data\/fichas\/f1_cartera\.html"/);
+ // Header as in the approved mockup (Dirección 29-oct): kicker + 'Destacada'; a two-line meta list under the headline;
+ // the cadence clause goes to Notas. 'Compartir informe' is not in the body: shareButton() gives the round icon button
+ // for the dialog's top bar. No 'Seguir' chips, no share pill, no '← Todos los temas' inside the sticky picker.
+ assert.match(html,/<p class="sf-kicker"><span class="sf-kick">Cartera y movilidad<\/span><span class="sf-featured">Destacada<\/span><\/p><h2 id="detailTitle" class="sf-headline">/);
+ assert.match(html,/<ul class="sf-meta" aria-label="Datos de la publicación"><li>Datos a agosto 2026<\/li><li>Publicado por la SIS el 2 oct 2026<\/li><\/ul><p class="sf-dek">/);
+ assert.match(html,/<summary>Notas y fuentes<\/summary><p class="sf-cadence">Se actualiza cada mes\.<\/p>/);
+ assert.doesNotMatch(html,/sf-share|Compartir informe|sf-actions|Seguir|SE ACTUALIZA/);
+ // The headline and dek are the builder's text, unchanged.
+ assert.ok(html.includes(`>${pub.headline}</h2>`));assert.ok(html.includes('El sistema terminó agosto con <strong>2.486.683 beneficiarios</strong>'));
+ const sb=load().shareButton(pub,{shareId:'sig-stats-ficha:F1:2026-08',shareUrl:'data/fichas/f1_cartera.html'});
+ assert.match(sb,/<button type="button" class="sf-share" data-ficha-share="sig-stats-ficha:F1:2026-08" data-share-url="data\/fichas\/f1_cartera\.html" data-share-title="[^"]+" aria-label="Compartir informe" title="Compartir informe"><svg/);
+ assert.match(sb,/class="sf-share-status" role="status" aria-live="polite"/);assert.equal(load().shareButton(pub),'');
+ assert.match(html,/<div class="sf-sticky"><div class="sf-picker">/);
  assert.match(html,/sha256 [0-9a-f]{12}…/);assert.doesNotMatch(html,/Lectura Alicanto<\/h3>/);
 });
 
@@ -122,7 +137,7 @@ for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fona
   const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));const f=card.stats_ficha;
   assert.equal(f.evidence,undefined);assert.equal(f.status,'PASS');
   const html=load().render(f,{shareId:`sig-${card.piece_id}`,shareUrl:card.share_url});
-  const order=['sf-kicker','sf-headline','sf-dek','sf-share','sf-index','sf-topic','sf-notes'];
+  const order=['sf-kicker','sf-headline','sf-meta','sf-dek','sf-index','sf-topic','sf-notes','sf-cadence'];
   const at=order.map(k=>html.indexOf(k));assert.ok(at.every(i=>i>=0),JSON.stringify(at));assert.deepEqual([...at].sort((a,b)=>a-b),at);
   // The generic index → topic layout: one index row per topic (builder index line), a sparkline when the topic has a
   // chart with 2+ rows, and the topic text (no builder dek) under the hero chart.
@@ -134,7 +149,9 @@ for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fona
   for(const t of f.tabs)for(const x of t.text||[])assert.ok(html.includes(x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')),x);
   assert.match(html,/<details class="sf-notes"><summary>Notas y fuentes<\/summary>/);assert.doesNotMatch(html,/<details class="sf-notes" open/);
   assert.doesNotMatch(html,/Por qué importa/);assert.doesNotMatch(html,/class="sf-facts"/);
-  assert.match(html,new RegExp(`data-share-url="data/fichas/${slug}\\.html"`));assert.match(html,/sha256 [0-9a-f]{12}…/);
+  assert.match(load().shareButton(f,{shareId:`sig-${card.piece_id}`,shareUrl:card.share_url}),new RegExp(`data-share-url="data/fichas/${slug}\\.html"[^>]*aria-label="Compartir informe"`));assert.match(html,/sha256 [0-9a-f]{12}…/);
+  assert.match(html,new RegExp(`<p class="sf-kicker"><span class="sf-kick">${f.kicker}</span>${f.featured?'<span class="sf-featured">Destacada</span>':''}</p>`));
+  assert.match(html,/<ul class="sf-meta" aria-label="Datos de la publicación"><li>Datos [^<]+<\/li><li>Publicado por la SIS el \d{1,2} \p{L}+ 2026<\/li><\/ul>/u);
   assert.equal(card.share_url,`data/fichas/${slug}.html`);
  });
 }
@@ -168,4 +185,14 @@ test('line axis labels thin out for many quarters; F1 monthly labels keep every 
 test('bars never draw a negative value as a positive bar',()=>{
  const F=load();const html=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'b',form:'bars',unit:'%',digits:1,headline:'x',rows:[{label:'A',value:12.5},{label:'B',value:-8.1}]}],text:[]}]});
  assert.match(html,/−8,1|−8/);assert.doesNotMatch(html,/<title>B: 8,1%<\/title>/);
+});
+
+test('the meta list is the builder\'s own words: data period, publication with its year; the rest goes to Notas',()=>{
+ const F=load(),m=(meta,published_at)=>JSON.parse(JSON.stringify(F.metaLines({kicker_meta:meta,published_at})));
+ assert.deepEqual(m('datos a agosto 2026 · publicado por la SIS el 2 oct · se actualiza cada mes','2026-10-02'),{lines:['Datos a agosto 2026','Publicado por la SIS el 2 oct 2026'],rest:['Se actualiza cada mes']});
+ assert.deepEqual(m('datos del segundo trimestre de 2026 · publicado por la SIS el 14 oct · se actualiza cada trimestre','2026-10-14'),{lines:['Datos del segundo trimestre de 2026','Publicado por la SIS el 14 oct 2026'],rest:['Se actualiza cada trimestre']});
+ // Without a publication date no year is added; unknown clauses are kept for Notas, never invented.
+ assert.deepEqual(m('datos a junio 2026 · publicado por la SIS el 3 ago',''),{lines:['Datos a junio 2026','Publicado por la SIS el 3 ago'],rest:[]});
+ assert.deepEqual(m('serie anual · se actualiza cada año','2026-01-01'),{lines:[],rest:['Serie anual','Se actualiza cada año']});
+ assert.deepEqual(m(undefined,undefined),{lines:[],rest:[]});
 });

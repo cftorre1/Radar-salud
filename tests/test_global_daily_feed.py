@@ -115,8 +115,13 @@ def test_cards_are_headline_link_and_deterministic_spanish_line_only():
     assert fda["description"] == "Publisher summary kept verbatim for the fixture." and fda["description_source"] == "publisher_feed_summary_verbatim"
     # Noise and consumer items never reach the page.
     assert "FDA Warns Consumers Not to Use Certain Tattoo Inks" not in cards and "Why do we yawn? A doctor explains" not in cards
-    # The Conversation (CC BY-ND) keeps its byline and verbatim headline; it needs two segment matches.
-    conv = cards["Medicare Advantage insurers use AI to deny coverage – what the data shows"]
+    # The Conversation is out of Global (Dirección 29-oct): its cards no longer show.
+    assert not any(c["source"] == "the_conversation" for c in payload["items"])
+    # Were it re-enabled, it keeps its byline and verbatim headline; it needs two segment matches.
+    on = authorized()
+    next(f for f in on["feeds"] if f["id"] == "the_conversation")["enabled"] = True
+    conv = {c["title"]: c for c in build(feed_payload(on), who_discovery(), on, None, AS_OF)["items"]}[
+        "Medicare Advantage insurers use AI to deny coverage – what the data shows"]
     assert conv["bylines"] == ["Ana Researcher, University of Somewhere"] and conv["source_label"] == "The Conversation"
     assert {"payers", "ai_in_health"} <= set(conv["segments"])
     # Federal Register stays off until robots for /api/ is verified (fail closed).
@@ -206,9 +211,14 @@ def test_feed_run_writes_the_daily_feed_and_new_sources_parse(tmp_path):
     payload = discover_global_feeds.run(tmp_path, tmp_path / "captures", AS_OF, "daily-test", client=FeedClient())
     assert payload["publication_count"] == 0
     daily = json.loads((tmp_path / "web/data/global_feed.json").read_text())
-    assert daily["enabled"] and daily["items"] and daily["content_use"] == "metadata_and_link_only"
-    again = export(tmp_path, AS_OF)
-    assert [c["id"] for c in again["items"]] == [c["id"] for c in daily["items"]]
+    assert daily["enabled"] and daily["content_use"] == "metadata_and_link_only"
+    # Dirección 30-oct (Spanish only): without a key nothing has Spanish text, so the public feed lists nothing;
+    # every card is kept in the data/ state file and is the history of the next run.
+    state = json.loads((tmp_path / "data/global_intelligence/global_feed_state.json").read_text())
+    assert state["items"] and daily["items"] == [] and daily["display"]["hidden"] == len(state["items"])
+    export(tmp_path, AS_OF)
+    again = json.loads((tmp_path / "data/global_intelligence/global_feed_state.json").read_text())
+    assert [c["id"] for c in again["items"]] == [c["id"] for c in state["items"]]
     conv = next(f for f in CONFIG["feeds"] if f["id"] == "the_conversation")
     rows = parse_feed((FIX / "conversation_health.atom").read_bytes(), conv["routes"][0], conv, AS_OF)
     assert rows[0]["url"] == "https://theconversation.com/medicare-advantage-insurers-use-ai-to-deny-coverage-300001"
