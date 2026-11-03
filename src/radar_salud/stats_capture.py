@@ -210,7 +210,10 @@ def verified_metrics(root: Path) -> dict[str, dict]:
     for doc in (cfg.get("primary_review") or {}).get("documents") or []:
         if doc.get("url") and isinstance(doc.get("verified_metrics"), dict):
             out[doc["url"]] = {"metrics": doc["verified_metrics"], "pages_1based": doc.get("pages_1based"),
-                               "reviewed_at": cfg.get("reviewed_at"), "unit_caution": doc.get("unit_caution")}
+                               "reviewed_at": cfg.get("reviewed_at"), "unit_caution": doc.get("unit_caution"),
+                               # Short footnotes on figures whose source tables do not add up (Dirección 2-nov,
+                               # 'mostrar con nota'): metric key → text with {metric} placeholders; never a fix.
+                               "source_notes": doc.get("source_notes") if isinstance(doc.get("source_notes"), dict) else {}}
     return out
 
 
@@ -434,8 +437,10 @@ def parse_boletin_pdf(data: bytes, metrics: dict | None, pages_1based: list[int]
     apply ('not_configured', 'placeholder', 'unreviewed', 'no_match', 'multiple_matches:N', …)."""
     version = checker_version(topic)
     templates = templates if version >= 2 else None
+    # The reading hash is recorded for every checker version (review of PR #126, 2-nov): a parse is bound to the exact
+    # reading it checked, and a parse whose reading changed (or carries no hash) is re-checked and HOLDs meanwhile.
     base = {"checker_version": version, "templates_sha256": templates_sha256(templates),
-            **({"reading_sha256": reading_sha256(metrics, pages_1based)} if version >= 3 else {})}
+            "reading_sha256": reading_sha256(metrics, pages_1based)}
     try:
         pages = pdf_pages(data)
     except Exception as exc:  # unreadable PDF: captured hash, no verification
@@ -855,9 +860,9 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         recorded = int(parsed.get("checker_version") or DEFAULT_CHECKER_VERSION)
         current_tpl = templates_sha256(templates) if version >= 2 else None
         # An independent reading added (or changed) after the capture: the document is read again once (e.g. N°3,
-        # captured before its reading existed). Parses from before v3 carry no reading hash and are left alone.
-        reading_changed = parsed.get("status") == "no_verified_metrics" or (
-            "reading_sha256" in parsed and parsed["reading_sha256"] != reading_sha256(info.get("metrics"), info.get("pages_1based")))
+        # captured before its reading existed). A parse without a reading hash (checker v1/v2 before 2-nov) cannot show
+        # which reading it checked, so it is re-checked too (bytes must hash to the recorded SHA-256).
+        reading_changed = parsed.get("reading_sha256") != reading_sha256(info.get("metrics"), info.get("pages_1based"))
         if recorded >= version and parsed.get("templates_sha256") == current_tpl and not reading_changed:
             return False
         last = old.get("recheck") or {}

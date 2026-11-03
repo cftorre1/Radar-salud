@@ -146,11 +146,22 @@ def ges_signals() -> list[dict]:
     return out
 
 
-def make_root(tmp: Path, *, ges: bool = True) -> Path:
-    """Copy the inputs; replace the GES releases of the history by the fixture ones (Boletín releases stay real)."""
+def make_root(tmp: Path, *, ges: bool = True, readings_until: str | None = None) -> Path:
+    """Copy the inputs; replace the GES releases of the history by the fixture ones (Boletín releases stay real).
+
+    ``readings_until='2026-06'`` keeps only the independent readings of Boletín releases up to that period: the state
+    before the N°3-2026 reading was committed (2-nov-2026), for the tests written for that state (N°2 live, N°3
+    captured without a reading)."""
     for rel in INPUTS:
         (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(REPO / rel, tmp / rel)
+    if readings_until:
+        path = tmp / cap.VERIFIED
+        cfg = json.loads(path.read_text(encoding="utf-8"))
+        docs = cfg["primary_review"]["documents"]
+        cfg["primary_review"]["documents"] = [d for d in docs if ((cap.doc_release(d.get("url") or "") or {}).get("period")
+                                                                   or "0000-00") <= readings_until]
+        path.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     hist_path = tmp / INPUTS[2]
     hist = json.loads(hist_path.read_text(encoding="utf-8"))
     hist["signals"] = [s for s in hist["signals"] if "casos ges" not in cap._fold(s.get("title"))] + (ges_signals() if ges else [])
@@ -196,7 +207,7 @@ def write_fixtures() -> None:
     from radar_salud import stats_ficha_f4 as f4, stats_ficha_f6 as f6, stats_fichas as sf
     reg = sf.load_registry()
     with tempfile.TemporaryDirectory() as tmp:
-        root = make_root(Path(tmp))
+        root = make_root(Path(tmp), readings_until="2026-06")  # fixture cards dated 29-oct: N°2 live
         capture_all(root, fetcher(root))
         FIXTURE_DIR.mkdir(parents=True, exist_ok=True)
         for fam, mod in (("F4", f4), ("F6", f6)):

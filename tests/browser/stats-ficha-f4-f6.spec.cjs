@@ -7,7 +7,7 @@ const path=require('node:path');
 // F4 values are synthetic test values, F6 values are the verified N°2-2026 reading).
 const SHOTS=process.env.ALICANTO_SHOTS_DIR||'artifacts';
 for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral'],0],
-                               ['f6_prestadores',['Acreditación','Mediación','Reclamos','RNPI'],0]]){
+                               ['f6_prestadores',['Acreditación','Con observaciones','Reclamos','Mediación'],0]]){
  test(`${slug} ficha opens with tabs, charts and a share link`,async({page})=>{
   const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));
   await page.clock.setFixedTime(new Date('2026-10-29T12:00:00-03:00'));
@@ -64,7 +64,7 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
 
 // 320 px (smallest supported phone): every tab fits, SVG labels stay inside their viewBox and x-axis labels never overlap.
 for(const [slug,tabs] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral']],
-                          ['f6_prestadores',['Acreditación','Mediación','Reclamos','RNPI']]]){
+                          ['f6_prestadores',['Acreditación','Con observaciones','Reclamos','Mediación']]]){
  test(`${slug} ficha fits a 320 px screen`,async({page})=>{
   test.skip(test.info().project.name!=='mobile','320 px runs once, in the mobile project');
   await page.setViewportSize({width:320,height:700});

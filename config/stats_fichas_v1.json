@@ -1216,7 +1216,8 @@
           "denominator": null,
           "period_rule": "Stock al corte; vs. boletín anterior solo con ambos verificados; nunca se suman cortes",
           "pitfalls": [
-            "Stock: no sumar boletines."
+            "Stock: no sumar boletines.",
+            "Una cifra cuya tabla de origen no cuadra se muestra solo con la nota de la lectura ('mostrar con nota', Dirección 2-nov-2026); nunca se corrige."
           ]
         },
         "observaciones": {
@@ -1264,7 +1265,8 @@
           "denominator": null,
           "period_rule": "Corte",
           "pitfalls": [
-            "Títulos, no profesionales únicos."
+            "Títulos, no profesionales únicos.",
+            "No se muestra en la ficha (Dirección 2-nov-2026)."
           ]
         }
       },
@@ -1331,9 +1333,13 @@
       "templates": {
         "kicker": "{label}",
         "headline": {
-          "default": "Boletín IP a {month_label}: {acreditados} prestadores acreditados y {tramite} solicitudes de acreditación en trámite"
+          "_doc": "Dirección 2-nov-2026: titular natural generado desde cifras verificadas. 'up'/'down'/'flat' según el signo de la variación verificada de acreditados frente al boletín anterior; 'default' sin boletín anterior verificado.",
+          "default": "Prestadores acreditados suman {acreditados} a {month}; {observaciones} con observaciones",
+          "up": "Prestadores acreditados llegan a {acreditados} a {month}, {delta} más que en {prev_month}; {observaciones} con observaciones",
+          "down": "Prestadores acreditados bajan a {acreditados} a {month}, {delta} menos que en {prev_month}; {observaciones} con observaciones",
+          "flat": "Prestadores acreditados se mantienen en {acreditados} a {month}, igual que en {prev_month}; {observaciones} con observaciones"
         },
-        "dek": "{rec_clause} El RNPI suma {titulos} títulos inscritos, que no son profesionales únicos.",
+        "dek": "{rec_clause} La SIS registra {mediadores} mediadores inscritos.",
         "kicker_meta": "datos a {period_label} · publicado por la SIS el {published_label} · {cadence_phrase}",
         "kicker_meta_detected": "datos a {period_label} · detectado por Alicanto el {published_label} · {cadence_phrase}"
       },
@@ -1343,20 +1349,23 @@
           "label": "Acreditación"
         },
         {
-          "id": "mediacion",
-          "label": "Mediación"
+          "id": "observaciones",
+          "label": "Con observaciones"
         },
         {
           "id": "reclamos",
           "label": "Reclamos"
         },
         {
-          "id": "rnpi",
-          "label": "RNPI"
+          "id": "mediacion",
+          "label": "Mediación"
         }
       ],
-      "builder_version": "f6_index_topic_v4",
-      "note": "Dirección 28-oct: el Boletín IP (acreditación, mediación, reclamos, RNPI) vive en F6; F5 queda para fiscalización."
+      "builder_version": "f6_index_topic_v5",
+      "note": "Dirección 28-oct: el Boletín IP (acreditación, mediación, reclamos, RNPI) vive en F6; F5 queda para fiscalización.",
+      "hidden_topics": {
+        "rnpi": "Dirección 2-nov-2026: el RNPI no es tema de la ficha. Su PDF sigue en la verificación del boletín (captura, hash y lectura independiente); ninguna cifra, tema ni fuente RNPI se muestra."
+      }
     },
     "F7": {
       "slug": "f7_financiamiento",

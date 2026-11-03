@@ -30,7 +30,7 @@ def isolated_ledgers(tmp_path, monkeypatch):
 
 @pytest.fixture
 def root(tmp_path):
-    r = fx.make_root(tmp_path / "root")
+    r = fx.make_root(tmp_path / "root", readings_until="2026-06")
     fx.capture_all(r, fx.fetcher(r))
     return r
 
@@ -145,7 +145,7 @@ def test_f4_chart_headline_count_is_derived_from_data(root):
 
 @pytest.mark.parametrize("case", ["total_mismatch", "measure_unconfirmed", "ytd_decreases", "sheet_not_pinned", "offline"])
 def test_f4_holds_and_never_publishes(tmp_path, case):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     url = fx.GES_URL.format(period="2026-06")
     books, fail = {}, set()
     if case == "total_mismatch":
@@ -174,7 +174,7 @@ def test_f4_holds_and_never_publishes(tmp_path, case):
 
 
 def test_f4_reviewer_confirmed_measure_publishes_unlabelled_header(tmp_path):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     books = {fx.GES_URL.format(period=p): fx.ges_workbook(p, rows, header="casos") for p, rows in fx.GES_CUTS.items()}
     fx.capture_all(r, fx.fetcher(r, books))
     registry = reg()
@@ -185,7 +185,7 @@ def test_f4_reviewer_confirmed_measure_publishes_unlabelled_header(tmp_path):
 
 
 def test_f4_without_yoy_or_beneficiaries_says_not_available(tmp_path):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     hist = json.loads((r / fx.INPUTS[2]).read_text(encoding="utf-8"))  # no base year captured
     hist["signals"] = [s for s in hist["signals"] if "fixture-ges-2025" not in str(s.get("source_url"))]
     (r / fx.INPUTS[2]).write_text(json.dumps(hist, ensure_ascii=False), encoding="utf-8")
@@ -249,14 +249,14 @@ def test_f4_good_lectura_publishes_end_to_end_with_review_and_no_real_model(root
     assert lect["status"] == "pass" and lect["text"] == F4_GOOD and lect["review"]["verdict"] == "PASS"
     assert [c["feature"] for c in model.calls] == ["stats_ficha_lectura", "stats_ficha_lectura_review"]
     # A Lectura with an untraceable figure is dropped; the reviewer is never paid and the ficha still publishes.
-    r2 = fx.make_root(root.parent / "r2")
+    r2 = fx.make_root(root.parent / "r2", readings_until="2026-06")
     fx.capture_all(r2, fx.fetcher(r2))
     bad = fake_model("Para las aseguradoras, Fonasa atendió 9 veces los casos de las Isapres en el segundo trimestre de 2026.")
     out2 = f4.run(r2, today=TODAY, registry=reg_ok(), llm=True, model_call=bad, budget=ALLOW)
     assert out2["status"] == "pass" and out2["ficha"]["lectura"]["status"] == "verifier_fail"
     assert [c["feature"] for c in bad.calls] == ["stats_ficha_lectura"]
     # No budget: no call at all, Lectura omitted.
-    r3 = fx.make_root(root.parent / "r3")
+    r3 = fx.make_root(root.parent / "r3", readings_until="2026-06")
     fx.capture_all(r3, fx.fetcher(r3))
     none = fake_model(F4_GOOD)
     out3 = f4.run(r3, today=TODAY, registry=reg_ok(), llm=True, model_call=none, budget=lambda w: (False, "no_capacity"))
@@ -277,14 +277,16 @@ def test_f6_figures_and_denominators_recomputed(root):
     assert p["reconciliation"]["ok"], p["reconciliation"]
     v = {k: e["value"] for k, e in p["values"].items()}
     cfg = json.loads((REPO / "config/statistical_analysis_verified_v1.json").read_text(encoding="utf-8"))
-    m = {k: val for d in cfg["primary_review"]["documents"] for k, val in d["verified_metrics"].items()}
+    m = {k: val for d in cfg["primary_review"]["documents"] if "-n2-2026-" in d["url"] for k, val in d["verified_metrics"].items()}
     assert v["acr.acreditados"] == m["accredited_providers"] == 971
     assert v["acr.sin_observaciones"] == 971 - 101 == 870
     assert v["acr.observaciones_pct"] == pytest.approx(101 / 971 * 100)  # denominator: accredited
     assert v["acr.tramite.privadas"] + v["acr.tramite.publicas"] == v["acr.tramite"] == 584
     assert v["acr.privadas_pct"] == pytest.approx(367 / 584 * 100)  # denominator: applications in process
     assert v["rec.pct"] == pytest.approx((1996 - 1530) / 1530 * 100) and round(v["rec.pct"]) == m["reported_growth_percent_rounded"]
-    assert v["rnpi.titulos"] == 1004982 and v["med.mediadores"] == 175 and v["med.solicitudes_acumuladas"] == 12067
+    assert v["med.mediadores"] == 175 and v["med.solicitudes_acumuladas"] == 12067
+    # RNPI gates the release (its PDF and reading are checked) but its figures never enter the package or number pool.
+    assert not any(k.startswith("rnpi.") for k in v) and 1004982 not in sf.number_pool(p) and "rnpi" in p["sources"]
     # Stocks are never summed across releases: no derived value adds two cuts.
     assert not any("Σ" in str(e.get("formula") or "") for e in p["values"].values())
     assert p["kpis"]["comparisons"] == {}  # only one verified release: quarter-on-quarter stays pending
@@ -294,9 +296,16 @@ def test_f6_ficha_tabs_and_rejected_release(root):
     out = f6.run(root, today=TODAY, registry=reg(), llm=False)
     assert out["status"] == "pass", out.get("errors")
     fi = out["ficha"]
-    assert [t["label"] for t in fi["tabs"]] == ["Acreditación", "Mediación", "Reclamos", "RNPI"]
-    assert fi["headline"] == "Boletín IP a junio 2026: 971 prestadores acreditados y 584 solicitudes de acreditación en trámite"
-    assert any("no profesionales únicos" in x for x in next(t for t in fi["tabs"] if t["id"] == "rnpi")["text"])
+    # Approved structure (Dirección 2-nov): four topics, no RNPI; headline from verified values. Without a verified
+    # previous bulletin the headline gives the level only (never a made-up change).
+    assert [t["label"] for t in fi["tabs"]] == ["Acreditación", "Con observaciones", "Reclamos", "Mediación"]
+    assert fi["headline"] == "Prestadores acreditados suman 971 a junio; 101 con observaciones"
+    assert fi["headline_type"] == "default"
+    shown = " ".join(sf.displayed_texts(fi))
+    assert "RNPI" not in shown and "1.004.982" not in shown and "4.036" not in shown
+    assert not any("rnpi" in s["url"] for s in fi["sources"])
+    assert next(t for t in fi["tabs"] if t["id"] == "observaciones")["index_line"] == \
+        "101 con observaciones · 10,4% de los acreditados"
     # The 'Septiembre 2026' page links the January–June PDFs: rejected, never relabelled.
     store = json.loads((root / "data/stats_fichas/captures/boletin_ip.json").read_text(encoding="utf-8"))
     rej = store["rejected_releases"]
@@ -327,14 +336,22 @@ def test_f6_quarter_on_quarter_compares_stocks_between_two_verified_releases(roo
     p = f6.build_package(root, reg())
     assert p["reconciliation"]["ok"], p["reconciliation"]
     c = p["kpis"]["comparisons"]
-    assert c["acr.acreditados"] == 971 - 950 and c["acr.tramite"] == 584 - 600 and c["rnpi.titulos"] == 1004982 - 990000
+    assert c["acr.acreditados"] == 971 - 950 and c["acr.tramite"] == 584 - 600
+    assert not any(k.startswith(("rnpi.", "med.")) for k in c)  # hidden RNPI; mediación shows its level only
     fi = f6.compose(p, reg(), today=TODAY)
     assert "+21 vs. marzo 2026" in fi["kpis"][0]["lines"]
+    # The headline wording follows the sign of the verified change; a fall reads 'bajan … menos', never '−21 más'.
+    assert fi["headline"] == "Prestadores acreditados llegan a 971 a junio, 21 más que en marzo; 101 con observaciones"
+    p["kpis"]["comparisons"]["acr.acreditados"] = -21
+    assert f6.compose(p, reg(), today=TODAY)["headline"] == \
+        "Prestadores acreditados bajan a 971 a junio, 21 menos que en marzo; 101 con observaciones"
+    p["kpis"]["comparisons"]["acr.acreditados"] = 0
+    assert f6.compose(p, reg(), today=TODAY)["headline"].startswith("Prestadores acreditados se mantienen en 971 a junio")
 
 
 @pytest.mark.parametrize("case", ["figure_missing", "sum_mismatch", "offline"])
 def test_f6_holds(tmp_path, case):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     books, fail = {}, set()
     acc = "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-acreditacion-enero-junio-2026-2.pdf"
     if case == "figure_missing":
@@ -386,7 +403,7 @@ def test_f6_verifier_checks_scope_period_and_base(root, text, error):
 
 
 def test_capture_downloads_once_and_stores_hashes_not_binaries(tmp_path):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     fetch = fx.fetcher(r)
     fx.capture_all(r, fetch)
     n = len(fetch.calls)
@@ -404,7 +421,7 @@ def test_capture_downloads_once_and_stores_hashes_not_binaries(tmp_path):
 
 
 def test_capture_retries_failed_downloads_a_bounded_number_of_times(tmp_path):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     url = fx.GES_URL.format(period="2026-06")
     fetch = fx.fetcher(r, fail={url})
     for _ in range(6):
@@ -449,7 +466,8 @@ def test_registry_declares_f4_f6_rules():
     assert a["measure"]["confirmed"] is False  # never auto-confirmed
     assert a["supersedes"]["stat_families"] == ["ges"] and b["supersedes"]["stat_families"] == ["boletin_ip"]
     assert [t["label"] for t in a["tabs"]] == ["Totales", "Top problemas", "Fonasa vs Isapre", "Tendencia trimestral"]
-    assert [t["label"] for t in b["tabs"]] == ["Acreditación", "Mediación", "Reclamos", "RNPI"]
+    assert [t["label"] for t in b["tabs"]] == ["Acreditación", "Con observaciones", "Reclamos", "Mediación"]
+    assert list(b["hidden_topics"]) == ["rnpi"] and f6.HIDDEN_TOPICS == ("rnpi",)
 
 
 def test_snapshot_ges_card_leaves_hold_only_when_f4_passes(root):
@@ -472,7 +490,7 @@ def test_snapshot_ges_card_leaves_hold_only_when_f4_passes(root):
 
 
 def test_committed_fixture_cards_match_the_builders(tmp_path):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     fx.capture_all(r, fx.fetcher(r))
     for fam, mod in (("F4", f4), ("F6", f6)):
         fi = mod.run(r, today=TODAY, registry=reg_ok(), llm=False)["ficha"]
@@ -505,7 +523,7 @@ def test_f4_holds_without_reviewer_flag_whatever_the_header_says():
 
 
 def test_f4_header_contradicting_reviewer_holds(tmp_path):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     books = {fx.GES_URL.format(period=p): fx.ges_workbook(p, rows, header="casos acumulados del trimestre")
              for p, rows in fx.GES_CUTS.items()}
     fx.capture_all(r, fx.fetcher(r, books))
@@ -514,7 +532,7 @@ def test_f4_header_contradicting_reviewer_holds(tmp_path):
 
 
 def test_f4_ranking_never_draws_a_decline_as_a_positive_bar(tmp_path):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     rows = dict(fx.GES_CUTS["2026-06"])
     rows["Hipertensión arterial en personas de 15 años y más"] = (38000, 4000)  # T2 2026 = 18.800 < T2 2025 = 23.100
     fx.capture_all(r, fx.fetcher(r, {fx.GES_URL.format(period="2026-06"): fx.ges_workbook("2026-06", rows)}))
@@ -687,7 +705,7 @@ def test_robots_disallow_is_respected_and_unknown_policy_fails_closed():
 
 
 def test_capture_time_budget_stops_new_downloads(tmp_path):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     fetch = fx.fetcher(r)
     now = {"t": 0.0}
 
@@ -706,7 +724,7 @@ def test_capture_time_budget_stops_new_downloads(tmp_path):
 
 
 def test_parse_failure_is_recorded_and_not_redownloaded_for_seven_days(tmp_path, monkeypatch):
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     url = fx.GES_URL.format(period="2026-06")
     monkeypatch.setattr(cap.data_insights, "parse_ges_workbook",
                         lambda b, t: (_ for _ in ()).throw(RuntimeError("broken workbook")) if "junio 2026" in t

@@ -218,7 +218,7 @@ def _write_templates(r: Path, templates: dict) -> None:
 
 def _root_captured_with_v1(tmp_path, monkeypatch, templates=None):
     """Capture everything with the pre-bump checker (acreditación at v1): reproduces the production HOLD."""
-    r = fx.make_root(tmp_path / "r")
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     _write_templates(r, REPO_TEMPLATES if templates is None else templates)
     fetch = fx.fetcher(r, {ACR: doc()})
     monkeypatch.setattr(cap, "CHECKER_VERSIONS", {})

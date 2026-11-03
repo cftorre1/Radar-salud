@@ -19,7 +19,13 @@
           "pending_applications": 584,
           "private_pending": 367,
           "public_pending": 217
-        }
+        },
+        "source_notes": {
+          "pending_applications": "En el boletín, las solicitudes por etapa del proceso suman una menos que el total informado ({pending_applications}) y que el de públicas ({public_pending})."
+        },
+        "source_discrepancies": [
+          "p.7: la fila subtotal pública por etapa (57 11 3 12 33 100) suma 216 frente a 217 informado; el total general por etapa (157 37 5 30 117 237) suma 583 frente a 584 (recibo de texto 8b7f7c7a385e4c09, revisión 2-nov-2026)."
+        ]
       },
       {
         "url": "https://www.superdesalud.gob.cl/app/uploads/2026/08/boletin-n2-2026-mediacion-enero-junio-2026.pdf",
@@ -56,6 +62,92 @@
           "records_without_birth_date": 4036
         },
         "unit_caution": "Titles, not unique professionals;1,034,076 reported enabling-entity registrations is a different denominator."
+      },
+      {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-acreditacion-enero-septiembre-2026-1.pdf",
+        "pages_1based": [
+          2,
+          7,
+          8
+        ],
+        "verified_metrics": {
+          "accredited_providers": 1009,
+          "with_observations": 124,
+          "pending_applications": 574,
+          "private_pending": 357,
+          "public_pending": 217
+        },
+        "source_notes": {
+          "pending_applications": "En el boletín, las solicitudes por etapa del proceso suman una menos que el total informado ({pending_applications}) y que el de públicas ({public_pending})."
+        },
+        "source_discrepancies": [
+          "p.7: la fila subtotal pública por etapa (40 29 2 18 30 97) suma 216 frente a 217 informado; la columna 'designación aceptada' de las filas públicas suma 19 frente a 18; el total general por etapa (111 72 12 32 96 250) suma 573 frente a 574. La tabla por región (p.8) suma 357 + 217 = 574.",
+          "p.6: finalizados con resultado acreditado 1158 + 1005 = 2163 frente a 2173 informado (no se usa en la ficha)."
+        ],
+        "quotes": {
+          "accredited_providers": "p.2: de un total de 1009 prestadores institucionales acreditados al 30 de septiembre",
+          "with_observations": "p.2: 124 prestadores institucionales obtuvieron el resultado de acreditado con observaciones, lo que equivale a un 12%",
+          "pending_applications": "p.8: desagregadas por region del prestador y tipo | total general 357 217 574",
+          "private_pending": "p.7: existe un 62% de solicitudes (357), realizadas por prestadores privados",
+          "public_pending": "p.7: otro 38% (217), corresponde a establecimientos publicos"
+        },
+        "reading": "lectura independiente N°3-2026 (2-nov-2026), comprobada contra los recibos de texto data/stats_fichas/text",
+        "reviewed_at": "2026-11-02",
+        "reviewed_by": "Dirección (cftorre1), lectura independiente"
+      },
+      {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-mediacion-enero-septiembre-2026.pdf",
+        "pages_1based": [
+          2,
+          5,
+          6
+        ],
+        "verified_metrics": {
+          "registered_mediators": 179,
+          "cumulative_requests_2019_to_september2026": 12697
+        },
+        "quotes": {
+          "registered_mediators": "p.2: mediadores inscritos en el registro nacional, desagregados por region (total: 179)",
+          "cumulative_requests_2019_to_september2026": "p.6: de las 12697 solicitudes de mediacion ingresadas entre enero del ano 2019 y septiembre de 2026"
+        },
+        "reading": "lectura independiente N°3-2026 (2-nov-2026), comprobada contra los recibos de texto data/stats_fichas/text",
+        "reviewed_at": "2026-11-02",
+        "reviewed_by": "Dirección (cftorre1), lectura independiente"
+      },
+      {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-reclamos-enero-septiembre-2026-1.pdf",
+        "pages_1based": [
+          2
+        ],
+        "verified_metrics": {
+          "monthly_average_2026": 1880,
+          "monthly_average_2025": 1530,
+          "reported_growth_percent_rounded": 23
+        },
+        "quotes": {
+          "monthly_average_2026": "p.2: a septiembre del presente ano, se observa un aumento de un 23% (1880), en el promedio mensual de reclamos ingresados",
+          "monthly_average_2025": "p.2: respecto al promedio mensual del a no 2025(1530)",
+          "reported_growth_percent_rounded": "p.2: un aumento de un 23% (1880)"
+        },
+        "reading": "lectura independiente N°3-2026 (2-nov-2026), comprobada contra los recibos de texto data/stats_fichas/text",
+        "reviewed_at": "2026-11-02",
+        "reviewed_by": "Dirección (cftorre1), lectura independiente"
+      },
+      {
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-rnpi-enero-septiembre-2026-1.pdf",
+        "pages_1based": [
+          2
+        ],
+        "verified_metrics": {
+          "records_without_birth_date": 5688
+        },
+        "quotes": {
+          "records_without_birth_date": "p.2: de los cuales 5688 casos no cuentan con la fecha de nacimiento"
+        },
+        "unit_caution": "Títulos inscritos no se registra: p.1 y p.4 dan 1018018 y p.2 dice 'existen 1012330 titulos inscritos' (1018018 − 1012330 = 5688); la lectura no resuelve cuál es el total. El RNPI no se muestra en la ficha (Dirección 2-nov); el documento se mantiene en la verificación.",
+        "reading": "lectura independiente N°3-2026 (2-nov-2026), comprobada contra los recibos de texto data/stats_fichas/text",
+        "reviewed_at": "2026-11-02",
+        "reviewed_by": "Dirección (cftorre1), lectura independiente"
       }
     ]
   },
