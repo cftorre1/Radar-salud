@@ -1130,3 +1130,105 @@ def test_f4_gated_run_never_calls_the_model_and_marks_the_candidate(root):
                                                       reviewed_sha256=out["candidate"]["review_request"]["release_sha256"])
     out = f4.run(root, today=TODAY, registry=registry, llm=True, model_call=model, budget=ALLOW)
     assert out["status"] == "pass" and [c["feature"] for c in model.calls] == ["stats_ficha_lectura", "stats_ficha_lectura_review"]
+
+
+# ---------------------------------------------------------------------------------------------
+# Daily run 3-nov-2026 on the real SIS workbooks: HOLD_GES_ROW_UNRECOGNIZED 'Sin Problema de Salud Informado'
+# (Año 2026 row 97, Año 2025 row 94): an un-numbered row of cases with no problem informed, part of the Total.
+
+def _unassigned_value(per: str) -> tuple[int, int]:
+    q = (int(per[:4]) - 2023) * 4 + int(per[5:7]) // 3  # grows with every cut: cumulative never decreases
+    return 7 * q, 3 * q
+
+
+def sin_problema(wb):
+    """Insert the SIS 'Sin Problema de Salud Informado' row (no N°) above the Total, adding it to the Total."""
+    for ws in year_sheets(wb):
+        year = int(ws.title[-4:])
+        if year < 2023:
+            continue
+        total_row = next(r[0].row for r in ws.iter_rows() if str(r[1].value or "").startswith("Total"))
+        vals = [None] * (ws.max_column - 2)
+        for c in range(3, ws.max_column + 1, 2):
+            head = str(ws.cell(3, c).value or "")
+            tail = head.split("2005 a")[-1] if "acumulados" in head else head.split("y")[-1]  # the cut month, never Jul-2005
+            mon = fx.MON3.index(next(m for m in fx.MON3 if m in tail)) + 1
+            per = f"{year}-{mon:02d}"
+            if ws.cell(total_row, c).value is None:
+                continue
+            u = _unassigned_value(per)
+            if "acumulados" not in head:  # year to date = cumulative now − cumulative previous December
+                b = _unassigned_value(f"{year - 1}-12")
+                u = (u[0] - b[0], u[1] - b[1])
+            vals[c - 3], vals[c - 2] = u
+            ws.cell(total_row, c, ws.cell(total_row, c).value + u[0])
+            ws.cell(total_row, c + 1, ws.cell(total_row, c + 1).value + u[1])
+        ws.insert_rows(total_row)
+        ws.cell(total_row, 2, "Sin Problema de Salud Informado")
+        for j, v in enumerate(vals):
+            ws.cell(total_row, 3 + j, v)
+
+
+def test_ges_unassigned_row_is_reconciled_with_the_total_and_never_a_problem():
+    from radar_salud import ges_workbook as gw
+    r = gw.parse(edit_book(fx.ges_workbook("2026-06"), sin_problema), GES_TITLE)
+    assert r["status"] == "validated", r
+    cur = gw.expand_sheet(r["years"]["2026"])
+    assert cur["unassigned"]["cut"]["2026-06"] == list(_unassigned_value("2026-06"))
+    assert all(p["label"] != "Sin problema de salud informado" for p in cur["problems"].values())
+    plain = gw.expand_sheet(gw.parse(fx.ges_workbook("2026-06"), GES_TITLE)["years"]["2026"])
+    assert set(cur["problems"]) == set(plain["problems"])
+    u = _unassigned_value("2026-06")
+    assert cur["totals"]["cut"]["2026-06"] == [plain["totals"]["cut"]["2026-06"][0] + u[0],
+                                               plain["totals"]["cut"]["2026-06"][1] + u[1]]
+
+
+def test_ges_unassigned_row_that_does_not_add_up_holds():
+    from radar_salud import ges_workbook as gw
+
+    def broken(wb):
+        sin_problema(wb)
+        ws = wb["Año 2026"]
+        at = next(r[0].row for r in ws.iter_rows() if r[1].value == "Sin Problema de Salud Informado")
+        ws.cell(at, 3, ws.cell(at, 3).value + 1)  # the row no longer adds up to the declared Total
+    r = gw.parse(edit_book(fx.ges_workbook("2026-06"), broken), GES_TITLE)
+    assert r["status"] == "HOLD" and r["hold_reason"] == "HOLD_GES_RECONCILIATION"
+
+
+def test_ges_other_unnumbered_rows_still_hold():
+    from radar_salud import ges_workbook as gw
+
+    def other(wb):
+        ws = wb["Año 2026"]
+        at = next(r[0].row for r in ws.iter_rows() if str(r[1].value or "").startswith("Total"))
+        ws.insert_rows(at)
+        ws.cell(at, 2, "Casos sin clasificar")
+    r = gw.parse(edit_book(fx.ges_workbook("2026-06"), other), GES_TITLE)
+    assert r["hold_reason"] == "HOLD_GES_ROW_UNRECOGNIZED" and r["label"] == "Casos sin clasificar"
+
+
+def test_ges_invalid_numeric_count_records_its_value():
+    from radar_salud import ges_workbook as gw
+
+    def negative(wb):
+        ws = wb["Año 2025"]
+        ws.cell(row_of(ws, 5), 3, -4)
+    r = gw.parse(edit_book(fx.ges_workbook("2026-06"), negative), GES_TITLE)
+    assert r["hold_reason"] == "HOLD_GES_INVALID_COUNT" and r["value"] == "-4" and r["at"].startswith("Año 2025!")
+
+
+def test_f4_with_unassigned_row_counts_it_in_the_year_to_date_total(tmp_path):
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
+    books = {fx.GES_URL.format(period=p): edit_book(fx.ges_workbook(p), sin_problema) for p in fx.GES_RELEASES}
+    fx.capture_all(r, fx.fetcher(r, books))
+    out = f4.run(r, today=TODAY, registry=reg_ok(), llm=False)
+    assert not out.get("errors"), out.get("errors")
+    r0 = fx.make_root(tmp_path / "r0", readings_until="2026-06")
+    fx.capture_all(r0, fx.fetcher(r0, {fx.GES_URL.format(period=p): fx.ges_workbook(p) for p in fx.GES_RELEASES}))
+    base = f4.run(r0, today=TODAY, registry=reg_ok(), llm=False)
+    u = _unassigned_value("2026-06")
+    b = _unassigned_value("2025-12")
+    extra = (u[0] - b[0]) + (u[1] - b[1])
+    ytd = lambda o: sum(v["value"] for k, v in o["ficha"]["evidence"]["values"].items()  # noqa: E731
+                        if k in ("ges.ytd.2026-06.fonasa", "ges.ytd.2026-06.isapre"))
+    assert ytd(out) == ytd(base) + extra

@@ -1084,7 +1084,7 @@ TITLE = "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE 
 def test_ges_reads_the_ytd_column_and_since_2005_cuts_of_the_pinned_sheets_and_reconciles():
     fx = ges_fx()
     r = data_insights.parse_ges_workbook(fx.ges_workbook("2026-06"), TITLE)
-    assert r["status"] == "validated" and r["sheet"] == "Año 2026" and r["parser"] == sf.GES_PARSER == "ges_ytd_cuts_v3"
+    assert r["status"] == "validated" and r["sheet"] == "Año 2026" and r["parser"] == sf.GES_PARSER == "ges_ytd_cuts_v4"
     assert set(r["years"]) == {"2026", "2025", "2024"}  # the decoy 'Año 2005' sheet is never read
     ytd = [sum(v[i] for v in fx.GES_YTD["2026-06"].values()) for i in (0, 1)]
     assert r["reconciliation"]["ok"] and r["reconciliation"]["declared_total"] == ytd == [85740, 12183]

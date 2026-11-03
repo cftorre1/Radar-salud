@@ -271,3 +271,11 @@ POLICY.md (sección "Editorial sessions"); aquí van la regla de producto, la se
   `fallback_redraft_after_contract_fail: false` lo desactiva.
 - En sesiones editoriales rige lo mismo: si el contrato no pasa, se escribe el Insight sobre el tema normal (sin ancla,
   sin registro de contrato).
+
+- 3-nov-2026 (F4 GES, primer run diario sobre las planillas reales de la SIS): cada hoja de año trae una fila sin
+  número "Sin Problema de Salud Informado" justo sobre el Total, y forma parte del Total. El parser
+  `ges_ytd_cuts_v4` la lee aparte (nunca es problema ni entra al ranking), la suma en las columnas y en la base de
+  diciembre de la identidad del acumulado del año, y deja en HOLD cualquier otra fila sin número. Aprendizaje: los
+  fixtures sintéticos armados desde un recibo de texto truncado (40 filas) nunca mostraron el final de la tabla;
+  revisar las últimas filas sobre el Total de un archivo real antes de dar por validado un esquema. Una cuenta
+  numérica negativa o con decimales ahora registra su valor en el HOLD (`HOLD_GES_INVALID_COUNT … value`).

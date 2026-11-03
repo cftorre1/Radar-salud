@@ -2,7 +2,7 @@
 
 Inputs (captured by ``stats_capture``; never downloaded here):
 - ``data/stats_fichas/captures/ges_quarterly.json``: one entry per SIS release ('… a junio 2026'), parsed by
-  ``ges_workbook.parse`` (parser ``ges_ytd_cuts_v3``): the year sheets of the release (t), the previous year and the
+  ``ges_workbook.parse`` (parser ``ges_ytd_cuts_v4``): the year sheets of the release (t), the previous year and the
   one before are pinned by name; every column read reconciles to the declared total; and the year-to-date column
   equals the cumulative cut minus the previous December cut, per problem and in total;
 - ``data/market/isapre_portfolio.json`` (F1): Isapre beneficiaries per month, the only rate denominator captured.
@@ -333,20 +333,41 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
             ids.append(vid)
         return ids
 
+    def unassigned_cut(per: str) -> list:
+        """The un-numbered 'Sin problema de salud informado' row: part of the declared total, never a problem."""
+        return list((((sheet_of(per).get("unassigned") or {}).get("cut") or {}).get(per)) or [0, 0])
+
+    def add_unassigned_cut(per: str) -> list[str]:
+        sh = sheet_of(per)
+        u = sh.get("unassigned")
+        if not u or not (u.get("cut") or {}).get(per):
+            return []
+        ids = []
+        for i, ins in enumerate(INS):
+            vid = f"ges.cut.{per}.sin_problema.{ins}"
+            values[vid] = value(vid, unassigned_cut(per)[i] or 0, unit="casos acumulados desde jul-2005", period=per,
+                                source=src, locator=f"{sh['sheet']}!fila {u['row']} (sin problema de salud informado) · "
+                                                    f"{sh['titles']['cut:' + per]} · {ins.capitalize()}", kind=CUMULATIVE)
+            ids.append(vid)
+        return ids
+
     def dec_base(dec: str, year: int) -> list[str]:
         """Evidence ids of the December cut ``dec`` as the base of ``year``: the declared total when the problem list
         did not change, else the sum over the problems of ``year`` (a dropped problem keeps its cumulative in the
         December total but has no flow; a new one enters with 0)."""
         codes = years[str(year)]["problems"]
-        own = [sum(((cut_pair(dec, c) or [0, 0])[i] or 0) for c in codes) for i in (0, 1)]
+        own = [sum(((cut_pair(dec, c) or [0, 0])[i] or 0) for c in codes) + (unassigned_cut(dec)[i] or 0)
+               for i in (0, 1)]
         if own == list(cut_pair(dec)):
             return add_cut(dec)
         ids = []
         for i, ins in enumerate(INS):
             parts = [x for c in codes if cut_pair(dec, c) is not None for x in add_problem_cut(dec, c) if x.endswith("." + ins)]
+            parts += [x for x in add_unassigned_cut(dec) if x.endswith("." + ins)]
             ids.append(f"ges.cut.{dec}.base_{year}.{ins}")
             values[ids[-1]] = value(ids[-1], own[i], unit="casos acumulados desde jul-2005", period=dec, source=None,
-                                    formula=f"Σ acumulado a {cut_label(dec)} de los problemas presentes en {year}",
+                                    formula=f"Σ acumulado a {cut_label(dec)} de los problemas presentes en {year}"
+                                            " y de los casos sin problema de salud informado",
                                     inputs=parts, kind=CUMULATIVE)
         return ids
 
@@ -365,7 +386,8 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
     # Year-to-date identity on the totals (defence in depth; the parser checks it per problem too).
     cur_sheet = years[str(ty)]
     ytd_t = cur_sheet["totals"]["ytd"][t]
-    base_dec = [sum(((cut_pair(dec1, k) or [0, 0])[i] or 0) for k in cur_sheet["problems"]) for i in (0, 1)]
+    base_dec = [sum(((cut_pair(dec1, k) or [0, 0])[i] or 0) for k in cur_sheet["problems"])
+                + (unassigned_cut(dec1)[i] or 0) for i in (0, 1)]
     if [cut_pair(t)[i] - base_dec[i] for i in (0, 1)] != list(ytd_t):
         failures.append(f"ytd_identity:{t}")
     if failures:

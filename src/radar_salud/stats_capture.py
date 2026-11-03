@@ -11,7 +11,7 @@ Text receipts (2-nov-2026): each captured or re-checked document also leaves its
 ``data/stats_fichas/text/<sha256[:16]>.json`` (once per sha256, capped), for the reviewer who writes the independent
 reading; a captured document of the newest release of each kind without one is downloaded once more for it.
 
-- GES (xlsx): ``data_insights.parse_ges_workbook`` → ``ges_workbook.parse`` (``ges_ytd_cuts_v3``): the year sheets of
+- GES (xlsx): ``data_insights.parse_ges_workbook`` → ``ges_workbook.parse`` (``ges_ytd_cuts_v4``): the year sheets of
   the release, the previous year and the one before are pinned by name, every column read adds up to the declared
   total and the year-to-date column equals the cumulative cut minus the previous December cut, else HOLD. A file
   captured with an older GES parser is re-read once with the current one (same fetcher, budget and hash check).

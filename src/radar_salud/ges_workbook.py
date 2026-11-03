@@ -33,7 +33,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-GES_PARSER = "ges_ytd_cuts_v3"  # mirrored in stats_fichas.GES_PARSER and data_insights.GES_PARSER
+GES_PARSER = "ges_ytd_cuts_v4"  # mirrored in stats_fichas.GES_PARSER and data_insights.GES_PARSER
 MONTHS = {"ene": 1, "feb": 2, "mar": 3, "abr": 4, "may": 5, "jun": 6, "jul": 7, "ago": 8, "sep": 9, "set": 9,
           "oct": 10, "nov": 11, "dic": 12}
 MONTH_NAMES = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
@@ -44,6 +44,9 @@ YTD_RX = re.compile(r"ingresos\s+entre\s+ene\w*\.?\s+y\s+(?P<m>[a-z]{3})\w*\.?\s
 CODE_HEAD = re.compile(r"^n\s*\W?\s*[°ºo]?\.?$")
 MISSING = {"", "nd", "n/d", "-", "s/i", "--"}
 FOOTNOTE = re.compile(r"(?:\s*\(\d{1,2}\))+\s*$")
+# Real SIS workbooks (2025-03 … 2026-06) carry one un-numbered row of cases with no health problem informed just above
+# the Total. It is part of the declared total: kept apart (never a problem, never ranked) and reconciled with the rows.
+UNASSIGNED = re.compile(r"^sin problema de salud informado$")
 MAX_ROWS = 700
 
 
@@ -97,7 +100,7 @@ def _count(v: Any, where: str) -> int | None:
         raise GesHold("HOLD_GES_INVALID_COUNT", at=where)
     if isinstance(v, (int, float)):
         if v < 0 or v != int(v):
-            raise GesHold("HOLD_GES_INVALID_COUNT", at=where)
+            raise GesHold("HOLD_GES_INVALID_COUNT", at=where, value=repr(v)[:20])
         return int(v)
     s = fold(v)
     if s in MISSING:
@@ -172,6 +175,7 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows:
         if c + 1 >= len(sub) or "fonasa" not in fold(sub[c]) or "isapre" not in fold(sub[c + 1]):
             raise GesHold("HOLD_GES_HEADER_NOT_VALIDATED", sheet=sheet, column=f"{key[0]}:{key[1]}", detail="fonasa_isapre")
     problems: dict[str, dict] = {}
+    unassigned = None
     total = None
     subtotals = []
     for offset, data in enumerate(rows[hi + 2:], hi + 3):
@@ -194,6 +198,15 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows:
         if code is None:
             if not label and not norm(data[code_col]):
                 continue  # blank line, or the line of cut dates under the header (no code, no label)
+            if UNASSIGNED.match(FOOTNOTE.sub("", lab).strip()) and not norm(data[code_col]):
+                if unassigned is not None:
+                    raise GesHold("HOLD_GES_DUPLICATE_PROBLEM", sheet=sheet, row=offset, code="sin_problema")
+                unassigned = {"label": FOOTNOTE.sub("", label).strip(), "row": offset}
+                for kind, per in want:
+                    c = groups[(kind, per)]
+                    pair = [_count(data[c], f"{sheet}!{offset}"), _count(data[c + 1], f"{sheet}!{offset}")]
+                    unassigned.setdefault(kind, {})[per] = None if pair == [None, None] else pair
+                continue
             raise GesHold("HOLD_GES_ROW_UNRECOGNIZED", sheet=sheet, row=offset, label=label[:40])
         if not re.search(r"[a-záéíóúñ]", label, re.I):
             raise GesHold("HOLD_GES_LABEL_NOT_TEXT", sheet=sheet, row=offset, label=label[:40])
@@ -223,7 +236,8 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows:
         declared = [_count(data[c], f"{sheet}!{total_row}"), _count(data[c + 1], f"{sheet}!{total_row}")]
         if None in declared:
             raise GesHold("HOLD_GES_TOTAL_MISSING", sheet=sheet, row=total_row, column=f"{kind}:{per}")
-        got = [sum(((p.get(kind) or {}).get(per) or [0, 0])[i] or 0 for p in problems.values()) for i in (0, 1)]
+        rows_ = list(problems.values()) + ([unassigned] if unassigned else [])
+        got = [sum(((p.get(kind) or {}).get(per) or [0, 0])[i] or 0 for p in rows_) for i in (0, 1)]
         if got != declared:
             raise GesHold("HOLD_GES_RECONCILIATION", sheet=sheet, column=f"{kind}:{per}",
                           reconciliation={"ok": False, "rows_sum": got, "declared_total": declared, "total_row": total_row})
@@ -231,7 +245,8 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows:
         sums.append({"column": f"{kind}:{per}", "rows_sum": got, "declared_total": declared})
     return {"sheet": sheet, "header_row": hi + 1, "total_row": total_row, "subtotal_rows": subtotals,
             "columns": {f"{k}:{p}": [groups[(k, p)] + 1, groups[(k, p)] + 2] for k, p in want},
-            "titles": {f"{k}:{p}": titles[(k, p)] for k, p in want}, "problems": problems, "totals": totals, "sums": sums}
+            "titles": {f"{k}:{p}": titles[(k, p)] for k, p in want}, "problems": problems, "unassigned": unassigned,
+            "totals": totals, "sums": sums}
 
 
 def ytd_identity(cur: dict, prev: dict, ytd_period: str, dec_prev: str) -> list[str]:
@@ -250,7 +265,7 @@ def ytd_identity(cur: dict, prev: dict, ytd_period: str, dec_prev: str) -> list[
     # total but has no year-to-date flow; it is not a mismatch). Equals the previous December total when none dropped.
     yt, ct = cur["totals"]["ytd"][t], cur["totals"]["cut"][t]
     bt = [sum((((prev["problems"].get(k) or {}).get("cut") or {}).get(dec_prev) or [0, 0])[i] or 0 for k in cur["problems"])
-          for i in (0, 1)]
+          + ((((prev.get("unassigned") or {}).get("cut") or {}).get(dec_prev) or [0, 0])[i] or 0) for i in (0, 1)]
     for i, ins in enumerate(("fonasa", "isapre")):
         if yt[i] != ct[i] - bt[i]:
             bad.append(f"{t}:total:{ins}")
@@ -283,6 +298,8 @@ def compact_sheet(sh: dict, *, labels: bool) -> dict:
            "rows": {k: [p["row"], *(x for c in cols for x in pair(p, c))] for k, p in sh["problems"].items()}}
     if labels:
         out["labels"] = {k: p["label"] for k, p in sh["problems"].items()}
+    if sh.get("unassigned"):
+        out["unassigned"] = [sh["unassigned"]["row"], *(x for c in cols for x in pair(sh["unassigned"], c))]
     return out
 
 
@@ -302,8 +319,16 @@ def expand_sheet(st: dict) -> dict:
             pr = vals[1 + 2 * j:3 + 2 * j]
             rec.setdefault(kind, {})[per] = None if pr == [None, None] else pr
         problems[k] = rec
+    unassigned = None
+    if st.get("unassigned"):
+        vals = st["unassigned"]
+        unassigned = {"row": vals[0], "label": "Sin problema de salud informado"}
+        for j, c in enumerate(cols):
+            kind, per = c.split(":", 1)
+            pr = vals[1 + 2 * j:3 + 2 * j]
+            unassigned.setdefault(kind, {})[per] = None if pr == [None, None] else pr
     return {"sheet": st["sheet"], "header_row": st.get("header_row"), "total_row": st["total_row"],
-            "titles": dict(zip(cols, st["titles"])), "totals": totals, "problems": problems}
+            "titles": dict(zip(cols, st["titles"])), "totals": totals, "problems": problems, "unassigned": unassigned}
 
 
 def parse(book_bytes: bytes, title: str, *, min_rows: int | None = None) -> dict:
