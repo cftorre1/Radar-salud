@@ -124,7 +124,8 @@ def source_ref(*, url: str, sha256: str, published_at: str | None, fetched_at: s
 
 def value(vid: str, val: float, *, unit: str, period: str, source: str | None, locator: str | None = None,
           formula: str | None = None, inputs: list[str] | None = None, kind: str = "captured") -> dict:
-    """One evidence entry. ``kind`` is 'captured' (read from a file) or 'derived' (formula + inputs)."""
+    """One evidence entry. ``kind`` is 'captured' (read from a file), 'derived' (formula + inputs) or
+    'cumulative_input' (read from a file, only an input to a difference: never shown, never a revision)."""
     return {"id": vid, "value": val, "unit": unit, "period": period, "source": source, "locator": locator,
             "formula": formula, "inputs": inputs or [], "kind": kind, "revised": None}
 
@@ -165,6 +166,8 @@ def number_pool(package: dict) -> list[float]:
     """Every number a ficha or a Lectura may show: package values, derived values and rule constants."""
     pool: set[float] = set()
     for v in (package.get("values") or {}).values():
+        if v.get("kind") == "cumulative_input":  # F4: SIS counts since July 2005, only subtracted, never shown
+            continue
         x = v.get("value")
         if isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x):
             pool.add(abs(float(x)))

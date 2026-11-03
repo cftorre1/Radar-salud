@@ -1087,7 +1087,7 @@ def test_ges_reads_the_ytd_column_and_since_2005_cuts_of_the_pinned_sheets_and_r
     assert r["status"] == "validated" and r["sheet"] == "Año 2026" and r["parser"] == sf.GES_PARSER == "ges_ytd_cuts_v3"
     assert set(r["years"]) == {"2026", "2025", "2024"}  # the decoy 'Año 2005' sheet is never read
     ytd = [sum(v[i] for v in fx.GES_YTD["2026-06"].values()) for i in (0, 1)]
-    assert r["reconciliation"]["ok"] and r["reconciliation"]["declared_total"] == ytd == [84950, 12025]
+    assert r["reconciliation"]["ok"] and r["reconciliation"]["declared_total"] == ytd == [85740, 12183]
     assert r["header"]["ytd"] == "Ingresos entre Ene y Jun 2026" and "Jul-2005" in r["header"]["cuts"]["2026-06"]
     assert r["insights"][0].startswith("Hipertensión") and "21" not in r["insights"][0]
     assert sf.ges_finding_valid(r)
@@ -1096,7 +1096,7 @@ def test_ges_reads_the_ytd_column_and_since_2005_cuts_of_the_pinned_sheets_and_r
 @pytest.mark.parametrize("kw,reason", [
     ({"total_delta": (1, 0)}, "HOLD_GES_RECONCILIATION"),
     ({"ytd_delta": {1: (0, 2)}}, "HOLD_GES_YTD_IDENTITY"),
-    ({"labels": {1: "21", 2: "22", 3: "23", 4: "24", 5: "25", 6: "26", 7: "27"}}, "HOLD_GES_LABEL_NOT_TEXT"),
+    ({"labels": {c: str(20 + c) for c in range(1, 86)}}, "HOLD_GES_LABEL_NOT_TEXT"),
     ({"ytd_header": "Casos del trimestre"}, "HOLD_GES_COLUMN_MISSING"),
     ({"extra": ("Año 2005", "Resumen 2026")}, "HOLD_GES_SHEET_NOT_PINNED"),
 ])

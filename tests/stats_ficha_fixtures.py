@@ -32,21 +32,39 @@ INPUTS = ("data/market/isapre_portfolio.json", "data/entities/isapres.json", "da
 # Year-to-date flows (Fonasa, Isapre) per GES problem number: cases that entered between January and the cut, as the SIS
 # column 'Ingresos entre Ene y <mes> <año>'. Fixture values only. The workbook carries, as the SIS does, cumulative counts
 # since July 2005 per cut: BASE_DEC_2023 + the year-to-date flows of every year since 2024.
+# Like the real GES list (80+ problems, numbered 1…n without gaps; registry F4.capture.min_problems), the fixture has
+# problems 1–5 with their own figures, fillers 6–84 (small, constant flows: below the ranking's 500-case base) and
+# problem 85, added by decree in 2026.
+FILLERS = range(6, 85)
+NEW_CODE = 85
+
+
+def _filler_label(code: int) -> str:
+    a, b = divmod(code - 6, 26)
+    return f"Problema de relleno {chr(97 + a)}{chr(97 + b)}"  # no digits: a label number would be a showable figure
+
+
 GES_LABELS = {1: "Diabetes Mellitus Tipo 2", 2: "Hipertensión arterial en personas de 15 años y más",
               3: "Cáncer de mama en personas de 15 años y más", 4: "Depresión en personas de 15 años y más",
-              5: "Hipoacusia bilateral en personas de 65 años y más", 6: "Problema retirado de prueba",
-              7: "Problema nuevo de prueba (3)"}
+              5: "Hipoacusia bilateral en personas de 65 años y más", **{c: _filler_label(c) for c in FILLERS},
+              NEW_CODE: "Problema nuevo de prueba (3)"}
 BASE_DEC_2023 = {1: (2_000_000, 150_000), 2: (4_000_000, 350_000), 3: (250_000, 50_000), 4: (1_500_000, 400_000),
-                 5: (60_000, 5_000), 6: (30_000, 2_000)}
-_Y24 = {1: (9500, 950), 2: (19000, 1900), 3: (950, 380), 4: (4800, 1400), 5: (550, 45), 6: (280, 18)}
+                 5: (60_000, 5_000), **{c: (300_017 + 1_013 * c, 30_011 + 101 * c) for c in FILLERS}}
+_Y24 = {1: (9500, 950), 2: (19000, 1900), 3: (950, 380), 4: (4800, 1400), 5: (550, 45)}
+
+
+def _fill(rows: dict, q: int) -> dict:
+    return {**rows, **{c: (5 * q, q) for c in FILLERS}}
+
+
 GES_YTD = {
-    **{f"2024-{m:02d}": {c: (f * k, i * k) for c, (f, i) in _Y24.items()} for k, m in ((1, 3), (2, 6), (3, 9), (4, 12))},
-    "2025-03": {1: (10000, 1000), 2: (20000, 2000), 3: (1000, 400), 4: (5000, 1500), 5: (600, 50), 6: (300, 20)},
-    "2025-06": {1: (21000, 2100), 2: (41000, 4100), 3: (2100, 850), 4: (10500, 3100), 5: (1250, 110), 6: (600, 40)},
-    "2025-09": {1: (31000, 3100), 2: (61000, 6100), 3: (3100, 1250), 4: (15500, 4600), 5: (1850, 160), 6: (900, 60)},
-    "2025-12": {1: (42000, 4200), 2: (82000, 8200), 3: (4200, 1700), 4: (21000, 6200), 5: (2500, 220), 6: (1200, 80)},
-    "2026-03": {1: (11000, 1100), 2: (21000, 2200), 3: (1200, 500), 4: (6000, 1700), 5: (700, 60), 7: (800, 200)},
-    "2026-06": {1: (23500, 2350), 2: (43000, 4500), 3: (2700, 1100), 4: (12600, 3500), 5: (1450, 125), 7: (1700, 450)},
+    **{f"2024-{m:02d}": _fill({c: (f * k, i * k) for c, (f, i) in _Y24.items()}, k) for k, m in ((1, 3), (2, 6), (3, 9), (4, 12))},
+    "2025-03": _fill({1: (10000, 1000), 2: (20000, 2000), 3: (1000, 400), 4: (5000, 1500), 5: (600, 50)}, 1),
+    "2025-06": _fill({1: (21000, 2100), 2: (41000, 4100), 3: (2100, 850), 4: (10500, 3100), 5: (1250, 110)}, 2),
+    "2025-09": _fill({1: (31000, 3100), 2: (61000, 6100), 3: (3100, 1250), 4: (15500, 4600), 5: (1850, 160)}, 3),
+    "2025-12": _fill({1: (42000, 4200), 2: (82000, 8200), 3: (4200, 1700), 4: (21000, 6200), 5: (2500, 220)}, 4),
+    "2026-03": _fill({1: (11000, 1100), 2: (21000, 2200), 3: (1200, 500), 4: (6000, 1700), 5: (700, 60), NEW_CODE: (800, 200)}, 1),
+    "2026-06": _fill({1: (23500, 2350), 2: (43000, 4500), 3: (2700, 1100), 4: (12600, 3500), 5: (1450, 125), NEW_CODE: (1700, 450)}, 2),
 }
 GES_RELEASES = ("2025-03", "2025-06", "2026-03", "2026-06")
 GES_PUBLISHED = {"2025-03": "2025-10-03", "2025-06": "2025-10-03", "2026-03": "2026-07-10", "2026-06": "2026-10-14"}
@@ -258,11 +276,13 @@ def fetcher(root: Path, books: dict[str, bytes] | None = None, *, fail: set[str]
 
 def confirmed_registry(registry: dict | None = None, by: str = "revisor de prueba") -> dict:
     """Registry copy with the F4 measure confirmed by a (test) reviewer (the committed registry carries Dirección's
-    confirmation of 3-nov-2026; F4 HOLDs without one)."""
+    confirmation of 3-nov-2026; F4 HOLDs without one) and without the first-publication review gate
+    (``first_pass_requires_review``), so builder tests see the PASS; the gate has its own test."""
     import copy
     from radar_salud import stats_fichas as sf
     reg = copy.deepcopy(registry or sf.load_registry())
     reg["families"]["F4"]["measure"].update(confirmed=True, confirmed_by=by)
+    reg["families"]["F4"]["first_pass_requires_review"] = False
     return reg
 
 

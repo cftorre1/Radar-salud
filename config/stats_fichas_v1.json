@@ -1147,7 +1147,8 @@
       "capture": {
         "store": "data/stats_fichas/captures/ges_quarterly.json",
         "parser": "ges_ytd_cuts_v3",
-        "documents": "source_documents de las releases 'Estadística Trimestral de Casos GES' en data/history/superintendencia_signals.json"
+        "documents": "source_documents de las releases 'Estadística Trimestral de Casos GES' en data/history/superintendencia_signals.json",
+        "min_problems": 80
       },
       "measure": {
         "declared": "ytd",
@@ -1155,6 +1156,13 @@
         "confirmed_by": "Dirección (cftorre1), 3-nov-2026: ene–jun vs ene–jun; trimestres por diferencia de acumulados; nunca acumulados desde 2005",
         "confirmed_at": "2026-11-03",
         "rule": "Solo un revisor establece la medida: sin confirmed: true (y confirmed_by), tras abrir la planilla capturada, la ficha queda en HOLD_RECONCILIATION measure_unconfirmed, diga lo que diga el encabezado. El encabezado solo puede vetar: 'desde 2005', una medida distinta de la declarada ('acumulado del trimestre' es trimestre, no año) o ambas redacciones a la vez mantienen el HOLD."
+      },
+      "first_pass_requires_review": true,
+      "first_review": {
+        "reviewed_by": null,
+        "reviewed_at": null,
+        "reviewed_sha256": null,
+        "rule": "La primera ficha F4 acumulada del año (parser ges_ytd_cuts_v3) sobre una planilla real queda en HOLD awaiting_first_review con la ficha completa en hold/f4_ges-<período>.json. Publica solo cuando una persona la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = SHA-256 de esa planilla. Después rige la política normal."
       },
       "decree_changes": [],
       "decree_rule": "Cambios de decreto: la ficha marca los problemas presentes en un solo trimestre de la comparación a/a (detectado desde los datos). Las notas oficiales de decreto se agregan aquí ({'note': …}) solo con fuente; nunca se infieren.",
@@ -1166,7 +1174,7 @@
       "templates": {
         "kicker": "{label}",
         "headline": "Casos GES {entre}: {total}, {yoy} frente a {periodo_base}",
-        "dek": "Fonasa informó {fonasa} casos y las Isapres {isapre} {entre}: el {share}% de los casos de ambos seguros.{rate_clause}",
+        "dek": "Fonasa informó {fonasa} casos y las Isapres {isapre} {entre}.{rate_clause}{decree_clause}",
         "kpi_label": "Casos GES {corto}",
         "kicker_meta": "datos de {period_label} · publicado por la SIS el {published_label} · {cadence_phrase}",
         "headline_rule": "Los casos son ingresos entre enero y el mes del corte, frente a los mismos meses del año anterior (Dirección, 3-nov-2026); el acumulado desde julio de 2005 nunca es titular ni KPI. Las tasas son brutas, por beneficiarios del mismo seguro, y cuentan casos, no personas."

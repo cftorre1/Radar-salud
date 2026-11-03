@@ -41,6 +41,9 @@ PORTFOLIO = Path("data/market/isapre_portfolio.json")
 QWORD = {1: "primer", 2: "segundo", 3: "tercer", 4: "cuarto"}
 MAX_PROBLEM_ROWS = 8
 INS = ("fonasa", "isapre")
+# Evidence kind of the SIS cumulative counts since July 2005: inputs to subtract only. Never a showable figure
+# (``sf.number_pool`` skips it), never compared as a revision (``sf.detect_revisions`` compares 'captured' only).
+CUMULATIVE = "cumulative_input"
 
 
 def _load(path: Path) -> Any:
@@ -286,7 +289,8 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
     doc = releases[t]["document"]
     src = "ges_" + t
     sources[src] = sf.source_ref(
-        url=doc["url"], sha256=doc["sha256"], published_at=releases[t].get("published_at"), fetched_at=doc.get("fetched_at"),
+        url=doc["url"], sha256=doc["sha256"], published_at=releases[t].get("published_at"),
+        fetched_at=doc.get("rechecked_at") or doc.get("fetched_at"),  # a re-read with the current parser dates the bytes
         label=f"SIS · Casos GES de Fonasa e Isapres a {sf.month_label(t)} (xlsx)",
         role="casos ingresados entre enero y el corte (columna 'Ingresos entre Ene y …') y cortes acumulados por problema y seguro",
         locator=f"{parse['sheet']}!fila Total {years[str(ty)]['total_row']}")
@@ -312,7 +316,8 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
         for i, ins in enumerate(INS):
             vid = f"ges.cut.{per}.{ins}"
             values[vid] = value(vid, sh["totals"]["cut"][per][i], unit="casos acumulados desde jul-2005", period=per, source=src,
-                                locator=f"{sh['sheet']}!fila {sh['total_row']} (Total) · {sh['titles']['cut:' + per]} · {ins.capitalize()}")
+                                locator=f"{sh['sheet']}!fila {sh['total_row']} (Total) · {sh['titles']['cut:' + per]} · {ins.capitalize()}",
+                                kind=CUMULATIVE)
             ids.append(vid)
         return ids
 
@@ -324,7 +329,7 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
             vid = f"ges.cut.{per}.p.{pkey(code)}.{ins}"
             values[vid] = value(vid, (p["cut"][per] or [0, 0])[i] or 0, unit="casos acumulados desde jul-2005", period=per,
                                 source=src, locator=f"{sh['sheet']}!fila {p['row']} (problema N°{p['code']}) · "
-                                                    f"{sh['titles']['cut:' + per]} · {ins.capitalize()}")
+                                                    f"{sh['titles']['cut:' + per]} · {ins.capitalize()}", kind=CUMULATIVE)
             ids.append(vid)
         return ids
 
@@ -340,8 +345,9 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
         for i, ins in enumerate(INS):
             parts = [x for c in codes if cut_pair(dec, c) is not None for x in add_problem_cut(dec, c) if x.endswith("." + ins)]
             ids.append(f"ges.cut.{dec}.base_{year}.{ins}")
-            derived(ids[-1], own[i], f"Σ acumulado a {cut_label(dec)} de los problemas presentes en {year}", parts,
-                    "casos acumulados desde jul-2005", dec)
+            values[ids[-1]] = value(ids[-1], own[i], unit="casos acumulados desde jul-2005", period=dec, source=None,
+                                    formula=f"Σ acumulado a {cut_label(dec)} de los problemas presentes en {year}",
+                                    inputs=parts, kind=CUMULATIVE)
         return ids
 
     # Cuts never decrease: dic(t−2) ≤ mar(t−1) ≤ … ≤ dic(t−1) ≤ mar(t) ≤ … ≤ t (totals within a year; problems across).
@@ -574,9 +580,21 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
              "entre": between(ty, tm), "entre_base": between(by, tm), "corto": st, "corto_base": sb}
 
     headline = tpl["headline"].format(total=fmt_int(total), yoy=pct("ges.yoy.total_pct"), **words)
-    rate_clause = (f" La tasa bruta Isapre fue {fmt_dec(rate, 1)} casos por 1.000 beneficiarios; la de Fonasa no está disponible."
-                   if rate is not None else " Las tasas por beneficiario no están disponibles para este período.")
-    dek = tpl["dek"].format(fonasa=fmt_int(fon), isapre=fmt_int(isa), share=fmt_dec(share, 1), rate_clause=rate_clause, **words)
+    # Fonasa has no rate (no beneficiaries captured): said in its KPI card and in the notes, not in the 40-word dek.
+    rate_clause = (f" Tasa bruta Isapre: {fmt_dec(rate, 1)} casos de enero a {mname(tm)} de {ty} por 1.000 beneficiarios."
+                   if rate is not None else " Sin tasas por beneficiario para este período.")
+    na, nd = len(k["added"]), len(k["dropped"])
+    pl = lambda n, one, many: f"{fmt_int(n)} {one if n == 1 else many}"  # noqa: E731
+    comparable = pct("ges.yoy.total_comparable_pct")
+    decree_clause = ("" if not (na or nd) else
+                     f" La variación incluye {pl(na, 'problema nuevo', 'problemas nuevos')} por decreto; comparable: {comparable}."
+                     if na and not nd else
+                     f" La variación excluye {pl(nd, 'problema retirado', 'problemas retirados')} de la lista; comparable: {comparable}."
+                     if nd and not na else
+                     f" La lista GES cambió por decreto ({pl(na, 'nuevo', 'nuevos')}, {pl(nd, 'retirado', 'retirados')}); "
+                     f"comparable: {comparable}.")
+    dek = tpl["dek"].format(fonasa=fmt_int(fon), isapre=fmt_int(isa), share=fmt_dec(share, 1), rate_clause=rate_clause,
+                            decree_clause=decree_clause, **words)
     crossed = any(f["kpi"] == "casos_ges" for f in package["findings"])
 
     kpis = [{"id": "casos", "label": tpl["kpi_label"].format(**words), "value": fmt_int(total), "prov": "C",
@@ -773,7 +791,37 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     }
 
 
+FIRST_REVIEW_HOLD = "HOLD_FIRST_REVIEW:awaiting_first_review"
+
+
+def first_review_gate(result: dict, cfg: dict, root: Path) -> dict:
+    """First publication of the year-to-date ficha on real data needs a human look (review of PR #129, 3-nov-2026).
+
+    While ``first_pass_requires_review`` is true and no year-to-date F4 ficha is live, a PASS is written as HOLD
+    (``awaiting_first_review``) with the full rendered ficha in the hold file. It publishes only once the registry
+    records ``first_review.reviewed_by`` and ``first_review.reviewed_sha256`` equal to the release's workbook SHA-256."""
+    if result.get("status") != "pass" or not cfg.get("first_pass_requires_review"):
+        return result
+    live = sf.load_live(Path(root), cfg["slug"]) or {}
+    if str(live.get("builder_version") or "").startswith("f4_ytd") and live.get("status") == "PASS":
+        return result  # the first year-to-date ficha was reviewed and published: later releases follow the policy
+    ficha = result["ficha"]
+    sha = next((s.get("sha256") for s in ficha.get("sources") or [] if s.get("key") == f"ges_{ficha.get('period')}"), None)
+    review = cfg.get("first_review") or {}
+    if review.get("reviewed_by") and sha and review.get("reviewed_sha256") == sha:
+        return result
+    decision = {**(result.get("decision") or {}), "decision": "HOLD",
+                "holds": [*((result.get("decision") or {}).get("holds") or []), FIRST_REVIEW_HOLD]}
+    candidate = {**ficha, "review_request": {
+        "release_sha256": sha, "period": ficha.get("period"),
+        "to_publish": "registro families.F4.first_review: reviewed_by, reviewed_at y reviewed_sha256 = release_sha256"}}
+    return {**{k: v for k, v in result.items() if k != "ficha"}, "status": "hold", "decision": decision,
+            "errors": [FIRST_REVIEW_HOLD], "candidate": candidate}
+
+
 def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = True,
         model_call: Callable[..., Any] | None = None, budget: Callable[[float], tuple[bool, str]] | None = None) -> dict:
-    return sf.run_family(FAMILY, builder_version=BUILDER_VERSION, build_package=build_package, compose=compose, root=Path(root),
-                         today=today, registry=registry, llm=llm, model_call=model_call, budget=budget)
+    registry = registry or sf.load_registry()
+    out = sf.run_family(FAMILY, builder_version=BUILDER_VERSION, build_package=build_package, compose=compose, root=Path(root),
+                        today=today, registry=registry, llm=llm, model_call=model_call, budget=budget)
+    return first_review_gate(out, registry["families"][FAMILY], Path(root))

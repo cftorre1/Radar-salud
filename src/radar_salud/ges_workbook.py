@@ -28,7 +28,9 @@ The workbook binary is never stored; only these values, their rows and the heade
 from __future__ import annotations
 
 import io
+import json
 import re
+from pathlib import Path
 from typing import Any
 
 GES_PARSER = "ges_ytd_cuts_v3"  # mirrored in stats_fichas.GES_PARSER and data_insights.GES_PARSER
@@ -46,9 +48,26 @@ MAX_ROWS = 700
 
 
 class GesHold(Exception):
+    """A HOLD with its reason code; ``extra`` (never a key named ``reason``: use ``detail``) is recorded with it."""
+
     def __init__(self, reason: str, **extra):
         super().__init__(reason)
         self.reason, self.extra = reason, extra
+
+
+REGISTRY = Path(__file__).resolve().parents[2] / "config/stats_fichas_v1.json"
+DEFAULT_MIN_PROBLEMS = 80
+
+
+def min_problems() -> int:
+    """Minimum problem rows per year sheet (registry ``families.F4.capture.min_problems``): the GES list has had 80+
+    problems since 2013 (85 in 2019, 87 in 2022); a sheet with fewer was cut short or is not the GES table."""
+    try:
+        cfg = json.loads(REGISTRY.read_text(encoding="utf-8"))["families"]["F4"]["capture"]
+        n = int(cfg.get("min_problems") or DEFAULT_MIN_PROBLEMS)
+    except (OSError, ValueError, KeyError, TypeError):
+        n = DEFAULT_MIN_PROBLEMS
+    return max(n, 3)
 
 
 def fold(v: Any) -> str:
@@ -105,8 +124,13 @@ def pin_sheet(wb, year: int):
     return hits[0]
 
 
-def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str]) -> dict:
-    """Read the columns ``cuts`` (cumulative since Jul-2005) and ``ytd`` (ingresos entre ene y …) of one year sheet."""
+def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows: int | None = None) -> dict:
+    """Read the columns ``cuts`` (cumulative since Jul-2005) and ``ytd`` (ingresos entre ene y …) of one year sheet.
+
+    The table is: problem rows numbered 1…n with no gap or repeat (n ≥ ``min_rows``), optional 'Subtotal' rows, and
+    one 'Total' row that is the last labelled row of the sheet. A 'Total…' row followed by more rows (e.g. a decree
+    total labelled 'Total Decreto…' in the middle of the table) is a HOLD, never a short table."""
+    min_rows = min_problems() if min_rows is None else min_rows
     sheet = ws.title
     rows = [list(r[:40]) for r in ws.iter_rows(min_row=1, max_row=MAX_ROWS, values_only=True)]
     head = None
@@ -134,9 +158,9 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str]) -> dict:
     hi, name_col, groups, titles = head
     code_col = name_col - 1
     if code_col < 0 or not CODE_HEAD.match(fold(rows[hi][code_col])):
-        raise GesHold("HOLD_GES_SCHEMA_NOT_VALIDATED", sheet=sheet, reason="no_code_column")
+        raise GesHold("HOLD_GES_SCHEMA_NOT_VALIDATED", sheet=sheet, detail="no_code_column")
     if hi + 1 >= len(rows):
-        raise GesHold("HOLD_GES_SCHEMA_NOT_VALIDATED", sheet=sheet, reason="no_subheader")
+        raise GesHold("HOLD_GES_SCHEMA_NOT_VALIDATED", sheet=sheet, detail="no_subheader")
     sub = rows[hi + 1]
     want = [("cut", p) for p in cuts] + [("ytd", p) for p in ytd]
     for key in want:
@@ -146,7 +170,7 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str]) -> dict:
             raise GesHold("HOLD_GES_HEADER_NOT_VALIDATED", sheet=sheet, column=f"{key[0]}:{key[1]}")
         c = groups[key]
         if c + 1 >= len(sub) or "fonasa" not in fold(sub[c]) or "isapre" not in fold(sub[c + 1]):
-            raise GesHold("HOLD_GES_HEADER_NOT_VALIDATED", sheet=sheet, column=f"{key[0]}:{key[1]}", reason="fonasa_isapre")
+            raise GesHold("HOLD_GES_HEADER_NOT_VALIDATED", sheet=sheet, column=f"{key[0]}:{key[1]}", detail="fonasa_isapre")
     problems: dict[str, dict] = {}
     total = None
     subtotals = []
@@ -160,6 +184,12 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str]) -> dict:
             continue
         if lab.startswith("total"):
             total = (offset, data)
+            # Nothing labelled or numbered may follow the Total row: an early 'Total Decreto…' would cut the table.
+            for after, rest in enumerate(rows[offset:], offset + 1):
+                rest = rest + [None] * (40 - len(rest))
+                if norm(rest[name_col]) or norm(rest[code_col]):
+                    raise GesHold("HOLD_GES_ROWS_AFTER_TOTAL", sheet=sheet, total_row=offset, row=after,
+                                  label=norm(rest[name_col])[:40])
             break
         if code is None:
             if not label and not norm(data[code_col]):
@@ -178,8 +208,13 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str]) -> dict:
         problems[key] = rec
     if total is None:
         raise GesHold("HOLD_GES_TOTAL_MISSING", sheet=sheet, header_row=hi + 1)
-    if len(problems) < 3:
-        raise GesHold("HOLD_GES_SCHEMA_NOT_VALIDATED", sheet=sheet, reason="fewer_than_3_problems")
+    codes = sorted(int(k) for k in problems)
+    if codes != list(range(1, len(codes) + 1)):
+        missing = sorted(set(range(1, (codes[-1] if codes else 0) + 1)) - set(codes))
+        raise GesHold("HOLD_GES_PROBLEM_NUMBERS_NOT_CONTIGUOUS", sheet=sheet, missing=missing[:12],
+                      first=codes[0] if codes else None)
+    if len(problems) < min_rows:
+        raise GesHold("HOLD_GES_TOO_FEW_PROBLEMS", sheet=sheet, problems=len(problems), min_problems=min_rows)
     total_row, data = total
     totals: dict[str, dict] = {"cut": {}, "ytd": {}}
     sums = []
@@ -271,7 +306,9 @@ def expand_sheet(st: dict) -> dict:
             "titles": dict(zip(cols, st["titles"])), "totals": totals, "problems": problems}
 
 
-def parse(book_bytes: bytes, title: str) -> dict:
+def parse(book_bytes: bytes, title: str, *, min_rows: int | None = None) -> dict:
+    """``min_rows``: minimum problems per sheet (default: registry ``F4.capture.min_problems``; tests of an excerpt
+    pass a smaller one explicitly)."""
     period = title_period(title)
     if not period:
         return {"family": "ges", "status": "period_not_validated", "parser": GES_PARSER, "insights": []}
@@ -286,9 +323,10 @@ def parse(book_bytes: bytes, title: str) -> dict:
         if m % 3:
             raise GesHold("HOLD_GES_PERIOD_NOT_QUARTER_END")
         q_cuts = lambda yy, mm: [f"{yy}-{k:02d}" for k in range(3, mm + 1, 3)]  # noqa: E731
-        cur = read_year_sheet(pin_sheet(wb, y), y, cuts=q_cuts(y, m), ytd=[period])
-        prev = read_year_sheet(pin_sheet(wb, y - 1), y - 1, cuts=q_cuts(y - 1, 12), ytd=[f"{y - 1}-12"])
-        prev2 = read_year_sheet(pin_sheet(wb, y - 2), y - 2, cuts=[f"{y - 2}-12"], ytd=[])
+        n = min_problems() if min_rows is None else min_rows
+        cur = read_year_sheet(pin_sheet(wb, y), y, cuts=q_cuts(y, m), ytd=[period], min_rows=n)
+        prev = read_year_sheet(pin_sheet(wb, y - 1), y - 1, cuts=q_cuts(y - 1, 12), ytd=[f"{y - 1}-12"], min_rows=n)
+        prev2 = read_year_sheet(pin_sheet(wb, y - 2), y - 2, cuts=[f"{y - 2}-12"], ytd=[], min_rows=n)
         bad = ytd_identity(cur, prev, period, f"{y - 1}-12") + ytd_identity(prev, prev2, f"{y - 1}-12", f"{y - 2}-12")
         if bad:
             raise GesHold("HOLD_GES_YTD_IDENTITY", mismatches=bad[:12], n=len(bad))
