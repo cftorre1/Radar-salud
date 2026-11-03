@@ -1232,3 +1232,13 @@ def test_f4_with_unassigned_row_counts_it_in_the_year_to_date_total(tmp_path):
     ytd = lambda o: sum(v["value"] for k, v in o["ficha"]["evidence"]["values"].items()  # noqa: E731
                         if k in ("ges.ytd.2026-06.fonasa", "ges.ytd.2026-06.isapre"))
     assert ytd(out) == ytd(base) + extra
+    # The year-before base and the quarters are derived (cut − December base): each must move by exactly the row's own
+    # flow, never by its whole cumulative since 2005 (review of #132: a base without the row passed the check above).
+    v, v0 = out["ficha"]["evidence"]["values"], base["ficha"]["evidence"]["values"]
+    flow = lambda a, z: tuple(x - y for x, y in zip(_unassigned_value(a), _unassigned_value(z)))  # noqa: E731
+    for vid, (a, z) in {"ges.ytd.2025-06": ("2025-06", "2024-12"), "ges.q.2025T1": ("2025-03", "2024-12"),
+                        "ges.q.2026T1": ("2026-03", "2025-12"), "ges.q.2026T2": ("2026-06", "2026-03")}.items():
+        for i, ins in enumerate(("fonasa", "isapre")):
+            assert v[f"{vid}.{ins}"]["value"] == v0[f"{vid}.{ins}"]["value"] + flow(a, z)[i], (vid, ins)
+    for per, (a, z) in {"2026-06": ("2026-06", "2025-12"), "2025-06": ("2025-06", "2024-12")}.items():
+        assert v[f"ges.ytd.{per}.total_comparable"]["value"] == v0[f"ges.ytd.{per}.total_comparable"]["value"] + sum(flow(a, z))

@@ -467,9 +467,14 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
     dropped = sorted(pkey(c) for c in prev_sheet if c not in cur_p and cut_pair(b, c) is not None)
     added = sorted(added)
     comp = [r for r in problems if "base" in r]
-    cf, cb = sum(r["t"] for r in comp), sum(r["base"] for r in comp)
-    derived(f"ges.ytd.{t}.total_comparable", cf, "Σ casos de los problemas presentes en ambos períodos", [f"ges.ytd.{t}.total"], "casos", t)
-    derived(f"ges.ytd.{b}.total_comparable", cb, "Σ casos de los problemas presentes en ambos períodos", [f"ges.ytd.{b}.total"], "casos", b)
+    # Cases with no health problem informed are in both periods' totals: they belong to the comparable total too, so
+    # the gap to the total is only the decree's added / dropped problems (as the dek says).
+    ua_t = sum((unassigned_cut(t)[i] or 0) - (unassigned_cut(dec1)[i] or 0) for i in (0, 1))
+    ua_b = sum((unassigned_cut(b)[i] or 0) - (unassigned_cut(dec2)[i] or 0) for i in (0, 1))
+    cf, cb = sum(r["t"] for r in comp) + ua_t, sum(r["base"] for r in comp) + ua_b
+    comp_f = "Σ casos de los problemas presentes en ambos períodos + casos sin problema de salud informado"
+    derived(f"ges.ytd.{t}.total_comparable", cf, comp_f, [f"ges.ytd.{t}.total"], "casos", t)
+    derived(f"ges.ytd.{b}.total_comparable", cb, comp_f, [f"ges.ytd.{b}.total"], "casos", b)
     derived("ges.yoy.total_comparable_pct", (cf - cb) / cb * 100 if cb else 0.0, "Δ comparable / base comparable × 100",
             [f"ges.ytd.{t}.total_comparable", f"ges.ytd.{b}.total_comparable"], "%", t)
     derived("ges.list.added", len(added), "problemas solo en el período actual", [], "count", t)
