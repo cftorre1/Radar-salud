@@ -342,13 +342,18 @@ REAL_N3 = {"acreditacion": {"accredited_providers": 1009, "with_observations": 1
 
 
 def committed_root(tmp_path):
-    """Copy of the committed registry, readings, history, Boletín capture store and text receipts (no fixture PDFs)."""
+    """Copy of the committed registry, readings, history and text receipts, with the Boletín capture store as committed
+    on 2-nov-2026 (staging 91b0f422: N°3 captured, nothing re-checked yet). The daily run keeps re-checking and
+    committing the live store, so these tests pin the state they describe instead of following it (3-nov-2026: the
+    first re-check run turned N°3 'ok' and broke every PR's CI)."""
     import shutil
     r = tmp_path / "committed"
     for rel in ("config/stats_fichas_v1.json", "config/statistical_analysis_verified_v1.json",
-                "data/history/superintendencia_signals.json", STORE):
+                "data/history/superintendencia_signals.json"):
         (r / rel).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(fx.REPO / rel, r / rel)
+    (r / STORE).parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy(Path(__file__).parent / "fixtures/stats_fichas/boletin_ip_store_2026-11-02.json", r / STORE)
     shutil.copytree(fx.REPO / "data/stats_fichas/text", r / "data/stats_fichas/text")
     return r
 
