@@ -304,6 +304,32 @@
         "4ae642843e7487f61921fb2781a9547bdb460406a4cda56442549aec77445fcd"
       ]
     },
+    "79f4d63ecb9aa7bdaceec3a2687447d134e6735b10fb1e457fc1fb30376fabc4": {
+      "attempt_contexts": [
+        {
+          "completed_at": "2026-11-03T22:24:04.485625Z",
+          "identity": {
+            "declared_repair_inputs": {},
+            "executor_fingerprint": "b94b0a0b4d852059fff1d033f3f839381bdfceaa11622ca713779d517b062d73",
+            "failure_signature": "218eae2486b6ca55e7e345fa842f545dcf60344eaec31e760d4392bdccd9da2b",
+            "family": "staging_qa",
+            "input_fingerprint": "b0721063190869637d51bafbfe39de7f5952bf7d98ad636529c9d9b5f9bdd3ae",
+            "product_input_fingerprint": "a813e4c92e4995ef78ec554491ea6587212fd893d50015013d38f9345a128f01"
+          },
+          "task_id": "staging_qa_failed_run_41717454286"
+        }
+      ],
+      "attempts": 1,
+      "failure_signature": "218eae2486b6ca55e7e345fa842f545dcf60344eaec31e760d4392bdccd9da2b",
+      "input_fingerprint": "b0721063190869637d51bafbfe39de7f5952bf7d98ad636529c9d9b5f9bdd3ae",
+      "last_attempt_at": "2026-11-03T22:24:04.485625Z",
+      "task_ids": [
+        "staging_qa_failed_run_41717454286"
+      ],
+      "tokens": [
+        "6f6c2fe5501830a027a700931c99543d42863b50162fcc40e57a9106f897d6f8"
+      ]
+    },
     "7abb263666d47b72575fc1238721d4050394b19018c8f057db7b2ca8e77044bc": {
       "attempts": 1,
       "failure_signature": "efb63ec88d121e39fb7be7434a7761906175b115c4c782dd993ea9de86996792",
@@ -559,7 +585,8 @@
     "beb092493d8ba4dbd24b8abe5e5c44b27c58d53fe57bb454cb1e6bcaa7d1e0d9",
     "019d57298a68672ce3d56f36eae8f93960da7fcfc90a91af28b561db21943eb2",
     "03a68c84b9a6af70307cf3a7fdbc7f48d0cef04253a9735bee29308a6c0966a5",
-    "ac1010724bf4dd21397e225aea820de8ad4b506d43c9dd34cda4c9ed04ebdee6"
+    "ac1010724bf4dd21397e225aea820de8ad4b506d43c9dd34cda4c9ed04ebdee6",
+    "c62bc9ffaa1dbb04c51c71c69d9c25a738eee06fea7ed1276745a798276d71ed"
   ],
   "lease_events": [
     {
@@ -93229,6 +93256,654 @@
       "id": "d1c62c95ccf95daf4bad8e3b81cae67fe346c416565f21795dc3870a168da5fb",
       "kind": "transition",
       "task_id": "staging_qa_failed_run_41717454286"
+    },
+    {
+      "at": "2026-11-03T22:24:04.485625Z",
+      "details": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "-rs",
+                  "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+                  "-m",
+                  "not integration",
+                  "tests"
+                ],
+                "failure_hash": "199b0b55485b389d15519e49cd497d4614a77eb0ef733bee300e6c9a2a711209",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+                "log_sha256": "3cc05819db59b0608b1fa61505202a9271cc144701337ae669a29fcddec003ed",
+                "name": "targeted_deterministic_tests",
+                "pytest": {
+                  "cases": [],
+                  "collected": 0,
+                  "failed": 0,
+                  "passed": 0,
+                  "proof": false,
+                  "skipped": 0
+                },
+                "returncode": 124,
+                "status": "FAIL"
+              },
+              {
+                "baseline_full_gate": {
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "-m",
+                    "pytest",
+                    "-q"
+                  ],
+                  "output": "Validation command unavailable or timed out: TimeoutExpired",
+                  "returncode": 124
+                },
+                "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+                "blocker_kind": "executor_capability_missing",
+                "changed_paths": [],
+                "context": [
+                  {
+                    "editable": false,
+                    "path": "tests/test_stats_fichas_f6_n3.py",
+                    "sha256": "c9b1fbda74d55d5faa021098fcdec9d126e4ee5c39d2d719be66e2f57b0736ea"
+                  },
+                  {
+                    "editable": false,
+                    "path": "tests/test_beta_source_runtime_fast.py",
+                    "sha256": "9e6a9bb5da888dde256fd51183eafaf9463408906a7d029f9482d363ed34b131"
+                  },
+                  {
+                    "editable": false,
+                    "path": "tests/test_source_fixes_20261027.py",
+                    "sha256": "de71ec5a6a83394c7cff089641e3ab7370b9b94993fba19039d49376de202e1c"
+                  },
+                  {
+                    "editable": true,
+                    "path": "src/radar_salud/public_source_transport.py",
+                    "sha256": "4e085b39cf00c2ea48b8efec39b54491cacfb9ded0e5df2398daf909fd5a7d07"
+                  },
+                  {
+                    "editable": true,
+                    "path": "src/radar_salud/stats_capture.py",
+                    "sha256": "ba9f0ca7396a69f6ff824d595ae106f7fdc764681f174f9f5b17ffcaf3f45abd"
+                  },
+                  {
+                    "editable": true,
+                    "path": "src/radar_salud/beta_source_engine_fast.py",
+                    "sha256": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37"
+                  },
+                  {
+                    "editable": true,
+                    "path": "src/radar_salud/source_health.py",
+                    "sha256": "dd57795f3b6a7e83b82a2e07ca650f541c2badfacfddc2390594883dad183ba2"
+                  }
+                ],
+                "deterministic_planning": {
+                  "diagnostic": {
+                    "human_required": false,
+                    "kind": "executor_capability_missing",
+                    "reason": "No deterministic strategy is registered for this source/failure"
+                  },
+                  "evidence": [],
+                  "material_progress": false,
+                  "paid_calls": 0,
+                  "plan": null,
+                  "product_files_written": false,
+                  "status": "UNSUPPORTED",
+                  "strategy": null
+                },
+                "evidence": [
+                  {
+                    "captured_stdout_bytes": 101032,
+                    "captured_stdout_sha256": "09db72f639bc9ba5ea5d076954c9e4c71428f051af4980cb7cff46ef5c9dd33b",
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q",
+                      "tests/test_stats_fichas_f6_n3.py::test_loose_n3_pdfs_collapse_into_one_card_titled_from_the_documents",
+                      "tests/test_stats_fichas_f6_n3.py::test_live_n2_keeps_the_n3_card_and_absorbs_the_september_page_card",
+                      "tests/test_stats_fichas_f6_n3.py::test_committed_state_holds_n3_until_the_daily_run_rechecks_the_hashed_pdfs"
+                    ],
+                    "output": "\\n        \"p'\n     b'eriod\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n        \"locator\": '\n     b'\"p\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n '\n     b'       \"kind\": \"captured\",\\n        \"revised\": {\\n          \"from\": 101,\\n '\n     b'         \"pct\": 22.7723\\n        }\\n      },\\n      \"acr.tramite\": {\\n      '\n     b'  \"id\": \"acr.tramite\",\\n        \"value\": 574,\\n        \"unit\": \"solicitude'\n     b's\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inpu'\n     b'ts\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": {\\n          \"fro'\n     b'm\": 584,\\n          \"pct\": -1.7123\\n        }\\n      },\\n      \"acr.tramite.'\n     b'privadas\": {\\n        \"id\": \"acr.tramite.privadas\",\\n        \"value\": 357,'\n     b'\\n        \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"so'\n     b'urce\": \"acreditacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2,7,8\",\\n        \"f'\n     b'ormula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n       '\n     b' \"revised\": {\\n          \"from\": 367,\\n          \"pct\": -2.7248\\n        }\\n'\n     b'      },\\n      \"acr.tramite.publicas\": {\\n        \"id\": \"acr.tramite.publ'\n     b'icas\",\\n        \"value\": 217,\\n        \"unit\": \"solicitudes\",\\n        \"per'\n     b'iod\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n        \"locator\": \"p'\n     b'\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n   '\n     b'     \"kind\": \"captured\",\\n        \"revised\": null\\n      },\\n      \"med.med'\n     b'iadores\": {\\n        \"id\": \"med.mediadores\",\\n        \"value\": 179,\\n      '\n     b'  \"unit\": \"mediadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"'\n     b'mediacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": nu'\n     b'll,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\":'\n     b' {\\n          \"from\": 175,\\n          \"pct\": 2.2857\\n        }\\n      },'\n     b'\\n      \"med.solicitudes_acumuladas\": {\\n        \"id\": \"med.solicitudes_ac'\n     b'umuladas\",\\n        \"value\": 12697,\\n        \"unit\": \"solicitudes\",\\n      '\n     b'  \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n        \"locator\":'\n     b' \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n'\n     b'        \"kind\": \"captured\",\\n        \"revised\": {\\n          \"from\": 12067'\n     b',\\n          \"pct\": 5.2209\\n        }\\n      },\\n      \"rec.promedio.2026\": '\n     b'{\\n        \"id\": \"rec.promedio.2026\",\\n        \"value\": 1880,\\n        \"uni'\n     b't\": \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"reclamos'\n     b'\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n        \"formula\": null,\\n     '\n     b'   \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": {\\n      '\n     b'    \"from\": 1996,\\n          \"pct\": -5.8116\\n        }\\n      },\\n      \"rec'\n     b'.promedio.2025\": {\\n        \"id\": \"rec.promedio.2025\",\\n        \"value\": 1'\n     b'530,\\n        \"unit\": \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"s'\n     b'ource\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n        \"formula\"'\n     b': null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revis'\n     b'ed\": null\\n      },\\n      \"rec.pct_informado\": {\\n        \"id\": \"rec.pct_i'\n     b'nformado\",\\n        \"value\": 23,\\n        \"unit\": \"%\",\\n        \"period\": \"'\n     b'2026-09\",\\n        \"source\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2'\n     b'\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captu'\n     b'red\",\\n        \"revised\": {\\n          \"from\": 30,\\n          \"pct\": -23.33'\n     b'33\\n        }\\n      },\\n      \"acr.sin_observaciones\": {\\n        \"id\": \"ac'\n     b'r.sin_observaciones\",\\n        \"value\": 885,\\n        \"unit\": \"prestadores'\n     b'\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n        \"locator'\n     b'\": null,\\n        \"formula\": \"acreditados \\xe2\\x88\\x92 con observaciones\",'\n     b'\\n        \"inputs\": [\\n          \"acr.acreditados\",\\n          \"acr.con_obs'\n     b'ervaciones\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": nul'\n     b'l\\n      },\\n      \"acr.observaciones_pct\": {\\n        \"id\": \"acr.observaci'\n     b'ones_pct\",\\n        \"value\": 12.289395441030724,\\n        \"unit\": \"%\",\\n   '\n     b'     \"period\": \"2026-09\",\\n        \"source\": null,\\n        \"locator\": nul'\n     b'l,\\n        \"formula\": \"con observaciones / acreditados \\xc3\\x97 100\",\\n    '\n     b'    \"inputs\": [\\n          \"acr.con_observaciones\",\\n          \"acr.acredi'\n     b'tados\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": null\\n   '\n     b'   },\\n      \"acr.privadas_pct\": {\\n        \"id\": \"acr.privadas_pct\",\\n    '\n     b'    \"value\": 62.19512195121951,\\n        \"unit\": \"%\",\\n        \"period\": \"'\n     b'2026-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"form'\n     b'ula\": \"privadas / en tramitaci\\xc3\\xb3n \\xc3\\x97 100\",\\n        \"inputs\":'\n     b' [\\n          \"acr.tramite.privadas\",\\n          \"acr.tramite\"\\n        ],\\n'\n     b'        \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"rec.d'\n     b'elta\": {\\n        \"id\": \"rec.delta\",\\n        \"value\": 350,\\n        \"unit\"'\n     b': \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n     '\n     b'   \"locator\": null,\\n        \"formula\": \"promedio(t) \\xe2\\x88\\x92 promedio'\n     b'(a\\xc3\\xb1o anterior)\",\\n        \"inputs\": [\\n          \"rec.promedio.2026\",'\n     b'\\n          \"rec.promedio.2025\"\\n        ],\\n        \"kind\": \"derived\",\\n   '\n     b'     \"revised\": null\\n      },\\n      \"rec.pct\": {\\n        \"id\": \"rec.pct\"'\n     b',\\n        \"value\": 22.875816993464053,\\n        \"unit\": \"%\",\\n        \"per'\n     b'iod\": \"2026-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n      '\n     b'  \"formula\": \"\\xce\\x94 / promedio mensual del a\\xc3\\xb1o anterior \\xc3\\x97'\n     b' 100\",\\n        \"inputs\": [\\n          \"rec.delta\",\\n          \"rec.promedi'\n     b'o.2025\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": null\\n  '\n     b'    },\\n      \"acr.acreditados.2026-06\": {\\n        \"id\": \"acr.acreditados'\n     b'.2026-06\",\\n        \"value\": 971,\\n        \"unit\": \"prestadores\",\\n        '\n     b'\"period\": \"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"loc'\n     b'ator\": null,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kin'\n     b'd\": \"captured\",\\n        \"revised\": null\\n      },\\n      \"acr.acreditados.'\n     b'qoq\": {\\n        \"id\": \"acr.acreditados.qoq\",\\n        \"value\": 38,\\n      '\n     b'  \"unit\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": '\n     b'null,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 '\n     b'stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.acredi'\n     b'tados\",\\n          \"acr.acreditados.2026-06\"\\n        ],\\n        \"kind\": \"'\n     b'derived\",\\n        \"revised\": null\\n      },\\n      \"acr.con_observaciones.'\n     b'2026-06\": {\\n        \"id\": \"acr.con_observaciones.2026-06\",\\n        \"valu'\n     b'e\": 101,\\n        \"unit\": \"prestadores\",\\n        \"period\": \"2026-06\",\\n   '\n     b'     \"source\": \"prev_acreditacion\",\\n        \"locator\": null,\\n        \"fo'\n     b'rmula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        '\n     b'\"revised\": null\\n      },\\n      \"acr.con_observaciones.qoq\": {\\n        \"i'\n     b'd\": \"acr.con_observaciones.qoq\",\\n        \"value\": 23,\\n        \"unit\": \"p'\n     b'restadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n      '\n     b'  \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 stock(bo'\n     b'let\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.con_observacio'\n     b'nes\",\\n          \"acr.con_observaciones.2026-06\"\\n        ],\\n        \"kind'\n     b'\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.2026-0'\n     b'6\": {\\n        \"id\": \"acr.tramite.2026-06\",\\n        \"value\": 584,\\n       '\n     b' \"unit\": \"solicitudes\",\\n        \"period\": \"2026-06\",\\n        \"source\": \"'\n     b'prev_acreditacion\",\\n        \"locator\": null,\\n        \"formula\": null,\\n  '\n     b'      \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": null\\n'\n     b'      },\\n      \"acr.tramite.qoq\": {\\n        \"id\": \"acr.tramite.qoq\",\\n   '\n     b'     \"value\": -10,\\n        \"unit\": \"solicitudes\",\\n        \"period\": \"202'\n     b'6-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"formula'\n     b'\": \"stock(t) \\xe2\\x88\\x92 stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\"'\n     b': [\\n          \"acr.tramite\",\\n          \"acr.tramite.2026-06\"\\n        ],\\n'\n     b'        \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.t'\n     b'ramite.privadas.2026-06\": {\\n        \"id\": \"acr.tramite.privadas.2026-06\"'\n     b',\\n        \"value\": 367,\\n        \"unit\": \"solicitudes\",\\n        \"period\":'\n     b' \"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"locator\": nu'\n     b'll,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"capt'\n     b'ured\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.privadas.qoq\"'\n     b': {\\n        \"id\": \"acr.tramite.privadas.qoq\",\\n        \"value\": -10,\\n    '\n     b'    \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"source\"'\n     b': null,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88'\n     b'\\x92 stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.'\n     b'tramite.privadas\",\\n          \"acr.tramite.privadas.2026-06\"\\n        ],\\n '\n     b'       \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.tr'\n     b'amite.publicas.2026-06\": {\\n        \"id\": \"acr.tramite.publicas.2026-06\",'\n     b'\\n        \"value\": 217,\\n        \"unit\": \"solicitudes\",\\n        \"period\": '\n     b'\"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"locator\": nul'\n     b'l,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captu'\n     b'red\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.publicas.qoq\":'\n     b' {\\n        \"id\": \"acr.tramite.publicas.qoq\",\\n        \"value\": 0,\\n       '\n     b' \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"source\": n'\n     b'ull,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 s'\n     b'tock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.tramite'\n     b'.publicas\",\\n          \"acr.tramite.publicas.2026-06\"\\n        ],\\n        '\n     b'\"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.observaci'\n     b'ones_pct.2026-06\": {\\n        \"id\": \"acr.observaciones_pct.2026-06\",\\n    '\n     b'    \"value\": 10.401647785787848,\\n        \"unit\": \"%\",\\n        \"period\": '\n     b'\"2026-06\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"for'\n     b'mula\": \"con observaciones / acreditados \\xc3\\x97 100 (bolet\\xc3\\xadn anterio'\n     b'r)\",\\n        \"inputs\": [\\n          \"acr.con_observaciones.2026-06\",\\n    '\n     b'      \"acr.acreditados.2026-06\"\\n        ],\\n        \"kind\": \"derived\",\\n  '\n     b'      \"revised\": null\\n      },\\n      \"acr.acreditados.previous\": {\\n     '\n     b'   \"id\": \"acr.acreditados.previous\",\\n        \"value\": 971,\\n        \"unit'\n     b'\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acredi'\n     b'tacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": nul'\n     b'l,\\n        \"inputs\": [],\\n        \"kind\": \"previous_release\",\\n        \"re'\n     b'vised\": null\\n      },\\n      \"acr.con_observaciones.previous\": {\\n        '\n     b'\"id\": \"acr.con_observaciones.previous\",\\n        \"value\": 101,\\n        \"u'\n     b'nit\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acr'\n     b'editacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": '\n     b'null,\\n        \"inputs\": [],\\n        \"kind\": \"previous_release\",\\n        '\n     b'\"revised\": null\\n      },\\n      \"acr.tramite.previous\": {\\n        \"id\": \"'\n     b'acr.tramite.previous\",\\n        \"value\": 584,\\n        \"unit\": \"solicitude'\n     b's\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": null,\\n        \"in'\n     b'puts\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n '\n     b'     },\\n      \"acr.tramite.privadas.previous\": {\\n        \"id\": \"acr.tram'\n     b'ite.privadas.previous\",\\n        \"value\": 367,\\n        \"unit\": \"solicitud'\n     b'es\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n    '\n     b'    \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": null,\\n        \"i'\n     b'nputs\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n'\n     b'      },\\n      \"med.mediadores.previous\": {\\n        \"id\": \"med.mediadore'\n     b's.previous\",\\n        \"value\": 175,\\n        \"unit\": \"mediadores\",\\n       '\n     b' \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n        \"locator\": '\n     b'\"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n '\n     b'       \"kind\": \"previous_release\",\\n        \"revised\": null\\n      },\\n    '\n     b'  \"med.solicitudes_acumuladas.previous\": {\\n        \"id\": \"med.solicitude'\n     b's_acumuladas.previous\",\\n        \"value\": 12067,\\n        \"unit\": \"solicit'\n     b'udes\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inpu'\n     b'ts\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n   '\n     b'   },\\n      \"rec.promedio.2026.previous\": {\\n        \"id\": \"rec.promedio.'\n     b'2026.previous\",\\n        \"value\": 1996,\\n        \"unit\": \"reclamos\",\\n     '\n     b'   \"period\": \"2026-09\",\\n        \"source\": \"reclamos\",\\n        \"locator\":'\n     b' \"p\\xc3\\xa1gs. 2\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n    '\n     b'    \"kind\": \"previous_release\",\\n        \"revised\": null\\n      },\\n      \"'\n     b'rec.pct_informado.previous\": {\\n        \"id\": \"rec.pct_informado.previous'\n     b'\",\\n        \"value\": 30,\\n        \"unit\": \"%\",\\n        \"period\": \"2026-09\"'\n     b',\\n        \"source\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n '\n     b'       \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"previous_'\n     b'release\",\\n        \"revised\": null\\n      },\\n      \"acr.publicas_pct\": {\\n '\n     b'       \"id\": \"acr.publicas_pct\",\\n        \"value\": 37.80487804878049,\\n   '\n     b'     \"unit\": \"%\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n '\n     b'       \"locator\": null,\\n        \"formula\": \"100 \\xe2\\x88\\x92 % privadas\",'\n     b'\\n        \"inputs\": [\\n          \"acr.privadas_pct\"\\n        ],\\n        \"ki'\n     b'nd\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.sin_observac'\n     b'iones_pct\": {\\n        \"id\": \"acr.sin_observaciones_pct\",\\n        \"value\"'\n     b': 87.71060455896928,\\n        \"unit\": \"%\",\\n        \"period\": \"2026-09\",\\n '\n     b'       \"source\": null,\\n        \"locator\": null,\\n        \"formula\": \"100 '\n     b'\\xe2\\x88\\x92 % con observaciones\",\\n        \"inputs\": [\\n          \"acr.obs'\n     b'ervaciones_pct\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\":'\n     b' null\\n      }\\n    },\\n    \"constants\": [\\n      30,\\n      2,\\n      100'\n     b'\\n    ],\\n    \"entity_codes\": [],\\n    \"entity_keys\": [],\\n    \"release_key\"'\n     b': \"2026-09:e59bc2e84bc9ebb3\",\\n    \"period\": \"2026-09\",\\n    \"lectura_pool'\n     b'\": [\\n      {\\n        \"id\": \"acr.acreditados\",\\n        \"value\": 1009,\\n   '\n     b'     \"unit\": \"prestadores\",\\n        \"metric\": \"prestadores\",\\n        \"en'\n     b'tity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"20'\n     b'26-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope\": \"sy'\n     b'stem\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n    '\n     b'    \"base\": null\\n      },\\n      {\\n        \"id\": \"acr.con_observaciones\",'\n     b'\\n        \"value\": 124,\\n        \"unit\": \"prestadores\",\\n        \"metric\": '\n     b'\"prestadores\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        '\n     b'\"periods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": f'\n     b'alse,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"stock_at\",\\n    '\n     b'    \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id\"'\n     b': \"acr.sin_observaciones\",\\n        \"value\": 885,\\n        \"unit\": \"presta'\n     b'dores\",\\n        \"metric\": \"prestadores\",\\n        \"entity\": null,\\n       '\n     b' \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n        ],\\n  '\n     b'      \"requires_period\": false,\\n        \"scope\": \"system\",\\n        \"peri'\n     b'od_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": null\\n   '\n     b'   },\\n      {\\n        \"id\": \"acr.observaciones_pct\",\\n        \"value\": 12'\n     b'.289395441030724,\\n        \"unit\": \"%\",\\n        \"metric\": null,\\n        \"'\n     b'entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"'\n     b'2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope\": \"'\n     b'system\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n  '\n     b'      \"base\": \"acreditados\"\\n      },\\n      {\\n        \"id\": \"acr.tramite\"'\n     b',\\n        \"value\": 574,\\n        \"unit\": \"solicitudes\",\\n        \"metric\":'\n     b' \"solicitudes\",\\n        \"entity\": null,\\n        \"signed\": false,\\n       '\n     b' \"periods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": '\n     b'false,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"stock_at\",\\n   '\n     b'     \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id'\n     b'\": \"acr.tramite.privadas\",\\n        \"value\": 357,\\n        \"unit\": \"solici'\n     b'tudes\",\\n        \"metric\": \"solicitudes\",\\n        \"entity\": null,\\n       '\n     b' \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n        ],\\n  '\n     b'      \"requires_period\": false,\\n        \"scope\": \"private\",\\n        \"per'\n     b'iod_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": null\\n  '\n     b'    },\\n      {\\n        \"id\": \"acr.tramite.publicas\",\\n        \"value\": 21'\n     b'7,\\n        \"unit\": \"solicitudes\",\\n        \"metric\": \"solicitudes\",\\n     '\n     b'   \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n       '\n     b'   \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope'\n     b'\": \"public\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false'\n     b',\\n        \"base\": null\\n      },\\n      {\\n        \"id\": \"acr.privadas_pct\"'\n     b',\\n        \"value\": 62.19512195121951,\\n        \"unit\": \"%\",\\n        \"metr'\n     b'ic\": null,\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"per'\n     b'iods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": false'\n     b',\\n        \"scope\": \"private\",\\n        \"period_kind\": \"stock_at\",\\n       '\n     b' \"trivial\": false,\\n        \"base\": \"solicitudes_en_tramite\"\\n      },\\n   '\n     b'   {\\n        \"id\": \"med.mediadores\",\\n        \"value\": 179,\\n        \"unit'\n     b'\": \"mediadores\",\\n        \"metric\": \"mediadores\",\\n        \"entity\": null,'\n     b'\\n        \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n     '\n     b'   ],\\n        \"requires_period\": false,\\n        \"scope\": \"system\",\\n     '\n     b'   \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": '\n     b'null\\n      },\\n      {\\n        \"id\": \"med.solicitudes_acumuladas\",\\n      '\n     b'  \"value\": 12697,\\n        \"unit\": \"solicitudes\",\\n        \"metric\": \"soli'\n     b'citudes\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"peri'\n     b'ods\": [\\n          \"2019-01\",\\n          \"2026-09\"\\n        ],\\n        \"req'\n     b'uires_period\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\": '\n     b'\"interval\",\\n        \"trivial\": false,\\n        \"base\": null\\n      },\\n    '\n     b'  {\\n        \"id\": \"rec.promedio.2026\",\\n        \"value\": 1880,\\n        \"u'\n     b'nit\": \"reclamos\",\\n        \"metric\": \"reclamos\",\\n        \"entity\": null,\\n'\n     b'        \"signed\": false,\\n        \"periods\": [\\n          \"2026-01\",\\n     '\n     b'     \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"sco'\n     b'pe\": \"system\",\\n        \"period_kind\": \"ytd\",\\n        \"trivial\": false,\\n '\n     b'       \"base\": null\\n      },\\n      {\\n        \"id\": \"rec.delta\",\\n        '\n     b'\"value\": 350,\\n        \"unit\": \"reclamos\",\\n        \"metric\": \"reclamos\",\\n'\n     b'        \"entity\": null,\\n        \"signed\": true,\\n        \"periods\": [\\n   '\n     b'       \"2026-01\",\\n          \"2026-09\"\\n        ],\\n        \"requires_perio'\n     b'd\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"ytd\",\\n    '\n     b'    \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id\"'\n     b': \"rec.pct\",\\n        \"value\": 22.875816993464053,\\n        \"unit\": \"%\",\\n '\n     b'       \"metric\": null,\\n        \"entity\": null,\\n        \"signed\": true,\\n '\n     b'       \"periods\": [\\n          \"2026-01\",\\n          \"2026-09\"\\n        ],\\n'\n     b'        \"requires_period\": false,\\n        \"scope\": \"system\",\\n        \"pe'\n     b'riod_kind\": \"ytd\",\\n        \"trivial\": false,\\n        \"base\": \"promedio_m'\n     b'ensual_anio_anterior\"\\n      },\\n      {\\n        \"id\": \"rec.promedio.2025\"'\n     b',\\n        \"value\": 1530,\\n        \"unit\": \"reclamos\",\\n        \"metric\": \"'\n     b'reclamos\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"per'\n     b'iods\": [\\n          \"2025-01\",\\n          \"2025-12\"\\n        ],\\n        \"re'\n     b'quires_period\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\":'\n     b' \"interval\",\\n        \"trivial\": false,\\n        \"base\": null\\n      }\\n    '\n     b'],\\n    \"derived_ratios\": [\\n      {\\n        \"id\": \"ratio.privadas_por_pub'\n     b'lica\",\\n        \"value\": 1.6451612903225807,\\n        \"unit\": \"x\",\\n       '\n     b' \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n         '\n     b' \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"formula'\n     b'\": \"privadas / p\\xc3\\xbablicas\",\\n        \"inputs\": [\\n          \"acr.tramit'\n     b'e.privadas\",\\n          \"acr.tramite.publicas\"\\n        ],\\n        \"scope\"'\n     b': \"private\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false'\n     b',\\n        \"base\": null\\n      },\\n      {\\n        \"id\": \"fraccion.observac'\n     b'iones\",\\n        \"value\": 0.12289395441030723,\\n        \"unit\": \"share\",\\n '\n     b'       \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n   '\n     b'       \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"f'\n     b'ormula\": \"con observaciones / acreditados\",\\n        \"inputs\": [\\n        '\n     b'  \"acr.observaciones_pct\"\\n        ],\\n        \"scope\": \"system\",\\n        '\n     b'\"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": \"ac'\n     b'reditados\"\\n      },\\n      {\\n        \"id\": \"ratio.reclamos_vs_anio_anteri'\n     b'or\",\\n        \"value\": 1.2287581699346406,\\n        \"unit\": \"x\",\\n        \"'\n     b'entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"'\n     b'2026-01\",\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": fals'\n     b'e,\\n        \"formula\": \"promedio(t) / promedio(a\\xc3\\xb1o anterior)\",\\n     '\n     b'   \"inputs\": [\\n          \"rec.promedio.2026\",\\n          \"rec.promedio.20'\n     b'25\"\\n        ],\\n        \"scope\": \"system\",\\n        \"period_kind\": \"ytd\",\\n'\n     b'        \"trivial\": false,\\n        \"base\": null\\n      }\\n    ],\\n    \"ranks'\n     b'\": []\\n  },\\n  \"first_verified_at\": \"2026-11-03T20:19:30.271733+00:00\"\\n}\\n') and '2026-09' == '2026-06'\n  \n  - 2026-06\n  ?       ^\n  + 2026-09\n  ?       ^)\n3 failed in 0.38s\n",
+                    "returncode": 1
+                  },
+                  {
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": "Validation command unavailable or timed out: TimeoutExpired",
+                    "returncode": 124
+                  }
+                ],
+                "failure_sha256": "3fe325b828685dd4ea3f9222b261fafbb690346edee92ded78d8acde80f60b9a",
+                "material_progress": false,
+                "signature": null,
+                "source_run_id": null,
+                "status": "BLOCKED",
+                "validated": false
+              }
+            ],
+            "fingerprint": "1f9151a45e0b72709c9e119664d15af99ab7ec5c920b326c21f712fc2b043742",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Targeted deterministic gate failed; no validated repair candidate",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "browser_proof": {
+                  "cases": [
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 21,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 81
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  79 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  80 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 81 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  82 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  83 |  await card.locator('[data-detail]').first().click();\n  84 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:81:21"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 33,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 13
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-\u001b[7m09-15\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m10-30\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 21,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 81
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  79 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  80 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 81 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  82 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  83 |  await card.locator('[data-detail]').first().click();\n  84 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:81:21"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 33,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 13
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-\u001b[7m09-15\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m10-30\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 367
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  365 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  366 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 367 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  369 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  370 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:367:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 367
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  365 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  366 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 367 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  369 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  370 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:367:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    }
+                  ],
+                  "projects": [
+                    "desktop",
+                    "mobile"
+                  ],
+                  "stats": {
+                    "duration": 206494.682,
+                    "expected": 172,
+                    "flaky": 0,
+                    "skipped": 8,
+                    "startTime": "2026-11-03T22:20:18.599Z",
+                    "unexpected": 6
+                  }
+                },
+                "command": [
+                  "npm",
+                  "run",
+                  "test:browser"
+                ],
+                "failure_hash": "170a2abe8ad87b678351f3bf3a3cb01605e07e7a2be2e047bbe87ae72300fdaa",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+                "log_sha256": "4ec3d906a8320ee1d61321ae4089254aadfb0e8b07e9bfbdbfe90ec5b46b4aec",
+                "name": "browser_desktop_and_mobile",
+                "returncode": 1,
+                "status": "FAIL"
+              }
+            ],
+            "fingerprint": "7c199f5a59f15965f8af04a753d1fcdd512e3556ee73631a70b80a34d9261e84",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "staging_qa",
+                "task_id": "staging_qa_failed_run_41717454286"
+              }
+            ],
+            "fingerprint": "874e9f2fdfec7eda670536286827339ddcbbdacf70b7356d155eddbafb664a32",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          }
+        ],
+        "canonical_material_signature": "5f6ddf70955ec88dc80a2a9e6161dfeaa12a60931dfc6b4e0ffea304215b09f2",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "-rs",
+              "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+              "-m",
+              "not integration",
+              "tests"
+            ],
+            "failure_hash": "199b0b55485b389d15519e49cd497d4614a77eb0ef733bee300e6c9a2a711209",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+            "log_sha256": "3cc05819db59b0608b1fa61505202a9271cc144701337ae669a29fcddec003ed",
+            "name": "targeted_deterministic_tests",
+            "pytest": {
+              "cases": [],
+              "collected": 0,
+              "failed": 0,
+              "passed": 0,
+              "proof": false,
+              "skipped": 0
+            },
+            "returncode": 124,
+            "status": "FAIL"
+          },
+          {
+            "baseline_full_gate": {
+              "command": [
+                "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                "-m",
+                "pytest",
+                "-q"
+              ],
+              "output": "Validation command unavailable or timed out: TimeoutExpired",
+              "returncode": 124
+            },
+            "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+            "blocker_kind": "executor_capability_missing",
+            "changed_paths": [],
+            "context": [
+              {
+                "editable": false,
+                "path": "tests/test_stats_fichas_f6_n3.py",
+                "sha256": "c9b1fbda74d55d5faa021098fcdec9d126e4ee5c39d2d719be66e2f57b0736ea"
+              },
+              {
+                "editable": false,
+                "path": "tests/test_beta_source_runtime_fast.py",
+                "sha256": "9e6a9bb5da888dde256fd51183eafaf9463408906a7d029f9482d363ed34b131"
+              },
+              {
+                "editable": false,
+                "path": "tests/test_source_fixes_20261027.py",
+                "sha256": "de71ec5a6a83394c7cff089641e3ab7370b9b94993fba19039d49376de202e1c"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/public_source_transport.py",
+                "sha256": "4e085b39cf00c2ea48b8efec39b54491cacfb9ded0e5df2398daf909fd5a7d07"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/stats_capture.py",
+                "sha256": "ba9f0ca7396a69f6ff824d595ae106f7fdc764681f174f9f5b17ffcaf3f45abd"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/beta_source_engine_fast.py",
+                "sha256": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/source_health.py",
+                "sha256": "dd57795f3b6a7e83b82a2e07ca650f541c2badfacfddc2390594883dad183ba2"
+              }
+            ],
+            "deterministic_planning": {
+              "diagnostic": {
+                "human_required": false,
+                "kind": "executor_capability_missing",
+                "reason": "No deterministic strategy is registered for this source/failure"
+              },
+              "evidence": [],
+              "material_progress": false,
+              "paid_calls": 0,
+              "plan": null,
+              "product_files_written": false,
+              "status": "UNSUPPORTED",
+              "strategy": null
+            },
+            "evidence": [
+              {
+                "captured_stdout_bytes": 101032,
+                "captured_stdout_sha256": "09db72f639bc9ba5ea5d076954c9e4c71428f051af4980cb7cff46ef5c9dd33b",
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "tests/test_stats_fichas_f6_n3.py::test_loose_n3_pdfs_collapse_into_one_card_titled_from_the_documents",
+                  "tests/test_stats_fichas_f6_n3.py::test_live_n2_keeps_the_n3_card_and_absorbs_the_september_page_card",
+                  "tests/test_stats_fichas_f6_n3.py::test_committed_state_holds_n3_until_the_daily_run_rechecks_the_hashed_pdfs"
+                ],
+                "output": "\\n        \"p'\n     b'eriod\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n        \"locator\": '\n     b'\"p\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n '\n     b'       \"kind\": \"captured\",\\n        \"revised\": {\\n          \"from\": 101,\\n '\n     b'         \"pct\": 22.7723\\n        }\\n      },\\n      \"acr.tramite\": {\\n      '\n     b'  \"id\": \"acr.tramite\",\\n        \"value\": 574,\\n        \"unit\": \"solicitude'\n     b's\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inpu'\n     b'ts\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": {\\n          \"fro'\n     b'm\": 584,\\n          \"pct\": -1.7123\\n        }\\n      },\\n      \"acr.tramite.'\n     b'privadas\": {\\n        \"id\": \"acr.tramite.privadas\",\\n        \"value\": 357,'\n     b'\\n        \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"so'\n     b'urce\": \"acreditacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2,7,8\",\\n        \"f'\n     b'ormula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n       '\n     b' \"revised\": {\\n          \"from\": 367,\\n          \"pct\": -2.7248\\n        }\\n'\n     b'      },\\n      \"acr.tramite.publicas\": {\\n        \"id\": \"acr.tramite.publ'\n     b'icas\",\\n        \"value\": 217,\\n        \"unit\": \"solicitudes\",\\n        \"per'\n     b'iod\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n        \"locator\": \"p'\n     b'\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n   '\n     b'     \"kind\": \"captured\",\\n        \"revised\": null\\n      },\\n      \"med.med'\n     b'iadores\": {\\n        \"id\": \"med.mediadores\",\\n        \"value\": 179,\\n      '\n     b'  \"unit\": \"mediadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"'\n     b'mediacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": nu'\n     b'll,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\":'\n     b' {\\n          \"from\": 175,\\n          \"pct\": 2.2857\\n        }\\n      },'\n     b'\\n      \"med.solicitudes_acumuladas\": {\\n        \"id\": \"med.solicitudes_ac'\n     b'umuladas\",\\n        \"value\": 12697,\\n        \"unit\": \"solicitudes\",\\n      '\n     b'  \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n        \"locator\":'\n     b' \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n'\n     b'        \"kind\": \"captured\",\\n        \"revised\": {\\n          \"from\": 12067'\n     b',\\n          \"pct\": 5.2209\\n        }\\n      },\\n      \"rec.promedio.2026\": '\n     b'{\\n        \"id\": \"rec.promedio.2026\",\\n        \"value\": 1880,\\n        \"uni'\n     b't\": \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"reclamos'\n     b'\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n        \"formula\": null,\\n     '\n     b'   \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": {\\n      '\n     b'    \"from\": 1996,\\n          \"pct\": -5.8116\\n        }\\n      },\\n      \"rec'\n     b'.promedio.2025\": {\\n        \"id\": \"rec.promedio.2025\",\\n        \"value\": 1'\n     b'530,\\n        \"unit\": \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"s'\n     b'ource\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n        \"formula\"'\n     b': null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revis'\n     b'ed\": null\\n      },\\n      \"rec.pct_informado\": {\\n        \"id\": \"rec.pct_i'\n     b'nformado\",\\n        \"value\": 23,\\n        \"unit\": \"%\",\\n        \"period\": \"'\n     b'2026-09\",\\n        \"source\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2'\n     b'\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captu'\n     b'red\",\\n        \"revised\": {\\n          \"from\": 30,\\n          \"pct\": -23.33'\n     b'33\\n        }\\n      },\\n      \"acr.sin_observaciones\": {\\n        \"id\": \"ac'\n     b'r.sin_observaciones\",\\n        \"value\": 885,\\n        \"unit\": \"prestadores'\n     b'\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n        \"locator'\n     b'\": null,\\n        \"formula\": \"acreditados \\xe2\\x88\\x92 con observaciones\",'\n     b'\\n        \"inputs\": [\\n          \"acr.acreditados\",\\n          \"acr.con_obs'\n     b'ervaciones\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": nul'\n     b'l\\n      },\\n      \"acr.observaciones_pct\": {\\n        \"id\": \"acr.observaci'\n     b'ones_pct\",\\n        \"value\": 12.289395441030724,\\n        \"unit\": \"%\",\\n   '\n     b'     \"period\": \"2026-09\",\\n        \"source\": null,\\n        \"locator\": nul'\n     b'l,\\n        \"formula\": \"con observaciones / acreditados \\xc3\\x97 100\",\\n    '\n     b'    \"inputs\": [\\n          \"acr.con_observaciones\",\\n          \"acr.acredi'\n     b'tados\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": null\\n   '\n     b'   },\\n      \"acr.privadas_pct\": {\\n        \"id\": \"acr.privadas_pct\",\\n    '\n     b'    \"value\": 62.19512195121951,\\n        \"unit\": \"%\",\\n        \"period\": \"'\n     b'2026-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"form'\n     b'ula\": \"privadas / en tramitaci\\xc3\\xb3n \\xc3\\x97 100\",\\n        \"inputs\":'\n     b' [\\n          \"acr.tramite.privadas\",\\n          \"acr.tramite\"\\n        ],\\n'\n     b'        \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"rec.d'\n     b'elta\": {\\n        \"id\": \"rec.delta\",\\n        \"value\": 350,\\n        \"unit\"'\n     b': \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n     '\n     b'   \"locator\": null,\\n        \"formula\": \"promedio(t) \\xe2\\x88\\x92 promedio'\n     b'(a\\xc3\\xb1o anterior)\",\\n        \"inputs\": [\\n          \"rec.promedio.2026\",'\n     b'\\n          \"rec.promedio.2025\"\\n        ],\\n        \"kind\": \"derived\",\\n   '\n     b'     \"revised\": null\\n      },\\n      \"rec.pct\": {\\n        \"id\": \"rec.pct\"'\n     b',\\n        \"value\": 22.875816993464053,\\n        \"unit\": \"%\",\\n        \"per'\n     b'iod\": \"2026-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n      '\n     b'  \"formula\": \"\\xce\\x94 / promedio mensual del a\\xc3\\xb1o anterior \\xc3\\x97'\n     b' 100\",\\n        \"inputs\": [\\n          \"rec.delta\",\\n          \"rec.promedi'\n     b'o.2025\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": null\\n  '\n     b'    },\\n      \"acr.acreditados.2026-06\": {\\n        \"id\": \"acr.acreditados'\n     b'.2026-06\",\\n        \"value\": 971,\\n        \"unit\": \"prestadores\",\\n        '\n     b'\"period\": \"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"loc'\n     b'ator\": null,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kin'\n     b'd\": \"captured\",\\n        \"revised\": null\\n      },\\n      \"acr.acreditados.'\n     b'qoq\": {\\n        \"id\": \"acr.acreditados.qoq\",\\n        \"value\": 38,\\n      '\n     b'  \"unit\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": '\n     b'null,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 '\n     b'stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.acredi'\n     b'tados\",\\n          \"acr.acreditados.2026-06\"\\n        ],\\n        \"kind\": \"'\n     b'derived\",\\n        \"revised\": null\\n      },\\n      \"acr.con_observaciones.'\n     b'2026-06\": {\\n        \"id\": \"acr.con_observaciones.2026-06\",\\n        \"valu'\n     b'e\": 101,\\n        \"unit\": \"prestadores\",\\n        \"period\": \"2026-06\",\\n   '\n     b'     \"source\": \"prev_acreditacion\",\\n        \"locator\": null,\\n        \"fo'\n     b'rmula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        '\n     b'\"revised\": null\\n      },\\n      \"acr.con_observaciones.qoq\": {\\n        \"i'\n     b'd\": \"acr.con_observaciones.qoq\",\\n        \"value\": 23,\\n        \"unit\": \"p'\n     b'restadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n      '\n     b'  \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 stock(bo'\n     b'let\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.con_observacio'\n     b'nes\",\\n          \"acr.con_observaciones.2026-06\"\\n        ],\\n        \"kind'\n     b'\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.2026-0'\n     b'6\": {\\n        \"id\": \"acr.tramite.2026-06\",\\n        \"value\": 584,\\n       '\n     b' \"unit\": \"solicitudes\",\\n        \"period\": \"2026-06\",\\n        \"source\": \"'\n     b'prev_acreditacion\",\\n        \"locator\": null,\\n        \"formula\": null,\\n  '\n     b'      \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": null\\n'\n     b'      },\\n      \"acr.tramite.qoq\": {\\n        \"id\": \"acr.tramite.qoq\",\\n   '\n     b'     \"value\": -10,\\n        \"unit\": \"solicitudes\",\\n        \"period\": \"202'\n     b'6-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"formula'\n     b'\": \"stock(t) \\xe2\\x88\\x92 stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\"'\n     b': [\\n          \"acr.tramite\",\\n          \"acr.tramite.2026-06\"\\n        ],\\n'\n     b'        \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.t'\n     b'ramite.privadas.2026-06\": {\\n        \"id\": \"acr.tramite.privadas.2026-06\"'\n     b',\\n        \"value\": 367,\\n        \"unit\": \"solicitudes\",\\n        \"period\":'\n     b' \"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"locator\": nu'\n     b'll,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"capt'\n     b'ured\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.privadas.qoq\"'\n     b': {\\n        \"id\": \"acr.tramite.privadas.qoq\",\\n        \"value\": -10,\\n    '\n     b'    \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"source\"'\n     b': null,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88'\n     b'\\x92 stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.'\n     b'tramite.privadas\",\\n          \"acr.tramite.privadas.2026-06\"\\n        ],\\n '\n     b'       \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.tr'\n     b'amite.publicas.2026-06\": {\\n        \"id\": \"acr.tramite.publicas.2026-06\",'\n     b'\\n        \"value\": 217,\\n        \"unit\": \"solicitudes\",\\n        \"period\": '\n     b'\"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"locator\": nul'\n     b'l,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captu'\n     b'red\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.publicas.qoq\":'\n     b' {\\n        \"id\": \"acr.tramite.publicas.qoq\",\\n        \"value\": 0,\\n       '\n     b' \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"source\": n'\n     b'ull,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 s'\n     b'tock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.tramite'\n     b'.publicas\",\\n          \"acr.tramite.publicas.2026-06\"\\n        ],\\n        '\n     b'\"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.observaci'\n     b'ones_pct.2026-06\": {\\n        \"id\": \"acr.observaciones_pct.2026-06\",\\n    '\n     b'    \"value\": 10.401647785787848,\\n        \"unit\": \"%\",\\n        \"period\": '\n     b'\"2026-06\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"for'\n     b'mula\": \"con observaciones / acreditados \\xc3\\x97 100 (bolet\\xc3\\xadn anterio'\n     b'r)\",\\n        \"inputs\": [\\n          \"acr.con_observaciones.2026-06\",\\n    '\n     b'      \"acr.acreditados.2026-06\"\\n        ],\\n        \"kind\": \"derived\",\\n  '\n     b'      \"revised\": null\\n      },\\n      \"acr.acreditados.previous\": {\\n     '\n     b'   \"id\": \"acr.acreditados.previous\",\\n        \"value\": 971,\\n        \"unit'\n     b'\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acredi'\n     b'tacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": nul'\n     b'l,\\n        \"inputs\": [],\\n        \"kind\": \"previous_release\",\\n        \"re'\n     b'vised\": null\\n      },\\n      \"acr.con_observaciones.previous\": {\\n        '\n     b'\"id\": \"acr.con_observaciones.previous\",\\n        \"value\": 101,\\n        \"u'\n     b'nit\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acr'\n     b'editacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": '\n     b'null,\\n        \"inputs\": [],\\n        \"kind\": \"previous_release\",\\n        '\n     b'\"revised\": null\\n      },\\n      \"acr.tramite.previous\": {\\n        \"id\": \"'\n     b'acr.tramite.previous\",\\n        \"value\": 584,\\n        \"unit\": \"solicitude'\n     b's\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": null,\\n        \"in'\n     b'puts\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n '\n     b'     },\\n      \"acr.tramite.privadas.previous\": {\\n        \"id\": \"acr.tram'\n     b'ite.privadas.previous\",\\n        \"value\": 367,\\n        \"unit\": \"solicitud'\n     b'es\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n    '\n     b'    \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": null,\\n        \"i'\n     b'nputs\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n'\n     b'      },\\n      \"med.mediadores.previous\": {\\n        \"id\": \"med.mediadore'\n     b's.previous\",\\n        \"value\": 175,\\n        \"unit\": \"mediadores\",\\n       '\n     b' \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n        \"locator\": '\n     b'\"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n '\n     b'       \"kind\": \"previous_release\",\\n        \"revised\": null\\n      },\\n    '\n     b'  \"med.solicitudes_acumuladas.previous\": {\\n        \"id\": \"med.solicitude'\n     b's_acumuladas.previous\",\\n        \"value\": 12067,\\n        \"unit\": \"solicit'\n     b'udes\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inpu'\n     b'ts\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n   '\n     b'   },\\n      \"rec.promedio.2026.previous\": {\\n        \"id\": \"rec.promedio.'\n     b'2026.previous\",\\n        \"value\": 1996,\\n        \"unit\": \"reclamos\",\\n     '\n     b'   \"period\": \"2026-09\",\\n        \"source\": \"reclamos\",\\n        \"locator\":'\n     b' \"p\\xc3\\xa1gs. 2\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n    '\n     b'    \"kind\": \"previous_release\",\\n        \"revised\": null\\n      },\\n      \"'\n     b'rec.pct_informado.previous\": {\\n        \"id\": \"rec.pct_informado.previous'\n     b'\",\\n        \"value\": 30,\\n        \"unit\": \"%\",\\n        \"period\": \"2026-09\"'\n     b',\\n        \"source\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n '\n     b'       \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"previous_'\n     b'release\",\\n        \"revised\": null\\n      },\\n      \"acr.publicas_pct\": {\\n '\n     b'       \"id\": \"acr.publicas_pct\",\\n        \"value\": 37.80487804878049,\\n   '\n     b'     \"unit\": \"%\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n '\n     b'       \"locator\": null,\\n        \"formula\": \"100 \\xe2\\x88\\x92 % privadas\",'\n     b'\\n        \"inputs\": [\\n          \"acr.privadas_pct\"\\n        ],\\n        \"ki'\n     b'nd\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.sin_observac'\n     b'iones_pct\": {\\n        \"id\": \"acr.sin_observaciones_pct\",\\n        \"value\"'\n     b': 87.71060455896928,\\n        \"unit\": \"%\",\\n        \"period\": \"2026-09\",\\n '\n     b'       \"source\": null,\\n        \"locator\": null,\\n        \"formula\": \"100 '\n     b'\\xe2\\x88\\x92 % con observaciones\",\\n        \"inputs\": [\\n          \"acr.obs'\n     b'ervaciones_pct\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\":'\n     b' null\\n      }\\n    },\\n    \"constants\": [\\n      30,\\n      2,\\n      100'\n     b'\\n    ],\\n    \"entity_codes\": [],\\n    \"entity_keys\": [],\\n    \"release_key\"'\n     b': \"2026-09:e59bc2e84bc9ebb3\",\\n    \"period\": \"2026-09\",\\n    \"lectura_pool'\n     b'\": [\\n      {\\n        \"id\": \"acr.acreditados\",\\n        \"value\": 1009,\\n   '\n     b'     \"unit\": \"prestadores\",\\n        \"metric\": \"prestadores\",\\n        \"en'\n     b'tity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"20'\n     b'26-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope\": \"sy'\n     b'stem\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n    '\n     b'    \"base\": null\\n      },\\n      {\\n        \"id\": \"acr.con_observaciones\",'\n     b'\\n        \"value\": 124,\\n        \"unit\": \"prestadores\",\\n        \"metric\": '\n     b'\"prestadores\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        '\n     b'\"periods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": f'\n     b'alse,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"stock_at\",\\n    '\n     b'    \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id\"'\n     b': \"acr.sin_observaciones\",\\n        \"value\": 885,\\n        \"unit\": \"presta'\n     b'dores\",\\n        \"metric\": \"prestadores\",\\n        \"entity\": null,\\n       '\n     b' \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n        ],\\n  '\n     b'      \"requires_period\": false,\\n        \"scope\": \"system\",\\n        \"peri'\n     b'od_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": null\\n   '\n     b'   },\\n      {\\n        \"id\": \"acr.observaciones_pct\",\\n        \"value\": 12'\n     b'.289395441030724,\\n        \"unit\": \"%\",\\n        \"metric\": null,\\n        \"'\n     b'entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"'\n     b'2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope\": \"'\n     b'system\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n  '\n     b'      \"base\": \"acreditados\"\\n      },\\n      {\\n        \"id\": \"acr.tramite\"'\n     b',\\n        \"value\": 574,\\n        \"unit\": \"solicitudes\",\\n        \"metric\":'\n     b' \"solicitudes\",\\n        \"entity\": null,\\n        \"signed\": false,\\n       '\n     b' \"periods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": '\n     b'false,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"stock_at\",\\n   '\n     b'     \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id'\n     b'\": \"acr.tramite.privadas\",\\n        \"value\": 357,\\n        \"unit\": \"solici'\n     b'tudes\",\\n        \"metric\": \"solicitudes\",\\n        \"entity\": null,\\n       '\n     b' \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n        ],\\n  '\n     b'      \"requires_period\": false,\\n        \"scope\": \"private\",\\n        \"per'\n     b'iod_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": null\\n  '\n     b'    },\\n      {\\n        \"id\": \"acr.tramite.publicas\",\\n        \"value\": 21'\n     b'7,\\n        \"unit\": \"solicitudes\",\\n        \"metric\": \"solicitudes\",\\n     '\n     b'   \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n       '\n     b'   \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope'\n     b'\": \"public\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false'\n     b',\\n        \"base\": null\\n      },\\n      {\\n        \"id\": \"acr.privadas_pct\"'\n     b',\\n        \"value\": 62.19512195121951,\\n        \"unit\": \"%\",\\n        \"metr'\n     b'ic\": null,\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"per'\n     b'iods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": false'\n     b',\\n        \"scope\": \"private\",\\n        \"period_kind\": \"stock_at\",\\n       '\n     b' \"trivial\": false,\\n        \"base\": \"solicitudes_en_tramite\"\\n      },\\n   '\n     b'   {\\n        \"id\": \"med.mediadores\",\\n        \"value\": 179,\\n        \"unit'\n     b'\": \"mediadores\",\\n        \"metric\": \"mediadores\",\\n        \"entity\": null,'\n     b'\\n        \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n     '\n     b'   ],\\n        \"requires_period\": false,\\n        \"scope\": \"system\",\\n     '\n     b'   \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": '\n     b'null\\n      },\\n      {\\n        \"id\": \"med.solicitudes_acumuladas\",\\n      '\n     b'  \"value\": 12697,\\n        \"unit\": \"solicitudes\",\\n        \"metric\": \"soli'\n     b'citudes\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"peri'\n     b'ods\": [\\n          \"2019-01\",\\n          \"2026-09\"\\n        ],\\n        \"req'\n     b'uires_period\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\": '\n     b'\"interval\",\\n        \"trivial\": false,\\n        \"base\": null\\n      },\\n    '\n     b'  {\\n        \"id\": \"rec.promedio.2026\",\\n        \"value\": 1880,\\n        \"u'\n     b'nit\": \"reclamos\",\\n        \"metric\": \"reclamos\",\\n        \"entity\": null,\\n'\n     b'        \"signed\": false,\\n        \"periods\": [\\n          \"2026-01\",\\n     '\n     b'     \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"sco'\n     b'pe\": \"system\",\\n        \"period_kind\": \"ytd\",\\n        \"trivial\": false,\\n '\n     b'       \"base\": null\\n      },\\n      {\\n        \"id\": \"rec.delta\",\\n        '\n     b'\"value\": 350,\\n        \"unit\": \"reclamos\",\\n        \"metric\": \"reclamos\",\\n'\n     b'        \"entity\": null,\\n        \"signed\": true,\\n        \"periods\": [\\n   '\n     b'       \"2026-01\",\\n          \"2026-09\"\\n        ],\\n        \"requires_perio'\n     b'd\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"ytd\",\\n    '\n     b'    \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id\"'\n     b': \"rec.pct\",\\n        \"value\": 22.875816993464053,\\n        \"unit\": \"%\",\\n '\n     b'       \"metric\": null,\\n        \"entity\": null,\\n        \"signed\": true,\\n '\n     b'       \"periods\": [\\n          \"2026-01\",\\n          \"2026-09\"\\n        ],\\n'\n     b'        \"requires_period\": false,\\n        \"scope\": \"system\",\\n        \"pe'\n     b'riod_kind\": \"ytd\",\\n        \"trivial\": false,\\n        \"base\": \"promedio_m'\n     b'ensual_anio_anterior\"\\n      },\\n      {\\n        \"id\": \"rec.promedio.2025\"'\n     b',\\n        \"value\": 1530,\\n        \"unit\": \"reclamos\",\\n        \"metric\": \"'\n     b'reclamos\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"per'\n     b'iods\": [\\n          \"2025-01\",\\n          \"2025-12\"\\n        ],\\n        \"re'\n     b'quires_period\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\":'\n     b' \"interval\",\\n        \"trivial\": false,\\n        \"base\": null\\n      }\\n    '\n     b'],\\n    \"derived_ratios\": [\\n      {\\n        \"id\": \"ratio.privadas_por_pub'\n     b'lica\",\\n        \"value\": 1.6451612903225807,\\n        \"unit\": \"x\",\\n       '\n     b' \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n         '\n     b' \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"formula'\n     b'\": \"privadas / p\\xc3\\xbablicas\",\\n        \"inputs\": [\\n          \"acr.tramit'\n     b'e.privadas\",\\n          \"acr.tramite.publicas\"\\n        ],\\n        \"scope\"'\n     b': \"private\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false'\n     b',\\n        \"base\": null\\n      },\\n      {\\n        \"id\": \"fraccion.observac'\n     b'iones\",\\n        \"value\": 0.12289395441030723,\\n        \"unit\": \"share\",\\n '\n     b'       \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n   '\n     b'       \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"f'\n     b'ormula\": \"con observaciones / acreditados\",\\n        \"inputs\": [\\n        '\n     b'  \"acr.observaciones_pct\"\\n        ],\\n        \"scope\": \"system\",\\n        '\n     b'\"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": \"ac'\n     b'reditados\"\\n      },\\n      {\\n        \"id\": \"ratio.reclamos_vs_anio_anteri'\n     b'or\",\\n        \"value\": 1.2287581699346406,\\n        \"unit\": \"x\",\\n        \"'\n     b'entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"'\n     b'2026-01\",\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": fals'\n     b'e,\\n        \"formula\": \"promedio(t) / promedio(a\\xc3\\xb1o anterior)\",\\n     '\n     b'   \"inputs\": [\\n          \"rec.promedio.2026\",\\n          \"rec.promedio.20'\n     b'25\"\\n        ],\\n        \"scope\": \"system\",\\n        \"period_kind\": \"ytd\",\\n'\n     b'        \"trivial\": false,\\n        \"base\": null\\n      }\\n    ],\\n    \"ranks'\n     b'\": []\\n  },\\n  \"first_verified_at\": \"2026-11-03T20:19:30.271733+00:00\"\\n}\\n') and '2026-09' == '2026-06'\n  \n  - 2026-06\n  ?       ^\n  + 2026-09\n  ?       ^)\n3 failed in 0.38s\n",
+                "returncode": 1
+              },
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": "Validation command unavailable or timed out: TimeoutExpired",
+                "returncode": 124
+              }
+            ],
+            "failure_sha256": "3fe325b828685dd4ea3f9222b261fafbb690346edee92ded78d8acde80f60b9a",
+            "material_progress": false,
+            "signature": null,
+            "source_run_id": null,
+            "status": "BLOCKED",
+            "validated": false
+          },
+          {
+            "browser_proof": {
+              "cases": [
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 81
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  79 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  80 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 81 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  82 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  83 |  await card.locator('[data-detail]').first().click();\n  84 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:81:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-\u001b[7m09-15\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m10-30\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 81
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  79 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  80 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 81 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  82 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  83 |  await card.locator('[data-detail]').first().click();\n  84 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:81:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-\u001b[7m09-15\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m10-30\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 367
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  365 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  366 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 367 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  369 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  370 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:367:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 367
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  365 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  366 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 367 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  369 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  370 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:367:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                }
+              ],
+              "projects": [
+                "desktop",
+                "mobile"
+              ],
+              "stats": {
+                "duration": 206494.682,
+                "expected": 172,
+                "flaky": 0,
+                "skipped": 8,
+                "startTime": "2026-11-03T22:20:18.599Z",
+                "unexpected": 6
+              }
+            },
+            "command": [
+              "npm",
+              "run",
+              "test:browser"
+            ],
+            "failure_hash": "170a2abe8ad87b678351f3bf3a3cb01605e07e7a2be2e047bbe87ae72300fdaa",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+            "log_sha256": "4ec3d906a8320ee1d61321ae4089254aadfb0e8b07e9bfbdbfe90ec5b46b4aec",
+            "name": "browser_desktop_and_mobile",
+            "returncode": 1,
+            "status": "FAIL"
+          },
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "staging_qa",
+            "task_id": "staging_qa_failed_run_41717454286"
+          }
+        ],
+        "failure_action": "blocked",
+        "fingerprint": "e5b9dcf2cbfbcc5721cc1dec20cdf4de869757dcfe809533b538a5111df15d0c",
+        "product_input_fingerprint": "a813e4c92e4995ef78ec554491ea6587212fd893d50015013d38f9345a128f01",
+        "real_failure": {
+          "conclusion": "failure",
+          "failure_signature": "218eae2486b6ca55e7e345fa842f545dcf60344eaec31e760d4392bdccd9da2b",
+          "head_sha": "b4c2f803622ea03fc41c3091866fb31edf693e93",
+          "run_id": 41717454286,
+          "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/41717454286"
+        },
+        "reason": "Targeted deterministic gate failed; no validated repair candidate; Independent candidate gate rejected or could not execute: browser_desktop_and_mobile; Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256"
+      },
+      "family": "staging_qa",
+      "id": "2a49fb8361d0fc5cecc40685a6547e604a0e7c7093d287760f10b064f607185a",
+      "kind": "blocker",
+      "task_id": "staging_qa_failed_run_41717454286"
     }
   ],
   "pending_transitions": [
@@ -93237,6 +93912,12 @@
       "event_id": "46f1b0af53643c096710ce2a8b2342339ab58a2655c3fafa09195ea6e8036554",
       "family": "staging_qa",
       "task_id": "staging_qa_failed_run_41442992580"
+    },
+    {
+      "at": "2026-11-03T22:24:04.485625Z",
+      "event_id": "2a49fb8361d0fc5cecc40685a6547e604a0e7c7093d287760f10b064f607185a",
+      "family": "staging_qa",
+      "task_id": "staging_qa_failed_run_41717454286"
     }
   ],
   "schema_version": 2,
@@ -121295,7 +121976,654 @@
       "approved": true,
       "attempts": 1,
       "audit_counts": {},
-      "blocker_signatures": [],
+      "blocked_revision": [
+        "b4c2f803622ea03fc41c3091866fb31edf693e93",
+        "221d875fdf9a77ed795fbf9fb2350bbf211bd62e0c0d2d205390f8a50a6fef47"
+      ],
+      "blocker": {
+        "blockers": [
+          {
+            "evidence": [
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "-rs",
+                  "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+                  "-m",
+                  "not integration",
+                  "tests"
+                ],
+                "failure_hash": "199b0b55485b389d15519e49cd497d4614a77eb0ef733bee300e6c9a2a711209",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+                "log_sha256": "3cc05819db59b0608b1fa61505202a9271cc144701337ae669a29fcddec003ed",
+                "name": "targeted_deterministic_tests",
+                "pytest": {
+                  "cases": [],
+                  "collected": 0,
+                  "failed": 0,
+                  "passed": 0,
+                  "proof": false,
+                  "skipped": 0
+                },
+                "returncode": 124,
+                "status": "FAIL"
+              },
+              {
+                "baseline_full_gate": {
+                  "command": [
+                    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                    "-m",
+                    "pytest",
+                    "-q"
+                  ],
+                  "output": "Validation command unavailable or timed out: TimeoutExpired",
+                  "returncode": 124
+                },
+                "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+                "blocker_kind": "executor_capability_missing",
+                "changed_paths": [],
+                "context": [
+                  {
+                    "editable": false,
+                    "path": "tests/test_stats_fichas_f6_n3.py",
+                    "sha256": "c9b1fbda74d55d5faa021098fcdec9d126e4ee5c39d2d719be66e2f57b0736ea"
+                  },
+                  {
+                    "editable": false,
+                    "path": "tests/test_beta_source_runtime_fast.py",
+                    "sha256": "9e6a9bb5da888dde256fd51183eafaf9463408906a7d029f9482d363ed34b131"
+                  },
+                  {
+                    "editable": false,
+                    "path": "tests/test_source_fixes_20261027.py",
+                    "sha256": "de71ec5a6a83394c7cff089641e3ab7370b9b94993fba19039d49376de202e1c"
+                  },
+                  {
+                    "editable": true,
+                    "path": "src/radar_salud/public_source_transport.py",
+                    "sha256": "4e085b39cf00c2ea48b8efec39b54491cacfb9ded0e5df2398daf909fd5a7d07"
+                  },
+                  {
+                    "editable": true,
+                    "path": "src/radar_salud/stats_capture.py",
+                    "sha256": "ba9f0ca7396a69f6ff824d595ae106f7fdc764681f174f9f5b17ffcaf3f45abd"
+                  },
+                  {
+                    "editable": true,
+                    "path": "src/radar_salud/beta_source_engine_fast.py",
+                    "sha256": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37"
+                  },
+                  {
+                    "editable": true,
+                    "path": "src/radar_salud/source_health.py",
+                    "sha256": "dd57795f3b6a7e83b82a2e07ca650f541c2badfacfddc2390594883dad183ba2"
+                  }
+                ],
+                "deterministic_planning": {
+                  "diagnostic": {
+                    "human_required": false,
+                    "kind": "executor_capability_missing",
+                    "reason": "No deterministic strategy is registered for this source/failure"
+                  },
+                  "evidence": [],
+                  "material_progress": false,
+                  "paid_calls": 0,
+                  "plan": null,
+                  "product_files_written": false,
+                  "status": "UNSUPPORTED",
+                  "strategy": null
+                },
+                "evidence": [
+                  {
+                    "captured_stdout_bytes": 101032,
+                    "captured_stdout_sha256": "09db72f639bc9ba5ea5d076954c9e4c71428f051af4980cb7cff46ef5c9dd33b",
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q",
+                      "tests/test_stats_fichas_f6_n3.py::test_loose_n3_pdfs_collapse_into_one_card_titled_from_the_documents",
+                      "tests/test_stats_fichas_f6_n3.py::test_live_n2_keeps_the_n3_card_and_absorbs_the_september_page_card",
+                      "tests/test_stats_fichas_f6_n3.py::test_committed_state_holds_n3_until_the_daily_run_rechecks_the_hashed_pdfs"
+                    ],
+                    "output": "\\n        \"p'\n     b'eriod\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n        \"locator\": '\n     b'\"p\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n '\n     b'       \"kind\": \"captured\",\\n        \"revised\": {\\n          \"from\": 101,\\n '\n     b'         \"pct\": 22.7723\\n        }\\n      },\\n      \"acr.tramite\": {\\n      '\n     b'  \"id\": \"acr.tramite\",\\n        \"value\": 574,\\n        \"unit\": \"solicitude'\n     b's\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inpu'\n     b'ts\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": {\\n          \"fro'\n     b'm\": 584,\\n          \"pct\": -1.7123\\n        }\\n      },\\n      \"acr.tramite.'\n     b'privadas\": {\\n        \"id\": \"acr.tramite.privadas\",\\n        \"value\": 357,'\n     b'\\n        \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"so'\n     b'urce\": \"acreditacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2,7,8\",\\n        \"f'\n     b'ormula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n       '\n     b' \"revised\": {\\n          \"from\": 367,\\n          \"pct\": -2.7248\\n        }\\n'\n     b'      },\\n      \"acr.tramite.publicas\": {\\n        \"id\": \"acr.tramite.publ'\n     b'icas\",\\n        \"value\": 217,\\n        \"unit\": \"solicitudes\",\\n        \"per'\n     b'iod\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n        \"locator\": \"p'\n     b'\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n   '\n     b'     \"kind\": \"captured\",\\n        \"revised\": null\\n      },\\n      \"med.med'\n     b'iadores\": {\\n        \"id\": \"med.mediadores\",\\n        \"value\": 179,\\n      '\n     b'  \"unit\": \"mediadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"'\n     b'mediacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": nu'\n     b'll,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\":'\n     b' {\\n          \"from\": 175,\\n          \"pct\": 2.2857\\n        }\\n      },'\n     b'\\n      \"med.solicitudes_acumuladas\": {\\n        \"id\": \"med.solicitudes_ac'\n     b'umuladas\",\\n        \"value\": 12697,\\n        \"unit\": \"solicitudes\",\\n      '\n     b'  \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n        \"locator\":'\n     b' \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n'\n     b'        \"kind\": \"captured\",\\n        \"revised\": {\\n          \"from\": 12067'\n     b',\\n          \"pct\": 5.2209\\n        }\\n      },\\n      \"rec.promedio.2026\": '\n     b'{\\n        \"id\": \"rec.promedio.2026\",\\n        \"value\": 1880,\\n        \"uni'\n     b't\": \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"reclamos'\n     b'\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n        \"formula\": null,\\n     '\n     b'   \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": {\\n      '\n     b'    \"from\": 1996,\\n          \"pct\": -5.8116\\n        }\\n      },\\n      \"rec'\n     b'.promedio.2025\": {\\n        \"id\": \"rec.promedio.2025\",\\n        \"value\": 1'\n     b'530,\\n        \"unit\": \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"s'\n     b'ource\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n        \"formula\"'\n     b': null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revis'\n     b'ed\": null\\n      },\\n      \"rec.pct_informado\": {\\n        \"id\": \"rec.pct_i'\n     b'nformado\",\\n        \"value\": 23,\\n        \"unit\": \"%\",\\n        \"period\": \"'\n     b'2026-09\",\\n        \"source\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2'\n     b'\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captu'\n     b'red\",\\n        \"revised\": {\\n          \"from\": 30,\\n          \"pct\": -23.33'\n     b'33\\n        }\\n      },\\n      \"acr.sin_observaciones\": {\\n        \"id\": \"ac'\n     b'r.sin_observaciones\",\\n        \"value\": 885,\\n        \"unit\": \"prestadores'\n     b'\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n        \"locator'\n     b'\": null,\\n        \"formula\": \"acreditados \\xe2\\x88\\x92 con observaciones\",'\n     b'\\n        \"inputs\": [\\n          \"acr.acreditados\",\\n          \"acr.con_obs'\n     b'ervaciones\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": nul'\n     b'l\\n      },\\n      \"acr.observaciones_pct\": {\\n        \"id\": \"acr.observaci'\n     b'ones_pct\",\\n        \"value\": 12.289395441030724,\\n        \"unit\": \"%\",\\n   '\n     b'     \"period\": \"2026-09\",\\n        \"source\": null,\\n        \"locator\": nul'\n     b'l,\\n        \"formula\": \"con observaciones / acreditados \\xc3\\x97 100\",\\n    '\n     b'    \"inputs\": [\\n          \"acr.con_observaciones\",\\n          \"acr.acredi'\n     b'tados\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": null\\n   '\n     b'   },\\n      \"acr.privadas_pct\": {\\n        \"id\": \"acr.privadas_pct\",\\n    '\n     b'    \"value\": 62.19512195121951,\\n        \"unit\": \"%\",\\n        \"period\": \"'\n     b'2026-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"form'\n     b'ula\": \"privadas / en tramitaci\\xc3\\xb3n \\xc3\\x97 100\",\\n        \"inputs\":'\n     b' [\\n          \"acr.tramite.privadas\",\\n          \"acr.tramite\"\\n        ],\\n'\n     b'        \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"rec.d'\n     b'elta\": {\\n        \"id\": \"rec.delta\",\\n        \"value\": 350,\\n        \"unit\"'\n     b': \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n     '\n     b'   \"locator\": null,\\n        \"formula\": \"promedio(t) \\xe2\\x88\\x92 promedio'\n     b'(a\\xc3\\xb1o anterior)\",\\n        \"inputs\": [\\n          \"rec.promedio.2026\",'\n     b'\\n          \"rec.promedio.2025\"\\n        ],\\n        \"kind\": \"derived\",\\n   '\n     b'     \"revised\": null\\n      },\\n      \"rec.pct\": {\\n        \"id\": \"rec.pct\"'\n     b',\\n        \"value\": 22.875816993464053,\\n        \"unit\": \"%\",\\n        \"per'\n     b'iod\": \"2026-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n      '\n     b'  \"formula\": \"\\xce\\x94 / promedio mensual del a\\xc3\\xb1o anterior \\xc3\\x97'\n     b' 100\",\\n        \"inputs\": [\\n          \"rec.delta\",\\n          \"rec.promedi'\n     b'o.2025\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": null\\n  '\n     b'    },\\n      \"acr.acreditados.2026-06\": {\\n        \"id\": \"acr.acreditados'\n     b'.2026-06\",\\n        \"value\": 971,\\n        \"unit\": \"prestadores\",\\n        '\n     b'\"period\": \"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"loc'\n     b'ator\": null,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kin'\n     b'd\": \"captured\",\\n        \"revised\": null\\n      },\\n      \"acr.acreditados.'\n     b'qoq\": {\\n        \"id\": \"acr.acreditados.qoq\",\\n        \"value\": 38,\\n      '\n     b'  \"unit\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": '\n     b'null,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 '\n     b'stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.acredi'\n     b'tados\",\\n          \"acr.acreditados.2026-06\"\\n        ],\\n        \"kind\": \"'\n     b'derived\",\\n        \"revised\": null\\n      },\\n      \"acr.con_observaciones.'\n     b'2026-06\": {\\n        \"id\": \"acr.con_observaciones.2026-06\",\\n        \"valu'\n     b'e\": 101,\\n        \"unit\": \"prestadores\",\\n        \"period\": \"2026-06\",\\n   '\n     b'     \"source\": \"prev_acreditacion\",\\n        \"locator\": null,\\n        \"fo'\n     b'rmula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        '\n     b'\"revised\": null\\n      },\\n      \"acr.con_observaciones.qoq\": {\\n        \"i'\n     b'd\": \"acr.con_observaciones.qoq\",\\n        \"value\": 23,\\n        \"unit\": \"p'\n     b'restadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n      '\n     b'  \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 stock(bo'\n     b'let\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.con_observacio'\n     b'nes\",\\n          \"acr.con_observaciones.2026-06\"\\n        ],\\n        \"kind'\n     b'\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.2026-0'\n     b'6\": {\\n        \"id\": \"acr.tramite.2026-06\",\\n        \"value\": 584,\\n       '\n     b' \"unit\": \"solicitudes\",\\n        \"period\": \"2026-06\",\\n        \"source\": \"'\n     b'prev_acreditacion\",\\n        \"locator\": null,\\n        \"formula\": null,\\n  '\n     b'      \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": null\\n'\n     b'      },\\n      \"acr.tramite.qoq\": {\\n        \"id\": \"acr.tramite.qoq\",\\n   '\n     b'     \"value\": -10,\\n        \"unit\": \"solicitudes\",\\n        \"period\": \"202'\n     b'6-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"formula'\n     b'\": \"stock(t) \\xe2\\x88\\x92 stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\"'\n     b': [\\n          \"acr.tramite\",\\n          \"acr.tramite.2026-06\"\\n        ],\\n'\n     b'        \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.t'\n     b'ramite.privadas.2026-06\": {\\n        \"id\": \"acr.tramite.privadas.2026-06\"'\n     b',\\n        \"value\": 367,\\n        \"unit\": \"solicitudes\",\\n        \"period\":'\n     b' \"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"locator\": nu'\n     b'll,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"capt'\n     b'ured\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.privadas.qoq\"'\n     b': {\\n        \"id\": \"acr.tramite.privadas.qoq\",\\n        \"value\": -10,\\n    '\n     b'    \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"source\"'\n     b': null,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88'\n     b'\\x92 stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.'\n     b'tramite.privadas\",\\n          \"acr.tramite.privadas.2026-06\"\\n        ],\\n '\n     b'       \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.tr'\n     b'amite.publicas.2026-06\": {\\n        \"id\": \"acr.tramite.publicas.2026-06\",'\n     b'\\n        \"value\": 217,\\n        \"unit\": \"solicitudes\",\\n        \"period\": '\n     b'\"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"locator\": nul'\n     b'l,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captu'\n     b'red\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.publicas.qoq\":'\n     b' {\\n        \"id\": \"acr.tramite.publicas.qoq\",\\n        \"value\": 0,\\n       '\n     b' \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"source\": n'\n     b'ull,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 s'\n     b'tock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.tramite'\n     b'.publicas\",\\n          \"acr.tramite.publicas.2026-06\"\\n        ],\\n        '\n     b'\"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.observaci'\n     b'ones_pct.2026-06\": {\\n        \"id\": \"acr.observaciones_pct.2026-06\",\\n    '\n     b'    \"value\": 10.401647785787848,\\n        \"unit\": \"%\",\\n        \"period\": '\n     b'\"2026-06\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"for'\n     b'mula\": \"con observaciones / acreditados \\xc3\\x97 100 (bolet\\xc3\\xadn anterio'\n     b'r)\",\\n        \"inputs\": [\\n          \"acr.con_observaciones.2026-06\",\\n    '\n     b'      \"acr.acreditados.2026-06\"\\n        ],\\n        \"kind\": \"derived\",\\n  '\n     b'      \"revised\": null\\n      },\\n      \"acr.acreditados.previous\": {\\n     '\n     b'   \"id\": \"acr.acreditados.previous\",\\n        \"value\": 971,\\n        \"unit'\n     b'\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acredi'\n     b'tacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": nul'\n     b'l,\\n        \"inputs\": [],\\n        \"kind\": \"previous_release\",\\n        \"re'\n     b'vised\": null\\n      },\\n      \"acr.con_observaciones.previous\": {\\n        '\n     b'\"id\": \"acr.con_observaciones.previous\",\\n        \"value\": 101,\\n        \"u'\n     b'nit\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acr'\n     b'editacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": '\n     b'null,\\n        \"inputs\": [],\\n        \"kind\": \"previous_release\",\\n        '\n     b'\"revised\": null\\n      },\\n      \"acr.tramite.previous\": {\\n        \"id\": \"'\n     b'acr.tramite.previous\",\\n        \"value\": 584,\\n        \"unit\": \"solicitude'\n     b's\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": null,\\n        \"in'\n     b'puts\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n '\n     b'     },\\n      \"acr.tramite.privadas.previous\": {\\n        \"id\": \"acr.tram'\n     b'ite.privadas.previous\",\\n        \"value\": 367,\\n        \"unit\": \"solicitud'\n     b'es\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n    '\n     b'    \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": null,\\n        \"i'\n     b'nputs\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n'\n     b'      },\\n      \"med.mediadores.previous\": {\\n        \"id\": \"med.mediadore'\n     b's.previous\",\\n        \"value\": 175,\\n        \"unit\": \"mediadores\",\\n       '\n     b' \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n        \"locator\": '\n     b'\"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n '\n     b'       \"kind\": \"previous_release\",\\n        \"revised\": null\\n      },\\n    '\n     b'  \"med.solicitudes_acumuladas.previous\": {\\n        \"id\": \"med.solicitude'\n     b's_acumuladas.previous\",\\n        \"value\": 12067,\\n        \"unit\": \"solicit'\n     b'udes\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inpu'\n     b'ts\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n   '\n     b'   },\\n      \"rec.promedio.2026.previous\": {\\n        \"id\": \"rec.promedio.'\n     b'2026.previous\",\\n        \"value\": 1996,\\n        \"unit\": \"reclamos\",\\n     '\n     b'   \"period\": \"2026-09\",\\n        \"source\": \"reclamos\",\\n        \"locator\":'\n     b' \"p\\xc3\\xa1gs. 2\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n    '\n     b'    \"kind\": \"previous_release\",\\n        \"revised\": null\\n      },\\n      \"'\n     b'rec.pct_informado.previous\": {\\n        \"id\": \"rec.pct_informado.previous'\n     b'\",\\n        \"value\": 30,\\n        \"unit\": \"%\",\\n        \"period\": \"2026-09\"'\n     b',\\n        \"source\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n '\n     b'       \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"previous_'\n     b'release\",\\n        \"revised\": null\\n      },\\n      \"acr.publicas_pct\": {\\n '\n     b'       \"id\": \"acr.publicas_pct\",\\n        \"value\": 37.80487804878049,\\n   '\n     b'     \"unit\": \"%\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n '\n     b'       \"locator\": null,\\n        \"formula\": \"100 \\xe2\\x88\\x92 % privadas\",'\n     b'\\n        \"inputs\": [\\n          \"acr.privadas_pct\"\\n        ],\\n        \"ki'\n     b'nd\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.sin_observac'\n     b'iones_pct\": {\\n        \"id\": \"acr.sin_observaciones_pct\",\\n        \"value\"'\n     b': 87.71060455896928,\\n        \"unit\": \"%\",\\n        \"period\": \"2026-09\",\\n '\n     b'       \"source\": null,\\n        \"locator\": null,\\n        \"formula\": \"100 '\n     b'\\xe2\\x88\\x92 % con observaciones\",\\n        \"inputs\": [\\n          \"acr.obs'\n     b'ervaciones_pct\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\":'\n     b' null\\n      }\\n    },\\n    \"constants\": [\\n      30,\\n      2,\\n      100'\n     b'\\n    ],\\n    \"entity_codes\": [],\\n    \"entity_keys\": [],\\n    \"release_key\"'\n     b': \"2026-09:e59bc2e84bc9ebb3\",\\n    \"period\": \"2026-09\",\\n    \"lectura_pool'\n     b'\": [\\n      {\\n        \"id\": \"acr.acreditados\",\\n        \"value\": 1009,\\n   '\n     b'     \"unit\": \"prestadores\",\\n        \"metric\": \"prestadores\",\\n        \"en'\n     b'tity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"20'\n     b'26-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope\": \"sy'\n     b'stem\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n    '\n     b'    \"base\": null\\n      },\\n      {\\n        \"id\": \"acr.con_observaciones\",'\n     b'\\n        \"value\": 124,\\n        \"unit\": \"prestadores\",\\n        \"metric\": '\n     b'\"prestadores\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        '\n     b'\"periods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": f'\n     b'alse,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"stock_at\",\\n    '\n     b'    \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id\"'\n     b': \"acr.sin_observaciones\",\\n        \"value\": 885,\\n        \"unit\": \"presta'\n     b'dores\",\\n        \"metric\": \"prestadores\",\\n        \"entity\": null,\\n       '\n     b' \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n        ],\\n  '\n     b'      \"requires_period\": false,\\n        \"scope\": \"system\",\\n        \"peri'\n     b'od_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": null\\n   '\n     b'   },\\n      {\\n        \"id\": \"acr.observaciones_pct\",\\n        \"value\": 12'\n     b'.289395441030724,\\n        \"unit\": \"%\",\\n        \"metric\": null,\\n        \"'\n     b'entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"'\n     b'2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope\": \"'\n     b'system\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n  '\n     b'      \"base\": \"acreditados\"\\n      },\\n      {\\n        \"id\": \"acr.tramite\"'\n     b',\\n        \"value\": 574,\\n        \"unit\": \"solicitudes\",\\n        \"metric\":'\n     b' \"solicitudes\",\\n        \"entity\": null,\\n        \"signed\": false,\\n       '\n     b' \"periods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": '\n     b'false,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"stock_at\",\\n   '\n     b'     \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id'\n     b'\": \"acr.tramite.privadas\",\\n        \"value\": 357,\\n        \"unit\": \"solici'\n     b'tudes\",\\n        \"metric\": \"solicitudes\",\\n        \"entity\": null,\\n       '\n     b' \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n        ],\\n  '\n     b'      \"requires_period\": false,\\n        \"scope\": \"private\",\\n        \"per'\n     b'iod_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": null\\n  '\n     b'    },\\n      {\\n        \"id\": \"acr.tramite.publicas\",\\n        \"value\": 21'\n     b'7,\\n        \"unit\": \"solicitudes\",\\n        \"metric\": \"solicitudes\",\\n     '\n     b'   \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n       '\n     b'   \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope'\n     b'\": \"public\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false'\n     b',\\n        \"base\": null\\n      },\\n      {\\n        \"id\": \"acr.privadas_pct\"'\n     b',\\n        \"value\": 62.19512195121951,\\n        \"unit\": \"%\",\\n        \"metr'\n     b'ic\": null,\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"per'\n     b'iods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": false'\n     b',\\n        \"scope\": \"private\",\\n        \"period_kind\": \"stock_at\",\\n       '\n     b' \"trivial\": false,\\n        \"base\": \"solicitudes_en_tramite\"\\n      },\\n   '\n     b'   {\\n        \"id\": \"med.mediadores\",\\n        \"value\": 179,\\n        \"unit'\n     b'\": \"mediadores\",\\n        \"metric\": \"mediadores\",\\n        \"entity\": null,'\n     b'\\n        \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n     '\n     b'   ],\\n        \"requires_period\": false,\\n        \"scope\": \"system\",\\n     '\n     b'   \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": '\n     b'null\\n      },\\n      {\\n        \"id\": \"med.solicitudes_acumuladas\",\\n      '\n     b'  \"value\": 12697,\\n        \"unit\": \"solicitudes\",\\n        \"metric\": \"soli'\n     b'citudes\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"peri'\n     b'ods\": [\\n          \"2019-01\",\\n          \"2026-09\"\\n        ],\\n        \"req'\n     b'uires_period\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\": '\n     b'\"interval\",\\n        \"trivial\": false,\\n        \"base\": null\\n      },\\n    '\n     b'  {\\n        \"id\": \"rec.promedio.2026\",\\n        \"value\": 1880,\\n        \"u'\n     b'nit\": \"reclamos\",\\n        \"metric\": \"reclamos\",\\n        \"entity\": null,\\n'\n     b'        \"signed\": false,\\n        \"periods\": [\\n          \"2026-01\",\\n     '\n     b'     \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"sco'\n     b'pe\": \"system\",\\n        \"period_kind\": \"ytd\",\\n        \"trivial\": false,\\n '\n     b'       \"base\": null\\n      },\\n      {\\n        \"id\": \"rec.delta\",\\n        '\n     b'\"value\": 350,\\n        \"unit\": \"reclamos\",\\n        \"metric\": \"reclamos\",\\n'\n     b'        \"entity\": null,\\n        \"signed\": true,\\n        \"periods\": [\\n   '\n     b'       \"2026-01\",\\n          \"2026-09\"\\n        ],\\n        \"requires_perio'\n     b'd\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"ytd\",\\n    '\n     b'    \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id\"'\n     b': \"rec.pct\",\\n        \"value\": 22.875816993464053,\\n        \"unit\": \"%\",\\n '\n     b'       \"metric\": null,\\n        \"entity\": null,\\n        \"signed\": true,\\n '\n     b'       \"periods\": [\\n          \"2026-01\",\\n          \"2026-09\"\\n        ],\\n'\n     b'        \"requires_period\": false,\\n        \"scope\": \"system\",\\n        \"pe'\n     b'riod_kind\": \"ytd\",\\n        \"trivial\": false,\\n        \"base\": \"promedio_m'\n     b'ensual_anio_anterior\"\\n      },\\n      {\\n        \"id\": \"rec.promedio.2025\"'\n     b',\\n        \"value\": 1530,\\n        \"unit\": \"reclamos\",\\n        \"metric\": \"'\n     b'reclamos\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"per'\n     b'iods\": [\\n          \"2025-01\",\\n          \"2025-12\"\\n        ],\\n        \"re'\n     b'quires_period\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\":'\n     b' \"interval\",\\n        \"trivial\": false,\\n        \"base\": null\\n      }\\n    '\n     b'],\\n    \"derived_ratios\": [\\n      {\\n        \"id\": \"ratio.privadas_por_pub'\n     b'lica\",\\n        \"value\": 1.6451612903225807,\\n        \"unit\": \"x\",\\n       '\n     b' \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n         '\n     b' \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"formula'\n     b'\": \"privadas / p\\xc3\\xbablicas\",\\n        \"inputs\": [\\n          \"acr.tramit'\n     b'e.privadas\",\\n          \"acr.tramite.publicas\"\\n        ],\\n        \"scope\"'\n     b': \"private\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false'\n     b',\\n        \"base\": null\\n      },\\n      {\\n        \"id\": \"fraccion.observac'\n     b'iones\",\\n        \"value\": 0.12289395441030723,\\n        \"unit\": \"share\",\\n '\n     b'       \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n   '\n     b'       \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"f'\n     b'ormula\": \"con observaciones / acreditados\",\\n        \"inputs\": [\\n        '\n     b'  \"acr.observaciones_pct\"\\n        ],\\n        \"scope\": \"system\",\\n        '\n     b'\"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": \"ac'\n     b'reditados\"\\n      },\\n      {\\n        \"id\": \"ratio.reclamos_vs_anio_anteri'\n     b'or\",\\n        \"value\": 1.2287581699346406,\\n        \"unit\": \"x\",\\n        \"'\n     b'entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"'\n     b'2026-01\",\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": fals'\n     b'e,\\n        \"formula\": \"promedio(t) / promedio(a\\xc3\\xb1o anterior)\",\\n     '\n     b'   \"inputs\": [\\n          \"rec.promedio.2026\",\\n          \"rec.promedio.20'\n     b'25\"\\n        ],\\n        \"scope\": \"system\",\\n        \"period_kind\": \"ytd\",\\n'\n     b'        \"trivial\": false,\\n        \"base\": null\\n      }\\n    ],\\n    \"ranks'\n     b'\": []\\n  },\\n  \"first_verified_at\": \"2026-11-03T20:19:30.271733+00:00\"\\n}\\n') and '2026-09' == '2026-06'\n  \n  - 2026-06\n  ?       ^\n  + 2026-09\n  ?       ^)\n3 failed in 0.38s\n",
+                    "returncode": 1
+                  },
+                  {
+                    "command": [
+                      "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                      "-m",
+                      "pytest",
+                      "-q"
+                    ],
+                    "output": "Validation command unavailable or timed out: TimeoutExpired",
+                    "returncode": 124
+                  }
+                ],
+                "failure_sha256": "3fe325b828685dd4ea3f9222b261fafbb690346edee92ded78d8acde80f60b9a",
+                "material_progress": false,
+                "signature": null,
+                "source_run_id": null,
+                "status": "BLOCKED",
+                "validated": false
+              }
+            ],
+            "fingerprint": "1f9151a45e0b72709c9e119664d15af99ab7ec5c920b326c21f712fc2b043742",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Targeted deterministic gate failed; no validated repair candidate",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "browser_proof": {
+                  "cases": [
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 21,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 81
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  79 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  80 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 81 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  82 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  83 |  await card.locator('[data-detail]').first().click();\n  84 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:81:21"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 33,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 13
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-\u001b[7m09-15\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m10-30\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 21,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 81
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  79 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  80 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 81 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  82 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  83 |  await card.locator('[data-detail]').first().click();\n  84 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:81:21"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "fiscalization.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "location": {
+                                "column": 33,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                                "line": 13
+                              },
+                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-\u001b[7m09-15\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m10-30\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                            }
+                          ],
+                          "status": "failed"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "desktop",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 367
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  365 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  366 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 367 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  369 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  370 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:367:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    },
+                    {
+                      "expected_status": "passed",
+                      "file": "product.spec.cjs",
+                      "project": "mobile",
+                      "results": [
+                        {
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "column": 47,
+                                "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                                "line": 367
+                              },
+                              "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  365 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  366 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 367 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  369 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  370 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:367:47"
+                            }
+                          ],
+                          "status": "timedOut"
+                        }
+                      ],
+                      "status": "unexpected",
+                      "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                    }
+                  ],
+                  "projects": [
+                    "desktop",
+                    "mobile"
+                  ],
+                  "stats": {
+                    "duration": 206494.682,
+                    "expected": 172,
+                    "flaky": 0,
+                    "skipped": 8,
+                    "startTime": "2026-11-03T22:20:18.599Z",
+                    "unexpected": 6
+                  }
+                },
+                "command": [
+                  "npm",
+                  "run",
+                  "test:browser"
+                ],
+                "failure_hash": "170a2abe8ad87b678351f3bf3a3cb01605e07e7a2be2e047bbe87ae72300fdaa",
+                "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+                "log_sha256": "4ec3d906a8320ee1d61321ae4089254aadfb0e8b07e9bfbdbfe90ec5b46b4aec",
+                "name": "browser_desktop_and_mobile",
+                "returncode": 1,
+                "status": "FAIL"
+              }
+            ],
+            "fingerprint": "7c199f5a59f15965f8af04a753d1fcdd512e3556ee73631a70b80a34d9261e84",
+            "human_required": false,
+            "kind": "technical",
+            "reason": "Independent candidate gate rejected or could not execute: browser_desktop_and_mobile",
+            "source_urls": []
+          },
+          {
+            "evidence": [
+              {
+                "diagnostics_are_acceptance": false,
+                "family": "staging_qa",
+                "task_id": "staging_qa_failed_run_41717454286"
+              }
+            ],
+            "fingerprint": "874e9f2fdfec7eda670536286827339ddcbbdacf70b7356d155eddbafb664a32",
+            "human_required": false,
+            "kind": "acceptance",
+            "reason": "Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256",
+            "source_urls": []
+          }
+        ],
+        "canonical_material_signature": "5f6ddf70955ec88dc80a2a9e6161dfeaa12a60931dfc6b4e0ffea304215b09f2",
+        "evidence": [
+          {
+            "command": [
+              "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+              "-m",
+              "pytest",
+              "-q",
+              "-rs",
+              "--junitxml=/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.xml",
+              "-m",
+              "not integration",
+              "tests"
+            ],
+            "failure_hash": "199b0b55485b389d15519e49cd497d4614a77eb0ef733bee300e6c9a2a711209",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/targeted-pytest.log",
+            "log_sha256": "3cc05819db59b0608b1fa61505202a9271cc144701337ae669a29fcddec003ed",
+            "name": "targeted_deterministic_tests",
+            "pytest": {
+              "cases": [],
+              "collected": 0,
+              "failed": 0,
+              "passed": 0,
+              "proof": false,
+              "skipped": 0
+            },
+            "returncode": 124,
+            "status": "FAIL"
+          },
+          {
+            "baseline_full_gate": {
+              "command": [
+                "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                "-m",
+                "pytest",
+                "-q"
+              ],
+              "output": "Validation command unavailable or timed out: TimeoutExpired",
+              "returncode": 124
+            },
+            "blocker": "No supported deterministic repair strategy for the reproduced failure; model lane disabled",
+            "blocker_kind": "executor_capability_missing",
+            "changed_paths": [],
+            "context": [
+              {
+                "editable": false,
+                "path": "tests/test_stats_fichas_f6_n3.py",
+                "sha256": "c9b1fbda74d55d5faa021098fcdec9d126e4ee5c39d2d719be66e2f57b0736ea"
+              },
+              {
+                "editable": false,
+                "path": "tests/test_beta_source_runtime_fast.py",
+                "sha256": "9e6a9bb5da888dde256fd51183eafaf9463408906a7d029f9482d363ed34b131"
+              },
+              {
+                "editable": false,
+                "path": "tests/test_source_fixes_20261027.py",
+                "sha256": "de71ec5a6a83394c7cff089641e3ab7370b9b94993fba19039d49376de202e1c"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/public_source_transport.py",
+                "sha256": "4e085b39cf00c2ea48b8efec39b54491cacfb9ded0e5df2398daf909fd5a7d07"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/stats_capture.py",
+                "sha256": "ba9f0ca7396a69f6ff824d595ae106f7fdc764681f174f9f5b17ffcaf3f45abd"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/beta_source_engine_fast.py",
+                "sha256": "bf41467a8f8ee2c7a7cf81f51f483646bfb4335964f98e72e209bf8ed4044c37"
+              },
+              {
+                "editable": true,
+                "path": "src/radar_salud/source_health.py",
+                "sha256": "dd57795f3b6a7e83b82a2e07ca650f541c2badfacfddc2390594883dad183ba2"
+              }
+            ],
+            "deterministic_planning": {
+              "diagnostic": {
+                "human_required": false,
+                "kind": "executor_capability_missing",
+                "reason": "No deterministic strategy is registered for this source/failure"
+              },
+              "evidence": [],
+              "material_progress": false,
+              "paid_calls": 0,
+              "plan": null,
+              "product_files_written": false,
+              "status": "UNSUPPORTED",
+              "strategy": null
+            },
+            "evidence": [
+              {
+                "captured_stdout_bytes": 101032,
+                "captured_stdout_sha256": "09db72f639bc9ba5ea5d076954c9e4c71428f051af4980cb7cff46ef5c9dd33b",
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q",
+                  "tests/test_stats_fichas_f6_n3.py::test_loose_n3_pdfs_collapse_into_one_card_titled_from_the_documents",
+                  "tests/test_stats_fichas_f6_n3.py::test_live_n2_keeps_the_n3_card_and_absorbs_the_september_page_card",
+                  "tests/test_stats_fichas_f6_n3.py::test_committed_state_holds_n3_until_the_daily_run_rechecks_the_hashed_pdfs"
+                ],
+                "output": "\\n        \"p'\n     b'eriod\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n        \"locator\": '\n     b'\"p\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n '\n     b'       \"kind\": \"captured\",\\n        \"revised\": {\\n          \"from\": 101,\\n '\n     b'         \"pct\": 22.7723\\n        }\\n      },\\n      \"acr.tramite\": {\\n      '\n     b'  \"id\": \"acr.tramite\",\\n        \"value\": 574,\\n        \"unit\": \"solicitude'\n     b's\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inpu'\n     b'ts\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": {\\n          \"fro'\n     b'm\": 584,\\n          \"pct\": -1.7123\\n        }\\n      },\\n      \"acr.tramite.'\n     b'privadas\": {\\n        \"id\": \"acr.tramite.privadas\",\\n        \"value\": 357,'\n     b'\\n        \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"so'\n     b'urce\": \"acreditacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2,7,8\",\\n        \"f'\n     b'ormula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n       '\n     b' \"revised\": {\\n          \"from\": 367,\\n          \"pct\": -2.7248\\n        }\\n'\n     b'      },\\n      \"acr.tramite.publicas\": {\\n        \"id\": \"acr.tramite.publ'\n     b'icas\",\\n        \"value\": 217,\\n        \"unit\": \"solicitudes\",\\n        \"per'\n     b'iod\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n        \"locator\": \"p'\n     b'\\xc3\\xa1gs. 2,7,8\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n   '\n     b'     \"kind\": \"captured\",\\n        \"revised\": null\\n      },\\n      \"med.med'\n     b'iadores\": {\\n        \"id\": \"med.mediadores\",\\n        \"value\": 179,\\n      '\n     b'  \"unit\": \"mediadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"'\n     b'mediacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": nu'\n     b'll,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\":'\n     b' {\\n          \"from\": 175,\\n          \"pct\": 2.2857\\n        }\\n      },'\n     b'\\n      \"med.solicitudes_acumuladas\": {\\n        \"id\": \"med.solicitudes_ac'\n     b'umuladas\",\\n        \"value\": 12697,\\n        \"unit\": \"solicitudes\",\\n      '\n     b'  \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n        \"locator\":'\n     b' \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n'\n     b'        \"kind\": \"captured\",\\n        \"revised\": {\\n          \"from\": 12067'\n     b',\\n          \"pct\": 5.2209\\n        }\\n      },\\n      \"rec.promedio.2026\": '\n     b'{\\n        \"id\": \"rec.promedio.2026\",\\n        \"value\": 1880,\\n        \"uni'\n     b't\": \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"reclamos'\n     b'\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n        \"formula\": null,\\n     '\n     b'   \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": {\\n      '\n     b'    \"from\": 1996,\\n          \"pct\": -5.8116\\n        }\\n      },\\n      \"rec'\n     b'.promedio.2025\": {\\n        \"id\": \"rec.promedio.2025\",\\n        \"value\": 1'\n     b'530,\\n        \"unit\": \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"s'\n     b'ource\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n        \"formula\"'\n     b': null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revis'\n     b'ed\": null\\n      },\\n      \"rec.pct_informado\": {\\n        \"id\": \"rec.pct_i'\n     b'nformado\",\\n        \"value\": 23,\\n        \"unit\": \"%\",\\n        \"period\": \"'\n     b'2026-09\",\\n        \"source\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2'\n     b'\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captu'\n     b'red\",\\n        \"revised\": {\\n          \"from\": 30,\\n          \"pct\": -23.33'\n     b'33\\n        }\\n      },\\n      \"acr.sin_observaciones\": {\\n        \"id\": \"ac'\n     b'r.sin_observaciones\",\\n        \"value\": 885,\\n        \"unit\": \"prestadores'\n     b'\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n        \"locator'\n     b'\": null,\\n        \"formula\": \"acreditados \\xe2\\x88\\x92 con observaciones\",'\n     b'\\n        \"inputs\": [\\n          \"acr.acreditados\",\\n          \"acr.con_obs'\n     b'ervaciones\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": nul'\n     b'l\\n      },\\n      \"acr.observaciones_pct\": {\\n        \"id\": \"acr.observaci'\n     b'ones_pct\",\\n        \"value\": 12.289395441030724,\\n        \"unit\": \"%\",\\n   '\n     b'     \"period\": \"2026-09\",\\n        \"source\": null,\\n        \"locator\": nul'\n     b'l,\\n        \"formula\": \"con observaciones / acreditados \\xc3\\x97 100\",\\n    '\n     b'    \"inputs\": [\\n          \"acr.con_observaciones\",\\n          \"acr.acredi'\n     b'tados\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": null\\n   '\n     b'   },\\n      \"acr.privadas_pct\": {\\n        \"id\": \"acr.privadas_pct\",\\n    '\n     b'    \"value\": 62.19512195121951,\\n        \"unit\": \"%\",\\n        \"period\": \"'\n     b'2026-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"form'\n     b'ula\": \"privadas / en tramitaci\\xc3\\xb3n \\xc3\\x97 100\",\\n        \"inputs\":'\n     b' [\\n          \"acr.tramite.privadas\",\\n          \"acr.tramite\"\\n        ],\\n'\n     b'        \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"rec.d'\n     b'elta\": {\\n        \"id\": \"rec.delta\",\\n        \"value\": 350,\\n        \"unit\"'\n     b': \"reclamos\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n     '\n     b'   \"locator\": null,\\n        \"formula\": \"promedio(t) \\xe2\\x88\\x92 promedio'\n     b'(a\\xc3\\xb1o anterior)\",\\n        \"inputs\": [\\n          \"rec.promedio.2026\",'\n     b'\\n          \"rec.promedio.2025\"\\n        ],\\n        \"kind\": \"derived\",\\n   '\n     b'     \"revised\": null\\n      },\\n      \"rec.pct\": {\\n        \"id\": \"rec.pct\"'\n     b',\\n        \"value\": 22.875816993464053,\\n        \"unit\": \"%\",\\n        \"per'\n     b'iod\": \"2026-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n      '\n     b'  \"formula\": \"\\xce\\x94 / promedio mensual del a\\xc3\\xb1o anterior \\xc3\\x97'\n     b' 100\",\\n        \"inputs\": [\\n          \"rec.delta\",\\n          \"rec.promedi'\n     b'o.2025\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\": null\\n  '\n     b'    },\\n      \"acr.acreditados.2026-06\": {\\n        \"id\": \"acr.acreditados'\n     b'.2026-06\",\\n        \"value\": 971,\\n        \"unit\": \"prestadores\",\\n        '\n     b'\"period\": \"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"loc'\n     b'ator\": null,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kin'\n     b'd\": \"captured\",\\n        \"revised\": null\\n      },\\n      \"acr.acreditados.'\n     b'qoq\": {\\n        \"id\": \"acr.acreditados.qoq\",\\n        \"value\": 38,\\n      '\n     b'  \"unit\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": '\n     b'null,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 '\n     b'stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.acredi'\n     b'tados\",\\n          \"acr.acreditados.2026-06\"\\n        ],\\n        \"kind\": \"'\n     b'derived\",\\n        \"revised\": null\\n      },\\n      \"acr.con_observaciones.'\n     b'2026-06\": {\\n        \"id\": \"acr.con_observaciones.2026-06\",\\n        \"valu'\n     b'e\": 101,\\n        \"unit\": \"prestadores\",\\n        \"period\": \"2026-06\",\\n   '\n     b'     \"source\": \"prev_acreditacion\",\\n        \"locator\": null,\\n        \"fo'\n     b'rmula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captured\",\\n        '\n     b'\"revised\": null\\n      },\\n      \"acr.con_observaciones.qoq\": {\\n        \"i'\n     b'd\": \"acr.con_observaciones.qoq\",\\n        \"value\": 23,\\n        \"unit\": \"p'\n     b'restadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n      '\n     b'  \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 stock(bo'\n     b'let\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.con_observacio'\n     b'nes\",\\n          \"acr.con_observaciones.2026-06\"\\n        ],\\n        \"kind'\n     b'\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.2026-0'\n     b'6\": {\\n        \"id\": \"acr.tramite.2026-06\",\\n        \"value\": 584,\\n       '\n     b' \"unit\": \"solicitudes\",\\n        \"period\": \"2026-06\",\\n        \"source\": \"'\n     b'prev_acreditacion\",\\n        \"locator\": null,\\n        \"formula\": null,\\n  '\n     b'      \"inputs\": [],\\n        \"kind\": \"captured\",\\n        \"revised\": null\\n'\n     b'      },\\n      \"acr.tramite.qoq\": {\\n        \"id\": \"acr.tramite.qoq\",\\n   '\n     b'     \"value\": -10,\\n        \"unit\": \"solicitudes\",\\n        \"period\": \"202'\n     b'6-09\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"formula'\n     b'\": \"stock(t) \\xe2\\x88\\x92 stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\"'\n     b': [\\n          \"acr.tramite\",\\n          \"acr.tramite.2026-06\"\\n        ],\\n'\n     b'        \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.t'\n     b'ramite.privadas.2026-06\": {\\n        \"id\": \"acr.tramite.privadas.2026-06\"'\n     b',\\n        \"value\": 367,\\n        \"unit\": \"solicitudes\",\\n        \"period\":'\n     b' \"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"locator\": nu'\n     b'll,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"capt'\n     b'ured\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.privadas.qoq\"'\n     b': {\\n        \"id\": \"acr.tramite.privadas.qoq\",\\n        \"value\": -10,\\n    '\n     b'    \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"source\"'\n     b': null,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88'\n     b'\\x92 stock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.'\n     b'tramite.privadas\",\\n          \"acr.tramite.privadas.2026-06\"\\n        ],\\n '\n     b'       \"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.tr'\n     b'amite.publicas.2026-06\": {\\n        \"id\": \"acr.tramite.publicas.2026-06\",'\n     b'\\n        \"value\": 217,\\n        \"unit\": \"solicitudes\",\\n        \"period\": '\n     b'\"2026-06\",\\n        \"source\": \"prev_acreditacion\",\\n        \"locator\": nul'\n     b'l,\\n        \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"captu'\n     b'red\",\\n        \"revised\": null\\n      },\\n      \"acr.tramite.publicas.qoq\":'\n     b' {\\n        \"id\": \"acr.tramite.publicas.qoq\",\\n        \"value\": 0,\\n       '\n     b' \"unit\": \"solicitudes\",\\n        \"period\": \"2026-09\",\\n        \"source\": n'\n     b'ull,\\n        \"locator\": null,\\n        \"formula\": \"stock(t) \\xe2\\x88\\x92 s'\n     b'tock(bolet\\xc3\\xadn anterior)\",\\n        \"inputs\": [\\n          \"acr.tramite'\n     b'.publicas\",\\n          \"acr.tramite.publicas.2026-06\"\\n        ],\\n        '\n     b'\"kind\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.observaci'\n     b'ones_pct.2026-06\": {\\n        \"id\": \"acr.observaciones_pct.2026-06\",\\n    '\n     b'    \"value\": 10.401647785787848,\\n        \"unit\": \"%\",\\n        \"period\": '\n     b'\"2026-06\",\\n        \"source\": null,\\n        \"locator\": null,\\n        \"for'\n     b'mula\": \"con observaciones / acreditados \\xc3\\x97 100 (bolet\\xc3\\xadn anterio'\n     b'r)\",\\n        \"inputs\": [\\n          \"acr.con_observaciones.2026-06\",\\n    '\n     b'      \"acr.acreditados.2026-06\"\\n        ],\\n        \"kind\": \"derived\",\\n  '\n     b'      \"revised\": null\\n      },\\n      \"acr.acreditados.previous\": {\\n     '\n     b'   \"id\": \"acr.acreditados.previous\",\\n        \"value\": 971,\\n        \"unit'\n     b'\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acredi'\n     b'tacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": nul'\n     b'l,\\n        \"inputs\": [],\\n        \"kind\": \"previous_release\",\\n        \"re'\n     b'vised\": null\\n      },\\n      \"acr.con_observaciones.previous\": {\\n        '\n     b'\"id\": \"acr.con_observaciones.previous\",\\n        \"value\": 101,\\n        \"u'\n     b'nit\": \"prestadores\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acr'\n     b'editacion\",\\n        \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": '\n     b'null,\\n        \"inputs\": [],\\n        \"kind\": \"previous_release\",\\n        '\n     b'\"revised\": null\\n      },\\n      \"acr.tramite.previous\": {\\n        \"id\": \"'\n     b'acr.tramite.previous\",\\n        \"value\": 584,\\n        \"unit\": \"solicitude'\n     b's\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": null,\\n        \"in'\n     b'puts\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n '\n     b'     },\\n      \"acr.tramite.privadas.previous\": {\\n        \"id\": \"acr.tram'\n     b'ite.privadas.previous\",\\n        \"value\": 367,\\n        \"unit\": \"solicitud'\n     b'es\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"acreditacion\",\\n    '\n     b'    \"locator\": \"p\\xc3\\xa1gs. 1,2,7,8\",\\n        \"formula\": null,\\n        \"i'\n     b'nputs\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n'\n     b'      },\\n      \"med.mediadores.previous\": {\\n        \"id\": \"med.mediadore'\n     b's.previous\",\\n        \"value\": 175,\\n        \"unit\": \"mediadores\",\\n       '\n     b' \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n        \"locator\": '\n     b'\"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n '\n     b'       \"kind\": \"previous_release\",\\n        \"revised\": null\\n      },\\n    '\n     b'  \"med.solicitudes_acumuladas.previous\": {\\n        \"id\": \"med.solicitude'\n     b's_acumuladas.previous\",\\n        \"value\": 12067,\\n        \"unit\": \"solicit'\n     b'udes\",\\n        \"period\": \"2026-09\",\\n        \"source\": \"mediacion\",\\n     '\n     b'   \"locator\": \"p\\xc3\\xa1gs. 2,5,6\",\\n        \"formula\": null,\\n        \"inpu'\n     b'ts\": [],\\n        \"kind\": \"previous_release\",\\n        \"revised\": null\\n   '\n     b'   },\\n      \"rec.promedio.2026.previous\": {\\n        \"id\": \"rec.promedio.'\n     b'2026.previous\",\\n        \"value\": 1996,\\n        \"unit\": \"reclamos\",\\n     '\n     b'   \"period\": \"2026-09\",\\n        \"source\": \"reclamos\",\\n        \"locator\":'\n     b' \"p\\xc3\\xa1gs. 2\",\\n        \"formula\": null,\\n        \"inputs\": [],\\n    '\n     b'    \"kind\": \"previous_release\",\\n        \"revised\": null\\n      },\\n      \"'\n     b'rec.pct_informado.previous\": {\\n        \"id\": \"rec.pct_informado.previous'\n     b'\",\\n        \"value\": 30,\\n        \"unit\": \"%\",\\n        \"period\": \"2026-09\"'\n     b',\\n        \"source\": \"reclamos\",\\n        \"locator\": \"p\\xc3\\xa1gs. 2\",\\n '\n     b'       \"formula\": null,\\n        \"inputs\": [],\\n        \"kind\": \"previous_'\n     b'release\",\\n        \"revised\": null\\n      },\\n      \"acr.publicas_pct\": {\\n '\n     b'       \"id\": \"acr.publicas_pct\",\\n        \"value\": 37.80487804878049,\\n   '\n     b'     \"unit\": \"%\",\\n        \"period\": \"2026-09\",\\n        \"source\": null,\\n '\n     b'       \"locator\": null,\\n        \"formula\": \"100 \\xe2\\x88\\x92 % privadas\",'\n     b'\\n        \"inputs\": [\\n          \"acr.privadas_pct\"\\n        ],\\n        \"ki'\n     b'nd\": \"derived\",\\n        \"revised\": null\\n      },\\n      \"acr.sin_observac'\n     b'iones_pct\": {\\n        \"id\": \"acr.sin_observaciones_pct\",\\n        \"value\"'\n     b': 87.71060455896928,\\n        \"unit\": \"%\",\\n        \"period\": \"2026-09\",\\n '\n     b'       \"source\": null,\\n        \"locator\": null,\\n        \"formula\": \"100 '\n     b'\\xe2\\x88\\x92 % con observaciones\",\\n        \"inputs\": [\\n          \"acr.obs'\n     b'ervaciones_pct\"\\n        ],\\n        \"kind\": \"derived\",\\n        \"revised\":'\n     b' null\\n      }\\n    },\\n    \"constants\": [\\n      30,\\n      2,\\n      100'\n     b'\\n    ],\\n    \"entity_codes\": [],\\n    \"entity_keys\": [],\\n    \"release_key\"'\n     b': \"2026-09:e59bc2e84bc9ebb3\",\\n    \"period\": \"2026-09\",\\n    \"lectura_pool'\n     b'\": [\\n      {\\n        \"id\": \"acr.acreditados\",\\n        \"value\": 1009,\\n   '\n     b'     \"unit\": \"prestadores\",\\n        \"metric\": \"prestadores\",\\n        \"en'\n     b'tity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"20'\n     b'26-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope\": \"sy'\n     b'stem\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n    '\n     b'    \"base\": null\\n      },\\n      {\\n        \"id\": \"acr.con_observaciones\",'\n     b'\\n        \"value\": 124,\\n        \"unit\": \"prestadores\",\\n        \"metric\": '\n     b'\"prestadores\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        '\n     b'\"periods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": f'\n     b'alse,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"stock_at\",\\n    '\n     b'    \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id\"'\n     b': \"acr.sin_observaciones\",\\n        \"value\": 885,\\n        \"unit\": \"presta'\n     b'dores\",\\n        \"metric\": \"prestadores\",\\n        \"entity\": null,\\n       '\n     b' \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n        ],\\n  '\n     b'      \"requires_period\": false,\\n        \"scope\": \"system\",\\n        \"peri'\n     b'od_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": null\\n   '\n     b'   },\\n      {\\n        \"id\": \"acr.observaciones_pct\",\\n        \"value\": 12'\n     b'.289395441030724,\\n        \"unit\": \"%\",\\n        \"metric\": null,\\n        \"'\n     b'entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"'\n     b'2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope\": \"'\n     b'system\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n  '\n     b'      \"base\": \"acreditados\"\\n      },\\n      {\\n        \"id\": \"acr.tramite\"'\n     b',\\n        \"value\": 574,\\n        \"unit\": \"solicitudes\",\\n        \"metric\":'\n     b' \"solicitudes\",\\n        \"entity\": null,\\n        \"signed\": false,\\n       '\n     b' \"periods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": '\n     b'false,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"stock_at\",\\n   '\n     b'     \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id'\n     b'\": \"acr.tramite.privadas\",\\n        \"value\": 357,\\n        \"unit\": \"solici'\n     b'tudes\",\\n        \"metric\": \"solicitudes\",\\n        \"entity\": null,\\n       '\n     b' \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n        ],\\n  '\n     b'      \"requires_period\": false,\\n        \"scope\": \"private\",\\n        \"per'\n     b'iod_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": null\\n  '\n     b'    },\\n      {\\n        \"id\": \"acr.tramite.publicas\",\\n        \"value\": 21'\n     b'7,\\n        \"unit\": \"solicitudes\",\\n        \"metric\": \"solicitudes\",\\n     '\n     b'   \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n       '\n     b'   \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"scope'\n     b'\": \"public\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false'\n     b',\\n        \"base\": null\\n      },\\n      {\\n        \"id\": \"acr.privadas_pct\"'\n     b',\\n        \"value\": 62.19512195121951,\\n        \"unit\": \"%\",\\n        \"metr'\n     b'ic\": null,\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"per'\n     b'iods\": [\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": false'\n     b',\\n        \"scope\": \"private\",\\n        \"period_kind\": \"stock_at\",\\n       '\n     b' \"trivial\": false,\\n        \"base\": \"solicitudes_en_tramite\"\\n      },\\n   '\n     b'   {\\n        \"id\": \"med.mediadores\",\\n        \"value\": 179,\\n        \"unit'\n     b'\": \"mediadores\",\\n        \"metric\": \"mediadores\",\\n        \"entity\": null,'\n     b'\\n        \"signed\": false,\\n        \"periods\": [\\n          \"2026-09\"\\n     '\n     b'   ],\\n        \"requires_period\": false,\\n        \"scope\": \"system\",\\n     '\n     b'   \"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": '\n     b'null\\n      },\\n      {\\n        \"id\": \"med.solicitudes_acumuladas\",\\n      '\n     b'  \"value\": 12697,\\n        \"unit\": \"solicitudes\",\\n        \"metric\": \"soli'\n     b'citudes\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"peri'\n     b'ods\": [\\n          \"2019-01\",\\n          \"2026-09\"\\n        ],\\n        \"req'\n     b'uires_period\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\": '\n     b'\"interval\",\\n        \"trivial\": false,\\n        \"base\": null\\n      },\\n    '\n     b'  {\\n        \"id\": \"rec.promedio.2026\",\\n        \"value\": 1880,\\n        \"u'\n     b'nit\": \"reclamos\",\\n        \"metric\": \"reclamos\",\\n        \"entity\": null,\\n'\n     b'        \"signed\": false,\\n        \"periods\": [\\n          \"2026-01\",\\n     '\n     b'     \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"sco'\n     b'pe\": \"system\",\\n        \"period_kind\": \"ytd\",\\n        \"trivial\": false,\\n '\n     b'       \"base\": null\\n      },\\n      {\\n        \"id\": \"rec.delta\",\\n        '\n     b'\"value\": 350,\\n        \"unit\": \"reclamos\",\\n        \"metric\": \"reclamos\",\\n'\n     b'        \"entity\": null,\\n        \"signed\": true,\\n        \"periods\": [\\n   '\n     b'       \"2026-01\",\\n          \"2026-09\"\\n        ],\\n        \"requires_perio'\n     b'd\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\": \"ytd\",\\n    '\n     b'    \"trivial\": false,\\n        \"base\": null\\n      },\\n      {\\n        \"id\"'\n     b': \"rec.pct\",\\n        \"value\": 22.875816993464053,\\n        \"unit\": \"%\",\\n '\n     b'       \"metric\": null,\\n        \"entity\": null,\\n        \"signed\": true,\\n '\n     b'       \"periods\": [\\n          \"2026-01\",\\n          \"2026-09\"\\n        ],\\n'\n     b'        \"requires_period\": false,\\n        \"scope\": \"system\",\\n        \"pe'\n     b'riod_kind\": \"ytd\",\\n        \"trivial\": false,\\n        \"base\": \"promedio_m'\n     b'ensual_anio_anterior\"\\n      },\\n      {\\n        \"id\": \"rec.promedio.2025\"'\n     b',\\n        \"value\": 1530,\\n        \"unit\": \"reclamos\",\\n        \"metric\": \"'\n     b'reclamos\",\\n        \"entity\": null,\\n        \"signed\": false,\\n        \"per'\n     b'iods\": [\\n          \"2025-01\",\\n          \"2025-12\"\\n        ],\\n        \"re'\n     b'quires_period\": false,\\n        \"scope\": \"system\",\\n        \"period_kind\":'\n     b' \"interval\",\\n        \"trivial\": false,\\n        \"base\": null\\n      }\\n    '\n     b'],\\n    \"derived_ratios\": [\\n      {\\n        \"id\": \"ratio.privadas_por_pub'\n     b'lica\",\\n        \"value\": 1.6451612903225807,\\n        \"unit\": \"x\",\\n       '\n     b' \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n         '\n     b' \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"formula'\n     b'\": \"privadas / p\\xc3\\xbablicas\",\\n        \"inputs\": [\\n          \"acr.tramit'\n     b'e.privadas\",\\n          \"acr.tramite.publicas\"\\n        ],\\n        \"scope\"'\n     b': \"private\",\\n        \"period_kind\": \"stock_at\",\\n        \"trivial\": false'\n     b',\\n        \"base\": null\\n      },\\n      {\\n        \"id\": \"fraccion.observac'\n     b'iones\",\\n        \"value\": 0.12289395441030723,\\n        \"unit\": \"share\",\\n '\n     b'       \"entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n   '\n     b'       \"2026-09\"\\n        ],\\n        \"requires_period\": false,\\n        \"f'\n     b'ormula\": \"con observaciones / acreditados\",\\n        \"inputs\": [\\n        '\n     b'  \"acr.observaciones_pct\"\\n        ],\\n        \"scope\": \"system\",\\n        '\n     b'\"period_kind\": \"stock_at\",\\n        \"trivial\": false,\\n        \"base\": \"ac'\n     b'reditados\"\\n      },\\n      {\\n        \"id\": \"ratio.reclamos_vs_anio_anteri'\n     b'or\",\\n        \"value\": 1.2287581699346406,\\n        \"unit\": \"x\",\\n        \"'\n     b'entity\": null,\\n        \"signed\": false,\\n        \"periods\": [\\n          \"'\n     b'2026-01\",\\n          \"2026-09\"\\n        ],\\n        \"requires_period\": fals'\n     b'e,\\n        \"formula\": \"promedio(t) / promedio(a\\xc3\\xb1o anterior)\",\\n     '\n     b'   \"inputs\": [\\n          \"rec.promedio.2026\",\\n          \"rec.promedio.20'\n     b'25\"\\n        ],\\n        \"scope\": \"system\",\\n        \"period_kind\": \"ytd\",\\n'\n     b'        \"trivial\": false,\\n        \"base\": null\\n      }\\n    ],\\n    \"ranks'\n     b'\": []\\n  },\\n  \"first_verified_at\": \"2026-11-03T20:19:30.271733+00:00\"\\n}\\n') and '2026-09' == '2026-06'\n  \n  - 2026-06\n  ?       ^\n  + 2026-09\n  ?       ^)\n3 failed in 0.38s\n",
+                "returncode": 1
+              },
+              {
+                "command": [
+                  "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+                  "-m",
+                  "pytest",
+                  "-q"
+                ],
+                "output": "Validation command unavailable or timed out: TimeoutExpired",
+                "returncode": 124
+              }
+            ],
+            "failure_sha256": "3fe325b828685dd4ea3f9222b261fafbb690346edee92ded78d8acde80f60b9a",
+            "material_progress": false,
+            "signature": null,
+            "source_run_id": null,
+            "status": "BLOCKED",
+            "validated": false
+          },
+          {
+            "browser_proof": {
+              "cases": [
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 81
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  79 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  80 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 81 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  82 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  83 |  await card.locator('[data-detail]').first().click();\n  84 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:81:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-\u001b[7m09-15\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m10-30\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 21,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 81
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('article[data-card]').filter({ has: getByRole('heading', { name: 'SUSESO sanciona a emisores de licencias · registro de 90 días', exact: true }) })\u001b[22m\n\n\n  79 |  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();\n  80 |  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});\n> 81 |  await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText('Emitido');\n     |                     ^\n  82 |  await expect(card.locator('.card-meta')).toContainText('Publicación no verificada');\n  83 |  await card.locator('[data-detail]').first().click();\n  84 |  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:81:21"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "recovered registers retain offices, actors, effects and issuance dates in grouped details"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "fiscalization.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "location": {
+                            "column": 33,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs",
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"2026-\u001b[7m09-15\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"2026-\u001b[7m10-30\u001b[27m\"\u001b[39m\n\n  11 |  const pulse=radar.signals.find(signal=>signal.title.startsWith('Pulso de sanciones a Prestadores'));\n  12 |  expect(pulse).toBeTruthy();\n> 13 |  expect(pulse.publication_date).toBe('2026-09-15');\n     |                                 ^\n  14 |  expect(pulse.event_date_basis).toBe('publication');\n  15 |  expect(pulse.source_alternatives).toHaveLength(3);\n  16 |  expect(pulse.source_alternatives.map(source=>source.event_date).sort()).toEqual(['2026-09-03','2026-09-08','2026-09-08']);\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/fiscalization.spec.cjs:13:33"
+                        }
+                      ],
+                      "status": "failed"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "fiscalization reconciliation preserves act dates and separates reviewed normativa"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "desktop",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 367
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  365 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  366 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 367 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  369 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  370 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:367:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                },
+                {
+                  "expected_status": "passed",
+                  "file": "product.spec.cjs",
+                  "project": "mobile",
+                  "results": [
+                    {
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "column": 47,
+                            "file": "/home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs",
+                            "line": 367
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('article').filter({ has: getByRole('heading', { name: /Pulso de sanciones a Prestadores/ }) }).locator('[data-detail]').first()\u001b[22m\n\n\n  365 |  await page.getByRole('button',{name:'Cerrar ficha'}).click();\n  366 |  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});\n> 367 |  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');\n      |                                               ^\n  368 |  await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');\n  369 |  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);\n  370 |  await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');\n    at /home/runner/work/Radar-salud/Radar-salud/candidate/tests/browser/product.spec.cjs:367:47"
+                        }
+                      ],
+                      "status": "timedOut"
+                    }
+                  ],
+                  "status": "unexpected",
+                  "title": "Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandable"
+                }
+              ],
+              "projects": [
+                "desktop",
+                "mobile"
+              ],
+              "stats": {
+                "duration": 206494.682,
+                "expected": 172,
+                "flaky": 0,
+                "skipped": 8,
+                "startTime": "2026-11-03T22:20:18.599Z",
+                "unexpected": 6
+              }
+            },
+            "command": [
+              "npm",
+              "run",
+              "test:browser"
+            ],
+            "failure_hash": "170a2abe8ad87b678351f3bf3a3cb01605e07e7a2be2e047bbe87ae72300fdaa",
+            "log_path": "/home/runner/work/Radar-salud/Radar-salud/artifacts/worker-logs/browser_desktop_and_mobile.log",
+            "log_sha256": "4ec3d906a8320ee1d61321ae4089254aadfb0e8b07e9bfbdbfe90ec5b46b4aec",
+            "name": "browser_desktop_and_mobile",
+            "returncode": 1,
+            "status": "FAIL"
+          },
+          {
+            "diagnostics_are_acceptance": false,
+            "family": "staging_qa",
+            "task_id": "staging_qa_failed_run_41717454286"
+          }
+        ],
+        "failure_action": "blocked",
+        "fingerprint": "e5b9dcf2cbfbcc5721cc1dec20cdf4de869757dcfe809533b538a5111df15d0c",
+        "product_input_fingerprint": "a813e4c92e4995ef78ec554491ea6587212fd893d50015013d38f9345a128f01",
+        "real_failure": {
+          "conclusion": "failure",
+          "failure_signature": "218eae2486b6ca55e7e345fa842f545dcf60344eaec31e760d4392bdccd9da2b",
+          "head_sha": "b4c2f803622ea03fc41c3091866fb31edf693e93",
+          "run_id": 41717454286,
+          "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/41717454286"
+        },
+        "reason": "Targeted deterministic gate failed; no validated repair candidate; Independent candidate gate rejected or could not execute: browser_desktop_and_mobile; Explicit task acceptance is still open: Missing revision-bound acceptance_artifact with path and sha256"
+      },
+      "blocker_signatures": [
+        "e25258928a89fe10fcce142d2f807156bd0d94c50579f89a545e57c778c0bb5a"
+      ],
       "created_at": "2026-11-03T22:11:28.351985Z",
       "declared_repair_inputs": {},
       "depends_on": [],
@@ -121313,26 +122641,26 @@
       "id": "staging_qa_failed_run_41717454286",
       "input_fingerprint": "b0721063190869637d51bafbfe39de7f5952bf7d98ad636529c9d9b5f9bdd3ae",
       "input_sha": "b4c2f803622ea03fc41c3091866fb31edf693e93",
-      "last_ready_at": "2026-11-03T22:11:28.351985Z",
-      "lease": {
-        "claimed_at": "2026-11-03T22:11:28.351985Z",
-        "expires_at": "2026-11-03T22:33:53.563618Z",
-        "fence": 1,
-        "heartbeat_at": "2026-11-03T22:23:53.563618Z",
-        "owner": "41728133782-1-staging_qa",
-        "token": "6f6c2fe5501830a027a700931c99543d42863b50162fcc40e57a9106f897d6f8"
+      "last_failure": {
+        "conclusion": "failure",
+        "failure_signature": "218eae2486b6ca55e7e345fa842f545dcf60344eaec31e760d4392bdccd9da2b",
+        "head_sha": "b4c2f803622ea03fc41c3091866fb31edf693e93",
+        "run_id": 41717454286,
+        "run_url": "https://github.com/cftorre1/Radar-salud/actions/runs/41717454286"
       },
-      "material_progress_at": "2026-11-03T22:11:28.351985Z",
-      "material_watch_started_at": "2026-11-03T22:11:28.351985Z",
+      "last_ready_at": "2026-11-03T22:11:28.351985Z",
+      "lease": null,
+      "material_progress_at": "2026-11-03T22:24:04.485625Z",
+      "material_watch_started_at": "2026-11-03T22:24:04.485625Z",
       "objective": "Recover the demonstrated staging gate; preserve product contracts.",
       "pickup_ready_since": "2026-11-03T22:11:28.351985Z",
       "priority": "critical",
       "product_input_fingerprint": "a813e4c92e4995ef78ec554491ea6587212fd893d50015013d38f9345a128f01",
       "queue_status": "approved",
-      "recovery_episode": "d1c62c95ccf95daf4bad8e3b81cae67fe346c416565f21795dc3870a168da5fb",
+      "recovery_episode": "2a49fb8361d0fc5cecc40685a6547e604a0e7c7093d287760f10b064f607185a",
       "recovery_reclaims": 0,
-      "state_changed_at": "2026-11-03T22:11:28.351985Z",
-      "status": "RUNNING"
+      "state_changed_at": "2026-11-03T22:24:04.485625Z",
+      "status": "BLOCKED"
     },
     "w4_cenabast_2026_10_11": {
       "approved": true,
