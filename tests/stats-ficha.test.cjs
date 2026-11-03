@@ -175,11 +175,11 @@ test('line axis labels thin out for many quarters; F1 monthly labels keep every 
  // F1: every month labelled, each label under its point (unchanged layout).
  const f1=F.render(pub);const stock=f1.slice(f1.indexOf('data-chart="f1-stock"'));const svg1=stock.slice(0,stock.indexOf('</svg>'));
  const l1=xs(svg1);assert.equal(l1.length,cx(svg1).length);assert.deepEqual(l1.map(l=>l[0]),cx(svg1));
- // 12 quarters 'T1 2024'…'T4 2026': every 2nd label, counted back from the last one (always shown).
+ // 12 quarters 'T1 2024'…'T4 2026': every 3rd label (the end-anchored last label needs 1.5 widths), counted back from the last one (always shown).
  const rows=[];for(const y of [2024,2025,2026])for(const q of [1,2,3,4])rows.push({label:`T${q} ${y}`,value:1000+rows.length*7});
  const html=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'f4-trend',form:'line',digits:0,headline:'Casos',rows}],text:[]}]});
  const fig=html.slice(html.indexOf('<figure'));const svg=fig.slice(fig.indexOf('<svg'),fig.indexOf('</svg>'));const labs=xs(svg);
- assert.deepEqual(labs.map(l=>l[1]),['T2 2024','T4 2024','T2 2025','T4 2025','T2 2026','T4 2026']);
+ assert.deepEqual(labs.map(l=>l[1]),['T3 2024','T2 2025','T1 2026','T4 2026']);
  for(let i=1;i<labs.length;i++)assert.ok(labs[i][0]-labs[i-1][0]>=7*6.6,`labels ${i} collide`);
  // 4 quarters fit: all labelled.
  const h4=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'x',form:'line',rows:rows.slice(-4)}],text:[]}]});
