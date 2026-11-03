@@ -76,8 +76,11 @@ def test_committed_five_old_events_are_never_emitted_even_with_90_day_window(mar
     items = verified_items(market_root, collected_ids=ALL_IDS, run_started="2026-10-27T11:00:00+00:00",
                            today=date(2026, 10, 27), skipped=skipped)
     assert items == [] and len(skipped) == 5
+    # The committed store moves with the daily run (3-nov-2026: some leads not fetched in that run); any of these
+    # reasons keeps the old events out, which is what this test protects.
     assert {s["reason"] for s in skipped} <= {"before_activation_or_older_than_30_days",
-                                              "event_date_differs_from_lead_document_date"}
+                                              "event_date_differs_from_lead_document_date",
+                                              "lead_primary_not_fetched_this_run"}
     assert publishable_event_date("2026-09-09", date(2026, 10, 27)) is False
     assert publishable_event_date("2026-10-26", date(2026, 10, 27)) is False  # before activation
     assert publishable_event_date("2026-10-27", date(2026, 10, 27)) is True
