@@ -227,11 +227,23 @@
     "insurers_rule": "Solo se pueden nombrar aseguradores del paquete (entity_codes) que además aparecen en 'Qué muestran los datos'. Fonasa no está en el paquete F1. Detección: nombres y alias exactos (CB y BMI solo en mayúsculas), luego errores de tipeo (distancia de edición ≤ 2 en nombres de más de 5 letras, misma inicial; palabras comunes excluidas). 'Vida 3' y 'Vida Tres' son una Isapre y su '3' nunca se lee como cifra.",
     "max_words_note": "Dirección 28-oct 08:20: Lectura corta (el prompt pide ≤ 50 palabras; el verificador corta en 60, dentro del tope de 90 de la decisión 3)."
   },
+  "datos": {
+    "decided": "Dirección, 3-nov-2026: página Datos (web/datos.html) con la última ficha publicada de cada familia. La vista 'Por grupo' agrupa por actor según el campo 'group' de cada familia, en el orden de 'groups'. 'datos_kpis' elige 1–2 KPI de la ficha publicada por su id y los copia tal cual; sin él se usan los dos primeros. 'source_short' es la sigla de la fuente que muestra la fila.",
+    "groups": [
+      {"key": "aseguradores", "label": "Aseguradores"},
+      {"key": "prestadores", "label": "Prestadores"},
+      {"key": "empleadores_licencias", "label": "Empleadores y licencias"},
+      {"key": "sector_publico", "label": "Sector público"}
+    ]
+  },
   "families": {
     "F1": {
       "slug": "f1_cartera",
       "label": "Cartera y movilidad",
       "status": "active",
+      "group": "aseguradores",
+      "source_short": "SIS",
+      "datos_kpis": ["beneficiarios", "cotizantes"],
       "cadence": "mensual",
       "cadence_phrase": "se actualiza cada mes",
       "series": [
@@ -426,6 +438,9 @@
       "slug": "f2_financieras",
       "label": "Resultados financieros de aseguradores",
       "status": "active",
+      "group": "aseguradores",
+      "source_short": "SIS",
+      "datos_kpis": ["siniestralidad", "ingresos"],
       "cadence": "trimestral",
       "series": [
         "sis_estadisticas_financieras",
@@ -1008,6 +1023,7 @@
       "slug": "f3_licencias",
       "label": "Licencias médicas y SIL",
       "status": "planned",
+      "group": "empleadores_licencias",
       "cadence": "mensual",
       "series": [
         "sis_licencias_isapre",
@@ -1067,6 +1083,8 @@
       "slug": "f4_ges",
       "label": "Casos GES",
       "status": "active",
+      "group": "aseguradores",
+      "source_short": "SIS",
       "cadence": "trimestral",
       "series": [
         "sis_casos_ges_trimestral"
@@ -1203,6 +1221,7 @@
       "slug": "f5_reclamos",
       "label": "Reclamos, mediación y fiscalización",
       "status": "planned",
+      "group": "aseguradores",
       "cadence": "trimestral",
       "series": [
         "sis_fiscalizacion"
@@ -1214,6 +1233,9 @@
       "slug": "f6_prestadores",
       "label": "Prestadores: Boletín IP",
       "status": "active",
+      "group": "prestadores",
+      "source_short": "SIS",
+      "datos_kpis": ["acreditados", "reclamos"],
       "cadence": "trimestral",
       "series": [
         "sis_boletin_ip"
@@ -1381,6 +1403,7 @@
       "slug": "f7_financiamiento",
       "label": "Financiamiento público",
       "status": "planned",
+      "group": "sector_publico",
       "cadence": "mensual",
       "series": [
         "dipres_partida_16"
@@ -1391,6 +1414,7 @@
       "slug": "f8_presion",
       "label": "Presión asistencial",
       "status": "planned",
+      "group": "sector_publico",
       "cadence": "semanal en temporada",
       "series": [
         "minsal_campana_invierno",
@@ -1402,6 +1426,7 @@
       "slug": "f9_benchmark_costos",
       "label": "Benchmark de costos entre Isapres",
       "status": "planned",
+      "group": "aseguradores",
       "cadence": "anual (Series Estadísticas SIS, cap. 3 y 5) + trimestral (FEFI)",
       "series": [
         "sis_series_1990_2025",
