@@ -30,7 +30,8 @@ from .public_source_evidence import failure_details, discovery_diagnostics, HOST
 # persisted in discovery_run/source_health. datos.gob.cl joined 27-oct-2026
 # as the FONASA substitute; without it a failure was recorded only as
 # "RuntimeError" (28-oct-2026 daily run).
-PUBLIC_DATA_SOURCES = frozenset(_PUBLIC_HOSTS) | {"datos_gob_cl", "fne_competencia", "congreso_tramitacion"}
+PUBLIC_DATA_SOURCES = frozenset(_PUBLIC_HOSTS) | {"datos_gob_cl", "fne_competencia", "congreso_tramitacion",
+                                                   "bcn_leychile_watch"}
 from .beta_sources import CuratedBetaSourceScout, process_curated_beta_source
 from .occupational_sources import SOURCES as OCCUPATIONAL_SOURCES
 # Dirección 27-oct-2026: datos.gob.cl (FONASA/DEIS), CMF in the daily cycle and
@@ -42,8 +43,12 @@ from .beta_sources import PrestadoresDailyScout, process_prestadores_bulletin
 # deterministic, health-sector only, through the editorial gate. No AI.
 from .fne_sources import FneScout, process_fne
 from .congreso_sources import CongresoScout, process_congreso
+# Dirección 3-nov-2026: BCN LeyChile probe + no-AI watch of key norms. It queues nothing:
+# version changes become candidates held for review in data/state/bcn_leychile_watch.json.
+from .leychile_watch import LeyChileWatchScout, process_leychile_watch
+from .leychile_watch import STATE_PATH as LEYCHILE_STATE_PATH, CONFIG_PATH as LEYCHILE_CONFIG_PATH
 DETERMINISTIC_SOURCES = ("datos_gob_cl", "cmf_health_ecosystem", "prestadores_data", "fne_competencia",
-                         "congreso_tramitacion")
+                         "congreso_tramitacion", "bcn_leychile_watch")
 NEW_ITEM_CAPPED_SOURCES = ("fne_competencia", "congreso_tramitacion")
 FIRST_DETECTED_SOURCES = ("bupa_chile", "clinicas_chile", "prestadores_data")
 from .date_basis import BASELINE_SOURCES as FIRST_DETECTION_BASELINE_SOURCES
@@ -204,7 +209,8 @@ def main():
       ("cmf_health_ecosystem","cmf_health_ecosystem",CmfDailyScout().discover,process_cmf_event),
       ("prestadores_data","prestadores_data",PrestadoresDailyScout().discover,process_prestadores_bulletin),
       ("fne_competencia","fne_competencia",FneScout().discover,process_fne),
-      ("congreso_tramitacion","congreso_tramitacion",CongresoScout().discover,process_congreso)]
+      ("congreso_tramitacion","congreso_tramitacion",CongresoScout().discover,process_congreso),
+      ("bcn_leychile_watch","bcn_leychile_watch",LeyChileWatchScout(state_path=root/LEYCHILE_STATE_PATH,config_path=root/LEYCHILE_CONFIG_PATH).discover,process_leychile_watch)]
     specs += [(slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
               for slug in sorted(OCCUPATIONAL_SOURCES) if not selected_sources or slug in selected_sources]
     specs.extend((slug,slug,CuratedBetaSourceScout(slug).discover,process_curated_beta_source)
@@ -252,7 +258,7 @@ def main():
             if name in PUBLIC_DATA_SOURCES:
                 # datos.gob.cl dates are data releases, never news publications:
                 # do not count them (as zero) against publication coverage.
-                discovery_details[name]={"diagnostics":discovery_diagnostics(scout,None if name=="datos_gob_cl" else items)}
+                discovery_details[name]={"diagnostics":discovery_diagnostics(scout,None if name in ("datos_gob_cl","bcn_leychile_watch") else items)}
                 discovery_details[name]["diagnostics"]["poll_mode"]="daily_engine"
             original_dates[name]=max([raw.event_date for raw in items if raw.event_date] or ['']) or None
             partial_errors=getattr(getattr(discover,"__self__",None),"discovery_errors",[])
