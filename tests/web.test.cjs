@@ -419,3 +419,23 @@ test('collapsed Boletín card says plainly that figures are being verified and l
  assert.doesNotMatch(c.detailHtml({...s,bulletin_status:{...s.bulletin_status,live_ficha:{id:'javascript:alert(1)',label:'x'}}}),/bulletin-live/);
  assert.doesNotMatch(c.detailHtml({...s,bulletin_status:null}),/bulletin-status/);
 });
+// Datos (Dirección 3-nov-2026): latest ficha per family; views from config groups; Nuevo from the shared read set.
+function datosContext(store={}){const c={localStorage:{getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=v}}};vm.createContext(c);vm.runInContext(fs.readFileSync('web/datos.js','utf8'),c);return c.AlicantoDatos}
+test('Datos orders Recientes by verification day, groups by config and marks Nuevo from the read set',()=>{
+ const D=datosContext(),fam=(family,order,group,extra={})=>({family,order,group,label:family,...extra});
+ const live=(family,order,group,updated_on)=>fam(family,order,group,{state:'live',piece_id:`stats-ficha:${family}:2026-08`,updated_on,headline:`T ${family}`,kpis:[{label:'A',value:'1.234'}],period_label:'ago 2026',source:'SIS',status:family==='F6'?'updating':'current'});
+ const data={groups:[{key:'aseguradores',label:'Aseguradores'},{key:'prestadores',label:'Prestadores'},{key:'sector_publico',label:'Sector público'}],families:[live('F1',0,'aseguradores','2026-10-28'),live('F2',1,'aseguradores','2026-11-02'),fam('F3',2,'aseguradores',{state:'planned'}),fam('F4',3,'aseguradores',{state:'pending'}),live('F6',5,'prestadores','2026-10-30')]};
+ assert.deepEqual([...D.recientes(data.families)].map(f=>f.family),['F2','F6','F1','F3','F4']);
+ assert.deepEqual(JSON.parse(JSON.stringify(D.byGroup(data).map(g=>[g.label,g.families.map(f=>f.family)]))),[['Aseguradores',['F2','F1','F3','F4']],['Prestadores',['F6']]]);
+ const html=D.render(data,'recientes',new Set(['stats-ficha:F1:2026-08']));
+ assert.equal((html.match(/dx-badge/g)||[]).length,2);assert.match(html,/Datos a ago 2026 · SIS/);assert.match(html,/Actualizándose/);assert.match(html,/Vigente/);
+ assert.match(html,/href="index\.html\?abrir=1&amp;desde=datos#sig-stats-ficha:F2:2026-08"/);
+ assert.match(html,/data-family="F3"><div class="dx-kick"><span>F3<\/span><span class="dx-tag">pronto<\/span>/);assert.match(html,/en verificación/);
+ assert.match(D.render(data,'grupo',new Set()),/<h2 class="dx-sec"[^>]*>Aseguradores<\/h2>/);
+ assert.doesNotMatch(html,/cómo leer/i);
+});
+test('Datos view preference is per viewer and survives a blocked localStorage',()=>{
+ const store={},D=datosContext(store);assert.equal(D.loadView(),'recientes');D.saveView('grupo');assert.equal(store.alicanto_datos_view,'grupo');assert.equal(D.loadView(),'grupo');
+ const c={localStorage:{getItem:()=>{throw new Error('blocked')},setItem:()=>{throw new Error('blocked')}}};vm.createContext(c);vm.runInContext(fs.readFileSync('web/datos.js','utf8'),c);assert.equal(c.AlicantoDatos.loadView(),'recientes');assert.doesNotThrow(()=>c.AlicantoDatos.saveView('grupo'));
+});
+test('Datos is in the top nav of every page that shares it',()=>{for(const p of ['index','global','datos']){const html=fs.readFileSync(`web/${p}.html`,'utf8');assert.match(html,/<a class="header-premium" href="datos\.html"( aria-current="page")? data-short="Datos">/,p)}assert.match(fs.readFileSync('web/sources.html','utf8'),/<a href="datos\.html">Datos<\/a>/);assert.match(fs.readFileSync('web/app.js','utf8'),/get\('desde'\)==='datos'/)});

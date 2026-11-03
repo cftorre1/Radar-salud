@@ -1,0 +1,162 @@
+{
+  "schema_version": "datos_index_v1",
+  "generated_at": "2026-11-03T20:19:46.959451+00:00",
+  "groups": [
+    {
+      "key": "aseguradores",
+      "label": "Aseguradores"
+    },
+    {
+      "key": "prestadores",
+      "label": "Prestadores"
+    },
+    {
+      "key": "empleadores_licencias",
+      "label": "Empleadores y licencias"
+    },
+    {
+      "key": "sector_publico",
+      "label": "Sector público"
+    }
+  ],
+  "families": [
+    {
+      "family": "F1",
+      "label": "Cartera y movilidad",
+      "group": "aseguradores",
+      "order": 0,
+      "cadence": "mensual",
+      "state": "live",
+      "piece_id": "stats-ficha:F1:2026-08",
+      "headline": "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
+      "kpis": [
+        {
+          "id": "beneficiarios",
+          "label": "Beneficiarios",
+          "value": "2.486.683"
+        },
+        {
+          "id": "cotizantes",
+          "label": "Cotizantes",
+          "value": "1.551.169"
+        }
+      ],
+      "period": "2026-08",
+      "period_label": "ago 2026",
+      "source": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "published_at": "2026-10-02",
+      "updated_on": "2026-10-28",
+      "status": "current",
+      "share_url": "data/fichas/f1_cartera.html"
+    },
+    {
+      "family": "F2",
+      "label": "Resultados financieros de aseguradores",
+      "group": "aseguradores",
+      "order": 1,
+      "cadence": "trimestral",
+      "state": "live",
+      "piece_id": "stats-ficha:F2:2026-03",
+      "headline": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
+      "kpis": [
+        {
+          "id": "siniestralidad",
+          "label": "Siniestralidad",
+          "value": "82,9%"
+        },
+        {
+          "id": "ingresos",
+          "label": "Ingresos",
+          "value": "1.091.349 MM$"
+        }
+      ],
+      "period": "2026-03",
+      "period_label": "mar 2026",
+      "source": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "published_at": "2026-07-07",
+      "updated_on": "2026-11-02",
+      "status": "current",
+      "share_url": "data/fichas/f2_financieras.html"
+    },
+    {
+      "family": "F3",
+      "label": "Licencias médicas y SIL",
+      "group": "empleadores_licencias",
+      "order": 2,
+      "cadence": "mensual",
+      "state": "planned"
+    },
+    {
+      "family": "F4",
+      "label": "Casos GES",
+      "group": "aseguradores",
+      "order": 3,
+      "cadence": "trimestral",
+      "state": "pending"
+    },
+    {
+      "family": "F5",
+      "label": "Reclamos, mediación y fiscalización",
+      "group": "aseguradores",
+      "order": 4,
+      "cadence": "trimestral",
+      "state": "planned"
+    },
+    {
+      "family": "F6",
+      "label": "Prestadores: Boletín IP",
+      "group": "prestadores",
+      "order": 5,
+      "cadence": "trimestral",
+      "state": "live",
+      "piece_id": "stats-ficha:F6:2026-09",
+      "headline": "Prestadores acreditados llegan a 1.009 a septiembre, 38 más que en junio; 124 con observaciones",
+      "kpis": [
+        {
+          "id": "acreditados",
+          "label": "Prestadores acreditados",
+          "value": "1.009"
+        },
+        {
+          "id": "reclamos",
+          "label": "Reclamos al mes",
+          "value": "1.880"
+        }
+      ],
+      "period": "2026-09",
+      "period_label": "sep 2026",
+      "source": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "published_at": "2026-10-29",
+      "updated_on": "2026-11-03",
+      "status": "current",
+      "share_url": "data/fichas/f6_prestadores.html"
+    },
+    {
+      "family": "F7",
+      "label": "Financiamiento público",
+      "group": "sector_publico",
+      "order": 6,
+      "cadence": "mensual",
+      "state": "planned"
+    },
+    {
+      "family": "F8",
+      "label": "Presión asistencial",
+      "group": "sector_publico",
+      "order": 7,
+      "cadence": "semanal en temporada",
+      "state": "planned"
+    },
+    {
+      "family": "F9",
+      "label": "Benchmark de costos entre Isapres",
+      "group": "aseguradores",
+      "order": 8,
+      "cadence": "anual (Series Estadísticas SIS, cap. 3 y 5) + trimestral (FEFI)",
+      "state": "planned"
+    }
+  ]
+}

@@ -846,6 +846,10 @@ def main():
     payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     stats_fichas.write_share_pages(cards,out.parent)
+    # Datos page (Dirección 3-nov-2026): latest published ficha per family, copied from the cards above.
+    from radar_salud import datos_index
+    datos=datos_index.build(payload["signals"],root=Path("."),generated_at=payload["generated_at"])
+    (out.parent/"datos.json").write_text(json.dumps(datos,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
     from radar_salud.public_source_catalog import export_public_sources
