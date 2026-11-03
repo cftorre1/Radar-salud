@@ -30,6 +30,9 @@ from radar_salud import stats_ficha_f6 as f6, stats_fichas as sf  # noqa: E402
 
 TODAY = date(2026, 11, 1)
 STORE = "data/stats_fichas/captures/boletin_ip.json"
+# The live F6 file as committed on 2-nov-2026 (N°2 live): the daily run published N°3 on 3-nov, so tests that describe
+# "N°2 live, N°3 on HOLD" pin it instead of following the committed live file.
+LIVE_N2 = Path(__file__).parent / "fixtures/stats_fichas/f6_live_n2_2026-11-02.json"
 HIST = json.loads((fx.REPO / "data/history/superintendencia_signals.json").read_text(encoding="utf-8"))["signals"]
 LOOSE = [s for s in HIST if s.get("source_name") == sb.LOOSE_SOURCE and "/boletin-n3-2026-" in str(s.get("source_url"))]
 N3 = {cap.doc_release(s["source_url"])["topic"]: s["source_url"] for s in LOOSE}
@@ -246,7 +249,7 @@ def test_n3_verified_updates_the_ficha_and_compares_stocks_with_n2(root):
 
 
 def live_n2():
-    return json.loads((fx.REPO / "data/stats_fichas/live/f6_prestadores.json").read_text(encoding="utf-8"))
+    return json.loads((LIVE_N2).read_text(encoding="utf-8"))
 
 
 def page_card():
@@ -342,13 +345,18 @@ REAL_N3 = {"acreditacion": {"accredited_providers": 1009, "with_observations": 1
 
 
 def committed_root(tmp_path):
-    """Copy of the committed registry, readings, history, Boletín capture store and text receipts (no fixture PDFs)."""
+    """Copy of the committed registry, readings, history and text receipts, with the Boletín capture store as committed
+    on 2-nov-2026 (staging 91b0f422: N°3 captured, nothing re-checked yet). The daily run keeps re-checking and
+    committing the live store, so these tests pin the state they describe instead of following it (3-nov-2026: the
+    first re-check run turned N°3 'ok' and broke every PR's CI)."""
     import shutil
     r = tmp_path / "committed"
     for rel in ("config/stats_fichas_v1.json", "config/statistical_analysis_verified_v1.json",
-                "data/history/superintendencia_signals.json", STORE):
+                "data/history/superintendencia_signals.json"):
         (r / rel).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(fx.REPO / rel, r / rel)
+    (r / STORE).parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy(Path(__file__).parent / "fixtures/stats_fichas/boletin_ip_store_2026-11-02.json", r / STORE)
     shutil.copytree(fx.REPO / "data/stats_fichas/text", r / "data/stats_fichas/text")
     return r
 
@@ -401,7 +409,7 @@ def test_committed_state_holds_n3_until_the_daily_run_rechecks_the_hashed_pdfs(t
     # The build HOLDs; the live N°2 file is left as it is (HOLD never publishes or unpublishes).
     (r / "data/stats_fichas/live").mkdir(parents=True, exist_ok=True)
     live = r / "data/stats_fichas/live/f6_prestadores.json"
-    live.write_text((fx.REPO / "data/stats_fichas/live/f6_prestadores.json").read_text(encoding="utf-8"), encoding="utf-8")
+    live.write_text((LIVE_N2).read_text(encoding="utf-8"), encoding="utf-8")
     before = live.read_bytes()
     out = f6.run(r, today=date(2026, 11, 2), registry=sf.load_registry(), llm=False)
     assert out["status"] == "hold" and not sf.publish(out, r)["published"]

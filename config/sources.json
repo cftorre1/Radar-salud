@@ -350,5 +350,18 @@
     "default_category": "Regulación & Legal",
     "force_category": true,
     "note": "Dirección 28-oct-2026 17:08: proyectos de ley de salud y sus hitos (ingreso, informes de comisión, aprobación en general/particular, comisión mixta, despacho, publicación) desde https://tramitacion.senado.cl/wspublico/tramitacion.php?fecha=; cuentas, urgencias y citaciones se descartan. robots.txt respetado. Sin IA."
+  },
+  {
+    "slug": "bcn_leychile_watch",
+    "name": "Biblioteca del Congreso Nacional · LeyChile (vigilancia de normas clave)",
+    "source_type": "official",
+    "system_domain": "HEALTH",
+    "base_confidence": 100,
+    "cadence": "daily",
+    "method": "bcn_leychile_obtxml_version_watch_metadata_only",
+    "default_category": "Regulación & Legal",
+    "force_category": true,
+    "publication": "held_for_review",
+    "note": "Dirección 3-nov-2026: sonda (robots.txt + una consulta real desde CI) y, si pasa, vigilancia sin IA de nuevas versiones (fechaVersion) de normas clave (config/bcn_leychile_watch.json). Sólo metadatos y enlace, nunca el texto. Licencia no resuelta (BCN anunció CC BY-NC-SA en 2007; la página de privacidad actual de bcn.cl indica CC BY-SA 3.0 CL). Los cambios quedan retenidos para revisión en data/state/bcn_leychile_watch.json; nada se publica automáticamente. robots.txt respetado; a lo más una consulta por norma al día."
   }
 ]

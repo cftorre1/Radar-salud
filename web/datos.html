@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#1D3345"/>
+<meta name="description" content="Datos de Alicanto Salud: la última ficha estadística verificada de cada serie oficial del sector salud en Chile."/>
+<title>Alicanto Salud · Datos</title>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Alicanto Salud"/>
+<meta property="og:title" content="Datos · Alicanto Salud"/>
+<meta property="og:description" content="La última ficha verificada de cada serie estadística oficial del sector salud en Chile."/>
+<meta property="og:image" content="https://cftorre1.github.io/Radar-salud/assets/alicanto-logo-header.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"/>
+<link rel="stylesheet" href="product-ui.css"/><link rel="stylesheet" href="home-inbox.css"/><link rel="stylesheet" href="datos.css"/></head>
+<body class="datos-page">
+<main>
+<header class="brandbar">
+<div class="brand-in">
+<a href="index.html" class="logo-link"><img class="logo" src="assets/alicanto-logo-header.png" alt="Alicanto Salud"/></a>
+<p class="hero-purpose">La última cifra oficial de cada serie, verificada.</p>
+<nav class="topnav" aria-label="Navegación principal">
+<a class="header-premium" href="index.html" data-short="Chile">Radar · Chile</a><a data-short="Global" class="header-premium" href="global.html">Global · Internacional</a><a class="header-premium" href="datos.html" aria-current="page" data-short="Datos">Datos del sector</a><a class="header-newsletter" href="subscription.html" data-open-newsletter data-short="Newsletter">Newsletter semanal</a>
+<button type="button" class="header-premium premium-access" id="earlyAccessOpen" data-open-premium><span class="wide-only">Acceso </span>PREMIUM</button>
+</nav>
+</div>
+</header>
+<div class="datos-wrap">
+<div class="datos-head">
+<h1>Datos del sector</h1>
+<p class="datos-lead">La última ficha publicada de cada serie oficial, verificada contra la fuente.</p>
+</div>
+<div class="datos-toggle" id="datosView" role="group" aria-label="Orden de las series">
+<button type="button" data-view="recientes" aria-pressed="true">Recientes</button><button type="button" data-view="grupo" aria-pressed="false">Por grupo</button>
+</div>
+<div id="datosList" aria-live="polite"><p class="datos-empty">Cargando datos…</p></div>
+</div>
+<footer class="footer">Alicanto Salud · Información seleccionada desde fuentes oficiales y verificadas para que no te pierdas lo que importa</footer>
+</main>
+<script src="analytics.js"></script>
+<script src="read-state.js"></script><script src="conversion.js"></script><script src="datos.js"></script>
+</body>
+</html>
