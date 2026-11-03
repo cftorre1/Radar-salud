@@ -1,7 +1,7 @@
 {
   "schema_version": "stats_capture_v1",
   "kind": "ges",
-  "updated_at": "2026-11-02T13:34:06.691982+00:00",
+  "updated_at": "2026-11-03T16:55:07.336060+00:00",
   "releases": [
     {
       "period": "2025-03",
@@ -18,12 +18,30 @@
         "parse": {
           "family": "ges",
           "status": "HOLD",
+          "hold_reason": "HOLD_GES_ROW_UNRECOGNIZED",
+          "parser": "ges_ytd_cuts_v3",
+          "period": "2025-03",
+          "insights": [],
+          "sheet": "Año 2025",
+          "row": 94,
+          "label": "Sin Problema de Salud Informado"
+        },
+        "text_receipt": {
+          "status": "extract_failed",
+          "error": "AttributeError:'Chartsheet' object has no attribute 'iter_rows'"
+        },
+        "previous_parse": {
+          "family": "ges",
+          "status": "HOLD",
           "hold_reason": "HOLD_GES_SCHEMA_NOT_VALIDATED",
           "parser": "ges_pinned_year_reconciled_v2",
           "period": "2025-03",
           "insights": [],
           "sheet": "Año 2025"
-        }
+        },
+        "rechecked_at": "2026-11-03T16:55:07.335954+00:00",
+        "rechecked_from_parser": "ges_pinned_year_reconciled_v2",
+        "rechecked_for_parser": "ges_ytd_cuts_v3"
       }
     },
     {
@@ -41,12 +59,28 @@
         "parse": {
           "family": "ges",
           "status": "HOLD",
+          "hold_reason": "HOLD_GES_INVALID_COUNT",
+          "parser": "ges_ytd_cuts_v3",
+          "period": "2025-06",
+          "insights": [],
+          "at": "Año 2025!65"
+        },
+        "text_receipt": {
+          "status": "extract_failed",
+          "error": "AttributeError:'Chartsheet' object has no attribute 'iter_rows'"
+        },
+        "previous_parse": {
+          "family": "ges",
+          "status": "HOLD",
           "hold_reason": "HOLD_GES_SCHEMA_NOT_VALIDATED",
           "parser": "ges_pinned_year_reconciled_v2",
           "period": "2025-06",
           "insights": [],
           "sheet": "Año 2025"
-        }
+        },
+        "rechecked_at": "2026-11-03T16:55:06.274897+00:00",
+        "rechecked_from_parser": "ges_pinned_year_reconciled_v2",
+        "rechecked_for_parser": "ges_ytd_cuts_v3"
       }
     },
     {
@@ -64,12 +98,28 @@
         "parse": {
           "family": "ges",
           "status": "HOLD",
+          "hold_reason": "HOLD_GES_INVALID_COUNT",
+          "parser": "ges_ytd_cuts_v3",
+          "period": "2025-09",
+          "insights": [],
+          "at": "Año 2025!65"
+        },
+        "text_receipt": {
+          "status": "extract_failed",
+          "error": "AttributeError:'Chartsheet' object has no attribute 'iter_rows'"
+        },
+        "previous_parse": {
+          "family": "ges",
+          "status": "HOLD",
           "hold_reason": "HOLD_GES_SCHEMA_NOT_VALIDATED",
           "parser": "ges_pinned_year_reconciled_v2",
           "period": "2025-09",
           "insights": [],
           "sheet": "Año 2025"
-        }
+        },
+        "rechecked_at": "2026-11-03T16:55:04.773874+00:00",
+        "rechecked_from_parser": "ges_pinned_year_reconciled_v2",
+        "rechecked_for_parser": "ges_ytd_cuts_v3"
       }
     },
     {
@@ -87,12 +137,28 @@
         "parse": {
           "family": "ges",
           "status": "HOLD",
+          "hold_reason": "HOLD_GES_INVALID_COUNT",
+          "parser": "ges_ytd_cuts_v3",
+          "period": "2025-12",
+          "insights": [],
+          "at": "Año 2025!65"
+        },
+        "text_receipt": {
+          "status": "extract_failed",
+          "error": "AttributeError:'Chartsheet' object has no attribute 'iter_rows'"
+        },
+        "previous_parse": {
+          "family": "ges",
+          "status": "HOLD",
           "hold_reason": "HOLD_GES_SCHEMA_NOT_VALIDATED",
           "parser": "ges_pinned_year_reconciled_v2",
           "period": "2025-12",
           "insights": [],
           "sheet": "Año 2025"
-        }
+        },
+        "rechecked_at": "2026-11-03T16:55:02.898011+00:00",
+        "rechecked_from_parser": "ges_pinned_year_reconciled_v2",
+        "rechecked_for_parser": "ges_ytd_cuts_v3"
       }
     },
     {
@@ -110,12 +176,30 @@
         "parse": {
           "family": "ges",
           "status": "HOLD",
+          "hold_reason": "HOLD_GES_ROW_UNRECOGNIZED",
+          "parser": "ges_ytd_cuts_v3",
+          "period": "2026-03",
+          "insights": [],
+          "sheet": "Año 2026",
+          "row": 97,
+          "label": "Sin Problema de Salud Informado"
+        },
+        "text_receipt": {
+          "status": "extract_failed",
+          "error": "AttributeError:'Chartsheet' object has no attribute 'iter_rows'"
+        },
+        "previous_parse": {
+          "family": "ges",
+          "status": "HOLD",
           "hold_reason": "HOLD_GES_SCHEMA_NOT_VALIDATED",
           "parser": "ges_pinned_year_reconciled_v2",
           "period": "2026-03",
           "insights": [],
           "sheet": "Año 2026"
-        }
+        },
+        "rechecked_at": "2026-11-03T16:55:01.545045+00:00",
+        "rechecked_from_parser": "ges_pinned_year_reconciled_v2",
+        "rechecked_for_parser": "ges_ytd_cuts_v3"
       }
     },
     {
@@ -133,19 +217,30 @@
         "parse": {
           "family": "ges",
           "status": "HOLD",
+          "hold_reason": "HOLD_GES_ROW_UNRECOGNIZED",
+          "parser": "ges_ytd_cuts_v3",
+          "period": "2026-06",
+          "insights": [],
+          "sheet": "Año 2026",
+          "row": 97,
+          "label": "Sin Problema de Salud Informado"
+        },
+        "text_receipt": {
+          "status": "exists",
+          "path": "data/stats_fichas/text/5a84c70ca52440c8.json"
+        },
+        "previous_parse": {
+          "family": "ges",
+          "status": "HOLD",
           "hold_reason": "HOLD_GES_SCHEMA_NOT_VALIDATED",
           "parser": "ges_pinned_year_reconciled_v2",
           "period": "2026-06",
           "insights": [],
           "sheet": "Año 2026"
         },
-        "text_receipt": {
-          "status": "written",
-          "path": "data/stats_fichas/text/5a84c70ca52440c8.json",
-          "bytes": 204798,
-          "truncated": true,
-          "backfill": true
-        }
+        "rechecked_at": "2026-11-03T16:55:00.460384+00:00",
+        "rechecked_from_parser": "ges_pinned_year_reconciled_v2",
+        "rechecked_for_parser": "ges_ytd_cuts_v3"
       }
     }
   ]

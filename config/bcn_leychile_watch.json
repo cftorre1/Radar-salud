@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "slug": "bcn_leychile_watch",
+  "decided_at": "2026-11-03",
+  "decision": "Dirección 3-nov-2026: primero una sonda (robots.txt + una consulta real desde CI); si pasa, vigilancia sin IA de normas clave. Sólo metadatos y enlace; nunca el texto de la norma. Lista aprobada: 'esa lista'.",
+  "license_note": "Licencia no resuelta: BCN anunció CC BY-NC-SA en 2007; los metadatos de la página de privacidad actual de bcn.cl indican CC BY-SA 3.0 CL. Mientras no se aclare: sólo metadatos (tipo/número, título, organismo, fechas, idNorma) y enlace; ningún texto de la norma se almacena ni se reproduce.",
+  "id_rule": "id_norma sólo desde una respuesta verificada del servicio (idLey -> normaId, o búsqueda con coincidencia única de identidad). Nunca se adivina: si no se resuelve, la norma queda 'unresolved' con su causa. Un revisor puede fijar id_norma aquí sólo tras verificarlo; aun así el motor comprueba tipo, número, organismo y año en la respuesta.",
+  "probe_norm": "ley_19966",
+  "norms": [
+    {
+      "key": "ley_19966",
+      "label": "la Ley N° 19.966 (Régimen de Garantías Explícitas en Salud, GES)",
+      "tipo": "ley",
+      "numero": "19966",
+      "anio": 2004,
+      "organismo": null,
+      "lookup": {"id_ley": "19966"},
+      "id_norma": null
+    },
+    {
+      "key": "dfl_1_2005_salud",
+      "label": "el DFL N° 1 de 2005 del Ministerio de Salud (texto refundido de Fonasa e Isapres)",
+      "tipo": "decreto con fuerza de ley",
+      "numero": "1",
+      "anio": 2005,
+      "organismo": "salud",
+      "lookup": {"search": "texto refundido decreto ley 2763 leyes 18933 18469"},
+      "id_norma": null
+    },
+    {
+      "key": "ley_20584",
+      "label": "la Ley N° 20.584 (derechos y deberes de las personas en su atención de salud)",
+      "tipo": "ley",
+      "numero": "20584",
+      "anio": 2012,
+      "organismo": null,
+      "lookup": {"id_ley": "20584"},
+      "id_norma": null
+    },
+    {
+      "key": "ds_3_1984_salud",
+      "label": "el Decreto Supremo N° 3 de 1984 del Ministerio de Salud (reglamento de licencias médicas)",
+      "tipo": "decreto",
+      "numero": "3",
+      "anio": 1984,
+      "organismo": "salud",
+      "lookup": {"search": "reglamento autorizacion licencias medicas COMPIN instituciones de salud previsional"},
+      "id_norma": null
+    },
+    {
+      "key": "ley_21674",
+      "label": "la Ley N° 21.674 (ley corta de Isapres)",
+      "tipo": "ley",
+      "numero": "21674",
+      "anio": 2024,
+      "organismo": null,
+      "lookup": {"id_ley": "21674"},
+      "id_norma": null
+    }
+  ]
+}

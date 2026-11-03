@@ -927,6 +927,192 @@
           "technical_failures": []
         }
       }
+    },
+    {
+      "run_id": "41669858120",
+      "generated_at": "2026-11-03T17:32:24.150590+00:00",
+      "as_of": "2026-11-03",
+      "network_requests": 17,
+      "sources": {
+        "kff_health_news": {
+          "checked_at": "2026-11-03T17:32:06.292229+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 17,
+            "90": 17
+          },
+          "relevant_items": 13,
+          "excluded_items": 4,
+          "technical_failures": []
+        },
+        "ema": {
+          "checked_at": "2026-11-03T17:32:09.986715+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 13,
+            "90": 13
+          },
+          "relevant_items": 2,
+          "excluded_items": 11,
+          "technical_failures": []
+        },
+        "fda": {
+          "checked_at": "2026-11-03T17:32:12.174020+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 10,
+            "90": 20
+          },
+          "relevant_items": 6,
+          "excluded_items": 14,
+          "technical_failures": []
+        },
+        "cdc": {
+          "checked_at": "2026-11-03T17:32:15.543509+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 0,
+            "90": 0
+          },
+          "relevant_items": 0,
+          "excluded_items": 0,
+          "technical_failures": []
+        },
+        "nih": {
+          "checked_at": null,
+          "technical_status": "error",
+          "counts": {
+            "30": 0,
+            "90": 0
+          },
+          "relevant_items": 0,
+          "excluded_items": 0,
+          "technical_failures": [
+            {
+              "source": "nih",
+              "section": "news_releases",
+              "url": "https://www.nih.gov/news-releases/feed.xml",
+              "stage": "robots",
+              "error": "ValueError: http_403"
+            }
+          ]
+        },
+        "ecdc": {
+          "checked_at": "2026-11-03T17:32:20.905509+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 20,
+            "90": 20
+          },
+          "relevant_items": 2,
+          "excluded_items": 18,
+          "technical_failures": []
+        },
+        "ec_health": {
+          "checked_at": "2026-11-03T17:32:23.943351+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 30,
+            "90": 30
+          },
+          "relevant_items": 6,
+          "excluded_items": 24,
+          "technical_failures": []
+        }
+      }
+    },
+    {
+      "run_id": "41703058328",
+      "generated_at": "2026-11-03T20:57:06.943763+00:00",
+      "as_of": "2026-11-03",
+      "network_requests": 17,
+      "sources": {
+        "kff_health_news": {
+          "checked_at": "2026-11-03T20:56:49.545982+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 17,
+            "90": 17
+          },
+          "relevant_items": 13,
+          "excluded_items": 4,
+          "technical_failures": []
+        },
+        "ema": {
+          "checked_at": "2026-11-03T20:56:53.220405+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 13,
+            "90": 13
+          },
+          "relevant_items": 2,
+          "excluded_items": 11,
+          "technical_failures": []
+        },
+        "fda": {
+          "checked_at": "2026-11-03T20:56:55.339468+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 10,
+            "90": 20
+          },
+          "relevant_items": 6,
+          "excluded_items": 14,
+          "technical_failures": []
+        },
+        "cdc": {
+          "checked_at": "2026-11-03T20:56:58.836479+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 0,
+            "90": 0
+          },
+          "relevant_items": 0,
+          "excluded_items": 0,
+          "technical_failures": []
+        },
+        "nih": {
+          "checked_at": null,
+          "technical_status": "error",
+          "counts": {
+            "30": 0,
+            "90": 0
+          },
+          "relevant_items": 0,
+          "excluded_items": 0,
+          "technical_failures": [
+            {
+              "source": "nih",
+              "section": "news_releases",
+              "url": "https://www.nih.gov/news-releases/feed.xml",
+              "stage": "robots",
+              "error": "ValueError: http_403"
+            }
+          ]
+        },
+        "ecdc": {
+          "checked_at": "2026-11-03T20:57:03.872894+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 20,
+            "90": 20
+          },
+          "relevant_items": 2,
+          "excluded_items": 18,
+          "technical_failures": []
+        },
+        "ec_health": {
+          "checked_at": "2026-11-03T20:57:06.696964+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 30,
+            "90": 30
+          },
+          "relevant_items": 6,
+          "excluded_items": 24,
+          "technical_failures": []
+        }
+      }
     }
   ]
 }
