@@ -8,8 +8,9 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    # The integrated suite includes immutable paid-history replays (3800+ cases).
-    timeout-minutes: 25
+    # The integrated suite includes immutable paid-history replays (3800+ cases). It reached ~23 min in Nov-2026 and
+    # PRs #129, #130 and #131 were cancelled at 25 min with tests still passing (3-nov-2026): 45 min of headroom.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:

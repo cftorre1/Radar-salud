@@ -2,12 +2,11 @@
   "status": "hold",
   "family": "F4",
   "period": "2026-06",
-  "generated_at": "2026-11-02T23:30:16.162684+00:00",
+  "generated_at": "2026-11-03T16:55:15.265995+00:00",
   "decision": {
     "decision": "HOLD",
     "holds": [
-      "HOLD_RECONCILIATION:latest_release_not_valid:2026-06:HOLD_GES_SCHEMA_NOT_VALIDATED",
-      "HOLD_MISSING_HASH"
+      "HOLD_RECONCILIATION:latest_release_not_valid:2026-06:HOLD_GES_ROW_UNRECOGNIZED"
     ],
     "triggers": [
       "new_period"
@@ -18,22 +17,21 @@
   },
   "verification": null,
   "errors": [
-    "HOLD_RECONCILIATION:latest_release_not_valid:2026-06:HOLD_GES_SCHEMA_NOT_VALIDATED",
-    "HOLD_MISSING_HASH"
+    "HOLD_RECONCILIATION:latest_release_not_valid:2026-06:HOLD_GES_ROW_UNRECOGNIZED"
   ],
   "candidate": {
     "reconciliation": {
       "ok": false,
       "failures": [
-        "latest_release_not_valid:2026-06:HOLD_GES_SCHEMA_NOT_VALIDATED"
+        "latest_release_not_valid:2026-06:HOLD_GES_ROW_UNRECOGNIZED"
       ],
       "checks": [
-        "hoja del año del corte fijada (nunca otra hoja)",
-        "Σ filas por problema = total declarado, Fonasa e Isapre",
-        "medida declarada por el encabezado de la fuente o confirmada por un revisor",
-        "cortes acumulados del mismo año nunca bajan",
-        "un solo archivo y hash por release",
-        "trimestre derivable del último corte"
+        "hojas del año del corte, del año anterior y del previo fijadas por nombre (nunca otra hoja)",
+        "Σ filas por problema = total declarado en cada columna leída, Fonasa e Isapre",
+        "ingresos ene–mes (columna SIS) = acumulado(t) − acumulado(dic del año anterior), por problema y en total",
+        "medida confirmada por un revisor en el registro (acumulado del año, Dirección 3-nov-2026)",
+        "cortes acumulados nunca bajan (dic del año anterior ≤ mar ≤ … ≤ t)",
+        "un solo archivo y hash por release"
       ]
     }
   }
