@@ -703899,7 +703899,7 @@
     },
     "global_who": {
       "name": "WHO",
-      "checked_at": "2026-11-02T13:45:56.441260+00:00",
+      "checked_at": "2026-11-02T23:42:43.287255+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -703916,19 +703916,19 @@
       "coverage_from": "2026-08-05",
       "coverage_to": "2026-11-02",
       "pages_checked": 7,
-      "recent_items": 99,
+      "recent_items": 101,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 99,
-        "detected": 99,
+        "inventory_url_count": 101,
+        "detected": 101,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 250,
-        "detected": 250,
+        "inventory_url_count": 252,
+        "detected": 252,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -703937,25 +703937,25 @@
         "30": "complete_on_declared_surfaces",
         "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 250,
-      "unique_items": 250,
+      "unique_language_urls_90": 252,
+      "unique_items": 252,
       "counts": {
-        "30": 99,
-        "90": 250
+        "30": 101,
+        "90": 252
       },
       "indexed_counts": {
-        "30": 99,
-        "90": 250
+        "30": 101,
+        "90": 252
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 135,
+      "material_items": 136,
       "published": 0,
       "rejected": 6,
-      "deferred": 244,
+      "deferred": 246,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 250,
-      "new": 0,
+      "discovered": 252,
+      "new": 2,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -703979,7 +703979,7 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/41447390917/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/41539638382/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
@@ -704001,68 +704001,63 @@
     },
     "global_paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-02T14:08:34.548800+00:00",
-      "status": "warning",
-      "technical_status": "error",
-      "coverage_status": "incomplete",
-      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+      "checked_at": "2026-11-03T00:06:30.012341+00:00",
+      "status": "ok",
+      "technical_status": "ok",
+      "coverage_status": "complete",
+      "outcome": "READY_FOR_INTEGRATION",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
-      "recurrent_operation_proven": false,
+      "recurrent_operation_proven": true,
       "cadence_seconds": 86400,
-      "cadence_validation_pending": true,
+      "cadence_validation_pending": false,
       "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
-      "next_cadence_validation_not_before": "2026-11-03T14:08:34.548800+00:00",
-      "coverage_completeness": "incomplete",
+      "next_cadence_validation_not_before": null,
+      "coverage_completeness": "complete",
       "coverage_window_days": 90,
       "coverage_from": "2026-08-05",
       "coverage_to": "2026-11-02",
-      "pages_checked": 124,
-      "recent_items": 177,
+      "pages_checked": 127,
+      "recent_items": 184,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 206,
-        "detected": 206,
+        "inventory_url_count": 215,
+        "detected": 215,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 680,
-        "detected": 680,
+        "inventory_url_count": 689,
+        "detected": 689,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "window_completeness": {
-        "30": "incomplete_lower_bound",
-        "90": "incomplete_lower_bound"
+        "30": "complete_on_declared_surfaces",
+        "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 680,
-      "unique_items": 552,
+      "unique_language_urls_90": 689,
+      "unique_items": 559,
       "counts": {
-        "30": 177,
-        "90": 552
+        "30": 184,
+        "90": 559
       },
       "indexed_counts": {
-        "30": 177,
-        "90": 553
+        "30": 184,
+        "90": 559
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 229,
+      "material_items": 234,
       "published": 0,
       "rejected": 14,
-      "deferred": 539,
+      "deferred": 545,
       "pending_date_items": 0,
-      "technical_failures": [
-        {
-          "url": "https://www.paho.org/es/noticias/9-9-2026-dia-mundial-fisioterapia-ops-destaca-rehabilitacion-bienestar-cobertura-universal",
-          "error": "TimeoutError: The read operation timed out"
-        }
-      ],
-      "discovered": 553,
-      "new": 0,
+      "technical_failures": [],
+      "discovered": 559,
+      "new": 7,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "regional_news",
@@ -704076,12 +704071,12 @@
         {
           "section": "regional_news",
           "stop": "verified_date_partition_coverage",
-          "pages": 41
+          "pages": 42
         },
         {
           "section": "regional_news_es",
           "stop": "verified_date_partition_coverage",
-          "pages": 78
+          "pages": 80
         },
         {
           "section": "chile_news",
@@ -704104,8 +704099,8 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/41447390917/inventory.json",
-      "source_quality_disposition": "hold_technical",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/41539638382/inventory.json",
+      "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
       "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
@@ -704115,7 +704110,7 @@
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
         "activated": false,
         "evidence_run_ids": [],
-        "reason": "current_run_not_successful_live_complete",
+        "reason": "failed_live_run_since_previous_daily_success",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
@@ -704168,7 +704163,7 @@
     "global_kff_health_news": {
       "name": "KFF Health News",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-02T14:08:49.382086+00:00",
+      "checked_at": "2026-11-03T00:06:41.326757+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704243,7 +704238,7 @@
     "global_ema": {
       "name": "EMA (European Medicines Agency)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-02T14:08:53.098629+00:00",
+      "checked_at": "2026-11-03T00:06:45.342494+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704255,16 +704250,16 @@
       "cadence_validation_pending": true,
       "counts": {
         "30": 13,
-        "90": 14
+        "90": 13
       },
       "recent_items": 13,
-      "unique_items": 14,
+      "unique_items": 13,
       "material_items": 2,
       "relevant_items": 2,
-      "excluded_items": 12,
-      "rejected": 12,
+      "excluded_items": 11,
+      "rejected": 11,
       "deferred": 2,
-      "discovered": 14,
+      "discovered": 13,
       "new": 0,
       "published": 0,
       "pages_checked": 2,
@@ -704314,7 +704309,7 @@
     "global_fda": {
       "name": "US FDA (press releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-02T14:08:55.174388+00:00",
+      "checked_at": "2026-11-03T00:06:47.551987+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704325,16 +704320,16 @@
       "recurrent_operation_proven": false,
       "cadence_validation_pending": true,
       "counts": {
-        "30": 9,
+        "30": 10,
         "90": 20
       },
-      "recent_items": 9,
+      "recent_items": 10,
       "unique_items": 20,
-      "material_items": 5,
-      "relevant_items": 5,
-      "excluded_items": 15,
-      "rejected": 15,
-      "deferred": 5,
+      "material_items": 6,
+      "relevant_items": 6,
+      "excluded_items": 14,
+      "rejected": 14,
+      "deferred": 6,
       "discovered": 20,
       "new": 0,
       "published": 0,
@@ -704382,7 +704377,7 @@
     "global_cdc": {
       "name": "US CDC (newsroom + MMWR)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-02T14:08:58.614051+00:00",
+      "checked_at": "2026-11-03T00:06:51.109657+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704525,7 +704520,7 @@
     "global_ecdc": {
       "name": "ECDC",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-02T14:09:03.532157+00:00",
+      "checked_at": "2026-11-03T00:06:56.234986+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704596,7 +704591,7 @@
     "global_ec_health": {
       "name": "European Commission (Public Health)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-02T14:09:06.211667+00:00",
+      "checked_at": "2026-11-03T00:06:59.065067+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",

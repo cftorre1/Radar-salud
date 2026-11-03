@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "as_of": "2026-11-02",
-  "generated_at": "2026-11-02T14:09:07.876096+00:00",
+  "generated_at": "2026-11-03T00:07:00.388821+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -15,10 +15,10 @@
   "window_days": 90,
   "retention_days": 90,
   "freshness": {
-    "newest_published_at": "2026-10-28",
-    "items_last_2_days": 0,
-    "items_last_7_days": 1,
-    "status": "stale",
+    "newest_published_at": "2026-11-02",
+    "items_last_2_days": 1,
+    "items_last_7_days": 2,
+    "status": "fresh",
     "stale_after_days": 2
   },
   "sources": [
@@ -41,15 +41,31 @@
   ],
   "held": {
     "feed_not_authorized_for_display": 17,
-    "not_relevant_or_undated": 70,
-    "publication_activation_pending_paho": 553,
-    "publication_activation_pending_who": 250
+    "not_relevant_or_undated": 68,
+    "publication_activation_pending_paho": 559,
+    "publication_activation_pending_who": 252
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
   "duplicates": [],
   "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
   "weekly_signal": [
+    {
+      "segment": "pharma",
+      "label_es": "Medicamentos y farma",
+      "count": 1,
+      "item_ids": [
+        "6041c398b60aaa07606b"
+      ]
+    },
+    {
+      "segment": "regulation",
+      "label_es": "Regulación",
+      "count": 1,
+      "item_ids": [
+        "6041c398b60aaa07606b"
+      ]
+    },
     {
       "segment": "providers",
       "label_es": "Prestadores",
@@ -60,6 +76,64 @@
     }
   ],
   "items": [
+    {
+      "id": "6041c398b60aaa07606b",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Provides Clarity to Support Cell and Gene Therapy Development and Quality",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-provides-clarity-support-cell-and-gene-therapy-development-and-quality",
+      "published_at": "2026-11-02",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": "The U.S. Food and Drug Administration today issued final guidance for manufacturers of cellular and gene therapy (CGT) products to implement a comprehensive, science- and risk-based plan for making sure their products meet potency standards.",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-11-02",
+      "title_es": "La FDA brinda claridad para apoyar el desarrollo y la calidad de las terapias celulares y génicas",
+      "description_es": "La Administración de Alimentos y Medicamentos de EE. UU. emitió hoy una guía final para que los fabricantes de productos de terapia celular y génica (CGT) implementen un plan integral, basado en la ciencia y el riesgo, para garantizar que sus productos cumplan con los estándares de potencia.",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": null,
+        "cache_key": "37b79ecbfcf95d55b946c748eef28b75"
+      }
+    },
     {
       "id": "bfdd8633fe174ab8e461",
       "source": "ecdc",
@@ -747,7 +821,7 @@
     }
   ],
   "translation": {
-    "translated": 10,
+    "translated": 11,
     "summarized": 2,
     "from_cache": 12,
     "verification_failed": 5,
@@ -756,11 +830,11 @@
     "pending": 0,
     "source_in_spanish": 0
   },
-  "ai_text_items": 12,
+  "ai_text_items": 13,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget",
   "display": {
     "spanish_only": true,
-    "shown": 12,
+    "shown": 13,
     "hidden": 7,
     "hidden_by_reason": {
       "not_allowed_without_verified_summary": 2,
