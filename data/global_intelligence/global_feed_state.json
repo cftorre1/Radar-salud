@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-11-02",
-  "generated_at": "2026-11-03T00:07:00.388821+00:00",
+  "as_of": "2026-11-03",
+  "generated_at": "2026-11-03T17:32:25.460074+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -15,9 +15,9 @@
   "window_days": 90,
   "retention_days": 90,
   "freshness": {
-    "newest_published_at": "2026-11-02",
-    "items_last_2_days": 1,
-    "items_last_7_days": 4,
+    "newest_published_at": "2026-11-03",
+    "items_last_2_days": 2,
+    "items_last_7_days": 5,
     "status": "fresh",
     "stale_after_days": 2
   },
@@ -41,9 +41,9 @@
   ],
   "held": {
     "feed_not_authorized_for_display": 17,
-    "not_relevant_or_undated": 68,
-    "publication_activation_pending_paho": 559,
-    "publication_activation_pending_who": 252
+    "not_relevant_or_undated": 67,
+    "publication_activation_pending_paho": 556,
+    "publication_activation_pending_who": 254
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
@@ -63,21 +63,78 @@
     {
       "segment": "pharma",
       "label_es": "Medicamentos y farma",
-      "count": 1,
+      "count": 2,
       "item_ids": [
+        "5ef15afad6e02a4dcb95",
         "6041c398b60aaa07606b"
       ]
     },
     {
       "segment": "regulation",
       "label_es": "Regulación",
-      "count": 1,
+      "count": 2,
       "item_ids": [
+        "5ef15afad6e02a4dcb95",
         "6041c398b60aaa07606b"
       ]
     }
   ],
   "items": [
+    {
+      "id": "5ef15afad6e02a4dcb95",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "New guidance document MDCG 2026-6 on Guidance on clinical evidence for orphan IVDs",
+      "url": "https://health.ec.europa.eu/latest-updates/new-guidance-document-mdcg-2026-6-guidance-clinical-evidence-orphan-ivds-2026-11-03_en",
+      "published_at": "2026-11-03",
+      "segments": [
+        "pharma",
+        "regulation",
+        "healthtech"
+      ],
+      "description": "MDCG 2020-16 rev.5 - Guidance on Classification Rules for in vitro Diagnostic Medical Devices under Regulation (EU) 2017/746 (September 2026)",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 89,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "title:acronym_missing:IV",
+          "title:acronym_added:IVD",
+          "title:term_missing:IVDs",
+          "description:term_missing:Classification"
+        ]
+      }
+    },
     {
       "id": "6041c398b60aaa07606b",
       "source": "fda",
@@ -596,7 +653,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-02",
+      "first_seen_on": "2026-11-03",
       "title_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "description_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "translation": {
@@ -1164,8 +1221,8 @@
   "translation": {
     "translated": 11,
     "summarized": 2,
-    "from_cache": 12,
-    "verification_failed": 5,
+    "from_cache": 13,
+    "verification_failed": 6,
     "review_failed": 0,
     "not_allowed": 2,
     "pending": 0,
