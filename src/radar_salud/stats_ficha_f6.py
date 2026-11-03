@@ -354,7 +354,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     notes_src = k.get("source_notes") or {}
     headline, headline_type = _headline(tpl["headline"], acc=acc, obs=obs, month=month, qoq=qoq, prev=prev)
     rec_clause = (f"Los reclamos promediaron {fmt_int(V(f'rec.promedio.{y}'))} al mes entre enero y {month}, "
-                  f"{fmt_dec(abs(V('rec.pct')), 1)}% {'más' if V('rec.delta') >= 0 else 'menos'} que el promedio mensual de {y - 1}."
+                  f"{fmt_dec(abs(V('rec.pct')), 1)}% {'más' if V('rec.delta') >= 0 else 'menos'} que el promedio mensual de todo {y - 1}."
                   if k["has_rec"] else "")
     dek = tpl["dek"].format(rec_clause=rec_clause, mediadores=fmt_int(V("med.mediadores"))).strip()
     tram_vs = f", {_vs(qoq['acr.tramite'], prev)}" if "acr.tramite" in qoq else ""
@@ -449,17 +449,17 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     # 3 · Reclamos.
     if k["has_rec"]:
         c_rec = {"id": "f6-reclamos", "form": "bars", "unit": "reclamos", "headline": "Promedio mensual de reclamos",
-                 "subtitle": f"Reclamos por mes: promedio de {y - 1} y de enero a {month} de {y}",
-                 "rows": [{"label": str(y - 1), "value": V(f"rec.promedio.{y - 1}"), "ref": f"rec.promedio.{y - 1}"},
+                 "subtitle": f"Reclamos por mes: promedio del año {y - 1} completo y de enero a {month} de {y}",
+                 "rows": [{"label": f"Año {y - 1}", "value": V(f"rec.promedio.{y - 1}"), "ref": f"rec.promedio.{y - 1}"},
                           {"label": f"Ene–{month[:3]} {y}", "value": V(f"rec.promedio.{y}"), "ref": f"rec.promedio.{y}", "emphasis": True}],
                  "table": {"columns": ["Período", "Reclamos al mes"],
-                           "rows": [[str(y - 1), fmt_int(V(f"rec.promedio.{y - 1}"))],
+                           "rows": [[f"Año {y - 1} completo", fmt_int(V(f"rec.promedio.{y - 1}"))],
                                     [f"Enero–{month} {y}", fmt_int(V(f"rec.promedio.{y}"))],
                                     ["Variación", fmt_dec(V("rec.pct"), 1, signed=True) + "%"]]},
-                 "source": src("SIS, Boletín IP, reclamos. Promedios mensuales de un flujo; la SIS informa la variación redondeada.",
+                 "source": src("SIS, Boletín IP, reclamos. Promedios mensuales de un flujo; el de " + str(y - 1) + " es del año completo, no del mismo período. La SIS informa la variación redondeada.",
                                f"rec.promedio.{y}", f"rec.promedio.{y - 1}")}
         rec_text = [f"Entre enero y {month} ingresaron en promedio {fmt_int(V(f'rec.promedio.{y}'))} reclamos al mes, frente a "
-                    f"{fmt_int(V(f'rec.promedio.{y - 1}'))} en {y - 1}: {fmt_int(abs(V('rec.delta')))} "
+                    f"{fmt_int(V(f'rec.promedio.{y - 1}'))} en todo {y - 1}: {fmt_int(abs(V('rec.delta')))} "
                     f"{'más' if V('rec.delta') >= 0 else 'menos'} al mes."]
         if "rec.pct_informado" in v:
             rec_text.append(f"La SIS informa la variación redondeada ({fmt_int(V('rec.pct_informado'))}%); Alicanto la recalcula "
