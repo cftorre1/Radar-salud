@@ -1,7 +1,7 @@
 {
   "schema_version": "stats_capture_v1",
   "kind": "boletin_ip",
-  "updated_at": "2026-11-03T16:55:14.792066+00:00",
+  "updated_at": "2026-11-03T20:19:30.115923+00:00",
   "releases": [
     {
       "period": "2025-06",
@@ -540,6 +540,39 @@
             "status": "verified",
             "pages": 7,
             "text_sha256": "ef3abb8c9e01eecb0223825280231af7c2ecd90bb18a6b0918cd69e65446a583",
+            "checker_version": 1,
+            "templates_sha256": null,
+            "reading_sha256": "9076e6435cf3126349761795b661338c6cca42a79e7fa8627dfa6a623968d111",
+            "verified_present": {
+              "registered_titles": true,
+              "records_without_birth_date": true
+            },
+            "pages_checked": [
+              1,
+              2,
+              4
+            ],
+            "figure_rules": {
+              "registered_titles": {
+                "rule": "context_window",
+                "page": 2
+              },
+              "records_without_birth_date": {
+                "rule": "context_window",
+                "page": 2
+              }
+            }
+          },
+          "text_receipt": {
+            "status": "written",
+            "path": "data/stats_fichas/text/060ed3a6d8954ba7.json",
+            "bytes": 11490,
+            "truncated": false
+          },
+          "previous_parse": {
+            "status": "verified",
+            "pages": 7,
+            "text_sha256": "ef3abb8c9e01eecb0223825280231af7c2ecd90bb18a6b0918cd69e65446a583",
             "verified_present": {
               "registered_titles": true,
               "records_without_birth_date": true
@@ -549,7 +582,9 @@
               2,
               4
             ]
-          }
+          },
+          "rechecked_at": "2026-11-03T20:19:30.109853+00:00",
+          "rechecked_from_checker_version": 1
         }
       ]
     },
