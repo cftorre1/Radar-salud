@@ -335,6 +335,9 @@ main{max-width:none;margin:0;padding:0 0 70px}
 }
 @media (max-width:380px){.brandbar .brand-in{gap:6px;padding:0 12px}.brandbar .topnav a{padding:0 3px}.brandbar .topnav a[data-short]::before{font-size:11.5px}.brandbar .premium-access,.brandbar .topnav a.premium-access{padding:0 6px}}
 @media (max-width:340px){.brandbar .topnav a[data-short]::before{font-size:11px}.brandbar .topnav a{padding:0 2px}}
+/* ≤340 px with a wider fallback font (no Inter, e.g. CI runners: DejaVu Sans) the five items overflowed by ~11 px:
+   tighter gutter/gap, smaller labels and PREMIUM pill, and the logo may shrink to 30 px. */
+@media (max-width:340px){.brandbar .brand-in{gap:4px;padding:0 10px}.brandbar .logo,.brandbar .logo-link{min-width:30px}.brandbar .topnav a[data-short]::before{font-size:10.5px}.brandbar .premium-access,.brandbar .topnav a.premium-access{margin-left:2px;padding:0 5px;font-size:10.5px;letter-spacing:0}}
 @media (max-width:300px){.brandbar .topnav .header-newsletter{display:none!important}.filter-details>summary{max-width:100%}}
 
 /* Proposal A · status beside the title, tools below. On phones only the active count is shown;
