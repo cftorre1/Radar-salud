@@ -1,38 +1,49 @@
-"""F4 · Casos GES por trimestre: evidence package, KPIs and ficha (no model numbers).
+"""F4 · Casos GES: evidence package, KPIs and ficha (no model numbers).
 
 Inputs (captured by ``stats_capture``; never downloaded here):
-- ``data/stats_fichas/captures/ges_quarterly.json``: one entry per SIS release ('… a junio 2026'), parsed with the
-  corrected GES parser (``data_insights.parse_ges_workbook``): the sheet of the reporting year is pinned and the
-  problem rows add up to the declared total for Fonasa and for Isapre;
+- ``data/stats_fichas/captures/ges_quarterly.json``: one entry per SIS release ('… a junio 2026'), parsed by
+  ``ges_workbook.parse`` (parser ``ges_ytd_cuts_v3``): the year sheets of the release (t), the previous year and the
+  one before are pinned by name; every column read reconciles to the declared total; and the year-to-date column
+  equals the cumulative cut minus the previous December cut, per problem and in total;
 - ``data/market/isapre_portfolio.json`` (F1): Isapre beneficiaries per month, the only rate denominator captured.
 
-Rules (registry F4):
-- the pinned year sheet is a year-to-date count ('measure'); the quarter is the difference between two cuts of the
-  same year (Q1 = the March cut). The measure must be declared by the source's header text or confirmed by a reviewer
-  in the registry, otherwise HOLD. A cut lower than the previous cut of the same year is a reconciliation failure;
-- year-on-year compares the same quarter one year earlier; problems are matched by their label. Labels present in only
-  one of the two quarters mark a change of the GES list (decree) and are excluded from the problem ranking;
-- rates per 1.000 use beneficiaries of the same insurer (Isapre from F1, mean of the quarter's three month-end stocks).
-  Fonasa beneficiaries are not captured: its rate is 'no disponible', never estimated. Rates are 'tasa bruta'.
+Measure (Dirección, 3-nov-2026: "Ene–jun vs ene–jun"; registry ``F4.measure``):
+- the ficha shows cases that entered between January and the month of the cut ("ingresos entre enero y junio de
+  2026"), compared with the same months of the previous year. The current year comes from the SIS year-to-date column;
+  the previous year's same period is derived from the same workbook: acumulado(t−12) − acumulado(dic del año t−2);
+- quarters (trend) are differences of cumulative cuts: T1 = corte de marzo − corte de diciembre del año anterior,
+  Tq = corte(q) − corte(q−1). The SIS cumulative counts since July 2005 are never shown: they are only differenced;
+- the measure is established by a reviewer in the registry (``measure.confirmed``); the header can only veto;
+- problems are matched by their GES number. A problem present in only one of the two periods marks a change of the
+  GES list (decree) and is kept out of the ranking;
+- rates per 1.000 use beneficiaries of the same insurer (Isapre from F1, mean of the month-end stocks of the same
+  months). Fonasa beneficiaries are not captured: its rate is 'no disponible', never estimated. Rates are 'tasa bruta'
+  and count cases, not persons.
 """
 from __future__ import annotations
 
 import json
+import math
 import re
 from datetime import date
 from pathlib import Path
 from typing import Any, Callable
 
+from . import ges_workbook as gw
 from . import stats_fichas as sf
-from .stats_fichas import fmt_dec, fmt_int, fmt_signed, value
+from .stats_fichas import fmt_dec, fmt_int, value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F4"
-BUILDER_VERSION = "f4_index_topic_v3"
+BUILDER_VERSION = "f4_ytd_v4"
 CAPTURE = Path("data/stats_fichas/captures/ges_quarterly.json")
 PORTFOLIO = Path("data/market/isapre_portfolio.json")
 QWORD = {1: "primer", 2: "segundo", 3: "tercer", 4: "cuarto"}
 MAX_PROBLEM_ROWS = 8
+INS = ("fonasa", "isapre")
+# Evidence kind of the SIS cumulative counts since July 2005: inputs to subtract only. Never a showable figure
+# (``sf.number_pool`` skips it), never compared as a revision (``sf.detect_revisions`` compares 'captured' only).
+CUMULATIVE = "cumulative_input"
 
 
 def _load(path: Path) -> Any:
@@ -61,10 +72,6 @@ def qend(y: int, q: int) -> str:
     return f"{y}-{3 * q:02d}"
 
 
-def qmonths(y: int, q: int) -> list[str]:
-    return [f"{y}-{m:02d}" for m in range(3 * q - 2, 3 * q + 1)]
-
-
 def qlabel(y: int, q: int) -> str:
     return f"{QWORD[q]} trimestre de {y}"
 
@@ -78,8 +85,46 @@ def qprev(y: int, q: int, n: int = 1) -> tuple[int, int]:
     return k // 4, k % 4 + 1
 
 
+def months_of(y: int, m: int) -> list[str]:
+    return [f"{y}-{k:02d}" for k in range(1, m + 1)]
+
+
+def mname(m: int) -> str:
+    return sf.MONTHS_ES[m - 1]
+
+
+def span(y: int, m: int) -> str:
+    """'enero–junio de 2026' (a year-to-date period)."""
+    return f"enero–{mname(m)} de {y}"
+
+
+def between(y: int, m: int) -> str:
+    """'entre enero y junio de 2026'."""
+    return f"entre enero y {mname(m)} de {y}"
+
+
+def short(y: int, m: int) -> str:
+    """'ene–jun 2026'."""
+    return f"ene–{mname(m)[:3]} {y}"
+
+
+def cut_label(period: str) -> str:
+    y, m = sf.period_parts(period)
+    return f"{mname(m)[:3]} {y}"
+
+
+def half_up(x: float) -> int:
+    """Round half up, as the verifier does (``fmt_int`` uses Python's round-half-even: 2.501.808,5 → 2.501.808)."""
+    return math.floor(x + 0.5)
+
+
 def slug(label: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", _fold(label)).strip("_")[:48] or "problema"
+
+
+def pkey(code: int | str) -> str:
+    """Problems are matched by their GES number (labels change wording between years)."""
+    return f"ps{int(code):02d}"
 
 
 def short_label(label: str, n: int = 18) -> str:
@@ -87,20 +132,24 @@ def short_label(label: str, n: int = 18) -> str:
     return label if len(label) <= n else label[: n - 1].rstrip(" ,;-") + "…"
 
 
-SINCE_2005 = re.compile(r"desde (?:julio )?(?:de )?2005|2005\s*[-–a]\s*20\d\d|desde el inicio")
+SINCE_2005 = re.compile(r"desde (?:julio )?(?:de )?2005|2005\s*[-–a]\s*20\d\d|desde el inicio|jul\w*[-\s]*(?:de\s+)?2005\s+(?:a|al|hasta)\b")
 # 'acumulado del trimestre' / 'casos del trimestre' declare a quarter, never a year-to-date count.
 QUARTER_HEAD = re.compile(r"\btrimestr|\btrim\b")
 YTD_HEAD = re.compile(r"acumulad[oa]s?\s+(?:en\s+el\s+|del\s+|al\s+)?(?:ano|anual)\b|acumulad[oa]s?\s+(?:desde\s+)?enero"
-                      r"|desde\s+enero|\benero\s*(?:a|al|-|–|hasta)\s*[a-z]{3,}|\bene\w*\s*[-–]\s*[a-z]{3}|year\s*to\s*date|\bytd\b")
+                      r"|desde\s+enero|\benero\s*(?:a|al|-|–|hasta)\s*[a-z]{3,}|\bene\w*\s*[-–]\s*[a-z]{3}|year\s*to\s*date|\bytd\b"
+                      r"|\bentre\s+ene\w*\.?\s+y\s+[a-z]{3}")
 
 
 def header_measure(parse: dict) -> str | None:
-    """What the captured header text declares: 'since_2005' | 'ytd' | 'quarter' | 'ambiguous' | None (silent).
+    """What the captured header text of the measure column declares: 'since_2005' | 'ytd' | 'quarter' | 'ambiguous' |
+    None (silent). With the v3 parser the measure column is the year-to-date column ('Ingresos entre Ene y Jun 2026');
+    the cumulative cuts (since July 2005) are only differenced and are not the measure.
 
     A bare 'acumulado' declares nothing (it can be cumulative within the quarter); 'acumulado del trimestre' is a
     quarter. Both a year-to-date and a quarter wording → 'ambiguous'."""
     head = parse.get("header") or {}
-    text = _fold(" ".join([head.get("fonasa") or "", head.get("isapre") or "", *(head.get("above") or [])]))
+    parts = [head["ytd"]] if head.get("ytd") else [head.get("fonasa") or "", head.get("isapre") or "", *(head.get("above") or [])]
+    text = _fold(" ".join(parts))
     if SINCE_2005.search(text):
         return "since_2005"
     q, y = bool(QUARTER_HEAD.search(text)), bool(YTD_HEAD.search(text))
@@ -145,6 +194,23 @@ def _portfolio_isapre(root: Path) -> dict:
 # Evidence package
 
 
+def _release_state(rel: dict) -> tuple[dict | None, str | None]:
+    """(parse, None) for a release whose capture is usable, else (None, why)."""
+    doc = rel.get("document") or {}
+    parse = doc.get("parse") or {}
+    period = rel.get("period")
+    if doc.get("status") != "captured":
+        return None, doc.get("status") or "missing"
+    if parse.get("parser") != sf.GES_PARSER:
+        # Parsed by an older parser: the daily capture re-reads the same file once (hash-checked) with the current one.
+        return None, f"parser_outdated:{parse.get('parser')}:recheck_pending"
+    if parse.get("status") != "validated" or (parse.get("reconciliation") or {}).get("ok") is not True:
+        return None, parse.get("hold_reason") or parse.get("status") or "missing"
+    if parse.get("period") != period or str(parse.get("sheet") or "").find(period[:4]) < 0:
+        return None, "sheet_or_period_mismatch"
+    return parse, None
+
+
 def build_package(root: Path, registry: dict | None = None, previous_live: dict | None = None) -> dict:
     registry = registry or sf.load_registry()
     cfg = registry["families"][FAMILY]
@@ -152,233 +218,245 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     store = _load(root / CAPTURE)
     if not store or not store.get("releases"):
         raise ValueError("ges_capture_missing")
+    releases = {r.get("period"): r for r in store["releases"] if r.get("period")}
+    if not releases:
+        raise ValueError("ges_capture_empty")
+    t = max(releases)
+    rel = releases[t]
+    doc = rel.get("document") or {}
     failures: list[str] = []
-    cuts: dict[str, dict] = {}
-    measures = set()
-    for rel in store["releases"]:
-        doc = rel.get("document") or {}
-        parse = doc.get("parse") or {}
-        period = rel.get("period")
-        if doc.get("status") != "captured" or parse.get("status") != "validated" or parse.get("parser") != sf.GES_PARSER \
-                or (parse.get("reconciliation") or {}).get("ok") is not True:
-            cuts[period] = {"invalid": parse.get("hold_reason") or parse.get("status") or doc.get("status") or "missing"}
-            continue
-        if parse.get("period") != period or str(parse.get("sheet") or "").find(period[:4]) < 0:
-            cuts[period] = {"invalid": "sheet_or_period_mismatch"}
-            continue
+    invalid = {}
+    for p, r in releases.items():
+        _, why = _release_state(r)
+        if why:
+            invalid[p] = why
+    parse, why = _release_state(rel)
+    measure, how = (None, None)
+    try:
+        ty, tq = qof(t)
+    except ValueError:
+        failures.append(f"not_a_quarter_end:{t}")
+        ty, tq = 0, 0
+    if why:
+        failures.append(f"latest_release_not_valid:{t}:{why}")
+    else:
         measure, how = measure_of(parse, cfg)
         if measure is None:
-            cuts[period] = {"invalid": f"measure_{how}"}
-            continue
-        measures.add(measure)
-        rows = {}
-        for o in parse.get("observations") or []:
-            key = slug(o["label"])
-            if key in rows:
-                cuts[period] = {"invalid": f"duplicate_label:{key}"}
-                break
-            rows[key] = o
-        else:
-            cuts[period] = {"period": period, "measure": measure, "measure_how": how, "rows": rows,
-                            "fonasa": parse["reconciliation"]["declared_total"][0],
-                            "isapre": parse["reconciliation"]["declared_total"][1], "sheet": parse.get("sheet"),
-                            "url": doc.get("url"), "sha256": doc.get("sha256"), "fetched_at": doc.get("fetched_at"),
-                            "published_at": rel.get("published_at"), "release_url": rel.get("release_url"),
-                            "total_row": parse["reconciliation"].get("total_row")}
-    valid = {p: c for p, c in cuts.items() if "invalid" not in c}
-    latest = max(cuts) if cuts else None
-    if not latest:
-        raise ValueError("ges_capture_empty")
-    if latest not in valid:
-        failures.append(f"latest_release_not_valid:{latest}:{cuts[latest]['invalid']}")
-    if len(measures) > 1:
-        failures.append("mixed_measures")
-    for p in cuts:
-        try:
-            qof(p)
-        except ValueError:
-            failures.append(f"not_a_quarter_end:{p}")
-
-    def quarter(y: int, q: int) -> dict | None:
-        """Flow of one quarter: per insurer and per problem (labels matched between the two cuts)."""
-        cur = valid.get(qend(y, q))
-        if not cur:
-            return None
-        if cur["measure"] == "quarter":
-            return {"fonasa": cur["fonasa"], "isapre": cur["isapre"],
-                    "rows": {k: (o["label"], o["fonasa"], o["isapre"]) for k, o in cur["rows"].items()},
-                    "cuts": [cur["period"]], "dropped": [], "added": []}
-        if q == 1:
-            return {"fonasa": cur["fonasa"], "isapre": cur["isapre"],
-                    "rows": {k: (o["label"], o["fonasa"], o["isapre"]) for k, o in cur["rows"].items()},
-                    "cuts": [cur["period"]], "dropped": [], "added": []}
-        prev = valid.get(qend(y, q - 1))
-        if not prev:
-            return None
-        return {"fonasa": cur["fonasa"] - prev["fonasa"], "isapre": cur["isapre"] - prev["isapre"],
-                "rows": {k: (o["label"], o["fonasa"] - prev["rows"][k]["fonasa"], o["isapre"] - prev["rows"][k]["isapre"])
-                         for k, o in cur["rows"].items() if k in prev["rows"]},
-                "cuts": [prev["period"], cur["period"]],
-                "added": sorted(k for k in cur["rows"] if k not in prev["rows"]),
-                "dropped": sorted(k for k in prev["rows"] if k not in cur["rows"])}
-
-    # Year-to-date cuts never decrease within a year (a lower cut means the sheet is not what we think: HOLD).
-    for p, c in sorted(valid.items()):
-        try:
-            y, q = qof(p)
-        except ValueError:
-            continue
-        prev = valid.get(qend(y, q - 1)) if q > 1 else None
-        if c["measure"] == "ytd" and prev:
-            if c["fonasa"] < prev["fonasa"] or c["isapre"] < prev["isapre"]:
-                failures.append(f"ytd_total_decreases:{p}")
-            bad = [k for k, o in c["rows"].items() if k in prev["rows"]
-                   and (o["fonasa"] < prev["rows"][k]["fonasa"] or o["isapre"] < prev["rows"][k]["isapre"])]
-            if bad:
-                failures.append(f"ytd_row_decreases:{p}:{bad[0]}")
-            if c["rows"].keys() != prev["rows"].keys():
-                failures.append(f"problem_list_changed_within_year:{p}")
-    t = latest
-    ty, tq = qof(t) if latest and not any(f.startswith("not_a_quarter_end") for f in failures) else (0, 0)
-    cur_q = quarter(ty, tq) if ty else None
-    if ty and cur_q is None and not failures:
-        failures.append(f"quarter_not_derivable:{qid(ty, tq)}")
-
-    sources: dict[str, dict] = {}
-    values: dict[str, dict] = {}
-    published = (valid.get(t) or {}).get("published_at") or (store["releases"][-1].get("published_at"))
-    primary = valid.get(t) or {}
+            failures.append(f"latest_release_not_valid:{t}:measure_{how}")
+        elif measure != "ytd":
+            failures.append(f"measure_not_ytd:{measure}")  # Dirección 3-nov-2026: year-to-date only
+    published = rel.get("published_at")
     package: dict[str, Any] = {
         "family": FAMILY, "period": t, "published_at": published,
-        "release_key": sf.release_key(t, primary.get("sha256") or "0" * 16),
-        "primary_source": {"url": primary.get("url"), "sha256": primary.get("sha256")}, "sources": sources,
-        "values": values, "entities": [{"code": None, "key": "fonasa", "name": "Fonasa"}], "entity_codes": [],
+        # The captured file's hash is recorded even when its parse HOLDs: the hold names the parse, not a missing hash.
+        "release_key": sf.release_key(t, doc.get("sha256") or "0" * 16),
+        "primary_source": {"url": doc.get("url"), "sha256": doc.get("sha256") if doc.get("status") == "captured" else None},
+        "sources": {}, "values": {}, "entities": [{"code": None, "key": "fonasa", "name": "Fonasa"}], "entity_codes": [],
         "entity_keys": ["fonasa"], "causal_note": None, "provisional": False,
-        "reconciliation": {"ok": not failures, "failures": failures,
-                           "checks": ["hoja del año del corte fijada (nunca otra hoja)",
-                                      "Σ filas por problema = total declarado, Fonasa e Isapre",
-                                      "medida declarada por el encabezado de la fuente o confirmada por un revisor",
-                                      "cortes acumulados del mismo año nunca bajan",
-                                      "un solo archivo y hash por release", "trimestre derivable del último corte"]},
+        "reconciliation": {"ok": not failures, "failures": failures, "checks": [
+            "hojas del año del corte, del año anterior y del previo fijadas por nombre (nunca otra hoja)",
+            "Σ filas por problema = total declarado en cada columna leída, Fonasa e Isapre",
+            "ingresos ene–mes (columna SIS) = acumulado(t) − acumulado(dic del año anterior), por problema y en total",
+            "medida confirmada por un revisor en el registro (acumulado del año, Dirección 3-nov-2026)",
+            "cortes acumulados nunca bajan (dic del año anterior ≤ mar ≤ … ≤ t)",
+            "un solo archivo y hash por release"]},
         "group_markers": [
             [r"(?:las |a las |de las |en las |entre las )?isapres?|(?:el )?sistema isapre", "isapres"],
             [r"(?:el|al|del) sistema|(?:el|al|del) total|ambos seguros|(?:el|al|del) ges(?! [a-z])", "system"]],
         "prompt_rules": ("Fonasa es un seguro y 'las Isapres' (en conjunto) el otro; 'el total' o 'ambos seguros' es la "
-                         "suma. Las cifras son casos de un trimestre: nombra el trimestre en palabras ('el segundo "
-                         "trimestre'); una variación anual lleva 'frente al mismo trimestre' del año anterior. La tasa "
-                         "es bruta y por cada mil beneficiarios del mismo seguro; Fonasa no tiene tasa."),
+                         "suma. Las cifras son casos ingresados entre enero y el mes del corte: nombra el período "
+                         "('entre enero y junio de 2026'); una variación anual se compara con los mismos meses del año "
+                         "anterior ('frente a enero–junio de 2025'). Nunca cites acumulados desde 2005. La tasa es bruta "
+                         "y por cada mil beneficiarios del mismo seguro; cuenta casos, no personas; Fonasa no tiene tasa."),
     }
     if failures:
-        package.update(findings=[], kpis={}, revisions=[], constants=[], periods=[t])
+        package.update(findings=[], kpis={"invalid": invalid}, revisions=[], constants=[], periods=[t])
         return package
+    return _fill(package, parse, cfg, root, ty, tq, invalid, how, releases, previous_live)
 
-    def src_key(c: dict) -> str:
-        return f"ges_{c['period']}"
 
-    def add_cut_source(c: dict) -> str:
-        key = src_key(c)
-        y, q = qof(c["period"])
-        sources.setdefault(key, sf.source_ref(
-            url=c["url"], sha256=c["sha256"], published_at=c["published_at"], fetched_at=c["fetched_at"],
-            label=f"SIS · Casos GES de Fonasa e Isapres a {sf.month_label(c['period'])} (xlsx)",
-            role=f"casos {'acumulados del año' if c['measure'] == 'ytd' else 'del trimestre'} por problema y seguro",
-            locator=f"{c['sheet']}!fila Total {c.get('total_row')}"))
-        for ins in ("fonasa", "isapre"):
-            vid = f"ges.cut.{c['period']}.{ins}"
-            values[vid] = value(vid, c[ins], unit="casos", period=c["period"], source=key,
-                                locator=f"{c['sheet']}!Total {ins.capitalize()}")
-        return key
+def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, invalid: dict, how: str,
+          releases: dict, previous_live: dict | None) -> dict:
+    t = package["period"]
+    tm = 3 * tq
+    by = ty - 1
+    b = f"{by}-{tm:02d}"
+    dec1, dec2 = f"{ty - 1}-12", f"{ty - 2}-12"
+    years = {k: gw.expand_sheet(v) for k, v in parse["years"].items()}
+    failures = package["reconciliation"]["failures"]
+    values: dict[str, dict] = package["values"]
+    sources: dict[str, dict] = package["sources"]
+    doc = releases[t]["document"]
+    src = "ges_" + t
+    sources[src] = sf.source_ref(
+        url=doc["url"], sha256=doc["sha256"], published_at=releases[t].get("published_at"),
+        fetched_at=doc.get("rechecked_at") or doc.get("fetched_at"),  # a re-read with the current parser dates the bytes
+        label=f"SIS · Casos GES de Fonasa e Isapres a {sf.month_label(t)} (xlsx)",
+        role="casos ingresados entre enero y el corte (columna 'Ingresos entre Ene y …') y cortes acumulados por problema y seguro",
+        locator=f"{parse['sheet']}!fila Total {years[str(ty)]['total_row']}")
 
-    def derived(vid: str, val: float, formula: str, inputs: list[str], unit: str, period: str, src: str | None = None) -> float:
-        values[vid] = value(vid, val, unit=unit, period=period, source=src, formula=formula, inputs=inputs, kind="derived")
+    def sheet_of(per: str) -> dict:
+        return years[per[:4]]
+
+    def cut_pair(per: str, key: str | None = None) -> list | None:
+        sh = sheet_of(per)
+        if key is None:
+            return sh["totals"]["cut"].get(per)
+        p = sh["problems"].get(key)
+        return ((p or {}).get("cut") or {}).get(per)
+
+    def derived(vid: str, val: float, formula: str, inputs: list[str], unit: str, period: str) -> float:
+        values[vid] = value(vid, val, unit=unit, period=period, source=None, formula=formula, inputs=inputs, kind="derived")
         return val
 
-    # Every derivable quarter (trend), from the oldest captured cut to t.
-    quarters: dict[tuple[int, int], dict] = {}
-    for p in sorted(valid):
-        y, q = qof(p)
-        flow = quarter(y, q)
-        if flow is None:
-            continue
-        for c in flow["cuts"]:
-            add_cut_source(valid[c])
-        quarters[(y, q)] = flow
-        k = qid(y, q)
-        ins = [f"ges.cut.{c}.{{}}" for c in flow["cuts"]]
-        formula = "corte(t) − corte(t−1) del mismo año" if len(flow["cuts"]) == 2 else (
-            "corte de marzo (primer trimestre)" if valid[flow["cuts"][0]]["measure"] == "ytd" else "casos del trimestre declarados")
-        f = derived(f"ges.q.{k}.fonasa", flow["fonasa"], formula, [i.format("fonasa") for i in ins], "casos", qend(y, q))
-        i_ = derived(f"ges.q.{k}.isapre", flow["isapre"], formula, [i.format("isapre") for i in ins], "casos", qend(y, q))
-        derived(f"ges.q.{k}.total", f + i_, "Fonasa + Isapre", [f"ges.q.{k}.fonasa", f"ges.q.{k}.isapre"], "casos", qend(y, q))
-        derived(f"ges.q.{k}.isapre_share", i_ / (f + i_) * 100 if f + i_ else 0.0, "Isapre / (Fonasa + Isapre) × 100",
-                [f"ges.q.{k}.isapre", f"ges.q.{k}.total"], "%", qend(y, q))
-    if (ty, tq) not in quarters:
-        raise ValueError("ges_latest_quarter_missing")
-    t_key = qid(ty, tq)
-    by, bq = qprev(ty, tq, 4)
-    b_key = qid(by, bq)
-    has_yoy = (by, bq) in quarters
-    kpcfg = cfg["kpis"]
-    findings: list[dict] = []
-    added = dropped = []
-    if has_yoy:
-        cur, base = quarters[(ty, tq)], quarters[(by, bq)]
-        for ins in ("fonasa", "isapre", "total"):
-            a, b = values[f"ges.q.{b_key}.{ins}"]["value"], values[f"ges.q.{t_key}.{ins}"]["value"]
-            derived(f"ges.yoy.{ins}", b - a, "casos(t) − casos(mismo trimestre t−1)", [f"ges.q.{t_key}.{ins}", f"ges.q.{b_key}.{ins}"], "casos", t)
-            derived(f"ges.yoy.{ins}_pct", (b - a) / a * 100 if a else 0.0, "Δ / casos del mismo trimestre t−1 × 100",
-                    [f"ges.yoy.{ins}", f"ges.q.{b_key}.{ins}"], "%", t)
-        derived("ges.yoy.isapre_share_pp", values[f"ges.q.{t_key}.isapre_share"]["value"] - values[f"ges.q.{b_key}.isapre_share"]["value"],
-                "participación(t) − participación(t−4)", [f"ges.q.{t_key}.isapre_share", f"ges.q.{b_key}.isapre_share"], "pp", t)
-        # Decree changes: labels in one quarter only (list of problems changed between the two quarters).
-        added = sorted(set(cur["rows"]) - set(base["rows"]))
-        dropped = sorted(set(base["rows"]) - set(cur["rows"]))
-        common = sorted(set(cur["rows"]) & set(base["rows"]))
-        cf = sum(cur["rows"][k][1] + cur["rows"][k][2] for k in common)
-        cb = sum(base["rows"][k][1] + base["rows"][k][2] for k in common)
-        derived(f"ges.q.{t_key}.total_comparable", cf, "Σ casos de los problemas presentes en ambos trimestres", [f"ges.q.{t_key}.total"], "casos", t)
-        derived(f"ges.q.{b_key}.total_comparable", cb, "Σ casos de los problemas presentes en ambos trimestres", [f"ges.q.{b_key}.total"], "casos", qend(by, bq))
-        derived("ges.yoy.total_comparable_pct", (cf - cb) / cb * 100 if cb else 0.0, "Δ comparable / base comparable × 100",
-                [f"ges.q.{t_key}.total_comparable", f"ges.q.{b_key}.total_comparable"], "%", t)
-        derived("ges.list.added", len(added), "problemas solo en el trimestre actual", [], "count", t)
-        derived("ges.list.dropped", len(dropped), "problemas solo en el trimestre base", [], "count", t)
-        th = kpcfg["casos_ges"]["threshold"]["yoy_pct"]
-        if abs(values["ges.yoy.total_pct"]["value"]) >= th:
-            findings.append({"type": "threshold_crossed", "kpi": "casos_ges", "crossed": True,
-                             "strength": abs(values["ges.yoy.total_pct"]["value"]) / th})
-    # Problems: quarter t, and year-on-year growth for those with a comparable base.
-    cur = quarters[(ty, tq)]
-    tp = kpcfg["top_problemas"]["threshold"]
-    problems = []
-    def problem_inputs(flow: dict, k: str) -> list[str]:
-        """Captured problem rows (sheet!row) the quarter flow of problem ``k`` is computed from."""
+    def add_cut(per: str) -> list[str]:
+        """Captured cumulative totals (since July 2005) of one cut: evidence only, never shown."""
+        sh = sheet_of(per)
         ids = []
-        for c in flow["cuts"]:
-            cut = valid[c]
-            o = cut["rows"][k]
-            for ins in ("fonasa", "isapre"):
-                vid = f"ges.cut.{c}.p.{k}.{ins}"
-                values[vid] = value(vid, o[ins], unit="casos", period=c, source=src_key(cut),
-                                    locator=f"{cut['sheet']}!fila {o.get('row')} ({o['label']}) · {ins.capitalize()}")
-                ids.append(vid)
+        for i, ins in enumerate(INS):
+            vid = f"ges.cut.{per}.{ins}"
+            values[vid] = value(vid, sh["totals"]["cut"][per][i], unit="casos acumulados desde jul-2005", period=per, source=src,
+                                locator=f"{sh['sheet']}!fila {sh['total_row']} (Total) · {sh['titles']['cut:' + per]} · {ins.capitalize()}",
+                                kind=CUMULATIVE)
+            ids.append(vid)
         return ids
 
-    p_formula = lambda flow: ("Fonasa + Isapre del problema: corte(t) − corte(t−1) del mismo año"  # noqa: E731
-                              if len(flow["cuts"]) == 2 else "Fonasa + Isapre del problema")
-    for k, (label, f, i) in cur["rows"].items():
-        derived(f"ges.p.{k}.{t_key}", f + i, p_formula(cur), problem_inputs(cur, k), "casos", t)
-        row = {"key": k, "label": label, "t": f + i}
-        if has_yoy and k in quarters[(by, bq)]["rows"]:
-            base_flow = quarters[(by, bq)]
-            _, bf, bi = base_flow["rows"][k]
-            derived(f"ges.p.{k}.{b_key}", bf + bi, p_formula(base_flow), problem_inputs(base_flow, k), "casos", qend(by, bq))
-            row["base"] = bf + bi
-            if bf + bi >= tp["min_cases"]:
+    def add_problem_cut(per: str, code: str) -> list[str]:
+        sh = sheet_of(per)
+        p = sh["problems"][code]
+        ids = []
+        for i, ins in enumerate(INS):
+            vid = f"ges.cut.{per}.p.{pkey(code)}.{ins}"
+            values[vid] = value(vid, (p["cut"][per] or [0, 0])[i] or 0, unit="casos acumulados desde jul-2005", period=per,
+                                source=src, locator=f"{sh['sheet']}!fila {p['row']} (problema N°{p['code']}) · "
+                                                    f"{sh['titles']['cut:' + per]} · {ins.capitalize()}", kind=CUMULATIVE)
+            ids.append(vid)
+        return ids
+
+    def dec_base(dec: str, year: int) -> list[str]:
+        """Evidence ids of the December cut ``dec`` as the base of ``year``: the declared total when the problem list
+        did not change, else the sum over the problems of ``year`` (a dropped problem keeps its cumulative in the
+        December total but has no flow; a new one enters with 0)."""
+        codes = years[str(year)]["problems"]
+        own = [sum(((cut_pair(dec, c) or [0, 0])[i] or 0) for c in codes) for i in (0, 1)]
+        if own == list(cut_pair(dec)):
+            return add_cut(dec)
+        ids = []
+        for i, ins in enumerate(INS):
+            parts = [x for c in codes if cut_pair(dec, c) is not None for x in add_problem_cut(dec, c) if x.endswith("." + ins)]
+            ids.append(f"ges.cut.{dec}.base_{year}.{ins}")
+            values[ids[-1]] = value(ids[-1], own[i], unit="casos acumulados desde jul-2005", period=dec, source=None,
+                                    formula=f"Σ acumulado a {cut_label(dec)} de los problemas presentes en {year}",
+                                    inputs=parts, kind=CUMULATIVE)
+        return ids
+
+    # Cuts never decrease: dic(t−2) ≤ mar(t−1) ≤ … ≤ dic(t−1) ≤ mar(t) ≤ … ≤ t (totals within a year; problems across).
+    chain = [dec2] + [f"{ty - 1}-{m:02d}" for m in (3, 6, 9, 12)] + [f"{ty}-{m:02d}" for m in range(3, tm + 1, 3)]
+    for a, c in zip(chain, chain[1:]):
+        if a[:4] == c[:4]:
+            ta, tc = cut_pair(a), cut_pair(c)
+            if any(tc[i] < ta[i] for i in (0, 1)):
+                failures.append(f"ytd_total_decreases:{c}")
+        for code in sheet_of(c)["problems"]:
+            pa, pc = cut_pair(a, code), cut_pair(c, code)
+            if pa and pc and any((pc[i] or 0) < (pa[i] or 0) for i in (0, 1)):
+                failures.append(f"ytd_row_decreases:{c}:{pkey(code)}")
+                break
+    # Year-to-date identity on the totals (defence in depth; the parser checks it per problem too).
+    cur_sheet = years[str(ty)]
+    ytd_t = cur_sheet["totals"]["ytd"][t]
+    base_dec = [sum(((cut_pair(dec1, k) or [0, 0])[i] or 0) for k in cur_sheet["problems"]) for i in (0, 1)]
+    if [cut_pair(t)[i] - base_dec[i] for i in (0, 1)] != list(ytd_t):
+        failures.append(f"ytd_identity:{t}")
+    if failures:
+        package["reconciliation"]["ok"] = False
+        package.update(findings=[], kpis={"invalid": invalid}, revisions=[], constants=[], periods=[t])
+        return package
+
+    # Year-to-date, current year: the SIS column 'Ingresos entre Ene y <mes> <año>'.
+    for i, ins in enumerate(INS):
+        vid = f"ges.ytd.{t}.{ins}"
+        values[vid] = value(vid, ytd_t[i], unit="casos", period=t, source=src,
+                            locator=f"{cur_sheet['sheet']}!fila {cur_sheet['total_row']} (Total) · {cur_sheet['titles']['ytd:' + t]} · {ins.capitalize()}")
+    # Same months one year earlier, from the same workbook: acumulado(b) − acumulado(dic del año anterior a b).
+    ins_b = add_cut(b), dec_base(dec2, by)
+    for i, ins in enumerate(INS):
+        derived(f"ges.ytd.{b}.{ins}", cut_pair(b)[i] - values[ins_b[1][i]]["value"],
+                f"acumulado jul-2005 a {cut_label(b)} − acumulado jul-2005 a {cut_label(dec2)}",
+                [ins_b[0][i], ins_b[1][i]], "casos", b)
+    for per in (t, b):
+        f, i_ = values[f"ges.ytd.{per}.fonasa"]["value"], values[f"ges.ytd.{per}.isapre"]["value"]
+        derived(f"ges.ytd.{per}.total", f + i_, "Fonasa + Isapre", [f"ges.ytd.{per}.fonasa", f"ges.ytd.{per}.isapre"], "casos", per)
+        derived(f"ges.ytd.{per}.isapre_share", i_ / (f + i_) * 100 if f + i_ else 0.0, "Isapre / (Fonasa + Isapre) × 100",
+                [f"ges.ytd.{per}.isapre", f"ges.ytd.{per}.total"], "%", per)
+    for ins in ("fonasa", "isapre", "total"):
+        a, c = values[f"ges.ytd.{b}.{ins}"]["value"], values[f"ges.ytd.{t}.{ins}"]["value"]
+        derived(f"ges.yoy.{ins}", c - a, "casos(ene–t) − casos(mismos meses del año anterior)", [f"ges.ytd.{t}.{ins}", f"ges.ytd.{b}.{ins}"], "casos", t)
+        derived(f"ges.yoy.{ins}_pct", (c - a) / a * 100 if a else 0.0, "Δ / casos de los mismos meses del año anterior × 100",
+                [f"ges.yoy.{ins}", f"ges.ytd.{b}.{ins}"], "%", t)
+    derived("ges.yoy.isapre_share_pp", values[f"ges.ytd.{t}.isapre_share"]["value"] - values[f"ges.ytd.{b}.isapre_share"]["value"],
+            "participación(t) − participación(mismos meses del año anterior)", [f"ges.ytd.{t}.isapre_share", f"ges.ytd.{b}.isapre_share"], "pp", t)
+
+    # Quarters (trend): differences of cumulative cuts; T1 against December of the previous year.
+    quarters: dict[tuple[int, int], dict] = {}
+    for (y, q) in [(ty - 1, k) for k in (1, 2, 3, 4)] + [(ty, k) for k in range(1, tq + 1)]:
+        cur, prv = qend(y, q), (f"{y - 1}-12" if q == 1 else qend(y, q - 1))
+        ic, ip = add_cut(cur), (dec_base(prv, y) if q == 1 else add_cut(prv))
+        k = qid(y, q)
+        formula = f"acumulado a {cut_label(cur)} − acumulado a {cut_label(prv)}" + (" (T1: contra diciembre del año anterior)" if q == 1 else "")
+        fl = [derived(f"ges.q.{k}.{ins}", cut_pair(cur)[i] - values[ip[i]]["value"], formula, [ic[i], ip[i]], "casos", cur)
+              for i, ins in enumerate(INS)]
+        derived(f"ges.q.{k}.total", fl[0] + fl[1], "Fonasa + Isapre", [f"ges.q.{k}.fonasa", f"ges.q.{k}.isapre"], "casos", cur)
+        derived(f"ges.q.{k}.isapre_share", fl[1] / sum(fl) * 100 if sum(fl) else 0.0, "Isapre / (Fonasa + Isapre) × 100",
+                [f"ges.q.{k}.isapre", f"ges.q.{k}.total"], "%", cur)
+        quarters[(y, q)] = {"cuts": [prv, cur]}
+
+    # Problems: year-to-date t (SIS column) vs the same months one year earlier (difference of cuts).
+    kpcfg = cfg["kpis"]
+    tp = kpcfg["top_problemas"]["threshold"]
+    cur_p, prev_sheet = cur_sheet["problems"], years[str(ty - 1)]["problems"]
+    problems, added, dropped = [], [], []
+    for code, p in cur_p.items():
+        y_ = p["ytd"].get(t)
+        if y_ is None:
+            continue
+        k = pkey(code)
+        ids = []
+        for i, ins in enumerate(INS):
+            vid = f"ges.ytd.{t}.p.{k}.{ins}"
+            values[vid] = value(vid, y_[i] or 0, unit="casos", period=t, source=src,
+                                locator=f"{cur_sheet['sheet']}!fila {p['row']} (problema N°{p['code']}) · {cur_sheet['titles']['ytd:' + t]} · {ins.capitalize()}")
+            ids.append(vid)
+        row = {"key": k, "code": p["code"], "label": p["label"], "t": derived(f"ges.p.{k}.ytd.{t}", (y_[0] or 0) + (y_[1] or 0),
+                                                                              "Fonasa + Isapre del problema (columna de ingresos del año)", ids, "casos", t)}
+        if cut_pair(b, code) is not None:
+            base_in = add_problem_cut(b, code) + (add_problem_cut(dec2, code) if cut_pair(dec2, code) is not None else [])
+            bv = sum(((cut_pair(b, code)[i] or 0) - ((cut_pair(dec2, code) or [0, 0])[i] or 0)) for i in (0, 1))
+            row["base"] = derived(f"ges.p.{k}.ytd.{b}", bv, f"Fonasa + Isapre del problema: acumulado a {cut_label(b)} − acumulado a "
+                                  f"{cut_label(dec2)} (0 si el problema no existía)", base_in, "casos", b)
+            if bv >= tp["min_cases"]:
                 # rounded to one decimal: the chart shows exactly this value
-                row["pct"] = derived(f"ges.p.{k}.yoy_pct", round((f + i - bf - bi) / (bf + bi) * 100, 1),
-                                     "redondeo(Δ / casos del mismo trimestre t−1 × 100, 1)",
-                                     [f"ges.p.{k}.{t_key}", f"ges.p.{k}.{b_key}"], "%", t)
+                row["pct"] = derived(f"ges.p.{k}.yoy_pct", round((row["t"] - bv) / bv * 100, 1),
+                                     "redondeo(Δ / casos de los mismos meses del año anterior × 100, 1)",
+                                     [f"ges.p.{k}.ytd.{t}", f"ges.p.{k}.ytd.{b}"], "%", t)
+        else:
+            added.append(k)
         problems.append(row)
+    dropped = sorted(pkey(c) for c in prev_sheet if c not in cur_p and cut_pair(b, c) is not None)
+    added = sorted(added)
+    comp = [r for r in problems if "base" in r]
+    cf, cb = sum(r["t"] for r in comp), sum(r["base"] for r in comp)
+    derived(f"ges.ytd.{t}.total_comparable", cf, "Σ casos de los problemas presentes en ambos períodos", [f"ges.ytd.{t}.total"], "casos", t)
+    derived(f"ges.ytd.{b}.total_comparable", cb, "Σ casos de los problemas presentes en ambos períodos", [f"ges.ytd.{b}.total"], "casos", b)
+    derived("ges.yoy.total_comparable_pct", (cf - cb) / cb * 100 if cb else 0.0, "Δ comparable / base comparable × 100",
+            [f"ges.ytd.{t}.total_comparable", f"ges.ytd.{b}.total_comparable"], "%", t)
+    derived("ges.list.added", len(added), "problemas solo en el período actual", [], "count", t)
+    derived("ges.list.dropped", len(dropped), "problemas solo en el período base", [], "count", t)
+    findings: list[dict] = []
+    th = kpcfg["casos_ges"]["threshold"]["yoy_pct"]
+    if abs(values["ges.yoy.total_pct"]["value"]) >= th:
+        findings.append({"type": "threshold_crossed", "kpi": "casos_ges", "crossed": True,
+                         "strength": abs(values["ges.yoy.total_pct"]["value"]) / th})
     ranked = sorted((r for r in problems if "pct" in r), key=lambda r: (-r["pct"], r["label"]))
     crossing = [r for r in ranked if r["pct"] >= tp["pct"]]
     derived("conteo.problemas_sobre_umbral", len(crossing), "problemas con Δ a/a ≥ umbral y base ≥ mínimo", [], "count", t)
@@ -386,77 +464,87 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     if crossing:
         findings.append({"type": "problem_growth", "kpi": "top_problemas", "crossed": True, "strength": len(crossing)})
 
-    # Crude rates per 1.000 beneficiaries of the same insurer: Isapre from F1; Fonasa not captured.
+    # Crude rates per 1.000 beneficiaries of the same insurer over the same months: Isapre from F1; Fonasa not captured.
     port = _portfolio_isapre(root)
     rates = {}
-    for (y, q) in quarters:
-        months = qmonths(y, q)
-        if port and all(m in port["totals"] for m in months):
-            k = qid(y, q)
-            sources.setdefault("cartera", sf.source_ref(
-                url=port["url"], sha256=port["sha256"], published_at=port["published_at"], fetched_at=port["fetched_at"],
-                label="SIS · Cartera mensual de beneficiarios Isapre (xlsx), ficha F1",
-                role="denominador de la tasa Isapre: beneficiarios al cierre de cada mes", locator="fila Total Sistema"))
-            for m in months:
-                values[f"cartera.isapre.{m}"] = value(f"cartera.isapre.{m}", port["totals"][m], unit="beneficiarios",
-                                                      period=m, source="cartera", locator="Total Sistema")
-            avg = derived(f"benef.isapre.avg.{k}", sum(port["totals"][m] for m in months) / 3,
-                          "promedio de los 3 stocks de cierre de mes", [f"cartera.isapre.{m}" for m in months], "beneficiarios", qend(y, q))
-            rates[(y, q)] = derived(f"ges.q.{k}.isapre_rate", values[f"ges.q.{k}.isapre"]["value"] / avg * 1000,
-                                    "casos Isapre del trimestre / beneficiarios Isapre promedio × 1.000",
-                                    [f"ges.q.{k}.isapre", f"benef.isapre.avg.{k}"], "per_1000", qend(y, q))
+    for per in (b, t):
+        y, m = sf.period_parts(per)
+        months = months_of(y, m)
+        if not (port and all(x in port["totals"] for x in months)):
+            continue
+        sources.setdefault("cartera", sf.source_ref(
+            url=port["url"], sha256=port["sha256"], published_at=port["published_at"], fetched_at=port["fetched_at"],
+            label="SIS · Cartera mensual de beneficiarios Isapre (xlsx), ficha F1",
+            role="denominador de la tasa Isapre: beneficiarios al cierre de cada mes", locator="fila Total Sistema"))
+        for x in months:
+            values[f"cartera.isapre.{x}"] = value(f"cartera.isapre.{x}", port["totals"][x], unit="beneficiarios",
+                                                  period=x, source="cartera", locator="Total Sistema")
+        avg = derived(f"benef.isapre.avg.ytd.{per}", sum(port["totals"][x] for x in months) / len(months),
+                      f"promedio de los {len(months)} stocks de cierre de mes de enero a {mname(m)}",
+                      [f"cartera.isapre.{x}" for x in months], "beneficiarios", per)
+        rates[per] = derived(f"ges.ytd.{per}.isapre_rate", values[f"ges.ytd.{per}.isapre"]["value"] / avg * 1000,
+                             "casos Isapre de enero al corte / beneficiarios Isapre promedio del mismo período × 1.000",
+                             [f"ges.ytd.{per}.isapre", f"benef.isapre.avg.ytd.{per}"], "per_1000", per)
+
+    # The same months one year earlier as published in that year's own release (its YTD column), if captured: a
+    # cross-check only (the SIS revises late registrations); the ficha uses the newest workbook.
+    cross = None
+    old, why = _release_state(releases.get(b) or {})
+    if old and not why:
+        col = gw.expand_sheet(old["years"][str(by)])["totals"]["ytd"].get(b)
+        if col:
+            cross = {"release": b, "equal": list(col) == [values[f"ges.ytd.{b}.{ins}"]["value"] for ins in INS]}
+    package["reconciliation"]["cross_release"] = cross
+
     # Label digits ('Diabetes Mellitus Tipo 2') are captured text, not figures: they may be shown.
     label_numbers = sorted({abs(v) for r in problems for _, v, _ in numbers_in(r["label"])})
-    constants = [1000, kpcfg["casos_ges"]["threshold"]["yoy_pct"], tp["pct"], tp["min_cases"], 3, len(quarters), *label_numbers]
-    months_all = sorted({m for (y, q) in quarters for m in qmonths(y, q)})
-    # Figures the topic index lines cite (verify_ficha traces each line to its own refs): the registry threshold and the
-    # number of derivable quarters, as evidence ids instead of loose constants.
+    constants = [1000, th, tp["pct"], tp["min_cases"], len(quarters), *label_numbers]
     values["regla.top_problemas.pct"] = value("regla.top_problemas.pct", tp["pct"], unit="%", period=t, source=None,
                                               formula="umbral del registro (top_problemas)", kind="rule")
     values["conteo.trimestres"] = value("conteo.trimestres", len(quarters), unit="trimestres", period=t, source=None,
                                         formula="conteo de trimestres derivables", kind="derived")
-    package.update(period=t, periods=months_all, base_period=qend(by, bq) if has_yoy else None, findings=findings,
+    package.update(period=t, periods=sorted(set(months_of(by, tm) + months_of(ty, tm))), base_period=b, findings=findings,
                    revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
                    constants=constants,
-                   kpis={"t": (ty, tq), "b": (by, bq), "has_yoy": has_yoy, "quarters": sorted(quarters), "rates": rates,
+                   kpis={"t": (ty, tm), "b": (by, tm), "tq": (ty, tq), "quarters": sorted(quarters),
+                         "quarter_cuts": {qid(*k): v["cuts"] for k, v in quarters.items()}, "rates": rates,
                          "problems": problems, "ranked": ranked, "crossing": crossing, "added": added, "dropped": dropped,
-                         "measure": valid[t]["measure"], "measure_how": valid[t]["measure_how"],
-                         "invalid": {p: c["invalid"] for p, c in cuts.items() if "invalid" in c}})
+                         "measure": "ytd", "measure_how": how, "invalid": invalid, "sis_notes": parse.get("notes") or [],
+                         "cross_release": cross})
     _lectura_material(package, values)
     return package
 
 
 def _lectura_material(package: dict, values: dict) -> None:
     k = package["kpis"]
-    (ty, tq), (by, bq) = k["t"], k["b"]
-    tk, bk = qid(ty, tq), qid(by, bq)
-    Q = {"periods": qmonths(ty, tq), "period_kind": "quarter", "requires_period": True}
+    (ty, tm), (by, _) = k["t"], k["b"]
+    t, b = f"{ty}-{tm:02d}", f"{by}-{tm:02d}"
+    Y = {"periods": months_of(ty, tm), "period_kind": "ytd", "requires_period": True}
     P = lambda vid, **kw: sf.pool_entry(values, vid, **kw) if vid in values else None  # noqa: E731
-    pool = [P(f"ges.q.{tk}.total", metric="casos", signed=False, scope="system", **Q),
-            P(f"ges.q.{tk}.fonasa", metric="casos", signed=False, scope="insurer:fonasa", **Q),
-            P(f"ges.q.{tk}.isapre", metric="casos", signed=False, scope="isapres", **Q),
-            P(f"ges.q.{tk}.isapre_share", signed=False, scope="isapres", base="casos_ambos_seguros", **Q),
-            P(f"ges.q.{tk}.isapre_rate", signed=False, scope="isapres", base="beneficiarios_mismo_seguro", **Q)]
-    if k["has_yoy"]:
-        YY = {"periods": qmonths(by, bq) + qmonths(ty, tq), "period_kind": "quarter_yoy"}
-        pool += [P(f"ges.yoy.{ins}", metric="casos", scope=sc, **YY) for ins, sc in
-                 (("total", "system"), ("fonasa", "insurer:fonasa"), ("isapre", "isapres"))]
-        pool += [P(f"ges.yoy.{ins}_pct", scope=sc, base="casos_mismo_trimestre_anio_anterior", **YY) for ins, sc in
-                 (("total", "system"), ("fonasa", "insurer:fonasa"), ("isapre", "isapres"))]
-        pool += [P("ges.yoy.isapre_share_pp", scope="isapres", base="casos_ambos_seguros", **YY),
-                 P(f"ges.q.{bk}.total", metric="casos", signed=False, scope="system",
-                   periods=qmonths(by, bq), period_kind="quarter", requires_period=True)]
+    pool = [P(f"ges.ytd.{t}.total", metric="casos", signed=False, scope="system", **Y),
+            P(f"ges.ytd.{t}.fonasa", metric="casos", signed=False, scope="insurer:fonasa", **Y),
+            P(f"ges.ytd.{t}.isapre", metric="casos", signed=False, scope="isapres", **Y),
+            P(f"ges.ytd.{t}.isapre_share", signed=False, scope="isapres", base="casos_ambos_seguros", **Y),
+            P(f"ges.ytd.{t}.isapre_rate", signed=False, scope="isapres", base="beneficiarios_mismo_seguro", **Y)]
+    YY = {"periods": months_of(by, tm) + months_of(ty, tm), "period_kind": "ytd", "requires_period": True}
+    pool += [P(f"ges.yoy.{ins}", metric="casos", scope=sc, **YY) for ins, sc in
+             (("total", "system"), ("fonasa", "insurer:fonasa"), ("isapre", "isapres"))]
+    pool += [P(f"ges.yoy.{ins}_pct", scope=sc, base="casos_mismo_periodo_anio_anterior", **YY) for ins, sc in
+             (("total", "system"), ("fonasa", "insurer:fonasa"), ("isapre", "isapres"))]
+    pool += [P("ges.yoy.isapre_share_pp", scope="isapres", base="casos_ambos_seguros", **YY),
+             P(f"ges.ytd.{b}.total", metric="casos", signed=False, scope="system", periods=months_of(by, tm),
+               period_kind="ytd", requires_period=True)]
     package["lectura_pool"] = [e for e in pool if e]
     ratios = []
-    f, i = values[f"ges.q.{tk}.fonasa"]["value"], values[f"ges.q.{tk}.isapre"]["value"]
+    f, i = values[f"ges.ytd.{t}.fonasa"]["value"], values[f"ges.ytd.{t}.isapre"]["value"]
     if i:
         ratios.append({"id": "ratio.fonasa_por_isapre", "value": f / i, "unit": "x", "entity": None, "signed": False,
-                       "periods": qmonths(ty, tq), "requires_period": False, "formula": "casos Fonasa / casos Isapre",
-                       "inputs": [f"ges.q.{tk}.fonasa", f"ges.q.{tk}.isapre"], "scope": "insurer:fonasa",
-                       "period_kind": "quarter", "trivial": False, "base": None})
+                       "periods": months_of(ty, tm), "requires_period": False, "formula": "casos Fonasa / casos Isapre",
+                       "inputs": [f"ges.ytd.{t}.fonasa", f"ges.ytd.{t}.isapre"], "scope": "insurer:fonasa",
+                       "period_kind": "ytd", "trivial": False, "base": None})
     ratios.append({"id": "conteo.problemas_sobre_umbral", "value": len(k["crossing"]), "unit": "count", "entity": None,
-                   "signed": False, "periods": qmonths(ty, tq), "requires_period": False, "formula": "conteo",
-                   "inputs": [], "scope": "system", "period_kind": "quarter", "trivial": True})
+                   "signed": False, "periods": months_of(ty, tm), "requires_period": False, "formula": "conteo",
+                   "inputs": [], "scope": "system", "period_kind": "ytd", "trivial": True})
     package["derived_ratios"] = ratios
     package["ranks"] = []
 
@@ -465,79 +553,90 @@ def _lectura_material(package: dict, values: dict) -> None:
 # Ficha composition
 
 
+SIS_NOTE_RULES = (  # (pattern in the captured 'Notas' sheet, the ficha's paraphrase); shown only when the note is there
+    (r"solicitudes de acceso", "desde julio de 2012 la fuente es el archivo de solicitudes de acceso a las GES"),
+    (r"no incorpora casos de vih", "Fonasa no informa casos de VIH anteriores a 2014"),
+    (r"eliminacion de casos", "algunas diferencias en problemas de salud puntuales se deben a que una Isapre eliminó casos del archivo"),
+)
+
+
 def compose(package: dict, registry: dict | None = None, *, today: date, decision: dict | None = None) -> dict:
     registry = registry or sf.load_registry()
     cfg = registry["families"][FAMILY]
     tpl = cfg["templates"]
     v = package["values"]
     k = package["kpis"]
-    (ty, tq), (by, bq) = k["t"], k["b"]
-    tk, bk = qid(ty, tq), qid(by, bq)
+    (ty, tm), (by, _) = k["t"], k["b"]
+    t, b = f"{ty}-{tm:02d}", f"{by}-{tm:02d}"
     val = lambda vid: v[vid]["value"]  # noqa: E731
-    total, fon, isa = val(f"ges.q.{tk}.total"), val(f"ges.q.{tk}.fonasa"), val(f"ges.q.{tk}.isapre")
-    share = val(f"ges.q.{tk}.isapre_share")
-    rate = k["rates"].get((ty, tq))
+    total, fon, isa = val(f"ges.ytd.{t}.total"), val(f"ges.ytd.{t}.fonasa"), val(f"ges.ytd.{t}.isapre")
+    share = val(f"ges.ytd.{t}.isapre_share")
+    rate = k["rates"].get(t)
     pct = lambda vid: fmt_dec(val(vid), 1, signed=True) + "%"  # noqa: E731
-    yoy = k["has_yoy"]
     list_changed = bool(k["added"] or k["dropped"])
     yoy_th = fmt_dec(cfg["kpis"]["casos_ges"]["threshold"]["yoy_pct"], 0)  # registry threshold, never hard-coded
+    st, sb = short(ty, tm), short(by, tm)
+    words = {"mes": mname(tm), "anio": ty, "anio_base": by, "periodo": span(ty, tm), "periodo_base": span(by, tm),
+             "entre": between(ty, tm), "entre_base": between(by, tm), "corto": st, "corto_base": sb}
 
-    head_type = "yoy" if yoy else "no_yoy"
-    headline = tpl["headline"][head_type].format(qlabel=qlabel(ty, tq), total=fmt_int(total),
-                                                  yoy=pct("ges.yoy.total_pct") if yoy else "")
-    rate_clause = (f" La tasa bruta Isapre fue {fmt_dec(rate, 1)} casos por 1.000 beneficiarios; la de Fonasa no está disponible."
-                   if rate is not None else " Las tasas por beneficiario no están disponibles para este trimestre.")
-    dek = tpl["dek"].format(fonasa=fmt_int(fon), isapre=fmt_int(isa), share=fmt_dec(share, 1), rate_clause=rate_clause)
+    headline = tpl["headline"].format(total=fmt_int(total), yoy=pct("ges.yoy.total_pct"), **words)
+    # Fonasa has no rate (no beneficiaries captured): said in its KPI card and in the notes, not in the 40-word dek.
+    rate_clause = (f" Tasa bruta Isapre: {fmt_dec(rate, 1)} casos de enero a {mname(tm)} de {ty} por 1.000 beneficiarios."
+                   if rate is not None else " Sin tasas por beneficiario para este período.")
+    na, nd = len(k["added"]), len(k["dropped"])
+    pl = lambda n, one, many: f"{fmt_int(n)} {one if n == 1 else many}"  # noqa: E731
+    comparable = pct("ges.yoy.total_comparable_pct")
+    decree_clause = ("" if not (na or nd) else
+                     f" La variación incluye {pl(na, 'problema nuevo', 'problemas nuevos')} por decreto; comparable: {comparable}."
+                     if na and not nd else
+                     # A dropped problem has no flow this year but stays in last year's base (review of #129).
+                     f" La base de {span(by, tm)} incluye {pl(nd, 'problema retirado', 'problemas retirados')}; "
+                     f"comparable: {comparable}."
+                     if nd and not na else
+                     f" Cambio de decreto: {pl(na, 'problema nuevo', 'problemas nuevos')}; la base {by} incluye "
+                     f"{pl(nd, 'retirado', 'retirados')}; comparable: {comparable}.")
+    dek = tpl["dek"].format(fonasa=fmt_int(fon), isapre=fmt_int(isa), share=fmt_dec(share, 1), rate_clause=rate_clause,
+                            decree_clause=decree_clause, **words)
+    crossed = any(f["kpi"] == "casos_ges" for f in package["findings"])
 
-    kpis = [{"id": "casos", "label": "Casos GES", "value": fmt_int(total), "prov": "C",
-             "lines": ([f"{pct('ges.yoy.total_pct')} vs. {qshort(by, bq)}"] if yoy else ["a/a no disponible"])
-             + ([f"{pct('ges.yoy.total_comparable_pct')} solo problemas comparables"] if yoy and list_changed else []),
-             "badge": (f"Cruza umbral ({yoy_th}% a/a)" if any(f["kpi"] == "casos_ges" for f in package["findings"]) else "Sin umbral cruzado")
-             if yoy else "Sin base a/a capturada", "badge_kind": "crossed" if any(f["kpi"] == "casos_ges" for f in package["findings"]) else "muted",
-             "refs": [f"ges.q.{tk}.total"] + (["ges.yoy.total_pct"] if yoy else [])},
-            {"id": "fonasa", "label": "Fonasa", "value": fmt_int(fon), "prov": "C",
-             "lines": [f"{pct('ges.yoy.fonasa_pct')} vs. {qshort(by, bq)}" if yoy else "a/a no disponible",
-                       "tasa no disponible (sin beneficiarios capturados)"],
-             "refs": [f"ges.q.{tk}.fonasa"]},
-            {"id": "isapre", "label": "Isapres", "value": fmt_int(isa), "prov": "C",
-             "lines": [f"{pct('ges.yoy.isapre_pct')} vs. {qshort(by, bq)}" if yoy else "a/a no disponible",
-                       f"{fmt_dec(share, 1)}% de los casos de ambos seguros"],
-             "refs": [f"ges.q.{tk}.isapre", f"ges.q.{tk}.isapre_share"]},
+    kpis = [{"id": "casos", "label": tpl["kpi_label"].format(**words), "value": fmt_int(total), "prov": "C",
+             "lines": [f"{pct('ges.yoy.total_pct')} vs. {sb}"]
+             + ([f"{pct('ges.yoy.total_comparable_pct')} solo problemas comparables"] if list_changed else []),
+             "badge": f"Cruza umbral ({yoy_th}% a/a)" if crossed else "Sin umbral cruzado",
+             "badge_kind": "crossed" if crossed else "muted",
+             "refs": [f"ges.ytd.{t}.total", "ges.yoy.total_pct"]},
+            {"id": "fonasa", "label": f"Fonasa {st}", "value": fmt_int(fon), "prov": "C",
+             "lines": [f"{pct('ges.yoy.fonasa_pct')} vs. {sb}", "tasa no disponible (sin beneficiarios capturados)"],
+             "refs": [f"ges.ytd.{t}.fonasa"]},
+            {"id": "isapre", "label": f"Isapres {st}", "value": fmt_int(isa), "prov": "C",
+             "lines": [f"{pct('ges.yoy.isapre_pct')} vs. {sb}", f"{fmt_dec(share, 1)}% de los casos de ambos seguros"],
+             "refs": [f"ges.ytd.{t}.isapre", f"ges.ytd.{t}.isapre_share"]},
             {"id": "tasa", "label": "Tasa bruta Isapre", "value": fmt_dec(rate, 1) if rate is not None else "no disponible",
              "prov": "C" if rate is not None else None,
-             "lines": (["casos por 1.000 beneficiarios Isapre", "tasa a/a no disponible" if (by, bq) not in k["rates"] else
-                        f"{qshort(by, bq)}: {fmt_dec(k['rates'][(by, bq)], 1)}"] if rate is not None
-                       else ["sin beneficiarios del trimestre capturados"]),
-             "refs": [f"ges.q.{tk}.isapre_rate"] if rate is not None else []}]
+             "lines": ([f"casos {st} por 1.000 beneficiarios Isapre", "tasa a/a no disponible" if b not in k["rates"] else
+                        f"{sb}: {fmt_dec(k['rates'][b], 1)}"] if rate is not None
+                       else ["sin beneficiarios del período capturados"]),
+             "refs": [f"ges.ytd.{t}.isapre_rate"] if rate is not None else []}]
 
-    # Tab 1 · Totales
+    # Tab 1 · Totales (year-to-date vs the same months one year earlier)
     tabs = []
-    if yoy:
-        rows = [{"label": lab, "value": val(f"ges.q.{tk}.{ins}"), "ref": f"ges.q.{tk}.{ins}",
-                 "base": val(f"ges.q.{bk}.{ins}"), "base_ref": f"ges.q.{bk}.{ins}"}
-                for lab, ins in (("Total", "total"), ("Fonasa", "fonasa"), ("Isapres", "isapre"))]
-        c_tot = {"id": "f4-totales", "form": "dots", "digits": 0, "unit": "casos",
-                 "headline": f"Casos del {qshort(ty, tq)} frente al {qshort(by, bq)}",
-                 "subtitle": f"Casos GES por seguro · punto = {qshort(ty, tq)}, aro = {qshort(by, bq)}", "rows": rows,
-                 "table": {"columns": ["Seguro", qshort(by, bq), qshort(ty, tq), "a/a"],
-                           "rows": [[r["label"], fmt_int(r["base"]), fmt_int(r["value"]),
-                                     pct(f"ges.yoy.{ins}_pct")] for r, ins in zip(rows, ("total", "fonasa", "isapre"))]},
-                 "source": "SIS, casos GES por trimestre: diferencia entre cortes acumulados del mismo año."}
-        tot_text = [f"En el {qlabel(ty, tq)} Fonasa e Isapres informaron {fmt_int(total)} casos GES, "
-                    f"{fmt_int(abs(val('ges.yoy.total')))} {'más' if val('ges.yoy.total') >= 0 else 'menos'} que en el {qlabel(by, bq)} "
-                    f"({pct('ges.yoy.total_pct')})."]
-        if list_changed:
-            tot_text.append(f"Con solo los problemas presentes en ambos trimestres la variación es {pct('ges.yoy.total_comparable_pct')}: "
-                            "la lista de problemas cambió entre ambos trimestres (posible cambio de decreto GES).")
-    else:
-        rows = [{"label": lab, "value": val(f"ges.q.{tk}.{ins}"), "ref": f"ges.q.{tk}.{ins}", "emphasis": ins == "total"}
-                for lab, ins in (("Total", "total"), ("Fonasa", "fonasa"), ("Isapres", "isapre"))]
-        c_tot = {"id": "f4-totales", "form": "bars", "unit": "casos", "headline": f"Casos del {qshort(ty, tq)} por seguro",
-                 "subtitle": "Casos GES por seguro", "rows": rows,
-                 "table": {"columns": ["Seguro", qshort(ty, tq)], "rows": [[r["label"], fmt_int(r["value"])] for r in rows]},
-                 "source": "SIS, casos GES por trimestre."}
-        tot_text = [f"En el {qlabel(ty, tq)} Fonasa e Isapres informaron {fmt_int(total)} casos GES; la comparación con el mismo "
-                    "trimestre del año anterior no está disponible porque Alicanto no tiene esos cortes capturados."]
+    rows = [{"label": lab, "value": val(f"ges.ytd.{t}.{ins}"), "ref": f"ges.ytd.{t}.{ins}",
+             "base": val(f"ges.ytd.{b}.{ins}"), "base_ref": f"ges.ytd.{b}.{ins}"}
+            for lab, ins in (("Total", "total"), ("Fonasa", "fonasa"), ("Isapres", "isapre"))]
+    c_tot = {"id": "f4-totales", "form": "dots", "digits": 0, "unit": "casos",
+             "headline": f"Casos de {st} frente a {sb}",
+             "subtitle": f"Casos GES ingresados por seguro · punto = {st}, aro = {sb}", "rows": rows,
+             "table": {"columns": ["Seguro", sb, st, "a/a"],
+                       "rows": [[r["label"], fmt_int(r["base"]), fmt_int(r["value"]),
+                                 pct(f"ges.yoy.{ins}_pct")] for r, ins in zip(rows, ("total", "fonasa", "isapre"))]},
+             "source": (f"SIS, casos GES ingresados {between(ty, tm)} (columna de ingresos del año); {span(by, tm)}, por "
+                        "diferencia entre cortes acumulados de la misma planilla.")}
+    d = val("ges.yoy.total")
+    tot_text = [f"{between(ty, tm).capitalize()} Fonasa e Isapres informaron {fmt_int(total)} casos GES, "
+                f"{fmt_int(abs(d))} {'más' if d >= 0 else 'menos'} que {between(by, tm)} ({pct('ges.yoy.total_pct')})."]
+    if list_changed:
+        tot_text.append(f"Con solo los problemas presentes en ambos períodos la variación es {pct('ges.yoy.total_comparable_pct')}: "
+                        "la lista de problemas cambió entre ambos años (posible cambio de decreto GES).")
     tabs.append({"id": "totales", "label": "Totales", "charts": [c_tot], "text": tot_text})
 
     # Tab 2 · Top problemas
@@ -552,81 +651,76 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         phrase = "Un problema supera" if n == 1 else sf.count_phrase(n, "", "problemas superan").strip().capitalize()
         head = f"{phrase} {fmt_dec(tp['pct'], 0)}% a/a" if n else "Ningún problema supera el umbral de crecimiento"
         c_top = {"id": "f4-top", "form": "bars", "unit": "%", "digits": 1, "headline": head,
-                 "subtitle": f"Problemas que crecen: variación a/a de casos · base ≥ {fmt_int(tp['min_cases'])} casos en el {qshort(by, bq)}",
+                 "subtitle": f"Problemas que crecen: variación de {st} frente a {sb} · base ≥ {fmt_int(tp['min_cases'])} casos en {sb}",
                  "rows": [{"label": short_label(r["label"]), "value": r["pct"], "ref": f"ges.p.{r['key']}.yoy_pct",
                            "emphasis": r["pct"] >= tp["pct"]} for r in ranked],
-                 "table": {"columns": ["Problema de salud", qshort(by, bq), qshort(ty, tq), "a/a"],
+                 "table": {"columns": ["Problema de salud", sb, st, "a/a"],
                            "rows": [[r["label"], fmt_int(r["base"]), fmt_int(r["t"]), fmt_dec(r["pct"], 1, signed=True) + "%"] for r in ranked]},
-                 "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos trimestres."}
-        top_text = [f"Se ordenan los problemas que crecen, con al menos {fmt_int(tp['min_cases'])} casos en el {qlabel(by, bq)}; "
+                 "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos períodos."}
+        top_text = [f"Se ordenan los problemas que crecen, con al menos {fmt_int(tp['min_cases'])} casos {between(by, tm)}; "
                     f"cruzan el umbral los que crecen {fmt_dec(tp['pct'], 0)}% o más."]
         if declining:
             top_text.append(("Un problema comparable bajó" if len(declining) == 1 else
                              sf.count_phrase(len(declining), "", "problemas comparables bajaron").strip().capitalize())
-                            + f" frente al {qshort(by, bq)}; no se grafican en este ranking de crecimiento.")
+                            + f" frente a {sb}; no se grafican en este ranking de crecimiento.")
     else:
         biggest = sorted(k["problems"], key=lambda r: (-r["t"], r["label"]))[:MAX_PROBLEM_ROWS]
-        c_top = {"id": "f4-top", "form": "bars", "unit": "casos", "headline": "Problemas con más casos en el trimestre",
-                 "subtitle": f"Casos GES por problema, {qshort(ty, tq)} (Fonasa + Isapre)",
-                 "rows": [{"label": short_label(r["label"]), "value": r["t"], "ref": f"ges.p.{r['key']}.{tk}"} for r in biggest],
-                 "table": {"columns": ["Problema de salud", qshort(ty, tq)], "rows": [[r["label"], fmt_int(r["t"])] for r in biggest]},
+        c_top = {"id": "f4-top", "form": "bars", "unit": "casos", "headline": f"Problemas con más casos en {st}",
+                 "subtitle": f"Casos GES por problema, {st} (Fonasa + Isapre)",
+                 "rows": [{"label": short_label(r["label"]), "value": r["t"], "ref": f"ges.p.{r['key']}.ytd.{t}"} for r in biggest],
+                 "table": {"columns": ["Problema de salud", st], "rows": [[r["label"], fmt_int(r["t"])] for r in biggest]},
                  "source": "SIS, casos GES por problema."}
-        top_text = ["El ranking por crecimiento necesita el mismo trimestre del año anterior; mientras no esté capturado se "
-                    "muestran los problemas con más casos."]
-    if k["added"] or k["dropped"]:
-        top_text.append(f"La lista de problemas cambió entre el {qshort(by, bq)} y el {qshort(ty, tq)} (posible cambio de decreto "
-                        f"GES). Problemas sin base comparable: {fmt_int(len(k['added']))}; que ya no aparecen: "
-                        f"{fmt_int(len(k['dropped']))}. No entran al ranking.")
+        top_text = [f"Ningún problema comparable crece frente a {sb}; se muestran los problemas con más casos."]
+    if list_changed:
+        top_text.append(f"La lista de problemas cambió entre {sb} y {st} (posible cambio de decreto GES). Problemas sin base "
+                        f"comparable: {fmt_int(len(k['added']))}; que ya no aparecen: {fmt_int(len(k['dropped']))}. No entran al ranking.")
     tabs.append({"id": "problemas", "label": "Top problemas", "charts": [c_top], "text": top_text})
 
     # Tab 3 · Fonasa vs Isapre
     qs = k["quarters"]
-    c_share = {"id": "f4-share", "form": "line", "unit": "%", "digits": 1, "headline": "Parte Isapre de los casos GES",
-               "subtitle": "% de los casos informados por Fonasa e Isapres, por trimestre",
+    c_share = {"id": "f4-share", "form": "line", "unit": "%", "digits": 1, "headline": "Parte Isapre de los casos GES por trimestre",
+               "subtitle": "% de los casos informados por Fonasa e Isapres en cada trimestre",
                "rows": [{"label": qshort(y, q), "value": val(f"ges.q.{qid(y, q)}.isapre_share"), "ref": f"ges.q.{qid(y, q)}.isapre_share",
-                         "emphasis": (y, q) == (ty, tq)} for (y, q) in qs[-12:]],
+                         "emphasis": (y, q) == tuple(k["tq"])} for (y, q) in qs[-12:]],
                "table": {"columns": ["Trimestre", "Fonasa", "Isapres", "% Isapre"],
                          "rows": [[qshort(y, q), fmt_int(val(f"ges.q.{qid(y, q)}.fonasa")), fmt_int(val(f"ges.q.{qid(y, q)}.isapre")),
                                    fmt_dec(val(f"ges.q.{qid(y, q)}.isapre_share"), 1) + "%"] for (y, q) in qs[-12:]]},
                "source": "Denominador: casos de ambos seguros del mismo trimestre. No es participación de beneficiarios."}
     ins_charts = [c_share] if len(qs) >= 2 else []
     if k["rates"]:
-        rq = sorted(k["rates"])
+        rp = sorted(k["rates"])
         ins_charts.append({"id": "f4-tasa", "form": "bars", "unit": "por 1.000", "digits": 1,
-                           "headline": "Tasa bruta Isapre por trimestre",
-                           "subtitle": "Casos Isapre por 1.000 beneficiarios Isapre (promedio de los 3 cierres de mes)",
-                           "rows": [{"label": qshort(y, q), "value": k["rates"][(y, q)], "ref": f"ges.q.{qid(y, q)}.isapre_rate",
-                                     "emphasis": (y, q) == (ty, tq)} for (y, q) in rq],
-                           "table": {"columns": ["Trimestre", "Casos Isapre", "Beneficiarios promedio", "Tasa bruta"],
-                                     "rows": [[qshort(y, q), fmt_int(val(f"ges.q.{qid(y, q)}.isapre")),
-                                               fmt_int(val(f"benef.isapre.avg.{qid(y, q)}")), fmt_dec(k["rates"][(y, q)], 1)] for (y, q) in rq]},
-                           "source": "Beneficiarios: cartera mensual Isapre (ficha F1). Tasa bruta: sin ajuste por edad ni sexo."})
-    ins_text = [f"Las Isapres informaron el {fmt_dec(share, 1)}% de los casos del {qlabel(ty, tq)}; es una parte de los casos, "
+                           "headline": f"Tasa bruta Isapre, {span(ty, tm).split(' de ')[0]}",
+                           "subtitle": "Casos Isapre por 1.000 beneficiarios Isapre (promedio de los cierres de mes del período)",
+                           "rows": [{"label": short(*sf.period_parts(p)), "value": k["rates"][p], "ref": f"ges.ytd.{p}.isapre_rate",
+                                     "emphasis": p == t} for p in rp],
+                           "table": {"columns": ["Período", "Casos Isapre", "Beneficiarios promedio", "Tasa bruta"],
+                                     "rows": [[short(*sf.period_parts(p)), fmt_int(val(f"ges.ytd.{p}.isapre")),
+                                               fmt_int(half_up(val(f"benef.isapre.avg.ytd.{p}"))), fmt_dec(k["rates"][p], 1)] for p in rp]},
+                           "source": "Beneficiarios: cartera mensual Isapre (ficha F1). Tasa bruta: sin ajuste por edad ni sexo; cuenta casos, no personas."})
+    ins_text = [f"Las Isapres informaron el {fmt_dec(share, 1)}% de los casos {between(ty, tm)}; es una parte de los casos, "
                 "no de la población."]
-    ins_text.append(f"Tasa bruta Isapre del trimestre: {fmt_dec(rate, 1)} casos por 1.000 beneficiarios Isapre. Fonasa: tasa no "
+    ins_text.append(f"Tasa bruta Isapre {between(ty, tm)}: {fmt_dec(rate, 1)} casos por 1.000 beneficiarios Isapre. Fonasa: tasa no "
                     "disponible, porque Alicanto no tiene capturados sus beneficiarios." if rate is not None else
-                    "Tasa por beneficiario no disponible: faltan los beneficiarios del trimestre (Isapre) y Alicanto no captura los de Fonasa.")
+                    "Tasa por beneficiario no disponible: faltan los beneficiarios Isapre del período y Alicanto no captura los de Fonasa.")
     tabs.append({"id": "seguros", "label": "Fonasa vs Isapre", "charts": ins_charts[:2], "text": ins_text})
 
-    # Tab 4 · Tendencia trimestral
+    # Tab 4 · Tendencia trimestral (quarters by difference of cumulative cuts)
+    cuts = k["quarter_cuts"]
     c_trend = {"id": "f4-trend", "form": "line", "unit": "casos", "digits": 0, "headline": "Casos GES por trimestre",
                "subtitle": "Fonasa + Isapre, casos de cada trimestre",
                "rows": [{"label": qshort(y, q), "value": val(f"ges.q.{qid(y, q)}.total"), "ref": f"ges.q.{qid(y, q)}.total",
-                         "emphasis": (y, q) == (ty, tq)} for (y, q) in qs[-12:]],
+                         "emphasis": (y, q) == tuple(k["tq"])} for (y, q) in qs[-12:]],
                "table": {"columns": ["Trimestre", "Casos", "Cortes usados"],
                          "rows": [[qshort(y, q), fmt_int(val(f"ges.q.{qid(y, q)}.total")),
-                                   " − ".join(sf.month_label(c) for c in reversed(_cuts_of(v, qid(y, q))))] for (y, q) in qs[-12:]]},
-               "source": "SIS, casos GES. Alicanto calcula cada trimestre desde los cortes acumulados."}
-    trend_text = [f"La serie tiene {fmt_int(len(qs))} trimestres derivables de los cortes capturados."
-                  + (" Faltan cortes para completar el resto." if k["invalid"] else "")]
-    tabs.append({"id": "tendencia", "label": "Tendencia trimestral", "charts": [c_trend] if len(qs) >= 2 else [],
-                 "text": trend_text})
-    if len(qs) < 2:  # a one-point trend is not a chart
-        tabs[-1]["text"].append("La tendencia se dibuja desde el segundo trimestre capturado.")
+                                   " − ".join(cut_label(c) for c in reversed(cuts[qid(y, q)]))] for (y, q) in qs[-12:]]},
+               "source": "SIS, casos GES. Cada trimestre es la diferencia entre dos cortes acumulados; el primero, contra diciembre del año anterior."}
+    trend_text = [f"La serie tiene {fmt_int(len(qs))} trimestres, calculados por diferencia entre cortes acumulados de la planilla."]
+    tabs.append({"id": "tendencia", "label": "Tendencia trimestral", "charts": [c_trend], "text": trend_text})
 
     # Index → topic layout (Dirección 29-oct): generic index fields; the topic dek falls back to the tab text.
     index_refs = {"problemas": ["regla.top_problemas.pct"], "tendencia": ["conteo.trimestres"],
-                  "seguros": [f"ges.q.{tk}.isapre_share"], "totales": [f"ges.q.{tk}.total", "ges.yoy.total"] if yoy else [f"ges.q.{tk}.total"]}
+                  "seguros": [f"ges.ytd.{t}.isapre_share"], "totales": [f"ges.ytd.{t}.total", "ges.yoy.total"]}
     for tab in tabs:
         refs = index_refs.get(tab["id"], [])
         sf.topic_fields(tab, text_refs=refs, headline_refs=refs)
@@ -635,37 +729,48 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     # Qué mirar
     published = date.fromisoformat(package["published_at"][:10])
     expected = date.fromordinal(published.toordinal() + int(cfg["calendar"]["expected_release_interval_days"]))
-    ny, nq = qprev(ty, tq, -1)
+    ny, nq = qprev(*k["tq"], -1)
     late = (decision or {}).get("late_release")
     watch = [{"headline": f"Casos GES a {sf.month_label(qend(ny, nq))}: publicación atrasada." if late else
               f"Casos GES a {sf.month_label(qend(ny, nq))} (la SIS la publicaría hacia el {sf.day_label(expected)}).",
               "explanation": (f"Lleva {late['days_late']} días de atraso según el calendario histórico." if late else
-                              f"Una variación de {yoy_th}% o más frente al mismo trimestre del año anterior marca la ficha como destacada.")}]
+                              f"Una variación de {yoy_th}% o más frente a los mismos meses del año anterior marca la ficha como destacada.")}]
     if k["crossing"]:
         r = k["crossing"][0]
         watch.append({"headline": f"{short_label(r['label'], 60)}: {fmt_dec(r['pct'], 1, signed=True)}% a/a.",
                       "explanation": "Un salto en un problema puede venir de un cambio de decreto o de registro; la ficha no infiere la causa."})
     else:
         watch.append({"headline": "Tasa Fonasa por beneficiario.",
-                      "explanation": "Se calculará cuando Alicanto capture los beneficiarios de Fonasa del mismo trimestre."})
+                      "explanation": "Se calculará cuando Alicanto capture los beneficiarios de Fonasa del mismo período."})
 
     notes = [
-        {"id": "n1", "text": ("Los casos GES son un flujo, no un stock: la hoja del año del corte (fijada; nunca la de otro año) "
-                              "acumula casos desde enero, y el trimestre es la diferencia entre dos cortes del mismo año. "
-                              "Los cortes no se suman." if k["measure"] == "ytd" else
-                              "Los casos GES son un flujo del trimestre, no un stock; los trimestres no se suman a un stock.")},
-        {"id": "n2", "text": ("Tasa bruta: casos del seguro / beneficiarios promedio del mismo seguro en el trimestre × 1.000. "
-                              "El denominador Isapre viene de la cartera mensual (F1); Fonasa no tiene denominador capturado y su "
-                              "tasa no está disponible. Sin ajuste por edad: no compara riesgo entre seguros.")},
-        {"id": "n3", "text": (f"Top problemas: variación frente al mismo trimestre del año anterior; entran los problemas con al menos "
-                              f"{fmt_int(tp['min_cases'])} casos en la base y cruzan el umbral los que crecen {fmt_dec(tp['pct'], 0)}% o más.")},
+        {"id": "n1", "text": ("Medida (definida por Dirección): casos GES ingresados entre enero y el mes del corte, frente a los "
+                              "mismos meses del año anterior. Es un flujo, no un stock: los cortes no se suman. La planilla SIS "
+                              "también informa casos acumulados desde julio de 2005; esa cifra no se muestra, solo se resta: "
+                              "los mismos meses del año anterior y cada trimestre son la diferencia entre dos cortes acumulados "
+                              "(el primer trimestre, contra diciembre del año anterior).")},
+        {"id": "n2", "text": ("Tasa bruta: casos del seguro entre enero y el corte / beneficiarios promedio del mismo seguro en esos "
+                              "meses × 1.000. Cuenta casos, no personas: una persona puede tener más de un caso GES. El denominador "
+                              "Isapre viene de la cartera mensual (F1); Fonasa no tiene denominador capturado y su tasa no está "
+                              "disponible. Sin ajuste por edad: no compara riesgo entre seguros.")},
+        {"id": "n3", "text": (f"Top problemas: variación frente a los mismos meses del año anterior; entran los problemas con al menos "
+                              f"{fmt_int(tp['min_cases'])} casos en la base y cruzan el umbral los que crecen {fmt_dec(tp['pct'], 0)}% o más. "
+                              "Los problemas se comparan por su número GES.")},
         {"id": "n4", "text": "Ningún dato de esta ficha establece por qué cambian los casos (demanda, decreto, registro o acceso)."},
     ]
+    sis = _fold(" ".join(k.get("sis_notes") or []))
+    said = [text for rx, text in SIS_NOTE_RULES if re.search(rx, sis)]
+    if said:
+        notes.append({"id": "n5", "text": "Según las notas de la SIS: " + "; ".join(said) + "."})
+    if k.get("cross_release") is not None:
+        notes.append({"id": "n6", "text": (f"{span(by, tm).capitalize()} se calcula con la planilla más reciente. "
+                                           + ("Coincide con lo publicado en la planilla de ese período." if k["cross_release"]["equal"] else
+                                              "Difiere de lo publicado en la planilla de ese período: la SIS revisa sus datos."))})
     if k["invalid"]:
-        notes.append({"id": "n5", "text": "Cortes no usados por no pasar el parser corregido: " +
+        notes.append({"id": "n7", "text": "Planillas anteriores no usadas por no pasar el parser vigente: " +
                       "; ".join(f"{sf.month_label(p)} ({why})" for p, why in sorted(k["invalid"].items())) + "."})
-    for d in cfg.get("decree_changes") or []:
-        notes.append({"id": f"d{len(notes) + 1}", "text": str(d.get("note"))})
+    for dc in cfg.get("decree_changes") or []:
+        notes.append({"id": f"d{len(notes) + 1}", "text": str(dc.get("note"))})
 
     sources = [{**src, "key": key} for key, src in package["sources"].items()]
     triggers = (decision or {}).get("triggers") or []
@@ -677,9 +782,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "schema_version": sf.SCHEMA, "id": f"stats-ficha:{FAMILY}:{package['period']}", "family": FAMILY,
         "family_label": cfg["label"], "slug": cfg["slug"], "period": package["period"], "published_at": package["published_at"],
         "release_key": package["release_key"], "kicker": tpl["kicker"].format(label=cfg["label"]),
-        "kicker_meta": tpl["kicker_meta"].format(period_label=qlabel(ty, tq), published_label=sf.day_label(package["published_at"]),
+        "kicker_meta": tpl["kicker_meta"].format(period_label=span(ty, tm), published_label=sf.day_label(package["published_at"]),
                                                  cadence_phrase=cfg["cadence_phrase"]),
-        "headline": headline, "headline_type": head_type, "dek": dek, "dek_emphasis": f"{fmt_int(fon)} casos",
+        "headline": headline, "headline_type": "ytd_yoy", "dek": dek, "dek_emphasis": f"{fmt_int(fon)} casos",
         "kpis": kpis, "tabs": tabs,
         "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs, "rendered_in_tabs": True},
         "watch": watch[:2], "notes": notes, "sources": sources, "machine_note": machine,
@@ -688,12 +793,54 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     }
 
 
-def _cuts_of(values: dict, key: str) -> list[str]:
-    ins = values[f"ges.q.{key}.fonasa"]["inputs"]
-    return [i.split(".")[2] for i in ins]
+FIRST_REVIEW_HOLD = "HOLD_FIRST_REVIEW:awaiting_first_review"
+
+
+def _gate_open(cfg: dict, root: Path, sha: str | None) -> bool:
+    if not cfg.get("first_pass_requires_review"):
+        return True
+    live = sf.load_live(Path(root), cfg["slug"]) or {}
+    if str(live.get("builder_version") or "").startswith("f4_ytd") and live.get("status") == "PASS":
+        return True  # the first year-to-date ficha was reviewed and published: later releases follow the policy
+    review = cfg.get("first_review") or {}
+    return bool(review.get("reviewed_by") and sha and review.get("reviewed_sha256") == sha)
+
+
+def _latest_sha(root: Path) -> str | None:
+    store = _load(Path(root) / CAPTURE) or {}
+    rels = sorted((r for r in store.get("releases") or [] if r.get("period")), key=lambda r: r["period"])
+    doc = (rels[-1].get("document") or {}) if rels else {}
+    return doc.get("sha256") if doc.get("status") == "captured" else None
+
+
+def first_review_gate(result: dict, cfg: dict, root: Path) -> dict:
+    """First publication of the year-to-date ficha on real data needs a human look (review of PR #129, 3-nov-2026).
+
+    While ``first_pass_requires_review`` is true and no year-to-date F4 ficha is live, a PASS is written as HOLD
+    (``awaiting_first_review``) with the full rendered ficha in the hold file. It publishes only once the registry
+    records ``first_review.reviewed_by`` and ``first_review.reviewed_sha256`` equal to the release's workbook SHA-256."""
+    if result.get("status") != "pass":
+        return result
+    ficha = result["ficha"]
+    sha = next((s.get("sha256") for s in ficha.get("sources") or [] if s.get("key") == f"ges_{ficha.get('period')}"), None)
+    if _gate_open(cfg, root, sha):
+        return result
+    decision = {**(result.get("decision") or {}), "decision": "HOLD",
+                "holds": [*((result.get("decision") or {}).get("holds") or []), FIRST_REVIEW_HOLD]}
+    candidate = {**ficha, "status": "AWAITING_FIRST_REVIEW", "review_request": {
+        "release_sha256": sha, "period": ficha.get("period"),
+        "to_publish": "registro families.F4.first_review: reviewed_by, reviewed_at y reviewed_sha256 = release_sha256"}}
+    return {**{k: v for k, v in result.items() if k != "ficha"}, "status": "hold", "decision": decision,
+            "errors": [FIRST_REVIEW_HOLD], "candidate": candidate}
 
 
 def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = True,
         model_call: Callable[..., Any] | None = None, budget: Callable[[float], tuple[bool, str]] | None = None) -> dict:
-    return sf.run_family(FAMILY, builder_version=BUILDER_VERSION, build_package=build_package, compose=compose, root=Path(root),
-                         today=today, registry=registry, llm=llm, model_call=model_call, budget=budget)
+    registry = registry or sf.load_registry()
+    cfg = registry["families"][FAMILY]
+    # While the first-review gate is closed for the newest captured file, no model is called: a gated ficha never
+    # publishes, so a paid Lectura would be wasted (review of #129).
+    gated = not _gate_open(cfg, Path(root), _latest_sha(root))
+    out = sf.run_family(FAMILY, builder_version=BUILDER_VERSION, build_package=build_package, compose=compose, root=Path(root),
+                        today=today, registry=registry, llm=llm and not gated, model_call=model_call, budget=budget)
+    return first_review_gate(out, registry["families"][FAMILY], Path(root))

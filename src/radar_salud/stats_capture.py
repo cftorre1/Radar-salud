@@ -11,8 +11,10 @@ Text receipts (2-nov-2026): each captured or re-checked document also leaves its
 ``data/stats_fichas/text/<sha256[:16]>.json`` (once per sha256, capped), for the reviewer who writes the independent
 reading; a captured document of the newest release of each kind without one is downloaded once more for it.
 
-- GES (xlsx): ``data_insights.parse_ges_workbook`` — the corrected parser: the sheet of the reporting year is
-  pinned and the rows must add up to the declared total, else HOLD.
+- GES (xlsx): ``data_insights.parse_ges_workbook`` → ``ges_workbook.parse`` (``ges_ytd_cuts_v3``): the year sheets of
+  the release, the previous year and the one before are pinned by name, every column read adds up to the declared
+  total and the year-to-date column equals the cumulative cut minus the previous December cut, else HOLD. A file
+  captured with an older GES parser is re-read once with the current one (same fetcher, budget and hash check).
 - Boletín IP (PDF): the text is never interpreted by a model. The figures come from the independent reading in
   ``config/statistical_analysis_verified_v1.json`` and the capture only records whether each verified figure is
   present in the captured document's text (``verified_present``) and under which rule (``figure_rules``: the
@@ -872,6 +874,18 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
             return days_since({"fetched_at": last.get("at")}) >= RETRY_AFTER_DAYS
         return True
 
+    def needs_ges_recheck(old: dict | None) -> bool:
+        if not old or old.get("status") != "captured" or old.get("format") != "xlsx":
+            return False
+        if data_insights.GES_PARSER in ((old.get("parse") or {}).get("parser"), old.get("rechecked_for_parser")):
+            return False  # parsed, or already re-read once, by the current parser
+        last = old.get("recheck") or {}
+        if last.get("status") == "fetch_failed" and int(last.get("attempts") or 0) >= MAX_ATTEMPTS:
+            return days_since({"fetched_at": last.get("at")}) >= RETRY_AFTER_DAYS
+        if last.get("status") == "parse_failed":
+            return days_since({"fetched_at": last.get("at")}) >= RETRY_AFTER_DAYS
+        return True
+
     # GES
     path = root / STORE / "ges_quarterly.json"
     store = _load(path, {}) or {}
@@ -881,12 +895,23 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
         old_doc = (old or {}).get("document")
         if old_doc and old_doc.get("url") != rel["documents"][0]["url"]:
             old_doc = None  # a new file for the same period: capture it (the revision is detected downstream)
+        title = rel["title"]
+        ges_parse = lambda b, t=title: data_insights.parse_ges_workbook(b, t)  # noqa: E731
         if needs(old_doc) and budget["left"] > 0 and has_time():
             budget["left"] -= 1
-            title = rel["title"]
             doc = _capture_doc({**(old_doc or {}), "url": rel["documents"][0]["url"]}, fetch=fetch, expected="xlsx",
-                               parse=lambda b, t=title: data_insights.parse_ges_workbook(b, t), text=text)
+                               parse=ges_parse, text=text)
             known[rel["period"]] = {k: rel[k] for k in ("period", "title", "release_url", "published_at")} | {"document": doc}
+        elif needs_ges_recheck(old_doc) and budget["left"] > 0 and has_time():
+            # Parsed by an older GES parser (e.g. v2, which never matched the SIS two-row header): the same file is read
+            # once more with the current parser; its bytes must hash to the recorded SHA-256 (else HOLD hash_mismatch).
+            budget["left"] -= 1
+            doc = _recheck_doc(old_doc, fetch=fetch, parse=ges_parse, stored=stored, text=text)
+            if doc.get("rechecked_at") and doc.get("previous_parse") is not None:
+                doc = {k: v for k, v in doc.items() if k != "rechecked_from_checker_version"}
+                doc["rechecked_from_parser"] = (doc["previous_parse"] or {}).get("parser")
+                doc["rechecked_for_parser"] = data_insights.GES_PARSER
+            known[rel["period"]] = {**old, **{k: rel[k] for k in ("title", "release_url", "published_at")}, "document": doc}
         elif old:
             known[rel["period"]] = {**old, **{k: rel[k] for k in ("title", "release_url", "published_at")}}
     text_backfills = 0
@@ -897,7 +922,7 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
             text_backfills += 1
             known[period] = {**known[period], "document": _backfill_text(root, doc, fetch=fetch, stored=stored)}
     store = {"schema_version": SCHEMA, "kind": "ges", "updated_at": _now(), "releases": [known[k] for k in sorted(known)]}
-    _write(path, store)
+    _write(path, store, inline_number_lists=True)
     used = max_new - budget["left"]
     budget["left"] = max_new
     summary["ges"] = {"releases": len(store["releases"]), "downloads": used,
@@ -949,11 +974,19 @@ def capture(root: Path, *, fetch: Callable[[str], bytes] | None = None, max_new:
     return summary
 
 
-def _write(path: Path, payload: dict) -> None:
-    """Rewrite only when something other than ``updated_at`` changed (no daily churn in the committed store)."""
+NUMBER_LIST = re.compile(r"\[\n\s+((?:-?\d+(?:\.\d+)?|null)(?:,\n\s+(?:-?\d+(?:\.\d+)?|null))*)\n\s+\]")
+
+
+def _write(path: Path, payload: dict, *, inline_number_lists: bool = False) -> None:
+    """Rewrite only when something other than ``updated_at`` changed (no daily churn in the committed store).
+
+    ``inline_number_lists`` writes each list of numbers on one line (the GES store keeps one flat list per problem)."""
     old = _load(path, None)
     if isinstance(old, dict) and {k: v for k, v in old.items() if k != "updated_at"} == \
             {k: v for k, v in payload.items() if k != "updated_at"}:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    text = json.dumps(payload, ensure_ascii=False, indent=2)
+    if inline_number_lists:
+        text = NUMBER_LIST.sub(lambda m: "[" + ", ".join(x.strip() for x in m[1].split(",")) + "]", text)
+    path.write_text(text + "\n", encoding="utf-8")

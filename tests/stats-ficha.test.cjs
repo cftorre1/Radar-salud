@@ -155,11 +155,13 @@ for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fona
   assert.equal(card.share_url,`data/fichas/${slug}.html`);
  });
 }
-test('F4 shows tasa bruta, Fonasa rate not available and percent bars with one decimal',()=>{
+test('F4 shows ene–jun vs ene–jun, tasa bruta, Fonasa rate not available and percent bars with one decimal',()=>{
  const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f4_ges.card.json','utf8')).stats_ficha;const html=load().render(f);
  assert.match(html,/Tasa bruta Isapre/);assert.match(html,/tasa no disponible/);
- assert.match(html,/aria-label="Problemas que crecen: variación a\/a de casos[^"]*Cáncer de mama en… 35,5%/);
- assert.match(html,/Dos problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
+ assert.match(html,/aria-label="Problemas que crecen: variación de ene–jun 2026 frente a ene–jun 2025[^"]*Cáncer de mama en… 28,8%/);
+ assert.match(html,/Tres problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
+ // Year-to-date measure (Dirección 3-nov-2026): the period is explicit in the headline.
+ assert.match(html,/entre enero y junio de 2026/);assert.match(html,/frente a enero–junio de 2025/);
 });
 test('F6 keeps stocks labelled, shows the claims change and no RNPI (Dirección 2-nov)',()=>{
  const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f6_prestadores.card.json','utf8')).stats_ficha;const html=load().render(f);
@@ -173,11 +175,11 @@ test('line axis labels thin out for many quarters; F1 monthly labels keep every 
  // F1: every month labelled, each label under its point (unchanged layout).
  const f1=F.render(pub);const stock=f1.slice(f1.indexOf('data-chart="f1-stock"'));const svg1=stock.slice(0,stock.indexOf('</svg>'));
  const l1=xs(svg1);assert.equal(l1.length,cx(svg1).length);assert.deepEqual(l1.map(l=>l[0]),cx(svg1));
- // 12 quarters 'T1 2024'…'T4 2026': every 2nd label, counted back from the last one (always shown).
+ // 12 quarters 'T1 2024'…'T4 2026': every 3rd label (the end-anchored last label needs 1.5 widths), counted back from the last one (always shown).
  const rows=[];for(const y of [2024,2025,2026])for(const q of [1,2,3,4])rows.push({label:`T${q} ${y}`,value:1000+rows.length*7});
  const html=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'f4-trend',form:'line',digits:0,headline:'Casos',rows}],text:[]}]});
  const fig=html.slice(html.indexOf('<figure'));const svg=fig.slice(fig.indexOf('<svg'),fig.indexOf('</svg>'));const labs=xs(svg);
- assert.deepEqual(labs.map(l=>l[1]),['T2 2024','T4 2024','T2 2025','T4 2025','T2 2026','T4 2026']);
+ assert.deepEqual(labs.map(l=>l[1]),['T3 2024','T2 2025','T1 2026','T4 2026']);
  for(let i=1;i<labs.length;i++)assert.ok(labs[i][0]-labs[i-1][0]>=7*6.6,`labels ${i} collide`);
  // 4 quarters fit: all labelled.
  const h4=F.render({...pub,tabs:[{id:'t',label:'T',charts:[{id:'x',form:'line',rows:rows.slice(-4)}],text:[]}]});

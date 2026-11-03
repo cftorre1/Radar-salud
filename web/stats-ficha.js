@@ -47,9 +47,10 @@
   const vals=rows.map(r=>Number(r.value)),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo)*.15||Math.abs(hi)*.01||1,min=lo-pad,max=hi+pad,W=360,top=24,H=130,x=i=>20+i*(W-40)/(rows.length-1),y=v=>top+(max-v)/(max-min)*H;
   const pts=rows.map((r,i)=>`${x(i).toFixed(1)},${y(Number(r.value)).toFixed(1)}`).join(' ');
   let s=`<polyline points="${pts}" fill="none" stroke="${C.ink}" stroke-width="2.5"/>`;
+  // Long labels (>4 chars) at the edges are anchored start/end, so their neighbour needs 1.5 label widths of room.
   // Axis labels thin out when they would collide (e.g. 12 quarters 'T2 2026' at 390 px): every 2nd, 3rd, 4th or 6th,
   // counted back from the last point so the latest period is always labelled. Short monthly labels (F1) all fit: unchanged.
-  const lw=Math.max(...rows.map(r=>String(r.label).length))*6.6+6,slot=(W-40)/(rows.length-1),step=[1,2,3,4,6,12].find(k=>slot*k>=lw)||Math.ceil(lw/slot),shown=i=>(rows.length-1-i)%step===0;
+  const ml=Math.max(...rows.map(r=>String(r.label).length)),lw=ml*6.6+6,need=ml>4?lw*1.5:lw,slot=(W-40)/(rows.length-1),step=[1,2,3,4,6,12].find(k=>slot*k>=need)||Math.ceil(need/slot),shown=i=>(rows.length-1-i)%step===0;
   rows.forEach((r,i)=>{const v=Number(r.value),last=i===rows.length-1,first=i===0;s+=`<g class="sf-mark"><title>${esc(r.label)}: ${dec(v,d)}</title><circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${last?5:3.5}" fill="${last?C.accent:C.ink}"/></g>`;if(shown(i))s+=`<text class="sf-xlab" x="${x(i).toFixed(1)}" y="${top+H+22}" font-size="11.5" text-anchor="${first&&rows.length>1&&String(r.label).length>4?'start':last&&String(r.label).length>4?'end':'middle'}" fill="${C.ink70}">${esc(r.label)}</text>`;
    // Dirección 29-oct: when the series descends into the last point, its label goes below the point, so it never
    // sits on the line ('0,603').
