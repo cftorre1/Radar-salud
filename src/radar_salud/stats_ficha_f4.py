@@ -589,10 +589,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     decree_clause = ("" if not (na or nd) else
                      f" La variación incluye {pl(na, 'problema nuevo', 'problemas nuevos')} por decreto; comparable: {comparable}."
                      if na and not nd else
-                     f" La variación excluye {pl(nd, 'problema retirado', 'problemas retirados')} de la lista; comparable: {comparable}."
+                     # A dropped problem has no flow this year but stays in last year's base (review of #129).
+                     f" La base de {span(by, tm)} incluye {pl(nd, 'problema retirado', 'problemas retirados')}; "
+                     f"comparable: {comparable}."
                      if nd and not na else
-                     f" La lista GES cambió por decreto ({pl(na, 'nuevo', 'nuevos')}, {pl(nd, 'retirado', 'retirados')}); "
-                     f"comparable: {comparable}.")
+                     f" Cambio de decreto: {pl(na, 'problema nuevo', 'problemas nuevos')}; la base {by} incluye "
+                     f"{pl(nd, 'retirado', 'retirados')}; comparable: {comparable}.")
     dek = tpl["dek"].format(fonasa=fmt_int(fon), isapre=fmt_int(isa), share=fmt_dec(share, 1), rate_clause=rate_clause,
                             decree_clause=decree_clause, **words)
     crossed = any(f["kpi"] == "casos_ges" for f in package["findings"])
@@ -794,25 +796,38 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 FIRST_REVIEW_HOLD = "HOLD_FIRST_REVIEW:awaiting_first_review"
 
 
+def _gate_open(cfg: dict, root: Path, sha: str | None) -> bool:
+    if not cfg.get("first_pass_requires_review"):
+        return True
+    live = sf.load_live(Path(root), cfg["slug"]) or {}
+    if str(live.get("builder_version") or "").startswith("f4_ytd") and live.get("status") == "PASS":
+        return True  # the first year-to-date ficha was reviewed and published: later releases follow the policy
+    review = cfg.get("first_review") or {}
+    return bool(review.get("reviewed_by") and sha and review.get("reviewed_sha256") == sha)
+
+
+def _latest_sha(root: Path) -> str | None:
+    store = _load(Path(root) / CAPTURE) or {}
+    rels = sorted((r for r in store.get("releases") or [] if r.get("period")), key=lambda r: r["period"])
+    doc = (rels[-1].get("document") or {}) if rels else {}
+    return doc.get("sha256") if doc.get("status") == "captured" else None
+
+
 def first_review_gate(result: dict, cfg: dict, root: Path) -> dict:
     """First publication of the year-to-date ficha on real data needs a human look (review of PR #129, 3-nov-2026).
 
     While ``first_pass_requires_review`` is true and no year-to-date F4 ficha is live, a PASS is written as HOLD
     (``awaiting_first_review``) with the full rendered ficha in the hold file. It publishes only once the registry
     records ``first_review.reviewed_by`` and ``first_review.reviewed_sha256`` equal to the release's workbook SHA-256."""
-    if result.get("status") != "pass" or not cfg.get("first_pass_requires_review"):
+    if result.get("status") != "pass":
         return result
-    live = sf.load_live(Path(root), cfg["slug"]) or {}
-    if str(live.get("builder_version") or "").startswith("f4_ytd") and live.get("status") == "PASS":
-        return result  # the first year-to-date ficha was reviewed and published: later releases follow the policy
     ficha = result["ficha"]
     sha = next((s.get("sha256") for s in ficha.get("sources") or [] if s.get("key") == f"ges_{ficha.get('period')}"), None)
-    review = cfg.get("first_review") or {}
-    if review.get("reviewed_by") and sha and review.get("reviewed_sha256") == sha:
+    if _gate_open(cfg, root, sha):
         return result
     decision = {**(result.get("decision") or {}), "decision": "HOLD",
                 "holds": [*((result.get("decision") or {}).get("holds") or []), FIRST_REVIEW_HOLD]}
-    candidate = {**ficha, "review_request": {
+    candidate = {**ficha, "status": "AWAITING_FIRST_REVIEW", "review_request": {
         "release_sha256": sha, "period": ficha.get("period"),
         "to_publish": "registro families.F4.first_review: reviewed_by, reviewed_at y reviewed_sha256 = release_sha256"}}
     return {**{k: v for k, v in result.items() if k != "ficha"}, "status": "hold", "decision": decision,
@@ -822,6 +837,10 @@ def first_review_gate(result: dict, cfg: dict, root: Path) -> dict:
 def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = True,
         model_call: Callable[..., Any] | None = None, budget: Callable[[float], tuple[bool, str]] | None = None) -> dict:
     registry = registry or sf.load_registry()
+    cfg = registry["families"][FAMILY]
+    # While the first-review gate is closed for the newest captured file, no model is called: a gated ficha never
+    # publishes, so a paid Lectura would be wasted (review of #129).
+    gated = not _gate_open(cfg, Path(root), _latest_sha(root))
     out = sf.run_family(FAMILY, builder_version=BUILDER_VERSION, build_package=build_package, compose=compose, root=Path(root),
-                        today=today, registry=registry, llm=llm, model_call=model_call, budget=budget)
+                        today=today, registry=registry, llm=llm and not gated, model_call=model_call, budget=budget)
     return first_review_gate(out, registry["families"][FAMILY], Path(root))

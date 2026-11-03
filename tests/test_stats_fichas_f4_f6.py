@@ -1050,7 +1050,7 @@ def test_f4_first_publication_waits_for_a_human_review_of_that_release(root):
     registry["families"]["F4"]["first_pass_requires_review"] = True
     out = f4.run(root, today=TODAY, registry=registry, llm=False)
     assert out["status"] == "hold" and out["errors"] == [f4.FIRST_REVIEW_HOLD]
-    assert "awaiting_first_review" in " ".join(out["decision"]["holds"])
+    assert "awaiting_first_review" in " ".join(out["decision"]["holds"]) and out["candidate"]["status"] == "AWAITING_FIRST_REVIEW"
     written = sf.publish(out, root)
     hold = json.loads(Path(written["hold"]).read_text(encoding="utf-8"))
     assert not written["published"] and sf.load_live(root, "f4_ges") is None
@@ -1086,3 +1086,47 @@ def test_f4_dek_names_the_rate_period_and_the_decree_caveat(root):
     p = f4.build_package(root, reg_ok())
     p["kpis"]["added"] = []
     assert "decreto" not in f4.compose(p, reg_ok(), today=TODAY)["dek"]
+
+
+def test_f4_dropped_problem_stays_in_last_years_base_and_the_dek_says_so(tmp_path):
+    """Problem 84 leaves the list in 2026 (the last number: the table stays contiguous). Its 2025 flows remain in the
+    January–June 2025 base; the comparable change excludes it, and the dek says the base includes it."""
+    import copy
+    y = copy.deepcopy(fx.GES_YTD)
+    for per in ("2026-03", "2026-06"):
+        y[per].pop(84)
+        y[per].pop(fx.NEW_CODE)
+    y["2025-03"][84], y["2025-06"][84], y["2025-09"][84], y["2025-12"][84] = (4500, 450), (9000, 900), (13500, 1350), (18000, 1800)
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
+    fx.capture_all(r, fx.fetcher(r, {fx.GES_URL.format(period=p): fx.ges_workbook(p, y) for p in fx.GES_RELEASES}))
+    p = f4.build_package(r, reg_ok())
+    assert p["reconciliation"]["ok"], p["reconciliation"]
+    v = {k: e["value"] for k, e in p["values"].items()}
+    base = sum(sum(x) for x in y["2025-06"].values())
+    assert v["ges.ytd.2025-06.total"] == base and v["ges.ytd.2025-06.total_comparable"] == base - (9000 + 900)
+    assert p["kpis"]["dropped"] == [f4.pkey(84)] and p["kpis"]["added"] == []
+    # T1 2026 is computed over the problems of 2026: the December base leaves problem 84 out.
+    assert p["values"]["ges.q.2026T1.fonasa"]["inputs"] == ["ges.cut.2026-03.fonasa", "ges.cut.2025-12.base_2026.fonasa"]
+    assert v["ges.q.2026T1.fonasa"] == sum(f for f, _ in y["2026-03"].values())
+    fi = f4.compose(p, reg_ok(), today=TODAY)
+    assert v["ges.yoy.total_pct"] < 0 < v["ges.yoy.total_comparable_pct"]
+    assert ("La base de enero–junio de 2025 incluye 1 problema retirado; comparable: "
+            + sf.fmt_dec(v["ges.yoy.total_comparable_pct"], 1, signed=True) + "%.") in fi["dek"]
+    assert "excluye" not in fi["dek"] and len(fi["dek"].split()) <= 40
+    out = f4.run(r, today=TODAY, registry=reg_ok(), llm=False)
+    assert out["status"] == "pass", out.get("errors")
+
+
+def test_f4_gated_run_never_calls_the_model_and_marks_the_candidate(root):
+    registry = reg_ok()
+    registry["families"]["F4"]["first_pass_requires_review"] = True
+    model = fake_model(F4_GOOD)
+    out = f4.run(root, today=TODAY, registry=registry, llm=True, model_call=model, budget=ALLOW)
+    assert out["status"] == "hold" and out["errors"] == [f4.FIRST_REVIEW_HOLD]
+    assert model.calls == []  # no paid Lectura while the gate is closed
+    assert out["candidate"]["status"] == "AWAITING_FIRST_REVIEW" and out["candidate"]["lectura"]["status"] == "not_attempted"
+    # With the review recorded for this file, the same run calls the model once (writer + reviewer) and publishes.
+    registry["families"]["F4"]["first_review"].update(reviewed_by="revisor de prueba", reviewed_at="2026-11-04",
+                                                      reviewed_sha256=out["candidate"]["review_request"]["release_sha256"])
+    out = f4.run(root, today=TODAY, registry=registry, llm=True, model_call=model, budget=ALLOW)
+    assert out["status"] == "pass" and [c["feature"] for c in model.calls] == ["stats_ficha_lectura", "stats_ficha_lectura_review"]
