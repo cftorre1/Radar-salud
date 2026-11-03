@@ -196,15 +196,15 @@ BASES = {
     # F4 GES
     "beneficiarios_mismo_seguro": {
         "short": "tasa bruta por 1.000 beneficiarios del mismo seguro",
-        "es": "tasa bruta: casos del seguro / beneficiarios promedio del mismo seguro en el trimestre × 1.000; sin ajuste "
-              "por edad: escribe 'por cada mil beneficiarios'",
+        "es": "tasa bruta: casos del seguro / beneficiarios promedio del mismo seguro en el período × 1.000; cuenta casos, "
+              "no personas; sin ajuste por edad: escribe 'por cada mil beneficiarios'",
         "required": True,
         "accept": r"beneficiari\w*",
         "reject": r"poblacion\w*|habitantes|de ambos seguros|del sistema",
     },
     "casos_ambos_seguros": {
         "short": "parte de los casos GES informados por Fonasa e Isapres",
-        "es": "casos del seguro / casos de Fonasa + Isapres del mismo trimestre; no es participación de mercado ni "
+        "es": "casos del seguro / casos de Fonasa + Isapres del mismo período; no es participación de mercado ni "
               "de beneficiarios: escribe 'de los casos'",
         "required": True,
         "accept": r"de los casos|del total de casos|de ambos seguros",
@@ -213,6 +213,10 @@ BASES = {
     "casos_mismo_trimestre_anio_anterior": {"short": "variación frente al mismo trimestre del año anterior",
                                             "es": "variación sobre los casos del mismo trimestre un año antes",
                                             "required": False},
+    "casos_mismo_periodo_anio_anterior": {"short": "variación frente a los mismos meses del año anterior",
+                                          "es": "variación sobre los casos de enero al mismo mes un año antes (no el acumulado "
+                                                "desde 2005): escribe 'frente a enero–junio de 2025'",
+                                          "required": False},
     # F6 Boletín IP
     "acreditados": {
         "short": "parte de los prestadores acreditados",

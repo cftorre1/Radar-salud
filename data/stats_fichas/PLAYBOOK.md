@@ -68,7 +68,13 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
    - Un solo test con anotaciones por PR: GitHub muestra unas 10 por paso.
 5. Una hoja o unidad que no se puede leer, un `.xls` sin `xlrd`, una fila o columna sin listar o una suma que no calza
    significan HOLD con la razón registrada (`stats_capture_fefi.parse_fefi_workbook`).
-6. **Escalas (Dirección, 1 nov).** Se leen solo hojas cuyo encabezado dice "miles"; la conversión a millones la hace
+6. **Hojas acumuladas desde el origen (GES, 3 nov).** Si una hoja informa acumulados desde el inicio de la serie
+   ("Número de casos acumulados Jul-2005 a Jun-2026"), ese número nunca se muestra: los flujos se derivan por diferencia
+   contra el corte de diciembre del año anterior (T1 = marzo − diciembre anterior; ene–jun del año anterior = jun − dic
+   de dos años antes), y la columna de flujo del año que publica la fuente ("Ingresos entre Ene y Jun") debe calzar con
+   esa resta, por fila y en total (`ges_workbook.ytd_identity`). Leer antes el encabezado real de dos filas en el recibo
+   de texto: el parser v2 nunca calzó con él (`HOLD_GES_SCHEMA_NOT_VALIDATED` en todas las releases).
+7. **Escalas (Dirección, 1 nov).** Se leen solo hojas cuyo encabezado dice "miles"; la conversión a millones la hace
    Alicanto.
    - Una hoja "en millones de $" se rechaza aunque la plantilla la nombre (`stats_capture_fefi.unit_refusal`). En la
      FEFI sus celdas mezclan miles y millones, porque el formato de Excel las escala: Colmena tiene ingresos 267346818
@@ -76,7 +82,7 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
    - En una hoja "miles", las Isapres suman la columna total con tolerancia ≤ 1 (`stats_capture_fefi.sum_tolerance`).
    - Si, para una misma Isapre, ítems comparables difieren más de ×100, se rechaza (`stats_capture_fefi.common_guards`,
      `magnitude_groups`). La misma función exige que los componentes sumen su total (`parts`).
-7. **Exclusión de una entidad.** Es una regla explícita de Dirección con fecha, guardada en
+8. **Exclusión de una entidad.** Es una regla explícita de Dirección con fecha, guardada en
    `config/editorial_rules_v3.json` → `rules`. Debe estar **condicionada al texto de la fuente** que la motiva y quedar
    ligada a su localizador. Si el texto cambia, HOLD. La entidad excluida no entra al paquete; los totales se rotulan
    "sin <entidad>" y se recalculan. El HOLD anterior se conserva en la historia (`hold_resolutions`). Ejemplo: Esencial

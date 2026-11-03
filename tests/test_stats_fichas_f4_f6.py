@@ -57,62 +57,171 @@ def fake_model(text, review="PASS"):
 
 
 def ytd(period):
-    rows = fx.GES_CUTS[period]
+    """(Fonasa, Isapre) year-to-date totals of the fixture (the SIS 'Ingresos entre Ene y …' column)."""
+    rows = fx.GES_YTD[period]
     return sum(f for f, _ in rows.values()), sum(i for _, i in rows.values())
 
 
+def cum_total(period, codes=None):
+    """(Fonasa, Isapre) cumulative-since-July-2005 totals of the fixture at one cut (optionally over ``codes``)."""
+    rows = fx.ges_cumulative(fx.GES_YTD)[period]
+    codes = rows if codes is None else codes
+    return sum(rows.get(c, (0, 0))[0] for c in codes), sum(rows.get(c, (0, 0))[1] for c in codes)
+
+
 # ---------------------------------------------------------------------------------------------
-# F4 · formulas and denominators, recomputed here
+# F4 · measure (Dirección 3-nov-2026: "Ene–jun vs ene–jun"), formulas and denominators, recomputed here
 
 
-def test_f4_quarter_flows_yoy_share_and_rate_recomputed(root):
+def test_f4_measure_is_confirmed_in_the_registry_and_never_holds_unconfirmed(root):
+    m = reg()["families"]["F4"]["measure"]
+    assert m["declared"] == "ytd" and m["confirmed"] is True and "Dirección" in m["confirmed_by"]
+    assert "nunca acumulados desde 2005" in m["confirmed_by"]
+    out = f4.run(root, today=TODAY, registry=reg(), llm=False)  # the committed registry, no test reviewer
+    assert out["status"] == "pass", out.get("errors")
+    assert "measure_unconfirmed" not in json.dumps(out, ensure_ascii=False)
+    assert "Dirección" in f4.build_package(root, reg())["kpis"]["measure_how"]
+    # Without the confirmation the ficha HOLDs, whatever the header says.
+    unconfirmed = reg()
+    unconfirmed["families"]["F4"]["measure"].update(confirmed=False, confirmed_by=None)
+    held = f4.run(root, today=TODAY, registry=unconfirmed, llm=False)
+    assert held["status"] == "hold" and "measure_unconfirmed" in " ".join(held["errors"])
+
+
+def test_f4_year_to_date_yoy_share_and_rate_recomputed(root):
     p = f4.build_package(root, reg_ok())
     assert p["reconciliation"]["ok"], p["reconciliation"]
     v = {k: e["value"] for k, e in p["values"].items()}
-    # Quarter = YTD(jun) − YTD(mar) of the same year; Q1 = the March cut. Never a sum of cuts.
-    (f26j, i26j), (f26m, i26m), (f25j, i25j), (f25m, i25m) = (ytd(x) for x in ("2026-06", "2026-03", "2025-06", "2025-03"))
-    assert (v["ges.q.2026T2.fonasa"], v["ges.q.2026T2.isapre"]) == (f26j - f26m, i26j - i26m) == (44250, 6265)
-    assert (v["ges.q.2025T2.fonasa"], v["ges.q.2025T2.isapre"]) == (f25j - f25m, i25j - i25m) == (39550, 5330)
-    assert (v["ges.q.2026T1.fonasa"], v["ges.q.2026T1.isapre"]) == (f26m, i26m)
-    tot, base = 44250 + 6265, 39550 + 5330
-    assert v["ges.q.2026T2.total"] == tot and v["ges.yoy.total"] == tot - base
-    assert v["ges.yoy.total_pct"] == pytest.approx((tot - base) / base * 100)  # 12,56 %
-    assert v["ges.yoy.fonasa_pct"] == pytest.approx((44250 - 39550) / 39550 * 100)
-    assert v["ges.yoy.isapre_pct"] == pytest.approx((6265 - 5330) / 5330 * 100)
-    # Isapre share: denominator = cases of both insurers in the same quarter.
-    assert v["ges.q.2026T2.isapre_share"] == pytest.approx(6265 / tot * 100)
-    # Rate: Isapre cases / mean of the Isapre month-end stocks of April–June (F1) × 1.000.
+    # Current year: the SIS year-to-date column (ene–jun 2026).
+    (f26, i26) = ytd("2026-06")
+    assert (v["ges.ytd.2026-06.fonasa"], v["ges.ytd.2026-06.isapre"]) == (f26, i26) == (84950, 12025)
+    # Same months one year earlier, from the same workbook: cum(jun 2025) − cum(dic 2024) (since-2005 cuts).
+    (cj, ij), (cd, id_) = cum_total("2025-06"), cum_total("2024-12")
+    assert (v["ges.ytd.2025-06.fonasa"], v["ges.ytd.2025-06.isapre"]) == (cj - cd, ij - id_) == ytd("2025-06") == (76450, 10300)
+    assert p["values"]["ges.ytd.2025-06.fonasa"]["inputs"] == ["ges.cut.2025-06.fonasa", "ges.cut.2024-12.fonasa"]
+    tot, base = f26 + i26, 76450 + 10300
+    assert v["ges.ytd.2026-06.total"] == tot and v["ges.yoy.total"] == tot - base
+    assert v["ges.yoy.total_pct"] == pytest.approx((tot - base) / base * 100)  # 11,79 %
+    assert v["ges.yoy.fonasa_pct"] == pytest.approx((84950 - 76450) / 76450 * 100)
+    assert v["ges.yoy.isapre_pct"] == pytest.approx((12025 - 10300) / 10300 * 100)
+    # Isapre share: denominator = cases of both insurers in the same months.
+    assert v["ges.ytd.2026-06.isapre_share"] == pytest.approx(12025 / tot * 100)
+    # Rate: Isapre cases / mean of the Isapre month-end stocks of January–June (F1) × 1.000.
     port = json.loads((root / "data/market/isapre_portfolio.json").read_text(encoding="utf-8"))
     stocks = {c["period"]: c["total_beneficiaries"] for c in port["coverage"]}
-    avg = sum(stocks[m] for m in ("2026-04", "2026-05", "2026-06")) / 3
-    assert v["benef.isapre.avg.2026T2"] == pytest.approx(avg)
-    assert v["ges.q.2026T2.isapre_rate"] == pytest.approx(6265 / avg * 1000)
-    assert "ges.q.2025T2.isapre_rate" not in v  # 2025 Isapre stocks are not captured: no rate, no estimate
+    avg = sum(stocks[f"2026-{m:02d}"] for m in range(1, 7)) / 6
+    assert v["benef.isapre.avg.ytd.2026-06"] == pytest.approx(avg)
+    assert v["ges.ytd.2026-06.isapre_rate"] == pytest.approx(12025 / avg * 1000)
+    assert "ges.ytd.2025-06.isapre_rate" not in v  # 2025 Isapre stocks are not captured: no rate, no estimate
     assert not any("fonasa_rate" in k or "benef.fonasa" in k for k in v)  # Fonasa beneficiaries never invented
+
+
+def test_f4_quarters_by_difference_and_q1_against_previous_december(root):
+    p = f4.build_package(root, reg_ok())
+    v = {k: e["value"] for k, e in p["values"].items()}
+    codes26 = fx.GES_YTD["2026-06"].keys()
+    for ins, i in (("fonasa", 0), ("isapre", 1)):
+        # Q1 2026 = cum(mar 2026) − cum(dic 2025), never the March cumulative (since July 2005) alone. The December
+        # base runs over the problems of 2026: the problem dropped from the list (N°6) has no flow in 2026.
+        q1 = cum_total("2026-03")[i] - cum_total("2025-12", codes26)[i]
+        assert v[f"ges.q.2026T1.{ins}"] == q1 == ytd("2026-03")[i] and q1 != cum_total("2026-03")[i]
+        assert q1 != cum_total("2026-03")[i] - cum_total("2025-12")[i]  # the declared Dec total still carries N°6
+        assert p["values"][f"ges.q.2026T1.{ins}"]["inputs"] == [f"ges.cut.2026-03.{ins}", f"ges.cut.2025-12.base_2026.{ins}"]
+        assert v[f"ges.q.2026T2.{ins}"] == cum_total("2026-06")[i] - cum_total("2026-03")[i]
+        # No list change between 2024 and 2025: the declared December total is the base.
+        assert v[f"ges.q.2025T1.{ins}"] == cum_total("2025-03")[i] - cum_total("2024-12")[i]
+        assert p["values"][f"ges.q.2025T1.{ins}"]["inputs"] == [f"ges.cut.2025-03.{ins}", f"ges.cut.2024-12.{ins}"]
+        # The quarters of the year add up to its year-to-date column.
+        assert v[f"ges.q.2026T1.{ins}"] + v[f"ges.q.2026T2.{ins}"] == ytd("2026-06")[i]
+    assert p["kpis"]["quarter_cuts"]["2026T1"] == ["2025-12", "2026-03"]
+    assert p["kpis"]["quarters"] == [(2025, 1), (2025, 2), (2025, 3), (2025, 4), (2026, 1), (2026, 2)]
+    fi = f4.compose(p, reg_ok(), today=TODAY)
+    trend = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f4-trend")
+    assert ["T1 2026", fx_int(v["ges.q.2026T1.total"]), "mar 2026 − dic 2025"] in trend["table"]["rows"]
+
+
+def fx_int(n):
+    return sf.fmt_int(n)
+
+
+def test_f4_ytd_reconciliation_identity_holds_on_receipt_figures_and_breaks_on_mismatch():
+    """Figures copied from the SIS text receipt of the June 2026 workbook (sha256 5a84c70c…, problems 1–3):
+    ingresos ene–jun 2026 = acumulado jun-2026 − acumulado dic-2025, per problem and in total, per insurer."""
+    from radar_salud import ges_workbook as gw
+    labels = {1: "Insuficiencia Renal Crónica Terminal", 2: "Cardiopatías Congénitas Operables", 3: "Cáncer Cérvicouterino"}
+    cum = {"2024-12": {1: (89213, 6845), 2: (116966, 6556), 3: (9178671, 33254)},
+           "2025-03": {1: (90929, 6991), 2: (118009, 6628), 3: (9384184, 34215)},
+           "2025-06": {1: (92920, 7277), 2: (119208, 6791), 3: (9653018, 36126)},
+           "2025-09": {1: (94862, 7388), 2: (120224, 6844), 3: (9907403, 37247)},
+           "2025-12": {1: (96680, 7499), 2: (121248, 6900), 3: (10137845, 38295)},
+           "2026-03": {1: (98443, 7598), 2: (122449, 6958), 3: (10341802, 39352)},
+           "2026-06": {1: (99499, 7703), 2: (123542, 7010), 3: (10575182, 40458)}}
+    ytd_cols = {"2025-12": {1: (7467, 654), 2: (4282, 344), 3: (959174, 5041)},
+                "2026-06": {1: (2819, 204), 2: (2294, 110), 3: (437337, 2163)}}
+    title = "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a junio 2026"
+    book = fx.ges_workbook("2026-06", ytd_cols, cum=cum, first_year=2024, labels=labels)
+    r = gw.parse(book, title)
+    assert r["status"] == "validated", r
+    p1 = gw.expand_sheet(r["years"]["2026"])["problems"]["1"]
+    q1, q2 = 98443 - 96680, 99499 - 98443
+    assert (q1, q2, q1 + q2) == (1763, 1056, 2819) == (p1["cut"]["2026-03"][0] - 96680, p1["cut"]["2026-06"][0] - p1["cut"]["2026-03"][0],
+                                                        p1["ytd"]["2026-06"][0])
+    assert r["header"]["ytd"] == "Ingresos entre Ene y Jun 2026"
+    assert all("2005" in t for t in r["header"]["cuts"].values())  # the cuts are cumulative since July 2005
+    # One problem's year-to-date figure off by one (its total too, so the rows still add up): HOLD, no figure.
+    bad = gw.parse(fx.ges_workbook("2026-06", ytd_cols, cum=cum, first_year=2024, labels=labels, ytd_delta={1: (1, 0)}), title)
+    assert bad["status"] == "HOLD" and bad["hold_reason"] == "HOLD_GES_YTD_IDENTITY"
+    assert "2026-06:ps1:fonasa" in bad["mismatches"] and "2026-06:total:fonasa" in bad["mismatches"]
+    assert "years" not in bad and bad["insights"] == []
+
+
+def test_f4_cumulative_since_2005_never_shown(root):
+    out = f4.run(root, today=TODAY, registry=reg_ok(), llm=False)
+    assert out["status"] == "pass", out.get("errors")
+    fi, v = out["ficha"], out["ficha"]["evidence"]["values"]
+    cums = {e["value"] for k, e in v.items() if k.startswith("ges.cut.")}
+    totals = {e["value"] for k, e in v.items() if k.startswith("ges.cut.") and ".p." not in k}
+    assert totals and min(totals) > 100_000  # the fixture's since-2005 totals are large, never confused with a flow
+    shown = json.dumps({k: fi[k] for k in ("kicker_meta", "headline", "dek", "kpis", "tabs", "facts", "watch", "notes")},
+                       ensure_ascii=False)
+    for n in cums:
+        assert sf.fmt_int(n) not in shown and str(int(n)) not in shown, n
+    head = json.dumps([fi["headline"], fi["dek"], fi["kpis"]], ensure_ascii=False)
+    assert "2005" not in head and "acumulad" not in head.lower()
+    # Every KPI and headline figure traces to a year-to-date or derived value, never to a cumulative cut.
+    for k in fi["kpis"]:
+        assert not any(r.startswith("ges.cut.") for r in k["refs"]), k
+    # The period is explicit: January–June 2026 against January–June 2025.
+    assert fi["headline"] == "Casos GES entre enero y junio de 2026: 96.975, +11,8% frente a enero–junio de 2025"
+    assert "entre enero y junio de 2026" in fi["dek"]
+    assert [k["label"] for k in fi["kpis"]] == ["Casos GES ene–jun 2026", "Fonasa ene–jun 2026", "Isapres ene–jun 2026",
+                                                "Tasa bruta Isapre"]
+    assert fi["kpis"][0]["lines"][0] == "+11,8% vs. ene–jun 2025"
 
 
 def test_f4_top_problems_threshold_and_decree_change(root):
     p = f4.build_package(root, reg_ok())
     k, v = p["kpis"], p["values"]
-    q = lambda per, lab: sum(fx.GES_CUTS[per][lab]) - (sum(fx.GES_CUTS[per.replace("-06", "-03")][lab]))  # noqa: E731
+    t, b = fx.GES_YTD["2026-06"], fx.GES_YTD["2025-06"]
     growth = {}
-    for lab in fx.GES_CUTS["2026-06"]:
-        if lab in fx.GES_CUTS["2025-06"] and q("2025-06", lab) >= 500:
-            growth[lab] = round((q("2026-06", lab) - q("2025-06", lab)) / q("2025-06", lab) * 100, 1)
+    for code in t:
+        if code in b and sum(b[code]) >= 500:
+            growth[fx.GES_LABELS[code]] = round((sum(t[code]) - sum(b[code])) / sum(b[code]) * 100, 1)
     assert {r["label"]: r["pct"] for r in k["ranked"]} == growth
     crossing = {lab for lab, g in growth.items() if g >= 15}
     assert {r["label"] for r in k["crossing"]} == crossing == {"Cáncer de mama en personas de 15 años y más",
-                                                                "Depresión en personas de 15 años y más"}
+                                                                "Depresión en personas de 15 años y más",
+                                                                "Hipoacusia bilateral en personas de 65 años y más"}
     # Decree change: a problem without base and one that disappeared are flagged and kept out of the ranking.
-    assert [*k["added"]] == [f4.slug("Problema nuevo de prueba")] and [*k["dropped"]] == [f4.slug("Problema retirado de prueba")]
+    assert k["added"] == [f4.pkey(7)] and k["dropped"] == [f4.pkey(6)]
     assert "Problema nuevo de prueba" not in {r["label"] for r in k["ranked"]}
-    comp_t = sum(q("2026-06", lab) for lab in fx.GES_CUTS["2026-06"] if lab in fx.GES_CUTS["2025-06"])
-    comp_b = sum(q("2025-06", lab) for lab in fx.GES_CUTS["2025-06"] if lab in fx.GES_CUTS["2026-06"])
+    comp_t = sum(sum(t[c]) for c in t if c in b)
+    comp_b = sum(sum(b[c]) for c in b if c in t)
     assert v["ges.yoy.total_comparable_pct"]["value"] == pytest.approx((comp_t - comp_b) / comp_b * 100)
     ficha = f4.compose(p, reg_ok(), today=TODAY)
     tab = next(t for t in ficha["tabs"] if t["id"] == "problemas")
     assert any("posible cambio de decreto GES" in x for x in tab["text"])
-    assert "+10,8% solo problemas comparables" in ficha["kpis"][0]["lines"]
+    assert "+10,1% solo problemas comparables" in ficha["kpis"][0]["lines"]
 
 
 def test_f4_ficha_publishes_with_tabs_kpis_and_tasa_bruta(root):
@@ -120,14 +229,17 @@ def test_f4_ficha_publishes_with_tabs_kpis_and_tasa_bruta(root):
     assert out["status"] == "pass", out.get("errors")
     fi = out["ficha"]
     assert [t["label"] for t in fi["tabs"]] == ["Totales", "Top problemas", "Fonasa vs Isapre", "Tendencia trimestral"]
-    assert fi["headline"] == "Casos GES del segundo trimestre de 2026: 50.515, +12,6% frente al mismo trimestre del año anterior"
-    assert [k["label"] for k in fi["kpis"]] == ["Casos GES", "Fonasa", "Isapres", "Tasa bruta Isapre"]
+    assert fi["kicker_meta"].startswith("datos de enero–junio de 2026 · ")
     assert "tasa no disponible" in " ".join(fi["kpis"][1]["lines"])
     assert fi["featured"] is True and "threshold_crossed" in fi["triggers"]  # |a/a| ≥ 5 %
     assert fi["verification"]["verdict"] == "PASS" and fi["reconciliation"]["ok"]
+    assert fi["reconciliation"]["cross_release"] == {"release": "2025-06", "equal": True}
     assert all(s["sha256"] and s["url"].startswith("https://") for s in fi["sources"])
-    assert "tasa bruta" in json.dumps(fi, ensure_ascii=False).lower()
+    text = json.dumps(fi, ensure_ascii=False).lower()
+    assert "tasa bruta" in text and "cuenta casos, no personas" in text
     assert not any(t.get("id") == "por_que" or "Por qué importa" in t.get("label", "") for t in fi["tabs"])
+    assert any("notas de la sis" in n["text"].lower() for n in fi["notes"])  # captured 'Notas' sheet, paraphrased
+    assert sf.lens_checks(fi, f4.build_package(root, reg_ok()))["data"] == []
     written = sf.publish(out, root)
     assert written["published"] and sf.load_live(root, "f4_ges")["status"] == "PASS"
 
@@ -136,59 +248,87 @@ def test_f4_chart_headline_count_is_derived_from_data(root):
     p = f4.build_package(root, reg_ok())
     fi = f4.compose(p, reg_ok(), today=TODAY)
     top = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f4-top")
-    n = next(r["value"] for r in p["derived_ratios"] if r["id"] == "conteo.problemas_sobre_umbral")
-    assert n == 2 and top["headline"].startswith("Dos problemas superan")
+    n = p["values"]["conteo.problemas_sobre_umbral"]["value"]
+    assert n == 3 and top["headline"].startswith("Tres problemas superan")
     assert sf.lens_checks(fi, p)["data"] == []
-    top["headline"] = "Tres problemas superan 15% a/a"
-    assert "chart_headline_count_not_in_evidence:f4-top:tres" in " ".join(sf.lens_checks(fi, p)["data"])
+    top["headline"] = "Dos problemas superan 15% a/a"
+    assert "chart_headline_count_not_in_evidence:f4-top:dos" in " ".join(sf.lens_checks(fi, p)["data"])
 
 
-@pytest.mark.parametrize("case", ["total_mismatch", "measure_unconfirmed", "ytd_decreases", "sheet_not_pinned", "offline"])
+@pytest.mark.parametrize("case", ["total_mismatch", "ytd_identity", "ytd_decreases", "sheet_not_pinned", "ytd_column_missing",
+                                  "offline"])
 def test_f4_holds_and_never_publishes(tmp_path, case):
     r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     url = fx.GES_URL.format(period="2026-06")
     books, fail = {}, set()
     if case == "total_mismatch":
-        books[url] = fx.ges_workbook("2026-06", fx.GES_CUTS["2026-06"], total_delta=(1, 0))
-    elif case == "measure_unconfirmed":
-        pass
+        books[url] = fx.ges_workbook("2026-06", total_delta=(1, 0))
+    elif case == "ytd_identity":
+        books[url] = fx.ges_workbook("2026-06", ytd_delta={2: (0, 3)})
     elif case == "ytd_decreases":
-        rows = dict(fx.GES_CUTS["2026-06"])
-        rows["Diabetes Mellitus Tipo 2"] = (100, 10)  # lower than the March cut of the same year
-        books[url] = fx.ges_workbook("2026-06", rows)
+        ytd_ = {**fx.GES_YTD, "2026-06": {**fx.GES_YTD["2026-06"], 1: (100, 10)}}  # lower than the March cut
+        books[url] = fx.ges_workbook("2026-06", ytd_)
     elif case == "sheet_not_pinned":
-        books[url] = fx.ges_workbook("2026-06", fx.GES_CUTS["2026-06"], extra=("Año 2005", "Resumen 2026"))
+        books[url] = fx.ges_workbook("2026-06", extra=("Año 2005", "Resumen 2026"))
+    elif case == "ytd_column_missing":  # a quarter column instead of 'Ingresos entre Ene y Jun 2026'
+        books[url] = fx.ges_workbook("2026-06", ytd_header="Casos acumulados del trimestre abr-jun 2026")
     else:
         fail.add(url)
     fx.capture_all(r, fx.fetcher(r, books, fail=fail))
-    # Unconfirmed: the committed registry (no reviewer), even though the fixture header declares 'acumulados enero a …'.
-    out = f4.run(r, today=TODAY, registry=reg() if case == "measure_unconfirmed" else reg_ok(), llm=False)
+    out = f4.run(r, today=TODAY, registry=reg_ok(), llm=False)
     assert out["status"] == "hold"
     joined = " ".join(out["errors"])
-    expected = {"total_mismatch": "HOLD_GES_RECONCILIATION", "measure_unconfirmed": "measure_unconfirmed",
-                "ytd_decreases": "ytd_row_decreases:2026-06", "sheet_not_pinned": "HOLD_GES_SHEET_NOT_PINNED",
-                "offline": "fetch_failed"}[case]
+    expected = {"total_mismatch": "HOLD_GES_RECONCILIATION", "ytd_identity": "HOLD_GES_YTD_IDENTITY",
+                "ytd_decreases": "ytd_row_decreases:2026-06:ps01", "sheet_not_pinned": "HOLD_GES_SHEET_NOT_PINNED",
+                "ytd_column_missing": "HOLD_GES_COLUMN_MISSING", "offline": "fetch_failed"}[case]
     assert expected in joined and "HOLD_RECONCILIATION" in joined
+    if case != "offline":
+        assert "HOLD_MISSING_HASH" not in joined  # the file was captured and hashed: the hold names the parse
     written = sf.publish(out, r)
     assert not written["published"] and Path(written["hold"]).exists() and sf.load_live(r, "f4_ges") is None
 
 
-def test_f4_reviewer_confirmed_measure_publishes_unlabelled_header(tmp_path):
+def test_f4_older_parser_capture_holds_until_the_daily_run_rechecks_it(tmp_path, monkeypatch):
+    """A file parsed by an older GES parser (v2 never matched the SIS two-row header) HOLDs with that reason, not
+    with a missing hash; the next capture re-reads the same bytes once with the current parser (hash-checked)."""
     r = fx.make_root(tmp_path / "r", readings_until="2026-06")
-    books = {fx.GES_URL.format(period=p): fx.ges_workbook(p, rows, header="casos") for p, rows in fx.GES_CUTS.items()}
-    fx.capture_all(r, fx.fetcher(r, books))
-    registry = reg()
-    assert f4.run(r, today=TODAY, registry=registry, llm=False)["status"] == "hold"
-    registry["families"]["F4"]["measure"].update(confirmed=True, confirmed_by="revisor de prueba")
-    out = f4.run(r, today=TODAY, registry=registry, llm=False)
-    assert out["status"] == "pass" and "revisor de prueba" in json.dumps(f4.build_package(r, registry)["kpis"]["measure_how"])
+    fetch = fx.fetcher(r)
+    old = {"family": "ges", "status": "HOLD", "hold_reason": "HOLD_GES_SCHEMA_NOT_VALIDATED",
+           "parser": "ges_pinned_year_reconciled_v2", "insights": []}
+    # The code before this parser: parse and parser name of v2.
+    monkeypatch.setattr(cap.data_insights, "parse_ges_workbook", lambda b, t: {**old, "period": cap.title_period(t)})
+    monkeypatch.setattr(cap.data_insights, "GES_PARSER", old["parser"])
+    fx.capture_all(r, fetch)
+    out = f4.run(r, today=TODAY, registry=reg_ok(), llm=False)
+    assert out["status"] == "hold"
+    assert out["errors"] == ["HOLD_RECONCILIATION:latest_release_not_valid:2026-06:parser_outdated:"
+                             "ges_pinned_year_reconciled_v2:recheck_pending"]
+    monkeypatch.undo()
+    n = len(fetch.calls)
+    cap.capture(r, fetch=fetch)
+    ges_urls = [c for c in fetch.calls[n:] if "/fixture/ges-" in c]
+    assert sorted(ges_urls) == sorted(fx.GES_URL.format(period=p) for p in fx.GES_RELEASES)  # once each, newest first
+    store = json.loads((r / "data/stats_fichas/captures/ges_quarterly.json").read_text(encoding="utf-8"))
+    doc = next(x for x in store["releases"] if x["period"] == "2026-06")["document"]
+    assert doc["parse"]["parser"] == sf.GES_PARSER and doc["rechecked_from_parser"] == "ges_pinned_year_reconciled_v2"
+    assert doc["previous_parse"]["hold_reason"] == "HOLD_GES_SCHEMA_NOT_VALIDATED"
+    cap.capture(r, fetch=fetch)
+    assert len([c for c in fetch.calls if "/fixture/ges-" in c]) == len(ges_urls) + len(fx.GES_RELEASES)  # never again
+    assert f4.run(r, today=TODAY, registry=reg_ok(), llm=False)["status"] == "pass"
+    # Bytes that no longer hash to the recorded SHA-256: HOLD hash_mismatch, never a silent re-capture.
+    r2 = fx.make_root(tmp_path / "r2", readings_until="2026-06")
+    monkeypatch.setattr(cap.data_insights, "parse_ges_workbook", lambda b, t: {**old, "period": cap.title_period(t)})
+    monkeypatch.setattr(cap.data_insights, "GES_PARSER", old["parser"])
+    fx.capture_all(r2, fx.fetcher(r2))
+    monkeypatch.undo()
+    url = fx.GES_URL.format(period="2026-06")
+    cap.capture(r2, fetch=fx.fetcher(r2, {url: fx.ges_workbook("2026-06", total_delta=(0, 0), extra=("Notas",))}))
+    out2 = f4.run(r2, today=TODAY, registry=reg_ok(), llm=False)
+    assert out2["status"] == "hold" and "latest_release_not_valid:2026-06:hash_mismatch" in " ".join(out2["errors"])
 
 
-def test_f4_without_yoy_or_beneficiaries_says_not_available(tmp_path):
+def test_f4_without_beneficiaries_says_not_available(tmp_path):
     r = fx.make_root(tmp_path / "r", readings_until="2026-06")
-    hist = json.loads((r / fx.INPUTS[2]).read_text(encoding="utf-8"))  # no base year captured
-    hist["signals"] = [s for s in hist["signals"] if "fixture-ges-2025" not in str(s.get("source_url"))]
-    (r / fx.INPUTS[2]).write_text(json.dumps(hist, ensure_ascii=False), encoding="utf-8")
     port = json.loads((r / "data/market/isapre_portfolio.json").read_text(encoding="utf-8"))
     port["coverage"] = [c for c in port["coverage"] if c["period"] not in ("2026-05",)]
     (r / "data/market/isapre_portfolio.json").write_text(json.dumps(port), encoding="utf-8")
@@ -196,8 +336,8 @@ def test_f4_without_yoy_or_beneficiaries_says_not_available(tmp_path):
     out = f4.run(r, today=TODAY, registry=reg_ok(), llm=False)
     assert out["status"] == "pass", out.get("errors")
     fi = out["ficha"]
-    assert fi["headline_type"] == "no_yoy" and "a/a no disponible" in fi["kpis"][0]["lines"]
-    assert fi["kpis"][3]["value"] == "no disponible" and "ges.q.2026T2.isapre_rate" not in out["ficha"]["evidence"]["values"]
+    assert fi["kpis"][3]["value"] == "no disponible" and "ges.ytd.2026-06.isapre_rate" not in fi["evidence"]["values"]
+    assert "Las tasas por beneficiario no están disponibles para este período." in fi["dek"]
 
 
 # ---------------------------------------------------------------------------------------------
@@ -208,29 +348,30 @@ def test_f4_lectura_pool_declares_scope_period_and_base(root):
     p = f4.build_package(root, reg_ok())
     for e in p["lectura_pool"]:
         assert e["scope"] in ("system", "isapres", "insurer:fonasa"), e
-        assert e["period_kind"] in ("quarter", "quarter_yoy"), e
+        assert e["period_kind"] == "ytd" and e["periods"][0].endswith("-01"), e  # year-to-date: from January
         if e["unit"] in ("%", "pp", "per_1000"):
             assert e["base"], e
+        assert not e["id"].startswith("ges.cut."), e  # a since-2005 cumulative is never Lectura material
     by = {e["id"]: e for e in p["lectura_pool"]}
-    assert by["ges.q.2026T2.isapre_rate"]["base"] == "beneficiarios_mismo_seguro"
-    assert by["ges.q.2026T2.isapre_share"]["base"] == "casos_ambos_seguros"
-    assert by["ges.q.2026T2.fonasa"]["scope"] == "insurer:fonasa" and by["ges.q.2026T2.isapre"]["scope"] == "isapres"
+    assert by["ges.ytd.2026-06.isapre_rate"]["base"] == "beneficiarios_mismo_seguro"
+    assert by["ges.ytd.2026-06.isapre_share"]["base"] == "casos_ambos_seguros"
+    assert by["ges.yoy.total_pct"]["base"] == "casos_mismo_periodo_anio_anterior"
+    assert by["ges.ytd.2026-06.fonasa"]["scope"] == "insurer:fonasa" and by["ges.ytd.2026-06.isapre"]["scope"] == "isapres"
 
 
-F4_GOOD = "Para las aseguradoras, la carga GES de Fonasa equivale a 7,1 veces la de las Isapres en el segundo trimestre de 2026."
+F4_GOOD = "Para las aseguradoras, la carga GES de Fonasa equivale a 7,1 veces la de las Isapres entre enero y junio de 2026."
 
 
 @pytest.mark.parametrize("text,error", [
     (F4_GOOD, None),
-    ("Para las aseguradoras, las Isapres informaron 44.250 casos en el segundo trimestre de 2026.", "number_entity_mismatch"),
+    ("Para las aseguradoras, las Isapres informaron 84.950 casos entre enero y junio de 2026.", "number_entity_mismatch"),
     ("Para las aseguradoras, la carga GES de Fonasa equivale a 7,1 veces la de las Isapres en junio.", "number_period_mismatch"),
-    ("Para las Isapres, su tasa bruta fue 2,5 casos por cada mil personas en el segundo trimestre de 2026.", "share_base_unstated"),
-    ("Para el regulador, las Isapres crecieron 17,5% en el segundo trimestre de 2026.", "number_period_mismatch"),
-    ("Para la competencia entre aseguradoras, la demanda Isapre aumentó en 935 casos frente al mismo trimestre de 2025, ya en "
-     "el segundo trimestre.", None),
-    ("Para el regulador, en el segundo trimestre las Isapres sumaron 935 casos más que en 2025.", "number_period_mismatch"),
-    ("Para el regulador, Fonasa sumó 935 casos más que un año antes en el segundo trimestre.", "number_entity_mismatch"),
-    ("Para el regulador, Banmédica informó 7,1 veces los casos en el segundo trimestre de 2026.", "insurer_not_in_package"),
+    ("Para las Isapres, su tasa bruta fue 4,8 casos por cada mil personas entre enero y junio de 2026.", "share_base_unstated"),
+    ("Para el regulador, las Isapres crecieron 16,7% en el segundo trimestre de 2026.", "number_period_mismatch"),
+    ("Para la competencia entre aseguradoras, la demanda Isapre aumentó en 1.725 casos entre enero y junio de 2026 frente a "
+     "enero y junio de 2025.", None),
+    ("Para el regulador, Fonasa sumó 1.725 casos más entre enero y junio de 2026 que un año antes.", "number_entity_mismatch"),
+    ("Para el regulador, Banmédica informó 7,1 veces los casos entre enero y junio de 2026.", "insurer_not_in_package"),
 ])
 def test_f4_verifier_checks_scope_period_and_base(root, text, error):
     p = f4.build_package(root, reg_ok())
@@ -251,7 +392,7 @@ def test_f4_good_lectura_publishes_end_to_end_with_review_and_no_real_model(root
     # A Lectura with an untraceable figure is dropped; the reviewer is never paid and the ficha still publishes.
     r2 = fx.make_root(root.parent / "r2", readings_until="2026-06")
     fx.capture_all(r2, fx.fetcher(r2))
-    bad = fake_model("Para las aseguradoras, Fonasa atendió 9 veces los casos de las Isapres en el segundo trimestre de 2026.")
+    bad = fake_model("Para las aseguradoras, Fonasa atendió 9 veces los casos de las Isapres entre enero y junio de 2026.")
     out2 = f4.run(r2, today=TODAY, registry=reg_ok(), llm=True, model_call=bad, budget=ALLOW)
     assert out2["status"] == "pass" and out2["ficha"]["lectura"]["status"] == "verifier_fail"
     assert [c["feature"] for c in bad.calls] == ["stats_ficha_lectura"]
@@ -409,7 +550,7 @@ def test_capture_downloads_once_and_stores_hashes_not_binaries(tmp_path):
     n = len(fetch.calls)
     # 4 GES files + 6 Boletines × 4 PDFs: five release pages and N°3-2026 from the loose listing PDFs (1-nov); the
     # mislabeled 'Septiembre 2026' page is never fetched.
-    assert n == len(fx.GES_CUTS) + 6 * 4
+    assert n == len(fx.GES_RELEASES) + 6 * 4
     fx.capture_all(r, fetch)
     assert len(fetch.calls) == n  # already captured: never downloaded again
     for name in ("ges_quarterly.json", "boletin_ip.json"):
@@ -463,7 +604,12 @@ def test_registry_declares_f4_f6_rules():
     assert a["builder_version"] == f4.BUILDER_VERSION and b["builder_version"] == f6.BUILDER_VERSION
     assert a["kpis"]["top_problemas"]["threshold"] == {"pct": 15.0, "min_cases": 500}
     assert "Beneficiarios del mismo seguro" in a["kpis"]["tasa_uso"]["denominator"]
-    assert a["measure"]["confirmed"] is False  # never auto-confirmed
+    # Confirmed by Dirección on 3-nov-2026 (year-to-date, "ene–jun vs ene–jun"); never by the code.
+    assert a["measure"]["declared"] == "ytd" and a["measure"]["confirmed"] is True
+    assert a["measure"]["confirmed_by"].startswith("Dirección (cftorre1), 3-nov-2026")
+    assert "T1 = corte de marzo − corte de diciembre del año anterior" in a["kpis"]["casos_ges"]["formula"]
+    assert "(T1 = corte de marzo)" not in json.dumps(a, ensure_ascii=False)
+    assert a["capture"]["parser"] == sf.GES_PARSER
     assert a["supersedes"]["stat_families"] == ["ges"] and b["supersedes"]["stat_families"] == ["boletin_ip"]
     assert [t["label"] for t in a["tabs"]] == ["Totales", "Top problemas", "Fonasa vs Isapre", "Tendencia trimestral"]
     assert [t["label"] for t in b["tabs"]] == ["Acreditación", "Con observaciones", "Reclamos", "Mediación"]
@@ -506,36 +652,43 @@ def test_committed_fixture_cards_match_the_builders(tmp_path):
 @pytest.mark.parametrize("header,expected", [
     ("casos acumulados enero a junio", "ytd"), ("acumulado del año", "ytd"), ("casos acumulados del trimestre", "quarter"),
     ("acumulado en el trimestre", "quarter"), ("casos del trimestre", "quarter"), ("casos acumulados", None), ("casos", None),
-    ("casos acumulados desde 2005", "since_2005"), ("trimestre enero a marzo", "ambiguous")])
+    ("casos acumulados desde 2005", "since_2005"), ("trimestre enero a marzo", "ambiguous"),
+    ("Ingresos entre Ene y Jun 2026", "ytd"), ("Número de casos acumulados Jul-2005 a Jun-2026", "since_2005")])
 def test_f4_header_measure_reads_quarter_cumulative_as_quarter(header, expected):
     assert f4.header_measure({"header": {"fonasa": f"Fonasa {header}", "isapre": f"Isapre {header}"}}) == expected
 
 
 def test_f4_holds_without_reviewer_flag_whatever_the_header_says():
     cfg = reg()["families"]["F4"]
+    cfg["measure"].update(confirmed=False, confirmed_by=None)
     ytd_head = {"header": {"fonasa": "Fonasa casos acumulados enero a junio", "isapre": "Isapre casos acumulados enero a junio"}}
-    assert cfg["measure"]["confirmed"] is False and f4.measure_of(ytd_head, cfg) == (None, "unconfirmed")
+    assert f4.measure_of(ytd_head, cfg) == (None, "unconfirmed")
     ok = reg_ok()["families"]["F4"]
     assert f4.measure_of(ytd_head, ok)[0] == "ytd"
     quarter_head = {"header": {"fonasa": "Fonasa acumulado del trimestre", "isapre": "Isapre acumulado del trimestre"}}
     assert f4.measure_of(quarter_head, ok) == (None, "header_contradicts_reviewer:quarter")  # never read as YTD
     assert f4.measure_of({"header": {"above": ["desde julio de 2005"]}}, ok) == (None, "source_declares_since_2005")
+    # v3 parse: the measure column is the year-to-date column; a since-2005 title there vetoes.
+    assert f4.measure_of({"header": {"ytd": "Ingresos entre Ene y Jun 2026"}}, ok)[0] == "ytd"
+    assert f4.measure_of({"header": {"ytd": "Casos acumulados Jul-2005 a Jun-2026"}}, ok) == (None, "source_declares_since_2005")
 
 
-def test_f4_header_contradicting_reviewer_holds(tmp_path):
+def test_f4_header_contradicting_reviewer_holds(tmp_path, monkeypatch):
     r = fx.make_root(tmp_path / "r", readings_until="2026-06")
-    books = {fx.GES_URL.format(period=p): fx.ges_workbook(p, rows, header="casos acumulados del trimestre")
-             for p, rows in fx.GES_CUTS.items()}
-    fx.capture_all(r, fx.fetcher(r, books))
+    fx.capture_all(r, fx.fetcher(r))
+    store_path = r / "data/stats_fichas/captures/ges_quarterly.json"
+    store = json.loads(store_path.read_text(encoding="utf-8"))
+    for rel in store["releases"]:  # a parse whose measure column says 'quarter' is never read as year-to-date
+        rel["document"]["parse"]["header"]["ytd"] = "Casos acumulados del trimestre"
+    store_path.write_text(json.dumps(store, ensure_ascii=False), encoding="utf-8")
     out = f4.run(r, today=TODAY, registry=reg_ok(), llm=False)
     assert out["status"] == "hold" and "header_contradicts_reviewer" in " ".join(out["errors"])
 
 
 def test_f4_ranking_never_draws_a_decline_as_a_positive_bar(tmp_path):
     r = fx.make_root(tmp_path / "r", readings_until="2026-06")
-    rows = dict(fx.GES_CUTS["2026-06"])
-    rows["Hipertensión arterial en personas de 15 años y más"] = (38000, 4000)  # T2 2026 = 18.800 < T2 2025 = 23.100
-    fx.capture_all(r, fx.fetcher(r, {fx.GES_URL.format(period="2026-06"): fx.ges_workbook("2026-06", rows)}))
+    ytd_ = {**fx.GES_YTD, "2026-06": {**fx.GES_YTD["2026-06"], 2: (38000, 4000)}}  # 42.000 ene–jun 2026 < 45.100 in 2025
+    fx.capture_all(r, fx.fetcher(r, {fx.GES_URL.format(period="2026-06"): fx.ges_workbook("2026-06", ytd_)}))
     p = f4.build_package(r, reg_ok())
     assert any(x["pct"] < 0 for x in p["kpis"]["ranked"])
     fi = f4.compose(p, reg_ok(), today=TODAY)
@@ -549,10 +702,10 @@ def test_f4_ranking_never_draws_a_decline_as_a_positive_bar(tmp_path):
 
 def test_f4_thresholds_come_from_the_registry(root):
     registry = reg_ok()
-    registry["families"]["F4"]["kpis"]["casos_ges"]["threshold"]["yoy_pct"] = 12.0
+    registry["families"]["F4"]["kpis"]["casos_ges"]["threshold"]["yoy_pct"] = 11.0  # fixture: +11,8% ene–jun a/a
     fi = f4.compose(f4.build_package(root, registry), registry, today=TODAY)
-    assert fi["kpis"][0]["badge"] == "Cruza umbral (12% a/a)"
-    assert "Una variación de 12% o más" in fi["watch"][0]["explanation"]
+    assert fi["kpis"][0]["badge"] == "Cruza umbral (11% a/a)"
+    assert "Una variación de 11% o más" in fi["watch"][0]["explanation"]
     import re
     assert not re.search(r"(?<![\d,])5%", json.dumps([fi["kpis"], fi["watch"]], ensure_ascii=False))
     assert not re.search(r"(?<![\d,{])5%", (REPO / "src/radar_salud/stats_ficha_f4.py").read_text(encoding="utf-8"))
@@ -561,18 +714,22 @@ def test_f4_thresholds_come_from_the_registry(root):
 def test_f4_problem_values_trace_to_sheet_rows(root):
     p = f4.build_package(root, reg_ok())
     v = p["values"]
-    key = f4.slug("Cáncer de mama en personas de 15 años y más")
-    for qk, cuts in (("2026T2", ("2026-03", "2026-06")), ("2025T2", ("2025-03", "2025-06"))):
-        e = v[f"ges.p.{key}.{qk}"]
-        assert sorted(e["inputs"]) == sorted(f"ges.cut.{c}.p.{key}.{ins}" for c in cuts for ins in ("fonasa", "isapre"))
-        for i in e["inputs"]:
-            src = v[i]
-            assert src["kind"] == "captured" and src["source"] in p["sources"] and "!fila " in src["locator"]
-        cur = {i.split(".")[2]: v[i]["value"] for i in e["inputs"] if i.endswith(".fonasa")}
-        cur_i = {i.split(".")[2]: v[i]["value"] for i in e["inputs"] if i.endswith(".isapre")}
-        assert e["value"] == (cur[cuts[1]] - cur[cuts[0]]) + (cur_i[cuts[1]] - cur_i[cuts[0]])
-    # The row number is the captured row of the problem in the pinned sheet (fixture: header row 3, problems from row 4).
-    assert v[f"ges.cut.2026-06.p.{key}.fonasa"]["locator"].startswith("Año 2026!fila 6 ")
+    key = f4.pkey(3)  # Cáncer de mama en personas de 15 años y más
+    # Current year: the problem's row of the year-to-date column.
+    e = v[f"ges.p.{key}.ytd.2026-06"]
+    assert e["inputs"] == [f"ges.ytd.2026-06.p.{key}.fonasa", f"ges.ytd.2026-06.p.{key}.isapre"]
+    assert e["value"] == sum(v[i]["value"] for i in e["inputs"]) == sum(fx.GES_YTD["2026-06"][3])
+    # The row number is the captured row of the problem in the pinned sheet (fixture: header row 3, subheader 4, dates 5,
+    # problems from row 6, a 'Subtotal' row after the second problem).
+    assert v[f"ges.ytd.2026-06.p.{key}.fonasa"]["locator"].startswith("Año 2026!fila 9 (problema N°3) · Ingresos entre Ene y Jun 2026")
+    # Same months of 2025: cum(jun 2025) − cum(dic 2024) of the problem's rows.
+    e = v[f"ges.p.{key}.ytd.2025-06"]
+    assert sorted(e["inputs"]) == sorted(f"ges.cut.{c}.p.{key}.{ins}" for c in ("2025-06", "2024-12") for ins in ("fonasa", "isapre"))
+    for i in e["inputs"]:
+        src = v[i]
+        assert src["kind"] == "captured" and src["source"] in p["sources"] and "!fila " in src["locator"] and "Jul-2005" in src["locator"]
+    c = {(i.split(".")[2], i.rsplit(".", 1)[1]): v[i]["value"] for i in e["inputs"]}
+    assert e["value"] == sum(c[("2025-06", ins)] - c[("2024-12", ins)] for ins in ("fonasa", "isapre")) == sum(fx.GES_YTD["2025-06"][3])
 
 
 def test_f6_claims_wording_follows_the_sign(root):

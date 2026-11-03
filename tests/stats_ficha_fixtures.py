@@ -1,7 +1,8 @@
 """Test fixtures for the F4 (GES) and F6 (Boletín IP) fichas. Never used by the product.
 
-- GES: synthetic workbooks (clearly fixture values) in the SIS layout: one sheet per year, the reporting year pinned,
-  problem rows plus a declared 'Total' row. Fonasa/Isapre columns declare 'casos acumulados enero a <mes>'.
+- GES: synthetic workbooks (clearly fixture values) in the SIS layout: one sheet per year, a two-row header with the
+  cumulative-since-July-2005 cuts and the 'Ingresos entre Ene y <mes>' (year-to-date) column over FONASA/ISAPRE pairs,
+  problem rows, a 'Subtotal' row and the declared 'Total' row.
 - Boletín IP: minimal PDFs that contain the figures of the independent reading in
   ``config/statistical_analysis_verified_v1.json`` (N°2-2026); other releases' PDFs carry no verified figures.
 
@@ -28,42 +29,109 @@ FIXTURE_DIR = REPO / "tests/fixtures/stats_fichas"
 INPUTS = ("data/market/isapre_portfolio.json", "data/entities/isapres.json", "data/history/superintendencia_signals.json",
           "config/statistical_analysis_verified_v1.json")
 
-# Year-to-date cuts (Fonasa, Isapre) per problem. Fixture values only.
-GES_CUTS = {
-    "2025-03": {"Diabetes Mellitus Tipo 2": (10000, 1000), "Hipertensión arterial en personas de 15 años y más": (20000, 2000),
-                "Cáncer de mama en personas de 15 años y más": (1000, 400), "Depresión en personas de 15 años y más": (5000, 1500),
-                "Hipoacusia bilateral en personas de 65 años y más": (600, 50), "Problema retirado de prueba": (300, 20)},
-    "2025-06": {"Diabetes Mellitus Tipo 2": (21000, 2100), "Hipertensión arterial en personas de 15 años y más": (41000, 4100),
-                "Cáncer de mama en personas de 15 años y más": (2100, 850), "Depresión en personas de 15 años y más": (10500, 3100),
-                "Hipoacusia bilateral en personas de 65 años y más": (1250, 110), "Problema retirado de prueba": (600, 40)},
-    "2026-03": {"Diabetes Mellitus Tipo 2": (11000, 1100), "Hipertensión arterial en personas de 15 años y más": (21000, 2200),
-                "Cáncer de mama en personas de 15 años y más": (1200, 500), "Depresión en personas de 15 años y más": (6000, 1700),
-                "Hipoacusia bilateral en personas de 65 años y más": (700, 60), "Problema nuevo de prueba": (800, 200)},
-    "2026-06": {"Diabetes Mellitus Tipo 2": (23500, 2350), "Hipertensión arterial en personas de 15 años y más": (43000, 4500),
-                "Cáncer de mama en personas de 15 años y más": (2700, 1100), "Depresión en personas de 15 años y más": (12600, 3500),
-                "Hipoacusia bilateral en personas de 65 años y más": (1450, 125), "Problema nuevo de prueba": (1700, 450)},
+# Year-to-date flows (Fonasa, Isapre) per GES problem number: cases that entered between January and the cut, as the SIS
+# column 'Ingresos entre Ene y <mes> <año>'. Fixture values only. The workbook carries, as the SIS does, cumulative counts
+# since July 2005 per cut: BASE_DEC_2023 + the year-to-date flows of every year since 2024.
+GES_LABELS = {1: "Diabetes Mellitus Tipo 2", 2: "Hipertensión arterial en personas de 15 años y más",
+              3: "Cáncer de mama en personas de 15 años y más", 4: "Depresión en personas de 15 años y más",
+              5: "Hipoacusia bilateral en personas de 65 años y más", 6: "Problema retirado de prueba",
+              7: "Problema nuevo de prueba (3)"}
+BASE_DEC_2023 = {1: (2_000_000, 150_000), 2: (4_000_000, 350_000), 3: (250_000, 50_000), 4: (1_500_000, 400_000),
+                 5: (60_000, 5_000), 6: (30_000, 2_000)}
+_Y24 = {1: (9500, 950), 2: (19000, 1900), 3: (950, 380), 4: (4800, 1400), 5: (550, 45), 6: (280, 18)}
+GES_YTD = {
+    **{f"2024-{m:02d}": {c: (f * k, i * k) for c, (f, i) in _Y24.items()} for k, m in ((1, 3), (2, 6), (3, 9), (4, 12))},
+    "2025-03": {1: (10000, 1000), 2: (20000, 2000), 3: (1000, 400), 4: (5000, 1500), 5: (600, 50), 6: (300, 20)},
+    "2025-06": {1: (21000, 2100), 2: (41000, 4100), 3: (2100, 850), 4: (10500, 3100), 5: (1250, 110), 6: (600, 40)},
+    "2025-09": {1: (31000, 3100), 2: (61000, 6100), 3: (3100, 1250), 4: (15500, 4600), 5: (1850, 160), 6: (900, 60)},
+    "2025-12": {1: (42000, 4200), 2: (82000, 8200), 3: (4200, 1700), 4: (21000, 6200), 5: (2500, 220), 6: (1200, 80)},
+    "2026-03": {1: (11000, 1100), 2: (21000, 2200), 3: (1200, 500), 4: (6000, 1700), 5: (700, 60), 7: (800, 200)},
+    "2026-06": {1: (23500, 2350), 2: (43000, 4500), 3: (2700, 1100), 4: (12600, 3500), 5: (1450, 125), 7: (1700, 450)},
 }
+GES_RELEASES = ("2025-03", "2025-06", "2026-03", "2026-06")
 GES_PUBLISHED = {"2025-03": "2025-10-03", "2025-06": "2025-10-03", "2026-03": "2026-07-10", "2026-06": "2026-10-14"}
+MON3 = ("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")
 
 
-def ges_workbook(period: str, rows: dict, *, header: str | None = None, extra=("Año 2005",), total_delta=(0, 0)) -> bytes:
+def ges_cumulative(ytd: dict) -> dict:
+    """Cumulative counts since July 2005 per cut: {period: {code: (f, i)}} (2023-12 and every cut of ``ytd``)."""
+    cum = {"2023-12": dict(BASE_DEC_2023)}
+    for per in sorted(ytd):
+        prev_dec = cum.get(f"{int(per[:4]) - 1}-12") or {}
+        cum[per] = {c: ((prev_dec.get(c) or (0, 0))[0] + f, (prev_dec.get(c) or (0, 0))[1] + i) for c, (f, i) in ytd[per].items()}
+    return cum
+
+
+def ges_workbook(period: str, ytd: dict | None = None, *, ytd_header: str | None = None, total_delta=(0, 0),
+                 ytd_delta: dict | None = None, extra=("Indice", "Notas", "Año 2005"), cum: dict | None = None,
+                 first_year: int = 2023, labels: dict | None = None) -> bytes:
+    """A synthetic workbook in the SIS layout: one sheet per year (2023 … year of ``period``); two-row header (group
+    titles 'Número de casos acumulados Jul-2005 a <Mes>-<año>' / 'Ingresos entre Ene y <Mes> <año>' over FONASA/ISAPRE
+    pairs); the line of cut dates; one row per problem (N°, label); a 'Subtotal' row and the declared 'Total' row.
+
+    ``total_delta`` shifts the declared Total of the year-to-date column of the reporting year; ``ytd_delta``
+    ({code: (df, di)}) shifts that column for one problem and its total (rows still add up, the identity breaks).
+    ``cum`` ({period: {code: (f, i)}}) gives the cumulative cuts directly (e.g. figures copied from a SIS text receipt)
+    instead of deriving them from ``ytd``; then ``ytd`` holds only the SIS year-to-date columns."""
+    from datetime import datetime
     from openpyxl import Workbook
-    year, month = period[:4], MONTHS[int(period[5:7]) - 1]
-    head = header if header is not None else f"casos acumulados enero a {month}"
+    ytd = GES_YTD if ytd is None else ytd
+    y, m = int(period[:4]), int(period[5:7])
+    labels = labels or GES_LABELS
+    cum = cum if cum is not None else ges_cumulative({p: v for p, v in ytd.items() if p <= period})
     book = Workbook()
-    book.active.title = extra[0] if extra else f"Año {year}"
-    for i, name in enumerate(extra):
-        ws = book.active if i == 0 else book.create_sheet(name)
-        ws.append(["N°", "Problema de salud", "Fonasa", "Isapre"])
-        for j in range(3):
-            ws.append([j + 21, str(j + 21), 900000, 900000])
-    ws = book.create_sheet(f"Año {year}") if extra else book.active
-    ws.append([f"Casos GES (AUGE) de Fonasa y Sistema Isapre, año {year}"])
-    ws.append([])
-    ws.append(["N°", "Problema de salud", f"Fonasa {head}", f"Isapre {head}"])
-    for i, (label, (f, s)) in enumerate(rows.items(), 1):
-        ws.append([i, label, f, s])
-    ws.append([None, "Total", sum(f for f, _ in rows.values()) + total_delta[0], sum(s for _, s in rows.values()) + total_delta[1]])
+    first = True
+    for name in extra:
+        ws = book.active if first else book.create_sheet(name)
+        ws.title, first = name, False
+        if name == "Notas":
+            ws.append(["N°", "DESCRIPCIÓN"])
+            ws.append([2, "A partir de julio 2012 la fuente de datos es el archivo de solicitudes de acceso a la GES."])
+            ws.append([3, "Esta información no incorpora casos de VIH atendidos por FONASA (fixture)."])
+            ws.append([4, "Las diferencias en el problema 57 se deben a la eliminación de casos del archivo, por parte de una isapre."])
+        elif name.startswith("Año"):
+            ws.append(["N°", "PROBLEMA DE SALUD", "Número de casos acumulados Jul-2005 a Dic-2005"])
+            ws.append([None, None, "FONASA", "ISAPRE"])
+            for j in range(3):
+                ws.append([j + 21, str(j + 21), 900000, 900000])
+    for year in range(first_year, y + 1):
+        ws = book.create_sheet(f"Año {year}")
+        last = m if year == y else 12
+        groups = [("cut", f"{year}-{q:02d}") for q in (3, 6, 9, 12)] + [("ytd", f"{year}-{last:02d}")]
+        head = ["N°", "PROBLEMA DE SALUD"]
+        for kind, per in groups:
+            mm = int(per[5:])
+            if kind == "cut":
+                head += [f"Número de casos acumulados\n Jul-2005 a {MON3[mm - 1]}-{year}", None]
+            else:
+                head += [ytd_header if (ytd_header is not None and year == y) else f"Ingresos entre \nEne  y {MON3[mm - 1]} {year}", None]
+        ws.append(["CASOS GES ACUMULADOS POR PROBLEMA DE SALUD"])
+        ws.append([])
+        ws.append(head)
+        ws.append([None, None] + ["FONASA", "ISAPRE"] * len(groups))
+        ws.append([None, None] + [datetime(year, int(per[5:]), 28) if kind == "cut" else None for kind, per in groups for _ in (0, 1)])
+        codes = sorted({c for kind, per in groups for c in ((cum.get(per) or {}) if kind == "cut" else (ytd.get(per) or {}))})
+        totals = [0] * (2 * len(groups))
+        for n, code in enumerate(codes):
+            row = [code, labels[code]]
+            for g, (kind, per) in enumerate(groups):
+                src = (cum.get(per) or {}) if kind == "cut" else (ytd.get(per) or {}) if per <= period else {}
+                pair = src.get(code)
+                if pair and kind == "ytd" and year == y and ytd_delta and code in ytd_delta:
+                    pair = (pair[0] + ytd_delta[code][0], pair[1] + ytd_delta[code][1])
+                row += list(pair) if pair else [None, None]
+                if pair:
+                    totals[2 * g] += pair[0]
+                    totals[2 * g + 1] += pair[1]
+            ws.append(row)
+            if n == 1:
+                ws.append([None, "Subtotal Casos GES Decreto Supremo de prueba", *[None] * (2 * len(groups))])
+        tot = [x if x else None for x in totals]
+        if year == y:
+            g = len(groups) - 1
+            tot[2 * g] = (tot[2 * g] or 0) + total_delta[0]
+            tot[2 * g + 1] = (tot[2 * g + 1] or 0) + total_delta[1]
+        ws.append([None, "Total Casos GES", *tot])
     out = BytesIO()
     book.save(out)
     return out.getvalue()
@@ -137,7 +205,7 @@ def boletin_pdf(url: str, root: Path) -> bytes:
 
 def ges_signals() -> list[dict]:
     out = []
-    for period in GES_CUTS:
+    for period in GES_RELEASES:
         month = MONTHS[int(period[5:7]) - 1]
         out.append({"title": f"Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a {month} {period[:4]}",
                     "source_name": "Superintendencia de Salud", "signal_types": ["Datos"],
@@ -171,8 +239,8 @@ def make_root(tmp: Path, *, ges: bool = True, readings_until: str | None = None)
 
 def fetcher(root: Path, books: dict[str, bytes] | None = None, *, fail: set[str] | None = None):
     books = dict(books or {})
-    for period, rows in GES_CUTS.items():
-        books.setdefault(GES_URL.format(period=period), ges_workbook(period, rows))
+    for period in GES_RELEASES:
+        books.setdefault(GES_URL.format(period=period), ges_workbook(period))
     calls = []
 
     def fetch(url: str) -> bytes:
@@ -189,7 +257,8 @@ def fetcher(root: Path, books: dict[str, bytes] | None = None, *, fail: set[str]
 
 
 def confirmed_registry(registry: dict | None = None, by: str = "revisor de prueba") -> dict:
-    """Registry copy with the F4 measure confirmed by a (test) reviewer: F4 HOLDs without it."""
+    """Registry copy with the F4 measure confirmed by a (test) reviewer (the committed registry carries Dirección's
+    confirmation of 3-nov-2026; F4 HOLDs without one)."""
     import copy
     from radar_salud import stats_fichas as sf
     reg = copy.deepcopy(registry or sf.load_registry())

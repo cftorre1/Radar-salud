@@ -36,11 +36,14 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
    - the months are contiguous;
    - the declared period equals the last month in the file;
    - the release has a single hash.
-   For **F4 GES**:
-   - the corrected parser (`ges_pinned_year_reconciled_v2`): the sheet of the reporting year is pinned and the problem rows add up to the declared total, Fonasa and Isapre;
-   - the measure of the pinned sheet (year-to-date or quarter) is established only by a reviewer in the registry (`F4.measure.confirmed`, `confirmed_by`); without it HOLD (`measure_unconfirmed`), whatever the header says. The header can only veto: "desde 2005", a different measure ("acumulado del trimestre" is a quarter) or both wordings keep the HOLD;
-   - year-to-date cuts never decrease within a year, and the problem list does not change within a year;
-   - the quarter is `cut(t) − cut(t−1)` of the same year (Q1 = the March cut), and it is derivable for the latest release.
+   For **F4 GES** (measure decided by Dirección on 3-nov-2026, "Ene–jun vs ene–jun"):
+   - the parser `ges_ytd_cuts_v3` (`src/radar_salud/ges_workbook.py`): the sheets of the reporting year, the previous year and the one before are pinned by name; each sheet has a two-row header (column groups over FONASA/ISAPRE); in every column read the problem rows add up to the declared total, Fonasa and Isapre;
+   - the measure is year-to-date: cases that entered between January and the month of the cut (the SIS column "Ingresos entre Ene y <mes> <año>"), compared with the same months of the previous year. It is confirmed in the registry (`F4.measure.confirmed`, `confirmed_by`); without it HOLD (`measure_unconfirmed`). The header can only veto: a measure column saying "desde 2005", a quarter or both keeps the HOLD;
+   - the SIS cumulative counts since July 2005 ("Número de casos acumulados Jul-2005 a …") are never shown as a headline, KPI or any figure; they are only differenced;
+   - year-to-date identity, per problem and in total, per insurer: the year-to-date column = cumulative(t) − cumulative(December of the previous year), for the reporting year and for the previous year's December column; else HOLD (`HOLD_GES_YTD_IDENTITY`);
+   - the same months of the previous year = cumulative(t − 12 months) − cumulative(December two years before), from the same workbook; quarters (trend) = `cut(t) − cut(t−1)`, and Q1 = the March cut − the December cut of the previous year (never the March cut alone);
+   - cumulative cuts never decrease (December of the previous year ≤ March ≤ … ≤ t);
+   - a capture parsed by an older GES parser HOLDs (`parser_outdated:…:recheck_pending`) until the daily capture re-reads the same file once with the current parser; the bytes must hash to the recorded SHA-256 (else `hash_mismatch`).
    For **F6 Boletín IP**:
    - one PDF per topic (acreditación, mediación, reclamos, RNPI), whose file names carry the release's own period. A release page that links another release's PDFs (the "Septiembre 2026" page, 28 oct) is rejected, never relabelled;
    - every figure comes from the independent reading (`config/statistical_analysis_verified_v1.json`) and is found in the text of the captured, hashed PDF, on a page the reading cites (`pages_1based`) and next to a context word of its metric ("acreditad", "trámite", "mediador", "reclamo", "títulos"…);
@@ -58,9 +61,9 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
 
 ## F4 and F6 rules
 
-- **F4 rates** are "tasa bruta": cases of an insurer / mean beneficiaries of the same insurer over the quarter's three month-end stocks × 1.000. The Isapre denominator is the F1 capture. Fonasa beneficiaries are not captured, so the Fonasa rate is "tasa no disponible"; it is never estimated.
-- **F4 decree changes** are marked from the data: a problem present in only one of the two quarters compared is flagged, kept out of the ranking, and the total change is also shown for the comparable problems only. Official decree notes go in `F4.decree_changes` only with a source.
-- **F4 top problems:** a year-on-year change of 15 % or more, over a base of at least 500 cases in the same quarter one year earlier.
+- **F4 rates** are "tasa bruta": year-to-date cases of an insurer / mean beneficiaries of the same insurer over the month-end stocks of the same months × 1.000. They count cases, not persons (one person can have more than one GES case). The Isapre denominator is the F1 capture. Fonasa beneficiaries are not captured, so the Fonasa rate is "tasa no disponible"; it is never estimated.
+- **F4 decree changes** are marked from the data: a problem (by GES number) present in only one of the two periods compared is flagged, kept out of the ranking, and the total change is also shown for the comparable problems only. Official decree notes go in `F4.decree_changes` only with a source.
+- **F4 top problems:** a year-on-year change of 15 % or more, over a base of at least 500 cases in the same months one year earlier.
 - **F4 supersedes** the loose GES card (`stat_families: ges`) only while the F4 ficha is live in PASS; until then that card stays in HOLD.
 - **F6 stocks** (acreditados, solicitudes en tramitación, mediadores, títulos) are never summed across releases. Quarter-on-quarter comparisons need two verified releases and stay "pendiente" otherwise. RNPI counts titles, not unique professionals.
 - **F6 new releases (Dirección, 1-nov-2026, Boletín N°3-2026):**

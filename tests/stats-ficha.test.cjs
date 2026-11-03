@@ -155,11 +155,13 @@ for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fona
   assert.equal(card.share_url,`data/fichas/${slug}.html`);
  });
 }
-test('F4 shows tasa bruta, Fonasa rate not available and percent bars with one decimal',()=>{
+test('F4 shows ene–jun vs ene–jun, tasa bruta, Fonasa rate not available and percent bars with one decimal',()=>{
  const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f4_ges.card.json','utf8')).stats_ficha;const html=load().render(f);
  assert.match(html,/Tasa bruta Isapre/);assert.match(html,/tasa no disponible/);
- assert.match(html,/aria-label="Problemas que crecen: variación a\/a de casos[^"]*Cáncer de mama en… 35,5%/);
- assert.match(html,/Dos problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
+ assert.match(html,/aria-label="Problemas que crecen: variación de ene–jun 2026 frente a ene–jun 2025[^"]*Cáncer de mama en… 28,8%/);
+ assert.match(html,/Tres problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
+ // Year-to-date measure (Dirección 3-nov-2026): the period is explicit in the headline.
+ assert.match(html,/entre enero y junio de 2026/);assert.match(html,/frente a enero–junio de 2025/);
 });
 test('F6 keeps stocks labelled, shows the claims change and no RNPI (Dirección 2-nov)',()=>{
  const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f6_prestadores.card.json','utf8')).stats_ficha;const html=load().render(f);

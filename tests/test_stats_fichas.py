@@ -1071,48 +1071,57 @@ def test_repo_snapshot_has_august_ficha_and_no_wrong_ges_finding():
 # GES card bug: pinned current-year sheet, sum vs declared total, HOLD
 
 
-def ges_book(rows_2026, extra_sheets=("Año 2005",)):
-    from openpyxl import Workbook
-    book = Workbook()
-    first = True
-    for name in extra_sheets:
-        ws = book.active if first else book.create_sheet(name)
-        ws.title = name
-        first = False
-        ws.append(["N°", "Problema de salud", "Fonasa", "Isapre"])
-        ws.append([21, 21, 900000, 900000])
-        ws.append([22, 22, 1, 1])
-        ws.append([23, 23, 1, 1])
-    ws = book.create_sheet("Año 2026") if not first else book.active
-    ws.title = "Año 2026"
-    ws.append(["N°", "Problema de salud", "Fonasa", "Isapre"])
-    for r in rows_2026:
-        ws.append(r)
-    stream = BytesIO()
-    book.save(stream)
-    return stream.getvalue()
+def ges_fx():
+    import sys
+    sys.path.insert(0, str(REPO / "tests"))
+    import stats_ficha_fixtures as fx
+    return fx
 
 
 TITLE = "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a junio 2026"
-ROWS = [[1, "Diabetes", 120, 30], [2, "Cáncer de mama", 80, 40], [3, "Hipertensión", 150, 20]]
 
 
-def test_ges_pins_current_year_sheet_and_reconciles():
-    r = data_insights.parse_ges_workbook(ges_book(ROWS + [[None, "Total", 350, 90]]), TITLE)
-    assert r["status"] == "validated" and r["sheet"] == "Año 2026" and r["parser"] == sf.GES_PARSER
-    assert r["reconciliation"] == {"ok": True, "rows_sum": [350, 90], "declared_total": [350, 90], "total_row": 5}
+def test_ges_reads_the_ytd_column_and_since_2005_cuts_of_the_pinned_sheets_and_reconciles():
+    fx = ges_fx()
+    r = data_insights.parse_ges_workbook(fx.ges_workbook("2026-06"), TITLE)
+    assert r["status"] == "validated" and r["sheet"] == "Año 2026" and r["parser"] == sf.GES_PARSER == "ges_ytd_cuts_v3"
+    assert set(r["years"]) == {"2026", "2025", "2024"}  # the decoy 'Año 2005' sheet is never read
+    ytd = [sum(v[i] for v in fx.GES_YTD["2026-06"].values()) for i in (0, 1)]
+    assert r["reconciliation"]["ok"] and r["reconciliation"]["declared_total"] == ytd == [84950, 12025]
+    assert r["header"]["ytd"] == "Ingresos entre Ene y Jun 2026" and "Jul-2005" in r["header"]["cuts"]["2026-06"]
     assert r["insights"][0].startswith("Hipertensión") and "21" not in r["insights"][0]
     assert sf.ges_finding_valid(r)
 
 
-@pytest.mark.parametrize("rows,extra,reason", [
-    (ROWS + [[None, "Total", 351, 90]], ("Año 2005",), "HOLD_GES_RECONCILIATION"),
-    (ROWS, ("Año 2005",), "HOLD_GES_TOTAL_MISSING"),
-    ([[1, "21", 120, 30], [2, "22", 80, 40], [3, "23", 150, 20], [None, "Total", 350, 90]], ("Año 2005",), "HOLD_GES_LABEL_NOT_TEXT"),
+@pytest.mark.parametrize("kw,reason", [
+    ({"total_delta": (1, 0)}, "HOLD_GES_RECONCILIATION"),
+    ({"ytd_delta": {1: (0, 2)}}, "HOLD_GES_YTD_IDENTITY"),
+    ({"labels": {1: "21", 2: "22", 3: "23", 4: "24", 5: "25", 6: "26", 7: "27"}}, "HOLD_GES_LABEL_NOT_TEXT"),
+    ({"ytd_header": "Casos del trimestre"}, "HOLD_GES_COLUMN_MISSING"),
+    ({"extra": ("Año 2005", "Resumen 2026")}, "HOLD_GES_SHEET_NOT_PINNED"),
 ])
-def test_ges_holds_on_failures(rows, extra, reason):
-    r = data_insights.parse_ges_workbook(ges_book(rows, extra), TITLE)
-    assert r["status"] == "HOLD" and r["hold_reason"] == reason and r["insights"] == []
+def test_ges_holds_on_failures(kw, reason):
+    r = data_insights.parse_ges_workbook(ges_fx().ges_workbook("2026-06", **kw), TITLE)
+    assert r["status"] == "HOLD" and r["hold_reason"] == reason and r["insights"] == [] and "years" not in r
+
+
+def test_ges_one_row_header_without_the_sis_column_groups_holds():
+    """The v2 parser looked for 'Fonasa', 'Isapre' and 'Problema' on one header row; the SIS sheet puts 'PROBLEMA DE
+    SALUD' and the column groups on one row and FONASA/ISAPRE on the next, so v2 never validated a real file. v3 reads
+    the two-row header and holds on a sheet without its column groups."""
+    from openpyxl import Workbook
+    book = Workbook()
+    for i, year in enumerate((2024, 2025, 2026)):
+        ws = book.active if i == 0 else book.create_sheet()
+        ws.title = f"Año {year}"
+        ws.append(["N°", "Problema de salud", "Fonasa", "Isapre"])
+        for j in range(1, 4):
+            ws.append([j, f"Problema {chr(64 + j)}", 10 * j, j])
+        ws.append([None, "Total", 60, 6])
+    stream = BytesIO()
+    book.save(stream)
+    r = data_insights.parse_ges_workbook(stream.getvalue(), TITLE)
+    assert r["status"] == "HOLD" and r["hold_reason"] == "HOLD_GES_SCHEMA_NOT_VALIDATED"
 
 
 def test_ges_holds_when_year_sheet_is_not_unique():
