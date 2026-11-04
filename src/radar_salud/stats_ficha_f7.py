@@ -60,6 +60,10 @@ ENTITIES = {
 }
 LEVEL = {"partida": "partida", "cap02": "chapter", "prog0201": "program"}
 FIRST_REVIEW_HOLD = "HOLD_FIRST_REVIEW:awaiting_first_review"
+# Names of other perimeters, as printed in the PDF (independent review of PR #139, 4-nov-2026: articles-431115 reads
+# "SUBPARTIDA : 1603 SERVICIOS DE SALUD"). The lane stores only the code; a code without a name here is shown bare.
+SUBPARTIDA_NAMES = {"1603": "Servicios de Salud"}
+MONTH_WORDS = {1: "un mes", 2: "dos meses", 3: "tres meses", 4: "cuatro meses", 5: "cinco meses", 6: "seis meses"}
 
 
 def _load(path: Path) -> dict | None:
@@ -160,8 +164,8 @@ def cut_failures(name: str, cs: list[dict], ledger: dict[str, dict]) -> list[str
             f.append(f"captured_before_cut:{tag}")
     # The same cut read from two documents agrees; accumulated execution never decreases within a fiscal year.
     by_period: dict[str, set] = {}
-    for c in cs:
-        by_period.setdefault(c["period"], set()).add(c["executed"].get("value"))
+    for c in cs:  # executed and vigente: two documents for one cut must agree on both
+        by_period.setdefault(c["period"], set()).add((c["executed"].get("value"), c["vigente"].get("value")))
     f += [f"same_cut_conflict:{name}:{p}" for p, vals in sorted(by_period.items()) if len(vals) > 1]
     for year in sorted({c["year"] for c in cs}):
         seq = sorted(((c["period"], c["executed"].get("value")) for c in cs if c["year"] == year))
@@ -294,7 +298,9 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         p = c["period"]
         e = captured(f"{ent}.{p}.ejecutado", ent, c, "executed")
         vg = captured(f"{ent}.{p}.vigente", ent, c, "modified")
-        derived(f"{ent}.{p}.pct", ent, e / vg * 100, "gasto devengado acumulado / presupuesto vigente × 100 (mismo documento)",
+        formula = ("gasto devengado acumulado / presupuesto vigente × 100 (mismo informe de ejecución)" if c["kind"] == "informe" else
+                   "ejecución acumulada (columna 'Ejecución', base contable no declarada) / presupuesto vigente × 100 (mismo cuadro)")
+        derived(f"{ent}.{p}.pct", ent, e / vg * 100, formula,
                 [f"{ent}.{p}.ejecutado", f"{ent}.{p}.vigente"], "%", p)
 
     def add_yoy(ent: str, c: dict) -> str | None:
@@ -370,7 +376,20 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     month, mlabel = sf.month_name(t), sf.month_label(t)
     pct = lambda vid: fmt_dec(V(vid), 1) + "%"  # noqa: E731
     span = f"enero–{month} {year}"
+    cut_label = f"{sf.day_label(_last_day(t))} {year}"  # '31 jul 2026': the data cut, shown in the kicker and meta line
     kpis, tabs, paragraphs, notes = [], [], [], []
+
+    def at(p: str) -> str:
+        """Cut label of a figure. A cut other than the partida's always says how far it is (review of PR #139: two
+        cuts are never side by side without a label)."""
+        if p == t:
+            return f"a {sf.month_label(p)}"
+        n = abs((sf.period_parts(p)[0] - year) * 12 + sf.period_parts(p)[1] - sf.period_parts(t)[1])
+        gap = MONTH_WORDS.get(n, f"{n} meses")
+        return f"a {sf.month_label(p)}, {gap} {'después' if p > t else 'antes'} del corte de la partida"
+
+    prog_kind = k["kinds"]["prog0201"]
+    exec_word = lambda kind: "devengado" if kind == "informe" else "ejecutado"  # noqa: E731  (comparative: basis not declared)
 
     def yoy_line(ent: str) -> tuple[str, list[str]]:
         p1 = yoy.get(ent)
@@ -382,23 +401,25 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     # KPI cards (the Datos page copies the first two by id).
     yl, yr = yoy_line("partida")
     kpis.append({"id": "ejecucion_partida", "label": "Ejecución Salud (Partida 16)", "value": pct(f"partida.{t}.pct"), "prov": "C",
-                 "lines": [f"a {mlabel} · {fmt_int(V(f'partida.{t}.ejecutado'))} de {fmt_int(V(f'partida.{t}.vigente'))} {MM}", yl],
+                 "lines": [at(t), f"devengado {fmt_int(V(f'partida.{t}.ejecutado'))} de {fmt_int(V(f'partida.{t}.vigente'))} {MM}", yl],
                  "refs": [f"partida.{t}.pct", f"partida.{t}.ejecutado", f"partida.{t}.vigente", *yr]})
-    if tp:
+    # Fonasa card: the programme only at the partida's cut; else capítulo 02 at that cut; else whichever exists, with
+    # its own cut and its distance to the partida's written on the card.
+    if tp == t or (tp and t not in cap):
         pl, pr = yoy_line("prog0201")
         kpis.append({"id": "ejecucion_fonasa", "label": "Ejecución programa Fonasa", "value": pct(f"prog0201.{tp}.pct"), "prov": "C",
-                     "lines": [f"a {sf.month_label(tp)} · {fmt_int(V(f'prog0201.{tp}.ejecutado'))} de "
+                     "lines": [at(tp), f"{exec_word(prog_kind)} {fmt_int(V(f'prog0201.{tp}.ejecutado'))} de "
                                f"{fmt_int(V(f'prog0201.{tp}.vigente'))} {MM}", pl],
                      "refs": [f"prog0201.{tp}.pct", f"prog0201.{tp}.ejecutado", f"prog0201.{tp}.vigente", *pr]})
     else:
-        c_t = cap[-1]
+        c_t = t if t in cap else cap[-1]
         kpis.append({"id": "ejecucion_fonasa", "label": "Ejecución Fonasa (capítulo 02)", "value": pct(f"cap02.{c_t}.pct"), "prov": "C",
-                     "lines": [f"a {sf.month_label(c_t)} · {fmt_int(V(f'cap02.{c_t}.ejecutado'))} de "
+                     "lines": [at(c_t), f"devengado {fmt_int(V(f'cap02.{c_t}.ejecutado'))} de "
                                f"{fmt_int(V(f'cap02.{c_t}.vigente'))} {MM}"],
                      "refs": [f"cap02.{c_t}.pct", f"cap02.{c_t}.ejecutado", f"cap02.{c_t}.vigente"]})
     has_ini = k["has_initial"]
     kpis.append({"id": "vigente_partida", "label": "Presupuesto vigente Salud", "value": f"{fmt_int(V(f'partida.{t}.vigente'))} {MM}",
-                 "prov": "C", "lines": ([f"ley inicial: {fmt_int(V(f'partida.{t}.ley_inicial'))} {MM}"] if has_ini else ["nominal"]),
+                 "prov": "C", "lines": [at(t)] + ([f"ley inicial: {fmt_int(V(f'partida.{t}.ley_inicial'))} {MM}"] if has_ini else ["nominal"]),
                  "refs": [f"partida.{t}.vigente", *([f"partida.{t}.ley_inicial"] if has_ini else [])]})
     kpis.append({"id": "devengado_partida", "label": "Gasto devengado Salud", "value": f"{fmt_int(V(f'partida.{t}.ejecutado'))} {MM}",
                  "prov": "C", "lines": [f"acumulado {span}, nominal"], "refs": [f"partida.{t}.ejecutado"]})
@@ -448,29 +469,34 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                            pct(f"cap02.{p}.pct")] for p in cap]},
                        "source": "DIPRES, informes de ejecución del capítulo 02. Capítulo y programa vienen de documentos distintos: no se comparan ni se suman."})
     if tp:
-        rows = [("Vigente", f"prog0201.{tp}.vigente"), ("Devengado", f"prog0201.{tp}.ejecutado")]
+        ew = exec_word(prog_kind).capitalize()
+        rows = [("Vigente", f"prog0201.{tp}.vigente"), (ew, f"prog0201.{tp}.ejecutado")]
         charts.append({"id": "f7-prog0201-niveles", "form": "bars", "unit": MM, "digits": 0,
                        "headline": f"Programa Fonasa a {sf.month_label(tp)}",
-                       "subtitle": "Millones de pesos nominales, capítulo 02, programa 01",
-                       "rows": [{"label": lab, "value": V(ref), "ref": ref, "emphasis": lab == "Devengado"} for lab, ref in rows],
+                       "subtitle": "Millones de pesos nominales, capítulo 02, programa 01"
+                                   + ("" if tp == t else f"; {at(tp).split(', ', 1)[1]}"),
+                       "rows": [{"label": lab, "value": V(ref), "ref": ref, "emphasis": lab == ew} for lab, ref in rows],
                        "table": {"columns": ["Concepto", MM], "rows": [[lab, fmt_int(V(ref))] for lab, ref in rows]
                                  + [["Ejecución", pct(f"prog0201.{tp}.pct")]]},
                        "source": ("DIPRES, cuadro comparativo del proyecto de presupuestos: columnas de presupuesto vigente y de ejecución "
                                   "de la misma tabla." if k["kinds"]["prog0201"] == "comparativo"
                                   else "DIPRES, informe de ejecución del programa.")})
     tab = {"id": "fonasa", "label": "Fonasa", "charts": charts, "text": [], "dek": None}
-    if tp:
+    if t in cap and tp != t:  # the index line stays on the partida's cut
+        fl, fr = f"Capítulo Fonasa: {pct(f'cap02.{t}.pct')} del vigente a {month}", [f"cap02.{t}.pct"]
+        paragraphs.append(f"El capítulo 02 (Fonasa) devengó el {pct(f'cap02.{t}.pct')} de su presupuesto vigente {at(t)}.")
+    elif tp:
         fl, fr = f"Programa Fonasa: {pct(f'prog0201.{tp}.pct')} del vigente a {sf.month_name(tp)}", [f"prog0201.{tp}.pct"]
-        paragraphs.append(f"El programa Fonasa devengó el {pct(f'prog0201.{tp}.pct')} de su presupuesto vigente a {sf.month_label(tp)}.")
     else:
-        fl, fr = f"Capítulo 02: {pct(f'cap02.{cap[-1]}.pct')} del vigente a {sf.month_name(cap[-1])}", [f"cap02.{cap[-1]}.pct"]
+        fl, fr = f"Capítulo Fonasa: {pct(f'cap02.{cap[-1]}.pct')} del vigente a {sf.month_name(cap[-1])}", [f"cap02.{cap[-1]}.pct"]
+    if tp:
+        paragraphs.append(f"El programa Fonasa ejecutó el {pct(f'prog0201.{tp}.pct')} de su presupuesto vigente {at(tp)}.")
     sf.topic_fields(tab, fl, index_refs=fr, kpis=[])
     tabs.append(tab)
 
     # Headline and dek: the dek adds what the KPI cards do not (budget changes since the initial law, YoY status).
+    # The headline speaks of the partida only, at its own cut (review of PR #139).
     lead = f"Salud ejecutó el {pct(f'partida.{t}.pct')} de su presupuesto vigente a {mlabel}"
-    if tp:
-        lead += f"; el programa Fonasa, el {pct(f'prog0201.{tp}.pct')} a {sf.month_label(tp)}"
     headline = tpl["headline"].format(lead=lead)
     dek_parts = []
     if has_ini:
@@ -490,8 +516,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     # Notes (method, denominators, dates, coverage). Every figure in them traces to the package or its constants.
     notes.append({"id": "n1", "text": "Montos acumulados de enero al corte: un flujo acumulado, no un stock. No se suman entre meses ni entre "
                                       "niveles anidados (partida, capítulo y programa); cada nivel se lee de su propio registro."})
-    notes.append({"id": "n2", "text": "Denominador: el % de ejecución divide el gasto devengado acumulado por el presupuesto vigente que informa "
-                                      "el mismo documento; nunca por la ley inicial ni por el año completo."})
+    notes.append({"id": "n2", "text": "Denominador: el % de ejecución divide el gasto devengado acumulado (en el cuadro comparativo, la columna "
+                                      "«Ejecución», que no declara su base contable) por el presupuesto vigente que informa el mismo documento; "
+                                      "nunca por la ley inicial ni por el año completo."})
     notes.append({"id": "n3", "text": "Montos nominales en millones de pesos: DIPRES publica miles de pesos y Alicanto divide por 1.000. "
                                       "El valor real (UF) queda pendiente."})
     notes.append({"id": "n4", "text": "Fechas: el corte es el último día del mes informado. Los PDF de DIPRES no traen fecha de publicación "
@@ -500,13 +527,16 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                   "Fechas: el corte es el último día del mes informado; la fecha de publicación es la que verificó la captura."})
     if tp and k["kinds"]["prog0201"] == "comparativo":
         notes.append({"id": "n5", "text": "El programa Fonasa sale del cuadro comparativo del proyecto de presupuestos (ejecución y vigente de la "
-                                          "misma tabla); la partida y el capítulo 02, de los informes de ejecución. No se comparan entre sí."})
+                                          "misma tabla)" + ("" if tp == t else f", con otro corte ({sf.month_label(tp)})")
+                                          + "; la partida y el capítulo 02, de los informes de ejecución. No se comparan entre sí."})
     if not yoy.get("partida"):
         notes.append({"id": "n6", "text": f"Sin comparación con {year - 1}: no hay un corte del mismo mes de {year - 1} en el mismo tipo de "
                                           "documento. Cortes de otros meses no se comparan."})
     if k["excluded"]:
-        subs = ", ".join(sorted({str(s) for s, _ in k["excluded"]}))
-        notes.append({"id": "n7", "text": f"Los cortes de la subpartida {subs} no se usan como Partida 16: son otro perímetro."})
+        subs = ", ".join(f"{s} ({SUBPARTIDA_NAMES[s]})" if s in SUBPARTIDA_NAMES else str(s)
+                         for s in sorted({str(s) for s, _ in k["excluded"]}))
+        notes.append({"id": "n7", "text": f"Los cortes de la subpartida {subs} no se usan como Partida 16: son otro perímetro, "
+                                          "menor que la partida."})
     if package["lane"].get("coverage_complete") is False:
         notes.append({"id": "n8", "text": "La captura DIPRES de Alicanto declara cobertura incompleta: no todas las versiones del presupuesto "
                                           "ni las fechas de publicación están verificadas."})
@@ -514,10 +544,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     nxt = sf.shift_period(t, 1)
     late = (decision or {}).get("late_release")
+    captured = sf.day_label(package["published_at"]) if detected_basis(package) else None
     watch = [({"headline": f"Informe de ejecución de la Partida 16 a {sf.month_label(nxt)}: sin captura nueva.",
                "explanation": f"Lleva {late['days_late']} días más allá del intervalo esperado desde la última captura."} if late else
-              {"headline": f"Informe de ejecución de la Partida 16 a {sf.month_label(nxt)}.",
-               "explanation": "La ficha se actualiza cuando Alicanto captura el informe nuevo."})]
+              {"headline": f"Informe de ejecución de la Partida 16 a {sf.month_label(nxt)}: captura pendiente.",
+               "explanation": "La captura DIPRES de Alicanto es manual" + (f" (última: {captured})" if captured else "")
+                              + "; ninguna corrida la actualiza sola."})]
     if not yoy.get("partida"):
         watch.append({"headline": f"Comparación con {year - 1}.",
                       "explanation": f"Se activa con el corte del mismo mes de {year - 1} en el mismo tipo de informe."})
@@ -532,9 +564,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "schema_version": sf.SCHEMA, "id": f"stats-ficha:{FAMILY}:{t}", "family": FAMILY, "family_label": cfg["label"],
         "slug": cfg["slug"], "period": t, "published_at": package["published_at"], "release_key": package["release_key"],
         "evidence_sha256": package["evidence_sha256"],
-        "kicker": tpl["kicker"].format(label=cfg["label"]),
+        "kicker": tpl["kicker"].format(label=cfg["label"], cut_label=cut_label),
         "kicker_meta": tpl["kicker_meta_detected" if detected else "kicker_meta"].format(
-            period_label=mlabel, published_label=sf.day_label(package["published_at"]), cadence_phrase=cfg["cadence_phrase"]),
+            period_label=mlabel, cut_label=cut_label, published_label=sf.day_label(package["published_at"]), cadence_phrase=cfg["cadence_phrase"]),
         **({"date_basis": "first_detected"} if detected else {}),
         "headline": headline, "headline_type": "default", "dek": dek, "dek_emphasis": None,
         "kpis": kpis[:5], "tabs": tabs,
@@ -543,6 +575,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "featured": bool((decision or {}).get("featured")), "triggers": triggers, "late_release": late,
         "revisions": package.get("revisions") or [],
     }
+
+
+def detected_basis(package: dict) -> bool:
+    return package.get("date_basis") == "first_detected"
 
 
 def _gate_open(cfg: dict, root: Path, sha: str | None) -> bool:

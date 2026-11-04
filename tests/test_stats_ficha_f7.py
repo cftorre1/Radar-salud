@@ -119,10 +119,14 @@ def test_pass_recomputes_every_kpi_from_the_raw_records(tmp_path):
     assert out["status"] == "pass", out.get("errors")
     fi = out["ficha"]
     assert fi["verification"]["verdict"] == "PASS"
-    assert fi["headline"] == ("Salud ejecutó el 29,3% de su presupuesto vigente a marzo 2026; "
-                              "el programa Fonasa, el 27,7% a marzo 2026")
+    assert fi["headline"] == "Salud ejecutó el 29,3% de su presupuesto vigente a marzo 2026"  # the partida only
     assert [k["id"] for k in fi["kpis"]][:2] == ["ejecucion_partida", "ejecucion_fonasa"]
-    assert fi["kpis"][0]["value"] == "29,3%" and fi["kpis"][0]["lines"][0] == "a marzo 2026 · 5.100 de 17.400 MM$"
+    assert fi["kpis"][0]["value"] == "29,3%" and fi["kpis"][0]["lines"][:2] == ["a marzo 2026", "devengado 5.100 de 17.400 MM$"]
+    # Same cut: the programme card; its comparative 'Ejecución' column is 'ejecutado', never 'devengado'.
+    assert fi["kpis"][1]["label"] == "Ejecución programa Fonasa" and fi["kpis"][1]["value"] == "27,7%"
+    assert fi["kpis"][1]["lines"][:2] == ["a marzo 2026", "ejecutado 3.900 de 14.100 MM$"]
+    assert fi["kicker"] == "Financiamiento público · corte 31 mar 2026"
+    assert "devengó" not in " ".join(x for x in fi["facts"]["paragraphs"] if "programa" in x)
     assert "600 MM$ más que la ley inicial (+3,6%)" in fi["dek"] and len(fi["dek"].split()) <= 40
     assert "sin comparación a/a" in fi["kpis"][0]["lines"]
     # Non-causal and nominal labels.
@@ -140,7 +144,7 @@ def test_yoy_only_against_the_same_month_and_kind_of_document(tmp_path):
     assert v["partida.yoy.pp"] == pytest.approx(round(5_100_000 / 17_400_000 * 100, 1) - round(4_000_000 / 16_000_000 * 100, 1))
     assert v["partida.yoy.ejecutado_pct"] == pytest.approx((5_100 - 4_000) / 4_000 * 100)
     fi = f7.run(tmp_path, today=TODAY, registry=reg_open(), llm=False)["ficha"]
-    assert fi["kpis"][0]["lines"][1] == "marzo 2025: 25,0% (+4,3 pp)" and "+4,3 pp a/a" in fi["tabs"][0]["index_line"]
+    assert fi["kpis"][0]["lines"][2] == "marzo 2025: 25,0% (+4,3 pp)" and "+4,3 pp a/a" in fi["tabs"][0]["index_line"]
     # A previous-year cut from another kind of document (comparative table) or another month is never compared.
     for rs, kind in ((comparativo(2001, "2025-03", 4_000_000, 16_000_000, P), "Cuadro Comparativo Analítico Años 2025-2026"),
                      (informe(2002, "2025-02", 3_000_000, 16_000_000, P), "Informe Ejecución Partida")):
@@ -156,7 +160,72 @@ def test_negative_budget_change_is_worded_by_its_sign(tmp_path):
 
 
 # ---------------------------------------------------------------------------------------------------------------------
+# Cuts are never mixed without a label (review of PR #139)
+
+MONTH_RX = "|".join(sf.MONTHS_ES)
+
+
+def unlabelled_other_cuts(fi: dict) -> list[str]:
+    """Headline, dek and KPI lines: a month other than the partida's cut appears only with its distance written next to
+    it ('… después/antes del corte de la partida') or as the labelled same-month-last-year comparison."""
+    import re
+    month = sf.month_name(fi["period"])
+    out = []
+    blocks = [fi["headline"], fi["dek"], *[x for k in fi["kpis"] for x in [k["value"], *k["lines"]]]]
+    for text in blocks:
+        span_free = re.sub(rf"enero–({MONTH_RX})", r"\1", text)  # an accumulated span ends at its cut month
+        for m in re.findall(rf"\b({MONTH_RX})\b", span_free):
+            if m != month and "del corte de la partida" not in text:
+                out.append(text)
+    return out
+
+
+@pytest.mark.parametrize("prog,cap,card,label", [
+    (("2026-03", 3_900_000, 14_100_000), CAP02, "Ejecución programa Fonasa", "a marzo 2026"),  # same cut: programme
+    (("2026-04", 5_200_000, 14_100_000), CAP02, "Ejecución Fonasa (capítulo 02)", "a marzo 2026"),  # later: chapter
+    (("2026-04", 5_200_000, 14_100_000), {}, "Ejecución programa Fonasa",
+     "a abril 2026, un mes después del corte de la partida"),  # no chapter at the cut: labelled distance
+])
+def test_headline_and_kpis_never_mix_cuts_unlabelled(tmp_path, prog, cap, card, label):
+    fi = f7.run(write(tmp_path, lane(prog=prog, cap=cap)), today=TODAY, registry=reg_open(), llm=False)["ficha"]
+    assert fi["period"] == "2026-03" and "Fonasa" not in fi["headline"]
+    assert unlabelled_other_cuts(fi) == []
+    assert fi["kpis"][1]["label"] == card and fi["kpis"][1]["lines"][0] == label
+    if prog[0] != "2026-03":  # the programme chart says its cut is another one
+        ch = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f7-prog0201-niveles")
+        assert "un mes después del corte de la partida" in ch["subtitle"]
+    # The checker itself catches the old headline (programme at another month, side by side).
+    bad = dict(fi, headline=fi["headline"] + "; el programa Fonasa, el 36,9% a abril 2026")
+    assert unlabelled_other_cuts(bad)
+
+
+def test_committed_lane_keeps_the_partida_cut_on_every_card():
+    fi = f7.compose(f7.build_package(REPO, reg_open()), reg_open(), today=TODAY)
+    assert unlabelled_other_cuts(fi) == []
+    assert all(k["lines"][0] == f"a {sf.month_label(fi['period'])}" for k in fi["kpis"][:3])
+
+
+# ---------------------------------------------------------------------------------------------------------------------
 # HOLD: each reconciliation rule
+
+
+def test_hold_vigente_not_positive(tmp_path):
+    bad = dict(PARTIDA, **{"2026-03": (0, 0)})
+    assert "vigente_not_positive:partida:2026-03" in failures(lane(partida=bad), tmp_path)
+
+
+def test_hold_duplicate_vigente_in_one_document(tmp_path):
+    data = lane()
+    vig = next(r for r in data["records"] if r["source_url"] == URL.format(n=1002) and r["budget_state"] == "modified")
+    data["records"].append(dict(vig, value=vig["value"] + 1))
+    assert any(f.startswith(f"vigente_not_unique:2026-03:{URL.format(n=1002)}:2") for f in failures(data, tmp_path))
+    data["records"][-1]["value"] = vig["value"]  # even an identical duplicate is not silently accepted
+    assert any(f.startswith("vigente_not_unique:2026-03") for f in failures(data, tmp_path))
+
+
+def test_same_cut_conflict_compares_the_vigente_too(tmp_path):
+    other = comparativo(2202, "2026-03", 5_100_000, 17_500_000, P)  # same executed, different vigente
+    assert "same_cut_conflict:partida:2026-03" in failures(lane(extra=[(other, "Cuadro Comparativo Analítico")]), tmp_path)
 
 
 def test_hold_executed_over_vigente(tmp_path):
@@ -173,6 +242,9 @@ def test_hold_when_a_narrower_perimeter_is_mislabelled_as_the_partida(tmp_path):
     """The real lane's 2027 comparative table reports subpartida 1603 at August (lower than the partida in July). Read
     as a subpartida it is excluded; if a parser dropped the subpartida, monotonicity HOLDs instead of publishing it."""
     sub = comparativo(2100, "2026-04", 4_000_000, 14_000_000, ("16", "1603", None, None))
+    fi = f7.run(write(tmp_path, lane(extra=[(sub, "Cuadro Comparativo Analítico Años 2026-2027")])), today=TODAY,
+                registry=reg_open(), llm=False)["ficha"]
+    assert any("subpartida 1603 (Servicios de Salud)" in n["text"] for n in fi["notes"])
     p = f7.build_package(write(tmp_path, lane(extra=[(sub, "Cuadro Comparativo Analítico Años 2026-2027")])), reg_open())
     assert p["reconciliation"]["ok"] and p["period"] == "2026-03" and p["kpis"]["excluded"] == [["1603", "2026-04"]]
     assert not any(k.startswith("partida.2026-04") for k in p["values"])
@@ -281,7 +353,10 @@ def test_trace_check_rejects_a_summed_or_mixed_value(tmp_path):
 def test_without_a_verified_publication_the_ficha_is_dated_by_capture(tmp_path):
     fi = f7.run(write(tmp_path, lane()), today=TODAY, registry=reg_open(), llm=False)["ficha"]
     assert fi["date_basis"] == "first_detected" and fi["published_at"] == "2026-10-11"
-    assert fi["kicker_meta"].startswith("datos a marzo 2026 · detectado por Alicanto el 11 oct")
+    assert fi["kicker_meta"].startswith("datos al 31 mar 2026 (corte; captura manual, próxima actualización pendiente) · detectado por Alicanto el 11 oct")
+    # Freshness: the lane is captured by hand; nothing claims a monthly refresh.
+    assert "captura manual, próxima actualización pendiente" in fi["kicker_meta"]
+    assert "se actualiza" not in " ".join(sf.displayed_texts(fi)) and "manual" in fi["watch"][0]["explanation"]
     card = sf.ficha_card(fi, reg_open()["families"]["F7"])
     assert card["publication_date"] is None and card["first_detected_at"] == "2026-10-11"
     assert card["source_name"] == "Dirección de Presupuestos"

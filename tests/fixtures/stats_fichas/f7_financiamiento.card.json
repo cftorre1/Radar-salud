@@ -1,7 +1,7 @@
 {
  "piece_id": "stats-ficha:F7:2026-07",
- "title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026; el programa Fonasa, el 73,3% a agosto 2026",
- "display_title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026; el programa Fonasa, el 73,3% a agosto 2026",
+ "title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026",
+ "display_title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026",
  "source_name": "Dirección de Presupuestos",
  "source_type": "official",
  "source_url": "https://www.dipres.gob.cl/597/articles-406167_doc_pdf.pdf",
@@ -40,15 +40,15 @@
   "family_label": "Financiamiento público",
   "period": "2026-07",
   "published_at": "2026-10-11",
-  "generated_at": "2026-11-04T03:12:08.780073+00:00",
+  "generated_at": "2026-11-04T03:44:22.248906+00:00",
   "release_key": "2026-07:d685bc1319275102",
   "featured": false,
   "triggers": [
    "new_period"
   ],
-  "kicker": "Financiamiento público",
-  "kicker_meta": "datos a julio 2026 · detectado por Alicanto el 11 oct · se actualiza cada mes · montos nominales",
-  "headline": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026; el programa Fonasa, el 73,3% a agosto 2026",
+  "kicker": "Financiamiento público · corte 31 jul 2026",
+  "kicker_meta": "datos al 31 jul 2026 (corte; captura manual, próxima actualización pendiente) · detectado por Alicanto el 11 oct · montos nominales",
+  "headline": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026",
   "headline_type": "default",
   "dek": "El presupuesto vigente de la Partida 16 suma 499.742 MM$ más que la ley inicial (+2,9%). Montos nominales; sin comparación con 2025 por falta del mismo corte.",
   "dek_emphasis": null,
@@ -59,7 +59,8 @@
     "value": "65,7%",
     "prov": "C",
     "lines": [
-     "a julio 2026 · 11.669.023 de 17.750.797 MM$",
+     "a julio 2026",
+     "devengado 11.669.023 de 17.750.797 MM$",
      "sin comparación a/a"
     ],
     "refs": [
@@ -70,17 +71,17 @@
    },
    {
     "id": "ejecucion_fonasa",
-    "label": "Ejecución programa Fonasa",
-    "value": "73,3%",
+    "label": "Ejecución Fonasa (capítulo 02)",
+    "value": "67,2%",
     "prov": "C",
     "lines": [
-     "a agosto 2026 · 11.715.715 de 15.981.086 MM$",
-     "sin comparación a/a"
+     "a julio 2026",
+     "devengado 10.414.446 de 15.499.203 MM$"
     ],
     "refs": [
-     "prog0201.2026-08.pct",
-     "prog0201.2026-08.ejecutado",
-     "prog0201.2026-08.vigente"
+     "cap02.2026-07.pct",
+     "cap02.2026-07.ejecutado",
+     "cap02.2026-07.vigente"
     ]
    },
    {
@@ -89,6 +90,7 @@
     "value": "17.750.797 MM$",
     "prov": "C",
     "lines": [
+     "a julio 2026",
      "ley inicial: 17.251.055 MM$"
     ],
     "refs": [
@@ -400,7 +402,7 @@
       "unit": "MM$",
       "digits": 0,
       "headline": "Programa Fonasa a agosto 2026",
-      "subtitle": "Millones de pesos nominales, capítulo 02, programa 01",
+      "subtitle": "Millones de pesos nominales, capítulo 02, programa 01; un mes después del corte de la partida",
       "rows": [
        {
         "label": "Vigente",
@@ -409,7 +411,7 @@
         "emphasis": false
        },
        {
-        "label": "Devengado",
+        "label": "Ejecutado",
         "value": 11715714.95,
         "ref": "prog0201.2026-08.ejecutado",
         "emphasis": true
@@ -426,7 +428,7 @@
          "15.981.086"
         ],
         [
-         "Devengado",
+         "Ejecutado",
          "11.715.715"
         ],
         [
@@ -444,9 +446,9 @@
      "chart": "f7-cap02-ejecucion",
      "form": "line"
     },
-    "index_line": "Programa Fonasa: 73,3% del vigente a agosto",
+    "index_line": "Capítulo Fonasa: 67,2% del vigente a julio",
     "index_refs": [
-     "prog0201.2026-08.pct"
+     "cap02.2026-07.pct"
     ],
     "kpis": []
    }
@@ -455,15 +457,16 @@
    "heading": "Qué muestran los datos",
    "paragraphs": [
     "Entre enero y julio de 2026, Salud devengó el 65,7% de su presupuesto vigente.",
-    "El programa Fonasa devengó el 73,3% de su presupuesto vigente a agosto 2026."
+    "El capítulo 02 (Fonasa) devengó el 67,2% de su presupuesto vigente a julio 2026.",
+    "El programa Fonasa ejecutó el 73,3% de su presupuesto vigente a agosto 2026, un mes después del corte de la partida."
    ],
    "rendered_in_tabs": true
   },
   "lectura": null,
   "watch": [
    {
-    "headline": "Informe de ejecución de la Partida 16 a agosto 2026.",
-    "explanation": "La ficha se actualiza cuando Alicanto captura el informe nuevo."
+    "headline": "Informe de ejecución de la Partida 16 a agosto 2026: captura pendiente.",
+    "explanation": "La captura DIPRES de Alicanto es manual (última: 11 oct); ninguna corrida la actualiza sola."
    },
    {
     "headline": "Comparación con 2025.",
@@ -477,7 +480,7 @@
    },
    {
     "id": "n2",
-    "text": "Denominador: el % de ejecución divide el gasto devengado acumulado por el presupuesto vigente que informa el mismo documento; nunca por la ley inicial ni por el año completo."
+    "text": "Denominador: el % de ejecución divide el gasto devengado acumulado (en el cuadro comparativo, la columna «Ejecución», que no declara su base contable) por el presupuesto vigente que informa el mismo documento; nunca por la ley inicial ni por el año completo."
    },
    {
     "id": "n3",
@@ -489,7 +492,7 @@
    },
    {
     "id": "n5",
-    "text": "El programa Fonasa sale del cuadro comparativo del proyecto de presupuestos (ejecución y vigente de la misma tabla); la partida y el capítulo 02, de los informes de ejecución. No se comparan entre sí."
+    "text": "El programa Fonasa sale del cuadro comparativo del proyecto de presupuestos (ejecución y vigente de la misma tabla), con otro corte (agosto 2026); la partida y el capítulo 02, de los informes de ejecución. No se comparan entre sí."
    },
    {
     "id": "n6",
@@ -497,7 +500,7 @@
    },
    {
     "id": "n7",
-    "text": "Los cortes de la subpartida 1603 no se usan como Partida 16: son otro perímetro."
+    "text": "Los cortes de la subpartida 1603 (Servicios de Salud) no se usan como Partida 16: son otro perímetro, menor que la partida."
    },
    {
     "id": "n8",
@@ -680,7 +683,7 @@
    "evidence_research"
   ],
   "materiality_decision": "accept",
-  "public_title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026; el programa Fonasa, el 73,3% a agosto 2026",
+  "public_title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026",
   "what_happened": "El presupuesto vigente de la Partida 16 suma 499.742 MM$ más que la ley inicial (+2,9%). Montos nominales; sin comparación con 2025 por falta del mismo corte.",
   "why_it_matters": "",
   "evidence_map": [

@@ -23,7 +23,9 @@ test('f7 ficha opens with its two topics, nominal labels, detection date and no 
  expect(await body.locator('.sf-row-line').evaluateAll(xs=>xs.map(x=>x.textContent))).toEqual(card.stats_ficha.tabs.map(t=>t.index_line));
  // Cut and detection are two different dates; no publication date is claimed.
  const meta=await body.locator('.sf-meta li').allTextContents();
- expect(meta[0]).toMatch(/^Datos a /);expect(meta[1]).toMatch(/^Detectado por Alicanto el /);
+ expect(meta[0]).toMatch(/^Datos al \d{1,2} \p{L}+ \d{4} \(corte; captura manual, próxima actualización pendiente\)$/u);expect(meta[1]).toMatch(/^Detectado por Alicanto el /);
+ await expect(body.locator('.sf-kick')).toContainText('· corte ');
+  await expect(body.locator('.sf-headline')).not.toContainText('Fonasa');
  await expect(body).not.toContainText('publicado por DIPRES');
  await expect(body.locator('.sf-reading')).toHaveCount(0);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
