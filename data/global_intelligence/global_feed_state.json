@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "as_of": "2026-11-03",
-  "generated_at": "2026-11-03T20:57:08.365118+00:00",
+  "generated_at": "2026-11-04T01:01:05.052996+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,8 +16,8 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-11-03",
-    "items_last_2_days": 2,
-    "items_last_7_days": 5,
+    "items_last_2_days": 4,
+    "items_last_7_days": 9,
     "status": "fresh",
     "stale_after_days": 2
   },
@@ -37,12 +37,20 @@
     [
       "fda",
       "FDA"
+    ],
+    [
+      "paho",
+      "OPS"
     ]
   ],
   "held": {
     "feed_not_authorized_for_display": 17,
+    "not_global_interest:facility_opening": 1,
+    "not_global_interest:no_global_interest_signal": 27,
+    "not_global_interest:source_rule_exclusion": 5,
+    "not_material_or_unverified": 322,
     "not_relevant_or_undated": 67,
-    "publication_activation_pending_paho": 560,
+    "official_title_without_executive_keyword": 174,
     "publication_activation_pending_who": 254
   },
   "capped_per_source_day": 0,
@@ -51,29 +59,33 @@
   "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
   "weekly_signal": [
     {
+      "segment": "healthtech",
+      "label_es": "Salud digital y dispositivos",
+      "count": 4,
+      "item_ids": [
+        "9f6107626b27a8db0e39",
+        "5ef15afad6e02a4dcb95",
+        "b0ede540040d093065b1",
+        "4ab03f48e76c068e3ca6"
+      ]
+    },
+    {
       "segment": "providers",
       "label_es": "Prestadores",
-      "count": 3,
+      "count": 4,
       "item_ids": [
+        "0e07c3f53457efbd4a25",
         "bfdd8633fe174ab8e461",
         "5bdb36cd4ca372a4d2e0",
         "0acfc72ecc068e88b4a6"
       ]
     },
     {
-      "segment": "pharma",
-      "label_es": "Medicamentos y farma",
-      "count": 2,
-      "item_ids": [
-        "5ef15afad6e02a4dcb95",
-        "6041c398b60aaa07606b"
-      ]
-    },
-    {
       "segment": "regulation",
       "label_es": "Regulación",
-      "count": 2,
+      "count": 3,
       "item_ids": [
+        "9f6107626b27a8db0e39",
         "5ef15afad6e02a4dcb95",
         "6041c398b60aaa07606b"
       ]
@@ -136,6 +148,88 @@
       }
     },
     {
+      "id": "b0ede540040d093065b1",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO promotes the use of artificial intelligence and digital tools to strengthen epidemic intelligence in the Region",
+      "url": "https://www.paho.org/en/news/3-11-2026-paho-promotes-use-artificial-intelligence-and-digital-tools-strengthen-epidemic",
+      "published_at": "2026-11-03",
+      "segments": [
+        "healthtech",
+        "ai_in_health"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Salud digital y dispositivos",
+        "IA en salud"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "0e07c3f53457efbd4a25",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO expands partnerships with Barcelona institutions to drive innovation and strengthen health systems in the Americas",
+      "url": "https://www.paho.org/en/news/2-11-2026-paho-expands-partnerships-barcelona-institutions-drive-innovation-and-strengthen",
+      "published_at": "2026-11-02",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
       "id": "6041c398b60aaa07606b",
       "source": "fda",
       "source_label": "FDA",
@@ -191,6 +285,85 @@
         "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
         "change_notice_es": null,
         "cache_key": "37b79ecbfcf95d55b946c748eef28b75"
+      }
+    },
+    {
+      "id": "9f6107626b27a8db0e39",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO launches regional guidance and COMAlerta digital tool to strengthen community-based early warning",
+      "url": "https://www.paho.org/en/news/30-10-2026-paho-launches-regional-guidance-and-comalerta-digital-tool-strengthen-community",
+      "published_at": "2026-10-30",
+      "segments": [
+        "regulation",
+        "healthtech"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 95,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "4ab03f48e76c068e3ca6",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "La OPS y el INS pilotan una herramienta digital para evaluar sitios centinela de influenza y otros virus respiratorios en Colombia",
+      "url": "https://www.paho.org/es/noticias/29-10-2026-ops-ins-pilotan-herramienta-digital-para-evaluar-sitios-centinela-influenza",
+      "published_at": "2026-10-29",
+      "segments": [
+        "healthtech"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "source_in_spanish"
       }
     },
     {
@@ -448,6 +621,48 @@
       }
     },
     {
+      "id": "63c155d2664a3e386547",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO and Project ECHO Join Efforts to Strengthen Health Emergency Workforce Capacities Through Digital Learning",
+      "url": "https://www.paho.org/en/news/23-10-2026-paho-and-project-echo-join-efforts-strengthen-health-emergency-workforce-capacities",
+      "published_at": "2026-10-23",
+      "segments": [
+        "providers",
+        "healthtech"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
       "id": "1e2dda4154b36b712837",
       "source": "ema",
       "source_label": "EMA",
@@ -670,6 +885,46 @@
       }
     },
     {
+      "id": "52e5ac97af6c4637cf87",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Regional study on mental health and working conditions seeks participation from nursing and medical professionals in 17 countries",
+      "url": "https://www.paho.org/en/news/15-10-2026-regional-study-mental-health-and-working-conditions-seeks-participation-nursing-and",
+      "published_at": "2026-10-15",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
       "id": "05518be530da51b752cf",
       "source": "ec_health",
       "source_label": "Comisión Europea",
@@ -826,6 +1081,53 @@
       }
     },
     {
+      "id": "05b21e98add9d71ab8dd",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "WHO issues first global guidelines on child and adolescent obesity",
+      "url": "https://www.paho.org/en/news/8-10-2026-who-issues-first-global-guidelines-child-and-adolescent-obesity",
+      "published_at": "2026-10-08",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "summary_es": "La WHO emite las primeras directrices mundiales sobre obesidad infantil y adolescente.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "0f8c03e2b71b2bef1b5d6fe9f1c848dc"
+      }
+    },
+    {
       "id": "4380c2b4d22a1571b97c",
       "source": "ema",
       "source_label": "EMA",
@@ -929,6 +1231,93 @@
         "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
         "change_notice_es": "Traducción de Alicanto",
         "cache_key": "a17b1b0b221762be5d0dbaa3c5857451"
+      }
+    },
+    {
+      "id": "4a10d661d54e0ec6cb43",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO and Curaçao sign first Country Cooperation Strategy to strengthen health system resilience and primary health care",
+      "url": "https://www.paho.org/en/news/1-10-2026-paho-and-curacao-sign-first-country-cooperation-strategy-strengthen-health-system",
+      "published_at": "2026-10-01",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "summary_es": "PAHO y Curaçao firmaron su primera Estrategia de Cooperación País para fortalecer la resiliencia del sistema de salud y la atención primaria.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "48c286ef079237a50ea8d6da0147070e"
+      }
+    },
+    {
+      "id": "b9e44cd1593b0f027a32",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Global Pharmacovigilance Authorities Gather in Costa Rica to Advance Medicines and Vaccines Safety",
+      "url": "https://www.paho.org/en/news/1-10-2026-global-pharmacovigilance-authorities-gather-costa-rica-advance-medicines-and",
+      "published_at": "2026-10-01",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
       }
     },
     {
@@ -1046,6 +1435,86 @@
       }
     },
     {
+      "id": "db2f6d1c2cbedb3e9a86",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO and Sint Maarten sign Country Cooperation Strategy to strengthen health system and improve health outcomes",
+      "url": "https://www.paho.org/en/news/29-9-2026-paho-and-sint-maarten-sign-country-cooperation-strategy-strengthen-health-system-and",
+      "published_at": "2026-09-29",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "ccd2dbe6f2274c73903f",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Innovative country experiences show how primary health care can accelerate health system transformation in the Americas",
+      "url": "https://www.paho.org/en/news/29-9-2026-innovative-country-experiences-show-how-primary-health-care-can-accelerate-health",
+      "published_at": "2026-09-29",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
       "id": "d2674c5a4f395eda7822",
       "source": "fda",
       "source_label": "FDA",
@@ -1099,6 +1568,213 @@
         "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
         "change_notice_es": null,
         "cache_key": "5b725a0b871d4d40eebe7187e74375e3"
+      }
+    },
+    {
+      "id": "3f98024f430149a84194",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Honduras advances in strengthening nursing personnel and health workforce governance",
+      "url": "https://www.paho.org/en/news/25-9-2026-honduras-advances-strengthening-nursing-personnel-and-health-workforce-governance",
+      "published_at": "2026-09-25",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "262203997581a84d720d",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Violence against health workers remains a challenge for health systems in the Americas, PAHO warns",
+      "url": "https://www.paho.org/en/news/24-9-2026-violence-against-health-workers-remains-challenge-health-systems-americas-paho-warns",
+      "published_at": "2026-09-24",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "177d9f635c6b75b67502",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "From Paper to Real-Time Intelligence: PAHO/WHO Supports Jamaica’s Digital Transformation of Road Crash Investigations",
+      "url": "https://www.paho.org/en/news/23-9-2026-paper-real-time-intelligence-pahowho-supports-jamaicas-digital-transformation-road",
+      "published_at": "2026-09-23",
+      "segments": [
+        "healthtech"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "18d01540be47525f85d7",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "WHO publishes global research agenda on traditional, complementary and integrative medicine",
+      "url": "https://www.paho.org/en/news/21-9-2026-who-publishes-global-research-agenda-traditional-complementary-and-integrative",
+      "published_at": "2026-09-21",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "7d8ec099e01b14f06c82",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Nicaragua strengthens its readiness for the responsible adoption of artificial intelligence in health",
+      "url": "https://www.paho.org/en/news/17-9-2026-nicaragua-strengthens-its-readiness-responsible-adoption-artificial-intelligence",
+      "published_at": "2026-09-17",
+      "segments": [
+        "ai_in_health"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "IA en salud"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "summary_es": "Nicaragua fortalece su preparación para adoptar responsablemente la inteligencia artificial en salud.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "05caf8fcebfa9a9ac81a0bbc9f776b29"
       }
     },
     {
@@ -1160,6 +1836,198 @@
       }
     },
     {
+      "id": "0e11c96429d653d2e332",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Dominica advances health workforce planning with development of centralized workforce database",
+      "url": "https://www.paho.org/en/news/15-9-2026-dominica-advances-health-workforce-planning-development-centralized-workforce",
+      "published_at": "2026-09-15",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
+    {
+      "id": "f35d595aa562e82fe16f",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "First mRNA Vaccine Developed by Bio-Manguinhos/Fiocruz with Support from PAHO and WHO Advances to Clinical Trials in Brazil",
+      "url": "https://www.paho.org/en/news/14-9-2026-first-mrna-vaccine-developed-bio-manguinhosfiocruz-support-paho-and-who-advances",
+      "published_at": "2026-09-14",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "run_cap"
+      }
+    },
+    {
+      "id": "d8e07172a870d3694565",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Seguro Social de Guatemala fortalece la gestión de antirretrovirales con cooperación técnica de la OPS",
+      "url": "https://www.paho.org/es/noticias/10-9-2026-seguro-social-guatemala-fortalece-gestion-antirretrovirales-con-cooperacion",
+      "published_at": "2026-09-10",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
+      "id": "cf71ca0b4e4bb3b122f5",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Salud y OPS en Argentina colaboran en el desarrollo de estrategias y registro nominal de vacunación electrónico en tiempo real en la región de Cuyo",
+      "url": "https://www.paho.org/es/noticias/7-9-2026-salud-ops-argentina-colaboran-desarrollo-estrategias-registro-nominal-vacunacion",
+      "published_at": "2026-09-07",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
+      "id": "aba890b2cd30d6d2853c",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Bolivia presenta en Brasilia su Plan Nacional de Salud 2026-2030 enfocado en la reingeniería del sistema sanitario y la transformación digital",
+      "url": "https://www.paho.org/es/noticias/3-9-2026-bolivia-presenta-brasilia-su-plan-nacional-salud-2026-2030-enfocado-reingenieria",
+      "published_at": "2026-09-03",
+      "segments": [
+        "healthtech"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
       "id": "55f97ea4aaa05a231a6e",
       "source": "fda",
       "source_label": "FDA",
@@ -1216,18 +2084,418 @@
         "change_notice_es": null,
         "cache_key": "474738767e426d44dc6aa4eabe144724"
       }
+    },
+    {
+      "id": "14fca5ddec979f05df8f",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Bolivia inicia fortalecimiento de las Redes Integradas de Servicios de Salud y la APS en el marco de la Estrategia Global de Acceso y Cobertura Universal de Salud",
+      "url": "https://www.paho.org/es/noticias/1-9-2026-bolivia-inicia-fortalecimiento-redes-integradas-servicios-salud-aps-marco-0",
+      "published_at": "2026-09-01",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
+      "id": "f3ee62e3a78744272fd8",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Maternal vaccination protects mothers and newborns, but coverage gaps persist across the Americas",
+      "url": "https://www.paho.org/en/news/1-9-2026-maternal-vaccination-protects-mothers-and-newborns-coverage-gaps-persist-across",
+      "published_at": "2026-09-01",
+      "segments": [
+        "payers",
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento",
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "run_cap"
+      }
+    },
+    {
+      "id": "1bebfb5328aa9254b79d",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Uruguay assesses its institutional readiness to integrate artificial intelligence into public health",
+      "url": "https://www.paho.org/en/news/31-8-2026-uruguay-assesses-its-institutional-readiness-integrate-artificial-intelligence",
+      "published_at": "2026-08-31",
+      "segments": [
+        "ai_in_health"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "IA en salud"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "run_cap"
+      }
+    },
+    {
+      "id": "925c90e30af9241a1093",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO supports the strengthening of nursing personnel and health workforce governance in Guatemala",
+      "url": "https://www.paho.org/en/news/21-8-2026-paho-supports-strengthening-nursing-personnel-and-health-workforce-governance",
+      "published_at": "2026-08-21",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "run_cap"
+      }
+    },
+    {
+      "id": "955769db03179fb8c54a",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "La Legislatura de Jujuy declaró de interés al acuerdo de cooperación técnica entre la OPS y el Ministerio de Salud de la provincia",
+      "url": "https://www.paho.org/es/noticias/20-8-2026-legislatura-jujuy-declaro-interes-al-acuerdo-cooperacion-tecnica-entre-ops",
+      "published_at": "2026-08-20",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
+      "id": "95429adb3956a68da943",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Saint Kitts and Nevis advances health workforce planning with rollout of centralised health workforce database",
+      "url": "https://www.paho.org/en/news/17-8-2026-saint-kitts-and-nevis-advances-health-workforce-planning-rollout-centralised-health",
+      "published_at": "2026-08-17",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "run_cap"
+      }
+    },
+    {
+      "id": "967443fdba171eee29b5",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO/WHO promotes analysis of the economic burden of respiratory viruses and the impact of vaccination in Panama",
+      "url": "https://www.paho.org/en/news/13-8-2026-pahowho-promotes-analysis-economic-burden-respiratory-viruses-and-impact-vaccination",
+      "published_at": "2026-08-13",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "run_cap"
+      }
+    },
+    {
+      "id": "72f803dcc7a55ab60f38",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "México fortalece el monitoreo, la evaluación y la interoperabilidad de HEARTS",
+      "url": "https://www.paho.org/es/noticias/11-8-2026-mexico-fortalece-monitoreo-evaluacion-interoperabilidad-hearts",
+      "published_at": "2026-08-11",
+      "segments": [
+        "healthtech"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
+      "id": "befc123e56959065d4b3",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO urges countries to strengthen vaccination and surveillance amid rising measles cases in the Americas",
+      "url": "https://www.paho.org/en/news/8-8-2026-paho-urges-countries-strengthen-vaccination-and-surveillance-amid-rising-measles",
+      "published_at": "2026-08-08",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 95,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "run_cap"
+      }
+    },
+    {
+      "id": "3728bff5d5c6e77419d6",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Guyana advances its assistive technology policy with PAHO support",
+      "url": "https://www.paho.org/en/news/6-8-2026-guyana-advances-its-assistive-technology-policy-paho-support",
+      "published_at": "2026-08-06",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-03",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "pending",
+        "summary_reason": "run_cap"
+      }
     }
   ],
   "translation": {
     "translated": 11,
-    "summarized": 2,
-    "from_cache": 13,
-    "verification_failed": 6,
-    "review_failed": 0,
-    "not_allowed": 2,
+    "summarized": 5,
+    "from_cache": 14,
+    "verification_failed": 19,
+    "review_failed": 13,
+    "not_allowed": 23,
     "pending": 0,
-    "source_in_spanish": 0
+    "source_in_spanish": 7
   },
-  "ai_text_items": 13,
+  "ai_text_items": 16,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget"
 }
