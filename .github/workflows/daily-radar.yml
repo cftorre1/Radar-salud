@@ -86,27 +86,38 @@ jobs:
       # Batches: stop taking new items after 60 min; the rest waits for the next run.
       RADAR_PROCESSING_SECONDS: 3600
     steps:
+      # Step timeouts (4-nov-2026): a stalled step fails alone instead of consuming the 180-min job budget
+      # that the always() preservation step at the end needs.
       - uses: actions/checkout@v4
         with:
           ref: staging
           fetch-depth: 0
+        timeout-minutes: 15
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install package
-        run: pip install -e . pytest
+        timeout-minutes: 10
+        run: pip install -e . pytest pyyaml
       - name: Core deterministic tests before collection
         # Failing test names surface as annotations (job logs are not readable from the orchestrator).
+        # Publication gate (4-nov-2026, config/publication_test_policy.json): every test blocks except files
+        # listed as internal tooling (scheduler gate, watchdogs, orchestrator/PMO); those are reported only.
+        # Anything unexpected (no JUnit report, pytest exit other than 0/1) blocks. Tests run without the
+        # OpenAI key, as locally: no test can spend money and CI and local runs take the same code paths.
+        timeout-minutes: 45
+        env:
+          OPENAI_API_KEY: ''
         run: |
           set +e
-          python -m pytest -q -rfE --ignore=tests/test_reviewer.py --ignore=tests/test_beta_source_runtime_fast.py 2>&1 | tee "$RUNNER_TEMP/core-tests.txt"
+          python -m pytest -q -rfE --junitxml="$RUNNER_TEMP/core-tests.xml" --ignore=tests/test_reviewer.py --ignore=tests/test_beta_source_runtime_fast.py 2>&1 | tee "$RUNNER_TEMP/core-tests.txt"
           rc=${PIPESTATUS[0]}
-          grep -E '^(FAILED|ERROR) ' "$RUNNER_TEMP/core-tests.txt" | head -20 | sed 's/^/::error title=Core test::/'
-          grep -E '^E  ' "$RUNNER_TEMP/core-tests.txt" | head -10 | sed 's/^/::error title=Core test detail::/'
-          exit $rc
+          python scripts/publication_test_gate.py --junit "$RUNNER_TEMP/core-tests.xml" --pytest-rc "$rc" --policy config/publication_test_policy.json
       - name: Preserve paid Terra analyses
+        timeout-minutes: 10
         run: python scripts/seed_analysis_cache.py
       - name: Run incremental collectors
+        timeout-minutes: 95  # inner 'timeout 90m' + margin
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.rebuild != true }}
         env:
           RADAR_DAILY_WINDOW_DAYS: 30
@@ -115,6 +126,7 @@ jobs:
           limit=$(python -c 'import os; n=int(os.environ["REQUESTED_LIMIT"]); print(n if 1 <= n <= 400 else 200)')
           timeout --signal=TERM 90m python -m radar_salud.engine_cli --limit "$limit"
       - name: Controlled rebuild using cache and persistent pending queue
+        timeout-minutes: 95  # inner 'timeout 90m' + margin
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.rebuild == true }}
         env:
           REQUESTED_LIMIT: ${{ inputs.processing_limit || 200 }}
@@ -124,12 +136,15 @@ jobs:
       # Dirección 28-oct-2026: PASS publishes, FAIL holds (data/stats_fichas/POLICY.md).
       - name: Statistics fichas
         continue-on-error: true
+        timeout-minutes: 15
         run: python scripts/run_stats_fichas.py
       - name: Export public snapshot and source health
+        timeout-minutes: 15
         run: python scripts/export_web_snapshot.py --input data/history/superintendencia_signals.json
       - name: Live beta source validation (degrades beta, never blocks core)
         id: beta_validation
         continue-on-error: true
+        timeout-minutes: 15
         run: python -m pytest -q tests/test_beta_source_runtime_fast.py
       - name: Record beta validation status
         if: always()
@@ -138,16 +153,19 @@ jobs:
           echo "Outcome: ${{ steps.beta_validation.outcome }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Beta source failures remain repair-required but do not suppress independent core collection." >> "$GITHUB_STEP_SUMMARY"
       - name: Snapshot reviewer after collection
+        timeout-minutes: 15
         run: python -m pytest -q tests/test_reviewer.py
       - name: Observe Global snapshot freshness without collecting or publishing
         if: always()
         continue-on-error: true
+        timeout-minutes: 10
         env:
           OPENAI_API_KEY: ''
         run: python scripts/check_global_source_freshness.py --output "data/audits/global_integration_2026_10_11/freshness/${GITHUB_RUN_ID}.json"
       - name: Read explicit Global daily activation policy
         id: global_policy
         if: always()
+        timeout-minutes: 5
         run: python -c 'import json; c=json.load(open("config/global_discovery.json")); print("enabled=" + ("true" if c.get("daily_collection_enabled") is True else "false"))' >> "$GITHUB_OUTPUT"
       - name: Independent Global metadata discovery (no paid AI or publication)
         id: global_discovery
@@ -159,6 +177,7 @@ jobs:
         run: python scripts/discover_global_sources.py
       - name: Preserve Global discovery health after independent core exports
         if: ${{ always() && steps.global_discovery.outcome == 'success' }}
+        timeout-minutes: 10
         run: python scripts/discover_global_sources.py --mirror-health
       # Dirección 29-oct-2026 authorized budgeted Spanish translation/summaries of Global items (two-layer check).
       - name: Licensed Global feed metadata + rights-gated Spanish translation (budgeted; no publication)
@@ -168,6 +187,7 @@ jobs:
         run: python scripts/discover_global_feeds.py
       - name: Preserve queue, paid usage and checkpoints on failure
         if: always()
+        timeout-minutes: 15
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
@@ -188,6 +208,7 @@ jobs:
           done
           git push --dry-run origin HEAD:staging
       - name: Request checked staging preview
+        timeout-minutes: 5
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run staging-preview.yml --ref staging
