@@ -279,3 +279,8 @@ POLICY.md (sección "Editorial sessions"); aquí van la regla de producto, la se
   fixtures sintéticos armados desde un recibo de texto truncado (40 filas) nunca mostraron el final de la tabla;
   revisar las últimas filas sobre el Total de un archivo real antes de dar por validado un esquema. Una cuenta
   numérica negativa o con decimales ahora registra su valor en el HOLD (`HOLD_GES_INVALID_COUNT … value`).
+
+- 3-nov-2026 (parser v5): la corrida real con v4 retuvo de nuevo en «Sin Problema de Salud Informado» con la etiqueta
+  exacta: la celda del N° de esa fila trae una marca en las planillas reales y el recibo de texto (truncado) no la
+  muestra. Lección: un HOLD de fila o celda debe registrar lo que vio (etiqueta, columna, seguro, valor), para no gastar
+  una corrida diaria en adivinar. v5 acepta cualquier marca no numérica en esa fila exacta y la anota en `code_cell`.

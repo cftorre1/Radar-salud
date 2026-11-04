@@ -33,7 +33,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-GES_PARSER = "ges_ytd_cuts_v4"  # mirrored in stats_fichas.GES_PARSER and data_insights.GES_PARSER
+GES_PARSER = "ges_ytd_cuts_v5"  # mirrored in stats_fichas.GES_PARSER and data_insights.GES_PARSER
 MONTHS = {"ene": 1, "feb": 2, "mar": 3, "abr": 4, "may": 5, "jun": 6, "jul": 7, "ago": 8, "sep": 9, "set": 9,
           "oct": 10, "nov": 11, "dic": 12}
 MONTH_NAMES = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
@@ -108,6 +108,18 @@ def _count(v: Any, where: str) -> int | None:
     if re.fullmatch(r"\d{1,3}(?:\.\d{3})+|\d+", s):
         return int(s.replace(".", ""))
     raise GesHold("HOLD_GES_INVALID_COUNT", at=where, value=norm(v)[:20])
+
+
+def _pair(data: list, c: int, where: str, label: str, kind: str, per: str, title: str | None) -> list:
+    """Fonasa and Isapre counts of one column group; an invalid cell names its row label, column and insurer."""
+    out = []
+    for i, ins in enumerate(("fonasa", "isapre")):
+        try:
+            out.append(_count(data[c + i], where))
+        except GesHold as h:
+            h.extra.update(label=label[:40], column=f"{kind}:{per}", column_title=(title or "")[:80], insurer=ins)
+            raise
+    return out
 
 
 def _code(v: Any) -> int | None:
@@ -198,16 +210,23 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows:
         if code is None:
             if not label and not norm(data[code_col]):
                 continue  # blank line, or the line of cut dates under the header (no code, no label)
-            if UNASSIGNED.match(FOOTNOTE.sub("", lab).strip()) and not norm(data[code_col]):
+            # v5 (3-nov-2026): the real sheets carry a marker in the code cell of this row (the v4 run held on 'Año 2026'
+            # r97 and 'Año 2025' r94 with an exact label match); any non-numeric marker is accepted and recorded.
+            if UNASSIGNED.match(FOOTNOTE.sub("", lab).strip()):
                 if unassigned is not None:
                     raise GesHold("HOLD_GES_DUPLICATE_PROBLEM", sheet=sheet, row=offset, code="sin_problema")
                 unassigned = {"label": FOOTNOTE.sub("", label).strip(), "row": offset}
+                if norm(data[code_col]):
+                    unassigned["code_cell"] = norm(data[code_col])[:20]
                 for kind, per in want:
                     c = groups[(kind, per)]
-                    pair = [_count(data[c], f"{sheet}!{offset}"), _count(data[c + 1], f"{sheet}!{offset}")]
+                    pair = _pair(data, c, f"{sheet}!{offset}", label, kind, per, titles.get((kind, per)))
                     unassigned.setdefault(kind, {})[per] = None if pair == [None, None] else pair
                 continue
             raise GesHold("HOLD_GES_ROW_UNRECOGNIZED", sheet=sheet, row=offset, label=label[:40])
+        if UNASSIGNED.match(FOOTNOTE.sub("", lab).strip()):
+            # Never ranked as a GES problem, even if a sheet numbers it (it would add a problem N°n+1 to the table).
+            raise GesHold("HOLD_GES_UNASSIGNED_NUMBERED", sheet=sheet, row=offset, code=code, label=label[:40])
         if not re.search(r"[a-záéíóúñ]", label, re.I):
             raise GesHold("HOLD_GES_LABEL_NOT_TEXT", sheet=sheet, row=offset, label=label[:40])
         key = str(code)
@@ -216,7 +235,7 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows:
         rec = {"code": code, "label": FOOTNOTE.sub("", label).strip(), "row": offset}
         for kind, per in want:
             c = groups[(kind, per)]
-            pair = [_count(data[c], f"{sheet}!{offset}"), _count(data[c + 1], f"{sheet}!{offset}")]
+            pair = _pair(data, c, f"{sheet}!{offset}", label, kind, per, titles.get((kind, per)))
             rec.setdefault(kind, {})[per] = None if pair == [None, None] else pair
         problems[key] = rec
     if total is None:
@@ -233,7 +252,7 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows:
     sums = []
     for kind, per in want:
         c = groups[(kind, per)]
-        declared = [_count(data[c], f"{sheet}!{total_row}"), _count(data[c + 1], f"{sheet}!{total_row}")]
+        declared = _pair(data, c, f"{sheet}!{total_row}", norm(data[name_col]), kind, per, titles.get((kind, per)))
         if None in declared:
             raise GesHold("HOLD_GES_TOTAL_MISSING", sheet=sheet, row=total_row, column=f"{kind}:{per}")
         rows_ = list(problems.values()) + ([unassigned] if unassigned else [])
@@ -300,6 +319,8 @@ def compact_sheet(sh: dict, *, labels: bool) -> dict:
         out["labels"] = {k: p["label"] for k, p in sh["problems"].items()}
     if sh.get("unassigned"):
         out["unassigned"] = [sh["unassigned"]["row"], *(x for c in cols for x in pair(sh["unassigned"], c))]
+        if sh["unassigned"].get("code_cell"):
+            out["unassigned_code_cell"] = sh["unassigned"]["code_cell"]  # the marker the SIS puts in its N° cell
     return out
 
 
@@ -323,6 +344,8 @@ def expand_sheet(st: dict) -> dict:
     if st.get("unassigned"):
         vals = st["unassigned"]
         unassigned = {"row": vals[0], "label": "Sin problema de salud informado"}
+        if st.get("unassigned_code_cell"):
+            unassigned["code_cell"] = st["unassigned_code_cell"]
         for j, c in enumerate(cols):
             kind, per = c.split(":", 1)
             pr = vals[1 + 2 * j:3 + 2 * j]

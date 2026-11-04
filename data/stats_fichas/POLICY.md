@@ -37,7 +37,7 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
    - the declared period equals the last month in the file;
    - the release has a single hash.
    For **F4 GES** (measure decided by Dirección on 3-nov-2026, "Ene–jun vs ene–jun"):
-   - the parser `ges_ytd_cuts_v4` (`src/radar_salud/ges_workbook.py`): the sheets of the reporting year, the previous year and the one before are pinned by name; each sheet has a two-row header (column groups over FONASA/ISAPRE); in every column read the problem rows add up to the declared total, Fonasa and Isapre;
+   - the parser `ges_ytd_cuts_v5` (`src/radar_salud/ges_workbook.py`): the sheets of the reporting year, the previous year and the one before are pinned by name; each sheet has a two-row header (column groups over FONASA/ISAPRE); in every column read the problem rows add up to the declared total, Fonasa and Isapre;
    - table structure (review of PR #129): problems numbered 1…n with no gap or repeat, n ≥ `F4.capture.min_problems` (80); 'Subtotal' rows are skipped; the 'Total' row is the last labelled row (a coded or labelled row after it, e.g. an intermediate 'Total Decreto…', HOLDs `HOLD_GES_ROWS_AFTER_TOTAL`);
    - the cumulative cuts are stored as evidence of kind `cumulative_input`: never in the pool of showable numbers, never compared as revisions;
    - **first publication gate** (`F4.first_pass_requires_review`): until a year-to-date F4 ficha is live, a PASS is written as HOLD `awaiting_first_review` with the full rendered ficha in `hold/f4_ges-<period>.json`; it publishes only when `F4.first_review` records `reviewed_by` and `reviewed_sha256` equal to that release's workbook SHA-256;
