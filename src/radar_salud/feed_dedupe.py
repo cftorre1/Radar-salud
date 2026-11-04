@@ -23,7 +23,7 @@ import re
 import unicodedata
 from datetime import date
 
-MAX_DAYS = 2
+MAX_DAYS = 1  # review 4 of #135: a recurring headline two days later is a new report
 MIN_SHARED = 3
 MIN_JACCARD = 0.35
 MIN_FIGURES = 2
@@ -212,8 +212,10 @@ def same_event(a: dict, b: dict) -> dict | None:
     fa, fb = figures(_title(a)), figures(_title(b))
     figs = fa & fb
     # Figures path: ≥2 shared figures and no figure in one title only ('3 muertes' / '4 muertes' never match).
-    by_figures = len(figs) >= MIN_FIGURES and fa == fb and jac >= MIN_JACCARD
-    if not (by_figures or same_words(_title(a), _title(b))):
+    # Single-digit figures ('2 muertes') must agree but never count toward the minimum (review 4 of #135).
+    by_figures = len({f for f in figs if len(f.split(",")[0]) >= 2}) >= MIN_FIGURES and fa == fb and jac >= MIN_JACCARD
+    identical = same_words(_title(a), _title(b))
+    if not (by_figures or identical):
         return None
     return {"shared_terms": sorted(shared), "shared_figures": sorted(figs), "jaccard": round(jac, 3),
             "days_apart": abs((da - db).days)}

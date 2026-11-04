@@ -139,6 +139,18 @@ ADVERSARIAL += [  # third review: thousands separators, law numbers, single digi
     ("Minsal amplía vacuna VPH a adolescentes", "Minsal amplía vacuna BCG a adolescentes"),
 ]
 
+ADVERSARIAL += [  # fourth review: small figures carrying the match
+    ("Clínica en Temuco despide a 30 enfermeras y cierra 2 pabellones",
+     "Clínica en Temuco despide a 30 técnicos y cierra 2 pabellones"),
+]
+
+
+def test_identical_titles_two_days_apart_stay_separate():
+    t = "Hospital suspende 40 cirugías y posterga 120 consultas por paro"
+    a, b = news("Ministerio de Salud", t, stype="official"), news("Pulso / La Tercera", t, day="2026-10-30")
+    assert len(fd.merge_same_event([a, b])) == 2
+    assert len(fd.merge_same_event([a, dict(b, event_date="2026-10-29")])) == 1
+
 
 def test_figures_are_read_whole_and_identifiers_are_not_figures():
     assert fd.figures("$1.200 millones a 3.000 afiliados") == {"1200", "3000"}
