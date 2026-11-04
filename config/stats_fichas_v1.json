@@ -1402,13 +1402,39 @@
     "F7": {
       "slug": "f7_financiamiento",
       "label": "Financiamiento público",
-      "status": "planned",
+      "status": "active",
       "group": "sector_publico",
-      "cadence": "mensual",
+      "source_short": "DIPRES",
+      "source_name": "Dirección de Presupuestos",
+      "datos_kpis": ["ejecucion_partida", "ejecucion_fonasa"],
+      "cadence": "captura manual",
+      "cadence_phrase": "captura manual, próxima actualización pendiente",
       "series": [
         "dipres_partida_16"
       ],
-      "kpis": {}
+      "primary_series": "dipres_partida_16",
+      "input": "data/market/dipres_health_budget.json (lane DIPRES de market_sources.collect_dipres); sin descargas nuevas",
+      "scopes": ["Fonasa", "Financiamiento"],
+      "supersedes": {"event_titles_prefix": [], "stat_families": []},
+      "calendar": {"expected_release_interval_days": 31, "late_tolerance_days": 30, "source": "sin calendario DIPRES verificado y sin actualización programada: la lane DIPRES se captura a mano (última captura 11-oct-2026). La fecha base es la captura del documento por Alicanto (detección), nunca una publicación"},
+      "lectura_enabled": false,
+      "first_pass_requires_review": true,
+      "first_review": {"reviewed_by": null, "reviewed_at": null, "reviewed_sha256": null, "rule": "La primera ficha F7 queda en HOLD awaiting_first_review con la ficha completa en hold/f7_financiamiento-<período>.json. Publica solo cuando Dirección la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = evidence_sha256 de esa ficha (SHA-256 de la lista ordenada URL + SHA-256 de los documentos que usa). Después rige la política normal."},
+      "templates": {
+        "kicker": "{label} · corte {cut_label}",
+        "headline": "{lead}",
+        "kicker_meta": "datos al {cut_label} (corte; {cadence_phrase}) · publicado por DIPRES el {published_label} · montos nominales",
+        "kicker_meta_detected": "datos al {cut_label} (corte; {cadence_phrase}) · detectado por Alicanto el {published_label} · montos nominales",
+        "headline_rule": "El titular habla solo de la Partida 16, a su propio corte; otro corte nunca va al lado sin rótulo. % de ejecución = gasto devengado acumulado / presupuesto vigente del mismo documento; nunca contra 100% del año ni contra la ley inicial. Sin causas."
+      },
+      "tabs": [{"id": "salud", "label": "Salud (Partida 16)"}, {"id": "fonasa", "label": "Fonasa"}],
+      "builder_version": "f7_ejecucion_v1",
+      "kpis": {
+        "ejecucion_partida": {"label": "Ejecución Salud (Partida 16)", "kind": "share", "formula": "gasto devengado acumulado / presupuesto vigente × 100, ambos del mismo informe de ejecución de la Partida 16", "denominator": "Presupuesto vigente de la Partida 16 en el mismo documento y corte", "period_rule": "Acumulado enero–mes del corte; a/a solo contra el mismo mes del año anterior y el mismo tipo de documento", "threshold": null, "pitfalls": ["Nunca sumar capítulos o programas para obtener la partida (niveles anidados y programas financiados por transferencias).", "Una subpartida (p. ej. 1603 en el proyecto 2027) es otro perímetro: no es la partida.", "Montos nominales hasta tener la serie UF."]},
+        "ejecucion_fonasa": {"label": "Ejecución programa Fonasa", "kind": "share", "formula": "ejecución acumulada / presupuesto vigente × 100 del capítulo 02, programa 01, mismo documento (en el cuadro comparativo la columna «Ejecución» no declara base contable: se escribe ejecutó, no devengó)", "denominator": "Presupuesto vigente del programa en el mismo documento", "period_rule": "El programa va en la tarjeta solo si su corte es el de la partida; si no, el capítulo 02 a ese corte; un corte distinto se rotula con su distancia (\"un mes después del corte de la partida\")", "threshold": null, "pitfalls": ["El capítulo 02 y el programa 02.01 vienen de documentos distintos: no se comparan ni se suman."]},
+        "vigente_partida": {"label": "Presupuesto vigente Salud", "kind": "level", "formula": "presupuesto vigente (modificado) declarado; vs. ley inicial del mismo informe", "denominator": "Ley inicial (para la variación)", "period_rule": "Al corte", "threshold": null, "pitfalls": ["Nominal."]},
+        "devengado_partida": {"label": "Gasto devengado Salud", "kind": "accumulated_flow", "formula": "gasto devengado acumulado declarado", "denominator": null, "period_rule": "Enero–mes del corte; no se suman meses", "threshold": null, "pitfalls": ["Es acumulado, no flujo mensual."]}
+      }
     },
     "F8": {
       "slug": "f8_presion",
