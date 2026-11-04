@@ -29,7 +29,7 @@ test('F2 ficha shows the siniestralidad split and the SIL topic',async({page})=>
  await expect(body.locator('.sf-reading')).toHaveCount(0);  // Lectura off for F2: no model call
  await expect(body).not.toContainText(/se explica por|debido a|gracias a/i);
  for(const r of await inside(page))expect(r.bad,r.chart).toEqual([]);
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  await shot(page,'index');
  // Siniestralidad: hero = the two components and the total, dot (this year) vs ring (same months a year earlier).
  await body.locator('.sf-row').nth(4).click();
@@ -39,14 +39,14 @@ test('F2 ficha shows the siniestralidad split and the SIL topic',async({page})=>
  await expect(hero).toBeVisible();
  await expect(hero.locator('svg circle')).toHaveCount(6);  // 3 rows × (dot + ring)
  for(const r of await inside(page))expect(r.bad,r.chart).toEqual([]);
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  await shot(page,'siniestralidad');
  // Per Isapre, prestaciones and SIL side by side in 'Ver datos'.
  const by=panel.locator('[data-chart="f2-siniestralidad-isapres"]');
  await by.locator('summary').click();
  expect(await by.locator('thead th').allTextContents()).toEqual(['Isapre','Prestaciones','SIL','Total','Ingresos (MM$)']);
  await expect(by.locator('tbody tr').last()).toContainText('Sistema sin Esencial');
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  await by.scrollIntoViewIfNeeded();
  await shot(page,'siniestralidad_tabla');
  // Licencias (SIL): SIL over ingresos by Isapre (dot vs ring) and SIL over cotizaciones with its definition.
@@ -63,7 +63,7 @@ test('F2 ficha shows the siniestralidad split and the SIL topic',async({page})=>
  for(const n of ['Isalud','Fundación','Cruz del Norte'])await expect(cot.locator('tbody th',{hasText:`${n} (cerrada)`})).toHaveCount(1);
  await cot.locator('summary').click();
  for(const r of await inside(page))expect(r.bad,r.chart).toEqual([]);
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  await page.evaluate(()=>{document.getElementById('signalDetail').scrollTop=0});
  await shot(page,'sil');
  await cot.scrollIntoViewIfNeeded();

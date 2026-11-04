@@ -37,7 +37,7 @@ test('f7 ficha opens with its two topics, nominal labels, detection date and no 
   await expect(body.locator('.sf-pick-label')).toHaveText(tab);
   await expect(body.locator('.sf-tpanel:not([hidden]) .sf-chart')).toHaveCount(2);
   expect(await inside(),tab).toBeTruthy();
-  expect(await page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1})).toBeTruthy();
+  await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1}),{timeout:3000}).toBe(true);  // settled layout (a topic switch can overflow for a frame)
   await page.screenshot({path:path.join(SHOTS,`f7_${['salud','fonasa'][i]}-${name}.png`),fullPage:false});
  }
  const chart=body.locator('.sf-tpanel:not([hidden]) .sf-chart').first();
