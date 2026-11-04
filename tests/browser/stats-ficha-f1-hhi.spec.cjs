@@ -30,14 +30,14 @@ test('F1 ficha has a Concentración topic with the HHI series and each Isapre pa
  await expect(body.locator('.sf-row-line').nth(i)).toHaveText(/^HHI \d{1,2}\.\d{3} puntos · /);
  await expect(body).not.toContainText(/moderadamente concentrad|altamente concentrad/i);
  for(const r of await inside(page))expect(r.bad,r.chart).toEqual([]);
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  await shot(page,'index');
  await body.locator('.sf-row').nth(i).click();
  await expect(body.locator('.sf-pick-label')).toHaveText('Concentración');
  const panel=body.locator('.sf-tpanel:not([hidden])');
  await expect(panel.locator('[data-chart="f1-hhi"]')).toBeVisible();
  for(const r of await inside(page)){expect(r.bad,r.chart).toEqual([]);expect(r.overlap,r.chart).toBeFalsy()}
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  await shot(page,'concentracion');
  const parts=panel.locator('[data-chart="f1-hhi-aporte"]');
  await expect(parts.locator('svg rect')).toHaveCount(7);  // only the 7 open Isapres
@@ -45,7 +45,7 @@ test('F1 ficha has a Concentración topic with the HHI series and each Isapre pa
  expect(await parts.locator('thead th').allTextContents()).toEqual(['Isapre','Participación','Aporte al HHI']);
  await expect(parts.locator('tbody tr').last()).toContainText('HHI abiertas');
  for(const n of ['Isalud','Fundación','Cruz del Norte'])await expect(parts).not.toContainText(n);
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  await parts.scrollIntoViewIfNeeded();
  await shot(page,'concentracion_aporte');
  // Notas: the HHI by controlling group is pending; no interpretation thresholds.

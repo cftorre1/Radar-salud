@@ -45,7 +45,7 @@ test('loose N°3 PDFs read as one card whose ficha says the figures are being ve
  await expect(body.locator('.ficha-sources > p.source')).toHaveText(/^SIS · Intendencia de Prestadores · 29 oct\.? 2026 \(detección\) · Fuente original ↗$/);
  await expect(body).not.toContainText(/Período de datos|fecha de publicación no informada|tema: |\d+ prestadores acreditados/);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
- expect(await page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1})).toBeTruthy();
+ await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1}),{timeout:3000}).toBe(true);  // settled layout (a topic switch can overflow for a frame)
  fs.mkdirSync(SHOTS,{recursive:true});
  await page.screenshot({path:path.join(SHOTS,`boletin-n3-card-${test.info().project.name}.png`),fullPage:false});
  // The live ficha link opens the F6 ficha (N°2) in place.

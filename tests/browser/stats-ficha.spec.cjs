@@ -72,7 +72,7 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  await expect(body.locator('details.sf-notes')).not.toHaveAttribute('open','');
  await expect(body.locator('.sf-reading')).toHaveCount(0);  // no verified Lectura in this release
  for(const r of await labelsFit(page))expect(r.bad,r.chart).toEqual([]);
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  const box=await body.locator('.sf-row').first().boundingBox();expect(box.height).toBeGreaterThanOrEqual(44);
  await share.click();
  await expect(dialog.locator('.sf-share-status')).toHaveText('Enlace copiado.');
@@ -110,7 +110,7 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  const trs=await isa.locator('tbody tr').evaluateAll(rs=>rs.map(r=>[...r.children].map(c=>c.textContent)));
  expect(trs.at(-1)).toEqual(['Sistema','−27.355','−5.895','−21.460','−1,09%']);expect(trs.map(r=>r[0])).toContain('Cerradas (3)');
  const n=x=>Number(x.replace('−','-').replace('+','').replace(/\./g,''));for(const r of trs)expect(n(r[1])).toBe(n(r[2])+n(r[3]));
- expect(await noOverflow(page)).toBeTruthy();
+ await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  await scrollTo(isa.locator('summary'),76);
  await shot(page,`stats-ficha-f1-isapres-table-${test.info().project.name}`);
  await isa.locator('summary').click();
@@ -229,14 +229,14 @@ for(const width of [320,390]){
   const body=page.locator('#detailBody');
   await expect(body.locator('.sf-index')).toBeVisible();
   for(const r of await labelsFit(page))expect(r.bad,r.chart).toEqual([]);
-  expect(await noOverflow(page),'index').toBeTruthy();
+  await expect.poll(()=>noOverflow(page),{message:'index',timeout:3000}).toBe(true);
   await body.locator('.sf-row').first().click();
   for(let i=0;i<5;i++){
    if(i)await body.locator('[data-sf-step="1"]').click();
    await expect(body.locator('.sf-pick-count')).toHaveText(`${i+1}/5`);
    const label=await body.locator('.sf-pick-label').textContent();
    for(const r of await labelsFit(page)){expect(r.bad,`${label} ${r.chart}`).toEqual([]);expect(r.overlap,`${label} ${r.chart}`).toBeFalsy()}
-   expect(await noOverflow(page),label).toBeTruthy();
+   await expect.poll(()=>noOverflow(page),{message:label,timeout:3000}).toBe(true);
    // The picker keeps its label, count and both arrows on one line.
    // Measured in one frame (two boundingBox calls can straddle the smooth scroll to the topic), until settled.
    await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('detailBody');const a=d.querySelector('.sf-pick').getBoundingClientRect(),b=d.querySelector('[data-sf-step="1"]').getBoundingClientRect();return Math.abs(a.top-b.top)}),{timeout:3000}).toBeLessThan(2);

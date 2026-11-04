@@ -55,7 +55,7 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
   await expect(page.locator('#signalDetail .sf-share-status')).toHaveText('Enlace copiado.');
   expect(await page.evaluate(()=>window.__copied[0])).toMatch(new RegExp(`/data/fichas/${slug}\\.html$`));
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
-  expect(await page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1})).toBeTruthy();
+  await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1}),{timeout:3000}).toBe(true);  // settled layout (a topic switch can overflow for a frame)
   fs.mkdirSync(SHOTS,{recursive:true});
   await page.screenshot({path:path.join(SHOTS,`${slug}-${test.info().project.name}.png`),fullPage:false});
   await page.screenshot({path:path.join(SHOTS,`${slug}-${test.info().project.name}-topic.png`),fullPage:false});
@@ -88,7 +88,7 @@ for(const [slug,tabs] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre
    for(const r of await check()){expect(r.inside,name).toBeTruthy();expect(r.overlap,name).toBeFalsy()}
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
-  expect(await page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1})).toBeTruthy();
+  await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1}),{timeout:3000}).toBe(true);  // settled layout (a topic switch can overflow for a frame)
   fs.mkdirSync(SHOTS,{recursive:true});
   await page.screenshot({path:path.join(SHOTS,`${slug}-320.png`),fullPage:false});
  });
