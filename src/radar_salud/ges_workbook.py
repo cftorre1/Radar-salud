@@ -224,6 +224,9 @@ def read_year_sheet(ws, year: int, *, cuts: list[str], ytd: list[str], min_rows:
                     unassigned.setdefault(kind, {})[per] = None if pair == [None, None] else pair
                 continue
             raise GesHold("HOLD_GES_ROW_UNRECOGNIZED", sheet=sheet, row=offset, label=label[:40])
+        if UNASSIGNED.match(FOOTNOTE.sub("", lab).strip()):
+            # Never ranked as a GES problem, even if a sheet numbers it (it would add a problem N°n+1 to the table).
+            raise GesHold("HOLD_GES_UNASSIGNED_NUMBERED", sheet=sheet, row=offset, code=code, label=label[:40])
         if not re.search(r"[a-záéíóúñ]", label, re.I):
             raise GesHold("HOLD_GES_LABEL_NOT_TEXT", sheet=sheet, row=offset, label=label[:40])
         key = str(code)
@@ -316,6 +319,8 @@ def compact_sheet(sh: dict, *, labels: bool) -> dict:
         out["labels"] = {k: p["label"] for k, p in sh["problems"].items()}
     if sh.get("unassigned"):
         out["unassigned"] = [sh["unassigned"]["row"], *(x for c in cols for x in pair(sh["unassigned"], c))]
+        if sh["unassigned"].get("code_cell"):
+            out["unassigned_code_cell"] = sh["unassigned"]["code_cell"]  # the marker the SIS puts in its N° cell
     return out
 
 
@@ -339,6 +344,8 @@ def expand_sheet(st: dict) -> dict:
     if st.get("unassigned"):
         vals = st["unassigned"]
         unassigned = {"row": vals[0], "label": "Sin problema de salud informado"}
+        if st.get("unassigned_code_cell"):
+            unassigned["code_cell"] = st["unassigned_code_cell"]
         for j, c in enumerate(cols):
             kind, per = c.split(":", 1)
             pr = vals[1 + 2 * j:3 + 2 * j]

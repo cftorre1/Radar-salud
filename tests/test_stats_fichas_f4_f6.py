@@ -1219,7 +1219,7 @@ def test_ges_invalid_numeric_count_records_its_value():
     assert r["insurer"] == "fonasa" and r["column"].startswith(("cut:", "ytd:")) and r["label"] and r["column_title"]
 
 
-@pytest.mark.parametrize("marker", ["-", "S/N", "0", "(*)"])
+@pytest.mark.parametrize("marker", ["-", "S/N", "0", "(*)", "0.0", 0])
 def test_ges_unassigned_row_with_a_marker_in_the_code_cell_is_read(marker):
     """The real SIS sheets put a marker in the N° cell of 'Sin Problema de Salud Informado' (v4 held on it): any
     non-numeric marker (or 0) is accepted for that exact label and recorded; a positive number stays a problem code."""
@@ -1233,7 +1233,24 @@ def test_ges_unassigned_row_with_a_marker_in_the_code_cell_is_read(marker):
                     row[0].value = marker
     r = gw.parse(edit_book(fx.ges_workbook("2026-06"), marked), GES_TITLE)
     assert r["status"] == "validated", r
-    assert gw.expand_sheet(r["years"]["2026"])["unassigned"]["cut"]["2026-06"] == list(_unassigned_value("2026-06"))
+    u = gw.expand_sheet(r["years"]["2026"])["unassigned"]
+    assert u["cut"]["2026-06"] == list(_unassigned_value("2026-06"))
+    assert u["code_cell"] == str(marker)  # kept in the stored parse, so the real marker can be audited
+
+
+def test_ges_unassigned_label_with_a_problem_number_holds():
+    """Numbered as if it were problem n+1, the row would enter the ranking: HOLD instead (review of #134)."""
+    from radar_salud import ges_workbook as gw
+
+    def numbered(wb):
+        sin_problema(wb)
+        ws = wb["Año 2026"]
+        n = max(int(r[0].value) for r in ws.iter_rows() if isinstance(r[0].value, (int, float)) and r[0].value)
+        for row in ws.iter_rows():
+            if row[1].value == "Sin Problema de Salud Informado":
+                row[0].value = n + 1
+    r = gw.parse(edit_book(fx.ges_workbook("2026-06"), numbered), GES_TITLE)
+    assert r["status"] == "HOLD" and r["hold_reason"] == "HOLD_GES_UNASSIGNED_NUMBERED"
 
 
 def test_f4_with_unassigned_row_counts_it_in_the_year_to_date_total(tmp_path):
