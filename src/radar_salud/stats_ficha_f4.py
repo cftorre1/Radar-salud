@@ -557,9 +557,13 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
 
     # Label digits ('Diabetes Mellitus Tipo 2') are captured text, not figures: they may be shown.
     label_numbers = sorted({abs(v) for r in problems for _, v, _ in numbers_in(r["label"])})
+    # An atypical quarter inside the current period makes the period's own figures (and any headline on them)
+    # suspect; with no alternative headline the comparison would lead. Either way a human decides (HOLD).
+    failures += atypical_holds(atypical, ty, lead)
+    if failures:
+        package["reconciliation"]["ok"] = False
     # Problem numbers quoted from the SIS 'Notas' sheet (n5) are captured text, like label digits.
-    sis_fold = _fold(" ".join(parse.get("notes") or []))
-    note_numbers = sorted({abs(v) for rx, text in SIS_NOTE_RULES if re.search(rx, sis_fold) for _, v, _ in numbers_in(text)})
+    note_numbers = sorted({abs(v) for text in sis_notes_said(parse.get("notes") or []) for _, v, _ in numbers_in(text)})
     constants = ([1000, th, tp["pct"], tp["min_cases"], len(quarters), *label_numbers, *note_numbers]
                  + ([ratio_th] if atypical else []))
     values["regla.top_problemas.pct"] = value("regla.top_problemas.pct", tp["pct"], unit="%", period=t, source=None,
@@ -622,14 +626,43 @@ def _lectura_material(package: dict, values: dict) -> None:
 # Ficha composition
 
 
-SIS_NOTE_RULES = (  # (pattern in the captured 'Notas' sheet, the ficha's paraphrase); shown only when the note is there
-    (r"solicitudes de acceso", "desde julio de 2012 la fuente es el archivo de solicitudes de acceso a las GES"),
-    (r"no incorpora casos de vih", "Fonasa no informa casos de VIH anteriores a 2014"),
-    # Dirección 4-nov-2026: quote which problems the SIS note names, so it is never read as covering other changes.
-    (r"problema 57,? se deben a la eliminacion de casos", "las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo"),
+SIS_NOTE_RULES = (  # (pattern in the captured 'Notas' sheet, the ficha's paraphrase, group); shown only when the note
+    # is there, and only the first matching rule of each group. Dirección 4-nov-2026: the deletion note names the
+    # problems (and years) it covers, so it is never read as explaining other changes.
+    (r"solicitudes de acceso", "desde julio de 2012 la fuente es el archivo de solicitudes de acceso a las GES", "fuente"),
+    (r"no incorpora casos de vih", "Fonasa no informa casos de VIH anteriores a 2014", "vih"),
+    (r"a partir del ano 2021,? las diferencias en el problema 57,? se deben a la eliminacion de casos",
+     "desde 2021, las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo", "p57"),
+    (r"problema 57,? se deben a la eliminacion de casos",
+     "las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo", "p57"),
     (r"problema 11,? para diciembre del 2022,? se deben a la eliminacion de casos",
-     "las del problema 11 en diciembre de 2022, por la misma causa"),
+     "las del problema 11 en diciembre de 2022, por la misma causa", "p11"),
+    # A reworded deletion note that no rule above reads keeps the generic paraphrase (never silently dropped).
+    (r"eliminacion de casos", "algunas diferencias en problemas de salud puntuales se deben a que una Isapre eliminó casos del "
+                              "archivo", "elim"),
 )
+
+
+def atypical_holds(atypical: list[dict], ty: int, lead: dict | None) -> list[str]:
+    """HOLD reasons from the atypical quarters: one inside the current period makes the period's own figures (and any
+    headline on them) suspect; a contaminated comparison with no alternative headline would lead. A human decides."""
+    cur = [a for a in atypical if a["in_window"] and a["y"] == ty]
+    if cur:
+        return ["atypical_quarter_current_period:" + ",".join(f"{qid(a['y'], a['q'])}.{a['ins']}" for a in cur)]
+    if any(a["in_window"] for a in atypical) and lead is None:
+        return ["atypical_quarter_no_alternative_headline"]
+    return []
+
+
+def sis_notes_said(notes: list[str]) -> list[str]:
+    folded = _fold(" ".join(notes or []))
+    taken: dict[str, str] = {}
+    for rx, text, group in SIS_NOTE_RULES:
+        if group in taken or (group == "elim" and ({"p57", "p11"} & set(taken))):
+            continue
+        if re.search(rx, folded):
+            taken[group] = text
+    return list(taken.values())
 
 
 def compose(package: dict, registry: dict | None = None, *, today: date, decision: dict | None = None) -> dict:
@@ -664,8 +697,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     else:
         headline = tpl["headline"].format(total=fmt_int(total), yoy=pct("ges.yoy.total_pct"), **words)
         headline_type = "ytd_yoy"
-    a0 = atyp[0] if atyp else None
-    atyp_ref = (f"el {qlabel(a0['y'], a0['q'])} de {'Fonasa' if a0['ins'] == 'fonasa' else 'las Isapres'}" if a0 else "")
+    who = lambda a: "Fonasa" if a["ins"] == "fonasa" else "las Isapres"  # noqa: E731
+    join = lambda xs: ", ".join(xs[:-1]) + " y " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")  # noqa: E731
+    atyp_ref = join([f"el {qlabel(a['y'], a['q'])} de {who(a)}" for a in atyp])
+    atyp_short = join([f"el {qshort(a['y'], a['q'])} de {who(a)}" for a in atyp])
+    es_atipico = "es atípico" if len(atyp) == 1 else "son atípicos"
     # Fonasa has no rate (no beneficiaries captured): said in its KPI card and in the notes, not in the 40-word dek.
     rate_clause = (f" Tasa bruta Isapre: {fmt_dec(rate, 1)} casos de enero a {mname(tm)} de {ty} por 1.000 beneficiarios."
                    if rate is not None else " Sin tasas por beneficiario para este período.")
@@ -684,7 +720,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     if bad:
         # The rate stays in its topic: the dek keeps to 40 words.
         rate_clause = ""
-        decree_clause = (f" El {qshort(a0['y'], a0['q'])} de {'Fonasa' if a0['ins'] == 'fonasa' else 'las Isapres'} es atípico en los datos SIS"
+        lead_in = (f" {atyp_short[0].upper() + atyp_short[1:]} {es_atipico}" if len(atyp) == 1 else
+                   " Hay trimestres atípicos" + (" de ambos seguros" if len(bad) == 2 else ""))  # dek ≤ 40 words
+        decree_clause = (f"{lead_in} en los datos SIS"
                          + (f"; {insw[alt]}: {pct(f'ges.yoy.{alt}_pct')} a/a." if alt else "."))
         if headline_type == "ytd_lead_problem" and re.search(SIS_NOTE_RULES[0][0], _fold(" ".join(k.get("sis_notes") or []))):
             # The SIS counts access requests (its own note): a reader must not read the lead problem as diagnoses.
@@ -702,9 +740,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
              "refs": [f"ges.ytd.{t}.total", "ges.yoy.total_pct"]},
             {"id": "fonasa", "label": f"Fonasa {st}", "value": fmt_int(fon), "prov": "C",
              "lines": [f"{pct('ges.yoy.fonasa_pct')} vs. {sb}", "tasa no disponible (sin beneficiarios capturados)"],
+             **({"badge": "Comparación con un trimestre atípico", "badge_kind": "muted"} if "fonasa" in bad else {}),
              "refs": [f"ges.ytd.{t}.fonasa"]},
             {"id": "isapre", "label": f"Isapres {st}", "value": fmt_int(isa), "prov": "C",
              "lines": [f"{pct('ges.yoy.isapre_pct')} vs. {sb}", f"{fmt_dec(share, 1)}% de los casos de ambos seguros"],
+             **({"badge": "Comparación con un trimestre atípico", "badge_kind": "muted"} if "isapre" in bad else {}),
              "refs": [f"ges.ytd.{t}.isapre", f"ges.ytd.{t}.isapre_share"]},
             {"id": "tasa", "label": "Tasa bruta Isapre", "value": fmt_dec(rate, 1) if rate is not None else "no disponible",
              "prov": "C" if rate is not None else None,
@@ -732,13 +772,18 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     if list_changed:
         tot_text.append(f"Con solo los problemas presentes en ambos períodos la variación es {pct('ges.yoy.total_comparable_pct')}: "
                         "la lista de problemas cambió entre ambos años (posible cambio de decreto GES).")
+    atyp_sentences = []
     for a in atyp:
         kq = qid(a["y"], a["q"])
         win = span(by, tm) if a["y"] == by else span(ty, tm)
         tot_text.append(f"El período {win} incluye el {qlabel(a['y'], a['q'])} de {'Fonasa' if a['ins'] == 'fonasa' else 'las Isapres'}, "
                         f"atípico en los datos SIS: {fmt_int(a['value'])} casos, "
                         f"{fmt_dec(val(f'ges.q.{kq}.{a["ins"]}.veces_mediana'), 1)} veces la mediana de los demás trimestres "
-                        f"({fmt_int(half_up(a['median']))}). La SIS no informa el motivo.")
+                        f"({fmt_int(half_up(a['median']))}).")
+        atyp_sentences.append(tot_text[-1])
+    if atyp:
+        tot_text[-1] += " La SIS no informa el motivo."
+        atyp_sentences[-1] = tot_text[-1]
     if alt:
         tot_text.append(f"Solo {insw[alt]}: {pct(f'ges.yoy.{alt}_pct')} frente a {span(by, tm)}.")
     tabs.append({"id": "totales", "label": "Totales", "charts": [c_tot], "text": tot_text})
@@ -779,8 +824,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         top_text.append(f"La lista de problemas cambió entre {sb} y {st} (posible cambio de decreto GES). Problemas sin base "
                         f"comparable: {fmt_int(len(k['added']))}; que ya no aparecen: {fmt_int(len(k['dropped']))}. No entran al ranking.")
     if bad and ranked:
-        top_text.append(f"La base por problema incluye {atyp_ref}, atípico en los datos SIS: las variaciones por problema "
-                        "pueden estar distorsionadas.")
+        top_text.append(f"La base por problema incluye {atyp_ref}, {'atípico' if len(atyp) == 1 else 'atípicos'} en los "
+                        "datos SIS: las variaciones por problema pueden estar distorsionadas.")
     tabs.append({"id": "problemas", "label": "Top problemas", "charts": [c_top], "text": top_text})
 
     # Tab 3 · Fonasa vs Isapre
@@ -810,8 +855,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     ins_text.append(f"Tasa bruta Isapre {between(ty, tm)}: {fmt_dec(rate, 1)} casos por 1.000 beneficiarios Isapre. Fonasa: tasa no "
                     "disponible, porque Alicanto no tiene capturados sus beneficiarios." if rate is not None else
                     "Tasa por beneficiario no disponible: faltan los beneficiarios Isapre del período y Alicanto no captura los de Fonasa.")
-    for a in [a for a in k.get("atypical") or [] if a["ins"] == "isapre"][:1]:
-        ins_text.append(f"El {qshort(a['y'], a['q'])} de las Isapres es atípico en los datos SIS (ver Totales).")
+    for a in k.get("atypical") or []:
+        ins_text.append(f"El {qshort(a['y'], a['q'])} de {who(a)} es atípico en los datos SIS (ver Totales).")
     tabs.append({"id": "seguros", "label": "Fonasa vs Isapre", "charts": ins_charts[:2], "text": ins_text})
 
     # Tab 4 · Tendencia trimestral (quarters by difference of cumulative cuts)
@@ -833,7 +878,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     for tab in tabs:
         refs = index_refs.get(tab["id"], [])
         sf.topic_fields(tab, text_refs=refs, headline_refs=refs)
-    paragraphs = [tot_text[0], ins_text[0], top_text[0]]
+    paragraphs = [" ".join([tot_text[0], *atyp_sentences]), ins_text[0], top_text[0]]
 
     # Qué mirar
     published = date.fromisoformat(package["published_at"][:10])
@@ -847,7 +892,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     if k["crossing"]:
         r = k["crossing"][0]
         watch.append({"headline": f"{short_label(r['label'], 60)}: {fmt_dec(r['pct'], 1, signed=True)}% a/a.",
-                      "explanation": "Un salto en un problema puede venir de un cambio de decreto o de registro; la ficha no infiere la causa."})
+                      "explanation": ("La base incluye un trimestre atípico de los datos SIS: la variación puede estar distorsionada."
+                                      if bad else "Un salto en un problema puede venir de un cambio de decreto o de registro; "
+                                      "la ficha no infiere la causa.")})
     else:
         watch.append({"headline": "Tasa Fonasa por beneficiario.",
                       "explanation": "Se calculará cuando Alicanto capture los beneficiarios de Fonasa del mismo período."})
@@ -867,8 +914,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                               "Los problemas se comparan por su número GES.")},
         {"id": "n4", "text": "Ningún dato de esta ficha establece por qué cambian los casos (demanda, decreto, registro o acceso)."},
     ]
-    sis = _fold(" ".join(k.get("sis_notes") or []))
-    said = [text for rx, text in SIS_NOTE_RULES if re.search(rx, sis)]
+    said = sis_notes_said(k.get("sis_notes") or [])
     if said:
         notes.append({"id": "n5", "text": "Según las notas de la SIS: " + "; ".join(said) + "."})
     if k.get("cross_release") is not None:
@@ -882,7 +928,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
             "informa el motivo: " + "; ".join(
                 f"{'Fonasa' if a['ins'] == 'fonasa' else 'Isapres'} {qshort(a['y'], a['q'])}: {fmt_int(a['value'])} casos, mediana "
                 f"de los demás {fmt_int(half_up(a['median']))}" for a in k["atypical"])
-            + (". Por eso el titular no usa la comparación con " + span(by, tm) + "." if bad else "."))})
+            + (". Por eso el titular no usa la comparación con " + span(by, tm) + "." if headline_type == "ytd_lead_problem" else "."))})
     if k["invalid"]:
         notes.append({"id": "n7", "text": "Planillas anteriores no usadas por no pasar el parser vigente: " +
                       "; ".join(f"{sf.month_label(p)} ({why})" for p, why in sorted(k["invalid"].items())) + "."})

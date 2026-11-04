@@ -1284,14 +1284,29 @@ def test_f4_with_unassigned_row_counts_it_in_the_year_to_date_total(tmp_path):
 # F4 · atypical quarter (Dirección 4-nov-2026): the SIS's T2-2025 Isapre cases triple the other quarters
 
 
-def _atypical_root(tmp_path, extra=3.0):
-    """Every problem's Isapre flow of T2 2025 multiplied by ``1 + extra``; the later 2025 YTD keep the bump."""
+def _bump(y, end, ins, factor):
+    """Multiply every problem's flow of the quarter ending at ``end`` (one insurer) by ``1 + factor``; the later YTD of
+    the same year keep the change, so the cumulative cuts stay consistent."""
+    yr, m = end[:4], int(end[5:])
+    start = f"{yr}-{m - 3:02d}" if m > 3 else None
+    i = 0 if ins == "fonasa" else 1
+    later = [p for p in y if p[:4] == yr and int(p[5:]) >= m]
+    for c in y[end]:
+        flow = y[end][c][i] - (y[start].get(c, (0, 0))[i] if start else 0)
+        d = int(round(flow * factor))
+        for per in later:
+            if c in y[per]:
+                row = list(y[per][c])
+                row[i] += d
+                y[per][c] = tuple(row)
+
+
+def _atypical_root(tmp_path, extra=3.0, bumps=None):
+    """Default: every problem's Isapre flow of T2 2025 multiplied by ``1 + extra``."""
     import copy
     y = copy.deepcopy(fx.GES_YTD)
-    q1 = y["2025-03"]
-    bump = {c: int(round(((y["2025-06"][c][1] - q1.get(c, (0, 0))[1]) * extra))) for c in y["2025-06"]}
-    for per in ("2025-06", "2025-09", "2025-12"):
-        y[per] = {c: (f, i + bump.get(c, 0)) for c, (f, i) in y[per].items()}
+    for end, ins, factor in bumps or [("2025-06", "isapre", extra)]:
+        _bump(y, end, ins, factor)
     r = fx.make_root(tmp_path / "r", readings_until="2026-06")
     fx.capture_all(r, fx.fetcher(r, {fx.GES_URL.format(period=p): fx.ges_workbook(p, y) for p in fx.GES_RELEASES}))
     return r
@@ -1344,3 +1359,64 @@ def test_f4_sis_note_names_the_problems_it_covers(root):
     fi = f4.run(root, today=TODAY, registry=reg_ok(), llm=False)["ficha"]
     n5 = next(n["text"] for n in fi["notes"] if n["id"] == "n5")
     assert "problema 57" in n5 and "puntuales" not in n5
+
+
+def test_f4_low_side_quarter_in_the_window_is_atypical(tmp_path):
+    p = f4.build_package(_atypical_root(tmp_path, bumps=[("2025-06", "isapre", -0.7)]), reg_ok())
+    assert [(a["q"], a["ins"], a["value"] * 2 <= a["median"]) for a in p["kpis"]["atypical"]] == [(2, "isapre", True)]
+    assert p["reconciliation"]["ok"] and p["kpis"]["yoy_contaminated"] == ["isapre"]
+
+
+def test_f4_atypical_quarter_outside_the_window_keeps_the_comparison(tmp_path):
+    p = f4.build_package(_atypical_root(tmp_path, bumps=[("2025-09", "isapre", 3.0)]), reg_ok())
+    assert [(a["y"], a["q"], a["in_window"]) for a in p["kpis"]["atypical"]] == [(2025, 3, False)]
+    fi = f4.compose(p, reg_ok(), today=TODAY)
+    assert fi["headline_type"] == "ytd_yoy" and "frente a" in fi["headline"]
+    n8 = next(n["text"] for n in fi["notes"] if n["id"] == "n8")
+    assert "T3 2025" in n8 and "Por eso el titular" not in n8
+    assert all(not x.get("badge", "").startswith("Comparación con") for x in fi["kpis"])
+
+
+def test_f4_both_insurers_atypical_are_both_named(tmp_path):
+    p = f4.build_package(_atypical_root(tmp_path, bumps=[("2025-06", "isapre", 3.0), ("2025-06", "fonasa", 3.0)]), reg_ok())
+    assert p["kpis"]["yoy_contaminated"] == ["fonasa", "isapre"] and p["reconciliation"]["ok"]
+    fi = f4.compose(p, reg_ok(), today=TODAY)
+    assert "Hay trimestres atípicos de ambos seguros en los datos SIS." in fi["dek"]
+    assert len(fi["dek"].split()) <= 40 and "a/a" not in fi["dek"]
+    seg = " ".join(next(t for t in fi["tabs"] if t["id"] == "seguros")["text"])
+    assert "de Fonasa es atípico" in seg and "de las Isapres es atípico" in seg
+    assert [x.get("badge") for x in fi["kpis"][:3]] == ["Comparación con un trimestre atípico"] * 3
+    assert sf.verify_ficha(fi, p)["verdict"] == "PASS"
+
+
+def test_f4_atypical_quarter_in_the_current_period_holds(tmp_path):
+    r = _atypical_root(tmp_path, bumps=[("2026-03", "isapre", 3.0)])
+    p = f4.build_package(r, reg_ok())
+    assert not p["reconciliation"]["ok"]
+    assert p["reconciliation"]["failures"] == ["atypical_quarter_current_period:2026T1.isapre"]
+    out = f4.run(r, today=TODAY, registry=reg_ok(), llm=False)
+    assert out["status"] == "hold" and "ficha" not in out
+
+
+def test_f4_atypical_hold_reasons():
+    base = {"y": 2025, "q": 2, "ins": "isapre", "value": 9, "median": 3, "in_window": True}
+    lead = {"key": "ps3", "label": "x", "share_id": "y"}
+    assert f4.atypical_holds([base], 2026, lead) == []
+    assert f4.atypical_holds([base], 2026, None) == ["atypical_quarter_no_alternative_headline"]
+    assert f4.atypical_holds([{**base, "in_window": False}], 2026, None) == []
+    assert f4.atypical_holds([{**base, "y": 2026, "q": 1}], 2026, lead) == ["atypical_quarter_current_period:2026T1.isapre"]
+
+
+@pytest.mark.parametrize("note, expected", [
+    ("A partir del año 2021 Las diferencias en el problema 57, se deben a la eliminación de casos del archivo, por parte de "
+     "una isapre. Las diferencias en el problema 11, para diciembre del 2022, se deben a la eliminación de casos del archivo, "
+     "por parte de una isapre.",
+     ["desde 2021, las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo",
+      "las del problema 11 en diciembre de 2022, por la misma causa"]),
+    ("Las diferencias en el problema 57 se deben a la eliminación de casos del archivo, por parte de una isapre.",
+     ["las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo"]),
+    ("Algunas diferencias se explican por la eliminación de casos del archivo por una isapre.",
+     ["algunas diferencias en problemas de salud puntuales se deben a que una Isapre eliminó casos del archivo"]),
+])
+def test_f4_sis_deletion_note_is_quoted_faithfully(note, expected):
+    assert f4.sis_notes_said([note]) == expected
