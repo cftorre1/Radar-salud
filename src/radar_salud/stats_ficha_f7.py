@@ -27,6 +27,10 @@ Reconciliation (any failure → HOLD; the ficha never publishes):
   is shown only when the lane verified one (and it is after the cut). Otherwise the ficha is dated by Alicanto's
   capture of the document (``date_basis: first_detected``), never as a publication.
 
+Freshness copy: the lane is refreshed by ``dipres_refresh`` in the daily statistics step. The ficha says "se revisa a
+diario; DIPRES publica mensualmente" only while that check completed within ``REFRESH_MAX_AGE_DAYS``; if it stopped it
+says so, and before it ever ran it keeps "captura manual". The cut stays in the kicker and the meta line.
+
 First publication (Dirección's review, like F4): while ``families.F7.first_pass_requires_review`` is true and no F7
 ficha is live, a PASS is written as HOLD ``awaiting_first_review`` with the full ficha in ``hold/``. It publishes only
 when ``families.F7.first_review`` records ``reviewed_by`` and ``reviewed_sha256`` equal to the ficha's
@@ -60,6 +64,8 @@ ENTITIES = {
 }
 LEVEL = {"partida": "partida", "cap02": "chapter", "prog0201": "program"}
 FIRST_REVIEW_HOLD = "HOLD_FIRST_REVIEW:awaiting_first_review"
+REFRESH_STATE = Path("data/market/dipres_refresh_state.json")  # written by dipres_refresh (daily statistics step)
+REFRESH_MAX_AGE_DAYS = 3
 # Names of other perimeters, as printed in the PDF (independent review of PR #139, 4-nov-2026: articles-431115 reads
 # "SUBPARTIDA : 1603 SERVICIOS DE SALUD"). The lane stores only the code; a code without a name here is shown bare.
 SUBPARTIDA_NAMES = {"1603": "Servicios de Salud"}
@@ -71,6 +77,22 @@ def _load(path: Path) -> dict | None:
         return json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
+
+
+def _refresh_last_ok(root: Path) -> str | None:
+    state = _load(Path(root) / REFRESH_STATE) or {}
+    return str(state.get("last_ok_on") or "") or None  # the Chile day of the last OK check (last_ok_at is UTC)
+
+
+def refresh_mode(package: dict, today: date) -> tuple[str, str | None]:
+    """'daily' only when the automatic DIPRES check completed within REFRESH_MAX_AGE_DAYS of today; otherwise 'manual'
+    (never ran) or 'stale' (it ran, but not recently). The copy never claims a refresh that did not happen."""
+    last = (package.get("lane") or {}).get("refresh_last_ok_on")
+    try:
+        age = (today - date.fromisoformat(str(last))).days
+    except ValueError:
+        return "manual", None
+    return ("daily" if 0 <= age <= REFRESH_MAX_AGE_DAYS else "stale"), last
 
 
 def entity_key(r: dict) -> tuple:
@@ -234,7 +256,10 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         "release_key": None, "primary_source": {}, "sources": {}, "values": {}, "entities": [], "entity_codes": [],
         "entity_keys": [], "causal_note": None, "provisional": False,
         "lane": {"coverage_complete": lane.get("coverage_complete"), "coverage_reason": lane.get("coverage_reason"),
-                 "aggregation_rule": lane.get("aggregation_rule")},
+                 "aggregation_rule": lane.get("aggregation_rule"),
+                 # Operational state of the daily refresh (dipres_refresh, 4-nov-2026), for the freshness copy only: it
+                 # is not evidence and never enters evidence_sha256.
+                 "refresh_last_ok_on": _refresh_last_ok(root)},
         "reconciliation": {"ok": False, "failures": failures, "checks": [
             "ejecutado ≤ presupuesto vigente, ambos del mismo documento; vigente > 0",
             "unidad miles de $ nominales y base de precios = año fiscal",
@@ -543,13 +568,23 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     notes.append({"id": "n9", "text": "Ningún dato de esta ficha establece por qué cambia la ejecución del gasto."})
 
     nxt = sf.shift_period(t, 1)
+    mode, checked = refresh_mode(package, today)
     late = (decision or {}).get("late_release")
     captured = sf.day_label(package["published_at"]) if detected_basis(package) else None
+    if mode == "daily":
+        pending = {"headline": f"Informe de ejecución de la Partida 16 a {sf.month_label(nxt)}: aún no publicado por DIPRES.",
+                   "explanation": f"Alicanto revisa DIPRES a diario (última revisión: {sf.day_label(checked)}); "
+                                  "la ficha cambia cuando aparece el informe del mes siguiente."}
+    elif mode == "stale":
+        pending = {"headline": f"Informe de ejecución de la Partida 16 a {sf.month_label(nxt)}: revisión automática detenida.",
+                   "explanation": f"La revisión diaria de DIPRES no se completa desde el {sf.day_label(checked)}."}
+    else:
+        pending = {"headline": f"Informe de ejecución de la Partida 16 a {sf.month_label(nxt)}: captura pendiente.",
+                   "explanation": "La captura DIPRES de Alicanto es manual" + (f" (última: {captured})" if captured else "")
+                                  + "; ninguna corrida la actualiza sola."}
     watch = [({"headline": f"Informe de ejecución de la Partida 16 a {sf.month_label(nxt)}: sin captura nueva.",
                "explanation": f"Lleva {late['days_late']} días más allá del intervalo esperado desde la última captura."} if late else
-              {"headline": f"Informe de ejecución de la Partida 16 a {sf.month_label(nxt)}: captura pendiente.",
-               "explanation": "La captura DIPRES de Alicanto es manual" + (f" (última: {captured})" if captured else "")
-                              + "; ninguna corrida la actualiza sola."})]
+              pending)]
     if not yoy.get("partida"):
         watch.append({"headline": f"Comparación con {year - 1}.",
                       "explanation": f"Se activa con el corte del mismo mes de {year - 1} en el mismo tipo de informe."})
@@ -566,7 +601,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "evidence_sha256": package["evidence_sha256"],
         "kicker": tpl["kicker"].format(label=cfg["label"], cut_label=cut_label),
         "kicker_meta": tpl["kicker_meta_detected" if detected else "kicker_meta"].format(
-            period_label=mlabel, cut_label=cut_label, published_label=sf.day_label(package["published_at"]), cadence_phrase=cfg["cadence_phrase"]),
+            period_label=mlabel, cut_label=cut_label, published_label=sf.day_label(package["published_at"]),
+            cadence_phrase={"daily": cfg["cadence_phrase_auto"], "stale": cfg["cadence_phrase_stale"]}.get(mode, cfg["cadence_phrase"])),
         **({"date_basis": "first_detected"} if detected else {}),
         "headline": headline, "headline_type": "default", "dek": dek, "dek_emphasis": None,
         "kpis": kpis[:5], "tabs": tabs,
