@@ -779,10 +779,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     atyp_sentences = []
     for a in atyp:
         kq = qid(a["y"], a["q"])
+        ratio_id = f"ges.q.{kq}.{a['ins']}.veces_mediana"
         win = span(by, tm) if a["y"] == by else span(ty, tm)
         tot_text.append(f"El período {win} incluye el {qlabel(a['y'], a['q'])} de {'Fonasa' if a['ins'] == 'fonasa' else 'las Isapres'}, "
                         f"atípico en los datos SIS: {fmt_int(a['value'])} casos, "
-                        f"{fmt_dec(val(f'ges.q.{kq}.{a["ins"]}.veces_mediana'), 1)} veces la mediana de los demás trimestres "
+                        f"{fmt_dec(val(ratio_id), 1)} veces la mediana de los demás trimestres "
                         f"({fmt_int(half_up(a['median']))}).")
         atyp_sentences.append(tot_text[-1])
     if atyp:
