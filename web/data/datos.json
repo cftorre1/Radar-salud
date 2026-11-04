@@ -1,6 +1,6 @@
 {
   "schema_version": "datos_index_v1",
-  "generated_at": "2026-11-04T09:19:34.393600+00:00",
+  "generated_at": "2026-11-04T13:27:11.112422+00:00",
   "groups": [
     {
       "key": "aseguradores",
@@ -139,8 +139,30 @@
       "label": "Financiamiento público",
       "group": "sector_publico",
       "order": 6,
-      "cadence": "captura manual",
-      "state": "pending"
+      "cadence": "mensual (DIPRES)",
+      "state": "live",
+      "piece_id": "stats-ficha:F7:2026-07",
+      "headline": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026",
+      "kpis": [
+        {
+          "id": "ejecucion_partida",
+          "label": "Ejecución Salud (Partida 16)",
+          "value": "65,7%"
+        },
+        {
+          "id": "ejecucion_fonasa",
+          "label": "Ejecución Fonasa (capítulo 02)",
+          "value": "67,2%"
+        }
+      ],
+      "period": "2026-07",
+      "period_label": "jul 2026",
+      "source": "DIPRES",
+      "source_name": "Dirección de Presupuestos",
+      "published_at": "2026-10-11",
+      "updated_on": "2026-11-04",
+      "status": "current",
+      "share_url": "data/fichas/f7_financiamiento.html"
     },
     {
       "family": "F8",

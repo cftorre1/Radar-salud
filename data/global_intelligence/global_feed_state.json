@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-11-03",
-  "generated_at": "2026-11-04T01:01:05.052996+00:00",
+  "as_of": "2026-11-04",
+  "generated_at": "2026-11-04T14:00:41.732731+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -15,9 +15,9 @@
   "window_days": 90,
   "retention_days": 90,
   "freshness": {
-    "newest_published_at": "2026-11-03",
-    "items_last_2_days": 4,
-    "items_last_7_days": 9,
+    "newest_published_at": "2026-11-04",
+    "items_last_2_days": 3,
+    "items_last_7_days": 7,
     "status": "fresh",
     "stale_after_days": 2
   },
@@ -48,10 +48,10 @@
     "not_global_interest:facility_opening": 1,
     "not_global_interest:no_global_interest_signal": 27,
     "not_global_interest:source_rule_exclusion": 5,
-    "not_material_or_unverified": 322,
+    "not_material_or_unverified": 315,
     "not_relevant_or_undated": 67,
-    "official_title_without_executive_keyword": 174,
-    "publication_activation_pending_who": 254
+    "official_title_without_executive_keyword": 175,
+    "publication_activation_pending_who": 126
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
@@ -61,37 +61,92 @@
     {
       "segment": "healthtech",
       "label_es": "Salud digital y dispositivos",
-      "count": 4,
+      "count": 5,
       "item_ids": [
         "9f6107626b27a8db0e39",
         "5ef15afad6e02a4dcb95",
         "b0ede540040d093065b1",
-        "4ab03f48e76c068e3ca6"
-      ]
-    },
-    {
-      "segment": "providers",
-      "label_es": "Prestadores",
-      "count": 4,
-      "item_ids": [
-        "0e07c3f53457efbd4a25",
-        "bfdd8633fe174ab8e461",
-        "5bdb36cd4ca372a4d2e0",
-        "0acfc72ecc068e88b4a6"
+        "4ab03f48e76c068e3ca6",
+        "d77abcc1a0e5b3cc3bb5"
       ]
     },
     {
       "segment": "regulation",
       "label_es": "Regulación",
-      "count": 3,
+      "count": 4,
       "item_ids": [
         "9f6107626b27a8db0e39",
+        "5ef15afad6e02a4dcb95",
+        "d77abcc1a0e5b3cc3bb5",
+        "6041c398b60aaa07606b"
+      ]
+    },
+    {
+      "segment": "pharma",
+      "label_es": "Medicamentos y farma",
+      "count": 2,
+      "item_ids": [
         "5ef15afad6e02a4dcb95",
         "6041c398b60aaa07606b"
       ]
     }
   ],
   "items": [
+    {
+      "id": "d77abcc1a0e5b3cc3bb5",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Video clip - The EU Health Data Space Regulation (EHDS)",
+      "url": "https://health.ec.europa.eu/latest-updates/video-clip-eu-health-data-space-regulation-ehds-2026-11-04_en",
+      "published_at": "2026-11-04",
+      "segments": [
+        "regulation",
+        "healthtech"
+      ],
+      "description": "Video clip - The EU Health Data Space Regulation (EHDS)",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-11-04",
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "title:acronym_missing:EU",
+          "title:term_missing:Video",
+          "title:name_added:Videoclip",
+          "description:acronym_missing:EU",
+          "description:term_missing:Video",
+          "description:name_added:Videoclip"
+        ]
+      }
+    },
     {
       "id": "5ef15afad6e02a4dcb95",
       "source": "ec_health",
@@ -868,7 +923,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-03",
+      "first_seen_on": "2026-11-04",
       "title_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "description_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "translation": {
@@ -1912,8 +1967,7 @@
         "status": "not_allowed",
         "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "run_cap"
+        "summary_status": "verification_failed"
       }
     },
     {
@@ -2161,8 +2215,7 @@
         "status": "not_allowed",
         "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "run_cap"
+        "summary_status": "verification_failed"
       }
     },
     {
@@ -2202,8 +2255,7 @@
         "status": "not_allowed",
         "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "run_cap"
+        "summary_status": "verification_failed"
       }
     },
     {
@@ -2243,8 +2295,7 @@
         "status": "not_allowed",
         "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "run_cap"
+        "summary_status": "verification_failed"
       }
     },
     {
@@ -2321,8 +2372,7 @@
         "status": "not_allowed",
         "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "run_cap"
+        "summary_status": "verification_failed"
       }
     },
     {
@@ -2362,8 +2412,7 @@
         "status": "not_allowed",
         "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "run_cap"
+        "summary_status": "verification_failed"
       }
     },
     {
@@ -2440,59 +2489,17 @@
         "status": "not_allowed",
         "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "run_cap"
-      }
-    },
-    {
-      "id": "3728bff5d5c6e77419d6",
-      "source": "paho",
-      "source_label": "OPS",
-      "attribution": "Organización Panamericana de la Salud (OPS)",
-      "bylines": [],
-      "title": "Guyana advances its assistive technology policy with PAHO support",
-      "url": "https://www.paho.org/en/news/6-8-2026-guyana-advances-its-assistive-technology-policy-paho-support",
-      "published_at": "2026-08-06",
-      "segments": [
-        "regulation"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Regulación"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 90,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-11-03",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "run_cap"
+        "summary_status": "verification_failed"
       }
     }
   ],
   "translation": {
     "translated": 11,
     "summarized": 5,
-    "from_cache": 14,
-    "verification_failed": 19,
-    "review_failed": 13,
-    "not_allowed": 23,
+    "from_cache": 16,
+    "verification_failed": 14,
+    "review_failed": 6,
+    "not_allowed": 22,
     "pending": 0,
     "source_in_spanish": 7
   },
