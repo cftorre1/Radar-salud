@@ -98,7 +98,7 @@ jobs:
           python-version: '3.11'
       - name: Install package
         timeout-minutes: 10
-        run: pip install -e . pytest
+        run: pip install -e . pytest pyyaml
       - name: Core deterministic tests before collection
         # Failing test names surface as annotations (job logs are not readable from the orchestrator).
         # Publication gate (4-nov-2026, config/publication_test_policy.json): every test blocks except files

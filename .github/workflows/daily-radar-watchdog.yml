@@ -33,8 +33,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-        run: gh api -X POST "repos/$REPO/actions/workflows/daily-radar.yml/dispatches" -f ref="$DEFAULT_BRANCH"
+          # The branch this scheduled run comes from (main): schedule payloads carry no repository data (review of #137).
+          REF: ${{ github.ref_name }}
+        run: |
+          test -n "$REF" || { echo "::error::empty ref"; exit 1; }
+          gh api -X POST "repos/$REPO/actions/workflows/daily-radar.yml/dispatches" -f ref="$REF"
       - name: Report
         if: always()
         env:

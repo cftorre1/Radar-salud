@@ -83,3 +83,13 @@ def test_workflow_is_read_only_except_guarded_dispatch():
     assert "vars.DAILY_WATCHDOG_DISPATCH == 'true'" in dispatch["if"] and "steps.check.outputs.dispatch == 'true'" in dispatch["if"]
     assert "actions/workflows/daily-radar.yml/dispatches" in dispatch["run"]
     assert wf["jobs"]["watchdog"]["timeout-minutes"] <= 10
+
+
+def test_a_cancelled_run_in_the_slot_is_never_redispatched():
+    runs = [run(5, "2026-11-01T10:40:00Z", conclusion="cancelled")]
+    assert wd.dispatch_decision(NOW, None, None, runs, []) == (False, "daily_cancelled_for_slot")
+
+
+def test_redispatch_uses_the_branch_the_scheduled_run_comes_from():
+    text = (ROOT / ".github/workflows/daily-radar-watchdog.yml").read_text(encoding="utf-8")
+    assert "github.ref_name" in text and "repository.default_branch" not in text

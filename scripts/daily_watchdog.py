@@ -63,6 +63,9 @@ def dispatch_decision(now: datetime, discovery_at: datetime | None, refresh_at: 
         return False, "daily_failed_for_slot"
     if any(r.get("event") == "workflow_dispatch" for r in since_slot):
         return False, "already_dispatched_for_slot"
+    # A cancelled run may have been building (someone stopped it on purpose): never second-guess it (review of #137).
+    if any(r.get("conclusion") == "cancelled" for r in since_slot):
+        return False, "daily_cancelled_for_slot"
     return True, "slot_missed"
 
 
