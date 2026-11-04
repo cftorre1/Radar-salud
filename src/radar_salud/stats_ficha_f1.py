@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 from collections import defaultdict
 from datetime import date
+from fractions import Fraction
 from pathlib import Path
 from typing import Any, Callable
 
@@ -21,8 +22,54 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, fmt_signed, month_label, month_name, value
 
 FAMILY = "F1"
-BUILDER_VERSION = "f1_index_topic_v8"  # a new builder republishes the same release (no archive, no new paid Lectura)
+BUILDER_VERSION = "f1_index_topic_v9"  # a new builder republishes the same release (no archive, no new paid Lectura)
+# v9 (3-nov-2026): tema «Concentración» (participación e HHI de las Isapres abiertas).
 METRIC_COL = {"cotizantes": "C", "cargas": "D", "beneficiarios": "E"}
+SHARE_SUM_TOL = 0.05  # pp: Σ participaciones de las abiertas = 100 ± 0,05 (registry F1.kpis.hhi)
+SHARE_CAPTURE_TOL = 0.0005  # pp: share recomputed here vs. the lane's captured beneficiary_share
+HHI_TOL = 1e-6  # points: Σ s_i² vs. the exact recomputation 10.000 · Σ b_i² / (Σ b_i)²
+HHI_MAX = 10000
+
+
+def hhi(shares: list[float]) -> float:
+    """Herfindahl-Hirschman index on shares in % (0–10.000 points)."""
+    return sum(x * x for x in shares)
+
+
+def hhi_exact(counts: list[int]) -> Fraction:
+    """The same index from the integer beneficiary counts, exactly: 10.000 · Σ b_i² / (Σ b_i)². Independent of the
+    floating-point shares (a different path to the same number)."""
+    total = sum(counts)
+    return Fraction(HHI_MAX * sum(b * b for b in counts), total * total)
+
+
+def concentration_failures(values: dict, captured: dict[tuple[str, int], dict], periods: list[str], open_codes: set[int],
+                           closed_codes: set[int]) -> list[str]:
+    """Reconciliation of the 'Concentración' topic, per month: only the open Isapres (closed codes never enter); the
+    captured beneficiary_share exists for exactly the open codes with population 'open' and matches the share
+    recomputed here; Σ shares = 100 ± SHARE_SUM_TOL (recomputed and captured); HHI = the exact recomputation."""
+    out = []
+    for p in periods:
+        inputs = values.get(f"hhi.{p}", {}).get("inputs") or []
+        codes = {int(i.split(".")[1]) for i in inputs}
+        if codes != open_codes or codes & closed_codes:
+            out.append(f"hhi_codes_not_open:{p}")
+            continue
+        cap_open = {c for (pp, c), o in captured.items() if pp == p and o.get("population") == "open"}
+        if cap_open != open_codes:
+            out.append(f"share_population_mismatch:{p}")
+            continue
+        shares = [values[f"share.{c}.{p}"]["value"] for c in sorted(open_codes)]
+        if abs(sum(shares) - 100) > SHARE_SUM_TOL:
+            out.append(f"share_sum_not_100:{p}")
+        if abs(sum(float(captured[(p, c)]["value"]) for c in open_codes) - 100) > SHARE_SUM_TOL:
+            out.append(f"captured_share_sum_not_100:{p}")
+        if any(abs(values[f"share.{c}.{p}"]["value"] - float(captured[(p, c)]["value"])) > SHARE_CAPTURE_TOL for c in open_codes):
+            out.append(f"share_capture_mismatch:{p}")
+        exact = hhi_exact([values[f"cartera.{c}.beneficiarios.{p}"]["value"] for c in sorted(open_codes)])
+        if abs(values[f"hhi.{p}"]["value"] - float(exact)) > HHI_TOL:
+            out.append(f"hhi_recompute_mismatch:{p}")
+    return out
 
 
 def _load(path: Path) -> dict | None:
@@ -73,6 +120,8 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     failures: list[str] = []
 
     obs = [o for o in portfolio.get("observations", []) if o.get("metric_id") in METRIC_COL]
+    captured_share = {(o["period"], int(o["official_code"])): o for o in portfolio.get("observations", [])
+                      if o.get("metric_id") == "beneficiary_share"}
     shas = {o.get("source_sha256") for o in obs}
     urls = {o.get("source_url") for o in obs}
     if len(shas) != 1 or len(urls) != 1:
@@ -257,6 +306,30 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
             d = derived(f"share.{c}.delta_pp", s1 - s0, "share(t) − share(base)", [f"share.{c}.{t}", f"share.{c}.{base}"], unit="pp")
             if abs(d) >= th_share["pp"] and abs(b1 - b0) >= th_share["min_persons"]:
                 findings.append({"type": "threshold_crossed", "kpi": "participacion", "entity": c, "crossed": True, "strength": abs(d) / th_share["pp"]})
+    # Concentración (F1 v9): shares of the open Isapres and HHI = Σ s_i², every month (stocks, never summed).
+    for p in periods:
+        den = values[f"abiertas.beneficiarios.{p}"]["value"]
+        for c in sorted(open_codes):
+            derived(f"share.{c}.{p}", grid[(p, c)]["beneficiarios"]["value"] / den * 100, "benef_i / Σ abiertas × 100",
+                    [f"cartera.{c}.beneficiarios.{p}", f"abiertas.beneficiarios.{p}"], unit="%", period=p)
+        derived(f"hhi.{p}", hhi([values[f"share.{c}.{p}"]["value"] for c in sorted(open_codes)]),
+                "Σ (participación_i en %)², 7 Isapres abiertas", [f"share.{c}.{p}" for c in sorted(open_codes)], unit="puntos", period=p)
+        for c in sorted(open_codes):
+            derived(f"hhi_aporte.{c}.{p}", values[f"share.{c}.{p}"]["value"] ** 2, "participación_i²", [f"share.{c}.{p}"],
+                    unit="puntos", period=p)
+    conc_fail = concentration_failures(values, captured_share, periods, open_codes, closed_codes)
+    if conc_fail:
+        package["reconciliation"].update(ok=False, failures=conc_fail)
+        package.update(findings=[], kpis={}, revisions=[], constants=[])
+        return package
+    derived("hhi.delta", values[f"hhi.{t}"]["value"] - values[f"hhi.{base}"]["value"], "HHI(t) − HHI(base)",
+            [f"hhi.{t}", f"hhi.{base}"], unit="puntos")
+    derived("hhi.delta_shown", round(values[f"hhi.{t}"]["value"]) - round(values[f"hhi.{base}"]["value"]),
+            "redondeo(HHI t) − redondeo(HHI base)", ["hhi.delta"], unit="puntos")
+    package["reconciliation"]["checks"] += [
+        "concentración: solo las 7 abiertas; participación recalculada = beneficiary_share capturada (≤ 0,0005 pp)",
+        "Σ participaciones = 100 ± 0,05 (recalculadas y capturadas)",
+        "HHI = Σ s_i² igual a 10.000 · Σ b_i² / (Σ b_i)² exacto (≤ 1e-6 puntos)"]
     closed_b0 = sum(grid[(base, c)]["beneficiarios"]["value"] for c in closed_codes)
     derived(f"cerradas.beneficiarios.{base}", closed_b0, "Σ beneficiarios de las 3 cerradas", [f"cartera.{c}.beneficiarios.{base}" for c in sorted(closed_codes)], period=base)
     derived("delta.cerradas.ytd", sum(deltas[c] for c in closed_codes), "Σ Δ de las 3 cerradas", [f"delta.{c}.ytd" for c in sorted(closed_codes)])
@@ -318,7 +391,7 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
 
     constants = [th_b["mm_pct"], th_b["yoy_pct"], th_mix["abs_delta"], th_share["pp"], th_share["min_persons"], th_con["share_pct"],
                  th_con["min_system_delta"], kp["movilidad"]["threshold"]["rate_change_pp"], len(open_codes), len(closed_codes),
-                 len(open_codes | closed_codes), 12, cot_streak, streak_neg, need, len(months)]
+                 len(open_codes | closed_codes), 12, cot_streak, streak_neg, need, len(months), HHI_MAX]
     _lectura_material(package, values, t=t, base=base, prev=prev, open_codes=open_codes, closed_codes=closed_codes,
                       deltas=deltas, contributions=contributions, declines=declines, peak_month=peak_month,
                       cot_streak=cot_streak)
@@ -693,6 +766,28 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         tabs.append({"id": "movilidad", "label": "Movilidad y desahucios", "charts": mov_charts, "text": [],
                      "index_line": mov_line, "index_refs": [], "spark": {"chart": mov_charts[0]["id"], "form": "diverging" if mov_charts[0]["form"] == "diverging" else "bars"},
                      "dek": None, "kpis": []})
+    # Concentración (F1 v9): HHI series first (a stock per month), then each open Isapre's part of it.
+    hhi_t, hhi_d = v[f"hhi.{t}"]["value"], int(v["hhi.delta_shown"]["value"])
+    conc_rows = sorted(cfg["open_codes"], key=lambda c: (-v[f"hhi_aporte.{c}.{t}"]["value"], names[c]))
+    chart_hhi = {"id": "f1-hhi", "form": "line", "headline": f"HHI de las Isapres abiertas, {base_month} a {month}",
+                 "subtitle": "Puntos al cierre de cada mes, según beneficiarios", "unit": "puntos", "digits": 0,
+                 "rows": [{"label": sf.month_short(p), "period": p, "value": v[f"hhi.{p}"]["value"], "ref": f"hhi.{p}", "emphasis": p == t}
+                          for p in periods_all],
+                 "table": {"columns": ["Mes", "HHI (puntos)"], "rows": [[sf.month_short(p), fmt_int(v[f"hhi.{p}"]["value"])] for p in periods_all]},
+                 "source": "SIS, estadística mensual de cartera. HHI por Isapre, no por grupo controlador."}
+    chart_hhi_parts = {"id": "f1-hhi-aporte", "form": "bars", "headline": "Aporte de cada Isapre al HHI",
+                       "subtitle": f"Participación al cuadrado, puntos, {month_label(t)}", "unit": "puntos", "digits": 0,
+                       "rows": [{"label": names[c], "value": v[f"hhi_aporte.{c}.{t}"]["value"], "ref": f"hhi_aporte.{c}.{t}",
+                                 "emphasis": c == conc_rows[0]} for c in conc_rows],
+                       "table": {"columns": ["Isapre", "Participación", "Aporte al HHI"],
+                                 "rows": [[names[c], fmt_dec(v[f"share.{c}.{t}"]["value"], 1) + "%", fmt_int(v[f"hhi_aporte.{c}.{t}"]["value"])]
+                                          for c in conc_rows] + [["HHI abiertas", "", fmt_int(hhi_t)]]},
+                       "source": "Denominador: solo las 7 Isapres abiertas; las cerradas no entran. Por redondeo, los aportes "
+                                 "mostrados pueden no sumar exactamente el HHI."}
+    hhi_line = f"HHI {fmt_int(hhi_t)} puntos · " + (f"{fmt_signed(hhi_d)} desde {base_month}" if hhi_d else f"sin cambio desde {base_month}")
+    tabs.append({"id": "concentracion", "label": "Concentración", "charts": [chart_hhi, chart_hhi_parts], "text": [],
+                 "index_line": hhi_line, "index_refs": [f"hhi.{t}"] + (["hhi.delta_shown"] if hhi_d else []),
+                 "spark": {"chart": "f1-hhi", "form": "line"}, "dek": None, "kpis": []})
     reg = package.get("regional")
     tabs.append({"id": "regional", "label": "Regional", "charts": [], "status": "pendiente", "spark": None,
                  "index_line": ("Enlace a la SIS · cifras aún no extraídas" if reg else "Cifras aún no extraídas"), "index_refs": [],
@@ -725,6 +820,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     if "movilidad.diferencia_intervalo" in v:
         notes.append({"id": "n3", "text": "La movilidad compara dos cortes; no equivale a la suma de los movimientos intermedios ni a suscripciones menos desahucios, que incluyen cambios entre Isapres."})
     # Moved from the topic text (Dirección 29-oct: topic text only where it adds to the chart): a method caveat.
+    notes.append({"id": "n2c", "text": "Concentración: el índice de Herfindahl-Hirschman (HHI) suma los cuadrados de las participaciones "
+                                       "(en %) de las 7 Isapres abiertas en beneficiarios del mismo mes; llega a 10.000 puntos con un solo actor. "
+                                       "Las cerradas no entran. Es el HHI por Isapre: el HHI por grupo controlador queda pendiente, porque "
+                                       "requiere una tabla de propiedad fechada y con fuente. La ficha no aplica umbrales de interpretación."})
     notes.append({"id": "n3b", "text": "Una razón de cargas por cotizante menor no implica menos ingreso: la cotización la paga el cotizante."})
     if record_low and whole_year:
         notes.append({"id": "n4", "text": f"'Menor baja del año' compara los cambios mensuales de {month_name(package['periods'][1])} a {month}; "

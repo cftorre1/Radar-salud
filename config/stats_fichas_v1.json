@@ -343,6 +343,20 @@
             "'Banmédica' es el código 99 (Isapre), no el grupo."
           ]
         },
+        "hhi": {
+          "label": "Concentración (HHI por Isapre)",
+          "kind": "index",
+          "formula": "Σ s_i², con s_i = benef_i / Σ benef de las 7 Isapres abiertas × 100 (puntos, hasta 10.000)",
+          "denominator": "Solo abiertas (7); las cerradas no entran.",
+          "period_rule": "Cada mes (stock al cierre); cambio vs. primer mes del año capturado; a/a pendiente hasta capturar 2025.",
+          "reconciliation": "Σ s_i = 100 ± 0,05 (recalculadas y beneficiary_share capturada); s_i recalculada = beneficiary_share (≤ 0,0005 pp); HHI = 10.000 · Σ b_i² / (Σ b_i)² exacto (≤ 1e-6); si no, HOLD",
+          "threshold": null,
+          "pending": "HHI por grupo controlador: requiere tabla de propiedad fechada con fuente (p. ej. resolución FNE) aprobada por Dirección.",
+          "pitfalls": [
+            "Sin umbrales de interpretación mientras la ficha no cite una guía oficial de la FNE aplicable.",
+            "El HHI por Isapre no es el HHI por grupo controlador."
+          ]
+        },
         "contribucion": {
           "label": "Contribución al cambio neto",
           "kind": "contribution",
@@ -422,6 +436,10 @@
           "label": "Movilidad y desahucios"
         },
         {
+          "id": "concentracion",
+          "label": "Concentración"
+        },
+        {
           "id": "regional",
           "label": "Regional",
           "status": "pendiente: cifras regionales no extraídas"
@@ -432,7 +450,7 @@
           "status": "se agrega cuando se capturen precios/planes"
         }
       ],
-      "builder_version": "f1_index_topic_v8"
+      "builder_version": "f1_index_topic_v9"
     },
     "F2": {
       "slug": "f2_financieras",

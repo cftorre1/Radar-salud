@@ -291,6 +291,29 @@ def capture_all(root: Path, fetch) -> None:
         cap.capture(root, fetch=fetch)
 
 
+def write_f1_fixture(feed_date: str = "2026-10-10") -> Path:
+    """F1 card for the browser spec (``python -c "import sys; sys.path.insert(0, 'tests'); import stats_ficha_fixtures as f;
+    f.write_f1_fixture()"``), built offline from the committed cartera capture with the Lectura off: no download, no model
+    call. ``feed_date`` keeps the card inside the spec's 30-day window."""
+    import tempfile
+    from radar_salud import stats_ficha_f1 as f1, stats_fichas as sf
+    reg = sf.load_registry()
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        for rel in ("data/market/isapre_portfolio.json", "data/excel/validated_series.json", "data/entities/isapres.json",
+                    "data/history/superintendencia_signals.json"):
+            (root / rel).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy(REPO / rel, root / rel)
+        out = f1.run(root, today=date(2026, 10, 28), registry=reg, llm=False)
+        assert out["status"] == "pass", out.get("errors")
+        card = sf.ficha_card(out["ficha"], reg["families"]["F1"], feed_date=feed_date)
+    card["fixture_note"] = "Fixture de prueba: cifras de la captura de cartera comprometida, sin Lectura"
+    FIXTURE_DIR.mkdir(parents=True, exist_ok=True)
+    path = FIXTURE_DIR / "f1_cartera.card.json"
+    path.write_text(json.dumps(card, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return path
+
+
 def write_fixtures() -> None:
     import tempfile
     from radar_salud import stats_ficha_f4 as f4, stats_ficha_f6 as f6, stats_fichas as sf

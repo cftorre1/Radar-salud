@@ -284,3 +284,10 @@ POLICY.md (sección "Editorial sessions"); aquí van la regla de producto, la se
   exacta: la celda del N° de esa fila trae una marca en las planillas reales y el recibo de texto (truncado) no la
   muestra. Lección: un HOLD de fila o celda debe registrar lo que vio (etiqueta, columna, seguro, valor), para no gastar
   una corrida diaria en adivinar. v5 acepta cualquier marca no numérica en esa fila exacta y la anota en `code_cell`.
+
+- 3-nov-2026 (F1 v9, `f1_index_topic_v9`): tema «Concentración». Participación de las 7 abiertas y HHI = Σ sᵢ² (sᵢ en %)
+  cada mes, desde los beneficiarios enteros de la captura de cartera. Reconciliación (`stats_ficha_f1.concentration_failures`,
+  HOLD si falla): solo códigos abiertos; la participación recalculada calza con `beneficiary_share` capturada
+  (≤ 0,0005 pp) y su población es `open`; Σ participaciones = 100 ± 0,05 (recalculadas y capturadas); HHI igual a la
+  recomputación exacta 10.000 · Σ bᵢ² / (Σ bᵢ)² (`hhi_exact`, ≤ 1e-6). Sin umbrales de interpretación mientras la ficha no
+  cite una guía oficial de la FNE aplicable; el HHI por grupo controlador queda pendiente de una tabla de propiedad con fuente.
