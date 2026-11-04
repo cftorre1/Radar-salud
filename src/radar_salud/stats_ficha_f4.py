@@ -636,7 +636,7 @@ SIS_NOTE_RULES = (  # (pattern in the captured 'Notas' sheet, the ficha's paraph
     (r"problema 57,? se deben a la eliminacion de casos",
      "las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo", "p57"),
     (r"problema 11,? para diciembre del 2022,? se deben a la eliminacion de casos",
-     "las del problema 11 en diciembre de 2022, por la misma causa", "p11"),
+     "las del problema 11 en diciembre de 2022 también se deben a que una Isapre eliminó casos del archivo", "p11"),
     # A reworded deletion note that no rule above reads keeps the generic paraphrase (never silently dropped).
     (r"eliminacion de casos", "algunas diferencias en problemas de salud puntuales se deben a que una Isapre eliminó casos del "
                               "archivo", "elim"),
@@ -658,8 +658,12 @@ def sis_notes_said(notes: list[str]) -> list[str]:
     folded = _fold(" ".join(notes or []))
     taken: dict[str, str] = {}
     for rx, text, group in SIS_NOTE_RULES:
-        if group in taken or (group == "elim" and ({"p57", "p11"} & set(taken))):
+        if group in taken:
             continue
+        if group == "elim":
+            # Only when the note has more deletion sentences than the specific rules read (a new problem named).
+            if len(re.findall(rx, folded)) <= len({"p57", "p11"} & set(taken)):
+                continue
         if re.search(rx, folded):
             taken[group] = text
     return list(taken.values())

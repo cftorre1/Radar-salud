@@ -1412,9 +1412,13 @@ def test_f4_atypical_hold_reasons():
      "una isapre. Las diferencias en el problema 11, para diciembre del 2022, se deben a la eliminación de casos del archivo, "
      "por parte de una isapre.",
      ["desde 2021, las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo",
-      "las del problema 11 en diciembre de 2022, por la misma causa"]),
+      "las del problema 11 en diciembre de 2022 también se deben a que una Isapre eliminó casos del archivo"]),
     ("Las diferencias en el problema 57 se deben a la eliminación de casos del archivo, por parte de una isapre.",
      ["las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo"]),
+    ("Las diferencias en el problema 57 se deben a la eliminación de casos del archivo. Las diferencias en el problema 30 se "
+     "deben a la eliminación de casos del archivo.",
+     ["las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo",
+      "algunas diferencias en problemas de salud puntuales se deben a que una Isapre eliminó casos del archivo"]),
     ("Algunas diferencias se explican por la eliminación de casos del archivo por una isapre.",
      ["algunas diferencias en problemas de salud puntuales se deben a que una Isapre eliminó casos del archivo"]),
 ])
