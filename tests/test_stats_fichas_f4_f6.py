@@ -1278,3 +1278,69 @@ def test_f4_with_unassigned_row_counts_it_in_the_year_to_date_total(tmp_path):
             assert v[f"{vid}.{ins}"]["value"] == v0[f"{vid}.{ins}"]["value"] + flow(a, z)[i], (vid, ins)
     for per, (a, z) in {"2026-06": ("2026-06", "2025-12"), "2025-06": ("2025-06", "2024-12")}.items():
         assert v[f"ges.ytd.{per}.total_comparable"]["value"] == v0[f"ges.ytd.{per}.total_comparable"]["value"] + sum(flow(a, z))
+
+
+# ---------------------------------------------------------------------------------------------
+# F4 · atypical quarter (Dirección 4-nov-2026): the SIS's T2-2025 Isapre cases triple the other quarters
+
+
+def _atypical_root(tmp_path, extra=3.0):
+    """Every problem's Isapre flow of T2 2025 multiplied by ``1 + extra``; the later 2025 YTD keep the bump."""
+    import copy
+    y = copy.deepcopy(fx.GES_YTD)
+    q1 = y["2025-03"]
+    bump = {c: int(round(((y["2025-06"][c][1] - q1.get(c, (0, 0))[1]) * extra))) for c in y["2025-06"]}
+    for per in ("2025-06", "2025-09", "2025-12"):
+        y[per] = {c: (f, i + bump.get(c, 0)) for c, (f, i) in y[per].items()}
+    r = fx.make_root(tmp_path / "r", readings_until="2026-06")
+    fx.capture_all(r, fx.fetcher(r, {fx.GES_URL.format(period=p): fx.ges_workbook(p, y) for p in fx.GES_RELEASES}))
+    return r
+
+
+def test_f4_atypical_quarter_changes_the_headline_and_is_disclosed(tmp_path):
+    r = _atypical_root(tmp_path)
+    p = f4.build_package(r, reg_ok())
+    assert p["reconciliation"]["ok"], p["reconciliation"]
+    k = p["kpis"]
+    assert [(a["y"], a["q"], a["ins"], a["in_window"]) for a in k["atypical"]] == [(2025, 2, "isapre", True)]
+    assert k["yoy_contaminated"] == ["isapre"]
+    v = p["values"]
+    a = k["atypical"][0]
+    others = sorted(v[f"ges.q.{q}.isapre"]["value"] for q in ("2025T1", "2025T3", "2025T4", "2026T1", "2026T2"))
+    assert a["median"] == others[2] and v["ges.q.2025T2.isapre.veces_mediana"]["value"] == a["value"] / a["median"] >= 2
+    # The total year-on-year change is no longer a threshold finding: the window holds the atypical quarter.
+    assert not any(f["kpi"] == "casos_ges" for f in p["findings"])
+    fi = f4.compose(p, reg_ok(), today=TODAY)
+    lead = k["lead"]
+    assert fi["headline_type"] == "ytd_lead_problem"
+    assert fi["headline"].startswith(lead["label"] + " reúne el ") and "frente a" not in fi["headline"]
+    assert "El T2 2025 de las Isapres es atípico en los datos SIS; Fonasa: " in fi["dek"] and len(fi["dek"].split()) <= 40
+    assert "Cada caso es una solicitud de acceso a la GES." in fi["dek"]
+    tot = " ".join(next(t for t in fi["tabs"] if t["id"] == "totales")["text"])
+    assert "atípico en los datos SIS" in tot and "La SIS no informa el motivo." in tot
+    assert any(n["id"] == "n8" and "Por eso el titular no usa la comparación" in n["text"] for n in fi["notes"])
+    assert fi["kpis"][0]["badge"] == "Comparación con un trimestre atípico"
+    assert sf.verify_ficha(fi, p)["verdict"] == "PASS"
+    # The Lectura is never offered the contaminated comparisons; Fonasa's stays.
+    ids = {e["id"] for e in p["lectura_pool"]}
+    assert not ids & {"ges.yoy.total", "ges.yoy.total_pct", "ges.yoy.isapre", "ges.yoy.isapre_pct", "ges.yoy.isapre_share_pp"}
+    assert {"ges.yoy.fonasa", "ges.yoy.fonasa_pct"} <= ids
+
+
+def test_f4_without_an_atypical_quarter_keeps_the_comparison_headline(root):
+    p = f4.build_package(root, reg_ok())
+    assert p["kpis"]["atypical"] == [] and p["kpis"]["yoy_contaminated"] == []
+    fi = f4.compose(p, reg_ok(), today=TODAY)
+    assert fi["headline_type"] == "ytd_yoy" and "frente a" in fi["headline"]
+    assert not any(n["id"] == "n8" for n in fi["notes"])
+
+
+def test_f4_a_mild_quarter_is_not_atypical(tmp_path):
+    p = f4.build_package(_atypical_root(tmp_path, extra=0.5), reg_ok())
+    assert p["kpis"]["atypical"] == []
+
+
+def test_f4_sis_note_names_the_problems_it_covers(root):
+    fi = f4.run(root, today=TODAY, registry=reg_ok(), llm=False)["ficha"]
+    n5 = next(n["text"] for n in fi["notes"] if n["id"] == "n5")
+    assert "problema 57" in n5 and "puntuales" not in n5
