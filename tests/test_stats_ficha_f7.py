@@ -398,7 +398,9 @@ def test_first_publication_waits_for_a_review_of_that_evidence(tmp_path):
     reg["families"]["F7"]["first_review"].update(reviewed_sha256="f" * 64)  # once live, the normal policy rules
     assert f7.run(root, today=TODAY, registry=reg, llm=False)["status"] in ("pass", "no_change")
     committed = sf.load_registry()["families"]["F7"]
-    assert committed["first_review"]["reviewed_sha256"] is None and committed["lectura_enabled"] is False
+    # Dirección approved the first real F7 ficha on 4-nov-2026 (evidence of the July-2026 cut); Lectura stays off.
+    assert committed["first_review"]["reviewed_sha256"] == "d685bc1319275102876917e10a7d3d43ee481faa7b83a0664472c05cafedafd1"
+    assert committed["first_review"]["reviewed_by"] and committed["lectura_enabled"] is False
 
 
 def test_no_model_call_even_with_llm_requested(tmp_path):
