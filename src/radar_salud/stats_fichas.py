@@ -842,7 +842,10 @@ URL_RX = re.compile(r"https?://|\bwww\.|\b[\w-]+(?:\.[\w-]+)*\.(?:cl|com|org|gob
 COUNT_WORDS = {"dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10}
 
 
-COUNT_CLAIM = re.compile(r"\b(\d+|una?|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez) isapres? (crecen?|caen?)\b")
+COUNT_CLAIM = re.compile(r"\b(\d+|una?|ninguna|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez) isapres? (crecen?|caen?|con perdida)\b")
+# The derived count each claim verb must equal (folded text): F1 open Isapres that grow / fall; F2 Isapres with a loss.
+COUNT_CLAIM_IDS = {"crece": "conteo.abiertas_crecen", "crecen": "conteo.abiertas_crecen", "cae": "conteo.abiertas_caen",
+                   "caen": "conteo.abiertas_caen", "con perdida": "conteo.isapres_con_perdida"}
 
 
 def count_phrase(n: int, singular: str, plural: str) -> str:
@@ -986,8 +989,8 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
         derived_counts = {e["id"]: e["value"] for e in package.get("derived_ratios") or [] if e.get("unit") == "count"}
         for text in (tab.get("index_line"), tab.get("dek")):
             for n, verb in COUNT_CLAIM.findall(_fold(text or "")):
-                want = derived_counts.get(f"conteo.abiertas_{'crecen' if verb.startswith('crece') else 'caen'}")
-                got = int(n) if n.isdigit() else (1 if n in {"una", "un"} else COUNT_WORDS.get(n))
+                want = derived_counts.get(COUNT_CLAIM_IDS[verb])
+                got = int(n) if n.isdigit() else (1 if n in {"una", "un"} else 0 if n == "ninguna" else COUNT_WORDS.get(n))
                 if want is None or got != want:
                     errors.append(f"count_not_in_evidence:{tab.get('id')}:{n} {verb}")
         spark = tab.get("spark")

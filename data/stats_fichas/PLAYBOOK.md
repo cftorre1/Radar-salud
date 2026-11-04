@@ -39,7 +39,7 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 | Un resultado (ganancia, antes de impuestos, ganancia bruta) nunca lleva variación %, aunque la base sea positiva: una base chica la vuelve engañosa ("2.707,6% más" sobre 1.215 MM$). Se muestran ambos niveles ("utilidad de 34.120 MM$ frente a 1.215 MM$ en marzo 2025") y el cambio absoluto en "Ver datos". Ingresos y costos conservan su % solo con base positiva (Dirección, 2 nov). | `stats_ficha_f2.RESULT_ITEMS`, `stats_ficha_f2.change`, `stats_ficha_f2.result_phrase` |
 | Montos en MM$ se muestran enteros con separador de miles ("+1.215", "739.841"); % y pp con un decimal. La evidencia conserva la precisión completa; solo la vista redondea, y lo redondeado traza a la evidencia con el redondeo del verificador. | gráficos: `digits` (`stats_ficha_f2.MM_DIGITS`; `js` `dec`/`sgd` en `bars`, `diverging`, `columns`); tablas: `sf.fmt_int`; `sf.verify_ficha` `chart_digits_invalid` |
 | Los umbrales se evalúan sobre el valor redondeado que se muestra. | F4 `ges.p.*.yoy_pct` (redondeo a 1 decimal antes del 15%); F1 `mezcla.delta_shown`; F2 siniestralidad 90/95 |
-| Los conteos van atados a su afirmación ("tres crecen", "9 de 10 con utilidad"). | `sf.COUNT_CLAIM`, `chart_headline_count_not_in_evidence`, `count_phrase`; F2 `conteo.*` citados en `index_refs` |
+| Los conteos van atados a su afirmación ("tres crecen", "1 Isapre con pérdida"). | `sf.COUNT_CLAIM` / `sf.COUNT_CLAIM_IDS`, `chart_headline_count_not_in_evidence`, `count_phrase`; F2 `conteo.*` citados en `index_refs` |
 | Un stock nunca se suma entre cortes, y un flujo se rotula con su período. | `lens_checks` `stock_rule_not_stated`; F6 n1; F2 n1 |
 
 ## 3. Documentos (PDF / xls / xlsx)
@@ -171,6 +171,24 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 
   Patrimonio queda fuera mientras ninguna hoja "E. Sit. Fin. I." esté verificada en miles.
   - La siniestralidad es (prestaciones + SIL) / total de ingresos de actividades ordinarias.
+  - **v5 (`f2_index_topic_v5`, 3 nov): siniestralidad separada.** `siniestralidad_prest` (prestaciones / ingresos) y
+    `siniestralidad_sil` (SIL / ingresos), por Isapre y sistema sin Esencial, YTD vs. YTD t−1. Se cumple
+    S_prest + S_SIL = S antes de redondear, con el total recalculado desde sus propias cuentas
+    (`stats_ficha_f2.split_identity_failures`, tolerancia 1e-9 pp); si no, HOLD `siniestralidad_split_mismatch`. El
+    renderer no tiene barras agrupadas: el tema muestra las dos partes y el total del sistema como puntos (año) y aros
+    (año anterior), y por Isapre las dos cifras lado a lado en «Ver datos». Nunca se dice que una parte explica a la otra.
+  - **Tema «Licencias (SIL)»:** SIL / ingresos por Isapre y SIL / cotizaciones, con cotizaciones = cotización legal +
+    cotización adicional voluntaria del mismo período (sin aporte adicional, fondo de compensación ni otros). Un
+    denominador ≤ 0 significa HOLD.
+  - **Total independiente (revisión de #136, 4 nov):** prestaciones + SIL = «Total costo de ventas» de la hoja − (no
+    liquidadas + litigio + egresos fondo + otros costos), por Isapre y período, ≤ 1 miles
+    (`stats_ficha_f2.costo_identity_failures`); si no, HOLD `costo_split_mismatch`. Sin esto, un SIL leído de otra fila
+    pasaría la identidad de la siniestralidad, que usa las mismas dos filas.
+  - **Cerradas en SIL / cotizaciones:** van después de las abiertas, con la marca «cerrada» en el gráfico (`tag`, `js`
+    `bars`) y en «Ver datos», más la columna «Aporte adicional (% ingresos)». La nota n2d se escribe solo si cada cerrada
+    tiene más aporte adicional que cualquier abierta.
+  - `conteo.isapres_con_perdida` (resultado < 0) va en la línea índice de Resultados («1 Isapre con pérdida») y lo
+    verifica `sf.COUNT_CLAIM` (`COUNT_CLAIM_IDS`).
   - Con menos de tres temas, HOLD.
 - **Comparación a/a.** Solo con la planilla del mismo trimestre del año anterior (2025-03), capturada y verificada con
   la misma plantilla. Si falta, la ficha muestra solo los niveles de 2026-03, con la nota "Sin comparación".

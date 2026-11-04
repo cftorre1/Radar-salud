@@ -35,7 +35,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F2"
-BUILDER_VERSION = "f2_index_topic_v4"
+BUILDER_VERSION = "f2_index_topic_v5"  # v5 (3-nov-2026): siniestralidad separada, SIL / cotizaciones, Isapres con pérdida
 CAPTURE = fc.STORE
 EDITORIAL_RULES = Path("config/editorial_rules_v3.json")
 ESENCIAL_HOLD = "HOLD_COVERAGE_ESENCIAL"
@@ -46,7 +46,20 @@ TOPICS = {  # topic → accounts it needs (latest period) for every published Is
     "costos": ("Costo de ventas", ("costo_prestaciones", "costo_sil")),
     "gastos": ("Gastos de administración", ("gav", "ingresos_operacionales")),
     "siniestralidad": ("Siniestralidad", ("costo_prestaciones", "costo_sil", "ingresos_operacionales")),
+    "sil": ("Licencias (SIL)", ("costo_sil", "cotizacion_legal", "cotizacion_adicional", "ingresos_operacionales")),
 }
+# Siniestralidad separada (F2 v5, 3-nov-2026): S = S_prest + S_SIL over the same denominator. The split must equal the
+# total before any rounding (only float noise allowed), else HOLD.
+SPLIT = (("siniestralidad_prest", "costo_prestaciones"), ("siniestralidad_sil", "costo_sil"))
+SPLIT_TOL = 1e-9  # percentage points; a/d + b/d vs (a + b)/d in binary floating point
+# SIL / cotizaciones: the denominator is fixed and labelled (business review 3-nov-2026): cotización legal (7%) + cotización
+# adicional voluntaria of the same accumulated period. Aporte adicional, fondo de compensación and otros are not cotizaciones.
+COTIZACIONES = ("cotizacion_legal", "cotizacion_adicional")
+# Independent total (review of #136, 4-nov-2026): the sheet's own 'Total costo de ventas' minus its other components must
+# equal prestaciones + SIL, per Isapre and period, within 1 miles (0,001 MM$). A template that mapped SIL (or
+# prestaciones) to the wrong row would otherwise still pass S_prest + S_SIL = S, which is built from the same two rows.
+COSTO_OTHER = ("prestaciones_no_liquidadas", "prestaciones_litigio", "egresos_fondo_compensacion", "otros_costos_operacion")
+COSTO_TOL_MM = 0.001 + 1e-9  # 1 miles de $ in MM$, plus float noise
 INGRESOS_PARTS = (("cotizacion_legal", "Cotización legal"), ("cotizacion_adicional", "Cot. adicional"),
                   ("aporte_adicional", "Aporte adicional"), ("fondo_compensacion", "Fondo compens."), ("ingresos_otros", "Otros"))
 COSTO_PARTS = (("costo_prestaciones", "Prestaciones"), ("costo_sil", "SIL"),
@@ -158,6 +171,11 @@ def headline_lead(prev: float | None, cur: float, span: str) -> str:
     return f"{head}, frente a {fmt_int(prev)} {MM} un año antes"
 
 
+def loss_phrase(n: int) -> str:
+    """'2 Isapres con pérdida' (the count ``sf.COUNT_CLAIM`` checks against ``conteo.isapres_con_perdida``)."""
+    return "ninguna Isapre con pérdida" if n == 0 else f"{n} Isapre{'s' if n != 1 else ''} con pérdida"
+
+
 def scope_note(cell: str, period_label: str, n: int) -> str:
     """The one always-visible footnote on Esencial (Dirección, 2-nov-2026), paraphrasing the A18 note the rule matched."""
     return (f"Cifras del sistema sin Isapre Esencial: según la SIS (nota {cell}), sus cifras a {period_label} están en "
@@ -166,6 +184,15 @@ def scope_note(cell: str, period_label: str, n: int) -> str:
 
 def pct_cell(pct: float | None) -> str:
     return "N/A" if pct is None else fmt_dec(pct, 1, signed=True) + "%"
+
+
+def _closed(root: Path) -> set[str]:
+    """Official codes of the closed Isapres (``isapre_type: closed`` in the entity catalog)."""
+    try:
+        data = json.loads((Path(root) / "data/entities/isapres.json").read_text(encoding="utf-8"))
+        return {str(int(e["official_code"])) for e in data["entities"] if e.get("isapre_type") == "closed"}
+    except (OSError, ValueError, KeyError):
+        return set()
 
 
 def _names(root: Path) -> dict[str, str]:
@@ -192,6 +219,49 @@ def _collect(parse: dict) -> tuple[dict[str, dict[str, tuple[float, str]]], list
                     errs.append(f"isapre_in_two_tables:{f['item']}:{code}")
                 out[f["item"]][code] = (x, f"{tab['sheet'].strip()}!{tab['cells'][fid][code]}")
     return out, errs
+
+
+def _pct(num: float, den: float) -> float:
+    """num / den × 100, at full precision (rounding happens only in the view)."""
+    return num / den * 100
+
+
+def costo_identity_failures(values: dict, codes: list[str], periods: list[str], tol: float = COSTO_TOL_MM) -> list[str]:
+    """costo_operacional (the sheet's 'Total costo de ventas' row) − (no liquidadas + litigio + egresos fondo + otros
+    costos) == costo de prestaciones + SIL, per Isapre and period. Uses the captured cells only, never a derived total;
+    a missing cell is a failure."""
+    out = []
+    for c in codes:
+        for p in periods:
+            need = ["costo_operacional", *COSTO_OTHER, "costo_prestaciones", "costo_sil"]
+            if any(f"{i}.{c}.{p}" not in values for i in need):
+                out.append(f"costo_total_missing:{c}.{p}")
+                continue
+            V = lambda i: values[f"{i}.{c}.{p}"]["value"]  # noqa: E731
+            rest = V("costo_operacional") - sum(V(i) for i in COSTO_OTHER)
+            if abs(rest - (V("costo_prestaciones") + V("costo_sil"))) > tol:
+                out.append(f"costo_split_mismatch:{c}.{p}")
+    return out
+
+
+def split_identity_failures(values: dict, whos: list[str], periods: list[str], tol: float = SPLIT_TOL) -> list[str]:
+    """S_prest + S_SIL must equal the total siniestralidad before rounding, for every Isapre, the system and period.
+    The total is recomputed here from its own inputs (costo de prestaciones + SIL over ingresos), not taken from the
+    parts. A missing value is a failure too."""
+    out = []
+    for w in whos:
+        for p in periods:
+            ids = [f"{k}.{w}.{p}" for k, _ in SPLIT] + [f"siniestralidad.{w}.{p}", f"costo_prestaciones.{w}.{p}",
+                                                      f"costo_sil.{w}.{p}", f"ingresos_operacionales.{w}.{p}"]
+            if any(i not in values for i in ids):
+                out.append(f"siniestralidad_split_missing:{w}.{p}")
+                continue
+            parts = sum(values[f"{k}.{w}.{p}"]["value"] for k, _ in SPLIT)
+            den = values[f"ingresos_operacionales.{w}.{p}"]["value"]
+            recomputed = (values[f"costo_prestaciones.{w}.{p}"]["value"] + values[f"costo_sil.{w}.{p}"]["value"]) / den * 100
+            if abs(parts - values[f"siniestralidad.{w}.{p}"]["value"]) > tol or abs(parts - recomputed) > tol:
+                out.append(f"siniestralidad_split_mismatch:{w}.{p}")
+    return out
 
 
 def _hold(package: dict, failures: list[str], topics: list[str] | None = None) -> dict:
@@ -252,7 +322,11 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
             "en cada cuenta las Isapres suman la columna total (tolerancia ≤ 1 miles) y los componentes suman su total",
             "Esencial: excluida por regla de Dirección mientras la nota A18 diga que sus cifras están en revisión; si no, HOLD",
             "comparación a/a solo con la planilla del año anterior verificada con la misma plantilla",
-            "al menos tres temas con datos verificados"]},
+            "al menos tres temas con datos verificados",
+            "siniestralidad separada: prestaciones/ingresos + SIL/ingresos = siniestralidad total antes de redondear; si no, HOLD",
+            "prestaciones + SIL = total costo de ventas de la hoja − (no liquidadas + litigio + egresos fondo + otros costos), "
+            "por Isapre y período, ≤ 1 miles; si no, HOLD",
+            "denominadores > 0 (ingresos; cotización legal + adicional para SIL / cotizaciones); si no, HOLD"]},
         "lectura_pool": [], "derived_ratios": [], "ranks": [],
     }
     if failures:
@@ -327,24 +401,54 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                         "costo de prestaciones + SIL", [f"costo_prestaciones.{w}.{p}", f"costo_sil.{w}.{p}"], MM, p)
     if "siniestralidad" in topics:
         s_pers = periods_for([*salud, "ingresos_operacionales"])
+        costo_errs = costo_identity_failures(values, codes, s_pers)
+        if costo_errs:
+            return _hold(package, costo_errs, topics)
         for w in whos:
             for p in s_pers:
                 den = V(f"ingresos_operacionales.{w}.{p}")
                 if den <= 0:
                     return _hold(package, [f"siniestralidad_denominator_not_positive:{w}.{p}"], topics)
-                derived(f"siniestralidad.{w}.{p}", V(f"costo_salud.{w}.{p}") / den * 100,
+                derived(f"siniestralidad.{w}.{p}", _pct(V(f"costo_salud.{w}.{p}"), den),
                         "(costo de prestaciones + SIL) / total ingresos de actividades ordinarias × 100",
                         [f"costo_salud.{w}.{p}", f"ingresos_operacionales.{w}.{p}"], "%", p)
+                for key, item in SPLIT:
+                    derived(f"{key}.{w}.{p}", _pct(V(f"{item}.{w}.{p}"), den),
+                            f"{item} / total ingresos de actividades ordinarias × 100",
+                            [f"{item}.{w}.{p}", f"ingresos_operacionales.{w}.{p}"], "%", p)
             if t1 in s_pers:
-                derived(f"siniestralidad.{w}.pp", round(V(f"siniestralidad.{w}.{t}"), 1) - round(V(f"siniestralidad.{w}.{t1}"), 1),
-                        "redondeo(siniestralidad t, 1) − redondeo(siniestralidad t−12, 1)",
-                        [f"siniestralidad.{w}.{t}", f"siniestralidad.{w}.{t1}"], "pp")
+                for key in ("siniestralidad", *(k for k, _ in SPLIT)):
+                    derived(f"{key}.{w}.pp", round(V(f"{key}.{w}.{t}"), 1) - round(V(f"{key}.{w}.{t1}"), 1),
+                            f"redondeo({key} t, 1) − redondeo({key} t−12, 1)", [f"{key}.{w}.{t}", f"{key}.{w}.{t1}"], "pp")
+        split_errs = split_identity_failures(values, whos, s_pers)
+        if split_errs:
+            return _hold(package, split_errs, topics)
         if t1 in s_pers:  # threshold on the rounded value shown (89,96 → '90,0%' crosses 90); needs the previous year
             levels = (cfg["kpis"]["siniestralidad"].get("threshold") or {}).get("levels_pct") or []
             s_t, s_1 = round(V(f"siniestralidad.sistema.{t}"), 1), round(V(f"siniestralidad.sistema.{t1}"), 1)
             for lvl in levels:
                 if (s_t >= lvl) != (s_1 >= lvl):
                     findings.append({"type": "threshold_crossed", "kpi": "siniestralidad", "level": lvl, "crossed": True, "strength": 1.0})
+    if "sil" in topics:
+        c_pers = periods_for(["costo_sil", *COTIZACIONES])
+        for w in whos:
+            for p in c_pers:
+                ids = [f"{i}.{w}.{p}" for i in COTIZACIONES]
+                cot = derived(f"cotizaciones.{w}.{p}", sum(V(i) for i in ids), "cotización legal + cotización adicional voluntaria",
+                              ids, MM, p)
+                if cot <= 0:
+                    return _hold(package, [f"sil_cotizaciones_denominator_not_positive:{w}.{p}"], topics)
+                if "aporte_adicional" in complete and p == t:
+                    derived(f"aporte_share.{w}.{p}", _pct(V(f"aporte_adicional.{w}.{p}"), V(f"ingresos_operacionales.{w}.{p}")),
+                            "aporte adicional / total ingresos de actividades ordinarias × 100",
+                            [f"aporte_adicional.{w}.{p}", f"ingresos_operacionales.{w}.{p}"], "%", p)
+                derived(f"sil_cotizaciones.{w}.{p}", _pct(V(f"costo_sil.{w}.{p}"), cot),
+                        "subsidios por incapacidad laboral / (cotización legal + cotización adicional voluntaria) × 100",
+                        [f"costo_sil.{w}.{p}", f"cotizaciones.{w}.{p}"], "%", p)
+            if t1 in c_pers:
+                derived(f"sil_cotizaciones.{w}.pp", round(V(f"sil_cotizaciones.{w}.{t}"), 1) - round(V(f"sil_cotizaciones.{w}.{t1}"), 1),
+                        "redondeo(sil_cotizaciones t, 1) − redondeo(sil_cotizaciones t−12, 1)",
+                        [f"sil_cotizaciones.{w}.{t}", f"sil_cotizaciones.{w}.{t1}"], "pp")
     if "gastos" in topics:
         for w in whos:
             derived(f"gav_pct.{w}.{t}", V(f"gav.{w}.{t}") / V(f"ingresos_operacionales.{w}.{t}") * 100,
@@ -367,7 +471,9 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     if "resultados" in topics:
         derived("conteo.isapres_con_utilidad", sum(1 for c in codes if V(f"resultado_ejercicio.{c}.{t}") > 0),
                 "Isapres con resultado > 0", [f"resultado_ejercicio.{c}.{t}" for c in codes], "count")
-    for vid in ("conteo.isapres", "conteo.isapres_con_utilidad"):
+        derived("conteo.isapres_con_perdida", sum(1 for c in codes if V(f"resultado_ejercicio.{c}.{t}") < 0),
+                "Isapres con resultado del ejercicio < 0 (pérdida), acumulado del año", [f"resultado_ejercicio.{c}.{t}" for c in codes], "count")
+    for vid in ("conteo.isapres", "conteo.isapres_con_utilidad", "conteo.isapres_con_perdida"):
         if vid in values:
             package["derived_ratios"].append({"id": vid, "value": V(vid), "unit": "count", "entity": None, "signed": False,
                                               "periods": [t], "requires_period": False, "formula": values[vid]["formula"],
@@ -379,6 +485,7 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                    revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
                    constants=[100, 12, *((cfg["kpis"]["siniestralidad"].get("threshold") or {}).get("levels_pct") or [])],
                    kpis={"t1": t1, "yoy": sorted(yoy), "codes": codes, "names": {c: names[c] for c in codes},
+                         "closed": sorted(set(codes) & _closed(root), key=int),
                          "complete": sorted(complete), "excluded": sorted(excluded),
                          "coverage_note": ({"locator": f"{str(note.get('sheet') or '').strip()}!{note.get('cell')}", "text": note.get("text")}
                                            if excluded else None),
@@ -394,6 +501,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     k = package["kpis"]
     t, t1 = package["period"], k["t1"]
     codes, names, yoy, complete = k["codes"], k["names"], set(k["yoy"]), set(k["complete"])
+    closed = set(k.get("closed") or [])
     V = lambda vid: v[vid]["value"]  # noqa: E731
     has = lambda vid: vid in v  # noqa: E731
     month, mlabel, plabel = sf.month_name(t), sf.month_label(t), sf.month_label(t1)
@@ -425,7 +533,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     if "resultados" in topics:
         R = V(f"resultado_ejercicio.sistema.{t}")
-        n_pos, n = int(V("conteo.isapres_con_utilidad")), int(V("conteo.isapres"))
+        n_loss = int(V("conteo.isapres_con_perdida"))
         ry = "resultado_ejercicio" in yoy
         kpis.append({"id": "resultado", "label": "Resultado del ejercicio", "value": f"{fmt_int(R)} {MM}", "prov": "C",
                      "lines": [cmp_line("resultado_ejercicio")],
@@ -466,8 +574,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                  "rows": [rrow(c, names[c]) for c in ordr] + [rrow("sistema", sys_row)]},
                        "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."})
         tab = {"id": "resultados", "label": "Resultados", "charts": charts, "text": [], "dek": None}
-        sf.topic_fields(tab, f"{fmt_int(R)} {MM} · {n_pos} de {n} Isapres con utilidad",
-                        index_refs=[f"resultado_ejercicio.sistema.{t}", "conteo.isapres_con_utilidad", "conteo.isapres"], kpis=[])
+        sf.topic_fields(tab, f"{fmt_int(R)} {MM} · {loss_phrase(n_loss)}",
+                        index_refs=[f"resultado_ejercicio.sistema.{t}", "conteo.isapres_con_perdida"], kpis=[])
         tabs.append(tab)
         paragraphs.append(f"Entre enero y {month}, las Isapres registraron una "
                           + (result_phrase(V(f"resultado_ejercicio.sistema.{t1}"), R, plabel) if ry else level_phrase(R)) + ".")
@@ -556,33 +664,104 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         tabs.append(tab)
     if "siniestralidad" in topics:
         S = V(f"siniestralidad.sistema.{t}")
-        pp = (v.get("siniestralidad.sistema.pp") or {}).get("value")
+        SP, SS = V(f"siniestralidad_prest.sistema.{t}"), V(f"siniestralidad_sil.sistema.{t}")
+        s_yoy = has(f"siniestralidad.sistema.{t1}")
+        pp = V("siniestralidad.sistema.pp") if s_yoy else None
         kpis.append({"id": "siniestralidad", "label": "Siniestralidad", "value": fmt_dec(S, 1) + "%", "prov": "C",
-                     "lines": ["prestaciones y SIL sobre ingresos"]
-                     + ([f"{plabel}: {fmt_dec(V(f'siniestralidad.sistema.{t1}'), 1)}% ({fmt_dec(pp, 1, signed=True)} pp)"] if pp is not None else []),
-                     "refs": [f"siniestralidad.sistema.{t}"] + ([f"siniestralidad.sistema.{t1}", "siniestralidad.sistema.pp"] if pp is not None else [])})
+                     "lines": [f"prestaciones {fmt_dec(SP, 1)}% · SIL {fmt_dec(SS, 1)}%"]
+                     + ([f"{plabel}: {fmt_dec(V(f'siniestralidad.sistema.{t1}'), 1)}% ({fmt_dec(pp, 1, signed=True)} pp)"] if s_yoy else []),
+                     "refs": [f"siniestralidad.sistema.{t}", f"siniestralidad_prest.sistema.{t}", f"siniestralidad_sil.sistema.{t}"]
+                     + ([f"siniestralidad.sistema.{t1}", "siniestralidad.sistema.pp"] if s_yoy else [])})
+        comps = (("siniestralidad_prest", "Prestaciones"), ("siniestralidad_sil", "SIL"), ("siniestralidad", "Total"))
+        if s_yoy:  # the two parts side by side, this year (dot) against the same months a year earlier (ring)
+            hero = {"id": "f2-siniestralidad-componentes", "form": "dots", "unit": "%", "digits": 1,
+                    "headline": "Siniestralidad por componente",
+                    "subtitle": f"% de los ingresos, {ytd} {t[:4]} (punto) y {t1[:4]} (aro){sin}",
+                    "rows": [{"label": lab, "value": V(f"{key}.sistema.{t}"), "ref": f"{key}.sistema.{t}",
+                              "base": V(f"{key}.sistema.{t1}"), "base_ref": f"{key}.sistema.{t1}"} for key, lab in comps],
+                    "table": {"columns": ["Componente", short(t1), short(t), "Cambio (pp)"],
+                              "rows": [[lab, fmt_dec(V(f"{key}.sistema.{t1}"), 1) + "%", fmt_dec(V(f"{key}.sistema.{t}"), 1) + "%",
+                                        fmt_dec(V(f"{key}.sistema.pp"), 1, signed=True)] for key, lab in comps]}}
+        else:
+            hero = {"id": "f2-siniestralidad-componentes", "form": "bars", "unit": "%", "digits": 1,
+                    "headline": "Siniestralidad por componente", "subtitle": f"% de los ingresos, {ytd} {t[:4]}{sin}",
+                    "rows": [{"label": lab, "value": V(f"{key}.sistema.{t}"), "ref": f"{key}.sistema.{t}",
+                              "emphasis": key == "siniestralidad"} for key, lab in comps],
+                    "table": {"columns": ["Componente", short(t)],
+                              "rows": [[lab, fmt_dec(V(f"{key}.sistema.{t}"), 1) + "%"] for key, lab in comps]}}
+        hero["source"] = ("Prestaciones = costos por prestaciones de salud; SIL = subsidios por incapacidad laboral; ambos sobre el "
+                          "total de ingresos de actividades ordinarias del mismo período acumulado. Las partes suman el total antes de redondear.")
         ordr = sorted(codes, key=lambda c: (-V(f"siniestralidad.{c}.{t}"), names[c]))
-        charts = [{"id": "f2-siniestralidad-isapres", "form": "bars", "unit": "%", "digits": 1, "headline": "Siniestralidad por Isapre",
-                   "subtitle": f"Prestaciones y SIL, % de los ingresos de cada Isapre, {ytd} {t[:4]}",
-                   "rows": [{"label": names[c], "value": V(f"siniestralidad.{c}.{t}"), "ref": f"siniestralidad.{c}.{t}"} for c in ordr],
-                   "table": {"columns": ["Isapre", "Prestaciones y SIL", "Ingresos", "Siniestralidad"],
-                             "rows": [[names[w] if w != "sistema" else sys_row, fmt_int(V(f"costo_salud.{w}.{t}")),
-                                       fmt_int(V(f"ingresos_operacionales.{w}.{t}")), fmt_dec(V(f"siniestralidad.{w}.{t}"), 1) + "%"]
-                                      for w in [*ordr, "sistema"]]},
-                   "source": "Denominador: total ingresos de actividades ordinarias de cada Isapre, mismo período acumulado."}]
-        if pp is not None:
-            charts.insert(0, {"id": "f2-siniestralidad", "form": "bars", "unit": "%", "digits": 1, "headline": "Siniestralidad de las Isapres",
-                              "subtitle": f"% de los ingresos, {ytd} de cada año{sin}",
-                              "rows": [{"label": short(t1), "value": V(f"siniestralidad.sistema.{t1}"), "ref": f"siniestralidad.sistema.{t1}"},
-                                       {"label": short(t), "value": S, "ref": f"siniestralidad.sistema.{t}", "emphasis": True}],
-                              "table": {"columns": ["Período", "Siniestralidad"],
-                                        "rows": [[short(p), fmt_dec(V(f"siniestralidad.sistema.{p}"), 1) + "%"] for p in (t1, t)]},
-                              "source": "Denominador: total ingresos de actividades ordinarias del mismo período acumulado."})
+        charts = [hero, {"id": "f2-siniestralidad-isapres", "form": "bars", "unit": "%", "digits": 1, "headline": "Siniestralidad por Isapre",
+                         "subtitle": f"Prestaciones y SIL, % de los ingresos de cada Isapre, {ytd} {t[:4]}",
+                         "rows": [{"label": names[c], "value": V(f"siniestralidad.{c}.{t}"), "ref": f"siniestralidad.{c}.{t}"} for c in ordr],
+                         "table": {"columns": ["Isapre", "Prestaciones", "SIL", "Total", f"Ingresos ({MM})"],
+                                   "rows": [[names[w] if w != "sistema" else sys_row, fmt_dec(V(f"siniestralidad_prest.{w}.{t}"), 1) + "%",
+                                             fmt_dec(V(f"siniestralidad_sil.{w}.{t}"), 1) + "%", fmt_dec(V(f"siniestralidad.{w}.{t}"), 1) + "%",
+                                             fmt_int(V(f"ingresos_operacionales.{w}.{t}"))] for w in [*ordr, "sistema"]]},
+                         "source": "Denominador: total ingresos de actividades ordinarias de cada Isapre, mismo período acumulado. "
+                                   "Prestaciones y SIL se muestran lado a lado en «Ver datos»."}]
         tab = {"id": "siniestralidad", "label": "Siniestralidad", "charts": charts, "text": [], "dek": None}
-        line = f"{fmt_dec(S, 1)}% de los ingresos" + (f" · {fmt_dec(pp, 1, signed=True)} pp" if pp is not None else "")
-        sf.topic_fields(tab, line, index_refs=[f"siniestralidad.sistema.{t}"] + (["siniestralidad.sistema.pp"] if pp is not None else []), kpis=[])
+        if s_yoy:
+            line = (f"{fmt_dec(S, 1)}% · prestaciones {fmt_dec(V('siniestralidad_prest.sistema.pp'), 1, signed=True)} pp · "
+                    f"SIL {fmt_dec(V('siniestralidad_sil.sistema.pp'), 1, signed=True)} pp")
+            refs = [f"siniestralidad.sistema.{t}", "siniestralidad_prest.sistema.pp", "siniestralidad_sil.sistema.pp"]
+        else:
+            line = f"{fmt_dec(S, 1)}% de los ingresos: prestaciones {fmt_dec(SP, 1)}%, SIL {fmt_dec(SS, 1)}%"
+            refs = [f"siniestralidad.sistema.{t}", f"siniestralidad_prest.sistema.{t}", f"siniestralidad_sil.sistema.{t}"]
+        sf.topic_fields(tab, line, index_refs=refs, kpis=[])
         tabs.append(tab)
-        paragraphs.append(f"La siniestralidad de las Isapres (prestaciones y SIL sobre ingresos) fue {fmt_dec(S, 1)}% entre enero y {month}.")
+        paragraphs.append(f"La siniestralidad de las Isapres (prestaciones y SIL sobre ingresos) fue {fmt_dec(S, 1)}% entre enero y {month}: "
+                          f"{fmt_dec(SP, 1)}% por prestaciones de salud y {fmt_dec(SS, 1)}% por SIL.")
+    if "sil" in topics:
+        SS = V(f"siniestralidad_sil.sistema.{t}")
+        SC = V(f"sil_cotizaciones.sistema.{t}")
+        c_yoy = has(f"sil_cotizaciones.sistema.{t1}")
+        ordr = sorted(codes, key=lambda c: (-V(f"siniestralidad_sil.{c}.{t}"), names[c]))
+        if has(f"siniestralidad_sil.sistema.{t1}"):
+            hero = {"id": "f2-sil-isapres", "form": "dots", "unit": "%", "digits": 1, "headline": "SIL sobre ingresos por Isapre",
+                    "subtitle": f"% de los ingresos de cada Isapre, {ytd} {t[:4]} (punto) y {t1[:4]} (aro)",
+                    "rows": [{"label": names[c], "value": V(f"siniestralidad_sil.{c}.{t}"), "ref": f"siniestralidad_sil.{c}.{t}",
+                              "base": V(f"siniestralidad_sil.{c}.{t1}"), "base_ref": f"siniestralidad_sil.{c}.{t1}"} for c in ordr],
+                    "table": {"columns": ["Isapre", short(t1), short(t), "Cambio (pp)"],
+                              "rows": [[names[w] if w != "sistema" else sys_row, fmt_dec(V(f"siniestralidad_sil.{w}.{t1}"), 1) + "%",
+                                        fmt_dec(V(f"siniestralidad_sil.{w}.{t}"), 1) + "%",
+                                        fmt_dec(V(f"siniestralidad_sil.{w}.pp"), 1, signed=True)] for w in [*ordr, "sistema"]]}}
+        else:
+            hero = {"id": "f2-sil-isapres", "form": "bars", "unit": "%", "digits": 1, "headline": "SIL sobre ingresos por Isapre",
+                    "subtitle": f"% de los ingresos de cada Isapre, {ytd} {t[:4]}",
+                    "rows": [{"label": names[c], "value": V(f"siniestralidad_sil.{c}.{t}"), "ref": f"siniestralidad_sil.{c}.{t}"} for c in ordr],
+                    "table": {"columns": ["Isapre", f"SIL ({MM})", f"Ingresos ({MM})", "SIL / ingresos"],
+                              "rows": [[names[w] if w != "sistema" else sys_row, fmt_int(V(f"costo_sil.{w}.{t}")),
+                                        fmt_int(V(f"ingresos_operacionales.{w}.{t}")), fmt_dec(V(f"siniestralidad_sil.{w}.{t}"), 1) + "%"]
+                                       for w in [*ordr, "sistema"]]}}
+        hero["source"] = "SIL = subsidios por incapacidad laboral. Denominador: total ingresos de actividades ordinarias de cada Isapre."
+        # Open Isapres first, then the closed ones, each group by value (review of #136): a closed Isapre whose income is
+        # largely aporte adicional never tops the chart unmarked.
+        ordc = sorted(codes, key=lambda c: (c in closed, -V(f"sil_cotizaciones.{c}.{t}"), names[c]))
+        aporte = has(f"aporte_share.sistema.{t}")
+        label = lambda w: sys_row if w == "sistema" else names[w] + (" (cerrada)" if w in closed else "")  # noqa: E731
+        charts = [hero, {"id": "f2-sil-cotizaciones", "form": "bars", "unit": "%", "digits": 1, "headline": "SIL sobre cotizaciones por Isapre",
+                         "subtitle": f"Costo SIL, % de la cotización legal y adicional de cada Isapre, {ytd} {t[:4]}"
+                                     + ("; abiertas primero, luego cerradas" if closed else ""),
+                         "rows": [{"label": names[c], "value": V(f"sil_cotizaciones.{c}.{t}"), "ref": f"sil_cotizaciones.{c}.{t}",
+                                   **({"tag": "cerrada", "muted": True} if c in closed else {})} for c in ordc],
+                         "table": {"columns": ["Isapre", f"SIL ({MM})", f"Cotizaciones ({MM})", short(t)] + ([short(t1)] if c_yoy else [])
+                                   + (["Aporte adicional (% ingresos)"] if aporte else []),
+                                   "rows": [[label(w), fmt_int(V(f"costo_sil.{w}.{t}")),
+                                             fmt_int(V(f"cotizaciones.{w}.{t}")), fmt_dec(V(f"sil_cotizaciones.{w}.{t}"), 1) + "%"]
+                                            + ([fmt_dec(V(f"sil_cotizaciones.{w}.{t1}"), 1) + "%"] if c_yoy else [])
+                                            + ([fmt_dec(V(f"aporte_share.{w}.{t}"), 1) + "%"] if aporte else [])
+                                            for w in [*ordc, "sistema"]]},
+                         "source": "Cotizaciones = cotización legal más cotización adicional voluntaria, mismo período acumulado. "
+                                   "No incluye aporte adicional, fondo de compensación ni otros ingresos."
+                                   + (" En las Isapres cerradas el aporte adicional pesa mucho más en los ingresos que en las abiertas "
+                                      "(última columna de «Ver datos»), así que su razón no es comparable con la de las abiertas." if closed else "")}]
+        tab = {"id": "sil", "label": TOPICS["sil"][0], "charts": charts, "text": [], "dek": None}
+        sf.topic_fields(tab, f"{fmt_dec(SS, 1)}% de los ingresos · {fmt_dec(SC, 1)}% de las cotizaciones",
+                        index_refs=[f"siniestralidad_sil.sistema.{t}", f"sil_cotizaciones.sistema.{t}"], kpis=[])
+        tabs.append(tab)
+        paragraphs.append(f"El costo SIL equivale al {fmt_dec(SC, 1)}% de la cotización legal y adicional entre enero y {month}.")
 
     span = f"{ytd} {t[:4]}"  # 'enero–marzo 2026', the same span as the chart subtitles
     if "resultados" in topics:
@@ -624,15 +803,30 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         {"id": "n2", "text": "Denominadores: la siniestralidad divide prestaciones y SIL por el total de ingresos de actividades ordinarias "
                              "del mismo período, igual que los gastos de administración. La variación % de ingresos usa el valor del año anterior "
                              "como base; los resultados no llevan variación % y se comparan por sus niveles y el cambio absoluto."},
+        {"id": "n2b", "text": "Siniestralidad separada: prestaciones (costos por prestaciones de salud / ingresos) más SIL (subsidios por "
+                              "incapacidad laboral / ingresos) igualan la siniestralidad total antes de redondear; si no calzan, la ficha se "
+                              "retiene. Por redondeo, las partes mostradas pueden diferir en una décima del total. El costo SIL sobre "
+                              "cotizaciones usa como denominador la cotización legal más la cotización adicional voluntaria del mismo período, "
+                              "sin aporte adicional, fondo de compensación ni otros ingresos; difiere de la siniestralidad sobre ingresos. "
+                              "Se compara enero–" + month + " con los mismos meses del año anterior, nunca con un año completo: el SIL "
+                              "tiene estacionalidad."},
         {"id": "n3", "text": "Cada cifra se lee de las hojas de apertura de cuentas de resultados "
                              "y del estado de resultados por función (en miles de $) de la planilla capturada (hash en Fuentes), con una plantilla "
                              "revisada por una persona; en cada cuenta las Isapres suman la columna total y los componentes su total; ingresos menos "
                              "costo de ventas igualan la ganancia bruta. Las hojas en millones no se usan: mezclan escalas."},
     ]
+    opn = [c for c in codes if c not in closed]
+    if ("sil" in topics and closed and opn and has(f"aporte_share.sistema.{t}")
+            and min(V(f"aporte_share.{c}.{t}") for c in closed) > max(V(f"aporte_share.{c}.{t}") for c in opn)):
+        notes.append({"id": "n2d", "text": "Isapres cerradas: en cada una, el aporte adicional pesa más en los ingresos que en cualquier "
+                                           "Isapre abierta. Como no es cotización, no entra al denominador de SIL sobre cotizaciones; por eso "
+                                           "esa razón de las cerradas va marcada «cerrada», después de las abiertas, y no es comparable con "
+                                           "la de las abiertas."})
     if not yoy:
         notes.append({"id": "n5", "text": f"Sin comparación con {plabel}: esa planilla no está capturada y verificada con la misma plantilla. "
                                           "La ficha muestra solo los niveles del período."})
-    notes.append({"id": "n6", "text": "Ningún dato de esta ficha establece por qué cambian los ingresos, los costos o la siniestralidad."})
+    notes.append({"id": "n6", "text": "Ningún dato de esta ficha establece por qué cambian los ingresos, los costos o la siniestralidad; "
+                                      "prestaciones y SIL se muestran lado a lado y ninguna de las dos explica a la otra."})
     sources = [{**src, "key": key} for key, src in package["sources"].items()]
     footnote = (scope_note(str(k["coverage_note"]["locator"]).rsplit("!", 1)[-1], mlabel, len(codes)) if excl else None)
     triggers = (decision or {}).get("triggers") or []

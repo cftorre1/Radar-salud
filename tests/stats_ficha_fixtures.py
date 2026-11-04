@@ -333,5 +333,31 @@ def write_fixtures() -> None:
             (FIXTURE_DIR / f"{slug}.card.json").write_text(json.dumps(card, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
+def write_f2_fixture(feed_date: str = "2026-10-10") -> Path:
+    """F2 card for the browser spec, built offline from the committed FEFI capture (``data/stats_fichas/captures/fefi.json``,
+    real SIS values read with the reviewed template) with the Lectura off. No download, no model call. ``feed_date`` dates
+    the card in the inbox so it falls in the spec's 30-day window (the SIS publication date stays on the card)."""
+    import tempfile
+    from radar_salud import stats_ficha_f2 as f2, stats_fichas as sf
+    reg = sf.load_registry()
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        for rel in ("config/editorial_rules_v3.json", "config/stats_fichas_v1.json", "data/entities/isapres.json",
+                    "data/stats_fichas/captures/fefi.json"):
+            (root / rel).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy(REPO / rel, root / rel)
+        out = f2.run(root, today=date(2026, 11, 4), registry=reg, llm=False)
+        assert out["status"] == "pass", out.get("errors")
+        card = sf.ficha_card(out["ficha"], reg["families"]["F2"], feed_date=feed_date)
+    card["fixture_note"] = "Fixture de prueba: cifras de la captura FEFI comprometida (plantilla revisada), sin Lectura"
+    FIXTURE_DIR.mkdir(parents=True, exist_ok=True)
+    path = FIXTURE_DIR / "f2_financieras.card.json"
+    path.write_text(json.dumps(card, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return path
+
+
 if __name__ == "__main__":
-    write_fixtures()
+    if sys.argv[1:] == ["f2"]:
+        write_f2_fixture()
+    else:
+        write_fixtures()

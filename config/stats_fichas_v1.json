@@ -969,9 +969,13 @@
         {
           "id": "siniestralidad",
           "label": "Siniestralidad"
+        },
+        {
+          "id": "sil",
+          "label": "Licencias (SIL)"
         }
       ],
-      "builder_version": "f2_index_topic_v3",
+      "builder_version": "f2_index_topic_v5",
       "kpis": {
         "siniestralidad": {
           "formula": "(costo de prestaciones de salud + subsidios por incapacidad laboral) / total ingresos de actividades ordinarias × 100",
@@ -989,6 +993,41 @@
             "Q1 no es comparable con el año por estacionalidad del SIL."
           ]
         },
+        "siniestralidad_prest": {
+          "formula": "costos por prestaciones de salud / total ingresos de actividades ordinarias × 100",
+          "denominator": "Total ingresos de actividades ordinarias del mismo período acumulado, por Isapre y sistema sin Esencial",
+          "period_rule": "YTD vs. YTD t−1 (mismo trimestre del año anterior)",
+          "reconciliation": "siniestralidad_prest + siniestralidad_sil = siniestralidad, antes de redondear (≤ 1e-9 pp); si no, HOLD",
+          "threshold": {
+            "pp": 1.0
+          },
+          "pitfalls": [
+            "Nunca decir que una parte explica a la otra: se muestran lado a lado.",
+            "Q1 no es comparable con el año completo: solo YTD vs. YTD."
+          ]
+        },
+        "siniestralidad_sil": {
+          "formula": "subsidios por incapacidad laboral / total ingresos de actividades ordinarias × 100",
+          "denominator": "Total ingresos de actividades ordinarias del mismo período acumulado, por Isapre y sistema sin Esencial",
+          "period_rule": "YTD vs. YTD t−1 (mismo trimestre del año anterior)",
+          "reconciliation": "siniestralidad_prest + siniestralidad_sil = siniestralidad, antes de redondear (≤ 1e-9 pp); si no, HOLD",
+          "threshold": {
+            "pp": 1.0
+          },
+          "pitfalls": [
+            "Estacionalidad del SIL: solo YTD vs. YTD."
+          ]
+        },
+        "isapres_con_perdida": {
+          "formula": "n.º de Isapres publicadas con resultado del ejercicio (ganancia/pérdida) < 0, acumulado del año",
+          "denominator": null,
+          "period_rule": "YTD del último trimestre",
+          "claim": "conteo.isapres_con_perdida; 'N Isapres con pérdida' verificado por stats_fichas.COUNT_CLAIM",
+          "threshold": null,
+          "pitfalls": [
+            "Esencial excluida mientras rija rules.fefi_esencial_exclusion."
+          ]
+        },
         "resultado": {
           "formula": "Del EERR SIS; puente = operacional + no operacional + impuestos/otros (residual)",
           "denominator": null,
@@ -1003,11 +1042,11 @@
           ]
         },
         "costo_sil": {
-          "formula": "Costo SIL YTD; % de cotizaciones",
-          "denominator": "Ingresos por cotizaciones",
-          "period_rule": "YTD a/a, real",
+          "formula": "subsidios por incapacidad laboral / (cotización legal + cotización adicional voluntaria) × 100",
+          "denominator": "Cotizaciones = cotización legal (7%) + cotización adicional voluntaria del mismo período acumulado; sin aporte adicional, fondo de compensación ni otros ingresos (definición fijada el 3-nov-2026). Denominador ≤ 0: HOLD",
+          "period_rule": "YTD a/a; nominal (real pendiente de la serie UF)",
           "threshold": {
-            "real_pct": 5.0
+            "pp": 1.0
           },
           "pitfalls": [
             "Cifras SIS nominales: deflactar."
