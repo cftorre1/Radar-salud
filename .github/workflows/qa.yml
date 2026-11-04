@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install -e . pytest
+      - run: pip install -e . pytest pyyaml
       - name: python -m pytest -q
         # Failing test names surface as check-run annotations (Actions logs are not readable from the agent environment).
         run: |

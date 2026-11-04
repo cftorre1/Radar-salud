@@ -1,0 +1,19 @@
+{
+  "purpose": "Which test failures block the Daily Radar publication (daily-radar.yml, step 'Core deterministic tests before collection'). Read by scripts/publication_test_gate.py.",
+  "rule": "Every test is publication-critical (blocking) by default. A test file may be listed in non_blocking_files only if it exercises internal tooling that cannot change published data: scheduler gates, watchdogs, agent/orchestrator queues, PMO bookkeeping, CI bootstrap. Data accuracy, statistical denominators/dates, normative IDs, source rights/paywall, verification/review, AI budget/paid outputs, queue/state/history, exports and the web snapshot always block. When unsure, keep it blocking. A listed file whose name contains a word from protected_name_fragments is ignored (treated as blocking).",
+  "decided": "Propuesta PR claude/reliability-20261104 (4-nov-2026); requiere aprobación de Revisor e Integration Commander.",
+  "non_blocking_files": [
+    "tests/test_should_run.py",
+    "tests/test_daily_watchdog.py",
+    "tests/test_autopilot_v1_watchdog.py",
+    "tests/test_bootstrap_autopilot.py",
+    "tests/test_orchestrator_liveness.py",
+    "tests/test_orchestrator_trigger.py",
+    "tests/test_pmo_readiness.py"
+  ],
+  "protected_name_fragments": [
+    "rights", "paywall", "verif", "review", "stat", "ficha", "normativ", "insight", "publi", "export", "snapshot",
+    "web", "page", "digest", "newsletter", "pricing", "budget", "usage", "paid", "ai_", "openai", "model", "evidence",
+    "editorial", "source", "queue", "state", "history", "integrity", "reconcil", "pulso", "radar", "gate", "rule"
+  ]
+}
