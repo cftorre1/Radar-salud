@@ -1164,7 +1164,7 @@
       },
       "capture": {
         "store": "data/stats_fichas/captures/ges_quarterly.json",
-        "parser": "ges_ytd_cuts_v4",
+        "parser": "ges_ytd_cuts_v5",
         "documents": "source_documents de las releases 'Estadística Trimestral de Casos GES' en data/history/superintendencia_signals.json",
         "min_problems": 80
       },
@@ -1180,7 +1180,7 @@
         "reviewed_by": null,
         "reviewed_at": null,
         "reviewed_sha256": null,
-        "rule": "La primera ficha F4 acumulada del año (parser ges_ytd_cuts_v4) sobre una planilla real queda en HOLD awaiting_first_review con la ficha completa en hold/f4_ges-<período>.json. Publica solo cuando una persona la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = SHA-256 de esa planilla. Después rige la política normal."
+        "rule": "La primera ficha F4 acumulada del año (parser ges_ytd_cuts_v5) sobre una planilla real queda en HOLD awaiting_first_review con la ficha completa en hold/f4_ges-<período>.json. Publica solo cuando una persona la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = SHA-256 de esa planilla. Después rige la política normal."
       },
       "decree_changes": [],
       "decree_rule": "Cambios de decreto: la ficha marca los problemas presentes en un solo trimestre de la comparación a/a (detectado desde los datos). Las notas oficiales de decreto se agregan aquí ({'note': …}) solo con fuente; nunca se infieren.",

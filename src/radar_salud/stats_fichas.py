@@ -1318,7 +1318,7 @@ def write_share_pages(cards: list[dict], web_data_dir: Path) -> list[str]:
 # GES card (F4 interim): a finding is shown only when the corrected parser reconciled it
 
 
-GES_PARSER = "ges_ytd_cuts_v4"  # mirrors ges_workbook.GES_PARSER
+GES_PARSER = "ges_ytd_cuts_v5"  # mirrors ges_workbook.GES_PARSER
 GES_HOLD_REASON = "HOLD_GES_UNPINNED_OR_UNRECONCILED"
 
 

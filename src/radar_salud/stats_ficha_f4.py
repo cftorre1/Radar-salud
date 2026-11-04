@@ -2,7 +2,7 @@
 
 Inputs (captured by ``stats_capture``; never downloaded here):
 - ``data/stats_fichas/captures/ges_quarterly.json``: one entry per SIS release ('… a junio 2026'), parsed by
-  ``ges_workbook.parse`` (parser ``ges_ytd_cuts_v4``): the year sheets of the release (t), the previous year and the
+  ``ges_workbook.parse`` (parser ``ges_ytd_cuts_v5``): the year sheets of the release (t), the previous year and the
   one before are pinned by name; every column read reconciles to the declared total; and the year-to-date column
   equals the cumulative cut minus the previous December cut, per problem and in total;
 - ``data/market/isapre_portfolio.json`` (F1): Isapre beneficiaries per month, the only rate denominator captured.
