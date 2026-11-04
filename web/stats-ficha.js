@@ -76,8 +76,11 @@
  function bars(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';
   if(rows.some(r=>Number(r.value)<0))return columns(c);  // a negative value is never drawn as a positive bar
-  const tagged=rows.some(r=>r.tag),max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=tagged?36:30,x0=128,L=160,H=rows.length*row+8;
   const fv=v=>Number.isInteger(c.digits)?dec(v,c.digits)+(c.unit==='%'?'%':''):nf(v);
+  // Long value labels ('17.750.797') shorten the bars so the label ends inside the viewBox, also with a wider fallback
+  // font than Inter (CI: DejaVu, ~7.6 px per character at 12.5 px bold). Short labels keep the full 160 px.
+  const tagged=rows.some(r=>r.tag),max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=tagged?36:30,x0=128,H=rows.length*row+8;
+  const L=Math.max(80,Math.min(160,W-x0-8-Math.max(...rows.map(r=>fv(r.value).length))*7.6));
   const s=rows.map((r,i)=>{const v=Number(r.value),w=Math.max(Math.abs(v)/max*L,2),y=4+i*row,tag=r.tag?`<text class="sf-tag" x="1.5" y="${y+28}" font-size="10.5" fill="${C.ink50}">${esc(r.tag)}</text>`:'';return`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text>${tag}<g class="sf-mark"><title>${esc(r.label)}${r.tag?` (${esc(r.tag)})`:''}: ${fv(v)}</title><rect x="${x0}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="3" fill="${r.emphasis?C.accent:r.muted?'#E6E1D6':'#CFC9BC'}"${r.muted?` stroke="${C.ink50}" stroke-dasharray="3 2"`:''}/></g><text x="${(x0+w+6).toFixed(1)}" y="${y+15}" font-size="12.5" font-weight="${r.emphasis?700:500}" fill="${C.ink}">${fv(v)}</text>`}).join('');
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label}${r.tag?` (${r.tag})`:''} ${fv(r.value)}`).join(', ')}.`)}">${s}</svg>`;
  }

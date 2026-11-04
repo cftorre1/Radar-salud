@@ -38,6 +38,15 @@ def portfolio(root):
 
 
 def save_portfolio(root, data):
+    """Writes an edited capture as the cartera lane would (``isapre_universe``): ``beneficiary_share`` is recomputed from
+    the edited beneficiarios within each month and population (open / closed), so only the edit under test differs."""
+    benef = {(o["period"], o["official_code"]): o["value"] for o in data["observations"] if o["metric_id"] == "beneficiarios"}
+    for o in data["observations"]:
+        if o["metric_id"] == "beneficiary_share":
+            peers = [x for x in data["observations"] if x["metric_id"] == "beneficiary_share" and x["period"] == o["period"]
+                     and x["population"] == o["population"]]
+            den = sum(benef[(o["period"], x["official_code"])] for x in peers)
+            o["value"], o["denominator"] = benef[(o["period"], o["official_code"])] / den * 100, den
     (root / INPUTS[0]).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
 
@@ -119,7 +128,7 @@ def test_ficha_shows_august_and_keeps_yoy_pending(root):
     assert fi["kpis"][0]["badge"] == "Sin umbral cruzado · a/a pendiente"
     assert any("pendiente" in n["text"] for n in fi["notes"])
     tabs = {t["id"]: t for t in fi["tabs"]}
-    assert list(tabs) == ["total", "isapres", "mezcla", "movilidad", "regional"]
+    assert list(tabs) == ["total", "isapres", "mezcla", "movilidad", "concentracion", "regional"]
     # Dirección 29-oct (C→B): stock evolution first, monthly differences second.
     assert [c["form"] for c in tabs["total"]["charts"]] == ["line", "columns_signed"]
     assert [row["label"] for row in tabs["total"]["charts"][0]["rows"]][-1] == "Ago"
@@ -141,11 +150,12 @@ def test_topics_follow_the_29_oct_content_rules(root):
     assert {k: t["index_line"] for k, t in tabs.items()} == {
         "total": "2.486.683 beneficiarios · menor baja del año", "isapres": "Banmédica: 77% de la baja · 3 Isapres crecen",
         "mezcla": "Cotizantes suben por segundo mes", "movilidad": "Salen más de los que entran · dato a julio",
-        "regional": "Enlace a la SIS · cifras aún no extraídas"}
+        "concentracion": "HHI 1.816 puntos · −20 desde enero", "regional": "Enlace a la SIS · cifras aún no extraídas"}
     assert {k: t["spark"] for k, t in tabs.items()} == {
         "total": {"chart": "f1-stock", "form": "line"}, "isapres": {"chart": "f1-isapres", "form": "diverging"},
-        "mezcla": {"chart": "f1-cot", "form": "columns"}, "movilidad": {"chart": "f1-mob", "form": "diverging"}, "regional": None}
-    for k in ("total", "isapres", "movilidad"):
+        "mezcla": {"chart": "f1-cot", "form": "columns"}, "movilidad": {"chart": "f1-mob", "form": "diverging"},
+        "concentracion": {"chart": "f1-hhi", "form": "line"}, "regional": None}
+    for k in ("total", "isapres", "movilidad", "concentracion"):
         assert tabs[k]["dek"] is None and tabs[k]["kpis"] == [] and tabs[k]["text"] == []
     assert tabs["mezcla"]["dek"] == "Las cargas explican el 78% de la baja del año."
     assert [(c["label"], c["value"], c["lines"]) for c in tabs["mezcla"]["kpis"]] == [

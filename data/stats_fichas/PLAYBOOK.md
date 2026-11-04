@@ -236,7 +236,9 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
   nombrar profesionales sin resolución firme).
 - **Período.** YTD a/a; el año en curso se rotula "parcial".
 
-**F5 Reclamos/fiscalización, F7 Financiamiento público, F8 Presión asistencial.** Siguen la receta del §6.
+**F7 Financiamiento público** (construida el 4 nov, `stats_ficha_f7.py`): reutiliza la lane DIPRES sin descargas; su primera publicación espera la revisión de Dirección (POLICY.md, F7). Aprendizaje: el cuadro comparativo del proyecto 2027 que la lane guarda con nivel «partida» es en realidad la subpartida 1603, SERVICIOS DE SALUD según el PDF: otro perímetro, menor que la Partida 16 de los informes mensuales. Un perímetro se identifica por partida, subpartida, capítulo y programa, nunca solo por el nivel. Además, la lane DIPRES se captura a mano (sin corrida programada): la ficha lo dice («captura manual, próxima actualización pendiente», junto al corte) y muestra el corte en el antetítulo; y la columna «Ejecución» del cuadro comparativo no declara base contable, por eso el programa «ejecutó», no «devengó».
+
+**F5 Reclamos/fiscalización, F8 Presión asistencial.** Siguen la receta del §6.
 - Antes de proponer temas, verificar la fuente: FONASA responde HTTP 403 e ISP falla en TLS (bloqueos externos).
 - No inventar series: un tema existe solo si una columna revisada lo sostiene.
 
@@ -302,3 +304,10 @@ POLICY.md (sección "Editorial sessions"); aquí van la regla de producto, la se
   exacta: la celda del N° de esa fila trae una marca en las planillas reales y el recibo de texto (truncado) no la
   muestra. Lección: un HOLD de fila o celda debe registrar lo que vio (etiqueta, columna, seguro, valor), para no gastar
   una corrida diaria en adivinar. v5 acepta cualquier marca no numérica en esa fila exacta y la anota en `code_cell`.
+
+- 3-nov-2026 (F1 v9, `f1_index_topic_v9`): tema «Concentración». Participación de las 7 abiertas y HHI = Σ sᵢ² (sᵢ en %)
+  cada mes, desde los beneficiarios enteros de la captura de cartera. Reconciliación (`stats_ficha_f1.concentration_failures`,
+  HOLD si falla): solo códigos abiertos; la participación recalculada calza con `beneficiary_share` capturada
+  (≤ 0,0005 pp) y su población es `open`; Σ participaciones = 100 ± 0,05 (recalculadas y capturadas); HHI igual a la
+  recomputación exacta 10.000 · Σ bᵢ² / (Σ bᵢ)² (`hhi_exact`, ≤ 1e-6). Sin umbrales de interpretación mientras la ficha no
+  cite una guía oficial de la FNE aplicable; el HHI por grupo controlador queda pendiente de una tabla de propiedad con fuente.
