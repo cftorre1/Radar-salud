@@ -81,7 +81,7 @@ def _load(path: Path) -> dict | None:
 
 def _refresh_last_ok(root: Path) -> str | None:
     state = _load(Path(root) / REFRESH_STATE) or {}
-    return str(state.get("last_ok_at") or "")[:10] or None
+    return str(state.get("last_ok_on") or "") or None  # the Chile day of the last OK check (last_ok_at is UTC)
 
 
 def refresh_mode(package: dict, today: date) -> tuple[str, str | None]:

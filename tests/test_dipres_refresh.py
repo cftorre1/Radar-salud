@@ -324,3 +324,109 @@ def test_freshness_copy_says_daily_only_after_a_recent_automatic_check(root):
     stale = f7.run(root, today=date(2026, 11, 20), registry=reg_open(), llm=False)
     fi = stale.get("ficha") or stale.get("candidate")
     assert "revisión diaria detenida" in fi["kicker_meta"]
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Independent review of PR #142
+
+
+def test_freshness_uses_the_chile_day_not_the_utc_stamp(root):
+    """An OK check at 00:07Z is still 21:07 of the previous Chile day: the ficha must say 'a diario', not 'detenida'."""
+    late = datetime(2026, 11, 5, 0, 7, tzinfo=timezone.utc)  # 4-nov 21:07 in Santiago
+    out = dr.refresh(root, today=TODAY, registry=reg_open(), fetch=Fetch(pages()), now=lambda: late,
+                     extract=lambda d: TEXTS[d])
+    state = json.loads((root / dr.STATE).read_text())
+    assert out["status"] == "ok" and state["last_ok_on"] == "2026-11-04" and state["last_ok_at"].startswith("2026-11-05")
+    assert dr.freshness(root, TODAY) == {"mode": "daily", "last_ok_on": "2026-11-04"}
+    fi = f7.run(root, today=TODAY, registry=reg_open(), llm=False)["ficha"]
+    assert "se revisa a diario" in fi["kicker_meta"] and "detenida" not in fi["kicker_meta"]
+    assert f7.build_package(root, reg_open())["lane"]["refresh_last_ok_on"] == "2026-11-04"
+
+
+def test_a_validated_report_whose_collect_crashed_is_retried_once_a_day(root, monkeypatch):
+    aug = make_pdf("aug-crash", execution_text("Agosto", "9.000.000", "17.500.000"))
+    fetch = Fetch(pages([(430050, "Informe Ejecución Partida Agosto [Pesos]")], {PDF.format(n=430050): aug}))
+    real = dr._collect
+
+    def crash(*a, **k):
+        raise RuntimeError("collector crashed")
+    monkeypatch.setattr(dr, "_collect", crash)
+    before = lane_bytes(root)
+    assert run(root, fetch)["status"] == "partial" and lane_bytes(root) == before
+    assert json.loads((root / dr.STATE).read_text())["documents"][PDF.format(n=430050)]["status"] == "collect_failed"
+    monkeypatch.setattr(dr, "_collect", real)
+    n = len(fetch.calls)
+    run(root, fetch, force=True)  # same Chile day: not downloaded again
+    assert not [u for u in fetch.calls[n:] if "articles-" in u]
+    out = run(root, fetch, today=date(2026, 11, 5))  # next day: retried and it reaches the lane
+    assert out["new"] == 1 and f7.build_package(root, reg_open())["period"] == "2026-08"
+    # A document left 'accepted' (crash between validation and collect) is due again the same way.
+    state = json.loads((root / dr.STATE).read_text())
+    assert dr._due({"status": "accepted", "last_attempt_on": "2026-11-05"}, NOW, "2026-11-06")
+    assert not dr._due({"status": "accepted", "last_attempt_on": "2026-11-06"}, NOW, "2026-11-06")
+    assert state["documents"][PDF.format(n=430050)]["status"] == "in_lane"
+
+
+def test_a_subpartida_report_is_never_taken_as_the_partida():
+    text = execution_text("Agosto", "9.000.000", "17.500.000") + "SUBPARTIDA : 1603 SERVICIOS DE SALUD\n"
+    item = {"canonical_url": PDF.format(n=1), "expected_period": "2026-08", "level": "partida"}
+    assert dr.validate(text, item, sha256="0" * 64) == (None, "level_mismatch")
+    records, reason = dr.validate(execution_text("Agosto", "9.000.000", "17.500.000"), item, sha256="0" * 64)
+    assert reason is None and records
+
+
+def test_no_pdf_is_parsed_after_the_deadline(root):
+    a = make_pdf("dl-a", execution_text("Agosto", "9.000.000", "17.500.000"))
+    b = make_pdf("dl-b", execution_text("Septiembre", "10.000.000", "17.500.000"))
+    fetch = Fetch(pages([(430060, "Informe Ejecución Partida Agosto [Pesos]"), (430061, "Informe Ejecución Partida Septiembre [Pesos]")],
+                        {PDF.format(n=430060): a, PDF.format(n=430061): b}))
+    parsed = []
+    t = {"now": 0.0}
+
+    def clock():
+        return t["now"]
+
+    def fetch_slow(url):
+        body = fetch(url)
+        if "articles-" in url:
+            t["now"] += 100  # each PDF download eats 100 s of a 150 s budget
+        return body
+    before = lane_bytes(root)
+    out = dr.refresh(root, today=TODAY, registry=reg_open(), fetch=fetch_slow, now=lambda: NOW, clock=clock,
+                     extract=lambda d: parsed.append(d) or TEXTS[d], time_budget_s=150)
+    assert out["time_budget_exhausted"] and out["status"] == "partial"
+    assert parsed == [b] and len([u for u in fetch.calls if "articles-" in u]) == 2  # second download: not parsed
+    docs = json.loads((root / dr.STATE).read_text())["documents"]
+    assert PDF.format(n=430060) not in docs  # left due for the next run, not marked failed
+    assert lane_bytes(root) != before
+
+
+def test_a_redirect_off_dipres_is_refused_before_the_other_host_is_requested():
+    import io
+    import urllib.request
+    from email.message import Message
+    from urllib.response import addinfourl
+
+    class FakeHTTPS(urllib.request.BaseHandler):
+        handler_order = 100  # ahead of the real HTTPSHandler: nothing leaves the process
+
+        def __init__(self):
+            self.opened = []
+
+        def https_open(self, req):
+            self.opened.append(req.full_url)
+            headers = Message()
+            if req.full_url.endswith("/robots.txt"):
+                resp = addinfourl(io.BytesIO(b"User-agent: *\nAllow: /\n"), headers, req.full_url, 200)
+                resp.msg = "OK"
+                return resp
+            headers["Location"] = "https://evil.example.org/articles-1_doc_pdf.pdf"
+            resp = addinfourl(io.BytesIO(b""), headers, req.full_url, 302)
+            resp.msg = "Found"
+            return resp
+    fake = FakeHTTPS()
+    opener = urllib.request.build_opener(dr._redirect_handler(), fake)
+    with pytest.raises(PermissionError, match="redirect_off_allowlist"):
+        dr.DipresFetcher(opener=opener)(PDF.format(n=1))
+    assert fake.opened == ["https://www.dipres.gob.cl/robots.txt", PDF.format(n=1)]
+    assert not any("example.org" in u for u in fake.opened)

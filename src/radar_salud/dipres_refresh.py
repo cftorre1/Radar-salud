@@ -231,7 +231,10 @@ def validate(text: str, item: dict, *, sha256: str) -> tuple[list[dict] | None, 
         got = ",".join(sorted(p for _, p in periods))
         return None, f"period_mismatch:listed {exp}, document {got}"
     level = {"partida": "partida", "capitulo": "chapter", "programa": "program"}[item["level"]]
-    if {r.get("reporting_level") for r in records} != {level} or {r.get("partida") for r in records} != {"16"}:
+    if ({r.get("reporting_level") for r in records} != {level} or {r.get("partida") for r in records} != {"16"}
+            or any(r.get("subpartida") is not None for r in records)
+            # parse_execution does not read a subpartida, so the text is checked too: 1603 is another perimeter
+            or re.search(r"SUBPARTIDA\s*:\s*\d{4}", text, re.I)):
         return None, "level_mismatch"
     return records, None
 
@@ -246,9 +249,16 @@ def first_review_pending(root: Path, registry: dict | None) -> bool:
     return not (str(live.get("builder_version") or "").startswith("f7_") and live.get("status") == "PASS")
 
 
-def _due(doc: dict | None, now: datetime) -> bool:
+RETRY_SAME_DAY_NEVER = frozenset({"collect_failed", "accepted"})  # validated but not in the lane: retried once a day
+
+
+def _due(doc: dict | None, now: datetime, day: str | None = None) -> bool:
+    """A listed report is (re)tried when new; after a failed download (3 times, then weekly); and, once per Chile day,
+    when it validated but never reached the lane (the collector crashed): one crash never drops a valid month."""
     if not doc:
         return True
+    if doc.get("status") in RETRY_SAME_DAY_NEVER:
+        return doc.get("last_attempt_on") != day
     if doc.get("status") != "fetch_failed":
         return False
     if int(doc.get("attempts") or 0) < MAX_ATTEMPTS:
@@ -348,20 +358,22 @@ def refresh(root: Path, *, today: date, registry: dict | None = None, fetch: Cal
             elif item["listing_ts"] and old.get("listing_ts") and item["listing_ts"] != old["listing_ts"]:
                 old["listing_ts_changed_at"] = stamp  # visible for review; the document is not re-downloaded
             continue
-        if not _due(old, started):
+        if not _due(old, started, day):
             continue
         if budget <= 0 or not has_time():
             complete = complete and budget > 0
             continue
         budget -= 1
         entry = {**(old or {}), "label": item["label"], "level": item["level"], "expected_period": item["expected_period"],
-                 "listing_ts": item["listing_ts"], "last_attempt_at": stamp}
+                 "listing_ts": item["listing_ts"], "last_attempt_at": stamp, "last_attempt_on": day}
         entry.setdefault("first_listed_at", stamp)
         data = get(item["url"])
         if data is None:
             entry.update(status="fetch_failed", attempts=int(entry.get("attempts") or 0) + 1, error=errors[-1] if errors else None)
             docs[canon] = entry
             counts["fetch_failed"] += 1
+            continue
+        if not has_time():  # no parsing past the deadline: the document stays due for the next run
             continue
         sha = hashlib.sha256(data).hexdigest()
         entry.update(sha256=sha, bytes=len(data), fetched_at=stamp, attempts=0, error=None)
@@ -402,6 +414,7 @@ def refresh(root: Path, *, today: date, registry: dict | None = None, fetch: Cal
     if status == "ok":
         state["last_completed_on"] = day
         state["last_ok_at"] = stamp
+        state["last_ok_on"] = day  # Chile day of the check (the guard's day); last_ok_at is UTC
     atomic_json(root / STATE, state)
     return {**summary, **run}
 
@@ -428,7 +441,7 @@ def _collect(root: Path, accepted: list[tuple[dict, bytes, str]], stamp: str) ->
 def freshness(root: Path, today: date, max_age_days: int = 3) -> dict:
     """What the ficha may say about freshness: 'daily' only if an automatic check completed in the last days."""
     state = _load(Path(root) / STATE, {}) or {}
-    last = str(state.get("last_ok_at") or "")[:10]
+    last = str(state.get("last_ok_on") or "")
     try:
         age = (today - date.fromisoformat(last)).days
     except ValueError:
