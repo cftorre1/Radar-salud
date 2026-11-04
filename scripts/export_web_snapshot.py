@@ -843,6 +843,9 @@ def main():
         cards=paywall_corroboration.apply(cards,history=signals)
     except Exception as exc:
         print(f"paywall_corroboration: omitted ({type(exc).__name__}: {exc})")
+    # Dirección 3-nov-2026 ("noticias duplicadas"): one card per bill and per event; merged cards stay as links.
+    from radar_salud import feed_dedupe
+    cards=feed_dedupe.apply(cards)
     payload={"date":(args.as_of or date.today()).isoformat(),"generated_at":datetime.now(timezone.utc).isoformat(),"entities":entity_watch.public_catalog(),"signals":cards}
     out=Path(args.output);out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     stats_fichas.write_share_pages(cards,out.parent)
