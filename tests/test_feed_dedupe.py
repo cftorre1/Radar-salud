@@ -128,6 +128,24 @@ ADVERSARIAL += [  # second review of #135: one shared round figure, or one diffe
      "Contraloría detecta irregularidades en compras de medicamentos del hospital de Concepción"),
 ]
 
+ADVERSARIAL += [  # third review: thousands separators, law numbers, single digits, acronyms
+    ("Colmena devolverá $1.200 millones a 3.000 afiliados por alza de precio base",
+     "Banmédica devolverá $1.200 millones a 3.000 afiliados por alza de precio base"),
+    ("Senado aprueba 20 indicaciones al proyecto que modifica la Ley 21.063",
+     "Cámara rechaza 20 indicaciones al proyecto que modifica la Ley 21.063"),
+    ("Brote en hogar de ancianos deja 3 muertes en Temuco", "Brote en hogar de ancianos deja 4 muertes en Temuco"),
+    ("Hospital suspende 5 cirugías por falta de insumos", "Hospital suspende 8 cirugías por falta de insumos"),
+    ("Minsal lanza campaña de vacunación contra el VIH", "Minsal lanza campaña de vacunación contra el VRS"),
+    ("Minsal amplía vacuna VPH a adolescentes", "Minsal amplía vacuna BCG a adolescentes"),
+]
+
+
+def test_figures_are_read_whole_and_identifiers_are_not_figures():
+    assert fd.figures("$1.200 millones a 3.000 afiliados") == {"1200", "3000"}
+    assert fd.figures("modifica la Ley 21.063 y el Boletín 18803-13") == set()
+    assert fd.figures("3 muertes, 3,5% más que en 2025") == {"3", "3,5"}
+    assert fd.figures("44 mil niños") == {"44"}
+
 
 def test_reviewer_adversarial_pairs_stay_separate():
     for a, b in ADVERSARIAL:
