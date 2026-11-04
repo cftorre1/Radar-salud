@@ -7,11 +7,11 @@ Two deterministic collapses, applied to the curated snapshot cards (``scripts/ex
    card; the others are listed in ``bill_history`` ("Trámites de este proyecto"). Nothing is rewritten.
 2. ``merge_same_event``: the same event reported by different outlets (e.g. a Minsal release and the La Tercera piece
    about it, same day). Two news cards are the same event only when ALL hold: different sources, event dates at most
-   ``MAX_DAYS`` apart, ≥ ``MIN_SHARED`` shared title terms, no conflicting WATCH entities (each card names an entity the
-   other does not) and EITHER a shared non-year figure ('44 mil', '62 millones') with Jaccard ≥ ``MIN_JACCARD`` OR
-   near-identical titles (Jaccard ≥ ``NEAR_IDENTICAL``). Titles that differ in one name ('multa a Colmena' / 'multa a
-   Cruz Blanca', 'paracetamol' / 'ibuprofeno') share many generic words but no figure: they stay separate (review of
-   PR #135). Normative records,
+   ``MAX_DAYS`` apart, ≥ ``MIN_SHARED`` shared title terms, the same WATCH entities when both cards name any, and
+   EITHER ≥ ``MIN_FIGURES`` shared non-year figures ('44 mil … 140 mil') with Jaccard ≥ ``MIN_JACCARD`` OR the same
+   title terms word for word. One shared round figure ('500 UF', '20%') or one differing name ('Colmena' / 'Cruz
+   Blanca', 'Viña del Mar' / 'Concepción') is not the same event: the two reviews of PR #135 broke every looser rule.
+   Normative records,
    bills, statistics fichas, syntheses and other aggregates never merge. The kept card is the official one (else the
    open one, else the earliest); the others go to ``same_event_sources`` ("También informaron"), title and link only.
 
@@ -26,7 +26,8 @@ from datetime import date
 MAX_DAYS = 2
 MIN_SHARED = 3
 MIN_JACCARD = 0.35
-NEAR_IDENTICAL = 0.8
+MIN_FIGURES = 2
+NEAR_IDENTICAL = 1.0  # the same title terms, word for word
 
 # Legislative order of the Congreso milestones (congreso_sources.MILESTONE_LABEL, plus the final ones).
 BILL_ORDER = ["ingreso", "informe_comision", "aprobacion_general", "aprobacion_particular",
@@ -161,10 +162,10 @@ def same_event(a: dict, b: dict) -> dict | None:
     if len(shared) < MIN_SHARED:
         return None
     ea, eb = _entities(a), _entities(b)
-    if ea - eb and eb - ea:
-        return None  # each names an entity the other does not: two events about different actors
+    if ea and eb and ea != eb:
+        return None  # both name WATCH entities and not the same ones: possibly different actors (review 2 of #135)
     figures = {t for t in shared if t.isdigit()}
-    if not ((figures and jac >= MIN_JACCARD) or jac >= NEAR_IDENTICAL):
+    if not ((len(figures) >= MIN_FIGURES and jac >= MIN_JACCARD) or jac >= NEAR_IDENTICAL):
         return None
     return {"shared_terms": sorted(shared), "shared_figures": sorted(figures), "jaccard": round(jac, 3),
             "days_apart": abs((da - db).days)}

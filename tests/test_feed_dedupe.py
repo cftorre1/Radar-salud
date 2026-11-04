@@ -118,6 +118,17 @@ ADVERSARIAL = [
 ]
 
 
+ADVERSARIAL += [  # second review of #135: one shared round figure, or one differing place in a long title
+    ("Superintendencia multa con 500 UF a Isapre Colmena", "Superintendencia multa con 500 UF a Isapre Cruz Blanca"),
+    ("Licencias médicas aumentan 20% en el primer semestre", "Consultas de urgencia aumentan 20% en el primer semestre"),
+    ("Listas de espera quirúrgicas aumentan 15% en el último año", "Listas de espera oncológicas aumentan 15% en el último año"),
+    ("Fonasa licita 50 camas críticas en la Región Metropolitana", "Fonasa licita 50 camas críticas en la Región del Biobío"),
+    ("Minsal confirma 12 casos de sarampión en la última semana", "Minsal confirma 12 casos de hepatitis en la última semana"),
+    ("Contraloría detecta irregularidades en compras de medicamentos del hospital de Viña del Mar",
+     "Contraloría detecta irregularidades en compras de medicamentos del hospital de Concepción"),
+]
+
+
 def test_reviewer_adversarial_pairs_stay_separate():
     for a, b in ADVERSARIAL:
         out = fd.merge_same_event([news("Ministerio de Salud", a, stype="official"), news("Pulso / La Tercera", b)])
@@ -129,7 +140,10 @@ def test_cards_naming_different_entities_never_merge_even_with_a_shared_figure()
     a = dict(MINSAL, entity_refs=ref("cl:org:colmena"))
     b = dict(PULSO, entity_refs=ref("cl:org:cruz-blanca"))
     assert len(fd.merge_same_event([a, b])) == 2
-    # One side naming an extra entity is not a conflict.
+    # Both naming entities but not the same ones (one card's extraction missed its actor) is not merged either.
+    c = dict(MINSAL, entity_refs=ref("cl:org:sis") + ref("cl:org:colmena"))
+    assert len(fd.merge_same_event([c, dict(PULSO, entity_refs=ref("cl:org:sis"))])) == 2
+    # Only one card naming entities is no conflict.
     assert len(fd.merge_same_event([dict(MINSAL), b])) == 1
 
 
