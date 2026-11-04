@@ -1,7 +1,7 @@
 // Statistics ficha renderer (web/stats-ficha.js): layout only, numbers come from the evidence package.
 const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const vm=require('node:vm');
 function load(){const c={Intl,URL,CSS:{escape:s=>s}};c.globalThis=c;vm.createContext(c);vm.runInContext(fs.readFileSync('web/stats-ficha.js','utf8'),c);return c.AlicantoFicha}
-const live=JSON.parse(fs.readFileSync('data/stats_fichas/live/f1_cartera.json','utf8'));
+const live=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f1_live_2026-11-03.json','utf8'));
 const pub={...live};delete pub.evidence;
 
 // Dirección 29-oct (option C→B): index of topics with sparklines → topic mode (sticky picker, hero chart first).

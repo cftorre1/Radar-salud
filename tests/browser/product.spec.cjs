@@ -99,7 +99,7 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await page.locator('#filterDetails summary').click();
  await expect(page.locator('#typeFilters,#entitySearch')).toHaveCount(0);
  await page.locator('#interestFilters [data-interest="normativa"]').click();
- await expect(page.locator('article').first()).toBeVisible();
+ await expect(page.locator('#local article[data-card]').first()).toBeVisible();
  expect(await laneCount('t')).toBe(await page.locator('#local article[data-card]').count());
  expect(await laneCount('p')).toBe(await page.locator('#local article[data-card]:not(.read)').count());
  await page.reload();await expect(page.locator('#period')).toHaveValue('90');
@@ -218,7 +218,8 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await page.addInitScript(()=>{window.__shared=[];Object.defineProperty(navigator,'share',{configurable:true,value:payload=>{window.__shared.push(payload);return Promise.resolve()}})});
  await page.goto('/');await expect(page.locator('#meta')).toContainText('Última actualización:');
  await expect(page.locator('#brief [data-share]')).toHaveCount(0);
- const share=page.locator('#local [data-share]').first();await expect(share).toBeVisible();await expect(share).toHaveAttribute('aria-label',/Compartir:/);
+ // A news row: a statistics ficha shares its share page (no '#'), tested in stats-ficha.spec.
+ const share=page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]) [data-share]').first();await expect(share).toBeVisible();await expect(share).toHaveAttribute('aria-label',/Compartir:/);
  await expect(share.locator('xpath=ancestor::div[contains(@class,"row-acts")]')).toHaveCount(1);await expect(share.locator('xpath=ancestor::article[1]').locator('[data-read]')).toHaveCount(1);await expect(page.locator('.card-actions [data-share]')).toHaveCount(0);
  const targetSize=await share.evaluate(button=>({width:button.getBoundingClientRect().width,height:button.getBoundingClientRect().height}));expect(targetSize.width).toBeGreaterThanOrEqual(44);expect(targetSize.height).toBeGreaterThanOrEqual(44);
  await share.click();const shared=(await page.evaluate(()=>window.__shared))[0];expect(shared.url).toContain('#');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Compartido');
@@ -359,7 +360,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody .sf-kicker .sf-kick')).toHaveText('Cartera y movilidad');
  expect(await page.locator('#detailBody .sf-meta li').allTextContents()).toEqual(['Datos a agosto 2026','Publicado por la SIS el 2 oct 2026']);
  await expect(page.locator('#detailBody .sf-dek')).toContainText('2.486.683');
- await expect(page.locator('#detailBody .sf-row')).toHaveCount(5);  // Dirección 29-oct: index of 5 topics
+ await expect(page.locator('#detailBody .sf-row')).toHaveCount(6);  // index of topics: 5 (Dirección 29-oct) + Concentración (F1 v9, #138)
  await expect(page.locator('#detailBody .sf-notes')).toContainText('denominador solo las 7 Isapres abiertas');
  await expect(page.locator('#detailBody .sf-notes a').first()).toHaveAttribute('href',/superdesalud\.gob\.cl/);
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
@@ -858,7 +859,7 @@ test('Global rows match Home rows: dot toggle, title opens the ficha, source and
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 test('news fichas are lean: headline, Qué pasó and sources, never why it matters (Dirección 28-oct 08:20)',async({page})=>{
- await page.goto('/');await page.locator('#local .title-open').first().click();await expect(page.locator('#signalDetail')).toBeVisible();
+ await page.goto('/');await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]) .title-open').first().click();await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(page.locator('#detailBody')).not.toContainText(/Contexto editorial|Enriquecimiento editorial|Por qué importa/);
  await expect(page.locator('#detailBody .ficha-h').first()).toHaveText(/Qué pasó/i);expect(await page.locator('#detailBody > p').count()).toBeGreaterThanOrEqual(1);
 });
@@ -872,7 +873,7 @@ test('the Global teaser in Chile invites to Global Premium without saying limita
 // Dirección 28-oct (punto 5): the ficha title has one style on Chile and Global.
 test('ficha titles share the same font on Chile and Global',async({page})=>{
  const style=sel=>page.locator(sel).evaluate(el=>{const c=getComputedStyle(el);return [c.fontFamily,c.fontWeight,c.fontSize,c.lineHeight].join('|')});
- await page.goto('/');await page.locator('#local .title-open').first().click();await expect(page.locator('#detailTitle')).toBeVisible();const chile=await style('#detailTitle');
+ await page.goto('/');await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]) .title-open').first().click();await expect(page.locator('#detailTitle')).toBeVisible();const chile=await style('#detailTitle');
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');await page.locator('#themes .title-open').first().click();await expect(page.locator('#globalDetailTitle')).toBeVisible();
  expect(await style('#globalDetailTitle')).toBe(chile);expect(chile).toMatch(/Georgia/);
 });

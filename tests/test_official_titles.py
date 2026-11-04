@@ -101,7 +101,9 @@ def _assert_faithful(title, short):
 
 
 def test_history_has_all_diario_oficial_act_titles():
-    assert len(HISTORY_TITLES) == 47
+    # The history grows with every daily run (49 on 4-nov-2026): the 47 reviewed titles must still be there, and every
+    # title, old or new, is checked by test_every_history_title_is_faithful.
+    assert len(HISTORY_TITLES) >= 47
 
 
 @pytest.mark.parametrize("title", HISTORY_TITLES, ids=range(len(HISTORY_TITLES)))

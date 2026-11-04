@@ -1155,6 +1155,7 @@
           "threshold": {
             "yoy_pct": 5.0
           },
+          "atypical_quarter": {"ratio": 2.0, "min_quarters": 5, "rule": "Un trimestre de un seguro es atípico si sus casos son ≥ ratio × o ≤ 1/ratio × la mediana de sus demás trimestres de la serie (Dirección, 4-nov-2026)."},
           "pitfalls": [
             "Fijar por nombre las hojas del año del corte, del anterior y del previo; validar cada columna contra el total declarado.",
             "La columna de ingresos del año debe ser igual a acumulado(t) − acumulado(dic del año anterior), por problema y en total; si no, HOLD.",
@@ -1249,10 +1250,11 @@
       "templates": {
         "kicker": "{label}",
         "headline": "Casos GES {entre}: {total}, {yoy} frente a {periodo_base}",
+        "headline_atypical": "{problema} reúne el {share}% de los {total} casos GES {entre}",
         "dek": "Fonasa informó {fonasa} casos y las Isapres {isapre} {entre}.{rate_clause}{decree_clause}",
         "kpi_label": "Casos GES {corto}",
         "kicker_meta": "datos de {period_label} · publicado por la SIS el {published_label} · {cadence_phrase}",
-        "headline_rule": "Los casos son ingresos entre enero y el mes del corte, frente a los mismos meses del año anterior (Dirección, 3-nov-2026); el acumulado desde julio de 2005 nunca es titular ni KPI. Las tasas son brutas, por beneficiarios del mismo seguro, y cuentan casos, no personas."
+        "headline_rule": "Los casos son ingresos entre enero y el mes del corte, frente a los mismos meses del año anterior (Dirección, 3-nov-2026); el acumulado desde julio de 2005 nunca es titular ni KPI. Las tasas son brutas, por beneficiarios del mismo seguro, y cuentan casos, no personas. Excepción (Dirección, 4-nov-2026): si la ventana de la comparación incluye un trimestre atípico de un seguro (registro: casos_ges.atypical_quarter), el titular no usa la comparación y destaca el problema con más casos del período; la ficha muestra los datos SIS tal cual y advierte el trimestre atípico."
       },
       "tabs": [
         {
