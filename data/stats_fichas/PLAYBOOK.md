@@ -180,6 +180,13 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
   - **Tema «Licencias (SIL)»:** SIL / ingresos por Isapre y SIL / cotizaciones, con cotizaciones = cotización legal +
     cotización adicional voluntaria del mismo período (sin aporte adicional, fondo de compensación ni otros). Un
     denominador ≤ 0 significa HOLD.
+  - **Total independiente (revisión de #136, 4 nov):** prestaciones + SIL = «Total costo de ventas» de la hoja − (no
+    liquidadas + litigio + egresos fondo + otros costos), por Isapre y período, ≤ 1 miles
+    (`stats_ficha_f2.costo_identity_failures`); si no, HOLD `costo_split_mismatch`. Sin esto, un SIL leído de otra fila
+    pasaría la identidad de la siniestralidad, que usa las mismas dos filas.
+  - **Cerradas en SIL / cotizaciones:** van después de las abiertas, con la marca «cerrada» en el gráfico (`tag`, `js`
+    `bars`) y en «Ver datos», más la columna «Aporte adicional (% ingresos)». La nota n2d se escribe solo si cada cerrada
+    tiene más aporte adicional que cualquier abierta.
   - `conteo.isapres_con_perdida` (resultado < 0) va en la línea índice de Resultados («1 Isapre con pérdida») y lo
     verifica `sf.COUNT_CLAIM` (`COUNT_CLAIM_IDS`).
   - Con menos de tres temas, HOLD.

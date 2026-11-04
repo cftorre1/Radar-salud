@@ -1089,3 +1089,85 @@ def test_new_builder_version_republishes_the_same_release_without_a_paid_call(tm
                  budget=lambda w: calls.append(w) or (True, "ok"))
     assert res["status"] == "pass" and "format_update" in res["ficha"]["triggers"] and calls == []
     assert res["ficha"]["builder_version"] == f2.BUILDER_VERSION == sf.load_registry()["families"]["F2"]["builder_version"]
+
+
+# ---------------------------------------------------------------------------------------------
+# Review of #136 (4-nov-2026): an independent total for prestaciones + SIL, closed Isapres tagged in SIL / cotizaciones
+
+
+def test_prestaciones_plus_sil_reconcile_with_the_sheet_total_costo_de_ventas(tmp_path):
+    root, fi = yoy_ficha(tmp_path)
+    pkg = f2.build_package(root, registry())
+    codes, pers = pkg["kpis"]["codes"], ["2026-03", "2025-03"]
+    assert f2.costo_identity_failures(pkg["values"], codes, pers) == []
+    d = full()
+    i = CODES.index("67")  # recomputed here: total costo − the other four components = prest + SIL (miles de $)
+    assert d["costo"][i] - sum(d[k][i] for k in ("ocurridas", "litigio", "egresos", "otroscostos")) == d["prest"][i] + d["sil"][i]
+    bad = copy.deepcopy(pkg["values"])
+    bad["costo_sil.81.2025-03"]["value"] += 0.002  # 2 miles off: beyond the 1 miles tolerance
+    assert f2.costo_identity_failures(bad, codes, pers) == ["costo_split_mismatch:81.2025-03"]
+    bad["costo_sil.81.2025-03"]["value"] -= 0.0015  # 0,5 miles: within tolerance
+    assert f2.costo_identity_failures(bad, codes, pers) == []
+    del bad["costo_operacional.67.2026-03"]
+    assert f2.costo_identity_failures(bad, codes, pers) == ["costo_total_missing:67.2026-03"]
+    assert any("total costo de ventas de la hoja" in c for c in pkg["reconciliation"]["checks"])
+
+
+def test_a_sil_value_off_the_sheet_total_holds_the_ficha(tmp_path):
+    """Mutation guard: SIL read from the wrong cell (synthetic: the stored parse of Colmena's SIL shifted by 1 MM$ after
+    capture) still satisfies S_prest + S_SIL = S, which is built from the same rows; only the sheet's own total catches
+    it. Removing costo_identity_failures from build_package makes this test fail."""
+    root = make_root(tmp_path, prev=True)
+    capture(root, files={URL: workbook(), URL_PREV: workbook(prev_data(), year="2025")}, max_new=2)
+    store = json.loads((root / fc.STORE).read_text(encoding="utf-8"))
+    rel = next(r for r in store["releases"] if r["period"] == "2026-03")
+    for tab in rel["document"]["parse"]["tables"].values():
+        for fid, col in tab["columns"].items():
+            if col["item"] == "costo_sil" and col.get("period") == "t" and "67" in tab["values"].get(fid, {}):
+                tab["values"][fid]["67"] += 1.0
+    (root / fc.STORE).write_text(json.dumps(store, ensure_ascii=False), encoding="utf-8")
+    pkg = f2.build_package(root, registry())
+    assert pkg["reconciliation"]["failures"] == ["costo_split_mismatch:67.2026-03"]
+    assert run(root)["status"] == "hold"
+
+
+def test_closed_isapres_are_tagged_and_listed_after_the_open_ones_in_sil_over_cotizaciones(tmp_path):
+    _, fi = yoy_ficha(tmp_path)
+    ev = fi["evidence"]["values"]
+    chart = next(c for c in sf.all_charts(fi) if c["id"] == "f2-sil-cotizaciones")
+    closed = {"Isalud", "Fundación", "Cruz del Norte"}
+    labels = [r["label"] for r in chart["rows"]]
+    first_closed = next(i for i, x in enumerate(labels) if x in closed)
+    assert set(labels[first_closed:]) == closed and not closed & set(labels[:first_closed])  # open first, then closed
+    for part in (labels[:first_closed], labels[first_closed:]):  # each group sorted by value
+        vals = [next(r["value"] for r in chart["rows"] if r["label"] == x) for x in part]
+        assert vals == sorted(vals, reverse=True)
+    assert all((r.get("tag") == "cerrada") == (r["label"] in closed) for r in chart["rows"])
+    rows = {r[0]: r for r in chart["table"]["rows"]}
+    assert {"Isalud (cerrada)", "Fundación (cerrada)", "Cruz del Norte (cerrada)"} <= set(rows)
+    assert chart["table"]["columns"][-1] == "Aporte adicional (% ingresos)"
+    d = full()
+    i = CODES.index("94")  # Cruz del Norte: aporte adicional / ingresos, recomputed here
+    assert ev["aporte_share.94.2026-03"]["value"] == pytest.approx(d["aporte"][i] / d["ingresos"][i] * 100)
+    assert rows["Cruz del Norte (cerrada)"][-1] == sf.fmt_dec(d["aporte"][i] / d["ingresos"][i] * 100, 1) + "%"
+    n2d = next(n["text"] for n in fi["notes"] if n["id"] == "n2d")
+    assert "aporte adicional pesa más en los ingresos que en cualquier Isapre abierta" in n2d
+    assert "abiertas primero, luego cerradas" in chart["subtitle"] and fi["verification"]["verdict"] == "PASS"
+
+
+def test_closed_note_only_when_the_data_supports_it(tmp_path):
+    data = copy.deepcopy(REAL)
+    i = CODES.index("76")  # synthetic: Fundación with no aporte adicional (income moved to cotización legal)
+    data["legal"][i] += data["aporte"][i]
+    data["aporte"][i] = 0
+    root = make_root(tmp_path)
+    capture(root, workbook(data))
+    fi = run(root)["ficha"]
+    assert not any(n["id"] == "n2d" for n in fi["notes"])
+    chart = next(c for c in sf.all_charts(fi) if c["id"] == "f2-sil-cotizaciones")
+    assert next(r for r in chart["rows"] if r["label"] == "Fundación")["tag"] == "cerrada"  # still tagged and grouped
+
+
+def test_costo_sil_registry_has_no_real_threshold_while_the_rule_is_nominal():
+    k = sf.load_registry()["families"]["F2"]["kpis"]["costo_sil"]
+    assert "nominal" in k["period_rule"] and "real_pct" not in (k.get("threshold") or {})

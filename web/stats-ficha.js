@@ -72,13 +72,14 @@
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${dec(r.value,d)}`).join(', ')}.`)}">${s}</svg>`;
  }
  // Plain horizontal bars for non-negative values: counts (integer) or, with c.digits, rates and percentages (F4/F6).
+ // A row may carry a short 'tag' (F2: 'cerrada'): drawn small under its label, with a hatched-light bar ('muted').
  function bars(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';
   if(rows.some(r=>Number(r.value)<0))return columns(c);  // a negative value is never drawn as a positive bar
-  const max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=30,x0=128,L=160,H=rows.length*row+8;
+  const tagged=rows.some(r=>r.tag),max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=tagged?36:30,x0=128,L=160,H=rows.length*row+8;
   const fv=v=>Number.isInteger(c.digits)?dec(v,c.digits)+(c.unit==='%'?'%':''):nf(v);
-  const s=rows.map((r,i)=>{const v=Number(r.value),w=Math.max(Math.abs(v)/max*L,2),y=4+i*row;return`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text><g class="sf-mark"><title>${esc(r.label)}: ${fv(v)}</title><rect x="${x0}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="3" fill="${r.emphasis?C.accent:'#CFC9BC'}"/></g><text x="${(x0+w+6).toFixed(1)}" y="${y+15}" font-size="12.5" font-weight="${r.emphasis?700:500}" fill="${C.ink}">${fv(v)}</text>`}).join('');
-  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${fv(r.value)}`).join(', ')}.`)}">${s}</svg>`;
+  const s=rows.map((r,i)=>{const v=Number(r.value),w=Math.max(Math.abs(v)/max*L,2),y=4+i*row,tag=r.tag?`<text class="sf-tag" x="1.5" y="${y+28}" font-size="10.5" fill="${C.ink50}">${esc(r.tag)}</text>`:'';return`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text>${tag}<g class="sf-mark"><title>${esc(r.label)}${r.tag?` (${esc(r.tag)})`:''}: ${fv(v)}</title><rect x="${x0}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="3" fill="${r.emphasis?C.accent:r.muted?'#E6E1D6':'#CFC9BC'}"${r.muted?` stroke="${C.ink50}" stroke-dasharray="3 2"`:''}/></g><text x="${(x0+w+6).toFixed(1)}" y="${y+15}" font-size="12.5" font-weight="${r.emphasis?700:500}" fill="${C.ink}">${fv(v)}</text>`}).join('');
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label}${r.tag?` (${r.tag})`:''} ${fv(r.value)}`).join(', ')}.`)}">${s}</svg>`;
  }
  const FORMS={diverging,line,dots,bars,columns_signed:columns};
  function chart(c,i){const svg=(FORMS[c.form]||columns)(c);if(!svg)return'';return`<figure class="sf-chart" data-chart="${esc(c.id||i)}"><h3>${esc(c.headline)}</h3>${c.subtitle?`<p class="sf-sub">${esc(c.subtitle)}</p>`:''}${svg}<details class="sf-data"><summary>Ver datos del gráfico</summary>${table(c.table)}</details>${c.source?`<p class="sf-src">${esc(c.source)}</p>`:''}</figure>`}

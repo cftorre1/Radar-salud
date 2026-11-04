@@ -38,7 +38,7 @@
   "family_label": "Resultados financieros de aseguradores",
   "period": "2026-03",
   "published_at": "2026-07-07",
-  "generated_at": "2026-11-04T03:07:48.082759+00:00",
+  "generated_at": "2026-11-04T04:12:09.101801+00:00",
   "release_key": "2026-03:e3c4f7b3cfee9a6e",
   "featured": false,
   "triggers": [
@@ -1414,18 +1414,8 @@
       "unit": "%",
       "digits": 1,
       "headline": "SIL sobre cotizaciones por Isapre",
-      "subtitle": "Costo SIL, % de la cotización legal y adicional de cada Isapre, enero–marzo 2026",
+      "subtitle": "Costo SIL, % de la cotización legal y adicional de cada Isapre, enero–marzo 2026; abiertas primero, luego cerradas",
       "rows": [
-       {
-        "label": "Cruz del Norte",
-        "value": 57.002018842530276,
-        "ref": "sil_cotizaciones.94.2026-03"
-       },
-       {
-        "label": "Fundación",
-        "value": 16.852808678212597,
-        "ref": "sil_cotizaciones.76.2026-03"
-       },
        {
         "label": "Consalud",
         "value": 16.840696312495453,
@@ -1435,11 +1425,6 @@
         "label": "Nueva Masvida",
         "value": 15.786288181954525,
         "ref": "sil_cotizaciones.81.2026-03"
-       },
-       {
-        "label": "Isalud",
-        "value": 14.124123233470304,
-        "ref": "sil_cotizaciones.63.2026-03"
        },
        {
         "label": "Banmédica",
@@ -1460,6 +1445,27 @@
         "label": "Vida Tres",
         "value": 8.4565497933513,
         "ref": "sil_cotizaciones.80.2026-03"
+       },
+       {
+        "label": "Cruz del Norte",
+        "value": 57.002018842530276,
+        "ref": "sil_cotizaciones.94.2026-03",
+        "tag": "cerrada",
+        "muted": true
+       },
+       {
+        "label": "Fundación",
+        "value": 16.852808678212597,
+        "ref": "sil_cotizaciones.76.2026-03",
+        "tag": "cerrada",
+        "muted": true
+       },
+       {
+        "label": "Isalud",
+        "value": 14.124123233470304,
+        "ref": "sil_cotizaciones.63.2026-03",
+        "tag": "cerrada",
+        "muted": true
        }
       ],
       "table": {
@@ -1468,82 +1474,93 @@
         "SIL (MM$)",
         "Cotizaciones (MM$)",
         "Mar 2026",
-        "Mar 2025"
+        "Mar 2025",
+        "Aporte adicional (% ingresos)"
        ],
        "rows": [
-        [
-         "Cruz del Norte",
-         "186",
-         "327",
-         "57,0%",
-         "68,0%"
-        ],
-        [
-         "Fundación",
-         "1.618",
-         "9.602",
-         "16,9%",
-         "24,4%"
-        ],
         [
          "Consalud",
          "32.400",
          "192.390",
          "16,8%",
-         "21,2%"
+         "21,2%",
+         "0,3%"
         ],
         [
          "Nueva Masvida",
          "18.236",
          "115.517",
          "15,8%",
-         "23,1%"
-        ],
-        [
-         "Isalud",
-         "2.110",
-         "14.937",
-         "14,1%",
-         "20,7%"
+         "23,1%",
+         "0,0%"
         ],
         [
          "Banmédica",
          "30.972",
          "229.533",
          "13,5%",
-         "18,1%"
+         "18,1%",
+         "0,2%"
         ],
         [
          "Colmena",
          "33.779",
          "267.315",
          "12,6%",
-         "18,3%"
+         "18,3%",
+         "0,0%"
         ],
         [
          "Cruz Blanca",
          "21.306",
          "171.377",
          "12,4%",
-         "17,4%"
+         "17,4%",
+         "0,1%"
         ],
         [
          "Vida Tres",
          "5.693",
          "67.321",
          "8,5%",
-         "10,2%"
+         "10,2%",
+         "0,0%"
+        ],
+        [
+         "Cruz del Norte (cerrada)",
+         "186",
+         "327",
+         "57,0%",
+         "68,0%",
+         "59,1%"
+        ],
+        [
+         "Fundación (cerrada)",
+         "1.618",
+         "9.602",
+         "16,9%",
+         "24,4%",
+         "21,1%"
+        ],
+        [
+         "Isalud (cerrada)",
+         "2.110",
+         "14.937",
+         "14,1%",
+         "20,7%",
+         "54,0%"
         ],
         [
          "Sistema sin Esencial",
          "146.301",
          "1.068.318",
          "13,7%",
-         "18,7%"
+         "18,7%",
+         "2,0%"
         ]
        ]
       },
-      "source": "Cotizaciones = cotización legal más cotización adicional voluntaria, mismo período acumulado. No incluye aporte adicional, fondo de compensación ni otros ingresos."
+      "source": "Cotizaciones = cotización legal más cotización adicional voluntaria, mismo período acumulado. No incluye aporte adicional, fondo de compensación ni otros ingresos. En las Isapres cerradas el aporte adicional pesa mucho más en los ingresos que en las abiertas (última columna de «Ver datos»), así que su razón no es comparable con la de las abiertas."
      }
     ],
     "text": [],
@@ -1596,6 +1613,10 @@
    {
     "id": "n3",
     "text": "Cada cifra se lee de las hojas de apertura de cuentas de resultados y del estado de resultados por función (en miles de $) de la planilla capturada (hash en Fuentes), con una plantilla revisada por una persona; en cada cuenta las Isapres suman la columna total y los componentes su total; ingresos menos costo de ventas igualan la ganancia bruta. Las hojas en millones no se usan: mezclan escalas."
+   },
+   {
+    "id": "n2d",
+    "text": "Isapres cerradas: en cada una, el aporte adicional pesa más en los ingresos que en cualquier Isapre abierta. Como no es cotización, no entra al denominador de SIL sobre cotizaciones; por eso esa razón de las cerradas va marcada «cerrada», después de las abiertas, y no es comparable con la de las abiertas."
    },
    {
     "id": "n6",

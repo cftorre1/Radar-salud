@@ -55,6 +55,13 @@ test('F2 ficha shows the siniestralidad split and the SIL topic',async({page})=>
  await expect(panel.locator('[data-chart="f2-sil-isapres"]')).toBeVisible();
  const cot=panel.locator('[data-chart="f2-sil-cotizaciones"]');
  await expect(cot.locator('.sf-src')).toContainText('cotización legal más cotización adicional voluntaria');
+ // Closed Isapres (review of #136): after the open ones, each tagged 'cerrada' in the chart and in 'Ver datos'.
+ expect(await cot.locator('svg text.sf-tag').allTextContents()).toEqual(['cerrada','cerrada','cerrada']);
+ const tagY=await cot.locator('svg text.sf-tag').first().evaluate(t=>t.getBBox().y),lastOpen=await cot.locator('svg rect').nth(5).evaluate(r=>r.getBBox().y);
+ expect(tagY).toBeGreaterThan(lastOpen);
+ await cot.locator('summary').click();
+ for(const n of ['Isalud','Fundación','Cruz del Norte'])await expect(cot.locator('tbody th',{hasText:`${n} (cerrada)`})).toHaveCount(1);
+ await cot.locator('summary').click();
  for(const r of await inside(page))expect(r.bad,r.chart).toEqual([]);
  expect(await noOverflow(page)).toBeTruthy();
  await page.evaluate(()=>{document.getElementById('signalDetail').scrollTop=0});
