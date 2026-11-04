@@ -1,0 +1,700 @@
+{
+ "piece_id": "stats-ficha:F7:2026-07",
+ "title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026; el programa Fonasa, el 73,3% a agosto 2026",
+ "display_title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026; el programa Fonasa, el 73,3% a agosto 2026",
+ "source_name": "Dirección de Presupuestos",
+ "source_type": "official",
+ "source_url": "https://www.dipres.gob.cl/597/articles-406167_doc_pdf.pdf",
+ "event_date": "2026-10-11",
+ "publication_date": null,
+ "date_basis": "first_detected",
+ "first_detected_at": "2026-10-11",
+ "validation_date": "2026-11-04",
+ "data_period": "2026-07",
+ "event_type": "DATA_PULSE",
+ "category": "Datos sectoriales",
+ "signal_types": [
+  "Datos"
+ ],
+ "scopes": [
+  "Fonasa",
+  "Financiamiento"
+ ],
+ "ingestion_mode": "BACKFILL",
+ "distribution": "archive",
+ "radar_score": 72,
+ "confidence_score": 100,
+ "what_happened": "El presupuesto vigente de la Partida 16 suma 499.742 MM$ más que la ley inicial (+2,9%). Montos nominales; sin comparación con 2025 por falta del mismo corte.",
+ "card_what": "El presupuesto vigente de la Partida 16 suma 499.742 MM$ más que la ley inicial (+2,9%). Montos nominales; sin comparación con 2025 por falta del mismo corte.",
+ "card_why_optional": true,
+ "why_it_matters": "",
+ "statistical_value_level": "stats_ficha",
+ "feed_visibility": true,
+ "editorial_decision": "accept",
+ "publication_gate_reason": "stats_ficha_pass",
+ "publication_ready_score": 100,
+ "stats_ficha": {
+  "schema_version": "stats_ficha_v1",
+  "id": "stats-ficha:F7:2026-07",
+  "family": "F7",
+  "family_label": "Financiamiento público",
+  "period": "2026-07",
+  "published_at": "2026-10-11",
+  "generated_at": "2026-11-04T03:12:08.780073+00:00",
+  "release_key": "2026-07:d685bc1319275102",
+  "featured": false,
+  "triggers": [
+   "new_period"
+  ],
+  "kicker": "Financiamiento público",
+  "kicker_meta": "datos a julio 2026 · detectado por Alicanto el 11 oct · se actualiza cada mes · montos nominales",
+  "headline": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026; el programa Fonasa, el 73,3% a agosto 2026",
+  "headline_type": "default",
+  "dek": "El presupuesto vigente de la Partida 16 suma 499.742 MM$ más que la ley inicial (+2,9%). Montos nominales; sin comparación con 2025 por falta del mismo corte.",
+  "dek_emphasis": null,
+  "kpis": [
+   {
+    "id": "ejecucion_partida",
+    "label": "Ejecución Salud (Partida 16)",
+    "value": "65,7%",
+    "prov": "C",
+    "lines": [
+     "a julio 2026 · 11.669.023 de 17.750.797 MM$",
+     "sin comparación a/a"
+    ],
+    "refs": [
+     "partida.2026-07.pct",
+     "partida.2026-07.ejecutado",
+     "partida.2026-07.vigente"
+    ]
+   },
+   {
+    "id": "ejecucion_fonasa",
+    "label": "Ejecución programa Fonasa",
+    "value": "73,3%",
+    "prov": "C",
+    "lines": [
+     "a agosto 2026 · 11.715.715 de 15.981.086 MM$",
+     "sin comparación a/a"
+    ],
+    "refs": [
+     "prog0201.2026-08.pct",
+     "prog0201.2026-08.ejecutado",
+     "prog0201.2026-08.vigente"
+    ]
+   },
+   {
+    "id": "vigente_partida",
+    "label": "Presupuesto vigente Salud",
+    "value": "17.750.797 MM$",
+    "prov": "C",
+    "lines": [
+     "ley inicial: 17.251.055 MM$"
+    ],
+    "refs": [
+     "partida.2026-07.vigente",
+     "partida.2026-07.ley_inicial"
+    ]
+   },
+   {
+    "id": "devengado_partida",
+    "label": "Gasto devengado Salud",
+    "value": "11.669.023 MM$",
+    "prov": "C",
+    "lines": [
+     "acumulado enero–julio 2026, nominal"
+    ],
+    "refs": [
+     "partida.2026-07.ejecutado"
+    ]
+   }
+  ],
+  "tabs": [
+   {
+    "id": "salud",
+    "label": "Salud (Partida 16)",
+    "charts": [
+     {
+      "id": "f7-partida-ejecucion",
+      "form": "line",
+      "unit": "%",
+      "digits": 1,
+      "headline": "Ejecución acumulada de la Partida 16",
+      "subtitle": "% del presupuesto vigente de cada corte, enero–julio 2026",
+      "rows": [
+       {
+        "label": "Ene",
+        "value": 13.515046811386986,
+        "ref": "partida.2026-01.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Feb",
+        "value": 22.09569635993368,
+        "ref": "partida.2026-02.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Mar",
+        "value": 32.34378366734082,
+        "ref": "partida.2026-03.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Abr",
+        "value": 41.854481011649675,
+        "ref": "partida.2026-04.pct",
+        "emphasis": false
+       },
+       {
+        "label": "May",
+        "value": 50.80359857490292,
+        "ref": "partida.2026-05.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Jun",
+        "value": 57.50755671693118,
+        "ref": "partida.2026-06.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Jul",
+        "value": 65.73802644480946,
+        "ref": "partida.2026-07.pct",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Corte",
+        "Devengado (MM$)",
+        "Vigente (MM$)",
+        "Ejecución"
+       ],
+       "rows": [
+        [
+         "enero 2026",
+         "2.331.488",
+         "17.251.055",
+         "13,5%"
+        ],
+        [
+         "febrero 2026",
+         "3.805.589",
+         "17.223.212",
+         "22,1%"
+        ],
+        [
+         "marzo 2026",
+         "5.570.910",
+         "17.224.050",
+         "32,3%"
+        ],
+        [
+         "abril 2026",
+         "7.209.037",
+         "17.224.050",
+         "41,9%"
+        ],
+        [
+         "mayo 2026",
+         "8.624.266",
+         "16.975.699",
+         "50,8%"
+        ],
+        [
+         "junio 2026",
+         "10.208.016",
+         "17.750.738",
+         "57,5%"
+        ],
+        [
+         "julio 2026",
+         "11.669.023",
+         "17.750.797",
+         "65,7%"
+        ]
+       ]
+      },
+      "source": "DIPRES, informes de ejecución de la Partida 16: gasto devengado acumulado y presupuesto vigente del mismo informe."
+     },
+     {
+      "id": "f7-partida-niveles",
+      "form": "bars",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "Ley inicial, vigente y devengado",
+      "subtitle": "Millones de pesos nominales, Partida 16, a julio 2026",
+      "rows": [
+       {
+        "label": "Ley inicial",
+        "value": 17251054.647,
+        "ref": "partida.2026-07.ley_inicial",
+        "emphasis": false
+       },
+       {
+        "label": "Vigente",
+        "value": 17750796.536,
+        "ref": "partida.2026-07.vigente",
+        "emphasis": false
+       },
+       {
+        "label": "Devengado",
+        "value": 11669023.321,
+        "ref": "partida.2026-07.ejecutado",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Concepto",
+        "MM$"
+       ],
+       "rows": [
+        [
+         "Ley inicial",
+         "17.251.055"
+        ],
+        [
+         "Vigente",
+         "17.750.797"
+        ],
+        [
+         "Devengado",
+         "11.669.023"
+        ],
+        [
+         "Vigente − ley inicial",
+         "+499.742"
+        ]
+       ]
+      },
+      "source": "DIPRES, informe de ejecución de la Partida 16. Los niveles no se suman entre sí."
+     }
+    ],
+    "text": [],
+    "dek": null,
+    "spark": {
+     "chart": "f7-partida-ejecucion",
+     "form": "line"
+    },
+    "index_line": "65,7% del vigente a julio",
+    "index_refs": [
+     "partida.2026-07.pct"
+    ],
+    "kpis": []
+   },
+   {
+    "id": "fonasa",
+    "label": "Fonasa",
+    "charts": [
+     {
+      "id": "f7-cap02-ejecucion",
+      "form": "line",
+      "unit": "%",
+      "digits": 1,
+      "headline": "Ejecución acumulada del capítulo 02 (Fonasa)",
+      "subtitle": "% del presupuesto vigente de cada corte, enero–julio 2026",
+      "rows": [
+       {
+        "label": "Ene",
+        "value": 11.975991381672399,
+        "ref": "cap02.2026-01.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Feb",
+        "value": 20.767046939750085,
+        "ref": "cap02.2026-02.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Mar",
+        "value": 30.546785892613254,
+        "ref": "cap02.2026-03.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Abr",
+        "value": 39.07279908305416,
+        "ref": "cap02.2026-04.pct",
+        "emphasis": false
+       },
+       {
+        "label": "May",
+        "value": 49.3077186052045,
+        "ref": "cap02.2026-05.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Jun",
+        "value": 57.467139636185706,
+        "ref": "cap02.2026-06.pct",
+        "emphasis": false
+       },
+       {
+        "label": "Jul",
+        "value": 67.1934288148565,
+        "ref": "cap02.2026-07.pct",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Corte",
+        "Devengado (MM$)",
+        "Vigente (MM$)",
+        "Ejecución"
+       ],
+       "rows": [
+        [
+         "enero 2026",
+         "1.792.118",
+         "14.964.255",
+         "12,0%"
+        ],
+        [
+         "febrero 2026",
+         "3.111.315",
+         "14.981.981",
+         "20,8%"
+        ],
+        [
+         "marzo 2026",
+         "4.576.770",
+         "14.982.819",
+         "30,5%"
+        ],
+        [
+         "abril 2026",
+         "5.854.207",
+         "14.982.819",
+         "39,1%"
+        ],
+        [
+         "mayo 2026",
+         "7.351.832",
+         "14.910.103",
+         "49,3%"
+        ],
+        [
+         "junio 2026",
+         "8.907.261",
+         "15.499.747",
+         "57,5%"
+        ],
+        [
+         "julio 2026",
+         "10.414.446",
+         "15.499.203",
+         "67,2%"
+        ]
+       ]
+      },
+      "source": "DIPRES, informes de ejecución del capítulo 02. Capítulo y programa vienen de documentos distintos: no se comparan ni se suman."
+     },
+     {
+      "id": "f7-prog0201-niveles",
+      "form": "bars",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "Programa Fonasa a agosto 2026",
+      "subtitle": "Millones de pesos nominales, capítulo 02, programa 01",
+      "rows": [
+       {
+        "label": "Vigente",
+        "value": 15981086.409,
+        "ref": "prog0201.2026-08.vigente",
+        "emphasis": false
+       },
+       {
+        "label": "Devengado",
+        "value": 11715714.95,
+        "ref": "prog0201.2026-08.ejecutado",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Concepto",
+        "MM$"
+       ],
+       "rows": [
+        [
+         "Vigente",
+         "15.981.086"
+        ],
+        [
+         "Devengado",
+         "11.715.715"
+        ],
+        [
+         "Ejecución",
+         "73,3%"
+        ]
+       ]
+      },
+      "source": "DIPRES, cuadro comparativo del proyecto de presupuestos: columnas de presupuesto vigente y de ejecución de la misma tabla."
+     }
+    ],
+    "text": [],
+    "dek": null,
+    "spark": {
+     "chart": "f7-cap02-ejecucion",
+     "form": "line"
+    },
+    "index_line": "Programa Fonasa: 73,3% del vigente a agosto",
+    "index_refs": [
+     "prog0201.2026-08.pct"
+    ],
+    "kpis": []
+   }
+  ],
+  "facts": {
+   "heading": "Qué muestran los datos",
+   "paragraphs": [
+    "Entre enero y julio de 2026, Salud devengó el 65,7% de su presupuesto vigente.",
+    "El programa Fonasa devengó el 73,3% de su presupuesto vigente a agosto 2026."
+   ],
+   "rendered_in_tabs": true
+  },
+  "lectura": null,
+  "watch": [
+   {
+    "headline": "Informe de ejecución de la Partida 16 a agosto 2026.",
+    "explanation": "La ficha se actualiza cuando Alicanto captura el informe nuevo."
+   },
+   {
+    "headline": "Comparación con 2025.",
+    "explanation": "Se activa con el corte del mismo mes de 2025 en el mismo tipo de informe."
+   }
+  ],
+  "notes": [
+   {
+    "id": "n1",
+    "text": "Montos acumulados de enero al corte: un flujo acumulado, no un stock. No se suman entre meses ni entre niveles anidados (partida, capítulo y programa); cada nivel se lee de su propio registro."
+   },
+   {
+    "id": "n2",
+    "text": "Denominador: el % de ejecución divide el gasto devengado acumulado por el presupuesto vigente que informa el mismo documento; nunca por la ley inicial ni por el año completo."
+   },
+   {
+    "id": "n3",
+    "text": "Montos nominales en millones de pesos: DIPRES publica miles de pesos y Alicanto divide por 1.000. El valor real (UF) queda pendiente."
+   },
+   {
+    "id": "n4",
+    "text": "Fechas: el corte es el último día del mes informado. Los PDF de DIPRES no traen fecha de publicación verificada; la ficha usa la fecha en que Alicanto capturó el documento y la rotula como detección."
+   },
+   {
+    "id": "n5",
+    "text": "El programa Fonasa sale del cuadro comparativo del proyecto de presupuestos (ejecución y vigente de la misma tabla); la partida y el capítulo 02, de los informes de ejecución. No se comparan entre sí."
+   },
+   {
+    "id": "n6",
+    "text": "Sin comparación con 2025: no hay un corte del mismo mes de 2025 en el mismo tipo de documento. Cortes de otros meses no se comparan."
+   },
+   {
+    "id": "n7",
+    "text": "Los cortes de la subpartida 1603 no se usan como Partida 16: son otro perímetro."
+   },
+   {
+    "id": "n8",
+    "text": "La captura DIPRES de Alicanto declara cobertura incompleta: no todas las versiones del presupuesto ni las fechas de publicación están verificadas."
+   },
+   {
+    "id": "n9",
+    "text": "Ningún dato de esta ficha establece por qué cambia la ejecución del gasto."
+   }
+  ],
+  "sources": [
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-406167_doc_pdf.pdf",
+    "sha256": "852691576733f110e4822d6d8483a28f705419a7cacb462665c9f373ca1c2492",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:28.781521+00:00",
+    "label": "DIPRES · Informe Ejecución Partida Enero [Pesos] (corte enero 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16; total GASTOS",
+    "key": "doc_852691576733"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-409284_doc_pdf.pdf",
+    "sha256": "31c955304c87faf2270c9990c41e448936758eee8762745a7255264e816f41e5",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:29.419113+00:00",
+    "label": "DIPRES · Informe Ejecución Partida Febrero [Pesos] (corte febrero 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16; total GASTOS",
+    "key": "doc_31c955304c87"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-412549_doc_pdf.pdf",
+    "sha256": "e86f7fc09f0c760919eccb6f8f1cdaf79780b527f97a5525e81843d6f946ebea",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:29.947073+00:00",
+    "label": "DIPRES · Informe Ejecución Partida Primer Trimestre [Pesos] (corte marzo 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16; total GASTOS",
+    "key": "doc_e86f7fc09f0c"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-415200_doc_pdf.pdf",
+    "sha256": "959c905fd6aa9567e2cec0a65f0fac6fc589d6d74af8400fc90bb5f3ed20c7ff",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:30.314273+00:00",
+    "label": "DIPRES · Informe Ejecución Partida Abril [Pesos] (corte abril 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16; total GASTOS",
+    "key": "doc_959c905fd6aa"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-417739_doc_pdf.pdf",
+    "sha256": "9c2c7baabb3016684a1a71ed7a58d490930bde9a135a476ac2b718f96e42d711",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:30.881318+00:00",
+    "label": "DIPRES · Informe Ejecución Partida Mayo [Pesos] (corte mayo 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16; total GASTOS",
+    "key": "doc_9c2c7baabb30"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-421059_doc_pdf.pdf",
+    "sha256": "0ebd660eafc2c7f89318bef6aa9b2410a0bfaf4c7872340c85ca3852f252749a",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:31.447680+00:00",
+    "label": "DIPRES · Informe Ejecución Partida Segundo Trimestre [Pesos] (corte junio 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16; total GASTOS",
+    "key": "doc_0ebd660eafc2"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-424500_doc_pdf.pdf",
+    "sha256": "f3ff117334ef740b13e49c9158c965a27f8d9ed2225a62fc9b8d2a5040956dde",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:31.813177+00:00",
+    "label": "DIPRES · Informe Ejecución Partida Julio [Pesos] (corte julio 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16; total GASTOS",
+    "key": "doc_f3ff117334ef"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-405254_doc_pdf.pdf",
+    "sha256": "717364f842cee2dd765f02af8ee83db145f47bbf8177de38f763afec023a7710",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:34.040750+00:00",
+    "label": "DIPRES · Informe Ejecución Capítulo Enero [Pesos] (corte enero 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16, capítulo 02; total GASTOS",
+    "key": "doc_717364f842ce"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-409165_doc_pdf.pdf",
+    "sha256": "4e3705c57e586bdc8ec340fa531a84dcd0c89ba9b7873b9cccca7621b4866f17",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:32.945023+00:00",
+    "label": "DIPRES · Informe Ejecución Capítulo Febrero [Pesos] (corte febrero 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16, capítulo 02; total GASTOS",
+    "key": "doc_4e3705c57e58"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-412430_doc_pdf.pdf",
+    "sha256": "7913d355aee0efe7150cffe80d1dce8ed94492e0b9c5f8b7624619e3da159c0e",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:34.445334+00:00",
+    "label": "DIPRES · Informe Ejecución Capítulo Primer Trimestre [Pesos] (corte marzo 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16, capítulo 02; total GASTOS",
+    "key": "doc_7913d355aee0"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-415081_doc_pdf.pdf",
+    "sha256": "25857751d69742d0d7ebae42d1d6a3ed31632bc061f3460e6cd9108e7924ec7e",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:34.937178+00:00",
+    "label": "DIPRES · Informe Ejecución Capítulo Abril [Pesos] (corte abril 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16, capítulo 02; total GASTOS",
+    "key": "doc_25857751d697"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-417620_doc_pdf.pdf",
+    "sha256": "4d16ea94aa849493f81d71039eaba460db88250d361126aec79139fa434cdafe",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:35.433702+00:00",
+    "label": "DIPRES · Informe Ejecución Capítulo Mayo [Pesos] (corte mayo 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16, capítulo 02; total GASTOS",
+    "key": "doc_4d16ea94aa84"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-420940_doc_pdf.pdf",
+    "sha256": "6c87c62250d71fa70f1ae43518cbc4704e4dd3d90024f3d27843b64870b57f86",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:33.311040+00:00",
+    "label": "DIPRES · Informe Ejecución Capítulo Segundo Trimestre [Pesos] (corte junio 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16, capítulo 02; total GASTOS",
+    "key": "doc_6c87c62250d7"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-424381_doc_pdf.pdf",
+    "sha256": "7839c99a2c303829d84bf09f29b786086205cc5e425f9d9ef5c6e6583ed3ff19",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:01:32.393179+00:00",
+    "label": "DIPRES · Informe Ejecución Capítulo Julio [Pesos] (corte julio 2026)",
+    "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+    "locator": "partida 16, capítulo 02; total GASTOS",
+    "key": "doc_7839c99a2c30"
+   },
+   {
+    "url": "https://www.dipres.gob.cl/597/articles-431114_doc_pdf.pdf",
+    "sha256": "509c6641e880c400033c74cb5230ca7ee0406c18adfa116f1d86fefcac1c3995",
+    "published_at": null,
+    "fetched_at": "2026-10-11T14:00:58.395644+00:00",
+    "label": "DIPRES · Cuadro Comparativo Analítico Años 2026-2027 (corte agosto 2026)",
+    "role": "columnas 'vigente' y 'ejecución' del mismo cuadro comparativo",
+    "locator": "partida 16, capítulo 02, programa 01; total GASTOS",
+    "key": "doc_509c6641e880"
+   }
+  ],
+  "machine_note": "Ficha generada por la regla \"nuevo período\" (documento capturado por Alicanto el 11 oct). Las cifras vienen del paquete de evidencia, sin descargas nuevas; la Lectura Alicanto está desactivada para esta familia. Lectura Alicanto omitida (sin modelo en esta corrida).",
+  "status": "PASS",
+  "late_release": null,
+  "revisions": [],
+  "date_basis": "first_detected"
+ },
+ "share_url": "data/fichas/f7_financiamiento.html",
+ "editorial_committee": {
+  "check_kind": "structured_check",
+  "independent_review": false,
+  "committee_version": "1.0",
+  "signal_type": "Datos",
+  "members": [
+   "editorial_intelligence",
+   "health_business",
+   "data_analytics",
+   "decision_intelligence",
+   "evidence_research"
+  ],
+  "materiality_decision": "accept",
+  "public_title": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026; el programa Fonasa, el 73,3% a agosto 2026",
+  "what_happened": "El presupuesto vigente de la Partida 16 suma 499.742 MM$ más que la ley inicial (+2,9%). Montos nominales; sin comparación con 2025 por falta del mismo corte.",
+  "why_it_matters": "",
+  "evidence_map": [
+   {
+    "source": "Dirección de Presupuestos",
+    "url": "https://www.dipres.gob.cl/597/articles-406167_doc_pdf.pdf"
+   }
+  ],
+  "uncertainties": [],
+  "value_level": "stats_ficha",
+  "publication_decision": "accept",
+  "critical_objections": [],
+  "verdict": "PASS",
+  "parser_or_research_debt_if_any": null
+ },
+ "fixture_note": "Fixture de navegador: ficha F7 armada con la lane DIPRES comprometida (data/market/dipres_health_budget.json) con la compuerta de primera revisión abierta solo para la prueba; no es una publicación."
+}

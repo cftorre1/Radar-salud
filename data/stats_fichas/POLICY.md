@@ -27,6 +27,12 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
   - Status: `active` since 2-nov-2026, when Dirección approved `families.F2.parser_template`. The builder is `src/radar_salud/stats_ficha_f2.py`, and capture is `src/radar_salud/stats_capture_fefi.py`, run by the daily `scripts/run_stats_fichas.py` (the latest FEFI workbook and the same quarter a year earlier, at most 2 downloads or re-checks per run, same SIS fetcher limits; `--no-capture` skips it).
   - The F2 Lectura stays off (`lectura_enabled: false`): no paid call. A template copy that is unreviewed or has `<<…>>` placeholders still HOLDs. Details in PLAYBOOK.md §7.
 
+- **F7 Financiamiento público (DIPRES Partida 16):** `active` with `first_pass_requires_review` (PR "F7 activación", 4-nov-2026). Builder `src/radar_salud/stats_ficha_f7.py`; it reads only `data/market/dipres_health_budget.json` (the DIPRES lane of `market_sources.collect_dipres`) and downloads nothing.
+  - KPIs: % de ejecución = gasto devengado acumulado / presupuesto vigente of the **same document**, for the Partida 16 and the Fonasa programme (capítulo 02, programa 01) at their latest cut; capítulo 02 monthly series; vigente vs. ley inicial. Nominal amounts (no UF yet). Year on year only against the same month of the previous year and the same kind of document; otherwise "sin comparación".
+  - Reconciliation (HOLD on failure): ejecutado ≤ vigente; accumulated execution never decreases within a fiscal year; one cut read from two documents agrees; units/basis verified; every record traced to a DIPRES https URL and a SHA-256 confirmed by the lane's document ledger; cut = month end, accumulated from 1 January; a publication date only when the lane verified one after the cut, else the ficha is dated by capture (`date_basis: first_detected`).
+  - Nested levels are never summed (the lane's `aggregation_rule`): each figure equals exactly one record of its own entity (`trace_failures`); a subpartida (e.g. 1603 in the 2027 project table) is another perimeter and is never read as the partida.
+  - First publication: a PASS is written as HOLD `awaiting_first_review` in `hold/f7_financiamiento-<period>.json` until `families.F7.first_review` records `reviewed_by` and `reviewed_sha256` = the ficha's `evidence_sha256`. The Lectura stays off (`lectura_enabled: false`).
+
 ## Conditions to auto-publish (all are required)
 
 1. **Reconciliation PASS**, recorded in `reconciliation` in the evidence package. For F1 that means:

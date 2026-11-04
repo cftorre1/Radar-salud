@@ -218,7 +218,9 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
   nombrar profesionales sin resolución firme).
 - **Período.** YTD a/a; el año en curso se rotula "parcial".
 
-**F5 Reclamos/fiscalización, F7 Financiamiento público, F8 Presión asistencial.** Siguen la receta del §6.
+**F7 Financiamiento público** (construida el 4 nov, `stats_ficha_f7.py`): reutiliza la lane DIPRES sin descargas; su primera publicación espera la revisión de Dirección (POLICY.md, F7). Aprendizaje: el cuadro comparativo del proyecto 2027 trae la Partida 16 como subpartida 1603 (otro perímetro, menor que la partida de los informes mensuales): un perímetro se identifica por partida, subpartida, capítulo y programa, nunca solo por el nivel.
+
+**F5 Reclamos/fiscalización, F8 Presión asistencial.** Siguen la receta del §6.
 - Antes de proponer temas, verificar la fuente: FONASA responde HTTP 403 e ISP falla en TLS (bloqueos externos).
 - No inventar series: un tema existe solo si una columna revisada lo sostiene.
 

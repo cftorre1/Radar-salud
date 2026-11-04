@@ -17,14 +17,17 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from radar_salud import (stats_capture, stats_capture_fefi, stats_ficha_f1, stats_ficha_f2, stats_ficha_f4,  # noqa: E402
-                         stats_ficha_f6, stats_fichas)
+                         stats_ficha_f6, stats_ficha_f7, stats_fichas)
 
-BUILDERS = {"F1": stats_ficha_f1.run, "F2": stats_ficha_f2.run, "F4": stats_ficha_f4.run, "F6": stats_ficha_f6.run}
+BUILDERS = {"F1": stats_ficha_f1.run, "F2": stats_ficha_f2.run, "F4": stats_ficha_f4.run, "F6": stats_ficha_f6.run,
+            "F7": stats_ficha_f7.run}
 CAPTURED = {"F4", "F6"}  # families whose documents are captured by stats_capture (F1 reads the market lane's capture)
 FEFI_CAPTURED = {"F2"}  # FEFI workbooks (stats_capture_fefi): the latest release, then the same quarter one year earlier
 # F2 is active since 2-nov-2026 and runs in the daily default like F1/F4/F6. Its capture is bounded (≤ 2 downloads or
 # re-checks per run, SIS fetcher limits, step deadline). Its Lectura stays off, so no paid call is made, until Dirección
 # sets families.F2.lectura_enabled, whatever OPENAI_API_KEY says (stats_ficha_f2.run).
+# F7 (DIPRES Partida 16) reads only data/market/dipres_health_budget.json: no capture, no download, Lectura off; its
+# first PASS waits for Dirección's review (families.F7.first_pass_requires_review), like F4.
 
 
 def main(argv: list[str] | None = None) -> int:
