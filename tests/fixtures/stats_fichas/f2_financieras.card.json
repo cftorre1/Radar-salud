@@ -1,0 +1,1663 @@
+{
+ "piece_id": "stats-ficha:F2:2026-03",
+ "title": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
+ "display_title": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
+ "source_name": "Superintendencia de Salud",
+ "source_type": "official",
+ "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls",
+ "event_date": "2026-07-07",
+ "publication_date": "2026-07-07",
+ "validation_date": "2026-11-04",
+ "feed_date": "2026-10-10",
+ "data_period": "2026-03",
+ "event_type": "DATA_PULSE",
+ "category": "Datos sectoriales",
+ "signal_types": [
+  "Datos"
+ ],
+ "scopes": [
+  "Isapres"
+ ],
+ "ingestion_mode": "BACKFILL",
+ "distribution": "archive",
+ "radar_score": 72,
+ "confidence_score": 100,
+ "what_happened": "La cotización legal aporta el 67,8% de los ingresos. Por Isapre, la siniestralidad va de 75,7% (Nueva Masvida) a 100,4% (Isalud).",
+ "card_what": "La cotización legal aporta el 67,8% de los ingresos. Por Isapre, la siniestralidad va de 75,7% (Nueva Masvida) a 100,4% (Isalud).",
+ "card_why_optional": true,
+ "why_it_matters": "",
+ "statistical_value_level": "stats_ficha",
+ "feed_visibility": true,
+ "editorial_decision": "accept",
+ "publication_gate_reason": "stats_ficha_pass",
+ "publication_ready_score": 100,
+ "stats_ficha": {
+  "schema_version": "stats_ficha_v1",
+  "id": "stats-ficha:F2:2026-03",
+  "family": "F2",
+  "family_label": "Resultados financieros de aseguradores",
+  "period": "2026-03",
+  "published_at": "2026-07-07",
+  "generated_at": "2026-11-04T03:07:48.082759+00:00",
+  "release_key": "2026-03:e3c4f7b3cfee9a6e",
+  "featured": false,
+  "triggers": [
+   "new_period"
+  ],
+  "kicker": "Estados financieros Isapres · marzo 2026",
+  "kicker_meta": "datos a marzo 2026 · publicado por la SIS el 7 jul · se actualiza cada trimestre",
+  "headline": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
+  "headline_type": "default",
+  "dek": "La cotización legal aporta el 67,8% de los ingresos. Por Isapre, la siniestralidad va de 75,7% (Nueva Masvida) a 100,4% (Isalud).",
+  "scope_note": "Cifras del sistema sin Isapre Esencial: según la SIS (nota A18), sus cifras a marzo 2026 están en revisión. Los totales suman las otras 9 Isapres.",
+  "dek_emphasis": null,
+  "kpis": [
+   {
+    "id": "resultado",
+    "label": "Resultado del ejercicio",
+    "value": "34.120 MM$",
+    "prov": "C",
+    "lines": [
+     "marzo 2025: 1.215 MM$"
+    ],
+    "refs": [
+     "resultado_ejercicio.sistema.2026-03",
+     "resultado_ejercicio.sistema.2025-03"
+    ]
+   },
+   {
+    "id": "ingresos",
+    "label": "Ingresos",
+    "value": "1.091.349 MM$",
+    "prov": "C",
+    "lines": [
+     "marzo 2025: 1.052.337 MM$ · variación % +3,7%"
+    ],
+    "refs": [
+     "ingresos_operacionales.sistema.2026-03",
+     "ingresos_operacionales.sistema.2025-03",
+     "ingresos_operacionales.sistema.pct"
+    ]
+   },
+   {
+    "id": "costo_salud",
+    "label": "Prestaciones y SIL",
+    "value": "905.146 MM$",
+    "prov": "C",
+    "lines": [
+     "prestaciones 758.845 · SIL 146.301"
+    ],
+    "refs": [
+     "costo_salud.sistema.2026-03",
+     "costo_prestaciones.sistema.2026-03",
+     "costo_sil.sistema.2026-03"
+    ]
+   },
+   {
+    "id": "gav",
+    "label": "Gastos de administración",
+    "value": "98.582 MM$",
+    "prov": "C",
+    "lines": [
+     "9,0% de los ingresos"
+    ],
+    "refs": [
+     "gav.sistema.2026-03",
+     "gav_pct.sistema.2026-03"
+    ]
+   },
+   {
+    "id": "siniestralidad",
+    "label": "Siniestralidad",
+    "value": "82,9%",
+    "prov": "C",
+    "lines": [
+     "prestaciones 69,5% · SIL 13,4%",
+     "marzo 2025: 88,9% (−6,0 pp)"
+    ],
+    "refs": [
+     "siniestralidad.sistema.2026-03",
+     "siniestralidad_prest.sistema.2026-03",
+     "siniestralidad_sil.sistema.2026-03",
+     "siniestralidad.sistema.2025-03",
+     "siniestralidad.sistema.pp"
+    ]
+   }
+  ],
+  "tabs": [
+   {
+    "id": "resultados",
+    "label": "Resultados",
+    "charts": [
+     {
+      "id": "f2-resultado",
+      "form": "diverging",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "Resultado del ejercicio de las Isapres",
+      "subtitle": "Millones de pesos, enero–marzo de cada año, sin Esencial",
+      "rows": [
+       {
+        "label": "Mar 2025",
+        "value": 1215.2849999999992,
+        "ref": "resultado_ejercicio.sistema.2025-03"
+       },
+       {
+        "label": "Mar 2026",
+        "value": 34120.358,
+        "ref": "resultado_ejercicio.sistema.2026-03",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Período",
+        "Resultado (MM$)"
+       ],
+       "rows": [
+        [
+         "Mar 2025",
+         "1.215"
+        ],
+        [
+         "Mar 2026",
+         "34.120"
+        ],
+        [
+         "Cambio",
+         "+32.905"
+        ]
+       ]
+      },
+      "source": "SIS. Los resultados se comparan por niveles y cambio absoluto, sin variación %."
+     },
+     {
+      "id": "f2-resultado-isapres",
+      "form": "diverging",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "Resultado por Isapre",
+      "subtitle": "Millones de pesos, enero–marzo 2026",
+      "rows": [
+       {
+        "label": "Consalud",
+        "value": 18040.492000000002,
+        "ref": "resultado_ejercicio.107.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Cruz Blanca",
+        "value": 6782.361,
+        "ref": "resultado_ejercicio.78.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Banmédica",
+        "value": 3918.1530000000002,
+        "ref": "resultado_ejercicio.99.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Isalud",
+        "value": 2027.266,
+        "ref": "resultado_ejercicio.63.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Nueva Masvida",
+        "value": 1703.799,
+        "ref": "resultado_ejercicio.81.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Colmena",
+        "value": 1483.912,
+        "ref": "resultado_ejercicio.67.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Fundación",
+        "value": 759.102,
+        "ref": "resultado_ejercicio.76.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Cruz del Norte",
+        "value": 30.635,
+        "ref": "resultado_ejercicio.94.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Vida Tres",
+        "value": -625.362,
+        "ref": "resultado_ejercicio.80.2026-03",
+        "emphasis": true
+       }
+      ],
+      "table": {
+       "columns": [
+        "Isapre",
+        "Mar 2026",
+        "Mar 2025",
+        "Cambio"
+       ],
+       "rows": [
+        [
+         "Consalud",
+         "18.040",
+         "3.056",
+         "+14.985"
+        ],
+        [
+         "Cruz Blanca",
+         "6.782",
+         "−3.614",
+         "+10.396"
+        ],
+        [
+         "Banmédica",
+         "3.918",
+         "−8.800",
+         "+12.718"
+        ],
+        [
+         "Isalud",
+         "2.027",
+         "−7",
+         "+2.035"
+        ],
+        [
+         "Nueva Masvida",
+         "1.704",
+         "3.576",
+         "−1.872"
+        ],
+        [
+         "Colmena",
+         "1.484",
+         "2.946",
+         "−1.462"
+        ],
+        [
+         "Fundación",
+         "759",
+         "569",
+         "+190"
+        ],
+        [
+         "Cruz del Norte",
+         "31",
+         "33",
+         "−2"
+        ],
+        [
+         "Vida Tres",
+         "−625",
+         "3.457",
+         "−4.082"
+        ],
+        [
+         "Sistema sin Esencial",
+         "34.120",
+         "1.215",
+         "+32.905"
+        ]
+       ]
+      },
+      "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."
+     }
+    ],
+    "text": [],
+    "dek": null,
+    "spark": {
+     "chart": "f2-resultado",
+     "form": "diverging"
+    },
+    "index_line": "34.120 MM$ · 1 Isapre con pérdida",
+    "index_refs": [
+     "resultado_ejercicio.sistema.2026-03",
+     "conteo.isapres_con_perdida"
+    ],
+    "kpis": []
+   },
+   {
+    "id": "ingresos",
+    "label": "Ingresos",
+    "charts": [
+     {
+      "id": "f2-ingresos-composicion",
+      "form": "bars",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "De dónde vienen los ingresos",
+      "subtitle": "Millones de pesos, enero–marzo 2026, sin Esencial",
+      "rows": [
+       {
+        "label": "Cotización legal",
+        "value": 739841.307,
+        "ref": "cotizacion_legal.sistema.2026-03",
+        "emphasis": true
+       },
+       {
+        "label": "Cot. adicional",
+        "value": 328477.109,
+        "ref": "cotizacion_adicional.sistema.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Aporte adicional",
+        "value": 21714.813000000002,
+        "ref": "aporte_adicional.sistema.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Fondo compens.",
+        "value": 1316.1,
+        "ref": "fondo_compensacion.sistema.2026-03",
+        "emphasis": false
+       }
+      ],
+      "table": {
+       "columns": [
+        "Componente",
+        "MM$"
+       ],
+       "rows": [
+        [
+         "Cotización legal",
+         "739.841"
+        ],
+        [
+         "Cot. adicional",
+         "328.477"
+        ],
+        [
+         "Aporte adicional",
+         "21.715"
+        ],
+        [
+         "Fondo compens.",
+         "1.316"
+        ],
+        [
+         "Otros",
+         "0"
+        ],
+        [
+         "Total ingresos",
+         "1.091.349"
+        ]
+       ]
+      },
+      "source": "SIS, apertura de cuentas de resultados (miles de $ convertidos a millones). Los componentes suman el total."
+     },
+     {
+      "id": "f2-ingresos-isapres",
+      "form": "bars",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "Ingresos por Isapre",
+      "subtitle": "Total ingresos de actividades ordinarias, millones de pesos, enero–marzo 2026",
+      "rows": [
+       {
+        "label": "Colmena",
+        "value": 267346.818,
+        "ref": "ingresos_operacionales.67.2026-03"
+       },
+       {
+        "label": "Banmédica",
+        "value": 230379.111,
+        "ref": "ingresos_operacionales.99.2026-03"
+       },
+       {
+        "label": "Consalud",
+        "value": 193273.47,
+        "ref": "ingresos_operacionales.107.2026-03"
+       },
+       {
+        "label": "Cruz Blanca",
+        "value": 171484.25400000002,
+        "ref": "ingresos_operacionales.78.2026-03"
+       },
+       {
+        "label": "Nueva Masvida",
+        "value": 115516.77500000001,
+        "ref": "ingresos_operacionales.81.2026-03"
+       },
+       {
+        "label": "Vida Tres",
+        "value": 67925.53600000001,
+        "ref": "ingresos_operacionales.80.2026-03"
+       },
+       {
+        "label": "Isalud",
+        "value": 32448.835,
+        "ref": "ingresos_operacionales.63.2026-03"
+       },
+       {
+        "label": "Fundación",
+        "value": 12175.61,
+        "ref": "ingresos_operacionales.76.2026-03"
+       },
+       {
+        "label": "Cruz del Norte",
+        "value": 798.9200000000001,
+        "ref": "ingresos_operacionales.94.2026-03"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Isapre",
+        "Total",
+        "Cotización legal",
+        "Cot. adicional",
+        "Aporte adicional",
+        "Fondo compens.",
+        "Otros"
+       ],
+       "rows": [
+        [
+         "Colmena",
+         "267.347",
+         "186.845",
+         "80.470",
+         "32",
+         "0",
+         "0"
+        ],
+        [
+         "Banmédica",
+         "230.379",
+         "152.606",
+         "76.927",
+         "369",
+         "477",
+         "0"
+        ],
+        [
+         "Consalud",
+         "193.273",
+         "132.430",
+         "59.959",
+         "649",
+         "235",
+         "0"
+        ],
+        [
+         "Cruz Blanca",
+         "171.484",
+         "118.341",
+         "53.036",
+         "107",
+         "0",
+         "0"
+        ],
+        [
+         "Nueva Masvida",
+         "115.517",
+         "89.709",
+         "25.808",
+         "0",
+         "0",
+         "0"
+        ],
+        [
+         "Vida Tres",
+         "67.926",
+         "37.847",
+         "29.475",
+         "0",
+         "604",
+         "0"
+        ],
+        [
+         "Isalud",
+         "32.449",
+         "12.905",
+         "2.031",
+         "17.512",
+         "0",
+         "0"
+        ],
+        [
+         "Fundación",
+         "12.176",
+         "8.874",
+         "728",
+         "2.573",
+         "0",
+         "0"
+        ],
+        [
+         "Cruz del Norte",
+         "799",
+         "284",
+         "43",
+         "472",
+         "0",
+         "0"
+        ],
+        [
+         "Sistema sin Esencial",
+         "1.091.349",
+         "739.841",
+         "328.477",
+         "21.715",
+         "1.316",
+         "0"
+        ]
+       ]
+      },
+      "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."
+     }
+    ],
+    "text": [],
+    "dek": null,
+    "spark": {
+     "chart": "f2-ingresos-composicion",
+     "form": "bars"
+    },
+    "index_line": "1.091.349 MM$ · +3,7% vs. marzo 2025",
+    "index_refs": [
+     "ingresos_operacionales.sistema.2026-03",
+     "ingresos_operacionales.sistema.pct"
+    ],
+    "kpis": []
+   },
+   {
+    "id": "costos",
+    "label": "Costo de ventas",
+    "charts": [
+     {
+      "id": "f2-costos-composicion",
+      "form": "bars",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "Costo de ventas por componente",
+      "subtitle": "Millones de pesos, enero–marzo 2026, sin Esencial",
+      "rows": [
+       {
+        "label": "Prestaciones",
+        "value": 758845.3300000001,
+        "ref": "costo_prestaciones.sistema.2026-03",
+        "emphasis": true
+       },
+       {
+        "label": "SIL",
+        "value": 146300.89,
+        "ref": "costo_sil.sistema.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Ocurridas no liq.",
+        "value": 29616.345,
+        "ref": "prestaciones_no_liquidadas.sistema.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "En litigio",
+        "value": 1330.8100000000002,
+        "ref": "prestaciones_litigio.sistema.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Egresos fondo",
+        "value": 534.129,
+        "ref": "egresos_fondo_compensacion.sistema.2026-03",
+        "emphasis": false
+       },
+       {
+        "label": "Otros costos oper.",
+        "value": 32184.45,
+        "ref": "otros_costos_operacion.sistema.2026-03",
+        "emphasis": false
+       }
+      ],
+      "table": {
+       "columns": [
+        "Componente",
+        "MM$"
+       ],
+       "rows": [
+        [
+         "Prestaciones",
+         "758.845"
+        ],
+        [
+         "SIL",
+         "146.301"
+        ],
+        [
+         "Ocurridas no liq.",
+         "29.616"
+        ],
+        [
+         "En litigio",
+         "1.331"
+        ],
+        [
+         "Egresos fondo",
+         "534"
+        ],
+        [
+         "Otros costos oper.",
+         "32.184"
+        ],
+        [
+         "Total costo de ventas",
+         "968.812"
+        ]
+       ]
+      },
+      "source": "SIS, apertura de cuentas de resultados. Los componentes suman el total del costo de ventas."
+     },
+     {
+      "id": "f2-costos-isapres",
+      "form": "bars",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "Prestaciones y SIL por Isapre",
+      "subtitle": "Millones de pesos, enero–marzo 2026",
+      "rows": [
+       {
+        "label": "Colmena",
+        "value": 217313.68800000002,
+        "ref": "costo_salud.67.2026-03"
+       },
+       {
+        "label": "Banmédica",
+        "value": 200273.73700000002,
+        "ref": "costo_salud.99.2026-03"
+       },
+       {
+        "label": "Consalud",
+        "value": 152757.31600000002,
+        "ref": "costo_salud.107.2026-03"
+       },
+       {
+        "label": "Cruz Blanca",
+        "value": 142565.332,
+        "ref": "costo_salud.78.2026-03"
+       },
+       {
+        "label": "Nueva Masvida",
+        "value": 87437.736,
+        "ref": "costo_salud.81.2026-03"
+       },
+       {
+        "label": "Vida Tres",
+        "value": 61968.200000000004,
+        "ref": "costo_salud.80.2026-03"
+       },
+       {
+        "label": "Isalud",
+        "value": 32587.593,
+        "ref": "costo_salud.63.2026-03"
+       },
+       {
+        "label": "Fundación",
+        "value": 9548.291,
+        "ref": "costo_salud.76.2026-03"
+       },
+       {
+        "label": "Cruz del Norte",
+        "value": 694.327,
+        "ref": "costo_salud.94.2026-03"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Isapre",
+        "Prestaciones",
+        "SIL",
+        "Ocurridas no liq.",
+        "En litigio",
+        "Egresos fondo",
+        "Otros costos oper."
+       ],
+       "rows": [
+        [
+         "Colmena",
+         "183.535",
+         "33.779",
+         "22.959",
+         "−754",
+         "0",
+         "9.779"
+        ],
+        [
+         "Banmédica",
+         "169.301",
+         "30.972",
+         "4.885",
+         "79",
+         "0",
+         "5.569"
+        ],
+        [
+         "Consalud",
+         "120.358",
+         "32.400",
+         "253",
+         "2.047",
+         "0",
+         "144"
+        ],
+        [
+         "Cruz Blanca",
+         "121.259",
+         "21.306",
+         "28",
+         "−338",
+         "67",
+         "7.181"
+        ],
+        [
+         "Nueva Masvida",
+         "69.202",
+         "18.236",
+         "956",
+         "261",
+         "467",
+         "5.993"
+        ],
+        [
+         "Vida Tres",
+         "56.275",
+         "5.693",
+         "395",
+         "39",
+         "0",
+         "2.674"
+        ],
+        [
+         "Isalud",
+         "30.478",
+         "2.110",
+         "0",
+         "0",
+         "0",
+         "283"
+        ],
+        [
+         "Fundación",
+         "7.930",
+         "1.618",
+         "201",
+         "−3",
+         "0",
+         "562"
+        ],
+        [
+         "Cruz del Norte",
+         "508",
+         "186",
+         "−61",
+         "0",
+         "0",
+         "0"
+        ],
+        [
+         "Sistema sin Esencial",
+         "758.845",
+         "146.301",
+         "29.616",
+         "1.331",
+         "534",
+         "32.184"
+        ]
+       ]
+      },
+      "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."
+     }
+    ],
+    "text": [],
+    "dek": null,
+    "spark": {
+     "chart": "f2-costos-composicion",
+     "form": "bars"
+    },
+    "index_line": "Prestaciones y SIL: 905.146 MM$",
+    "index_refs": [
+     "costo_salud.sistema.2026-03"
+    ],
+    "kpis": []
+   },
+   {
+    "id": "gastos",
+    "label": "Gastos de administración",
+    "charts": [
+     {
+      "id": "f2-gastos-composicion",
+      "form": "bars",
+      "unit": "MM$",
+      "digits": 0,
+      "headline": "Gastos de administración por componente",
+      "subtitle": "Millones de pesos, enero–marzo 2026, sin Esencial",
+      "rows": [
+       {
+        "label": "Remuneraciones",
+        "value": 32404.377,
+        "ref": "gav_remuneraciones.sistema.2026-03"
+       },
+       {
+        "label": "Remun. ventas",
+        "value": 31250.807,
+        "ref": "gav_remuneraciones_ventas.sistema.2026-03"
+       },
+       {
+        "label": "Publicidad",
+        "value": 1399.197,
+        "ref": "gav_publicidad.sistema.2026-03"
+       },
+       {
+        "label": "Deterioro cotiz.",
+        "value": 1392.2,
+        "ref": "gav_deterioro_cotizaciones.sistema.2026-03"
+       },
+       {
+        "label": "Deter. préstamos",
+        "value": 1183.174,
+        "ref": "gav_deterioro_prestamos.sistema.2026-03"
+       },
+       {
+        "label": "Otros",
+        "value": 30952.257,
+        "ref": "gav_otros.sistema.2026-03"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Componente",
+        "MM$"
+       ],
+       "rows": [
+        [
+         "Remuneraciones",
+         "32.404"
+        ],
+        [
+         "Remun. ventas",
+         "31.251"
+        ],
+        [
+         "Publicidad",
+         "1.399"
+        ],
+        [
+         "Deterioro cotiz.",
+         "1.392"
+        ],
+        [
+         "Deter. préstamos",
+         "1.183"
+        ],
+        [
+         "Otros",
+         "30.952"
+        ],
+        [
+         "Total",
+         "98.582"
+        ]
+       ]
+      },
+      "source": "SIS, apertura de cuentas de resultados. Los componentes suman el total."
+     },
+     {
+      "id": "f2-gastos-isapres",
+      "form": "bars",
+      "unit": "%",
+      "digits": 1,
+      "headline": "Gastos de administración por Isapre",
+      "subtitle": "% de los ingresos de cada Isapre, enero–marzo 2026",
+      "rows": [
+       {
+        "label": "Nueva Masvida",
+        "value": 17.546796125497792,
+        "ref": "gav_pct.81.2026-03"
+       },
+       {
+        "label": "Cruz del Norte",
+        "value": 16.50040054072998,
+        "ref": "gav_pct.94.2026-03"
+       },
+       {
+        "label": "Fundación",
+        "value": 13.24578398946747,
+        "ref": "gav_pct.76.2026-03"
+       },
+       {
+        "label": "Isalud",
+        "value": 9.405647383026233,
+        "ref": "gav_pct.63.2026-03"
+       },
+       {
+        "label": "Cruz Blanca",
+        "value": 8.582127312983499,
+        "ref": "gav_pct.78.2026-03"
+       },
+       {
+        "label": "Consalud",
+        "value": 8.209149450258227,
+        "ref": "gav_pct.107.2026-03"
+       },
+       {
+        "label": "Banmédica",
+        "value": 7.761121189498817,
+        "ref": "gav_pct.99.2026-03"
+       },
+       {
+        "label": "Colmena",
+        "value": 7.6748854366390855,
+        "ref": "gav_pct.67.2026-03"
+       },
+       {
+        "label": "Vida Tres",
+        "value": 6.6753201623613245,
+        "ref": "gav_pct.80.2026-03"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Isapre",
+        "Gastos (MM$)",
+        "Ingresos (MM$)",
+        "% de los ingresos"
+       ],
+       "rows": [
+        [
+         "Nueva Masvida",
+         "20.269",
+         "115.517",
+         "17,5%"
+        ],
+        [
+         "Cruz del Norte",
+         "132",
+         "799",
+         "16,5%"
+        ],
+        [
+         "Fundación",
+         "1.613",
+         "12.176",
+         "13,2%"
+        ],
+        [
+         "Isalud",
+         "3.052",
+         "32.449",
+         "9,4%"
+        ],
+        [
+         "Cruz Blanca",
+         "14.717",
+         "171.484",
+         "8,6%"
+        ],
+        [
+         "Consalud",
+         "15.866",
+         "193.273",
+         "8,2%"
+        ],
+        [
+         "Banmédica",
+         "17.880",
+         "230.379",
+         "7,8%"
+        ],
+        [
+         "Colmena",
+         "20.519",
+         "267.347",
+         "7,7%"
+        ],
+        [
+         "Vida Tres",
+         "4.534",
+         "67.926",
+         "6,7%"
+        ],
+        [
+         "Sistema sin Esencial",
+         "98.582",
+         "1.091.349",
+         "9,0%"
+        ]
+       ]
+      },
+      "source": "Denominador: total ingresos de actividades ordinarias de cada Isapre, mismo período."
+     }
+    ],
+    "text": [],
+    "dek": null,
+    "spark": {
+     "chart": "f2-gastos-composicion",
+     "form": "bars"
+    },
+    "index_line": "98.582 MM$ · 9,0% de los ingresos",
+    "index_refs": [
+     "gav.sistema.2026-03",
+     "gav_pct.sistema.2026-03"
+    ],
+    "kpis": []
+   },
+   {
+    "id": "siniestralidad",
+    "label": "Siniestralidad",
+    "charts": [
+     {
+      "id": "f2-siniestralidad-componentes",
+      "form": "dots",
+      "unit": "%",
+      "digits": 1,
+      "headline": "Siniestralidad por componente",
+      "subtitle": "% de los ingresos, enero–marzo 2026 (punto) y 2025 (aro), sin Esencial",
+      "rows": [
+       {
+        "label": "Prestaciones",
+        "value": 69.5327618605243,
+        "ref": "siniestralidad_prest.sistema.2026-03",
+        "base": 70.62503298729695,
+        "base_ref": "siniestralidad_prest.sistema.2025-03"
+       },
+       {
+        "label": "SIL",
+        "value": 13.40550510385662,
+        "ref": "siniestralidad_sil.sistema.2026-03",
+        "base": 18.231740700729546,
+        "base_ref": "siniestralidad_sil.sistema.2025-03"
+       },
+       {
+        "label": "Total",
+        "value": 82.93826696438093,
+        "ref": "siniestralidad.sistema.2026-03",
+        "base": 88.8567736880265,
+        "base_ref": "siniestralidad.sistema.2025-03"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Componente",
+        "Mar 2025",
+        "Mar 2026",
+        "Cambio (pp)"
+       ],
+       "rows": [
+        [
+         "Prestaciones",
+         "70,6%",
+         "69,5%",
+         "−1,1"
+        ],
+        [
+         "SIL",
+         "18,2%",
+         "13,4%",
+         "−4,8"
+        ],
+        [
+         "Total",
+         "88,9%",
+         "82,9%",
+         "−6,0"
+        ]
+       ]
+      },
+      "source": "Prestaciones = costos por prestaciones de salud; SIL = subsidios por incapacidad laboral; ambos sobre el total de ingresos de actividades ordinarias del mismo período acumulado. Las partes suman el total antes de redondear."
+     },
+     {
+      "id": "f2-siniestralidad-isapres",
+      "form": "bars",
+      "unit": "%",
+      "digits": 1,
+      "headline": "Siniestralidad por Isapre",
+      "subtitle": "Prestaciones y SIL, % de los ingresos de cada Isapre, enero–marzo 2026",
+      "rows": [
+       {
+        "label": "Isalud",
+        "value": 100.42762089917868,
+        "ref": "siniestralidad.63.2026-03"
+       },
+       {
+        "label": "Vida Tres",
+        "value": 91.22960766919822,
+        "ref": "siniestralidad.80.2026-03"
+       },
+       {
+        "label": "Banmédica",
+        "value": 86.93224664800448,
+        "ref": "siniestralidad.99.2026-03"
+       },
+       {
+        "label": "Cruz del Norte",
+        "value": 86.90820107144644,
+        "ref": "siniestralidad.94.2026-03"
+       },
+       {
+        "label": "Cruz Blanca",
+        "value": 83.13610647890738,
+        "ref": "siniestralidad.78.2026-03"
+       },
+       {
+        "label": "Colmena",
+        "value": 81.28530933179088,
+        "ref": "siniestralidad.67.2026-03"
+       },
+       {
+        "label": "Consalud",
+        "value": 79.03687764285498,
+        "ref": "siniestralidad.107.2026-03"
+       },
+       {
+        "label": "Fundación",
+        "value": 78.42145896591629,
+        "ref": "siniestralidad.76.2026-03"
+       },
+       {
+        "label": "Nueva Masvida",
+        "value": 75.69267407266173,
+        "ref": "siniestralidad.81.2026-03"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Isapre",
+        "Prestaciones",
+        "SIL",
+        "Total",
+        "Ingresos (MM$)"
+       ],
+       "rows": [
+        [
+         "Isalud",
+         "93,9%",
+         "6,5%",
+         "100,4%",
+         "32.449"
+        ],
+        [
+         "Vida Tres",
+         "82,8%",
+         "8,4%",
+         "91,2%",
+         "67.926"
+        ],
+        [
+         "Banmédica",
+         "73,5%",
+         "13,4%",
+         "86,9%",
+         "230.379"
+        ],
+        [
+         "Cruz del Norte",
+         "63,6%",
+         "23,3%",
+         "86,9%",
+         "799"
+        ],
+        [
+         "Cruz Blanca",
+         "70,7%",
+         "12,4%",
+         "83,1%",
+         "171.484"
+        ],
+        [
+         "Colmena",
+         "68,7%",
+         "12,6%",
+         "81,3%",
+         "267.347"
+        ],
+        [
+         "Consalud",
+         "62,3%",
+         "16,8%",
+         "79,0%",
+         "193.273"
+        ],
+        [
+         "Fundación",
+         "65,1%",
+         "13,3%",
+         "78,4%",
+         "12.176"
+        ],
+        [
+         "Nueva Masvida",
+         "59,9%",
+         "15,8%",
+         "75,7%",
+         "115.517"
+        ],
+        [
+         "Sistema sin Esencial",
+         "69,5%",
+         "13,4%",
+         "82,9%",
+         "1.091.349"
+        ]
+       ]
+      },
+      "source": "Denominador: total ingresos de actividades ordinarias de cada Isapre, mismo período acumulado. Prestaciones y SIL se muestran lado a lado en «Ver datos»."
+     }
+    ],
+    "text": [],
+    "dek": null,
+    "spark": {
+     "chart": "f2-siniestralidad-componentes",
+     "form": "bars"
+    },
+    "index_line": "82,9% · prestaciones −1,1 pp · SIL −4,8 pp",
+    "index_refs": [
+     "siniestralidad.sistema.2026-03",
+     "siniestralidad_prest.sistema.pp",
+     "siniestralidad_sil.sistema.pp"
+    ],
+    "kpis": []
+   },
+   {
+    "id": "sil",
+    "label": "Licencias (SIL)",
+    "charts": [
+     {
+      "id": "f2-sil-isapres",
+      "form": "dots",
+      "unit": "%",
+      "digits": 1,
+      "headline": "SIL sobre ingresos por Isapre",
+      "subtitle": "% de los ingresos de cada Isapre, enero–marzo 2026 (punto) y 2025 (aro)",
+      "rows": [
+       {
+        "label": "Cruz del Norte",
+        "value": 23.32536424172633,
+        "ref": "siniestralidad_sil.94.2026-03",
+        "base": 19.848871167303674,
+        "base_ref": "siniestralidad_sil.94.2025-03"
+       },
+       {
+        "label": "Consalud",
+        "value": 16.763675842318143,
+        "ref": "siniestralidad_sil.107.2026-03",
+        "base": 21.086315788411255,
+        "base_ref": "siniestralidad_sil.107.2025-03"
+       },
+       {
+        "label": "Nueva Masvida",
+        "value": 15.786288181954525,
+        "ref": "siniestralidad_sil.81.2026-03",
+        "base": 23.087868597720014,
+        "base_ref": "siniestralidad_sil.81.2025-03"
+       },
+       {
+        "label": "Banmédica",
+        "value": 13.444083478558088,
+        "ref": "siniestralidad_sil.99.2026-03",
+        "base": 18.037047643389833,
+        "base_ref": "siniestralidad_sil.99.2025-03"
+       },
+       {
+        "label": "Fundación",
+        "value": 13.291038395612212,
+        "ref": "siniestralidad_sil.76.2026-03",
+        "base": 18.86081978507728,
+        "base_ref": "siniestralidad_sil.76.2025-03"
+       },
+       {
+        "label": "Colmena",
+        "value": 12.634961303335954,
+        "ref": "siniestralidad_sil.67.2026-03",
+        "base": 18.27551876344879,
+        "base_ref": "siniestralidad_sil.67.2025-03"
+       },
+       {
+        "label": "Cruz Blanca",
+        "value": 12.42473492639155,
+        "ref": "siniestralidad_sil.78.2026-03",
+        "base": 17.3383147710587,
+        "base_ref": "siniestralidad_sil.78.2025-03"
+       },
+       {
+        "label": "Vida Tres",
+        "value": 8.381348658036353,
+        "ref": "siniestralidad_sil.80.2026-03",
+        "base": 10.087892454418741,
+        "base_ref": "siniestralidad_sil.80.2025-03"
+       },
+       {
+        "label": "Isalud",
+        "value": 6.501490731485429,
+        "ref": "siniestralidad_sil.63.2026-03",
+        "base": 8.233655329344646,
+        "base_ref": "siniestralidad_sil.63.2025-03"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Isapre",
+        "Mar 2025",
+        "Mar 2026",
+        "Cambio (pp)"
+       ],
+       "rows": [
+        [
+         "Cruz del Norte",
+         "19,8%",
+         "23,3%",
+         "+3,5"
+        ],
+        [
+         "Consalud",
+         "21,1%",
+         "16,8%",
+         "−4,3"
+        ],
+        [
+         "Nueva Masvida",
+         "23,1%",
+         "15,8%",
+         "−7,3"
+        ],
+        [
+         "Banmédica",
+         "18,0%",
+         "13,4%",
+         "−4,6"
+        ],
+        [
+         "Fundación",
+         "18,9%",
+         "13,3%",
+         "−5,6"
+        ],
+        [
+         "Colmena",
+         "18,3%",
+         "12,6%",
+         "−5,7"
+        ],
+        [
+         "Cruz Blanca",
+         "17,3%",
+         "12,4%",
+         "−4,9"
+        ],
+        [
+         "Vida Tres",
+         "10,1%",
+         "8,4%",
+         "−1,7"
+        ],
+        [
+         "Isalud",
+         "8,2%",
+         "6,5%",
+         "−1,7"
+        ],
+        [
+         "Sistema sin Esencial",
+         "18,2%",
+         "13,4%",
+         "−4,8"
+        ]
+       ]
+      },
+      "source": "SIL = subsidios por incapacidad laboral. Denominador: total ingresos de actividades ordinarias de cada Isapre."
+     },
+     {
+      "id": "f2-sil-cotizaciones",
+      "form": "bars",
+      "unit": "%",
+      "digits": 1,
+      "headline": "SIL sobre cotizaciones por Isapre",
+      "subtitle": "Costo SIL, % de la cotización legal y adicional de cada Isapre, enero–marzo 2026",
+      "rows": [
+       {
+        "label": "Cruz del Norte",
+        "value": 57.002018842530276,
+        "ref": "sil_cotizaciones.94.2026-03"
+       },
+       {
+        "label": "Fundación",
+        "value": 16.852808678212597,
+        "ref": "sil_cotizaciones.76.2026-03"
+       },
+       {
+        "label": "Consalud",
+        "value": 16.840696312495453,
+        "ref": "sil_cotizaciones.107.2026-03"
+       },
+       {
+        "label": "Nueva Masvida",
+        "value": 15.786288181954525,
+        "ref": "sil_cotizaciones.81.2026-03"
+       },
+       {
+        "label": "Isalud",
+        "value": 14.124123233470304,
+        "ref": "sil_cotizaciones.63.2026-03"
+       },
+       {
+        "label": "Banmédica",
+        "value": 13.493651372251842,
+        "ref": "sil_cotizaciones.99.2026-03"
+       },
+       {
+        "label": "Colmena",
+        "value": 12.6364747678503,
+        "ref": "sil_cotizaciones.67.2026-03"
+       },
+       {
+        "label": "Cruz Blanca",
+        "value": 12.432499898615422,
+        "ref": "sil_cotizaciones.78.2026-03"
+       },
+       {
+        "label": "Vida Tres",
+        "value": 8.4565497933513,
+        "ref": "sil_cotizaciones.80.2026-03"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Isapre",
+        "SIL (MM$)",
+        "Cotizaciones (MM$)",
+        "Mar 2026",
+        "Mar 2025"
+       ],
+       "rows": [
+        [
+         "Cruz del Norte",
+         "186",
+         "327",
+         "57,0%",
+         "68,0%"
+        ],
+        [
+         "Fundación",
+         "1.618",
+         "9.602",
+         "16,9%",
+         "24,4%"
+        ],
+        [
+         "Consalud",
+         "32.400",
+         "192.390",
+         "16,8%",
+         "21,2%"
+        ],
+        [
+         "Nueva Masvida",
+         "18.236",
+         "115.517",
+         "15,8%",
+         "23,1%"
+        ],
+        [
+         "Isalud",
+         "2.110",
+         "14.937",
+         "14,1%",
+         "20,7%"
+        ],
+        [
+         "Banmédica",
+         "30.972",
+         "229.533",
+         "13,5%",
+         "18,1%"
+        ],
+        [
+         "Colmena",
+         "33.779",
+         "267.315",
+         "12,6%",
+         "18,3%"
+        ],
+        [
+         "Cruz Blanca",
+         "21.306",
+         "171.377",
+         "12,4%",
+         "17,4%"
+        ],
+        [
+         "Vida Tres",
+         "5.693",
+         "67.321",
+         "8,5%",
+         "10,2%"
+        ],
+        [
+         "Sistema sin Esencial",
+         "146.301",
+         "1.068.318",
+         "13,7%",
+         "18,7%"
+        ]
+       ]
+      },
+      "source": "Cotizaciones = cotización legal más cotización adicional voluntaria, mismo período acumulado. No incluye aporte adicional, fondo de compensación ni otros ingresos."
+     }
+    ],
+    "text": [],
+    "dek": null,
+    "spark": {
+     "chart": "f2-sil-isapres",
+     "form": "bars"
+    },
+    "index_line": "13,4% de los ingresos · 13,7% de las cotizaciones",
+    "index_refs": [
+     "siniestralidad_sil.sistema.2026-03",
+     "sil_cotizaciones.sistema.2026-03"
+    ],
+    "kpis": []
+   }
+  ],
+  "facts": {
+   "heading": "Qué muestran los datos",
+   "paragraphs": [
+    "Entre enero y marzo, las Isapres registraron una utilidad de 34.120 MM$ frente a 1.215 MM$ en marzo 2025.",
+    "La siniestralidad de las Isapres (prestaciones y SIL sobre ingresos) fue 82,9% entre enero y marzo: 69,5% por prestaciones de salud y 13,4% por SIL.",
+    "El costo SIL equivale al 13,7% de la cotización legal y adicional entre enero y marzo."
+   ],
+   "rendered_in_tabs": true
+  },
+  "lectura": null,
+  "watch": [
+   {
+    "headline": "Estadísticas financieras a junio 2026 (la SIS las publicaría hacia el 7 oct).",
+    "explanation": "Si la nota de cobertura deja de decir que Esencial está en revisión, la ficha se retiene hasta una nueva decisión."
+   }
+  ],
+  "notes": [
+   {
+    "id": "n0",
+    "text": "Esencial queda fuera por decisión de Dirección del 1 nov 2026. La SIS indica en Notas Explicativas!A18: \"La Isapre Esencial no presenta información a marzo 2026, dado que sus cifras se encuentran en proceso de revisión.\" Los totales del sistema sin Esencial los calcula Alicanto con las otras 9 Isapres."
+   },
+   {
+    "id": "n1",
+    "text": "Ingresos, costos y resultados son flujos acumulados de enero a marzo, no stocks. Montos nominales: la SIS los publica en miles de pesos y Alicanto los convierte a millones; el valor real (UF) queda pendiente."
+   },
+   {
+    "id": "n2",
+    "text": "Denominadores: la siniestralidad divide prestaciones y SIL por el total de ingresos de actividades ordinarias del mismo período, igual que los gastos de administración. La variación % de ingresos usa el valor del año anterior como base; los resultados no llevan variación % y se comparan por sus niveles y el cambio absoluto."
+   },
+   {
+    "id": "n2b",
+    "text": "Siniestralidad separada: prestaciones (costos por prestaciones de salud / ingresos) más SIL (subsidios por incapacidad laboral / ingresos) igualan la siniestralidad total antes de redondear; si no calzan, la ficha se retiene. Por redondeo, las partes mostradas pueden diferir en una décima del total. El costo SIL sobre cotizaciones usa como denominador la cotización legal más la cotización adicional voluntaria del mismo período, sin aporte adicional, fondo de compensación ni otros ingresos; difiere de la siniestralidad sobre ingresos. Se compara enero–marzo con los mismos meses del año anterior, nunca con un año completo: el SIL tiene estacionalidad."
+   },
+   {
+    "id": "n3",
+    "text": "Cada cifra se lee de las hojas de apertura de cuentas de resultados y del estado de resultados por función (en miles de $) de la planilla capturada (hash en Fuentes), con una plantilla revisada por una persona; en cada cuenta las Isapres suman la columna total y los componentes su total; ingresos menos costo de ventas igualan la ganancia bruta. Las hojas en millones no se usan: mezclan escalas."
+   },
+   {
+    "id": "n6",
+    "text": "Ningún dato de esta ficha establece por qué cambian los ingresos, los costos o la siniestralidad; prestaciones y SIL se muestran lado a lado y ninguna de las dos explica a la otra."
+   }
+  ],
+  "sources": [
+   {
+    "url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls",
+    "sha256": "e3c4f7b3cfee9a6e4a3122aef4d0c65a26d41630e482c16ec4345b8a804db065",
+    "published_at": "2026-07-07",
+    "fetched_at": "2026-11-02T13:34:11.840651+00:00",
+    "label": "SIS · Estadísticas financieras del sistema Isapre a marzo 2026 (xls)",
+    "role": "hojas en miles de $ leídas con la plantilla revisada; Isapres = total por cuenta",
+    "locator": "hojas: Ctas. de Resultados I. Abierta, Ctas. de Resultados I. Cerradas, E. Resultados I. Abiertas, E. Resultados I. Cerradas",
+    "key": "fefi"
+   },
+   {
+    "url": "https://www.superdesalud.gob.cl/app/uploads/2025/06/finan_ifrs_mar_2025_web.xls",
+    "sha256": "da1e4c62d96af40abc54e371af167543127c4e7b497937cecd1ac9f011df04e5",
+    "published_at": "2025-06-16",
+    "fetched_at": "2026-11-02T13:34:11.911654+00:00",
+    "label": "SIS · Estadísticas financieras del sistema Isapre a marzo 2025 (xls)",
+    "role": "mismo trimestre del año anterior, misma plantilla",
+    "locator": "hojas: Ctas. de Resultados I. Abierta, Ctas. de Resultados I. Cerradas, E. Resultados I. Abiertas, E. Resultados I. Cerradas",
+    "key": "fefi_prev"
+   }
+  ],
+  "machine_note": "Ficha generada por la regla \"nuevo período\" (publicación del 7 jul). Las cifras vienen del paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (sin modelo en esta corrida).",
+  "status": "PASS",
+  "late_release": null,
+  "revisions": []
+ },
+ "share_url": "data/fichas/f2_financieras.html",
+ "editorial_committee": {
+  "check_kind": "structured_check",
+  "independent_review": false,
+  "committee_version": "1.0",
+  "signal_type": "Datos",
+  "members": [
+   "editorial_intelligence",
+   "health_business",
+   "data_analytics",
+   "decision_intelligence",
+   "evidence_research"
+  ],
+  "materiality_decision": "accept",
+  "public_title": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
+  "what_happened": "La cotización legal aporta el 67,8% de los ingresos. Por Isapre, la siniestralidad va de 75,7% (Nueva Masvida) a 100,4% (Isalud).",
+  "why_it_matters": "",
+  "evidence_map": [
+   {
+    "source": "Superintendencia de Salud",
+    "url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls"
+   }
+  ],
+  "uncertainties": [],
+  "value_level": "stats_ficha",
+  "publication_decision": "accept",
+  "critical_objections": [],
+  "verdict": "PASS",
+  "parser_or_research_debt_if_any": null
+ },
+ "fixture_note": "Fixture de prueba: cifras de la captura FEFI comprometida (plantilla revisada), sin Lectura"
+}

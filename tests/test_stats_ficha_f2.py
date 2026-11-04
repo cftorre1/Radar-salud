@@ -487,7 +487,7 @@ def test_ficha_shows_nine_isapres_and_recomputes_the_system_without_esencial(tmp
     for c in sf.all_charts(fi):
         assert "Esencial" not in [r["label"] for r in c["rows"]] and all(r["label"] != "Sistema" for r in c["rows"])
         assert all("Esencial" not in str(row[0]) or row[0] == "Sistema sin Esencial" for row in c["table"]["rows"])
-    assert [t["id"] for t in fi["tabs"]] == ["resultados", "ingresos", "costos", "gastos", "siniestralidad"]  # no patrimonio
+    assert [t["id"] for t in fi["tabs"]] == ["resultados", "ingresos", "costos", "gastos", "siniestralidad", "sil"]  # no patrimonio
     assert fi["verification"]["verdict"] == "PASS" and fi["lectura"]["status"] == "not_attempted"
 
 
@@ -611,7 +611,7 @@ def test_loss_to_profit_uses_absolute_change_and_na(tmp_path):
     chart = next(c for c in sf.all_charts(fi) if c["id"] == "f2-resultado-isapres")
     assert chart["table"]["columns"] == ["Isapre", "Mar 2026", "Mar 2025", "Cambio"]
     assert chart["table"]["rows"][-1][0] == "Sistema sin Esencial"
-    assert fi["tabs"][0]["index_line"] == f"{sf.fmt_int(r_t)} MM$ · 9 de 9 Isapres con utilidad"
+    assert fi["tabs"][0]["index_line"] == f"{sf.fmt_int(r_t)} MM$ · ninguna Isapre con pérdida"
     for text in sf.displayed_texts(fi):
         assert not sf.SIGNED_WITH_WORD.search(text), text
 
@@ -914,3 +914,178 @@ def test_esencial_is_one_visible_footnote_not_a_label(tmp_path):
     bad = copy.deepcopy(fi)
     bad["scope_note"] = bad["scope_note"].replace("9 Isapres", "10 Isapres")
     assert any(e.startswith("number_not_in_evidence:10") for e in sf.verify_ficha(bad, pkg)["errors"])
+
+
+# ---------------------------------------------------------------------------------------------
+# F2 v5 (3-nov-2026): siniestralidad separada, SIL / cotizaciones, Isapres con pérdida. Every figure is recomputed here
+# from the fixture inputs, independently of the builder.
+
+
+def pct(num, den):
+    return num / den * 100
+
+
+def test_siniestralidad_is_split_into_prestaciones_and_sil_per_isapre_and_system(tmp_path):
+    root, fi = yoy_ficha(tmp_path)
+    ev = fi["evidence"]["values"]
+    cur, old = full(), full(prev_data())
+    for p, d, data in (("2026-03", cur, None), ("2025-03", old, prev_data())):
+        sp = pct(sin_esencial("prest", data), sin_esencial("ingresos", data))
+        ss = pct(sin_esencial("sil", data), sin_esencial("ingresos", data))
+        assert ev[f"siniestralidad_prest.sistema.{p}"]["value"] == pytest.approx(sp)
+        assert ev[f"siniestralidad_sil.sistema.{p}"]["value"] == pytest.approx(ss)
+        assert ev[f"siniestralidad.sistema.{p}"]["value"] == pytest.approx(sp + ss)
+        for i, code in enumerate(CODES):
+            if code == "108":
+                assert f"siniestralidad_sil.108.{p}" not in ev  # Esencial never enters the package
+                continue
+            assert ev[f"siniestralidad_prest.{code}.{p}"]["value"] == pytest.approx(pct(d["prest"][i], d["ingresos"][i]))
+            assert ev[f"siniestralidad_sil.{code}.{p}"]["value"] == pytest.approx(pct(d["sil"][i], d["ingresos"][i]))
+    sp_t, ss_t = ev["siniestralidad_prest.sistema.2026-03"]["value"], ev["siniestralidad_sil.sistema.2026-03"]["value"]
+    sp_1, ss_1 = ev["siniestralidad_prest.sistema.2025-03"]["value"], ev["siniestralidad_sil.sistema.2025-03"]["value"]
+    assert ev["siniestralidad_sil.sistema.pp"]["value"] == pytest.approx(round(ss_t, 1) - round(ss_1, 1))
+    k = next(x for x in fi["kpis"] if x["id"] == "siniestralidad")
+    assert k["lines"][0] == f"prestaciones {sf.fmt_dec(sp_t, 1)}% · SIL {sf.fmt_dec(ss_t, 1)}%"
+    tab = next(t for t in fi["tabs"] if t["id"] == "siniestralidad")
+    hero = tab["charts"][0]
+    assert hero["id"] == "f2-siniestralidad-componentes" and hero["form"] == "dots" and "sin Esencial" in hero["subtitle"]
+    assert [(r["label"], r["value"], r["base"]) for r in hero["rows"]] == [
+        ("Prestaciones", sp_t, sp_1), ("SIL", ss_t, ss_1), ("Total", ev["siniestralidad.sistema.2026-03"]["value"],
+                                                            ev["siniestralidad.sistema.2025-03"]["value"])]
+    assert tab["index_line"] == (f"{sf.fmt_dec(sp_t + ss_t, 1)}% · prestaciones "
+                                 f"{sf.fmt_dec(round(sp_t, 1) - round(sp_1, 1), 1, signed=True)} pp · SIL "
+                                 f"{sf.fmt_dec(round(ss_t, 1) - round(ss_1, 1), 1, signed=True)} pp")
+    # Per Isapre, the two figures side by side in 'Ver datos' (the bar renderer has no grouped bars).
+    by = tab["charts"][1]
+    assert by["table"]["columns"] == ["Isapre", "Prestaciones", "SIL", "Total", "Ingresos (MM$)"]
+    i = CODES.index("67")
+    row = next(r for r in by["table"]["rows"] if r[0] == "Colmena")
+    assert row[1:4] == [sf.fmt_dec(pct(cur["prest"][i], cur["ingresos"][i]), 1) + "%",
+                        sf.fmt_dec(pct(cur["sil"][i], cur["ingresos"][i]), 1) + "%",
+                        sf.fmt_dec(pct(cur["prest"][i] + cur["sil"][i], cur["ingresos"][i]), 1) + "%"]
+    assert by["table"]["rows"][-1][0] == "Sistema sin Esencial"
+    assert fi["verification"]["verdict"] == "PASS"
+
+
+def test_without_the_previous_year_the_split_shows_levels_only(tmp_path):
+    _, fi = published(tmp_path)
+    ev = fi["evidence"]["values"]
+    sp, ss = ev["siniestralidad_prest.sistema.2026-03"]["value"], ev["siniestralidad_sil.sistema.2026-03"]["value"]
+    tab = next(t for t in fi["tabs"] if t["id"] == "siniestralidad")
+    assert tab["charts"][0]["form"] == "bars" and not any("base" in r for r in tab["charts"][0]["rows"])
+    assert tab["index_line"] == f"{sf.fmt_dec(sp + ss, 1)}% de los ingresos: prestaciones {sf.fmt_dec(sp, 1)}%, SIL {sf.fmt_dec(ss, 1)}%"
+    assert next(t for t in fi["tabs"] if t["id"] == "sil")["charts"][0]["form"] == "bars"
+
+
+def test_split_identity_recomputes_the_total_and_flags_any_mismatch(tmp_path):
+    root, _ = yoy_ficha(tmp_path)
+    pkg = f2.build_package(root, registry())
+    whos, pers = [*pkg["kpis"]["codes"], "sistema"], ["2026-03", "2025-03"]
+    assert f2.split_identity_failures(pkg["values"], whos, pers) == []
+    bad = copy.deepcopy(pkg["values"])
+    bad["siniestralidad_sil.81.2025-03"]["value"] += 0.001
+    assert f2.split_identity_failures(bad, whos, pers) == ["siniestralidad_split_mismatch:81.2025-03"]
+    bad = copy.deepcopy(pkg["values"])  # a total that no longer follows its own inputs is caught too
+    bad["siniestralidad.sistema.2026-03"]["value"] += 0.001
+    bad["siniestralidad_prest.sistema.2026-03"]["value"] += 0.001
+    assert f2.split_identity_failures(bad, whos, pers) == ["siniestralidad_split_mismatch:sistema.2026-03"]
+    del bad["siniestralidad_prest.67.2026-03"]
+    assert "siniestralidad_split_missing:67.2026-03" in f2.split_identity_failures(bad, whos, pers)
+
+
+def test_parts_rounded_before_the_identity_hold_the_ficha(tmp_path, monkeypatch):
+    """Mutation guard: a builder that rounds each ratio before summing breaks S_prest + S_SIL = S. The package must HOLD
+    (removing the reconciliation from build_package makes this test fail)."""
+    root = make_root(tmp_path, prev=True)
+    capture(root, files={URL: workbook(), URL_PREV: workbook(prev_data(), year="2025")}, max_new=2)
+    monkeypatch.setattr(f2, "_pct", lambda num, den: round(num / den * 100, 1))
+    pkg = f2.build_package(root, registry())
+    assert not pkg["reconciliation"]["ok"]
+    assert pkg["reconciliation"]["failures"] and all(x.startswith("siniestralidad_split_mismatch:")
+                                                     for x in pkg["reconciliation"]["failures"]), pkg["reconciliation"]["failures"]
+    res = run(root)
+    assert res["status"] == "hold" and not (root / "data/stats_fichas/live/f2_financieras.json").exists()
+
+
+def test_sil_over_cotizaciones_uses_legal_plus_adicional_and_is_labelled(tmp_path):
+    root, fi = yoy_ficha(tmp_path)
+    ev = fi["evidence"]["values"]
+    for p, data in (("2026-03", None), ("2025-03", prev_data())):
+        cot = sin_esencial("legal", data) + sin_esencial("adicional", data)
+        assert ev[f"cotizaciones.sistema.{p}"]["value"] == pytest.approx(cot)
+        assert ev[f"sil_cotizaciones.sistema.{p}"]["value"] == pytest.approx(pct(sin_esencial("sil", data), cot))
+    d = full()
+    i = CODES.index("63")  # Isalud: large aporte adicional, which is not a cotización
+    assert d["aporte"][i] > 0
+    assert ev["sil_cotizaciones.63.2026-03"]["value"] == pytest.approx(pct(d["sil"][i], d["legal"][i] + d["adicional"][i]))
+    tab = next(t for t in fi["tabs"] if t["id"] == "sil")
+    assert tab["label"] == "Licencias (SIL)" and [c["id"] for c in tab["charts"]] == ["f2-sil-isapres", "f2-sil-cotizaciones"]
+    chart = tab["charts"][1]
+    assert "cotización legal más cotización adicional voluntaria" in chart["source"] and "aporte adicional" in chart["source"]
+    assert chart["table"]["rows"][-1][0] == "Sistema sin Esencial"
+    sc = ev["sil_cotizaciones.sistema.2026-03"]["value"]
+    assert tab["index_line"] == f"{sf.fmt_dec(ev['siniestralidad_sil.sistema.2026-03']['value'], 1)}% de los ingresos · {sf.fmt_dec(sc, 1)}% de las cotizaciones"
+    n2b = next(n for n in fi["notes"] if n["id"] == "n2b")["text"]
+    assert "cotización legal más la cotización adicional voluntaria" in n2b and "nunca con un año completo" in n2b
+    reg = sf.load_registry()["families"]["F2"]["kpis"]
+    assert "cotización adicional voluntaria" in reg["costo_sil"]["formula"] and "HOLD" in reg["costo_sil"]["denominator"]
+
+
+@pytest.mark.parametrize("keys,why", [(("legal", "adicional"), "sil_cotizaciones_denominator_not_positive:67.2026-03"),
+                                      (("legal", "adicional", "aporte", "fondo", "otros"), "siniestralidad_denominator_not_positive:67.2026-03")])
+def test_a_non_positive_denominator_holds(tmp_path, keys, why):
+    data = copy.deepcopy(REAL)
+    if "aporte" not in keys:  # keep Colmena's income at its scale (the parser refuses mixed magnitudes)
+        data["aporte"][0] += data["legal"][0] + data["adicional"][0]
+    for key in keys:
+        data[key][0] = 0
+    root = make_root(tmp_path)
+    capture(root, workbook(data))
+    pkg = f2.build_package(root, registry())
+    assert pkg["reconciliation"]["failures"] == [why]
+    assert run(root)["status"] == "hold"
+
+
+def test_isapres_with_a_loss_are_a_derived_count_checked_in_the_index_line(tmp_path):
+    root, fi = yoy_ficha(tmp_path)
+    d = full()
+    n = sum(1 for i, c in enumerate(CODES) if c != "108" and d["gan"][i] < 0)
+    assert n == 1  # Vida Tres; Esencial (also negative) is excluded
+    pkg = f2.build_package(root, registry())
+    assert pkg["values"]["conteo.isapres_con_perdida"]["value"] == n
+    assert any(e["id"] == "conteo.isapres_con_perdida" and e["unit"] == "count" for e in pkg["derived_ratios"])
+    tab = fi["tabs"][0]
+    assert tab["index_line"].endswith(" · 1 Isapre con pérdida") and "conteo.isapres_con_perdida" in tab["index_refs"]
+    for wrong in ("2 Isapres con pérdida", "dos Isapres con pérdida", "ninguna Isapre con pérdida"):
+        bad = copy.deepcopy(fi)
+        bad["tabs"][0]["index_line"] = tab["index_line"].replace("1 Isapre con pérdida", wrong)
+        errs = sf.verify_ficha(bad, pkg)["errors"]
+        assert any(e.startswith("count_not_in_evidence:resultados:") for e in errs), (wrong, errs)
+    assert f2.loss_phrase(0) == "ninguna Isapre con pérdida" and f2.loss_phrase(3) == "3 Isapres con pérdida"
+
+
+CAUSAL = re.compile(r"\b(debido a|se debe|gracias a|impulsad|explica(?:n|da)?|por efecto|a causa|producto de)\b", re.I)
+
+
+def test_the_split_is_shown_side_by_side_with_no_causal_wording(tmp_path):
+    _, fi = yoy_ficha(tmp_path)
+    for text in sf.displayed_texts(fi):
+        if CAUSAL.search(text):  # only the note that rules causality out
+            assert "ninguna de las dos explica a la otra" in text, text
+    assert any("ninguna de las dos explica a la otra" in n["text"] for n in fi["notes"])
+
+
+def test_new_builder_version_republishes_the_same_release_without_a_paid_call(tmp_path):
+    root = make_root(tmp_path, prev=True)
+    capture(root, files={URL: workbook(), URL_PREV: workbook(prev_data(), year="2025")}, max_new=2)
+    first = run(root)
+    sf.publish(first, root)
+    live = root / "data/stats_fichas/live/f2_financieras.json"
+    old = json.loads(live.read_text(encoding="utf-8"))
+    old["builder_version"] = "f2_index_topic_v4"
+    live.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+    calls = []
+    res = f2.run(root, today=TODAY, registry=registry(), llm=True, model_call=lambda *a, **k: calls.append(1),
+                 budget=lambda w: calls.append(w) or (True, "ok"))
+    assert res["status"] == "pass" and "format_update" in res["ficha"]["triggers"] and calls == []
+    assert res["ficha"]["builder_version"] == f2.BUILDER_VERSION == sf.load_registry()["families"]["F2"]["builder_version"]

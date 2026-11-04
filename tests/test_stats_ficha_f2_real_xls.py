@@ -102,7 +102,16 @@ def ficha_text(res: dict) -> str:
     lines.append("Temas:")
     for t in fi.get("tabs") or []:
         lines.append(f"- {t.get('label')}: {t.get('index_line') or ''}")
+    # F2 v5: the per-Isapre split (prestaciones · SIL · total) and SIL / cotizaciones, as 'Ver datos' shows them.
+    for cid in SPLIT_TABLES:
+        c = next((c for t in fi.get("tabs") or [] for c in t.get("charts") or [] if c.get("id") == cid), None)
+        if c:
+            lines.append(f"{c.get('headline')} ({' · '.join(map(str, c['table']['columns'][1:]))}):")
+            lines += [f"- {r[0]}: {' · '.join(map(str, r[1:]))}" for r in c["table"]["rows"]]
     return "\n".join(lines)
+
+
+SPLIT_TABLES = ("f2-siniestralidad-isapres", "f2-sil-cotizaciones")
 
 
 def build_ficha(tmp: Path, latest: dict, data: bytes, prior: dict | None, prior_data: bytes | None) -> dict:
@@ -131,6 +140,13 @@ def emit(lines: list[str], capsys) -> None:
     with capsys.disabled():
         sys.stdout.write("\n" + "\n".join(lines) + "\n")
         sys.stdout.flush()
+
+
+def test_ficha_text_prints_the_per_isapre_split_for_review():
+    chart = {"id": "f2-siniestralidad-isapres", "headline": "Siniestralidad por Isapre",
+             "table": {"columns": ["Isapre", "Prestaciones", "SIL", "Total"], "rows": [["Colmena", "70,0%", "12,6%", "82,6%"]]}}
+    text = ficha_text({"status": "pass", "ficha": {"tabs": [{"label": "Siniestralidad", "index_line": "x", "charts": [chart]}]}})
+    assert "Siniestralidad por Isapre (Prestaciones · SIL · Total):\n- Colmena: 70,0% · 12,6% · 82,6%" in text
 
 
 def test_annotation_lines_are_escaped_chunked_and_capped():
