@@ -101,3 +101,47 @@ def test_apply_on_the_committed_snapshot_only_removes_cards_it_lists_on_a_kept_c
     listed = {r["url"] for c in out for k in ("bill_history", "same_event_sources") for r in c.get(k) or []}
     assert removed <= listed
     assert fd.apply(out) == out  # idempotent
+
+
+# Review of #135: titles that differ in one name share many generic words; without a shared figure they stay apart.
+ADVERSARIAL = [
+    ("Superintendencia multa a Isapre Colmena por incumplir garantías GES",
+     "Superintendencia multa a Isapre Cruz Blanca por incumplir garantías GES"),
+    ("Hospital Sótero del Río suspende cirugías por falta de anestesistas",
+     "Hospital Barros Luco suspende cirugías por falta de anestesistas"),
+    ("ISP alerta retiro de lote de paracetamol por defecto de calidad",
+     "ISP alerta retiro de lote de ibuprofeno por defecto de calidad"),
+    ("Ministra anuncia plan nacional de listas de espera", "Ministra anuncia plan nacional de vacunación"),
+    ("Fonasa abre licitación de cirugías en la Región Metropolitana", "Fonasa abre licitación de cirugías en Valparaíso"),
+    ("Contraloría detecta licencias médicas irregulares en funcionarios municipales",
+     "Contraloría detecta licencias médicas irregulares en funcionarios de Gendarmería"),
+]
+
+
+def test_reviewer_adversarial_pairs_stay_separate():
+    for a, b in ADVERSARIAL:
+        out = fd.merge_same_event([news("Ministerio de Salud", a, stype="official"), news("Pulso / La Tercera", b)])
+        assert len(out) == 2, (a, b)
+
+
+def test_cards_naming_different_entities_never_merge_even_with_a_shared_figure():
+    ref = lambda i: [{"canonical_id": i, "name": i}]  # noqa: E731
+    a = dict(MINSAL, entity_refs=ref("cl:org:colmena"))
+    b = dict(PULSO, entity_refs=ref("cl:org:cruz-blanca"))
+    assert len(fd.merge_same_event([a, b])) == 2
+    # One side naming an extra entity is not a conflict.
+    assert len(fd.merge_same_event([dict(MINSAL), b])) == 1
+
+
+def test_kept_card_inherits_entity_refs_and_identity_keys_of_merged_cards():
+    b = dict(PULSO, entity_refs=[{"canonical_id": "cl:org:minsal", "name": "Minsal"}], event_type="NEWS")
+    kept = fd.merge_same_event([MINSAL, b])[0]
+    assert [r["canonical_id"] for r in kept["entity_refs"]] == ["cl:org:minsal"]
+    assert kept["merged_from"] == [{"source_url": PULSO["source_url"], "event_date": "2026-10-28", "event_type": "NEWS"}]
+    a, d = bill("ingreso", "Ingresó a tramitación", "2026-10-27"), bill("despacho", "Despachado", "2026-10-27")
+    k2 = fd.collapse_bill_milestones([a, d])[0]
+    assert k2["merged_from"] == [{"source_url": a["source_url"], "event_date": "2026-10-27"}]
+
+
+def test_v3_cards_never_merge():
+    assert len(fd.merge_same_event([dict(MINSAL, editorial_schema_version="3"), PULSO])) == 2

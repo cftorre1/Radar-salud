@@ -7,7 +7,11 @@ Two deterministic collapses, applied to the curated snapshot cards (``scripts/ex
    card; the others are listed in ``bill_history`` ("Trámites de este proyecto"). Nothing is rewritten.
 2. ``merge_same_event``: the same event reported by different outlets (e.g. a Minsal release and the La Tercera piece
    about it, same day). Two news cards are the same event only when ALL hold: different sources, event dates at most
-   ``MAX_DAYS`` apart, ≥ ``MIN_SHARED`` shared title terms and title-term Jaccard ≥ ``MIN_JACCARD``. Normative records,
+   ``MAX_DAYS`` apart, ≥ ``MIN_SHARED`` shared title terms, no conflicting WATCH entities (each card names an entity the
+   other does not) and EITHER a shared non-year figure ('44 mil', '62 millones') with Jaccard ≥ ``MIN_JACCARD`` OR
+   near-identical titles (Jaccard ≥ ``NEAR_IDENTICAL``). Titles that differ in one name ('multa a Colmena' / 'multa a
+   Cruz Blanca', 'paracetamol' / 'ibuprofeno') share many generic words but no figure: they stay separate (review of
+   PR #135). Normative records,
    bills, statistics fichas, syntheses and other aggregates never merge. The kept card is the official one (else the
    open one, else the earliest); the others go to ``same_event_sources`` ("También informaron"), title and link only.
 
@@ -21,7 +25,8 @@ from datetime import date
 
 MAX_DAYS = 2
 MIN_SHARED = 3
-MIN_JACCARD = 0.25
+MIN_JACCARD = 0.35
+NEAR_IDENTICAL = 0.8
 
 # Legislative order of the Congreso milestones (congreso_sources.MILESTONE_LABEL, plus the final ones).
 BILL_ORDER = ["ingreso", "informe_comision", "aprobacion_general", "aprobacion_particular",
@@ -74,6 +79,26 @@ def _ref(card: dict) -> dict:
         "paywalled": True if card.get("paywalled") is True else None}.items() if v is not None}
 
 
+def _absorb(kept: dict, merged: list[dict]) -> dict:
+    """The kept card inherits the WATCH entity refs of the merged ones (a follower of either actor still sees it) and
+    their identity keys (``merged_from``), so a shared '#sig-<id>' link of a merged card opens the kept one."""
+    refs = list(kept.get("entity_refs") or [])
+    seen = {r.get("canonical_id") for r in refs if isinstance(r, dict)}
+    for c in merged:
+        for r in c.get("entity_refs") or []:
+            if isinstance(r, dict) and r.get("canonical_id") not in seen:
+                refs.append(r)
+                seen.add(r.get("canonical_id"))
+    if refs:
+        kept["entity_refs"] = refs
+    keys = list(kept.get("merged_from") or [])
+    for c in merged:
+        keys.append({k: c.get(k) for k in ("piece_id", "source_url", "event_date", "event_type") if c.get(k)})
+        keys.extend(c.get("merged_from") or [])
+    kept["merged_from"] = keys
+    return kept
+
+
 # ---------------------------------------------------------------------------------------------------------------
 # 1. Bill milestones
 
@@ -97,7 +122,7 @@ def collapse_bill_milestones(cards: list[dict]) -> list[dict]:
             continue
         keep = max(idx, key=lambda i: _bill_rank(cards[i]))
         others = sorted((i for i in idx if i != keep), key=lambda i: _bill_rank(cards[i]), reverse=True)
-        k = dict(cards[keep])
+        k = _absorb(dict(cards[keep]), [cards[i] for i in others])
         k["bill_history"] = [{**_ref(cards[i]), "material": _title(cards[i]).split(":", 1)[0]} for i in others]
         k["dedupe"] = {**(k.get("dedupe") or {}), "bill_milestones": {"boletin": boletin, "merged": len(others)}}
         out[keep] = k
@@ -116,6 +141,8 @@ def mergeable(card: dict) -> bool:
         return False
     if str(card.get("source_name") or "").startswith(NEVER_MERGE_SOURCES):
         return False
+    if str(card.get("editorial_schema_version")) == "3":
+        return False  # v3 fichas render no 'También informaron' list (review of #135)
     if card.get("normative_minimal") or card.get("loose_bulletin"):
         return False
     return bool(card.get("source_url")) and _day(card) is not None and len(terms(_title(card))) >= MIN_SHARED
@@ -131,9 +158,20 @@ def same_event(a: dict, b: dict) -> dict | None:
     ta, tb = terms(_title(a)), terms(_title(b))
     shared = ta & tb
     jac = len(shared) / len(ta | tb) if ta | tb else 0.0
-    if len(shared) < MIN_SHARED or jac < MIN_JACCARD:
+    if len(shared) < MIN_SHARED:
         return None
-    return {"shared_terms": sorted(shared), "jaccard": round(jac, 3), "days_apart": abs((da - db).days)}
+    ea, eb = _entities(a), _entities(b)
+    if ea - eb and eb - ea:
+        return None  # each names an entity the other does not: two events about different actors
+    figures = {t for t in shared if t.isdigit()}
+    if not ((figures and jac >= MIN_JACCARD) or jac >= NEAR_IDENTICAL):
+        return None
+    return {"shared_terms": sorted(shared), "shared_figures": sorted(figures), "jaccard": round(jac, 3),
+            "days_apart": abs((da - db).days)}
+
+
+def _entities(card: dict) -> set[str]:
+    return {str(r.get("canonical_id")) for r in card.get("entity_refs") or [] if isinstance(r, dict) and r.get("canonical_id")}
 
 
 def _keep_rank(card: dict) -> tuple:
@@ -172,7 +210,7 @@ def merge_same_event(cards: list[dict]) -> list[dict]:
         others = [i for i in members if i != keep and (evidence.get((min(i, keep), max(i, keep))))]
         if not others:
             continue
-        k = dict(cards[keep])
+        k = _absorb(dict(cards[keep]), [cards[i] for i in others])
         k["same_event_sources"] = list(k.get("same_event_sources") or []) + [_ref(cards[i]) for i in others]
         k["dedupe"] = {**(k.get("dedupe") or {}), "same_event": [
             {"merged_source": cards[i].get("source_name"), "merged_url": cards[i].get("source_url"),
