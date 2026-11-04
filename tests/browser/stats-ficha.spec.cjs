@@ -6,7 +6,8 @@ const SHOTS=process.env.ALICANTO_SHOTS_DIR||'artifacts';
 // Scrolls the ficha dialog so that `el` sits `below` px under the dialog's top edge (the sticky picker's height).
 const scrollTo=(loc,below=0)=>loc.evaluate((e,b)=>{const d=e.closest('dialog');d.scrollTop+=e.getBoundingClientRect().top-d.getBoundingClientRect().top-b},below);
 const shot=async(page,name)=>{fs.mkdirSync(SHOTS,{recursive:true});await page.screenshot({path:path.join(SHOTS,`${name}.png`),fullPage:false})};
-const f1Card=()=>JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8')).signals.find(s=>s.stats_ficha&&s.stats_ficha.family==='F1');
+// The reviewed F1 card of 3-nov-2026, pinned: the published card changes with every daily run (review of #144).
+const f1Card=()=>JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f1_card_2026-11-03.json','utf8'));
 async function openF1(page,card){
  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-12',generated_at:'2026-10-12T12:00:00Z',signals:[card]}}));
  await page.goto('/');
@@ -246,8 +247,7 @@ for(const width of [320,390]){
 }
 
 test('the F1 share page redirects to the ficha deep link',async({page})=>{
- const snap=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
- const card=snap.signals.find(s=>s.stats_ficha);
+ const card=f1Card();
  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-12',generated_at:'2026-10-12T12:00:00Z',signals:[card]}}));
  await page.goto('/data/fichas/f1_cartera.html');
  await page.waitForURL(/index\.html#sig-stats-ficha/);
