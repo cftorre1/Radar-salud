@@ -343,7 +343,7 @@ def write_f2_fixture(feed_date: str = "2026-10-10") -> Path:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         for rel in ("config/editorial_rules_v3.json", "config/stats_fichas_v1.json", "data/entities/isapres.json",
-                    "data/stats_fichas/captures/fefi.json"):
+                    "data/stats_fichas/captures/fefi.json", "data/market/isapre_portfolio.json"):  # cartera: margin denominator
             (root / rel).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(REPO / rel, root / rel)
         out = f2.run(root, today=date(2026, 11, 4), registry=reg, llm=False)

@@ -7,7 +7,7 @@
  "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls",
  "event_date": "2026-07-07",
  "publication_date": "2026-07-07",
- "validation_date": "2026-11-04",
+ "validation_date": "2026-11-05",
  "feed_date": "2026-10-10",
  "data_period": "2026-03",
  "event_type": "DATA_PULSE",
@@ -38,7 +38,7 @@
   "family_label": "Resultados financieros de aseguradores",
   "period": "2026-03",
   "published_at": "2026-07-07",
-  "generated_at": "2026-11-04T04:12:09.101801+00:00",
+  "generated_at": "2026-11-05T03:05:59.587523+00:00",
   "release_key": "2026-03:e3c4f7b3cfee9a6e",
   "featured": false,
   "triggers": [
@@ -239,72 +239,105 @@
         "Isapre",
         "Mar 2026",
         "Mar 2025",
-        "Cambio"
+        "Cambio",
+        "Res. operacional (MM$)",
+        "Benef. promedio",
+        "$ por benef."
        ],
        "rows": [
         [
          "Consalud",
          "18.040",
          "3.056",
-         "+14.985"
+         "+14.985",
+         "22.207",
+         "458.135",
+         "$48.472"
         ],
         [
          "Cruz Blanca",
          "6.782",
          "−3.614",
-         "+10.396"
+         "+10.396",
+         "7.264",
+         "360.754",
+         "$20.136"
         ],
         [
          "Banmédica",
          "3.918",
          "−8.800",
-         "+12.718"
+         "+12.718",
+         "1.692",
+         "563.244",
+         "$3.005"
         ],
         [
          "Isalud",
          "2.027",
          "−7",
-         "+2.035"
+         "+2.035",
+         "−3.474",
+         "40.412",
+         "−$85.959"
         ],
         [
          "Nueva Masvida",
          "1.704",
          "3.576",
-         "−1.872"
+         "−1.872",
+         "133",
+         "293.895",
+         "$453"
         ],
         [
          "Colmena",
          "1.484",
          "2.946",
-         "−1.462"
+         "−1.462",
+         "−2.470",
+         "571.347",
+         "−$4.322"
         ],
         [
          "Fundación",
          "759",
          "569",
-         "+190"
+         "+190",
+         "254",
+         "26.469",
+         "$9.582"
         ],
         [
          "Cruz del Norte",
          "31",
          "33",
-         "−2"
+         "−2",
+         "34",
+         "1.114",
+         "$30.476"
         ],
         [
          "Vida Tres",
          "−625",
          "3.457",
-         "−4.082"
+         "−4.082",
+         "−1.685",
+         "140.632",
+         "−$11.983"
         ],
         [
          "Sistema sin Esencial",
          "34.120",
          "1.215",
-         "+32.905"
+         "+32.905",
+         "23.955",
+         "2.456.002",
+         "$9.754"
         ]
        ]
       },
-      "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."
+      "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas. Margen por beneficiario: resultado operacional / beneficiarios promedio (cartera SIS)."
      }
     ],
     "text": [],
@@ -318,7 +351,22 @@
      "resultado_ejercicio.sistema.2026-03",
      "conteo.isapres_con_perdida"
     ],
-    "kpis": []
+    "kpis": [
+     {
+      "id": "tema-margen",
+      "label": "Margen por beneficiario",
+      "value": "$9.754",
+      "prov": "C",
+      "lines": [
+       "enero–marzo 2026; 2.456.002 beneficiarios promedio",
+       "a/a pendiente"
+      ],
+      "refs": [
+       "margen_beneficiario.sistema.2026-03",
+       "benef_prom.sistema.2026-03"
+      ]
+     }
+    ]
    },
    {
     "id": "ingresos",
@@ -1615,6 +1663,14 @@
     "text": "Cada cifra se lee de las hojas de apertura de cuentas de resultados y del estado de resultados por función (en miles de $) de la planilla capturada (hash en Fuentes), con una plantilla revisada por una persona; en cada cuenta las Isapres suman la columna total y los componentes su total; ingresos menos costo de ventas igualan la ganancia bruta. Las hojas en millones no se usan: mezclan escalas."
    },
    {
+    "id": "n4",
+    "text": "Margen por beneficiario = resultado operacional / beneficiarios promedio, en pesos, acumulado de enero a marzo. Resultado operacional = ganancia bruta − gastos de administración y otros gastos por función (no incluye otros ingresos, resultado financiero ni impuestos). Denominador: promedio simple de los stocks de beneficiarios a fin de mes, de enero a marzo, de la misma Isapre, según la estadística mensual de cartera de la SIS (datos provisionales; hash en Fuentes); el sistema suma las mismas Isapres de la ficha."
+   },
+   {
+    "id": "n4b",
+    "text": "Margen por beneficiario retenido para marzo 2025: no hay cartera mensual capturada y cuadrada para las mismas Isapres y los mismos meses. Alicanto no lo aproxima."
+   },
+   {
     "id": "n2d",
     "text": "Isapres cerradas: en cada una, el aporte adicional pesa más en los ingresos que en cualquier Isapre abierta. Como no es cotización, no entra al denominador de SIL sobre cotizaciones; por eso esa razón de las cerradas va marcada «cerrada», después de las abiertas, y no es comparable con la de las abiertas."
    },
@@ -1643,6 +1699,16 @@
     "role": "mismo trimestre del año anterior, misma plantilla",
     "locator": "hojas: Ctas. de Resultados I. Abierta, Ctas. de Resultados I. Cerradas, E. Resultados I. Abiertas, E. Resultados I. Cerradas",
     "key": "fefi_prev"
+   },
+   {
+    "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+    "sha256": "b1dc62eb1a40b0f34452f67e7fdecefb91adc175235ffc046b60a6e5e0c7e4ee",
+    "published_at": "2026-10-02",
+    "fetched_at": "2026-11-05T00:30:51.019560+00:00",
+    "label": "SIS · Estadística mensual de cartera de beneficiarios 2026 (xlsx)",
+    "role": "denominador del margen por beneficiario: beneficiarios a fin de mes, enero–marzo 2026",
+    "locator": "hojas mensuales!E · fila de cada Isapre",
+    "key": "cartera"
    }
   ],
   "machine_note": "Ficha generada por la regla \"nuevo período\" (publicación del 7 jul). Las cifras vienen del paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (sin modelo en esta corrida).",

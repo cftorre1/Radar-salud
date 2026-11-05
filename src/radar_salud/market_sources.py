@@ -69,6 +69,7 @@ def collect_isapres(captures, root):
     if portfolio['coverage'][-1]['period'] != meta['reporting_period']:
         raise ValueError('Official release month and workbook latest data disagree')
     atomic_json(root/'data/market/isapre_portfolio.json', {'schema_version': 1, **meta, **portfolio})
+    prior = collect_prior_portfolio(captures, root, entities)
     evidence = health(captures, 'isapres', discovered=10, unique=10, recent=None, complete=False,
         reason='10/10 official codes and January–August portfolio reconcile; complete control perimeter, legal form Isalud, networks and separate-cadence recurrence remain unverified',
         deferred=1)
@@ -78,8 +79,49 @@ def collect_isapres(captures, root):
                     recency_reason='Registry validity is observed, not dated publication; release date and data month are separate',
                     inventory_coverage_complete=True, outcome='OPERATIVE_DEGRADED')
     evidence['entities_with_control_evidence']=sum(bool(e['group_control']) for e in entities)
+    evidence['prior_year_portfolio']=prior
     record_data_adapter(root, 'sis_isapre_universe', evidence)
     return evidence
+
+
+PRIOR_PORTFOLIO = 'data/market/isapre_portfolio_{year}.json'
+
+
+def collect_prior_portfolio(captures, root, entities):
+    """Previous-year SIS monthly cartera workbook (F1 a/a base; F2 t−12 denominator), captured the same way as the
+    current one: the release page seeded as 'cartera_release_prior', its linked .xlsx of that year, the same fail-closed
+    parser and SHA-256. Written to ``data/market/isapre_portfolio_<year>.json`` only when every month is of that year and
+    the page's declared month equals the workbook's last month. Never raises: a failure keeps the file as it was and is
+    reported (the ficha then says 'a/a pendiente')."""
+    page = next((r for r in captures.receipts if r.get('package') == 'isapres' and r.get('kind') == 'cartera_release_prior'), None)
+    if page is None:
+        return {'status': 'not_in_capture'}
+    m = re.search(r'ano-(20\d{2})/?$', page.get('url') or '')
+    if not m:
+        return {'status': 'error', 'reason': 'year_not_in_release_url'}
+    year = int(m[1])
+    if not page.get('transport_ok'):
+        return {'status': 'error', 'year': year, 'reason': (page.get('blocked_reason') or 'page_transport_failed')}
+    try:
+        meta = release_metadata(captures.html(page))
+        rx = re.compile(rf'/estadistica-mensual-de-cartera-de-beneficiarios-{year}(?:-\d+)?\.xlsx$', re.I)
+        linked = {x['url'] for x in page.get('links') or [] if rx.search(urlsplit(x['url']).path)}
+        if len(linked) != 1:
+            return {'status': 'error', 'year': year, 'reason': f'workbook_links:{len(linked)}'}
+        book = next((r for r in captures.receipts if r['url'] in linked and r.get('transport_ok')), None)
+        if book is None:
+            return {'status': 'error', 'year': year, 'reason': 'workbook_not_captured'}
+        portfolio = parse_portfolio(captures.body(book), source_url=book['url'], sha256=book['sha256'],
+                                    published_at=meta['published_at'], fetched_at=book['completed_at'], universe=entities)
+        periods = [c['period'] for c in portfolio['coverage']]
+        if any(not p.startswith(f'{year}-') for p in periods):
+            return {'status': 'error', 'year': year, 'reason': 'period_outside_year'}
+        if meta.get('reporting_period') and meta['reporting_period'] != periods[-1]:
+            return {'status': 'error', 'year': year, 'reason': 'release_month_disagrees_with_workbook'}
+    except Exception as exc:  # parser and capture errors: keep the stored file, report the reason
+        return {'status': 'error', 'year': year, 'reason': f'{type(exc).__name__}: {exc}'[:200]}
+    atomic_json(root/PRIOR_PORTFOLIO.format(year=year), {'schema_version': 1, 'year': year, **meta, **portfolio})
+    return {'status': 'ok', 'year': year, 'periods': len(periods), 'sha256': book['sha256'], 'url': book['url']}
 
 
 def collect_cmf(captures, root):
