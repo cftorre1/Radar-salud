@@ -216,8 +216,15 @@ def test_one_act_for_two_services_is_one_card_that_keeps_every_act_number_and_li
     assert len(out) == 2
     g = next(c for c in out if c.get("group_items"))
     # Both normative IDs and both services stay in the title; services come first (the feed clamps long titles).
-    assert g["title"] == ("Res. exenta CP 14.658 y CP 24.861/2026 · Servicios de Salud Araucanía Norte y Araucanía Sur · "
-                          "Arsenal Farmacológico para establecimientos de Atención Primaria de Salud")
+    assert g["display_title"] == ("Res. exenta CP 14.658 y CP 24.861/2026 · Servicios de Salud Araucanía Norte y Araucanía Sur · "
+                                  "Arsenal Farmacológico para establecimientos de Atención Primaria de Salud")
+    # The official long form stays in 'title' (the Diario Oficial publication gate reads it); here the fixtures'
+    # titles are already compact, so it is the compact one.
+    from radar_salud.editorial_gate import malformed_official_listing_title
+    long = {**NORTE, "title": "Resolución exenta número CP 14.658, de 2026.- " + NORTE["title"].split(" · ", 1)[1]}
+    g2 = next(c for c in fd.group_act_series([long, SUR]) if c.get("group_items"))
+    assert g2["title"].startswith("Resolución exenta números CP 14.658 y CP 24.861, de 2026.- Servicios de Salud Araucanía")
+    assert not malformed_official_listing_title(g2)
     assert [x["url"] for x in g["group_items"]] == [NORTE["source_url"], SUR["source_url"]]
     assert g["what_happened"] == "Res. exenta CP 14.658/2026 (Servicio de Salud Araucanía Norte): Acto CP 14.658."
     assert g["key_points"] == ["Res. exenta CP 24.861/2026 (Servicio de Salud Araucanía Sur): Acto CP 24.861."]
@@ -249,14 +256,14 @@ def test_three_services_are_named_in_order():
             "Servicio de Salud Aconcagua", pdf="3")
     out = fd.group_act_series([SUR, c, NORTE])
     assert len(out) == 1
-    assert out[0]["title"].startswith("Res. exenta CP 14.658, CP 24.861 y CP 30.001/2026 · Servicios de Salud "
+    assert out[0]["display_title"].startswith("Res. exenta CP 14.658, CP 24.861 y CP 30.001/2026 · Servicios de Salud "
                                       "Araucanía Norte, Araucanía Sur y Aconcagua · ")
 
 
 def test_act_series_orders_numbers_numerically_and_never_joins_a_held_act():
     nine = {**SUR, "title": SUR["title"].replace("CP 24.861", "CP 9.000"), "display_title": SUR["title"].replace("CP 24.861", "CP 9.000")}
     g = fd.group_act_series([NORTE, nine])[0]
-    assert g["title"].startswith("Res. exenta CP 9.000 y CP 14.658/2026 · Servicios de Salud Araucanía Sur y Araucanía Norte")
+    assert g["display_title"].startswith("Res. exenta CP 9.000 y CP 14.658/2026 · Servicios de Salud Araucanía Sur y Araucanía Norte")
     held = {**SUR, "feed_visibility": False}
     assert len(fd.group_act_series([NORTE, held])) == 2
     hold = {**SUR, "editorial_committee": {"verdict": "HOLD"}}

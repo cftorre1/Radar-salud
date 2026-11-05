@@ -347,7 +347,12 @@ def group_act_series(cards: list[dict]) -> list[dict]:
         title = f"{kind} {nums}/{year} · Servicios de Salud {_join([p['service'] for p in ps])} · {obj}"
         whats = [f"{_title(m).split(' · ')[0]} (Servicio de Salud {p['service']}): {m.get('what_happened') or m.get('card_what') or ''}".rstrip(': ')
                  for m, p in zip(members, ps)]
-        first.update(title=title, display_title=title, short_title=title, source_title_full=title,
+        # 'title' keeps the official long form ('Resolución exenta números …, de 2026.- …'): the Diario Oficial
+        # publication gate checks it (editorial_gate.malformed_official_listing_title); the compact one is for display.
+        long_kind = re.split(r"\s+n[uú]mero\b", str(members[0].get("title") or ""), maxsplit=1, flags=re.I)[0].strip()
+        long_title = (f"{long_kind} números {nums}, de {year}.- Servicios de Salud {_join([p['service'] for p in ps])}: {obj}"
+                      if long_kind and long_kind != str(members[0].get("title") or "").strip() else title)
+        first.update(title=long_title, display_title=title, short_title=title, source_title_full=long_title,
                      # One paragraph per act in the ficha ('Qué pasó' renders what_happened, then each key point).
                      what_happened=whats[0], key_points=whats[1:], key_facts=[], card_what=None, card_why=None,
                      # Each act's own reason, kept (the feed's publication contract requires one; the ficha omits it).
