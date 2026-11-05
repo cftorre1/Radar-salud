@@ -61,7 +61,7 @@ PREST_NAMES = ["codigo_aseguradora", "periodo", "tipo_registro", "run_beneficiar
                "cobertura_financiamiento", "fecha_bonificacion", "tipo_prestador", "tipo_atencion", "frecuencia",
                "valor_facturado", "valor_bonificado", "monto_copago", "bonificacion_restringida", "tipo_plan",
                "modalidad_iq", "ley_urgencia", "codigo_gpp", "id_ges"]
-PREST_SENSITIVE = {P_RUN_BEN, P_PRESTADOR, *P_FOLIOS}
+PREST_SENSITIVE = {P_RUN_BEN, P_PRESTADOR, *P_FOLIOS, P_GES}  # id GES is a case identifier: lengths only
 
 LIC_N = 44
 (L_ISAPRE, L_FECHA_INFO, L_RUN_TRAB, L_FECHA_EMISION, L_DIAS, L_INICIO, L_EDAD, L_SEXO, L_ACTIVIDAD, L_OCUPACION,

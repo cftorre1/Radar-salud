@@ -122,8 +122,11 @@ def test_isapre_table_concentration_and_ids():
 
 def test_profile_never_exposes_sensitive_values():
     a = agg.PrestacionesAgg()
-    a.add(prest_row())
+    row = prest_row()
+    row[29] = "078880554"
+    a.add(row)
     prof = json.dumps(a.profile.result())
+    assert "078880554" not in prof
     assert "SECRET" not in prof and "P1" not in prof and "0101001" in prof
 
 
