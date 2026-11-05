@@ -251,3 +251,28 @@ def test_three_services_are_named_in_order():
     assert len(out) == 1
     assert out[0]["title"].startswith("Res. exenta CP 14.658, CP 24.861 y CP 30.001/2026 · Servicios de Salud "
                                       "Araucanía Norte, Araucanía Sur y Aconcagua · ")
+
+
+def test_act_series_orders_numbers_numerically_and_never_joins_a_held_act():
+    nine = {**SUR, "title": SUR["title"].replace("CP 24.861", "CP 9.000"), "display_title": SUR["title"].replace("CP 24.861", "CP 9.000")}
+    g = fd.group_act_series([NORTE, nine])[0]
+    assert g["title"].startswith("Res. exenta CP 9.000 y CP 14.658/2026 · Servicios de Salud Araucanía Sur y Araucanía Norte")
+    held = {**SUR, "feed_visibility": False}
+    assert len(fd.group_act_series([NORTE, held])) == 2
+    hold = {**SUR, "editorial_committee": {"verdict": "HOLD"}}
+    assert len(fd.group_act_series([NORTE, hold])) == 2
+    undated = [{**NORTE, "event_date": None}, {**SUR, "event_date": None}]
+    assert len(fd.group_act_series(undated)) == 2
+
+
+def test_act_series_merges_watch_fields_and_drops_single_act_texts():
+    a = {**NORTE, "issuer": "SEREMI de Salud", "watch_tags": ["diario oficial", "seremi de salud"],
+         "why_it_matters": "Afecta a Araucanía Norte.", "original_title": "x", "evidence_map": {"a": 1},
+         "editorial_committee": {"verdict": "PASS", "public_title": "solo CP 14.658"}}
+    b = {**SUR, "issuer": "Ministerio de Salud", "watch_tags": ["diario oficial", "ministerio de salud"],
+         "why_it_matters": "Afecta a Araucanía Sur."}
+    g = fd.group_act_series([a, b])[0]
+    assert g["watch_tags"] == ["diario oficial", "seremi de salud", "ministerio de salud"]
+    assert g["issuer"] == "SEREMI de Salud · Ministerio de Salud"
+    assert g["why_it_matters"] == "Res. exenta CP 14.658/2026: Afecta a Araucanía Norte. Res. exenta CP 24.861/2026: Afecta a Araucanía Sur."
+    assert "original_title" not in g and "evidence_map" not in g and "public_title" not in g["editorial_committee"]

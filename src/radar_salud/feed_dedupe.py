@@ -287,9 +287,21 @@ SERVICE_TAIL = re.compile(r"^(?P<core>.+?),? del Servicio de Salud (?P<svc>[^,.;
 VERB_SYNONYMS = (("aprueba actualizacion de ", "actualiza "),)
 
 
+def _publishable(card: dict) -> bool:
+    """The browser's individualCardAllowed, on the fields known here: a held card never joins (or hides) a group."""
+    verdict = str((card.get("editorial_committee") or {}).get("verdict") or "PASS").upper()
+    return card.get("feed_visibility") is not False and verdict not in ("HOLD", "REJECT")
+
+
+def _num_key(num: str) -> tuple:
+    digits = re.sub(r"\D", "", num)
+    return (int(digits) if digits else 0, num)
+
+
 def act_parts(card: dict) -> dict | None:
     """(kind, number, year, operative core, service) of a Diario Oficial act title, or None."""
-    if card.get("source_name") != "Diario Oficial" or card.get("stats_ficha") or card.get("group_items"):
+    if (card.get("source_name") != "Diario Oficial" or card.get("stats_ficha") or card.get("group_items")
+            or not card.get("event_date") or not _publishable(card)):
         return None
     m = ACT_TITLE.match(_title(card).strip())
     if not m:
@@ -322,7 +334,7 @@ def group_act_series(cards: list[dict]) -> list[dict]:
         services = [p["service"] for p in parts]
         if len(idx) < 2 or len(set(_fold(x) for x in services)) != len(services):
             continue
-        order = sorted(range(len(idx)), key=lambda k: parts[k]["num"])
+        order = sorted(range(len(idx)), key=lambda k: _num_key(parts[k]["num"]))
         members = [cards[idx[k]] for k in order]
         ps = [parts[k] for k in order]
         first = dict(members[0])
@@ -339,10 +351,19 @@ def group_act_series(cards: list[dict]) -> list[dict]:
                      # One paragraph per act in the ficha ('Qué pasó' renders what_happened, then each key point).
                      what_happened=whats[0], key_points=whats[1:], key_facts=[], card_what=None, card_why=None,
                      # Each act's own reason, kept (the feed's publication contract requires one; the ficha omits it).
-                     why_it_matters=" ".join(str(m.get("why_it_matters") or m.get("card_why") or "").strip()
-                                             for m in members).strip() or None,
+                     why_it_matters=" ".join(f"{_title(m).split(' · ')[0]}: {w}" for m in members
+                                             if (w := str(m.get("why_it_matters") or m.get("card_why") or "").strip())) or None,
                      group_items=[_ref(m) for m in members],
                      source_documents=[d for m in members for d in (m.get("source_documents") or [])])
+        # Union of what each act carries for WATCH and search; single-act texts that would describe only one act go.
+        first["watch_tags"] = list(dict.fromkeys(t for m in members for t in (m.get("watch_tags") or [])))
+        issuers = list(dict.fromkeys(str(m.get("issuer")) for m in members if m.get("issuer")))
+        first["issuer"] = " · ".join(issuers) if issuers else None
+        # normative_document_label stays: the feed's publication contract needs it on normativa cards.
+        for k in ("original_title", "original_what_happened", "evidence_map"):
+            first.pop(k, None)
+        if isinstance(first.get("editorial_committee"), dict):
+            first["editorial_committee"] = {k: v for k, v in first["editorial_committee"].items() if k != "public_title"}
         first["dedupe"] = {"rule": "act_series", "acts": [p["num"] for p in ps], "services": [p["service"] for p in ps]}
         out[idx[order[0]]] = _absorb(first, members[1:])
         drop.update(idx[k] for k in order[1:])
