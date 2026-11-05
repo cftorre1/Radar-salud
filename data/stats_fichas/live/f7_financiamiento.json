@@ -1,76 +1,76 @@
 {
   "schema_version": "stats_ficha_v1",
-  "id": "stats-ficha:F7:2026-07",
+  "id": "stats-ficha:F7:2026-09",
   "family": "F7",
   "family_label": "Financiamiento público",
   "slug": "f7_financiamiento",
-  "period": "2026-07",
-  "published_at": "2026-10-11",
-  "release_key": "2026-07:d685bc1319275102",
-  "evidence_sha256": "d685bc1319275102876917e10a7d3d43ee481faa7b83a0664472c05cafedafd1",
-  "kicker": "Financiamiento público · corte 31 jul 2026",
-  "kicker_meta": "datos al 31 jul 2026 (corte; captura manual, próxima actualización pendiente) · detectado por Alicanto el 11 oct · montos nominales",
+  "period": "2026-09",
+  "published_at": "2026-11-05",
+  "release_key": "2026-09:fc5c60a64171f71d",
+  "evidence_sha256": "fc5c60a64171f71d58ec4f0e60c3cbfc1a7dfb3de4b98932bb860db3069299d7",
+  "kicker": "Financiamiento público · corte 30 sep 2026",
+  "kicker_meta": "datos al 30 sep 2026 (corte; se revisa a diario; DIPRES publica mensualmente) · detectado por Alicanto el 5 nov · montos nominales",
   "date_basis": "first_detected",
-  "headline": "Salud ejecutó el 65,7% de su presupuesto vigente a julio 2026",
+  "headline": "Salud ejecutó el 80,8% de su presupuesto vigente a septiembre 2026",
   "headline_type": "default",
-  "dek": "El presupuesto vigente de la Partida 16 suma 499.742 MM$ más que la ley inicial (+2,9%). Montos nominales; sin comparación con 2025 por falta del mismo corte.",
+  "dek": "El presupuesto vigente de la Partida 16 suma 1.195.697 MM$ más que la ley inicial (+6,9%). Montos nominales; sin comparación con 2025 por falta del mismo corte.",
   "dek_emphasis": null,
   "kpis": [
     {
       "id": "ejecucion_partida",
       "label": "Ejecución Salud (Partida 16)",
-      "value": "65,7%",
+      "value": "80,8%",
       "prov": "C",
       "lines": [
-        "a julio 2026",
-        "devengado 11.669.023 de 17.750.797 MM$",
+        "a septiembre 2026",
+        "devengado 14.905.709 de 18.446.752 MM$",
         "sin comparación a/a"
       ],
       "refs": [
-        "partida.2026-07.pct",
-        "partida.2026-07.ejecutado",
-        "partida.2026-07.vigente"
+        "partida.2026-09.pct",
+        "partida.2026-09.ejecutado",
+        "partida.2026-09.vigente"
       ]
     },
     {
       "id": "ejecucion_fonasa",
       "label": "Ejecución Fonasa (capítulo 02)",
-      "value": "67,2%",
+      "value": "82,6%",
       "prov": "C",
       "lines": [
-        "a julio 2026",
-        "devengado 10.414.446 de 15.499.203 MM$"
+        "a septiembre 2026",
+        "devengado 13.217.904 de 16.002.818 MM$"
       ],
       "refs": [
-        "cap02.2026-07.pct",
-        "cap02.2026-07.ejecutado",
-        "cap02.2026-07.vigente"
+        "cap02.2026-09.pct",
+        "cap02.2026-09.ejecutado",
+        "cap02.2026-09.vigente"
       ]
     },
     {
       "id": "vigente_partida",
       "label": "Presupuesto vigente Salud",
-      "value": "17.750.797 MM$",
+      "value": "18.446.752 MM$",
       "prov": "C",
       "lines": [
-        "a julio 2026",
+        "a septiembre 2026",
         "ley inicial: 17.251.055 MM$"
       ],
       "refs": [
-        "partida.2026-07.vigente",
-        "partida.2026-07.ley_inicial"
+        "partida.2026-09.vigente",
+        "partida.2026-09.ley_inicial"
       ]
     },
     {
       "id": "devengado_partida",
       "label": "Gasto devengado Salud",
-      "value": "11.669.023 MM$",
+      "value": "14.905.709 MM$",
       "prov": "C",
       "lines": [
-        "acumulado enero–julio 2026, nominal"
+        "acumulado enero–septiembre 2026, nominal"
       ],
       "refs": [
-        "partida.2026-07.ejecutado"
+        "partida.2026-09.ejecutado"
       ]
     }
   ],
@@ -85,7 +85,7 @@
           "unit": "%",
           "digits": 1,
           "headline": "Ejecución acumulada de la Partida 16",
-          "subtitle": "% del presupuesto vigente de cada corte, enero–julio 2026",
+          "subtitle": "% del presupuesto vigente de cada corte, enero–septiembre 2026",
           "rows": [
             {
               "label": "Ene",
@@ -127,6 +127,18 @@
               "label": "Jul",
               "value": 65.73802644480946,
               "ref": "partida.2026-07.pct",
+              "emphasis": false
+            },
+            {
+              "label": "Ago",
+              "value": 72.40357309296108,
+              "ref": "partida.2026-08.pct",
+              "emphasis": false
+            },
+            {
+              "label": "Sep",
+              "value": 80.80397768246172,
+              "ref": "partida.2026-09.pct",
               "emphasis": true
             }
           ],
@@ -179,6 +191,18 @@
                 "11.669.023",
                 "17.750.797",
                 "65,7%"
+              ],
+              [
+                "agosto 2026",
+                "13.236.187",
+                "18.281.124",
+                "72,4%"
+              ],
+              [
+                "septiembre 2026",
+                "14.905.709",
+                "18.446.752",
+                "80,8%"
               ]
             ]
           },
@@ -190,24 +214,24 @@
           "unit": "MM$",
           "digits": 0,
           "headline": "Ley inicial, vigente y devengado",
-          "subtitle": "Millones de pesos nominales, Partida 16, a julio 2026",
+          "subtitle": "Millones de pesos nominales, Partida 16, a septiembre 2026",
           "rows": [
             {
               "label": "Ley inicial",
               "value": 17251054.647,
-              "ref": "partida.2026-07.ley_inicial",
+              "ref": "partida.2026-09.ley_inicial",
               "emphasis": false
             },
             {
               "label": "Vigente",
-              "value": 17750796.536,
-              "ref": "partida.2026-07.vigente",
+              "value": 18446751.923,
+              "ref": "partida.2026-09.vigente",
               "emphasis": false
             },
             {
               "label": "Devengado",
-              "value": 11669023.321,
-              "ref": "partida.2026-07.ejecutado",
+              "value": 14905709.307,
+              "ref": "partida.2026-09.ejecutado",
               "emphasis": true
             }
           ],
@@ -223,15 +247,15 @@
               ],
               [
                 "Vigente",
-                "17.750.797"
+                "18.446.752"
               ],
               [
                 "Devengado",
-                "11.669.023"
+                "14.905.709"
               ],
               [
                 "Vigente − ley inicial",
-                "+499.742"
+                "+1.195.697"
               ]
             ]
           },
@@ -244,9 +268,9 @@
         "chart": "f7-partida-ejecucion",
         "form": "line"
       },
-      "index_line": "65,7% del vigente a julio",
+      "index_line": "80,8% del vigente a septiembre",
       "index_refs": [
-        "partida.2026-07.pct"
+        "partida.2026-09.pct"
       ],
       "kpis": []
     },
@@ -260,7 +284,7 @@
           "unit": "%",
           "digits": 1,
           "headline": "Ejecución acumulada del capítulo 02 (Fonasa)",
-          "subtitle": "% del presupuesto vigente de cada corte, enero–julio 2026",
+          "subtitle": "% del presupuesto vigente de cada corte, enero–septiembre 2026",
           "rows": [
             {
               "label": "Ene",
@@ -302,6 +326,18 @@
               "label": "Jul",
               "value": 67.1934288148565,
               "ref": "cap02.2026-07.pct",
+              "emphasis": false
+            },
+            {
+              "label": "Ago",
+              "value": 73.3098783910092,
+              "ref": "cap02.2026-08.pct",
+              "emphasis": false
+            },
+            {
+              "label": "Sep",
+              "value": 82.59735333856149,
+              "ref": "cap02.2026-09.pct",
               "emphasis": true
             }
           ],
@@ -354,6 +390,18 @@
                 "10.414.446",
                 "15.499.203",
                 "67,2%"
+              ],
+              [
+                "agosto 2026",
+                "11.715.715",
+                "15.981.086",
+                "73,3%"
+              ],
+              [
+                "septiembre 2026",
+                "13.217.904",
+                "16.002.818",
+                "82,6%"
               ]
             ]
           },
@@ -365,7 +413,7 @@
           "unit": "MM$",
           "digits": 0,
           "headline": "Programa Fonasa a agosto 2026",
-          "subtitle": "Millones de pesos nominales, capítulo 02, programa 01; un mes después del corte de la partida",
+          "subtitle": "Millones de pesos nominales, capítulo 02, programa 01; un mes antes del corte de la partida",
           "rows": [
             {
               "label": "Vigente",
@@ -409,9 +457,9 @@
         "chart": "f7-cap02-ejecucion",
         "form": "line"
       },
-      "index_line": "Capítulo Fonasa: 67,2% del vigente a julio",
+      "index_line": "Capítulo Fonasa: 82,6% del vigente a septiembre",
       "index_refs": [
-        "cap02.2026-07.pct"
+        "cap02.2026-09.pct"
       ],
       "kpis": []
     }
@@ -419,16 +467,16 @@
   "facts": {
     "heading": "Qué muestran los datos",
     "paragraphs": [
-      "Entre enero y julio de 2026, Salud devengó el 65,7% de su presupuesto vigente.",
-      "El capítulo 02 (Fonasa) devengó el 67,2% de su presupuesto vigente a julio 2026.",
-      "El programa Fonasa ejecutó el 73,3% de su presupuesto vigente a agosto 2026, un mes después del corte de la partida."
+      "Entre enero y septiembre de 2026, Salud devengó el 80,8% de su presupuesto vigente.",
+      "El capítulo 02 (Fonasa) devengó el 82,6% de su presupuesto vigente a septiembre 2026.",
+      "El programa Fonasa ejecutó el 73,3% de su presupuesto vigente a agosto 2026, un mes antes del corte de la partida."
     ],
     "rendered_in_tabs": true
   },
   "watch": [
     {
-      "headline": "Informe de ejecución de la Partida 16 a agosto 2026: captura pendiente.",
-      "explanation": "La captura DIPRES de Alicanto es manual (última: 11 oct); ninguna corrida la actualiza sola."
+      "headline": "Informe de ejecución de la Partida 16 a octubre 2026: aún no publicado por DIPRES.",
+      "explanation": "Alicanto revisa DIPRES a diario (última revisión: 4 nov); la ficha cambia cuando aparece el informe del mes siguiente."
     },
     {
       "headline": "Comparación con 2025.",
@@ -545,6 +593,26 @@
       "key": "doc_f3ff117334ef"
     },
     {
+      "url": "https://www.dipres.gob.cl/597/articles-428676_doc_pdf.pdf",
+      "sha256": "39da71f87ab617d5a51d4905de6de8c129183ec2a0c9059f54a837c137c6de70",
+      "published_at": null,
+      "fetched_at": "2026-11-05T00:46:42.471796+00:00",
+      "label": "DIPRES · Informe Ejecución Partida Agosto [Pesos] (corte agosto 2026)",
+      "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+      "locator": "partida 16; total GASTOS",
+      "key": "doc_39da71f87ab6"
+    },
+    {
+      "url": "https://www.dipres.gob.cl/597/articles-436912_doc_pdf.pdf",
+      "sha256": "e17c1810540ddea3f78170759389ed6e319d92e5e421c5f5c68507b8108def64",
+      "published_at": null,
+      "fetched_at": "2026-11-05T00:46:42.471796+00:00",
+      "label": "DIPRES · Informe Ejecución Partida Tercer Trimestre [Pesos] (corte septiembre 2026)",
+      "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+      "locator": "partida 16; total GASTOS",
+      "key": "doc_e17c1810540d"
+    },
+    {
       "url": "https://www.dipres.gob.cl/597/articles-405254_doc_pdf.pdf",
       "sha256": "717364f842cee2dd765f02af8ee83db145f47bbf8177de38f763afec023a7710",
       "published_at": null,
@@ -615,6 +683,26 @@
       "key": "doc_7839c99a2c30"
     },
     {
+      "url": "https://www.dipres.gob.cl/597/articles-428557_doc_pdf.pdf",
+      "sha256": "58b53a57db3553b93d22017501d46b8b6dd7513dec0c0a5ed92abf8d08f298c8",
+      "published_at": null,
+      "fetched_at": "2026-11-05T00:46:42.471796+00:00",
+      "label": "DIPRES · Informe Ejecución Capítulo Agosto [Pesos] (corte agosto 2026)",
+      "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+      "locator": "partida 16, capítulo 02; total GASTOS",
+      "key": "doc_58b53a57db35"
+    },
+    {
+      "url": "https://www.dipres.gob.cl/597/articles-436793_doc_pdf.pdf",
+      "sha256": "f1f81f704b61276741ef625cce4efab0c505f5911ab0b5b387919a733932fbaa",
+      "published_at": null,
+      "fetched_at": "2026-11-05T00:46:42.471796+00:00",
+      "label": "DIPRES · Informe Ejecución Capítulo Tercer Trimestre [Pesos] (corte septiembre 2026)",
+      "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+      "locator": "partida 16, capítulo 02; total GASTOS",
+      "key": "doc_f1f81f704b61"
+    },
+    {
       "url": "https://www.dipres.gob.cl/597/articles-431114_doc_pdf.pdf",
       "sha256": "509c6641e880c400033c74cb5230ca7ee0406c18adfa116f1d86fefcac1c3995",
       "published_at": null,
@@ -625,7 +713,7 @@
       "key": "doc_509c6641e880"
     }
   ],
-  "machine_note": "Ficha generada por la regla \"nuevo período\" (documento capturado por Alicanto el 11 oct). Las cifras vienen del paquete de evidencia, sin descargas nuevas; la Lectura Alicanto está desactivada para esta familia. Lectura Alicanto omitida (sin modelo en esta corrida).",
+  "machine_note": "Ficha generada por la regla \"nuevo período\" (documento capturado por Alicanto el 5 nov). Las cifras vienen del paquete de evidencia, sin descargas nuevas; la Lectura Alicanto está desactivada para esta familia. Lectura Alicanto omitida (sin modelo en esta corrida).",
   "featured": false,
   "triggers": [
     "new_period"
@@ -638,7 +726,7 @@
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-11-04T13:26:59.573869+00:00",
+  "generated_at": "2026-11-05T00:46:56.955848+00:00",
   "builder_version": "f7_ejecucion_v1",
   "verification": {
     "verdict": "PASS",
@@ -1043,12 +1131,120 @@
         "revised": null,
         "entity": "partida"
       },
-      "partida.2026-07.ley_inicial": {
-        "id": "partida.2026-07.ley_inicial",
+      "partida.2026-08.ejecutado": {
+        "id": "partida.2026-08.ejecutado",
+        "value": 13236187.244,
+        "unit": "MM$",
+        "period": "2026-08",
+        "source": "doc_39da71f87ab6",
+        "locator": "executed · miles de $ / 1.000",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null,
+        "entity": "partida",
+        "record": {
+          "url": "https://www.dipres.gob.cl/597/articles-428676_doc_pdf.pdf",
+          "sha256": "39da71f87ab617d5a51d4905de6de8c129183ec2a0c9059f54a837c137c6de70",
+          "state": "executed",
+          "period": "2026-08"
+        }
+      },
+      "partida.2026-08.vigente": {
+        "id": "partida.2026-08.vigente",
+        "value": 18281124.368,
+        "unit": "MM$",
+        "period": "2026-08",
+        "source": "doc_39da71f87ab6",
+        "locator": "modified · miles de $ / 1.000",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null,
+        "entity": "partida",
+        "record": {
+          "url": "https://www.dipres.gob.cl/597/articles-428676_doc_pdf.pdf",
+          "sha256": "39da71f87ab617d5a51d4905de6de8c129183ec2a0c9059f54a837c137c6de70",
+          "state": "modified",
+          "period": "2026-08"
+        }
+      },
+      "partida.2026-08.pct": {
+        "id": "partida.2026-08.pct",
+        "value": 72.40357309296108,
+        "unit": "%",
+        "period": "2026-08",
+        "source": null,
+        "locator": null,
+        "formula": "gasto devengado acumulado / presupuesto vigente × 100 (mismo informe de ejecución)",
+        "inputs": [
+          "partida.2026-08.ejecutado",
+          "partida.2026-08.vigente"
+        ],
+        "kind": "derived",
+        "revised": null,
+        "entity": "partida"
+      },
+      "partida.2026-09.ejecutado": {
+        "id": "partida.2026-09.ejecutado",
+        "value": 14905709.307,
+        "unit": "MM$",
+        "period": "2026-09",
+        "source": "doc_e17c1810540d",
+        "locator": "executed · miles de $ / 1.000",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null,
+        "entity": "partida",
+        "record": {
+          "url": "https://www.dipres.gob.cl/597/articles-436912_doc_pdf.pdf",
+          "sha256": "e17c1810540ddea3f78170759389ed6e319d92e5e421c5f5c68507b8108def64",
+          "state": "executed",
+          "period": "2026-09"
+        }
+      },
+      "partida.2026-09.vigente": {
+        "id": "partida.2026-09.vigente",
+        "value": 18446751.923,
+        "unit": "MM$",
+        "period": "2026-09",
+        "source": "doc_e17c1810540d",
+        "locator": "modified · miles de $ / 1.000",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null,
+        "entity": "partida",
+        "record": {
+          "url": "https://www.dipres.gob.cl/597/articles-436912_doc_pdf.pdf",
+          "sha256": "e17c1810540ddea3f78170759389ed6e319d92e5e421c5f5c68507b8108def64",
+          "state": "modified",
+          "period": "2026-09"
+        }
+      },
+      "partida.2026-09.pct": {
+        "id": "partida.2026-09.pct",
+        "value": 80.80397768246172,
+        "unit": "%",
+        "period": "2026-09",
+        "source": null,
+        "locator": null,
+        "formula": "gasto devengado acumulado / presupuesto vigente × 100 (mismo informe de ejecución)",
+        "inputs": [
+          "partida.2026-09.ejecutado",
+          "partida.2026-09.vigente"
+        ],
+        "kind": "derived",
+        "revised": null,
+        "entity": "partida"
+      },
+      "partida.2026-09.ley_inicial": {
+        "id": "partida.2026-09.ley_inicial",
         "value": 17251054.647,
         "unit": "MM$",
-        "period": "2026-07",
-        "source": "doc_f3ff117334ef",
+        "period": "2026-09",
+        "source": "doc_e17c1810540d",
         "locator": "approved_initial · miles de $ / 1.000",
         "formula": null,
         "inputs": [],
@@ -1056,39 +1252,39 @@
         "revised": null,
         "entity": "partida",
         "record": {
-          "url": "https://www.dipres.gob.cl/597/articles-424500_doc_pdf.pdf",
-          "sha256": "f3ff117334ef740b13e49c9158c965a27f8d9ed2225a62fc9b8d2a5040956dde",
+          "url": "https://www.dipres.gob.cl/597/articles-436912_doc_pdf.pdf",
+          "sha256": "e17c1810540ddea3f78170759389ed6e319d92e5e421c5f5c68507b8108def64",
           "state": "approved_initial",
-          "period": "2026-07"
+          "period": "2026-09"
         }
       },
-      "partida.2026-07.modificaciones": {
-        "id": "partida.2026-07.modificaciones",
-        "value": 499741.88899999857,
+      "partida.2026-09.modificaciones": {
+        "id": "partida.2026-09.modificaciones",
+        "value": 1195697.2760000005,
         "unit": "MM$",
-        "period": "2026-07",
+        "period": "2026-09",
         "source": null,
         "locator": null,
         "formula": "presupuesto vigente − ley inicial (mismo informe)",
         "inputs": [
-          "partida.2026-07.vigente",
-          "partida.2026-07.ley_inicial"
+          "partida.2026-09.vigente",
+          "partida.2026-09.ley_inicial"
         ],
         "kind": "derived",
         "revised": null,
         "entity": "partida"
       },
-      "partida.2026-07.modificaciones_pct": {
-        "id": "partida.2026-07.modificaciones_pct",
-        "value": 2.8968773169291704,
+      "partida.2026-09.modificaciones_pct": {
+        "id": "partida.2026-09.modificaciones_pct",
+        "value": 6.9311546480315345,
         "unit": "%",
-        "period": "2026-07",
+        "period": "2026-09",
         "source": null,
         "locator": null,
         "formula": "(vigente − ley inicial) / ley inicial × 100",
         "inputs": [
-          "partida.2026-07.modificaciones",
-          "partida.2026-07.ley_inicial"
+          "partida.2026-09.modificaciones",
+          "partida.2026-09.ley_inicial"
         ],
         "kind": "derived",
         "revised": null,
@@ -1472,6 +1668,114 @@
         "revised": null,
         "entity": "cap02"
       },
+      "cap02.2026-08.ejecutado": {
+        "id": "cap02.2026-08.ejecutado",
+        "value": 11715715.012,
+        "unit": "MM$",
+        "period": "2026-08",
+        "source": "doc_58b53a57db35",
+        "locator": "executed · miles de $ / 1.000",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null,
+        "entity": "cap02",
+        "record": {
+          "url": "https://www.dipres.gob.cl/597/articles-428557_doc_pdf.pdf",
+          "sha256": "58b53a57db3553b93d22017501d46b8b6dd7513dec0c0a5ed92abf8d08f298c8",
+          "state": "executed",
+          "period": "2026-08"
+        }
+      },
+      "cap02.2026-08.vigente": {
+        "id": "cap02.2026-08.vigente",
+        "value": 15981086.409,
+        "unit": "MM$",
+        "period": "2026-08",
+        "source": "doc_58b53a57db35",
+        "locator": "modified · miles de $ / 1.000",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null,
+        "entity": "cap02",
+        "record": {
+          "url": "https://www.dipres.gob.cl/597/articles-428557_doc_pdf.pdf",
+          "sha256": "58b53a57db3553b93d22017501d46b8b6dd7513dec0c0a5ed92abf8d08f298c8",
+          "state": "modified",
+          "period": "2026-08"
+        }
+      },
+      "cap02.2026-08.pct": {
+        "id": "cap02.2026-08.pct",
+        "value": 73.3098783910092,
+        "unit": "%",
+        "period": "2026-08",
+        "source": null,
+        "locator": null,
+        "formula": "gasto devengado acumulado / presupuesto vigente × 100 (mismo informe de ejecución)",
+        "inputs": [
+          "cap02.2026-08.ejecutado",
+          "cap02.2026-08.vigente"
+        ],
+        "kind": "derived",
+        "revised": null,
+        "entity": "cap02"
+      },
+      "cap02.2026-09.ejecutado": {
+        "id": "cap02.2026-09.ejecutado",
+        "value": 13217903.969,
+        "unit": "MM$",
+        "period": "2026-09",
+        "source": "doc_f1f81f704b61",
+        "locator": "executed · miles de $ / 1.000",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null,
+        "entity": "cap02",
+        "record": {
+          "url": "https://www.dipres.gob.cl/597/articles-436793_doc_pdf.pdf",
+          "sha256": "f1f81f704b61276741ef625cce4efab0c505f5911ab0b5b387919a733932fbaa",
+          "state": "executed",
+          "period": "2026-09"
+        }
+      },
+      "cap02.2026-09.vigente": {
+        "id": "cap02.2026-09.vigente",
+        "value": 16002817.808,
+        "unit": "MM$",
+        "period": "2026-09",
+        "source": "doc_f1f81f704b61",
+        "locator": "modified · miles de $ / 1.000",
+        "formula": null,
+        "inputs": [],
+        "kind": "captured",
+        "revised": null,
+        "entity": "cap02",
+        "record": {
+          "url": "https://www.dipres.gob.cl/597/articles-436793_doc_pdf.pdf",
+          "sha256": "f1f81f704b61276741ef625cce4efab0c505f5911ab0b5b387919a733932fbaa",
+          "state": "modified",
+          "period": "2026-09"
+        }
+      },
+      "cap02.2026-09.pct": {
+        "id": "cap02.2026-09.pct",
+        "value": 82.59735333856149,
+        "unit": "%",
+        "period": "2026-09",
+        "source": null,
+        "locator": null,
+        "formula": "gasto devengado acumulado / presupuesto vigente × 100 (mismo informe de ejecución)",
+        "inputs": [
+          "cap02.2026-09.ejecutado",
+          "cap02.2026-09.vigente"
+        ],
+        "kind": "derived",
+        "revised": null,
+        "entity": "cap02"
+      },
       "prog0201.2026-08.ejecutado": {
         "id": "prog0201.2026-08.ejecutado",
         "value": 11715714.95,
@@ -1537,11 +1841,11 @@
     ],
     "entity_codes": [],
     "entity_keys": [],
-    "release_key": "2026-07:d685bc1319275102",
-    "period": "2026-07",
+    "release_key": "2026-09:fc5c60a64171f71d",
+    "period": "2026-09",
     "lectura_pool": [],
     "derived_ratios": [],
     "ranks": []
   },
-  "first_verified_at": "2026-11-04T13:26:59.573869+00:00"
+  "first_verified_at": "2026-11-05T00:46:56.955848+00:00"
 }
