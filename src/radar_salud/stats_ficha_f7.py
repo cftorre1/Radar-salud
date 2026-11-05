@@ -51,7 +51,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F7"
-BUILDER_VERSION = "f7_ejecucion_v1"
+BUILDER_VERSION = "f7_ejecucion_v2"  # v2 (5-nov-2026): latest report first in sources
 LANE = Path("data/market/dipres_health_budget.json")
 DIPRES_HOSTS = ("www.dipres.gob.cl", "dipres.gob.cl")
 MM = "MM$"
@@ -594,7 +594,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     machine = (f"Ficha generada por la regla \"{rule}\" (documento {'capturado por Alicanto el' if detected else 'publicado el'} "
                f"{sf.day_label(package['published_at'])}). Las cifras vienen del paquete de evidencia, sin descargas nuevas; "
                "la Lectura Alicanto está desactivada para esta familia.")
-    sources = [{**src, "key": key} for key, src in package["sources"].items()]
+    # The latest report first: the card's "Fuente original" is the first source, and each DIPRES report is cumulative
+    # to its cut (devengado acumulado and vigente at that date), so it alone backs the headline (Dirección 5-nov-2026).
+    prim = (package.get("primary_source") or {}).get("url")
+    sources = sorted(({**src, "key": key} for key, src in package["sources"].items()),
+                     key=lambda x: (x.get("url") != prim,))
     return {
         "schema_version": sf.SCHEMA, "id": f"stats-ficha:{FAMILY}:{t}", "family": FAMILY, "family_label": cfg["label"],
         "slug": cfg["slug"], "period": t, "published_at": package["published_at"], "release_key": package["release_key"],

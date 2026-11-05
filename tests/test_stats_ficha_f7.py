@@ -452,3 +452,24 @@ def test_committed_lane_passes_reconciliation_and_traces_every_kpi():
     out = run_family("F7", builder_version=f7.BUILDER_VERSION, build_package=f7.build_package, compose=f7.compose,
                      root=REPO, today=TODAY, registry=reg, llm=False)
     assert out["status"] in ("pass", "no_change"), out.get("errors")
+
+
+def test_card_links_the_latest_report_first():
+    """Dirección 5-nov-2026: 'Fuente original' opened the January report. Each DIPRES report is cumulative to its cut,
+    so the card links the latest one (the primary source) and the ficha lists it first."""
+    reg = reg_open()
+    p = f7.build_package(REPO, reg)
+    fi = f7.compose(p, reg, today=TODAY)
+    assert fi["sources"][0]["url"] == p["primary_source"]["url"]
+    from radar_salud.stats_fichas import ficha_card
+    assert ficha_card({**fi, "status": "PASS"}, reg["families"]["F7"])["source_url"] == p["primary_source"]["url"]
+
+
+def test_verifier_rejects_a_ficha_whose_first_source_is_not_the_primary():
+    from radar_salud.stats_fichas import verify_ficha
+    reg = reg_open()
+    p = f7.build_package(REPO, reg)
+    fi = f7.compose(p, reg, today=TODAY)
+    assert "first_source_not_primary" not in verify_ficha(fi, p)["errors"]
+    fi["sources"] = fi["sources"][::-1]
+    assert "first_source_not_primary" in verify_ficha(fi, p)["errors"]

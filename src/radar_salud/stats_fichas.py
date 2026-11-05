@@ -947,6 +947,12 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
     for key in ("headline", "dek", "kpis", "facts", "sources"):
         if not ficha.get(key):
             errors.append(f"missing:{key}")
+    # The card's "Fuente original" is the ficha's first source: it must be the package's primary source (the release
+    # the headline comes from), never an older file of the series (Dirección 5-nov-2026: F7 opened January).
+    prim = (package.get("primary_source") or {}).get("url")
+    first = ((ficha.get("sources") or [{}])[0] or {}).get("url")
+    if prim and first != prim:
+        errors.append("first_source_not_primary")
     pool = number_pool(package)
     # Derived counts ('3 Isapres crecen') are not in this pool: a count traces only through the line that cites it.
     # The Lectura's figures are traced by verify_lectura (pool, unit, sign, entity, period), not by value alone.
