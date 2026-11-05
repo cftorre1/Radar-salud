@@ -442,8 +442,12 @@ def test_committed_lane_passes_reconciliation_and_traces_every_kpi():
     e, vg = (next(r["value"] for r in lane_recs if f7.entity_key(r) == f7.ENTITIES["partida"] and r["metric"] == "gastos"
                   and r["budget_state"] == s and r["source_url"] == p["primary_source"]["url"]) for s in ("executed", "modified"))
     assert p["values"][f"partida.{t}.pct"]["value"] == pytest.approx(e / vg * 100)
-    for sub, per in p["kpis"]["excluded"]:  # other perimeters (subpartidas) are listed in the notes, never read as the partida
-        assert sub and not any(v.get("record", {}).get("period") == per and v["entity"] == "partida" for v in p["values"].values())
+    # Other perimeters (subpartidas) are listed in the notes, never read as the partida: no partida figure comes from
+    # a subpartida's document. (A month may have both: a partida report and a subpartida table, 5-nov-2026.)
+    sub_urls = {r["source_url"] for r in lane_recs if r.get("subpartida")}
+    for sub, per in p["kpis"]["excluded"]:
+        assert sub and per
+    assert not any(v.get("record", {}).get("url") in sub_urls for v in p["values"].values() if v.get("entity") == "partida")
     from radar_salud.stats_fichas import run_family
     out = run_family("F7", builder_version=f7.BUILDER_VERSION, build_package=f7.build_package, compose=f7.compose,
                      root=REPO, today=TODAY, registry=reg, llm=False)
