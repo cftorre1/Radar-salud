@@ -20,9 +20,9 @@ const INTERESTS=[
  {k:'laboral',label:'Salud laboral',group:'Actores',match:s=>has(s.scopes,['Salud laboral','Seguridad social','COMPIN'])},
  {k:'farma',label:'Farma e ISP',group:'Actores',match:s=>has(s.scopes,['Farma / medicamentos'])},
  {k:'publica',label:'Salud pública',group:'Actores',match:s=>has(s.scopes,['Salud pública'])},
- // WATCH (Dirección 27-oct, restored 28-oct): following is its own service, not a filter; "Siguiendo" is the one
- // Actores option that shows the items of followed entities, so there is still a single filter system.
- {k:'siguiendo',label:'Siguiendo',group:'Actores',match:s=>refIds(s).some(id=>followed.has(id))},
+ // WATCH (Dirección 27-oct, restored 28-oct; topics instead of entities, Dirección 4-nov-2026): following is its own
+ // service, not a filter; "Siguiendo" is the one Actores option that shows the items of followed topics.
+ {k:'siguiendo',label:'Siguiendo',group:'Actores',match:s=>topicsOf(s).some(x=>followedTopics.has(x.k))},
  {k:'normativa',label:'Normativa y fiscalización',group:'Temas',match:s=>has(s.signal_types,['Normativa','Fiscalización','Acreditación'])},
  {k:'mercado',label:'Mercado e inversiones',group:'Temas',match:s=>has(s.topics,['investment_ma','competition'])},
  {k:'politica',label:'Política y presupuesto',group:'Temas',match:s=>has(s.scopes,['Política pública','Financiamiento'])||(has(s.scopes,['Sistema de salud'])&&has(s.topics,['financing','waiting_lists']))},
@@ -38,6 +38,11 @@ const activeInterests=new Set(storedInterests(filterStored));
 // filter. WATCH stays: followed entities persist (same `entities` key as PR #75, so earlier follows survive),
 // are toggled from the ficha, mark their rows, and are reachable through Actores › Siguiendo.
 const followed=new Set(arr(filterStored.entities).filter(x=>typeof x==='string'));
+// Dirección 4-nov-2026: one follows a topic (an Actores or Temas option), not an entity: a topic has volume and covers
+// system-wide data (a ficha of the whole Isapre system belongs to 'Isapres'). Entity follows saved before stay stored
+// (never deleted) but no longer mark rows.
+const followedTopics=new Set(arr(filterStored.topics).filter(k=>typeof k==='string'&&k!=='siguiendo'));
+function topicsOf(s){return INTERESTS.filter(x=>x.k!=='siguiendo'&&x.match(s))}
 let entityCatalog=[];
 function refIds(s){return [...new Set(arr(s.entity_refs).map(r=>typeof r==='string'?r:r?.canonical_id).filter(Boolean))]}
 function entityInfo(id){return entityCatalog.find(e=>e.id===id)||{id,name:id,short:id}}
@@ -50,7 +55,7 @@ let laneMode=['p','l','t'].includes(filterStored.lane)?filterStored.lane:'p',det
 // Only the hash the page was loaded with reopens a ficha topic: the ficha's own topic URLs (pushState) never do.
 const loadHash=typeof location!=='undefined'?location.hash:'';
 const readSet=AlicantoRead.readSet;
-function persistFilters(){saveLocal('alicanto_filters',JSON.stringify({interests:[...activeInterests],entities:[...followed],period:periodMode,sort:sortMode,lane:laneMode}))}
+function persistFilters(){saveLocal('alicanto_filters',JSON.stringify({interests:[...activeInterests],entities:[...followed],topics:[...followedTopics],period:periodMode,sort:sortMode,lane:laneMode}))}
 function encodedId(value){return btoa(unescape(encodeURIComponent(value)))}
 function idFor(s){if(s.piece_id)return s.piece_id;return encodedId((s.source_url||'')+'|'+(s.event_date||'')+'|'+(s.event_type||'OTHER'))}
 function legacyIdFor(s,title=s.title){return encodedId((s.source_url||'')+'|'+(title||''))}
@@ -204,16 +209,18 @@ function detailHtml(s){
  const related=`${!v3?corroborationRelated(s)+statusBlock(s)+contextBlock(arr(s.related_context))+(s.event_type==='STORY_SUMMARY'?sourceBlock(arr(s.source_alternatives),false,false,'Piezas incluidas en esta síntesis'):sourceBlock(arr(s.source_alternatives),Boolean(s.sanction_count)||s.event_type==='ACCREDITATION_PULSE',s.event_type==='DATA_PULSE'))+sourceBlock(arr(s.historical_sanction_context),false,false,'Suspensiones de oficios históricos')+sourceBlock(arr(s.bill_history),false,false,'Trámites anteriores de este proyecto')+sourceBlock(arr(s.same_event_sources),false,false,'También informaron')+enrichmentBlock(arr(s.editorial_enrichment),arr(s.historical_connections),s.historical_context_status):''}${docs.length?`<ul>${docs.map(x=>`<li><a href='${esc(x.url||x.document_url)}' target='_blank' rel='noopener'>${esc(x.title||x.label||'Documento original')} ↗</a></li>`).join('')}</ul>`:''}`,origin=originLine(s);
  // News fichas group the original source and related sources under one short heading; analysis fichas keep theirs.
  // The heading only appears when there is a source to show (a name, a captured link or related sources).
- const hasSource=Boolean(related||s.source_name||originalLink(s));
  // Rights policy (#92): a paywalled item says so next to its sources; its body is only the public headline and lead.
- const sourcesHtml=(hasSource&&!s.statistical_view&&!v3?`<section class="ficha-sources"><h3 class="ficha-h">Fuentes</h3>${related}${origin}</section>`:related+origin)+paywallNote(s);
- return `<h2 id='detailTitle'>${esc(title)}</h2>${body}${s.validity_text?`<p><strong>Vigencia:</strong> ${esc(s.validity_text)}</p>`:''}${dates?`<p class='source'>${dates}</p>`:''}${sourcesHtml}`
+ // Dirección 4-nov-2026: the source and its dates sit right under the title; 'Fuentes' keeps the related sources.
+ const sourcesHtml=(s.statistical_view||v3?related+origin:related?`<section class="ficha-sources"><h3 class="ficha-h">Fuentes</h3>${related}</section>`:'')+paywallNote(s);
+ // The ficha's action bar already carries 'Fuente original ↗': the line under the title keeps only source and dates.
+ const head=(v3||s.statistical_view?'':String(originLine(s,false)).replace("<p class='source'>","<p class='source ficha-origin'>"))+(dates?`<p class='source ficha-dates'>${dates}</p>`:'');
+ return `<h2 id='detailTitle'>${esc(title)}</h2>${head}${body}${s.validity_text?`<p><strong>Vigencia:</strong> ${esc(s.validity_text)}</p>`:''}${sourcesHtml}`
 }
 // The ficha's origin line (Dirección 1-nov-2026): compact, "SIS · Intendencia de Prestadores · 29 oct 2026 (detección) ·
 // Fuente original ↗". Institutions are shortened only from this curated map; any other name stays in full.
-const SOURCE_ABBR={'superintendencia de salud':'SIS','ministerio de salud':'Minsal','minsal':'Minsal','fondo nacional de salud':'Fonasa','fonasa':'Fonasa','instituto de salud pública':'ISP','instituto de salud pública de chile':'ISP','isp':'ISP','superintendencia de seguridad social':'SUSESO','superintendencia de seguridad social (suseso)':'SUSESO','suseso':'SUSESO','diario oficial':'DO','diario oficial de la república de chile':'DO','fiscalía nacional económica':'FNE','fne':'FNE','congreso nacional':'Congreso','dirección de presupuestos':'DIPRES','dipres':'DIPRES','comisión para el mercado financiero':'CMF','cmf':'CMF','biblioteca del congreso nacional':'BCN','achs seguro laboral':'ACHS','sis':'SIS'};
+const SOURCE_ABBR={'superintendencia de salud':'SIS','ministerio de salud':'Minsal','minsal':'Minsal','fondo nacional de salud':'Fonasa','fonasa':'Fonasa','instituto de salud pública':'ISP','instituto de salud pública de chile':'ISP','isp':'ISP','superintendencia de seguridad social':'SUSESO','superintendencia de seguridad social (suseso)':'SUSESO','suseso':'SUSESO','fiscalía nacional económica':'FNE','fne':'FNE','congreso nacional':'Congreso','dirección de presupuestos':'DIPRES','dipres':'DIPRES','comisión para el mercado financiero':'CMF','cmf':'CMF','biblioteca del congreso nacional':'BCN','achs seguro laboral':'ACHS','sis':'SIS'};
 // Dirección 4-nov-2026: the ficha names an institution in full with its acronym in parentheses; the feed uses the acronym.
-const SOURCE_LONG={SIS:'Superintendencia de Salud',Minsal:'Ministerio de Salud',Fonasa:'Fondo Nacional de Salud',ISP:'Instituto de Salud Pública',SUSESO:'Superintendencia de Seguridad Social',DO:'Diario Oficial',FNE:'Fiscalía Nacional Económica',DIPRES:'Dirección de Presupuestos',CMF:'Comisión para el Mercado Financiero',BCN:'Biblioteca del Congreso Nacional'};
+const SOURCE_LONG={SIS:'Superintendencia de Salud',Minsal:'Ministerio de Salud',Fonasa:'Fondo Nacional de Salud',ISP:'Instituto de Salud Pública',SUSESO:'Superintendencia de Seguridad Social',FNE:'Fiscalía Nacional Económica',DIPRES:'Dirección de Presupuestos',CMF:'Comisión para el Mercado Financiero',BCN:'Biblioteca del Congreso Nacional'};
 // 'Fiscalía Nacional Económica (FNE)' → 'Fiscalía Nacional Económica' only when the parenthesis is that institution's
 // acronym; any other parenthetical ('(edición extraordinaria)') stays.
 const bareSource=x=>{const t=String(x||'').trim(),m=t.match(/^(.*\S)\s*\(([^)]*)\)$/);return m&&SOURCE_ABBR[m[1].toLowerCase()]&&SOURCE_ABBR[m[1].toLowerCase()].toLowerCase()===m[2].trim().toLowerCase()?m[1]:t};
@@ -227,7 +234,7 @@ function shortSource(name){return String(name||'').split(' · ').map(x=>x.trim()
 function originDate(s){if(s.date_basis==='first_detected'){const d=s.first_detected_at||s.event_date;return d?`${fmtDate(d)} (detección)`:''}if(s.date_basis==='data_release'){const d=s.data_release_date||s.event_date;return d?`${fmtDate(d)} (actualización)`:''}const fiscal=Boolean(s.issued_on||s.emission_date)||arr(s.signal_types).includes('Fiscalización')||s.event_date_basis==='emission'||s.event_date_basis==='verified_primary_emission';const pub=s.published_on||s.publication_date||(fiscal?null:s.event_date);if(pub)return `${fmtDate(pub)} (publicación)`;const det=s.first_detected_at||s.detected_at;return det?`${fmtDate(det)} (detección)`:''}
 // "Período de datos" only when it says more than the year, and not when the title already states it.
 function originPeriod(s){const p=String(s.data_period||'').trim();if(!p||/^(?:19|20)\d{2}$/.test(p)||String(triageTitle(s)).includes(p))return'';return 'Período de datos: '+esc(p)}
-function originLine(s){const url=originalLink(s),parts=[esc(longSource(s.source_name)),originDate(s),originPeriod(s),url?`<a href='${esc(url)}' target='_blank' rel='noopener'>Fuente original ↗</a>`:''].filter(Boolean);return parts.length?`<p class='source'>${parts.join(' · ')}</p>`:''}
+function originLine(s,withLink=true){const url=withLink?originalLink(s):null,parts=[esc(longSource(s.source_name)),originDate(s),originPeriod(s),url?`<a href='${esc(url)}' target='_blank' rel='noopener'>Fuente original ↗</a>`:''].filter(Boolean);return parts.length?`<p class='source'>${parts.join(' · ')}</p>`:''}
 // A bulletin whose figures are being verified (Dirección 1-nov, Boletín IP N°3): says so plainly and links the live ficha.
 function bulletinStatus(s){const b=s.bulletin_status;if(!b||b.status!=='verifying'||!b.text)return'';const f=b.live_ficha,ok=f&&/^stats-ficha:F\d+:\d{4}-\d{2}$/.test(String(f.id||''));return `<p class="bulletin-status">${esc(b.text)}</p>${ok?`<p><a class="bulletin-live" href="?abrir=1#sig-${esc(f.id)}" data-open-signal="${esc(f.id)}">${esc(f.label||'Ver la ficha vigente')} ›</a></p>`:''}`}
 // Feed row (Dirección 4-nov-2026): one date that says whether it is news, and the source's acronym.
@@ -248,7 +255,7 @@ function formatTag(s){const t=['Normativa','Fiscalización','Datos'].find(x=>typ
 // and a row of a followed entity keeps only its small follow marker.
 const followIcon='<svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"></path></svg>';
 // A row that names a followed entity carries a small marker before its source (WATCH).
-function followMark(s){const ids=refIds(s).filter(id=>followed.has(id));return ids.length?`<span class="follow-mark" title="Sigues a ${esc(ids.map(id=>entityInfo(id).name).join(', '))}">${followIcon}<span class="sr-only">Sigues a ${esc(ids.map(id=>entityInfo(id).name).join(', '))}. </span></span>`:''}
+function followMark(s){const ts=topicsOf(s).filter(x=>followedTopics.has(x.k)).map(x=>x.label);if(!ts.length)return'';const t=`Sigues ${ts.length>1?'los temas':'el tema'} ${ts.join(', ')}`;return `<span class="follow-mark" title="${esc(t)}">${followIcon}<span class="sr-only">${esc(t)}. </span></span>`}
 function card(s){const rd=isRead(s),id=idFor(s),title=triageTitle(s);return `<article id="sig-${esc(id)}" tabindex="-1" data-card="${esc(id)}" data-rel="${rel(s.radar_score).cls}" class="signal item ${rd?'read':''}">${dotButton('data-read',id,rd,title)}<div class="item-body"><h2><button class="title-open" data-detail="${esc(id)}">${esc(title)}</button></h2><div class="card-meta">${followMark(s)}<span class="meta-text">${rowMeta(s)}</span>${formatTag(s)}</div>${AlicantoBar.rowActions(`data-detail="${esc(id)}"`,originalLink(s),`sig-${id}`,title,s.stats_ficha?s.share_url:'')}</div></article>`}
 let detailOrigin=null;
 function detailBar(s){const r=isRead(s);return `<button type="button" class="textbtn" id="detailRead">${r?'Marcar no leída':'Marcar leída'}</button>`}
@@ -260,9 +267,11 @@ function wireStatsFoot(s){const body=document.getElementById('detailBody');if(!b
 function wireDetailBar(s){const bar=document.getElementById('detailBar');if(!bar)return;if(s.stats_ficha){if(bar.querySelector('.sf-share')?.dataset.fichaShare!==`sig-${idFor(s)}`)bar.innerHTML=statsShare(s);wireStatsFoot(s)}else bar.innerHTML=detailBar(s);bar.closest('.detail-top')?.classList.toggle('sf-top',Boolean(s.stats_ficha));const acts=document.getElementById('detailActs');if(acts){acts.innerHTML=s.stats_ficha?'':AlicantoBar.fichaActions(originalLink(s),`sig-${idFor(s)}`,triageTitle(s));acts.querySelectorAll('[data-share]').forEach(b=>b.onclick=()=>shareCard(b))}const t=document.getElementById('detailRead');if(t)t.onclick=async()=>{await AlicantoRead.set(idFor(s),!isRead(s));readStatus(isRead(s)?'Marcado como leído.':'Marcado como no leído.');wireDetailBar(s);document.getElementById('detailRead')?.focus()}}
 // Inside a news ficha every named entity gets a "Seguir <entidad>" toggle (WATCH). It never changes the filters.
 // Statistics fichas carry none (Dirección 29-oct): their header stays compact so the charts show above the fold.
-function followRow(s){const ids=refIds(s);if(!ids.length)return'';return `<div class="follow-row" role="group" aria-label="Seguir entidades">${ids.map(id=>{const e=entityInfo(id),on=followed.has(id);return `<button type="button" class="follow-chip" data-follow="${esc(id)}" aria-pressed="${on}">${on?tickIcon:followIcon}<span>${on?'Siguiendo':'Seguir'} ${esc(e.short||e.name)}</span></button>`}).join('')}</div>`}
-function wireFollow(host,s){host.querySelectorAll('[data-follow]').forEach(b=>b.onclick=()=>{const id=b.dataset.follow,on=!followed.has(id);if(on)followed.add(id);else followed.delete(id);persistFilters();const fresh=document.createElement('div');fresh.innerHTML=followRow(s);host.querySelector('.follow-row').replaceWith(fresh.firstElementChild);wireFollow(host,s);host.querySelector(`[data-follow="${CSS.escape(id)}"]`)?.focus();readStatus(on?`Siguiendo ${entityInfo(id).name}.`:`Dejaste de seguir ${entityInfo(id).name}.`);draw()})}
-async function openDetail(s){const dialog=document.getElementById('signalDetail');detailOrigin=document.activeElement;detailPending={id:idFor(s),was:isRead(s)};try{const body=document.getElementById('detailBody');body.innerHTML=detailHtml(s);if(!s.stats_ficha)body.querySelector('#detailTitle')?.insertAdjacentHTML('afterend',followRow(s));body.querySelectorAll('[data-open-signal]').forEach(a=>a.onclick=e=>{const t=allSignals.find(x=>idFor(x)===a.dataset.openSignal);if(t){e.preventDefault();openDetail(t)}});wireFollow(body,s);wireDetailBar(s);if(s.stats_ficha&&typeof AlicantoFicha!=='undefined'&&AlicantoFicha.mount)AlicantoFicha.mount(body);if(s.statistical_view)AlicantoStats.wire(document.getElementById('detailBody'),s.statistical_view);if(!dialog.open)dialog.showModal();dialog.querySelector('#closeDetail').focus();await AlicantoRead.set(idFor(s),true);wireDetailBar(s);readStatus('Marcado como leído.')}catch{readStatus('No se pudo abrir la ficha.')}}
+// The ficha offers 'Seguir tema: <tema>' for each topic the item belongs to; the entities it names are listed as plain
+// text ('Menciona: …'), with no button (Dirección 4-nov-2026).
+function followRow(s){const ts=topicsOf(s),ids=refIds(s);if(!ts.length&&!ids.length)return'';const chips=ts.map(x=>{const on=followedTopics.has(x.k);return `<button type="button" class="follow-chip" data-follow-topic="${esc(x.k)}" aria-pressed="${on}">${on?tickIcon:followIcon}<span>${on?'Siguiendo tema':'Seguir tema'}: ${esc(x.label)}</span></button>`}).join('');const names=ids.map(id=>entityInfo(id)).map(e=>esc(e.short||e.name));return `<div class="follow-row" role="group" aria-label="Seguir temas">${chips}${names.length?`<p class="follow-mentions">Menciona: ${names.join(', ')}</p>`:''}</div>`}
+function wireFollow(host,s){host.querySelectorAll('[data-follow-topic]').forEach(b=>b.onclick=()=>{const k=b.dataset.followTopic,on=!followedTopics.has(k),label=INTERESTS.find(x=>x.k===k)?.label||k;if(on)followedTopics.add(k);else followedTopics.delete(k);persistFilters();const fresh=document.createElement('div');fresh.innerHTML=followRow(s);host.querySelector('.follow-row').replaceWith(fresh.firstElementChild);wireFollow(host,s);host.querySelector(`[data-follow-topic="${CSS.escape(k)}"]`)?.focus();readStatus(on?`Siguiendo el tema ${label}.`:`Dejaste de seguir el tema ${label}.`);draw()})}
+async function openDetail(s){const dialog=document.getElementById('signalDetail');detailOrigin=document.activeElement;detailPending={id:idFor(s),was:isRead(s)};try{const body=document.getElementById('detailBody');body.innerHTML=detailHtml(s);if(!s.stats_ficha)(body.querySelector('.ficha-dates')||body.querySelector('.ficha-origin')||body.querySelector('#detailTitle'))?.insertAdjacentHTML('afterend',followRow(s));body.querySelectorAll('[data-open-signal]').forEach(a=>a.onclick=e=>{const t=allSignals.find(x=>idFor(x)===a.dataset.openSignal);if(t){e.preventDefault();openDetail(t)}});wireFollow(body,s);wireDetailBar(s);if(s.stats_ficha&&typeof AlicantoFicha!=='undefined'&&AlicantoFicha.mount)AlicantoFicha.mount(body);if(s.statistical_view)AlicantoStats.wire(document.getElementById('detailBody'),s.statistical_view);if(!dialog.open)dialog.showModal();dialog.querySelector('#closeDetail').focus();await AlicantoRead.set(idFor(s),true);wireDetailBar(s);readStatus('Marcado como leído.')}catch{readStatus('No se pudo abrir la ficha.')}}
 
 // Statistics fichas age and sort by the day Alicanto first verified the release (feed_date); cards still show the SIS date.
 // A feed_date later than today (clock skew, a snapshot built after the viewer's day) falls back to the SIS date.
@@ -351,7 +360,7 @@ function setInterest(k,on){if(!k)activeInterests.clear();else if(on)activeIntere
 function renderInterests(){
  const c=interestCounts();
  const toggle=(cls,x)=>`<button type="button" class="${cls}" data-interest="${x.k}" aria-pressed="${activeInterests.has(x.k)}"><span class="box" aria-hidden="true"></span><span>${esc(x.label)}</span><small>${c.by[x.k]}</small></button>`;
- const shown=x=>x.k!=='siguiendo'||followed.size>0||activeInterests.has('siguiendo');
+ const shown=x=>x.k!=='siguiendo'||followedTopics.size>0||activeInterests.has('siguiendo');
  const grouped=cls=>['Actores','Temas'].map(g=>`<p class="interest-group">${g}</p><div class="interest-grid">${INTERESTS.filter(x=>x.group===g&&shown(x)).map(x=>toggle(cls,x)).join('')}</div>`).join('');
  const sheet=document.getElementById('interestFilters');
  if(sheet)sheet.innerHTML=`<button type="button" class="tog tog-all" data-interest="" aria-pressed="${!filtersActive()}"><span class="box" aria-hidden="true"></span><span>Todos los temas</span><small>${c.total}</small></button>${grouped('tog')}`;

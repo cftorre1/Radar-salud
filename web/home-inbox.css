@@ -495,6 +495,11 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .follow-chip:hover{border-color:var(--ink48);color:var(--ink)}
 .follow-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
 .follow-chip:focus-visible{outline:2px solid #E3A24F;outline-offset:2px}
+/* Entities named by the item: plain text, no button (Dirección 4-nov-2026). */
+.follow-mentions{flex-basis:100%;margin:2px 0 0;font-size:12px;color:var(--ink48)}
+/* Source and dates right under the ficha title (Dirección 4-nov-2026). */
+#detailBody .ficha-origin{margin:4px 0 10px;padding-top:0;border-top:0}
+#detailBody .ficha-dates{margin:-6px 0 12px;padding-top:0;border-top:0}
 .follow-mark{display:inline-flex;vertical-align:-2px;margin-right:4px;color:var(--accent-ink)}
 .follow-mark .mini-icon{width:12px;height:12px;fill:currentColor;stroke:none}
 /* Ficha titles share one style on Chile and Global (Dirección 28-oct, punto 5). */
