@@ -10,6 +10,7 @@ Approval still goes through ``config/stats_fichas_v1.json`` (``first_review``): 
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from . import stats_fichas as sf
@@ -19,30 +20,42 @@ HOLD_DIR = Path("data/stats_fichas/hold")
 LIVE_DIR = Path("data/stats_fichas/live")
 
 
-def _load(p: Path):
+SLUG = re.compile(r"^[a-z0-9_]+$")
+
+
+def _load(p: Path) -> dict:
+    """A JSON object, or {} for anything else (a malformed hold never breaks the daily export)."""
     try:
-        return json.loads(p.read_text(encoding="utf-8"))
+        d = json.loads(p.read_text(encoding="utf-8"))
     except (OSError, ValueError):
-        return None
+        return {}
+    return d if isinstance(d, dict) else {}
+
+
+def _obj(x) -> dict:
+    return x if isinstance(x, dict) else {}
 
 
 def candidates(root: Path) -> list[dict]:
     live = {}
     for p in sorted((root / LIVE_DIR).glob("*.json")):
-        d = _load(p) or {}
-        if d.get("family"):
+        d = _load(p)
+        if isinstance(d.get("family"), str):
             live[d["family"]] = str(d.get("period") or "")
     out = []
     for p in sorted((root / HOLD_DIR).glob("*.json")):
-        d = _load(p) or {}
-        holds = ((d.get("decision") or {}).get("holds")) or []
-        cand = d.get("candidate") or {}
-        fam, per = cand.get("family"), str(cand.get("period") or "")
-        if holds != [FIRST_REVIEW_HOLD] or not cand.get("headline") or not fam or not cand.get("slug"):
+        d = _load(p)
+        holds = _obj(d.get("decision")).get("holds")
+        cand = _obj(d.get("candidate"))
+        fam, per, slug = cand.get("family"), str(cand.get("period") or ""), str(cand.get("slug") or "")
+        # Only a ficha that passed verification and waits for nothing but the first review (the page renders it).
+        if (holds != [FIRST_REVIEW_HOLD] or cand.get("status") != "AWAITING_FIRST_REVIEW"
+                or _obj(cand.get("verification")).get("verdict") != "PASS" or not cand.get("headline")
+                or not isinstance(fam, str) or not SLUG.match(slug)):
             continue
         if fam in live and live[fam] >= per:  # the live ficha already covers this period
             continue
-        out.append({"slug": cand["slug"], "family": fam, "period": per, "held_since": d.get("generated_at"),
+        out.append({"slug": slug, "family": fam, "period": per, "held_since": d.get("generated_at"),
                     "ficha": sf.public_ficha(cand)})
     return out
 

@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from radar_salud import review_preview as rp  # noqa: E402
 
 FICHA = {"family": "F4", "slug": "f4_ges", "period": "2026-06", "headline": "Titular", "status": "AWAITING_FIRST_REVIEW",
-         "evidence": {"values": {"x": 1}}, "kpis": [], "tabs": []}
+         "verification": {"verdict": "PASS"}, "evidence": {"values": {"x": 1}}, "kpis": [], "tabs": []}
 
 
 def hold(root, name, holds, cand=FICHA):
@@ -51,3 +51,48 @@ def test_preview_page_is_unlisted_and_never_linked_from_the_site():
     for f in web.glob("*.html"):
         if f.name != "preview.html":
             assert "preview.html" not in f.read_text(encoding="utf-8"), f.name
+
+
+def test_malformed_files_unsafe_slugs_and_unverified_candidates_are_skipped(tmp_path):
+    d = tmp_path / "data/stats_fichas/hold"
+    d.mkdir(parents=True)
+    (d / "list.json").write_text("[1, 2]")
+    (d / "bad.json").write_text("{not json")
+    (d / "str.json").write_text(json.dumps({"decision": "x", "candidate": []}))
+    hold(tmp_path, "slug.json", [rp.FIRST_REVIEW_HOLD], {**FICHA, "slug": "../x"})
+    hold(tmp_path, "unverified.json", [rp.FIRST_REVIEW_HOLD], {**FICHA, "slug": "f9_x", "verification": {"verdict": "FAIL"}})
+    hold(tmp_path, "status.json", [rp.FIRST_REVIEW_HOLD], {**FICHA, "slug": "f8_x", "status": "HOLD"})
+    lv = tmp_path / "data/stats_fichas/live"
+    lv.mkdir(parents=True)
+    (lv / "weird.json").write_text("[]")
+    assert rp.write(tmp_path, tmp_path / "web/data") == []
+    assert not (tmp_path / "web/x.json").exists()
+
+
+def test_production_root_never_carries_previews(tmp_path):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    import package_pages as pp
+    checked = tmp_path / "checked"
+    (checked / "admin").mkdir(parents=True)
+    (checked / "data/preview").mkdir(parents=True)
+    (checked / "index.html").write_text("<html></html>")
+    (checked / "admin/product.html").write_text("<html></html>")
+    (checked / "data/product.json").write_text(json.dumps({"version": "1"}))
+    (checked / "preview.html").write_text("x")
+    (checked / "data/preview/f4_ges.json").write_text("{}")
+    sha = "a" * 40
+    out = tmp_path / "out"
+    pp.assemble("production", checked, checked, out, sha)
+    assert not (out / "preview.html").exists() and not (out / "data/preview").exists()
+    assert (out / "staging/preview.html").exists() and (out / "staging/data/preview/f4_ges.json").exists()
+    out2 = tmp_path / "out2"
+    pp.assemble("staging", checked, checked, out2, sha)
+    assert not (out2 / "preview.html").exists() and (out2 / "staging/preview.html").exists()
+
+
+def test_previews_never_reach_the_feed_or_datos():
+    root = Path(__file__).resolve().parents[1]
+    for f in ("web/data/radar_today.json", "web/data/datos.json"):
+        assert "data/preview" not in (root / f).read_text(encoding="utf-8")
+    for js in (root / "web").glob("*.js"):
+        assert "preview/" not in js.read_text(encoding="utf-8"), js.name
