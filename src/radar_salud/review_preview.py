@@ -57,7 +57,12 @@ def candidates(root: Path) -> list[dict]:
             continue
         out.append({"slug": slug, "family": fam, "period": per, "held_since": d.get("generated_at"),
                     "ficha": sf.public_ficha(cand)})
-    return out
+    # One preview per family: the newest period waiting for review (two holds would share a slug).
+    newest: dict[str, dict] = {}
+    for it in out:
+        if it["family"] not in newest or it["period"] > newest[it["family"]]["period"]:
+            newest[it["family"]] = it
+    return sorted(newest.values(), key=lambda it: it["slug"])
 
 
 def write(root: Path, web_data_dir: Path) -> list[str]:

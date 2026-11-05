@@ -96,3 +96,12 @@ def test_previews_never_reach_the_feed_or_datos():
         assert "data/preview" not in (root / f).read_text(encoding="utf-8")
     for js in (root / "web").glob("*.js"):
         assert "preview/" not in js.read_text(encoding="utf-8"), js.name
+
+
+def test_one_preview_per_family_the_newest_period(tmp_path):
+    hold(tmp_path, "a.json", [rp.FIRST_REVIEW_HOLD], {**FICHA, "period": "2026-03", "headline": "Viejo"})
+    hold(tmp_path, "b.json", [rp.FIRST_REVIEW_HOLD], {**FICHA, "period": "2026-06", "headline": "Nuevo"})
+    web = tmp_path / "web/data"
+    assert rp.write(tmp_path, web) == ["f4_ges"]
+    assert json.loads((web / "preview/f4_ges.json").read_text())["ficha"]["headline"] == "Nuevo"
+    assert len(json.loads((web / "preview/index.json").read_text())["previews"]) == 1
