@@ -35,7 +35,8 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F2"
-BUILDER_VERSION = "f2_index_topic_v5"  # v5 (3-nov-2026): siniestralidad separada, SIL / cotizaciones, Isapres con pérdida
+BUILDER_VERSION = "f2_index_topic_v6"  # v5 (3-nov-2026): siniestralidad separada, SIL / cotizaciones, Isapres con pérdida
+# v6 (4-nov-2026): margen operacional por beneficiario (denominador: cartera F1 de las mismas Isapres y los mismos meses).
 CAPTURE = fc.STORE
 EDITORIAL_RULES = Path("config/editorial_rules_v3.json")
 ESENCIAL_HOLD = "HOLD_COVERAGE_ESENCIAL"
@@ -75,6 +76,15 @@ MM = "MM$"
 # positive base makes a valid % misleading ('2.707,6% más' on 1.215 MM$). Ingresos and costos keep their % (positive base).
 RESULT_ITEMS = frozenset({"resultado_ejercicio", "resultado_antes_impuestos", "ganancia_bruta"})
 MM_DIGITS = 0  # MM$ are displayed as whole numbers (charts: 'digits'; tables: fmt_int); the evidence keeps full precision
+# Margen operacional por beneficiario (F2 v6, roadmap increment 4): (ganancia bruta − gastos de administración y otros
+# gastos por función) / beneficiarios promedio, in pesos, for the same accumulated months. The denominator is the simple
+# mean of the month-end stocks January…t of the same Isapre, read from the F1 cartera capture (one hash, reconciled).
+# A period or perimeter that cannot be matched exactly holds that figure (never approximated); the ficha still publishes.
+PORTFOLIO = Path("data/market/isapre_portfolio.json")
+PRIOR_PORTFOLIO = "data/market/isapre_portfolio_{year}.json"  # previous-year workbooks (market_sources.collect_prior_portfolio)
+CARTERA_METRICS = ("beneficiarios", "cotizantes", "cargas")
+MARGIN_ITEMS = ("ganancia_bruta", "gav")
+GB_TOL_MM = 0.001 + 1e-9  # ganancia bruta = ingresos − costo de ventas, ≤ 1 miles (the parser's own cross-check)
 
 
 def _rules(root: Path) -> dict | None:
@@ -262,6 +272,63 @@ def split_identity_failures(values: dict, whos: list[str], periods: list[str], t
             if abs(parts - values[f"siniestralidad.{w}.{p}"]["value"]) > tol or abs(parts - recomputed) > tol:
                 out.append(f"siniestralidad_split_mismatch:{w}.{p}")
     return out
+
+
+def average_beneficiaries(root: Path, codes: list[str], period: str) -> tuple[dict | None, str | None]:
+    """Month-end beneficiaries January…``period`` of each Isapre in ``codes``, from the F1 cartera capture of that year
+    (the current file, else ``isapre_portfolio_<año>.json``), or (None, reason). Exact match only: one https URL and one
+    SHA-256; every month present with the 10 official codes, integer counts, cotizantes + cargas = beneficiarios and
+    Σ Isapres = the declared 'Total Sistema'; every Isapre of the ficha present in every month."""
+    year, month = sf.period_parts(period)
+    months = [f"{year}-{m:02d}" for m in range(1, month + 1)]
+    for path in (PORTFOLIO, Path(PRIOR_PORTFOLIO.format(year=year))):
+        port = cap._load(Path(root) / path, None)
+        if not port:
+            continue
+        obs = [o for o in port.get("observations") or [] if o.get("metric_id") in CARTERA_METRICS]
+        if not any(str(o.get("period") or "").startswith(f"{year}-") for o in obs):
+            continue
+        shas, urls = {o.get("source_sha256") for o in obs}, {o.get("source_url") for o in obs}
+        if len(shas) != 1 or len(urls) != 1:
+            return None, "cartera_mixed_release"
+        sha, url = next(iter(shas)), next(iter(urls))
+        if not sf.HEX64.fullmatch(str(sha or "")) or not str(url or "").startswith("https://"):
+            return None, "cartera_sin_hash"
+        grid: dict[tuple[str, str], dict[str, dict]] = {}
+        for o in obs:
+            grid.setdefault((o["period"], str(int(o["official_code"]))), {})[o["metric_id"]] = o
+        declared = {c.get("period"): c.get("total_beneficiaries") for c in port.get("coverage") or []}
+        cells: dict[str, dict[str, tuple[int, str]]] = {c: {} for c in codes}
+        for m in months:
+            here = {c for (p, c) in grid if p == m}
+            if not here:
+                return None, f"cartera_sin_mes:{m}"
+            if len(here) != 10:
+                return None, f"cartera_codigos:{m}"
+            if set(codes) - here:
+                return None, f"perimetro_distinto:{m}:{','.join(sorted(set(codes) - here, key=int))}"
+            total = 0
+            for c in here:
+                cell = grid[(m, c)]
+                vals = {k: (cell.get(k) or {}).get("value") for k in CARTERA_METRICS}
+                if any(not isinstance(x, int) or isinstance(x, bool) or x < 0 for x in vals.values()):
+                    return None, f"cartera_conteo:{m}:{c}"
+                if vals["cotizantes"] + vals["cargas"] != vals["beneficiarios"]:
+                    return None, f"cartera_cot_mas_cargas:{m}:{c}"
+                total += vals["beneficiarios"]
+                if c in cells:
+                    o = cell["beneficiarios"]
+                    cells[c][m] = (vals["beneficiarios"], f"{o.get('sheet')}!E{o.get('source_row')}")
+            if declared.get(m) != total:
+                return None, f"cartera_total:{m}"
+        return {"url": url, "sha256": sha, "published_at": port.get("published_at"), "months": months, "cells": cells,
+                "fetched_at": max((o.get("fetched_at") or "") for o in obs) or None, "year": year}, None
+    return None, f"cartera_{year}_no_capturada"
+
+
+def money(x: float) -> str:
+    """Pesos, whole, sign-aware: '$48.120', '−$3.210'."""
+    return ("−" if round(x) < 0 else "") + "$" + fmt_int(abs(x))
 
 
 def _hold(package: dict, failures: list[str], topics: list[str] | None = None) -> dict:
@@ -478,6 +545,54 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
             package["derived_ratios"].append({"id": vid, "value": V(vid), "unit": "count", "entity": None, "signed": False,
                                               "periods": [t], "requires_period": False, "formula": values[vid]["formula"],
                                               "inputs": [], "scope": "system", "period_kind": "ytd", "trivial": True, "base": None})
+    # Margen operacional por beneficiario (v6): numerator from this workbook, denominator from the F1 cartera capture.
+    margin_periods, margin_holds = [], []
+    if "resultados" in topics and set(MARGIN_ITEMS) <= complete:
+        for p in periods_for(MARGIN_ITEMS):
+            base, why = average_beneficiaries(root, codes, p)
+            gb_errs = [c for c in codes if not all(f"{i}.{c}.{p}" in values for i in ("ingresos_operacionales", "costo_operacional"))
+                       or abs(V(f"ganancia_bruta.{c}.{p}") - (V(f"ingresos_operacionales.{c}.{p}") - V(f"costo_operacional.{c}.{p}"))) > GB_TOL_MM]
+            if not base or gb_errs:
+                margin_holds.append({"period": p, "reason": why or f"ganancia_bruta_no_cuadra:{','.join(gb_errs)}"})
+                continue
+            key = "cartera" if p == t else "cartera_prev"
+            sources[key] = sf.source_ref(url=base["url"], sha256=base["sha256"], published_at=base["published_at"],
+                                         fetched_at=base["fetched_at"],
+                                         label=f"SIS · Estadística mensual de cartera de beneficiarios {base['year']} (xlsx)",
+                                         role=f"denominador del margen por beneficiario: beneficiarios a fin de mes, "
+                                              f"enero–{sf.month_name(p)} {p[:4]}",
+                                         locator="hojas mensuales!E · fila de cada Isapre")
+            for c in codes:
+                for m in base["months"]:
+                    x, loc = base["cells"][c][m]
+                    values[f"cartera.{c}.beneficiarios.{m}"] = value(f"cartera.{c}.beneficiarios.{m}", x, unit="personas", period=m,
+                                                                     source=key, locator=loc)
+                ids = [f"cartera.{c}.beneficiarios.{m}" for m in base["months"]]
+                derived(f"benef_prom.{c}.{p}", sum(V(i) for i in ids) / len(ids),
+                        f"promedio simple de los stocks a fin de mes, enero–{sf.month_name(p)}", ids, "personas", p)
+            derived(f"benef_prom.sistema.{p}", sum(V(f"benef_prom.{c}.{p}") for c in codes),
+                    f"Σ beneficiarios promedio de las {len(codes)} Isapres publicadas", [f"benef_prom.{c}.{p}" for c in codes], "personas", p)
+            for w in whos:
+                if V(f"benef_prom.{w}.{p}") <= 0:
+                    return _hold(package, [f"margen_denominator_not_positive:{w}.{p}"], topics)
+                op = derived(f"resultado_operacional.{w}.{p}", V(f"ganancia_bruta.{w}.{p}") - V(f"gav.{w}.{p}"),
+                             "ganancia bruta − gastos de administración y otros gastos por función",
+                             [f"ganancia_bruta.{w}.{p}", f"gav.{w}.{p}"], MM, p)
+                derived(f"margen_beneficiario.{w}.{p}", op * 1_000_000 / V(f"benef_prom.{w}.{p}"),
+                        "resultado operacional (MM$ × 1.000.000) / beneficiarios promedio del mismo período",
+                        [f"resultado_operacional.{w}.{p}", f"benef_prom.{w}.{p}"], "$", p)
+            margin_periods.append(p)
+        if margin_periods:
+            package["reconciliation"]["checks"].append(
+                "margen por beneficiario: mismas Isapres y mismos meses (enero–t) en la cartera F1 (un hash; 10 códigos; "
+                "cotizantes + cargas = beneficiarios; Σ = Total Sistema); ganancia bruta = ingresos − costo de ventas (≤ 1 miles); "
+                "si no calza, esa cifra se retiene")
+        if t in margin_periods and t1 in margin_periods:
+            for w in whos:
+                derived(f"margen_beneficiario.{w}.delta", V(f"margen_beneficiario.{w}.{t}") - V(f"margen_beneficiario.{w}.{t1}"),
+                        "margen(t) − margen(t−12) (sin variación %: es un resultado)",
+                        [f"margen_beneficiario.{w}.{t}", f"margen_beneficiario.{w}.{t1}"], "$")
+    package["margin"] = {"periods": margin_periods, "holds": margin_holds}
     note = parse.get("coverage_note") or {}
     package["entities"] = [{"code": int(c), "name": names[c]} for c in codes]
     package["entity_codes"] = [int(c) for c in codes]
@@ -560,22 +675,42 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                               ["Cambio", sf.fmt_signed(V("resultado_ejercicio.sistema.delta"))]]},
                            "source": "SIS. Los resultados se comparan por niveles y cambio absoluto, sin variación %."})
 
+        mg = has(f"margen_beneficiario.sistema.{t}")
+
         def rrow(w, lab):
             out = [lab, fmt_int(V(f"resultado_ejercicio.{w}.{t}"))]
             if ry:
                 out += [fmt_int(V(f"resultado_ejercicio.{w}.{t1}")), sf.fmt_signed(V(f"resultado_ejercicio.{w}.delta"))]
+            if mg:  # margen operacional por beneficiario (v6), same months, in «Ver datos»
+                out += [fmt_int(V(f"resultado_operacional.{w}.{t}")), fmt_int(V(f"benef_prom.{w}.{t}")),
+                        money(V(f"margen_beneficiario.{w}.{t}"))]
             return out
         ordr = order("resultado_ejercicio")
         charts.append({"id": "f2-resultado-isapres", "form": "diverging", "unit": MM, "digits": MM_DIGITS, "headline": "Resultado por Isapre",
                        "subtitle": f"Millones de pesos, {ytd} {t[:4]}",
                        "rows": [{"label": names[c], "value": V(f"resultado_ejercicio.{c}.{t}"), "ref": f"resultado_ejercicio.{c}.{t}",
                                  "emphasis": V(f"resultado_ejercicio.{c}.{t}") < 0} for c in ordr],
-                       "table": {"columns": ["Isapre", short(t)] + ([short(t1), "Cambio"] if ry else []),
+                       "table": {"columns": ["Isapre", short(t)] + ([short(t1), "Cambio"] if ry else [])
+                                 + ([f"Res. operacional ({MM})", "Benef. promedio", "$ por benef."] if mg else []),
                                  "rows": [rrow(c, names[c]) for c in ordr] + [rrow("sistema", sys_row)]},
-                       "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."})
+                       "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."
+                                 + (" Margen por beneficiario: resultado operacional / beneficiarios promedio (cartera SIS)." if mg else "")})
         tab = {"id": "resultados", "label": "Resultados", "charts": charts, "text": [], "dek": None}
+        topic_kpis = []
+        if mg:
+            M, BP = V(f"margen_beneficiario.sistema.{t}"), V(f"benef_prom.sistema.{t}")
+            m_yoy = has(f"margen_beneficiario.sistema.{t1}")
+            m_lines = [f"{ytd} {t[:4]}; {fmt_int(BP)} beneficiarios promedio"]
+            m_refs = [f"margen_beneficiario.sistema.{t}", f"benef_prom.sistema.{t}"]
+            if m_yoy:
+                m_lines.append(f"{plabel}: {money(V(f'margen_beneficiario.sistema.{t1}'))}")
+                m_refs.append(f"margen_beneficiario.sistema.{t1}")
+            elif ry:  # the workbook a year earlier is verified, its denominator is not: never estimated
+                m_lines.append("a/a pendiente")
+            topic_kpis.append({"id": "tema-margen", "label": "Margen por beneficiario", "value": money(M), "prov": "C",
+                               "lines": m_lines, "refs": m_refs})
         sf.topic_fields(tab, f"{fmt_int(R)} {MM} · {loss_phrase(n_loss)}",
-                        index_refs=[f"resultado_ejercicio.sistema.{t}", "conteo.isapres_con_perdida"], kpis=[])
+                        index_refs=[f"resultado_ejercicio.sistema.{t}", "conteo.isapres_con_perdida"], kpis=topic_kpis)
         tabs.append(tab)
         paragraphs.append(f"Entre enero y {month}, las Isapres registraron una "
                           + (result_phrase(V(f"resultado_ejercicio.sistema.{t1}"), R, plabel) if ry else level_phrase(R)) + ".")
@@ -815,6 +950,19 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              "revisada por una persona; en cada cuenta las Isapres suman la columna total y los componentes su total; ingresos menos "
                              "costo de ventas igualan la ganancia bruta. Las hojas en millones no se usan: mezclan escalas."},
     ]
+    margin = package.get("margin") or {}
+    if t in (margin.get("periods") or []):
+        notes.append({"id": "n4", "text": f"Margen por beneficiario = resultado operacional / beneficiarios promedio, en pesos, acumulado de "
+                                          f"enero a {month}. Resultado operacional = ganancia bruta − gastos de administración y otros "
+                                          f"gastos por función (no incluye otros ingresos, resultado financiero ni impuestos). "
+                                          f"Denominador: promedio simple de los stocks de beneficiarios a fin de mes, de enero a {month}, de "
+                                          f"la misma Isapre, según la estadística mensual de cartera de la SIS (datos provisionales; hash en "
+                                          f"Fuentes); el sistema suma las mismas Isapres de la ficha."})
+    held = [h for h in margin.get("holds") or [] if h["period"] in (t, t1)]
+    if held:
+        notes.append({"id": "n4b", "text": "Margen por beneficiario retenido para " + " y ".join(sf.month_label(h["period"]) for h in held)
+                                           + ": no hay cartera mensual capturada y cuadrada para las mismas Isapres y los mismos meses. "
+                                           "Alicanto no lo aproxima."})
     opn = [c for c in codes if c not in closed]
     if ("sil" in topics and closed and opn and has(f"aporte_share.sistema.{t}")
             and min(V(f"aporte_share.{c}.{t}") for c in closed) > max(V(f"aporte_share.{c}.{t}") for c in opn)):

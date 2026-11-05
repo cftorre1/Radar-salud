@@ -125,7 +125,33 @@ class Links(HTMLParser):
         if tag=='a' and self.href is not None:
             self.links.append((self.href,' '.join(''.join(self.label).split())));self.href=None
 
-def period_seeds(seeds, as_of):
+PRIOR_PORTFOLIO='data/market/isapre_portfolio_{year}.json'
+
+
+def prior_portfolio_complete(year, root=None):
+    """True when the previous-year cartera workbook is already captured with its 12 months from one hash: the seed is
+    then skipped (the annual file is final; no daily re-download)."""
+    try:
+        data=json.loads((Path(root or '.')/PRIOR_PORTFOLIO.format(year=year)).read_text(encoding='utf-8'))
+    except (OSError,ValueError):
+        return False
+    periods={c.get('period') for c in data.get('coverage') or []}
+    shas={o.get('source_sha256') for o in data.get('observations') or []}
+    return periods=={f'{year}-{m:02d}' for m in range(1,13)} and len(shas)==1
+
+
+def prior_year_seed(seed, seeds, root=None):
+    """'cartera_release_prior': {prior_year} = the year of the current 'cartera_release' page − 1. None when that year
+    cannot be read from the current seed or its file is already complete."""
+    current=next((s['url'] for s in seeds if s.get('kind')=='cartera_release'),'')
+    m=re.search(r'ano-(20\d{2})/?$',current)
+    if not m or '{prior_year}' not in seed['url']:return None
+    year=int(m[1])-1
+    if prior_portfolio_complete(year,root):return None
+    return dict(seed,url=seed['url'].replace('{prior_year}',str(year)),prior_year=year)
+
+
+def period_seeds(seeds, as_of, root=None):
     """Refresh the actual search window; quarter selection is not a release date."""
     result=[]
     reference=as_of-timedelta(days=45)
@@ -136,6 +162,10 @@ def period_seeds(seeds, as_of):
     by_rut={}
     for original in seeds:
         seed=dict(original)
+        if seed.get('kind')=='cartera_release_prior':
+            seed=prior_year_seed(seed,seeds,root)
+            if seed:result.append(seed)
+            continue
         if seed['kind']=='essential_90d':
             values={k:v[0] for k,v in parse_qs(seed['post']).items()}
             start=as_of-timedelta(days=89)

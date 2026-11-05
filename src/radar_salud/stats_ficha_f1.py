@@ -7,7 +7,9 @@ Inputs already captured and reconciled by the data lanes:
 Rules from the registry (config/stats_fichas_v1.json, F1):
 - each month is a stock: values are never summed across months;
 - market share uses only the 7 open Isapres as denominator;
-- the year-on-year comparison stays 'pendiente' until monthly 2025 data is captured.
+- the year-on-year comparison (F1 v10, 4-nov-2026) is the same month one year earlier, read only from the SIS monthly
+  workbook of the previous year captured by the cartera lane (``data/market/isapre_portfolio_<año>.json``, one hash,
+  the same reconciliation as the current file); without that base the ficha says 'a/a pendiente', never an estimate.
 """
 from __future__ import annotations
 
@@ -22,8 +24,10 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, fmt_signed, month_label, month_name, value
 
 FAMILY = "F1"
-BUILDER_VERSION = "f1_index_topic_v9"  # a new builder republishes the same release (no archive, no new paid Lectura)
+BUILDER_VERSION = "f1_index_topic_v10"  # a new builder republishes the same release (no archive, no new paid Lectura)
 # v9 (3-nov-2026): tema «Concentración» (participación e HHI de las Isapres abiertas).
+# v10 (4-nov-2026): comparación a/a (mismo mes del año anterior) desde la planilla SIS del año anterior capturada.
+PRIOR_PORTFOLIO = "data/market/isapre_portfolio_{year}.json"  # written by market_sources.collect_isapres
 METRIC_COL = {"cotizantes": "C", "cargas": "D", "beneficiarios": "E"}
 SHARE_SUM_TOL = 0.05  # pp: Σ participaciones de las abiertas = 100 ± 0,05 (registry F1.kpis.hhi)
 SHARE_CAPTURE_TOL = 0.0005  # pp: share recomputed here vs. the lane's captured beneficiary_share
@@ -88,6 +92,51 @@ def _contiguous(periods: list[str]) -> bool:
     keys = [sf.period_parts(p) for p in periods]
     idx = [y * 12 + m for y, m in keys]
     return all(b - a == 1 for a, b in zip(idx, idx[1:]))
+
+
+def prior_year_base(root: Path, t: str, codes: set[int]) -> tuple[dict | None, str | None]:
+    """The same month one year earlier (t−12), from the captured SIS workbook of the previous year, or (None, reason).
+
+    Fails closed, with the reason the ficha records ('a/a pendiente'): the file must exist, come from one https URL with
+    one SHA-256, contain only months of that year, hold t−12 with exactly the 10 official codes, integer counts with
+    cotizantes + cargas = beneficiarios per Isapre, and a declared 'Total Sistema' equal to the sum. Never estimated."""
+    year = sf.period_parts(t)[0] - 1
+    p = sf.shift_period(t, -12)
+    port = _load(root / PRIOR_PORTFOLIO.format(year=year))
+    if not port:
+        return None, f"base_{year}_no_capturada"
+    obs = [o for o in port.get("observations") or [] if o.get("metric_id") in METRIC_COL]
+    shas = {o.get("source_sha256") for o in obs}
+    urls = {o.get("source_url") for o in obs}
+    if len(shas) != 1 or len(urls) != 1:
+        return None, f"base_{year}_mixed_release"
+    sha, url = next(iter(shas)), next(iter(urls))
+    if not sf.HEX64.fullmatch(str(sha or "")) or not str(url or "").startswith("https://"):
+        return None, f"base_{year}_sin_hash"
+    if any(not str(o.get("period") or "").startswith(f"{year}-") for o in obs):
+        return None, f"base_{year}_period_outside_year"
+    cells: dict[int, dict[str, dict]] = defaultdict(dict)
+    for o in obs:
+        if o["period"] == p:
+            cells[int(o["official_code"])][o["metric_id"]] = o
+    if not cells:
+        return None, f"base_sin_{p}"
+    if set(cells) != codes:
+        return None, f"base_codes_{p}"
+    for c, cell in cells.items():
+        if set(cell) != set(METRIC_COL):
+            return None, f"base_metrics_{p}_{c}"
+        vals = {m: o.get("value") for m, o in cell.items()}
+        if any(not isinstance(x, int) or isinstance(x, bool) or x < 0 for x in vals.values()):
+            return None, f"base_count_{p}_{c}"
+        if vals["cotizantes"] + vals["cargas"] != vals["beneficiarios"]:
+            return None, f"base_cot_plus_cargas_{p}_{c}"
+    declared = {c.get("period"): c.get("total_beneficiaries") for c in port.get("coverage") or []}.get(p)
+    total = sum(cells[c]["beneficiarios"]["value"] for c in codes)
+    if not isinstance(declared, int) or declared != total:
+        return None, f"base_total_{p}"
+    return {"year": year, "period": p, "url": url, "sha256": sha, "published_at": port.get("published_at"),
+            "fetched_at": max((o.get("fetched_at") or "") for o in obs) or None, "cells": cells, "total": declared}, None
 
 
 def _regional_release(root: Path, period: str) -> dict | None:
@@ -389,6 +438,51 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                 source=car.get("sha256")) for r in car.get("series", [])}}
     revisions = sf.detect_revisions(package, previous_evidence)
 
+    # Year on year (F1 v10): the same month one year earlier, only from the captured previous-year SIS workbook.
+    base_aa, aa_reason = prior_year_base(root, t, open_codes | closed_codes)
+    if base_aa:
+        pa = base_aa["period"]
+        sources["cartera_prev"] = sf.source_ref(
+            url=base_aa["url"], sha256=base_aa["sha256"], published_at=base_aa["published_at"], fetched_at=base_aa["fetched_at"],
+            label=f"SIS · Estadística mensual de cartera de beneficiarios {base_aa['year']} (xlsx)",
+            role=f"beneficiarios por Isapre en {month_label(pa)} (mismo mes del año anterior)",
+            locator=f"{base_aa['cells'][67]['beneficiarios'].get('sheet')}!E · fila Total Sistema")
+        for c in sorted(open_codes | closed_codes):
+            o = base_aa["cells"][c]["beneficiarios"]
+            values[f"aa.cartera.{c}.beneficiarios.{pa}"] = value(
+                f"aa.cartera.{c}.beneficiarios.{pa}", o["value"], unit="personas", period=pa, source="cartera_prev",
+                locator=f"{o.get('sheet')}!E{o.get('source_row')}")
+        values[f"aa.declarado.beneficiarios.{pa}"] = value(
+            f"aa.declarado.beneficiarios.{pa}", base_aa["total"], unit="personas", period=pa, source="cartera_prev",
+            locator=f"{base_aa['cells'][67]['beneficiarios'].get('sheet')}!E · Total Sistema")
+        b_aa = derived(f"aa.sistema.beneficiarios.{pa}", sum(base_aa["cells"][c]["beneficiarios"]["value"] for c in open_codes | closed_codes),
+                       "Σ beneficiarios de los 10 códigos, mismo mes del año anterior",
+                       [f"aa.cartera.{c}.beneficiarios.{pa}" for c in sorted(open_codes | closed_codes)], period=pa)
+        yoy = derived("sistema.beneficiarios.yoy", B[t] - b_aa, f"stock({t}) − stock({pa})",
+                      [f"sistema.beneficiarios.{t}", f"aa.sistema.beneficiarios.{pa}"])
+        derived("sistema.beneficiarios.yoy_pct", yoy / b_aa * 100, "Δ a/a / stock(t−12) × 100",
+                ["sistema.beneficiarios.yoy", f"aa.sistema.beneficiarios.{pa}"], unit="%")
+        for c in sorted(open_codes | closed_codes):
+            b0 = base_aa["cells"][c]["beneficiarios"]["value"]
+            d = derived(f"delta.{c}.yoy", grid[(t, c)]["beneficiarios"]["value"] - b0, f"stock({t}) − stock({pa})",
+                        [f"cartera.{c}.beneficiarios.{t}", f"aa.cartera.{c}.beneficiarios.{pa}"])
+            if b0 > 0:
+                derived(f"delta.{c}.yoy_pct", d / b0 * 100, "Δ a/a / stock(t−12) × 100",
+                        [f"delta.{c}.yoy", f"aa.cartera.{c}.beneficiarios.{pa}"], unit="%")
+        closed_aa = derived(f"aa.cerradas.beneficiarios.{pa}", sum(base_aa["cells"][c]["beneficiarios"]["value"] for c in closed_codes),
+                            "Σ beneficiarios de las 3 cerradas", [f"aa.cartera.{c}.beneficiarios.{pa}" for c in sorted(closed_codes)], period=pa)
+        dc = derived("delta.cerradas.yoy", sum(values[f"delta.{c}.yoy"]["value"] for c in closed_codes), "Σ Δ a/a de las 3 cerradas",
+                     [f"delta.{c}.yoy" for c in sorted(closed_codes)])
+        if closed_aa > 0:
+            derived("delta.cerradas.yoy_pct", dc / closed_aa * 100, "Δ a/a / stock(t−12) × 100",
+                    ["delta.cerradas.yoy", f"aa.cerradas.beneficiarios.{pa}"], unit="%")
+        if sum(values[f"delta.{c}.yoy"]["value"] for c in open_codes | closed_codes) != yoy:
+            raise ValueError("yoy_isapres_not_equal_system")
+        package["reconciliation"]["checks"].append(
+            f"a/a: {month_label(pa)} de la planilla SIS {base_aa['year']} (un hash; 10 códigos; cotizantes + cargas = beneficiarios; "
+            "Σ Isapres = Total Sistema declarado)")
+    package["yoy"] = ({"status": "ok", "period": base_aa["period"]} if base_aa else {"status": "pendiente", "reason": aa_reason})
+
     constants = [th_b["mm_pct"], th_b["yoy_pct"], th_mix["abs_delta"], th_share["pp"], th_share["min_persons"], th_con["share_pct"],
                  th_con["min_system_delta"], kp["movilidad"]["threshold"]["rate_change_pp"], len(open_codes), len(closed_codes),
                  len(open_codes | closed_codes), 12, cot_streak, streak_neg, need, len(months), HHI_MAX]
@@ -547,6 +641,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     month, base_month, prev_month = month_name(t), month_name(base), month_name(prev)
     conc = next((f for f in package["findings"] if f["type"] == "concentration"), None)
     cot_up = k["cot_sustained"] and k["cmm"][t] > 0
+    aa = (package.get("yoy") or {}).get("status") == "ok" and "sistema.beneficiarios.yoy" in v
+    pa = package["yoy"]["period"] if aa else sf.shift_period(t, -12)
+    aa_label = month_label(pa)  # 'agosto 2025'
 
     # Headline
     pick = _pick_headline(package["findings"], cfg["headline_priority"])
@@ -570,18 +667,30 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     dek = tpl["dek"].format(month=month, benef=fmt_int(k["B"][t]), delta_ytd_abs=fmt_int(abs(ytd)),
                             more_less="menos" if ytd < 0 else "más", base_month=base_month,
                             cot_clause=cot_clause, concentration_clause=conc_clause)
+    if aa:  # the year-on-year change joins the first sentence only while the dek stays within 40 words
+        yv = v["sistema.beneficiarios.yoy"]["value"]
+        clause = (f" y {fmt_int(abs(yv))} {'menos' if yv < 0 else 'más'} que en {aa_label}" if yv else f" e igual que en {aa_label}")
+        anchor = f"que en {base_month}."
+        candidate = dek.replace(anchor, f"que en {base_month}{clause}.", 1) if anchor in dek else dek
+        if len(candidate.split()) <= 40:
+            dek = candidate
     dek_emphasis = tpl["dek_emphasis"].format(benef=fmt_int(k["B"][t]))
 
     # KPI strip
     th_b = kp["beneficiarios"]["threshold"]
     b_crossed = abs(mm_pct) >= th_b["mm_pct"]
+    b_lines = [f"{fmt_signed(mm_t)} vs. {prev_month} ({fmt_dec(mm_pct, 2, signed=True)}%)",
+               f"{fmt_signed(ytd)} desde {base_month} ({fmt_dec(ytd_pct, 2, signed=True)}%)"]
+    b_refs = [f"sistema.beneficiarios.{t}", f"sistema.beneficiarios.mm.{t}", "sistema.beneficiarios.ytd"]
+    if aa:
+        b_lines.append(f"{fmt_signed(v['sistema.beneficiarios.yoy']['value'])} vs. {aa_label} "
+                       f"({fmt_dec(v['sistema.beneficiarios.yoy_pct']['value'], 2, signed=True)}%)")
+        b_refs += ["sistema.beneficiarios.yoy", "sistema.beneficiarios.yoy_pct"]
+    badge = "Cruza umbral (0,25% m/m)" if b_crossed else "Sin umbral cruzado"
     kpis = [{
-        "id": "beneficiarios", "label": "Beneficiarios", "value": fmt_int(k["B"][t]), "prov": "C",
-        "lines": [f"{fmt_signed(mm_t)} vs. {prev_month} ({fmt_dec(mm_pct, 2, signed=True)}%)",
-                  f"{fmt_signed(ytd)} desde {base_month} ({fmt_dec(ytd_pct, 2, signed=True)}%)"],
-        "badge": "Cruza umbral (0,25% m/m)" if b_crossed else "Sin umbral cruzado · a/a pendiente",
-        "badge_kind": "crossed" if b_crossed else "muted",
-        "refs": [f"sistema.beneficiarios.{t}", f"sistema.beneficiarios.mm.{t}", "sistema.beneficiarios.ytd"]}]
+        "id": "beneficiarios", "label": "Beneficiarios", "value": fmt_int(k["B"][t]), "prov": "C", "lines": b_lines,
+        "badge": badge if aa else badge + " · a/a pendiente",
+        "badge_kind": "crossed" if b_crossed else "muted", "refs": b_refs}]
     cmm = k["cmm"]
     cot_lines = [f"{fmt_signed(cmm[t])} vs. {prev_month}"]
     if k["cot_sustained"]:
@@ -621,11 +730,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                 [[sf.month_short(p), fmt_signed(k["mm"][p]), fmt_int(k["B"][p])] for p in months]},
               "source": "SIS, estadística mensual de cartera (datos provisionales). La diferencia mensual la calcula Alicanto."}
     rows2 = [{"label": names[c], "value": k["deltas"][c], "ref": f"delta.{c}.ytd", "base": v[f"cartera.{c}.beneficiarios.{base}"]["value"],
-              "pct_ref": f"delta.{c}.ytd_pct", "cot_ref": f"delta.{c}.cotizantes.ytd", "car_ref": f"delta.{c}.cargas.ytd"}
+              "pct_ref": f"delta.{c}.ytd_pct", "cot_ref": f"delta.{c}.cotizantes.ytd", "car_ref": f"delta.{c}.cargas.ytd",
+              "yoy_ref": f"delta.{c}.yoy"}
              for c in package["entity_codes"] if c in set(cfg["open_codes"])]
     rows2.append({"label": f"Cerradas ({len(cfg['closed_codes'])})", "value": v["delta.cerradas.ytd"]["value"], "ref": "delta.cerradas.ytd",
                   "base": v[f"cerradas.beneficiarios.{base}"]["value"], "pct_ref": "delta.cerradas.ytd_pct",
-                  "cot_ref": "delta.cerradas.cotizantes.ytd", "car_ref": "delta.cerradas.cargas.ytd"})
+                  "cot_ref": "delta.cerradas.cotizantes.ytd", "car_ref": "delta.cerradas.cargas.ytd", "yoy_ref": "delta.cerradas.yoy"})
     for r in rows2:  # Cotizantes + Cargas = Cambio on every row of the table (Dirección 29-oct)
         if v[r["cot_ref"]]["value"] + v[r["car_ref"]]["value"] != r["value"]:
             raise ValueError(f"table_cot_plus_cargas:{r['label']}")
@@ -634,14 +744,20 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     n_up = next(int(r["value"]) for r in package["derived_ratios"] if r["id"] == "conteo.abiertas_crecen")
     c2_head = (f"Una Isapre concentra la {'baja' if ytd < 0 else 'variación'}" + (f"; {sf.count_phrase(n_up, 'crece', 'crecen')}" if n_up else "")
                if conc else "Cambio de beneficiarios por Isapre")
+    def aa_cells(ref: str) -> list[str]:  # 'Ver datos' a/a columns (F1 v10): only with the captured previous-year base
+        if not aa:
+            return []
+        pct_id = ref + "_pct"
+        return [fmt_signed(v[ref]["value"]), (fmt_dec(v[pct_id]["value"], 2, signed=True) + "%") if pct_id in v else "N/A"]
+    aa_cols = [f"Cambio vs. {aa_label}", "% a/a"] if aa else []
     chart2 = {"id": "f1-isapres", "form": "diverging", "headline": c2_head,
               "subtitle": f"Cambio de beneficiarios entre {base_month} y {month}, por Isapre", "unit": "personas",
-              "rows": [{**r, "emphasis": r["value"] > 0} for r in rows2],
-              "table": {"columns": ["Isapre", "Cambio", "Cotizantes", "Cargas", f"% vs. {base_month}"],
+              "rows": [{**{x: y for x, y in r.items() if x != "yoy_ref"}, "emphasis": r["value"] > 0} for r in rows2],
+              "table": {"columns": ["Isapre", "Cambio", "Cotizantes", "Cargas", f"% vs. {base_month}"] + aa_cols,
                         "rows": [[r["label"], fmt_signed(r["value"]), fmt_signed(v[r["cot_ref"]]["value"]), fmt_signed(v[r["car_ref"]]["value"]),
-                                  fmt_dec(v[r["pct_ref"]]["value"], 2, signed=True) + "%"] for r in rows2]
+                                  fmt_dec(v[r["pct_ref"]]["value"], 2, signed=True) + "%"] + aa_cells(r["yoy_ref"]) for r in rows2]
                                 + [["Sistema", fmt_signed(ytd), fmt_signed(v["sistema.cotizantes.ytd"]["value"]), fmt_signed(v["sistema.cargas.ytd"]["value"]),
-                                    fmt_dec(ytd_pct, 2, signed=True) + "%"]]},
+                                    fmt_dec(ytd_pct, 2, signed=True) + "%"] + aa_cells("sistema.beneficiarios.yoy")]},
               "source": "SIS, cartera por Isapre. Las cerradas (Isalud, Fundación, Cruz del Norte) van agrupadas."}
 
     # Qué muestran los datos (3 sentences)
@@ -814,7 +930,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     # Notas sobre la evidencia (fixed pitfalls + dynamic)
     notes = [
-        {"id": "n1", "text": f"Son stocks al cierre de mes y no se suman. Los datos de la SIS son provisionales. La comparación contra {month} del año anterior queda pendiente: Alicanto no tiene capturada la serie mensual del año anterior."},
+        {"id": "n1", "text": (f"Son stocks al cierre de mes y no se suman. Los datos de la SIS son provisionales. La comparación a/a resta el "
+                              f"stock de {aa_label}, leído de la planilla mensual {pa[:4]} de la SIS (hash en Fuentes), con las mismas "
+                              "reglas de cuadre que el año en curso." if aa else
+                              f"Son stocks al cierre de mes y no se suman. Los datos de la SIS son provisionales. A/a pendiente: la comparación "
+                              f"contra {aa_label} espera la planilla mensual {pa[:4]} de la SIS, capturada y cuadrada; Alicanto no la estima.")},
         {"id": "n2", "text": f"La participación usa como denominador solo las 7 Isapres abiertas ({fmt_int(v[f'abiertas.beneficiarios.{t}']['value'])} en {month}). Las cerradas (Isalud, Fundación, Cruz del Norte) atienden poblaciones cautivas y no compiten. 'Banmédica' es la Isapre, no el grupo controlador."},
     ]
     if "movilidad.diferencia_intervalo" in v:
