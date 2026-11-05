@@ -40,7 +40,8 @@ FILE_HOST = "datos.superdesalud.gob.cl"
 UA = "AlicantoSaludBot/1.0 (+https://alicantosalud.cl; datos abiertos SIS, lectura acotada)"
 # Prestaciones: Dirección allowed "~400 MB"; run 41962408457 showed the 2026t2 ZIP is 458,865,683 bytes
 # (Content-Length), so the bound is 460 MiB (482 MB). Integration owner to confirm or revert.
-MAX_BYTES = {"Prestaciones Bonificadas": 460 * 1024 * 1024, "Licencias Medicas": 60 * 1024 * 1024}
+MAX_BYTES = {"Prestaciones Bonificadas": 460 * 1024 * 1024, "Licencias Medicas": 60 * 1024 * 1024,
+             "Arancel Isapre": 20 * 1024 * 1024}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
 
 PRICE_MIN_PROVIDERS = 3
@@ -234,8 +235,12 @@ def is_fonasa(pertenencia: str) -> bool:
 
 
 class PrestacionesAgg:
-    def __init__(self, ids_only: bool = False):
+    def __init__(self, ids_only: bool = False, focus: Iterable[str] = ()):
         self.ids_only = ids_only
+        self.focus = set(focus)
+        self.focus_cells: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0])  # (cod, reg, prov)
+        self.focus_isapre: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0])        # (cod, reg, prov, isapre)
+        self.focus_meta: dict[str, Counter] = defaultdict(Counter)
         self.err: Counter = Counter()
         self.prov_isapres: dict[str, set] = defaultdict(set)
         self.prov_fact: dict[str, float] = defaultdict(float)
@@ -278,6 +283,14 @@ class PrestacionesAgg:
         if prov in NO_PROVIDER:
             return
         self.region_prov[(region, prov)] += fact
+        if self.focus and f[P_CODIGO].strip() in self.focus:
+            codigo = f[P_CODIGO].strip()
+            fc = self.focus_cells[(codigo, region, prov)]
+            fc[0] += fact; fc[1] += bonif; fc[2] += copago; fc[3] += freq; fc[4] += 1
+            fi = self.focus_isapre[(codigo, region, prov, isapre)]
+            fi[0] += bonif; fi[1] += fact; fi[2] += freq
+            self.focus_meta[codigo]["pertenencia=" + f[P_PERTENENCIA].strip()] += 1
+            self.focus_meta[codigo]["tipo_atencion=" + atencion] += 1
         if is_fonasa(f[P_PERTENENCIA]):
             self.fonasa_rows += 1
             codigo = f[P_CODIGO].strip()
@@ -418,6 +431,60 @@ class PrestacionesAgg:
         return {"definicion": "HHI sobre facturado entre prestadores (seudónimos) de la región del prestador, escala "
                               "0-10000; top5/top1 share de facturado. NACIONAL suma cada prestador entre regiones.",
                 "regiones": out}
+
+    def focus_report(self) -> dict:
+        """Worked example per focus code: national and by region, disclosure rule applied (Dirección 5-nov)."""
+        out = {}
+        for codigo in sorted(self.focus):
+            provs: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0])
+            for (c, reg, prov), v in self.focus_cells.items():
+                if c != codigo:
+                    continue
+                for key in ((reg, prov), ("NACIONAL", prov)):
+                    for k in range(5):
+                        provs[key][k] += v[k]
+            isap: dict[tuple, dict] = defaultdict(dict)
+            for (c, reg, prov, i), v in self.focus_isapre.items():
+                if c != codigo:
+                    continue
+                for key in ((reg, prov), ("NACIONAL", prov)):
+                    t = isap[key].setdefault(i, [0.0, 0.0, 0.0])
+                    for k in range(3):
+                        t[k] += v[k]
+            regions = sorted({k[0] for k in provs}, key=lambda x: (x != "NACIONAL", x))
+            rows = []
+            for reg in regions:
+                cell = [(prov, v) for (rg, prov), v in provs.items() if rg == reg and v[3] > 0 and v[0] > 0]
+                n, freq = len(cell), sum(v[3] for _, v in cell)
+                fact, bonif, cop = (sum(v[k] for _, v in cell) for k in range(3))
+                row: dict = {"region": reg, "n_prestadores": n, "frecuencia": round(freq)}
+                if n >= PRICE_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ:
+                    u = sorted(v[0] / v[3] for _, v in cell)
+                    row.update(estado="publicable", precio_mediana=r(quantile(u, .5), 0),
+                               precio_p25=r(quantile(u, .25), 0), precio_p75=r(quantile(u, .75), 0),
+                               facturado=round(fact), pct_bonificado=pct(bonif, fact), pct_copago=pct(cop, fact))
+                    # same pseudonymous provider, >=2 Isapres: index of each Isapre's bonificado/frecuencia
+                    idx: dict[str, list] = defaultdict(list)
+                    for prov, _ in cell:
+                        by = {i: v for i, v in isap[(reg, prov)].items() if v[2] > 0}
+                        if len(by) < 2:
+                            continue
+                        mb = sum(v[0] / v[2] for v in by.values()) / len(by)
+                        if mb <= 0:
+                            continue
+                        for i, v in by.items():
+                            idx[i].append((v[0] / v[2] / mb - 1) * 100)
+                    row["indice_isapre_mismo_prestador"] = [
+                        {"isapre": i, "n_prestadores": len(v), "indice_bonif_unit_mediana_pct": r(quantile(sorted(v), .5))}
+                        for i, v in sorted(idx.items()) if len(v) >= PRICE_MIN_PROVIDERS]
+                elif n <= 2:
+                    row.update(estado="concentracion_revision_direccion",
+                               share_prestador_mayor_pct=pct(max(v[3] for _, v in cell), freq) if cell else None)
+                else:
+                    row["estado"] = "suprimido_frecuencia_menor_30"
+                rows.append(row)
+            out[codigo] = {"perfil_filas": dict(self.focus_meta[codigo].most_common(12)), "filas": rows}
+        return out
 
     def id_summary(self) -> dict:
         n = len(self.prov_isapres)
@@ -684,8 +751,35 @@ def write_json(path: Path, obj) -> None:
     path.write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
 
 
+def arancel_descriptions(path: Path, codes: set[str], rec: dict) -> dict:
+    """Verbatim descriptions of focus codes from the Arancel Isapre file (code = field 6, description = field 8,
+    as seen in the probe header line). Nothing is inferred."""
+    found: dict[str, Counter] = defaultdict(Counter)
+    reader = RowReader(17)
+    with zipfile.ZipFile(path) as zf:
+        rec["zip_members"] = [{"name": i.filename, "size": i.file_size} for i in zf.infolist()]
+        for info in zf.infolist():
+            if info.is_dir():
+                continue
+            with zf.open(info) as stream:
+                for raw in stream:
+                    reader.lines += 1
+                    try:
+                        line = raw.decode("utf-8")
+                    except UnicodeDecodeError:
+                        line = raw.decode("latin-1")
+                    f = line.rstrip("\r\n").split("|")
+                    reader.field_hist[len(f)] += 1
+                    if len(f) > 8 and f[5].strip() in codes:
+                        found[f[5].strip()][(f[7].strip(), f[8].strip())] += 1
+    rec["parse"] = {"lines_read": reader.lines, "field_count_histogram": dict(reader.field_hist.most_common(5))}
+    return {c: [{"descripcion": d, "clasificacion": k, "filas_isapre_plan": n} for (d, k), n in found[c].most_common(5)]
+            for c in sorted(codes)}
+
+
 def run(period: str, prev: str | None, out: Path, local: dict[str, Path] | None = None,
-        which: Iterable[str] = ("prestaciones", "licencias")) -> dict:
+        which: Iterable[str] = ("prestaciones", "licencias"), focus: Iterable[str] = ("0405001",),
+        arancel_year: str = "2026") -> dict:
     receipts: dict = {"generated_at": datetime.now(timezone.utc).isoformat(), "user_agent": UA,
                       "github_run_id": os.environ.get("GITHUB_RUN_ID"), "github_sha": os.environ.get("GITHUB_SHA"),
                       "period": period, "previous_period": prev, "files": []}
@@ -711,7 +805,7 @@ def run(period: str, prev: str | None, out: Path, local: dict[str, Path] | None 
 
     try:
         if "prestaciones" in which:
-            cur = PrestacionesAgg()
+            cur = PrestacionesAgg(focus=focus)
             p, rec = fetch("Prestaciones Bonificadas", period, f"prest_{period}")
             if p:
                 process_zip(p, PREST_N, cur.add, rec)
@@ -738,6 +832,14 @@ def run(period: str, prev: str | None, out: Path, local: dict[str, Path] | None 
                 write_json(out / f"prestaciones_{period}_precios_fonasa_region.json", {**meta, **cur.price_table()})
                 write_json(out / f"prestaciones_{period}_indice_isapre_mismo_prestador.json",
                            {**meta, **cur.cross_isapre()})
+                fx: dict = {**meta, "codigos": cur.focus_report()}
+                ap, arec = fetch("Arancel Isapre", arancel_year, f"arancel_{arancel_year}")
+                if ap:
+                    fx["descripcion_arancel_isapre"] = arancel_descriptions(ap, set(focus), arec)
+                    fx["sha256_arancel"] = arec["sha256"]
+                    drop(ap)
+                receipts["files"].append(arec)
+                write_json(out / f"prestaciones_{period}_ejemplo_codigos.json", fx)
                 write_json(out / f"prestaciones_{period}_consistencia_ids.json",
                            {**meta, "periodo_anterior": prev,
                             **({"sha256_archivo_anterior": prec.get("sha256")} if prev_agg else {}),

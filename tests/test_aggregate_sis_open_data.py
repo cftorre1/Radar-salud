@@ -162,10 +162,11 @@ def test_run_end_to_end_local(tmp_path):
     lz = make_zip(tmp_path / "l.zip", "Licencias_Medicas_2026t2.txt", [lic_row() for _ in range(12)], "utf-8")
     out = tmp_path / "out"
     rec = agg.run("2026t2", "2026t1", out, local={"prest_2026t2": pz, "prest_2026t1": pz1, "lic_2026t2": lz})
-    assert [f["parse"]["rows_ok"] for f in rec["files"]] == [6, 1, 12]
-    assert all(len(f["sha256"]) == 64 for f in rec["files"])
+    assert [f.get("parse", {}).get("rows_ok") for f in rec["files"]] == [6, 1, None, 12]
+    assert all(len(f["sha256"]) == 64 for f in rec["files"] if "error" not in f)
     names = sorted(p.name for p in out.iterdir())
     assert names == ["licencias_2026t2.json", "prestaciones_2026t2_consistencia_ids.json",
+                     "prestaciones_2026t2_ejemplo_codigos.json",
                      "prestaciones_2026t2_indice_isapre_mismo_prestador.json",
                      "prestaciones_2026t2_precios_fonasa_region.json", "prestaciones_2026t2_resumen.json",
                      "receipts_2026t2_licencias+prestaciones.json"]
@@ -173,3 +174,30 @@ def test_run_end_to_end_local(tmp_path):
     assert "SECRET" not in blob
     ids = json.loads((out / "prestaciones_2026t2_consistencia_ids.json").read_text())
     assert ids["entre_trimestres"]["pct_overlap_sobre_actual"] == pytest.approx(33.33)
+
+
+def test_focus_code_worked_example():
+    a = agg.PrestacionesAgg(focus=["0405001"])
+    for prov, unit in (("A", 100), ("B", 200), ("C", 300)):
+        a.add(prest_row(prov=prov, codigo="0405001", isapre="67", freq=10, fact=unit * 10, bonif=unit * 6,
+                        copago=unit * 4))
+        a.add(prest_row(prov=prov, codigo="0405001", isapre="78", freq=10, fact=unit * 10, bonif=unit * 4,
+                        copago=unit * 6))
+    a.add(prest_row(prov="D", codigo="0405001", region="5", freq=50, fact=5000))
+    rep = a.focus_report()["0405001"]
+    rows = {x["region"]: x for x in rep["filas"]}
+    r13 = rows["13"]
+    assert r13["estado"] == "publicable" and r13["precio_mediana"] == 200 and r13["pct_bonificado"] == 50.0
+    idx = {x["isapre"]: x["indice_bonif_unit_mediana_pct"] for x in r13["indice_isapre_mismo_prestador"]}
+    assert idx == {"67": 20.0, "78": -20.0}
+    assert rows["5"]["estado"] == "concentracion_revision_direccion" and "precio_mediana" not in rows["5"]
+    assert "pct_bonificado" not in rows["5"]
+    assert rows["NACIONAL"]["n_prestadores"] == 4
+
+
+def test_arancel_description_is_verbatim(tmp_path):
+    line = "76|202604|202603|ISAPRE|UF|0405001|0|DESCRIPCION X|Prestaci\u00f3n Incluida en el Arancel Fonasa| | | |1.10|0.00|0|0|2026|"
+    z = make_zip(tmp_path / "a.zip", "a.txt", [line, line.replace("0405001", "0101001")])
+    out = agg.arancel_descriptions(z, {"0405001"}, {})
+    assert out == {"0405001": [{"descripcion": "DESCRIPCION X",
+                                "clasificacion": "Prestaci\u00f3n Incluida en el Arancel Fonasa", "filas_isapre_plan": 1}]}
