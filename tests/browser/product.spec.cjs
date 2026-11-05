@@ -480,7 +480,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  {const radar=await (await page.request.get('/data/radar_today.json')).json();
   const ficha=radar.signals.find(s=>s.stats_ficha&&s.stats_ficha.family==='F1');
   expect(ficha).toBeTruthy();
-  await expect(page.locator('article[data-card]').filter({hasText:`Datos a ${ficha.data_period}`})).toHaveCount(1);
+  await expect(page.locator(`article[data-card="stats-ficha:F1:${ficha.data_period}"]`)).toHaveCount(1);
   const MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const periodOf=t=>{const m=String(t).toLowerCase().match(/– (\p{L}+) (20\d\d)$/u);const i=m?MONTHS.indexOf(m[1]):-1;return i<0?null:`${m[2]}-${String(i+1).padStart(2,'0')}`;};
   const regional=radar.signals.filter(s=>String(s.title).includes('Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'));
