@@ -1,0 +1,40 @@
+name: SIS open data probe
+
+# Dirección 4-nov-2026: receipts of the SIS open data files (one recent file per dataset). Runs only on its own
+# branch; it never touches staging data. The report is uploaded and committed to this branch.
+on:
+  push:
+    branches: [claude/sis-open-data-probe]
+    paths:
+      - .github/workflows/sis-open-data-probe.yml
+      - scripts/probe_sis_open_data.py
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    if: github.ref == 'refs/heads/claude/sis-open-data-probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/sis-open-data-probe
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Probe one recent file per dataset (robots.txt honoured)
+        run: python scripts/probe_sis_open_data.py --output "data/audits/sis_open_data_probe/${GITHUB_RUN_ID}.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sis-open-data-probe-${{ github.run_id }}
+          path: data/audits/sis_open_data_probe/
+      - name: Commit the receipt to this branch only
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/audits/sis_open_data_probe
+          git commit -m "chore: SIS open data probe receipt ${GITHUB_RUN_ID}" || exit 0
+          git push origin HEAD:claude/sis-open-data-probe
