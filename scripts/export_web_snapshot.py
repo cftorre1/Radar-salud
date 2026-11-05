@@ -853,6 +853,9 @@ def main():
     from radar_salud import datos_index
     datos=datos_index.build(payload["signals"],root=Path("."),generated_at=payload["generated_at"])
     (out.parent/"datos.json").write_text(json.dumps(datos,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    # Review previews (Dirección 4-nov-2026): fichas held only by their first-review gate, for web/preview.html.
+    from radar_salud import review_preview
+    review_preview.write(Path("."),out.parent)
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
     from radar_salud.public_source_catalog import export_public_sources

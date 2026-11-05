@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Alicanto Salud · Vista previa de revisión</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="product-ui.css"/><link rel="stylesheet" href="home-inbox.css"/><link rel="stylesheet" href="stats-ficha.css"/>
+<style>
+/* Dirección 4-nov-2026: fichas held only by their first-review gate, reviewed on staging. Unlisted; never in the feed. */
+.pv{max-width:760px;margin:0 auto;padding:16px}
+.pv-banner{background:#FDF1DD;border:1px solid #E3A24F;border-radius:12px;padding:12px 14px;margin:0 0 16px;font-size:14px;line-height:1.45;color:#5B3A0E}
+.pv-banner strong{display:block;margin-bottom:2px}
+.pv-list a{display:block;padding:12px 0;border-bottom:1px solid var(--ink09,#e5e5e5);color:inherit;text-decoration:none}
+.pv-list small{display:block;color:var(--ink48,#777)}
+</style>
+</head>
+<body>
+<main class="pv">
+<div class="pv-banner" role="note"><strong>Vista previa para revisión de Dirección — no publicada.</strong>Esta ficha pasó la verificación determinista y espera tu primera revisión. No aparece en el feed ni en Datos; se publica solo cuando se registra tu aprobación.</div>
+<div id="pv"></div>
+</main>
+<script src="statistical-view.js"></script>
+<script src="stats-ficha.js"></script>
+<script>
+(async()=>{
+ const host=document.getElementById('pv'),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const slug=new URLSearchParams(location.search).get('f');
+ try{
+  if(!slug||!/^[a-z0-9_]+$/.test(slug)){
+   const idx=await (await fetch('data/preview/index.json',{cache:'no-store'})).json();
+   host.innerHTML=idx.previews?.length?`<div class="pv-list">${idx.previews.map(p=>`<a href="?f=${esc(p.slug)}"><b>${esc(p.headline)}</b><small>${esc(p.family)} · datos ${esc(p.period)}</small></a>`).join('')}</div>`:'<p>No hay fichas esperando revisión.</p>';
+   return;
+  }
+  const r=await fetch(`data/preview/${slug}.json`,{cache:'no-store'});if(!r.ok)throw new Error('sin vista previa');
+  const d=await r.json();
+  // The renderer draws only verified fichas; a first-review hold has passed verification (review_preview.py).
+  host.innerHTML=AlicantoFicha.render({...d.ficha,status:'PASS'},{});
+  if(AlicantoFicha.mount)AlicantoFicha.mount(host);
+ }catch(e){host.innerHTML='<p>Esta ficha ya no está esperando revisión (o fue publicada).</p>'}
+})();
+</script>
+</body>
+</html>
