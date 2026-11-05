@@ -211,13 +211,16 @@ function detailHtml(s){
 }
 // The ficha's origin line (Dirección 1-nov-2026): compact, "SIS · Intendencia de Prestadores · 29 oct 2026 (detección) ·
 // Fuente original ↗". Institutions are shortened only from this curated map; any other name stays in full.
-const SOURCE_ABBR={'superintendencia de salud':'SIS','ministerio de salud':'Minsal','minsal':'Minsal','fondo nacional de salud':'Fonasa','fonasa':'Fonasa','instituto de salud pública':'ISP','instituto de salud pública de chile':'ISP','isp':'ISP','superintendencia de seguridad social':'SUSESO','superintendencia de seguridad social (suseso)':'SUSESO','suseso':'SUSESO','diario oficial':'DO','diario oficial de la república de chile':'DO','fiscalía nacional económica':'FNE','fne':'FNE','congreso nacional':'Congreso','dirección de presupuestos':'DIPRES','dipres':'DIPRES','comisión para el mercado financiero':'CMF','cmf':'CMF','biblioteca del congreso nacional':'BCN','achs seguro laboral':'ACHS'};
+const SOURCE_ABBR={'superintendencia de salud':'SIS','ministerio de salud':'Minsal','minsal':'Minsal','fondo nacional de salud':'Fonasa','fonasa':'Fonasa','instituto de salud pública':'ISP','instituto de salud pública de chile':'ISP','isp':'ISP','superintendencia de seguridad social':'SUSESO','superintendencia de seguridad social (suseso)':'SUSESO','suseso':'SUSESO','diario oficial':'DO','diario oficial de la república de chile':'DO','fiscalía nacional económica':'FNE','fne':'FNE','congreso nacional':'Congreso','dirección de presupuestos':'DIPRES','dipres':'DIPRES','comisión para el mercado financiero':'CMF','cmf':'CMF','biblioteca del congreso nacional':'BCN','achs seguro laboral':'ACHS','sis':'SIS'};
 // Dirección 4-nov-2026: the ficha names an institution in full with its acronym in parentheses; the feed uses the acronym.
 const SOURCE_LONG={SIS:'Superintendencia de Salud',Minsal:'Ministerio de Salud',Fonasa:'Fondo Nacional de Salud',ISP:'Instituto de Salud Pública',SUSESO:'Superintendencia de Seguridad Social',DO:'Diario Oficial',FNE:'Fiscalía Nacional Económica',DIPRES:'Dirección de Presupuestos',CMF:'Comisión para el Mercado Financiero',BCN:'Biblioteca del Congreso Nacional'};
-const bareSource=x=>{const t=String(x||'').trim(),m=t.match(/^(.*\S)\s*\(([^)]*)\)$/);return m&&SOURCE_ABBR[m[1].toLowerCase()]?m[1]:t};
+// 'Fiscalía Nacional Económica (FNE)' → 'Fiscalía Nacional Económica' only when the parenthesis is that institution's
+// acronym; any other parenthetical ('(edición extraordinaria)') stays.
+const bareSource=x=>{const t=String(x||'').trim(),m=t.match(/^(.*\S)\s*\(([^)]*)\)$/);return m&&SOURCE_ABBR[m[1].toLowerCase()]&&SOURCE_ABBR[m[1].toLowerCase()].toLowerCase()===m[2].trim().toLowerCase()?m[1]:t};
 function longSource(name){return String(name||'').split(' · ').map(x=>x.trim()).filter(Boolean).map(x=>{const a=SOURCE_ABBR[bareSource(x).toLowerCase()];return a&&SOURCE_LONG[a]?`${SOURCE_LONG[a]} (${a})`:x}).join(' · ')}
 // The feed row names only the first institution, by its acronym when the curated map has one (Dirección 4-nov-2026).
-function feedSource(name){const first=String(name||'').split(' · ')[0].trim();return first?(SOURCE_ABBR[bareSource(first).toLowerCase()]||first):''}
+// Only the curated map shortens a name; the one other normalization kept from the old row is Pulso's spellings.
+function feedSource(name){const first=String(name||'').split(' · ')[0].trim();if(!first)return'';const bare=bareSource(first);return SOURCE_ABBR[bare.toLowerCase()]||(/^(?:pulso|la tercera)/i.test(bare)?canonicalSource(bare):first)}
 function shortSource(name){return String(name||'').split(' · ').map(x=>x.trim()).filter(Boolean).map(x=>SOURCE_ABBR[bareSource(x).toLowerCase()]||x).join(' · ')}
 // One date and its kind: "(publicación)" only when the source gives a publication date, otherwise "(detección)";
 // a datos.gob.cl release keeps its own kind ("(actualización)").
@@ -234,7 +237,7 @@ function rowDate(s){if(s.date_basis==='first_detected'){const d=s.first_detected
  if(s.date_basis==='data_release'){const d=s.data_release_date||s.event_date;return d?`Actualizado ${fmtDate(d)}`:''}
  const fiscal=Boolean(s.issued_on||s.emission_date)||arr(s.signal_types).includes('Fiscalización')||s.event_date_basis==='emission'||s.event_date_basis==='verified_primary_emission';
  const pub=s.published_on||s.publication_date||(fiscal?null:s.event_date);if(pub)return `Publicado ${fmtDate(pub)}`;
- const det=s.first_detected_at||s.detected_at||(s.event_type==='DATA_PULSE'?s.validation_date:null);return det?`Detectado ${fmtDate(det)}`:''}
+ const det=s.first_detected_at||s.detected_at;return det?`Detectado ${fmtDate(det)}`:''}
 function cardMetadata(s){return [rowDate(s),esc(feedSource(s.source_name))].filter(Boolean).join(' · ')}
 function normativeIdentityHtml(){return ""}
 // Inbox rows use a short 'source · date'; data pulses and sanction pulses keep their full dated metadata, and the record always shows it in full.

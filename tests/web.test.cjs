@@ -52,7 +52,17 @@ test('feed row: one date and the source acronym (Dirección 4-nov-2026)',()=>{co
  assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Superintendencia de Seguridad Social (SUSESO)'}),/· SUSESO$/);
  assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Congreso Nacional · Tramitación (Senado, datos abiertos)'}),/· Congreso$/);
  assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Fiscalía Nacional Económica (FNE)'}),/· FNE$/);
- assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Diario Financiero'}),/· Diario Financiero$/)});
+ assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Diario Financiero'}),/· Diario Financiero$/);
+ assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Pulso latercera'}),/· Pulso \/ La Tercera$/);
+ // Validation is not detection: a data card with only a validation date shows no date, never 'Detectado' (review of #145).
+ assert.equal(c.cardMetadata({event_type:'DATA_PULSE',validation_date:'2026-11-04',source_name:'Dirección de Presupuestos'}),'DIPRES');
+ // An act with neither publication nor detection shows only its source; never 'Publicado'.
+ assert.equal(c.cardMetadata({signal_types:['Fiscalización'],emission_date:'2026-10-01',event_date:'2026-10-01',source_name:'Superintendencia de Salud'}),'SIS');
+ assert.doesNotMatch(c.cardMetadata({event_date:'2026-10-20',source_name:'<img src=x onerror=alert(1)>'}),/<img/);
+ assert.equal(c.longSource('Diario Oficial (edición extraordinaria)'),'Diario Oficial (edición extraordinaria)');
+ assert.equal(c.longSource('Fiscalía Nacional Económica (FNE)'),'Fiscalía Nacional Económica (FNE)');
+ assert.equal(c.longSource('SIS'),'Superintendencia de Salud (SIS)');
+ assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Superintendencia de Salud Animal'}),/· Superintendencia de Salud Animal$/)});
 test('unverified Circular 77 relation remains visible without invented URL',()=>{const c=context();const html=c.contextBlock([{title:'Circular IF/N°77',relationship:'Norma modificada',url:null,verified:false}]);assert.match(html,/Normativa relacionada/);assert.match(html,/Circular IF\/N°77/);assert.match(html,/Norma modificada/);assert.match(html,/enlace pendiente de verificación/);assert.doesNotMatch(html,/href=/)});
 test('Global Intelligence mirrors Home with value-first inbox and Chile hypothesis separation',()=>{const html=fs.readFileSync('web/global.html','utf8'),app=fs.readFileSync('web/app.js','utf8'),js=fs.readFileSync('web/global.js','utf8'),data=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8'));assert.match(html,/Ponte al día en Global Intelligence/);assert.match(html,/globalPeriod/);assert.match(html,/globalPublisher/);assert.doesNotMatch(html,/globalSort|globalDaily|Al día afuera|value="all"|value="365"/);assert.doesNotMatch(html,/está en preparación|Vista pública de la experiencia/);assert.doesNotMatch(js,/<strong>Qué mirar en Chile|<strong>Lectura estratégica|<strong>Por qué importa/);assert.match(fs.readFileSync('web/read-state.js','utf8'),/alicanto_global_read/);assert.match(js,/AlicantoRead/);assert.match(js,/globalDetail/);assert.match(js,/Metodología y alcance/);assert.match(app,/Global Premium · desde afuera/);assert.match(app,/globalId/);assert.ok(data.themes.every(t=>t.kind==='global_theme'&&t.chile_watch.kind==='hypothesis'&&t.chile_watch.trend_chile_status==='not_established'&&t.cross_analysis));assert.ok(data.themes.flatMap(t=>t.sources).filter(s=>s.material_type!=='high_trust_press').every(s=>s.analysis.key_findings.length>=3&&s.analysis.methodology))});
 test('weekly analysis has its own read identity and keeps the base news accessible',()=>{
