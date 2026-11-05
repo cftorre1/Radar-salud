@@ -691,10 +691,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                        "rows": [{"label": names[c], "value": V(f"resultado_ejercicio.{c}.{t}"), "ref": f"resultado_ejercicio.{c}.{t}",
                                  "emphasis": V(f"resultado_ejercicio.{c}.{t}") < 0} for c in ordr],
                        "table": {"columns": ["Isapre", short(t)] + ([short(t1), "Cambio"] if ry else [])
-                                 + ([f"Res. operacional ({MM})", "Benef. promedio", "$ por benef."] if mg else []),
+                                 + ([f"Res. operacional ({MM})", "Benef. promedio", f"$ por beneficiario, {ytd} (pesos)"] if mg else []),
                                  "rows": [rrow(c, names[c]) for c in ordr] + [rrow("sistema", sys_row)]},
                        "source": "SIS. Totales calculados por Alicanto con las Isapres publicadas."
-                                 + (" Margen por beneficiario: resultado operacional / beneficiarios promedio (cartera SIS)." if mg else "")})
+                                 + (f" Margen por beneficiario: resultado operacional acumulado {ytd} / beneficiarios promedio del período (cartera SIS), en pesos; no es mensual." if mg else "")})
         tab = {"id": "resultados", "label": "Resultados", "charts": charts, "text": [], "dek": None}
         topic_kpis = []
         if mg:
@@ -703,7 +703,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
             m_lines = [f"{ytd} {t[:4]}; {fmt_int(BP)} beneficiarios promedio"]
             m_refs = [f"margen_beneficiario.sistema.{t}", f"benef_prom.sistema.{t}"]
             if m_yoy:
-                m_lines.append(f"{plabel}: {money(V(f'margen_beneficiario.sistema.{t1}'))}")
+                # The margin is cumulative over the same months (review of #150): never a single month's label.
+                m_lines.append(f"{ytd} {t1[:4]}: {money(V(f'margen_beneficiario.sistema.{t1}'))}")
                 m_refs.append(f"margen_beneficiario.sistema.{t1}")
             elif ry:  # the workbook a year earlier is verified, its denominator is not: never estimated
                 m_lines.append("a/a pendiente")
