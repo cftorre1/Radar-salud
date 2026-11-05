@@ -32,7 +32,7 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
   window.__copied=[];Object.defineProperty(navigator,'clipboard',{value:{writeText:async t=>{window.__copied.push(t)}},configurable:true})});
  const row=await openF1(page,card);
  const mobile=test.info().project.name==='mobile';
- await expect(row).toContainText('Datos a 2026-08');
+ await expect(row.locator('.card-meta')).toContainText('Publicado 02 oct 2026 · SIS');
  // Opción B on the stats row: Ver ficha · Fuente original (only with a source link) · Compartir (share page deep link).
  expect(await row.locator('.row-acts .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Ver ficha','Fuente original','Compartir']);
  await expect(row.locator('.act-share')).toHaveAttribute('data-share-url',card.share_url);

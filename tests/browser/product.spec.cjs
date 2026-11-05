@@ -352,7 +352,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody')).not.toContainText('Enriquecimiento editorial');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
- const isapre=page.locator('article[data-card]').filter({hasText:'Datos a 2026-08'}).filter({hasText:'Superintendencia de Salud'});
+ const isapre=page.locator('article[data-card="stats-ficha:F1:2026-08"]');
  await expect(isapre).toHaveCount(1);
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 02 oct 2026');
  await isapre.locator('[data-detail]').first().click();
@@ -480,7 +480,7 @@ test('persistent editorial contract is visible in feed and brief',async({page})=
  {const radar=await (await page.request.get('/data/radar_today.json')).json();
   const ficha=radar.signals.find(s=>s.stats_ficha&&s.stats_ficha.family==='F1');
   expect(ficha).toBeTruthy();
-  await expect(page.locator('article[data-card]').filter({hasText:`Datos a ${ficha.data_period}`})).toHaveCount(1);
+  await expect(page.locator(`article[data-card="stats-ficha:F1:${ficha.data_period}"]`)).toHaveCount(1);
   const MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const periodOf=t=>{const m=String(t).toLowerCase().match(/– (\p{L}+) (20\d\d)$/u);const i=m?MONTHS.indexOf(m[1]):-1;return i<0?null:`${m[2]}-${String(i+1).padStart(2,'0')}`;};
   const regional=radar.signals.filter(s=>String(s.title).includes('Cartera de Beneficiarios del Sistema ISAPRE a Nivel Regional'));
@@ -522,7 +522,7 @@ test('F1 ficha presents stock KPIs with separate contracts and mobility views',a
    }
  }
  // F1 ficha: contracts and mobility live in their own topic (between cuts, never monthly).
- const ficha=page.locator('article[data-card]').filter({hasText:'Datos a 2026-08'});
+ const ficha=page.locator('article[data-card="stats-ficha:F1:2026-08"]');
  await expect(ficha).toHaveCount(1);await ficha.locator('[data-detail]').first().click();
  const detail=page.locator('#detailBody');
  await expect(detail.locator('.sf-dek')).toContainText('2.486.683');
