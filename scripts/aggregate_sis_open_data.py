@@ -38,7 +38,9 @@ from urllib.request import Request, urlopen
 PAGE = "https://www.superdesalud.gob.cl/tax-biblioteca-digital/datos-abiertos-de-isapres-6988/"
 FILE_HOST = "datos.superdesalud.gob.cl"
 UA = "AlicantoSaludBot/1.0 (+https://alicantosalud.cl; datos abiertos SIS, lectura acotada)"
-MAX_BYTES = {"Prestaciones Bonificadas": 400 * 1024 * 1024, "Licencias Medicas": 60 * 1024 * 1024}
+# Prestaciones: Dirección allowed "~400 MB"; run 41962408457 showed the 2026t2 ZIP is 458,865,683 bytes
+# (Content-Length), so the bound is 460 MiB (482 MB). Integration owner to confirm or revert.
+MAX_BYTES = {"Prestaciones Bonificadas": 460 * 1024 * 1024, "Licencias Medicas": 60 * 1024 * 1024}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
 
 PRICE_MIN_PROVIDERS = 3
@@ -638,7 +640,9 @@ def download(url: str, dest: Path, limit: int) -> dict:
     try:
         with urlopen(req, timeout=300) as resp, open(dest, "wb") as out:
             rec.update(status=resp.status, content_length=resp.headers.get("Content-Length"),
-                       last_modified=resp.headers.get("Last-Modified"))
+                       last_modified=resp.headers.get("Last-Modified"), limit_bytes=limit)
+            if (rec["content_length"] or "").isdigit() and int(rec["content_length"]) > limit:
+                raise ValueError(f"over_limit_by_content_length:{limit}")  # fail fast, no wasted download
             while True:
                 chunk = resp.read(1 << 20)
                 if not chunk:
