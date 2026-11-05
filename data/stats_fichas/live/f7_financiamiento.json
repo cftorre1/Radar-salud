@@ -476,7 +476,7 @@
   "watch": [
     {
       "headline": "Informe de ejecución de la Partida 16 a octubre 2026: aún no publicado por DIPRES.",
-      "explanation": "Alicanto revisa DIPRES a diario (última revisión: 4 nov); la ficha cambia cuando aparece el informe del mes siguiente."
+      "explanation": "Alicanto revisa DIPRES a diario (última revisión: 5 nov); la ficha cambia cuando aparece el informe del mes siguiente."
     },
     {
       "headline": "Comparación con 2025.",
@@ -522,6 +522,16 @@
     }
   ],
   "sources": [
+    {
+      "url": "https://www.dipres.gob.cl/597/articles-436912_doc_pdf.pdf",
+      "sha256": "e17c1810540ddea3f78170759389ed6e319d92e5e421c5f5c68507b8108def64",
+      "published_at": null,
+      "fetched_at": "2026-11-05T00:46:42.471796+00:00",
+      "label": "DIPRES · Informe Ejecución Partida Tercer Trimestre [Pesos] (corte septiembre 2026)",
+      "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
+      "locator": "partida 16; total GASTOS",
+      "key": "doc_e17c1810540d"
+    },
     {
       "url": "https://www.dipres.gob.cl/597/articles-406167_doc_pdf.pdf",
       "sha256": "852691576733f110e4822d6d8483a28f705419a7cacb462665c9f373ca1c2492",
@@ -601,16 +611,6 @@
       "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
       "locator": "partida 16; total GASTOS",
       "key": "doc_39da71f87ab6"
-    },
-    {
-      "url": "https://www.dipres.gob.cl/597/articles-436912_doc_pdf.pdf",
-      "sha256": "e17c1810540ddea3f78170759389ed6e319d92e5e421c5f5c68507b8108def64",
-      "published_at": null,
-      "fetched_at": "2026-11-05T00:46:42.471796+00:00",
-      "label": "DIPRES · Informe Ejecución Partida Tercer Trimestre [Pesos] (corte septiembre 2026)",
-      "role": "gasto devengado acumulado y presupuesto vigente del mismo informe",
-      "locator": "partida 16; total GASTOS",
-      "key": "doc_e17c1810540d"
     },
     {
       "url": "https://www.dipres.gob.cl/597/articles-405254_doc_pdf.pdf",
@@ -716,7 +716,8 @@
   "machine_note": "Ficha generada por la regla \"nuevo período\" (documento capturado por Alicanto el 5 nov). Las cifras vienen del paquete de evidencia, sin descargas nuevas; la Lectura Alicanto está desactivada para esta familia. Lectura Alicanto omitida (sin modelo en esta corrida).",
   "featured": false,
   "triggers": [
-    "new_period"
+    "new_period",
+    "format_update"
   ],
   "late_release": null,
   "revisions": [],
@@ -726,8 +727,8 @@
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-11-05T00:46:56.955848+00:00",
-  "builder_version": "f7_ejecucion_v1",
+  "generated_at": "2026-11-05T19:01:49.820526+00:00",
+  "builder_version": "f7_ejecucion_v2",
   "verification": {
     "verdict": "PASS",
     "errors": [],

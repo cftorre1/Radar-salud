@@ -2,7 +2,7 @@
   "sources": {
     "superintendencia_normativa": {
       "name": "Superintendencia de Salud",
-      "checked_at": "2026-11-05T00:46:11.226230+00:00",
+      "checked_at": "2026-11-05T19:01:21.102781+00:00",
       "last_signal_at": "2026-11-03",
       "discovered": 4314,
       "new": 0,
@@ -31,7 +31,7 @@
     },
     "minsal": {
       "name": "Ministerio de Salud",
-      "checked_at": "2026-11-05T00:46:11.302830+00:00",
+      "checked_at": "2026-11-05T19:01:21.173361+00:00",
       "last_signal_at": "2026-11-03",
       "discovered": 52,
       "new": 0,
@@ -60,22 +60,22 @@
     },
     "suseso": {
       "name": "Superintendencia de Seguridad Social (SUSESO)",
-      "checked_at": "2026-11-05T00:46:11.363989+00:00",
-      "last_signal_at": "2026-10-28",
+      "checked_at": "2026-11-05T19:01:21.231275+00:00",
+      "last_signal_at": "2026-11-03",
       "discovered": 7611,
-      "new": 2,
+      "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 2,
-      "pending": 2,
+      "backfill_pending": 0,
+      "pending": 0,
       "deferred": 0,
       "rejected": 2,
       "status": "warning",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
-      "content_freshness": "older",
-      "latest_original_at": "2026-10-28",
+      "content_freshness": "recent",
+      "latest_original_at": "2026-11-03",
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
       "processed_rejections": 0,
@@ -89,11 +89,11 @@
     },
     "diario_financiero": {
       "name": "Diario Financiero",
-      "checked_at": "2026-11-05T00:46:11.406614+00:00",
-      "last_signal_at": "2026-11-02",
+      "checked_at": "2026-11-05T19:01:21.271384+00:00",
+      "last_signal_at": "2026-11-05",
       "discovered": 43,
-      "new": 0,
-      "published": 0,
+      "new": 1,
+      "published": 1,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
@@ -104,9 +104,9 @@
       "technical_status": "partial",
       "coverage_status": "format_gap",
       "content_freshness": "recent",
-      "latest_original_at": "2026-11-02",
-      "editorial_outcome": "not_evaluated",
-      "evaluation_performed": false,
+      "latest_original_at": "2026-11-05",
+      "editorial_outcome": "published",
+      "evaluation_performed": true,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -119,42 +119,42 @@
       "dated": 43,
       "undated": 0,
       "detail_errors": 0,
-      "insufficient_evidence": 11,
-      "textual_candidates": 32,
-      "nontextual_candidates_known": 8,
+      "insufficient_evidence": 12,
+      "textual_candidates": 31,
+      "nontextual_candidates_known": 9,
       "textual_capture_status": "verified",
       "format_capability": {
         "text": "runtime_verified",
         "images": "requires_ocr",
         "audio_video": "requires_official_text"
       },
-      "newest_event_date": "2026-11-02",
+      "newest_event_date": "2026-11-05",
       "deferred_multimedia": 19,
       "unverifiable_date_dispositions": 0,
-      "last_published_event_at": "2026-11-02",
-      "last_discovered_event_at": "2026-11-02",
+      "last_published_event_at": "2026-11-05",
+      "last_discovered_event_at": "2026-11-05",
       "coverage_complete": false
     },
     "diario_oficial": {
       "name": "Diario Oficial",
-      "checked_at": "2026-11-05T00:46:11.472069+00:00",
-      "last_signal_at": "2026-11-04",
-      "discovered": 10,
-      "new": 0,
-      "published": 0,
+      "checked_at": "2026-11-05T19:01:21.331434+00:00",
+      "last_signal_at": "2026-11-05",
+      "discovered": 11,
+      "new": 1,
+      "published": 1,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
       "rejected": 9,
-      "status": "warning",
+      "status": "ok",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "recent",
-      "latest_original_at": "2026-11-04",
-      "editorial_outcome": "not_evaluated",
-      "evaluation_performed": false,
+      "latest_original_at": "2026-11-05",
+      "editorial_outcome": "published",
+      "evaluation_performed": true,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -166,11 +166,11 @@
     },
     "superintendencia_fiscalizacion": {
       "name": "Superintendencia de Salud",
-      "checked_at": "2026-11-05T00:46:11.237295+00:00",
+      "checked_at": "2026-11-05T19:01:21.113507+00:00",
       "last_signal_at": "2026-10-29",
       "discovered": 3410,
-      "new": 1,
-      "published": 3,
+      "new": 0,
+      "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
@@ -182,8 +182,8 @@
       "coverage_status": "listed_surface_parsed",
       "content_freshness": "recent",
       "latest_original_at": "2026-10-29",
-      "editorial_outcome": "published",
-      "evaluation_performed": true,
+      "editorial_outcome": "no_new_publications_existing_history",
+      "evaluation_performed": false,
       "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
@@ -281,11 +281,12 @@
         "pending": "current queue stock",
         "rejected": "queue stock with evaluated rejection",
         "archived": "queue stock beyond backfill horizon"
-      }
+      },
+      "zero_published_reason": "evaluated_rejections_or_existing_published_history"
     },
     "superintendencia": {
       "name": "Superintendencia de Salud",
-      "checked_at": "2026-11-05T00:46:11.217105+00:00",
+      "checked_at": "2026-11-05T19:01:21.094305+00:00",
       "last_signal_at": "2026-10-28",
       "discovered": 742,
       "new": 0,
@@ -314,7 +315,7 @@
     },
     "fonasa": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-11-05T00:46:11.309106+00:00",
+      "checked_at": "2026-11-05T19:01:21.179481+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -375,12 +376,12 @@
         "partial_failure": true,
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-11-05T00:46:11.309106+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.179481+00:00",
       "poll_mode": "daily_engine"
     },
     "isp_anamed": {
       "name": "Instituto de Salud Pública de Chile (ISP) / ANAMED",
-      "checked_at": "2026-11-05T00:46:11.321501+00:00",
+      "checked_at": "2026-11-05T19:01:21.191801+00:00",
       "last_signal_at": null,
       "discovered": 4,
       "new": 0,
@@ -420,13 +421,13 @@
         "latest_verified_publication_date": "2026-10-28",
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-11-05T00:46:11.321501+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.191801+00:00",
       "poll_mode": "daily_engine",
       "latest_verified_publication_at": "2026-10-28"
     },
     "deis": {
       "name": "Departamento de Estadísticas e Información de Salud",
-      "checked_at": "2026-11-05T00:46:11.334084+00:00",
+      "checked_at": "2026-11-05T19:01:21.203913+00:00",
       "last_signal_at": null,
       "discovered": 12,
       "new": 0,
@@ -471,7 +472,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Modelo del Certificado Médico de defunción y Estadísticas de Mortalidad Fetal (CMD) vigente",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -481,7 +482,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Decreto 460 del año 1970 Reglamento sobre la Extensión del Certificado Médico de defunción",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -491,7 +492,7 @@
             "reason": "update_without_proven_material_change",
             "publication_date": null,
             "listing_notice": "Volumen 1 CIE-10 2016-cha ¡Actualizado 15/12/2017!",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -501,7 +502,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Volumen 2 Manual de Instrucciones ¡Agregado el 07/08/2015!",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -511,7 +512,7 @@
             "reason": "update_without_proven_material_change",
             "publication_date": null,
             "listing_notice": "Volumen 3 Índice Alfabético Nota: ¡Actualizado el 01/03/2018!",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -521,7 +522,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Actualización Catalogo Diagnosticos.pdf ¡Agregado 26/03/2015!",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -531,7 +532,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Decreto Norma Técnica sobre Uso de CIE 10",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -541,7 +542,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Decreto 356 Complementa Decreto Uso de la CIE-10 ¡Agregado 15/12/2017!",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           },
           {
@@ -551,7 +552,7 @@
             "reason": "missing_explicit_publication_date",
             "publication_date": null,
             "listing_notice": "Resolución Nº 783: DEIS – Centro de referencia FIC",
-            "listing_sha256": "bb8b97bb7d117f866f388c83b5c6f3f934db0a8785023bc1b9165b6352a4d6a7",
+            "listing_sha256": "7e5c577b660454d9637f36ce84601ab6963ab146591ffa11a084258b0203af9f",
             "listing_sha256_kind": "utf8_decoded_listing"
           }
         ],
@@ -626,31 +627,31 @@
         "latest_verified_publication_date": "2026-06-25",
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-11-05T00:46:11.334084+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.203913+00:00",
       "poll_mode": "daily_engine",
       "latest_verified_publication_at": "2026-06-25"
     },
     "redsalud": {
       "name": "RedSalud",
-      "checked_at": "2026-11-05T00:46:11.340517+00:00",
+      "checked_at": "2026-11-05T19:01:21.210002+00:00",
       "last_signal_at": "2026-09-21",
       "discovered": 45,
-      "new": 0,
+      "new": 1,
       "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 2,
-      "rejected": 29,
+      "rejected": 30,
       "status": "warning",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "unverified",
       "content_freshness": "older",
-      "latest_original_at": "2026-10-22",
-      "editorial_outcome": "not_evaluated",
-      "evaluation_performed": false,
-      "processed_rejections": 0,
+      "latest_original_at": "2026-11-05",
+      "editorial_outcome": "rejected",
+      "evaluation_performed": true,
+      "processed_rejections": 1,
       "counts_scope": {
         "discovered": "this_run",
         "new": "this_run",
@@ -720,16 +721,16 @@
     },
     "bupa_chile": {
       "name": "Bupa Chile",
-      "checked_at": "2026-11-05T00:46:11.346983+00:00",
+      "checked_at": "2026-11-05T19:01:21.216112+00:00",
       "last_signal_at": "2026-08-13",
       "discovered": 51,
-      "new": 1,
+      "new": 0,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 1,
-      "pending": 1,
+      "backfill_pending": 0,
+      "pending": 0,
       "deferred": 0,
-      "rejected": 28,
+      "rejected": 29,
       "status": "warning",
       "error": null,
       "technical_status": "ok",
@@ -983,7 +984,7 @@
     },
     "fonasa_datos_abiertos": {
       "name": "Fondo Nacional de Salud (FONASA)",
-      "checked_at": "2026-11-05T00:46:11.315359+00:00",
+      "checked_at": "2026-11-05T19:01:21.185631+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -1077,30 +1078,30 @@
         "partial_failure": true,
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-11-05T00:46:11.315359+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.185631+00:00",
       "poll_mode": "daily_engine"
     },
     "suseso_news": {
       "name": "Superintendencia de Seguridad Social (SUSESO)",
-      "checked_at": "2026-11-05T00:46:11.370656+00:00",
-      "last_signal_at": "2026-11-03",
+      "checked_at": "2026-11-05T19:01:21.237562+00:00",
+      "last_signal_at": "2026-11-05",
       "discovered": 6,
       "new": 1,
-      "published": 0,
+      "published": 1,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
       "rejected": 5,
-      "status": "warning",
+      "status": "ok",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "recent",
-      "latest_original_at": "2026-11-04",
-      "editorial_outcome": "not_evaluated",
-      "evaluation_performed": false,
-      "processed_rejections": 1,
+      "latest_original_at": "2026-11-05",
+      "editorial_outcome": "published",
+      "evaluation_performed": true,
+      "processed_rejections": 0,
       "counts_scope": {
         "discovered": "this_run",
         "new": "this_run",
@@ -1111,22 +1112,22 @@
     },
     "suseso_fiscalizacion": {
       "name": "Superintendencia de Seguridad Social (SUSESO)",
-      "checked_at": "2026-11-05T00:46:11.379123+00:00",
+      "checked_at": "2026-11-05T19:01:21.245337+00:00",
       "last_signal_at": "2026-11-02",
-      "discovered": 1296,
+      "discovered": 1297,
       "new": 1,
       "published": 0,
       "live_pending": 1,
       "backfill_pending": 0,
       "pending": 1,
-      "deferred": 27,
+      "deferred": 28,
       "rejected": 113,
       "status": "warning",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "gap",
       "content_freshness": "recent",
-      "latest_original_at": "2026-11-04",
+      "latest_original_at": "2026-11-05",
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
       "processed_rejections": 0,
@@ -1137,8 +1138,8 @@
         "processed_rejections": "this_run",
         "rejected": "cumulative_queue"
       },
-      "last_observed_event_at": "2026-11-04",
-      "last_observed_publication_at": "2026-11-04",
+      "last_observed_event_at": "2026-11-05",
+      "last_observed_publication_at": "2026-11-05",
       "surfaces": [
         {
           "url": "https://www.suseso.gob.cl/612/w3-propertyvalue-30981.html",
@@ -1190,7 +1191,7 @@
         {
           "url": "https://www.suseso.gob.cl/605/w3-propertyname-536.html",
           "status": "parsed",
-          "documents": 204,
+          "documents": 205,
           "surface_kind": "official_news"
         }
       ],
@@ -1207,19 +1208,19 @@
       "published_total": 116,
       "final_state": "OPERATIVE_DEGRADED",
       "pages_checked": 8,
-      "items_discovered": 1296,
-      "unique_items": 1296,
-      "surface_rows_discovered": 1642,
-      "items_recent": 145,
+      "items_discovered": 1297,
+      "unique_items": 1297,
+      "surface_rows_discovered": 1643,
+      "items_recent": 146,
       "items_material": 73,
       "items_recent_enforcement": 73,
       "parse_errors": 0,
       "surface_errors": 0,
       "windows": {
         "30": {
-          "items_recent": 42,
+          "items_recent": 43,
           "enforcement_recent": 21,
-          "official_news_recent": 19,
+          "official_news_recent": 20,
           "related_normative_recent": 2,
           "published": 21,
           "rejected": 4,
@@ -1228,9 +1229,9 @@
           "unaccounted": 0
         },
         "90": {
-          "items_recent": 145,
+          "items_recent": 146,
           "enforcement_recent": 73,
-          "official_news_recent": 58,
+          "official_news_recent": 59,
           "related_normative_recent": 15,
           "published": 73,
           "rejected": 51,
@@ -1253,7 +1254,7 @@
     },
     "prestadores_data": {
       "name": "Superintendencia de Salud · Intendencia de Prestadores",
-      "checked_at": "2026-11-05T00:46:11.491002+00:00",
+      "checked_at": "2026-11-05T19:01:21.349848+00:00",
       "last_signal_at": "2026-10-29",
       "discovered": 4,
       "new": 0,
@@ -1372,7 +1373,7 @@
     },
     "andes_salud": {
       "name": "Andes Salud",
-      "checked_at": "2026-11-05T00:46:11.537268+00:00",
+      "checked_at": "2026-11-05T19:01:21.394808+00:00",
       "last_signal_at": "2026-10-29",
       "discovered": 25,
       "new": 0,
@@ -1706,7 +1707,7 @@
     },
     "achs_seguro_laboral": {
       "name": "Achs Seguro Laboral",
-      "checked_at": "2026-11-05T00:46:11.518047+00:00",
+      "checked_at": "2026-11-05T19:01:21.375421+00:00",
       "last_signal_at": "2026-09-24",
       "discovered": 28,
       "new": 0,
@@ -1734,31 +1735,31 @@
       },
       "coverage_window": {
         "convention": "rolling_elapsed_days_inclusive",
-        "end": "2026-11-04",
-        "start_30": "2026-10-05",
-        "start_90": "2026-08-06"
+        "end": "2026-11-05",
+        "start_30": "2026-10-06",
+        "start_90": "2026-08-07"
       },
       "pages_checked": 3,
       "recent_items": {
         "30": {
-          "start": "2026-10-05",
-          "end": "2026-11-04",
-          "dated_articles": 12,
-          "expected_role": 12,
+          "start": "2026-10-06",
+          "end": "2026-11-05",
+          "dated_articles": 11,
+          "expected_role": 11,
           "candidates": 3,
-          "rejected": 9,
+          "rejected": 8,
           "excluded_role": 0,
           "pending": 0,
           "unknown_date_items": 0,
           "complete": true,
           "content_kinds": {
-            "news": 10,
+            "news": 9,
             "study": 2
           }
         },
         "90": {
-          "start": "2026-08-06",
-          "end": "2026-11-04",
+          "start": "2026-08-07",
+          "end": "2026-11-05",
           "dated_articles": 30,
           "expected_role": 28,
           "candidates": 9,
@@ -1782,16 +1783,16 @@
     },
     "mutual_seguridad": {
       "name": "Mutual de Seguridad CChC",
-      "checked_at": "2026-11-05T00:46:11.530978+00:00",
+      "checked_at": "2026-11-05T19:01:21.388441+00:00",
       "last_signal_at": "2026-08-27",
-      "discovered": 58,
-      "new": 4,
+      "discovered": 60,
+      "new": 3,
       "published": 0,
       "live_pending": 0,
       "backfill_pending": 0,
       "pending": 0,
       "deferred": 0,
-      "rejected": 94,
+      "rejected": 97,
       "status": "warning",
       "error": "SourceDiscoveryError",
       "technical_status": "partial",
@@ -1800,7 +1801,7 @@
       "latest_original_at": null,
       "editorial_outcome": "not_evaluated",
       "evaluation_performed": false,
-      "processed_rejections": 4,
+      "processed_rejections": 3,
       "counts_scope": {
         "discovered": "this_run",
         "new": "this_run",
@@ -1810,149 +1811,149 @@
       },
       "error_detail": {
         "code": "pagination_stalled_before_90_day_cutoff",
-        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GH=/",
-        "message": "pagination_stalled_before_90_day_cutoff: https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GH=/"
+        "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GH=/",
+        "message": "pagination_stalled_before_90_day_cutoff: https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GH=/"
       },
       "coverage_window": {
-        "as_of_chile": "2026-11-04",
-        "30_day_start": "2026-10-05",
-        "90_day_start": "2026-08-06"
+        "as_of_chile": "2026-11-05",
+        "30_day_start": "2026-10-06",
+        "90_day_start": "2026-08-07"
       },
       "pages_checked": 15,
       "recent_items": {
         "30": {
-          "start": "2026-10-05",
-          "end": "2026-11-04",
-          "dated_articles": 40,
-          "expected_role": 40,
+          "start": "2026-10-06",
+          "end": "2026-11-05",
+          "dated_articles": 43,
+          "expected_role": 43,
           "candidates": 1,
-          "rejected": 39,
+          "rejected": 42,
           "pending": 0,
           "excluded_role": 0,
           "unknown_date_items": 0,
           "complete": false,
           "content_kinds": {
-            "prevention": 26,
-            "news": 13,
+            "prevention": 28,
+            "news": 14,
             "commercial": 1
           }
         },
         "90": {
-          "start": "2026-08-06",
-          "end": "2026-11-04",
-          "dated_articles": 58,
-          "expected_role": 58,
+          "start": "2026-08-07",
+          "end": "2026-11-05",
+          "dated_articles": 60,
+          "expected_role": 60,
           "candidates": 2,
-          "rejected": 56,
+          "rejected": 58,
           "pending": 0,
           "excluded_role": 0,
           "unknown_date_items": 0,
           "complete": false,
           "content_kinds": {
-            "prevention": 38,
-            "news": 17,
+            "prevention": 39,
+            "news": 18,
             "commercial": 2,
             "study": 1
           }
         }
       },
-      "unique_items": 58,
+      "unique_items": 60,
       "material_items": 2,
       "technical_failures": [
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GH=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GH=/",
           "branch": "component-2",
           "oldest_verified_listing_date": "2026-10-07",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GL=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GL=/",
           "branch": "component-3",
           "oldest_verified_listing_date": "2026-10-26",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GP=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GP=/",
           "branch": "component-4",
-          "oldest_verified_listing_date": "2026-11-03",
+          "oldest_verified_listing_date": "2026-11-04",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GDB=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GDB=/",
           "branch": "component-5",
           "oldest_verified_listing_date": "2026-09-15",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GPB=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GPB=/",
           "branch": "component-9",
           "oldest_verified_listing_date": "2026-10-20",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GDC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GDC=/",
           "branch": "component-10",
-          "oldest_verified_listing_date": "2026-10-01",
+          "oldest_verified_listing_date": "2026-10-07",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GHC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GHC=/",
           "branch": "component-11",
-          "oldest_verified_listing_date": "2026-11-03",
+          "oldest_verified_listing_date": "2026-11-04",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GLC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GLC=/",
           "branch": "component-12",
           "oldest_verified_listing_date": "2026-09-16",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GPC=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GPC=/",
           "branch": "component-14",
           "oldest_verified_listing_date": "2026-11-03",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GDD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GDD=/",
           "branch": "component-15",
           "oldest_verified_listing_date": "2026-10-20",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GHD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GHD=/",
           "branch": "component-16",
           "oldest_verified_listing_date": "2026-09-16",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GLD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GLD=/",
           "branch": "component-18",
           "oldest_verified_listing_date": "2026-09-15",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GPD=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GPD=/",
           "branch": "component-19",
           "oldest_verified_listing_date": "2026-10-19",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
         },
         {
           "code": "pagination_stalled_before_90_day_cutoff",
-          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKduF6YA=GHE=/",
+          "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijQ29zTyNLYyMLH2dzA3MzP1MLEwtfAwNLMz0w1EVBBiEGhqYOfn5elsYGBt7hhrqR1GgP9jUhDj9BjiAowGJ9mMqiMJvfLh-FKoVWEIAn4JgU2NCCkygCvC4oiA3NDQ0wiDTM11REQChQxHT/p0/IZ7_31K6I38229MB7067N4858L10O0=CZ6_31K6I38229MB7067N4858L1086=MKEQCPVApw=GHE=/",
           "branch": "component-21",
           "oldest_verified_listing_date": "2026-08-20",
           "detail": "publisher paginator repeated the page before reaching the 90-day start"
@@ -1963,7 +1964,7 @@
     },
     "ist": {
       "name": "Instituto de Seguridad del Trabajo (IST)",
-      "checked_at": "2026-11-05T00:46:11.524637+00:00",
+      "checked_at": "2026-11-05T19:01:21.381819+00:00",
       "last_signal_at": "2026-07-14",
       "discovered": 22,
       "new": 0,
@@ -1991,31 +1992,31 @@
       },
       "coverage_window": {
         "convention": "rolling_elapsed_days_inclusive",
-        "end": "2026-11-04",
-        "start_30": "2026-10-05",
-        "start_90": "2026-08-06"
+        "end": "2026-11-05",
+        "start_30": "2026-10-06",
+        "start_90": "2026-08-07"
       },
       "pages_checked": 3,
       "recent_items": {
         "30": {
-          "start": "2026-10-05",
-          "end": "2026-11-04",
-          "dated_articles": 7,
-          "expected_role": 7,
+          "start": "2026-10-06",
+          "end": "2026-11-05",
+          "dated_articles": 6,
+          "expected_role": 6,
           "candidates": 0,
-          "rejected": 7,
+          "rejected": 6,
           "excluded_role": 0,
           "pending": 0,
           "unknown_date_items": 0,
           "complete": true,
           "content_kinds": {
             "news": 4,
-            "prevention": 3
+            "prevention": 2
           }
         },
         "90": {
-          "start": "2026-08-06",
-          "end": "2026-11-04",
+          "start": "2026-08-07",
+          "end": "2026-11-05",
           "dated_articles": 22,
           "expected_role": 22,
           "candidates": 0,
@@ -2038,25 +2039,25 @@
     },
     "pulso_latercera": {
       "name": "Pulso / La Tercera",
-      "checked_at": "2026-11-05T00:46:11.464245+00:00",
+      "checked_at": "2026-11-05T19:01:21.322785+00:00",
       "last_signal_at": null,
-      "discovered": 527,
-      "new": 23,
+      "discovered": 509,
+      "new": 17,
       "published": 0,
       "live_pending": 0,
-      "backfill_pending": 8,
-      "pending": 8,
-      "deferred": 113,
-      "rejected": 687,
+      "backfill_pending": 4,
+      "pending": 4,
+      "deferred": 117,
+      "rejected": 701,
       "status": "ok",
       "error": null,
       "technical_status": "ok",
       "coverage_status": "observed",
       "content_freshness": "unknown",
-      "latest_original_at": "2026-11-04",
+      "latest_original_at": "2026-11-05",
       "editorial_outcome": "rejected",
       "evaluation_performed": true,
-      "processed_rejections": 17,
+      "processed_rejections": 14,
       "counts_scope": {
         "discovered": "this_run",
         "new": "this_run",
@@ -2070,7 +2071,7 @@
     },
     "isp_surveillance": {
       "name": "Instituto de Salud Pública de Chile (ISP)",
-      "checked_at": "2026-11-05T00:46:11.327798+00:00",
+      "checked_at": "2026-11-05T19:01:21.197784+00:00",
       "last_signal_at": null,
       "discovered": 1,
       "new": 0,
@@ -2150,15 +2151,15 @@
         "latest_verified_publication_date": "2026-06-17",
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-11-05T00:46:11.327798+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.197784+00:00",
       "poll_mode": "daily_engine",
       "latest_verified_publication_at": "2026-06-17"
     },
     "clinicas_chile": {
       "name": "Clínicas de Chile A.G.",
-      "checked_at": "2026-11-05T00:46:11.353321+00:00",
+      "checked_at": "2026-11-05T19:01:21.222255+00:00",
       "last_signal_at": "2026-10-02",
-      "discovered": 0,
+      "discovered": 37,
       "new": 0,
       "published": 0,
       "live_pending": 0,
@@ -2166,9 +2167,9 @@
       "pending": 0,
       "deferred": 0,
       "rejected": 35,
-      "status": "error",
-      "error": "RuntimeError",
-      "technical_status": "error",
+      "status": "warning",
+      "error": null,
+      "technical_status": "ok",
       "coverage_status": "unverified",
       "content_freshness": "stale_external_surface",
       "latest_original_at": "2025-07-22",
@@ -2349,7 +2350,7 @@
     },
     "cmf_health_ecosystem": {
       "name": "Comisión para el Mercado Financiero (CMF)",
-      "checked_at": "2026-11-05T00:46:11.484760+00:00",
+      "checked_at": "2026-11-05T19:01:21.343771+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -2377,7 +2378,7 @@
       }
     },
     "sis_isapre_universe": {
-      "pages_checked": 5,
+      "pages_checked": 7,
       "items_discovered": 10,
       "unique_items": 10,
       "items_recent": null,
@@ -2403,15 +2404,22 @@
       "inventory_coverage_complete": true,
       "outcome": "OPERATIVE_DEGRADED",
       "entities_with_control_evidence": 1,
+      "prior_year_portfolio": {
+        "status": "ok",
+        "year": 2025,
+        "periods": 12,
+        "sha256": "a1bcd1def90c4bfcd7551b43f9f3558572f6968db8ebf6d621d3d09619da7e6c",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2025/12/estadistica-mensual-de-cartera-de-beneficiarios-2025-1.xlsx"
+      },
       "poll_mode": "daily_engine",
-      "checked_at": "2026-11-05T00:32:05.855504+00:00",
+      "checked_at": "2026-11-05T18:47:40.986571+00:00",
       "status": "warning",
       "coverage_status": "partial",
       "editorial_outcome": "data_snapshot_no_news_quota"
     },
     "global_who": {
       "name": "WHO",
-      "checked_at": "2026-11-05T01:02:13.127746+00:00",
+      "checked_at": "2026-11-05T19:15:43.295050+00:00",
       "status": "warning",
       "technical_status": "error",
       "coverage_status": "incomplete",
@@ -2422,25 +2430,25 @@
       "cadence_seconds": 86400,
       "cadence_validation_pending": true,
       "coverage_contract_id": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
-      "next_cadence_validation_not_before": "2026-11-06T01:02:13.127746+00:00",
+      "next_cadence_validation_not_before": "2026-11-06T19:15:43.295050+00:00",
       "coverage_completeness": "incomplete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-08-07",
-      "coverage_to": "2026-11-04",
+      "coverage_from": "2026-08-08",
+      "coverage_to": "2026-11-05",
       "pages_checked": 7,
-      "recent_items": 102,
+      "recent_items": 105,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 102,
-        "detected": 102,
+        "inventory_url_count": 106,
+        "detected": 106,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 256,
-        "detected": 256,
+        "inventory_url_count": 254,
+        "detected": 254,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -2449,30 +2457,30 @@
         "30": "incomplete_lower_bound",
         "90": "incomplete_lower_bound"
       },
-      "unique_language_urls_90": 256,
-      "unique_items": 255,
+      "unique_language_urls_90": 254,
+      "unique_items": 253,
       "counts": {
-        "30": 102,
-        "90": 255
+        "30": 105,
+        "90": 253
       },
       "indexed_counts": {
-        "30": 102,
-        "90": 256
+        "30": 106,
+        "90": 254
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 140,
+      "material_items": 135,
       "published": 0,
       "rejected": 6,
-      "deferred": 250,
+      "deferred": 248,
       "pending_date_items": 0,
       "technical_failures": [
         {
-          "url": "https://www.who.int/publications/i/item/9789292800154",
-          "error": "TimeoutError: The read operation timed out"
+          "url": "https://www.who.int/news/item/30-10-2026-world-conference-on-traditional-medicine-2026-delivers-landmark-outcomes-for-global-health",
+          "error": "ValueError: index_detail_title_mismatch"
         }
       ],
-      "discovered": 256,
-      "new": 130,
+      "discovered": 254,
+      "new": 7,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -2496,7 +2504,7 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/41936904299/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/42081648291/inventory.json",
       "source_quality_disposition": "hold_technical",
       "publication_activation": false,
       "content_freshness": "recent",
@@ -2518,7 +2526,7 @@
     },
     "global_paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-05T01:23:13.725946+00:00",
+      "checked_at": "2026-11-05T19:42:36.062279+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -2532,22 +2540,22 @@
       "next_cadence_validation_not_before": null,
       "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-08-07",
-      "coverage_to": "2026-11-04",
-      "pages_checked": 137,
-      "recent_items": 189,
+      "coverage_from": "2026-08-08",
+      "coverage_to": "2026-11-05",
+      "pages_checked": 130,
+      "recent_items": 183,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 224,
-        "detected": 224,
+        "inventory_url_count": 226,
+        "detected": 226,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 687,
-        "detected": 687,
+        "inventory_url_count": 691,
+        "detected": 691,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -2556,25 +2564,25 @@
         "30": "complete_on_declared_surfaces",
         "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 687,
-      "unique_items": 556,
+      "unique_language_urls_90": 691,
+      "unique_items": 547,
       "counts": {
-        "30": 189,
-        "90": 556
+        "30": 183,
+        "90": 547
       },
       "indexed_counts": {
-        "30": 189,
-        "90": 556
+        "30": 183,
+        "90": 547
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 238,
+      "material_items": 234,
       "published": 0,
       "rejected": 12,
-      "deferred": 544,
+      "deferred": 535,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 556,
-      "new": 4,
+      "discovered": 547,
+      "new": 8,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "regional_news",
@@ -2588,12 +2596,12 @@
         {
           "section": "regional_news",
           "stop": "verified_date_partition_coverage",
-          "pages": 42
+          "pages": 43
         },
         {
           "section": "regional_news_es",
           "stop": "verified_date_partition_coverage",
-          "pages": 89
+          "pages": 81
         },
         {
           "section": "chile_news",
@@ -2616,7 +2624,7 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/41936904299/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/42081648291/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -2627,15 +2635,15 @@
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
         "activated": true,
         "evidence_run_ids": [
-          "41739824614",
-          "41936904299"
+          "41830070814",
+          "42081648291"
         ],
         "reason": "two_consecutive_successful_daily_live_runs",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 87760,
+        "gap_seconds": 106950,
         "earned_at": "2026-11-04T01:00:32.943483+00:00",
         "earned_evidence_run_ids": [
           "41539638382",
@@ -2686,7 +2694,7 @@
     },
     "datos_gob_cl": {
       "name": "datos.gob.cl (FONASA y DEIS-MINSAL)",
-      "checked_at": "2026-11-05T00:46:11.478420+00:00",
+      "checked_at": "2026-11-05T19:01:21.337631+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -2741,13 +2749,13 @@
         "terms_policy": "catalog_metadata_and_links_only",
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-11-05T00:46:11.478420+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.337631+00:00",
       "poll_mode": "daily_engine"
     },
     "global_kff_health_news": {
       "name": "KFF Health News",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-05T01:23:26.510081+00:00",
+      "checked_at": "2026-11-05T19:42:51.610166+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -2763,11 +2771,11 @@
       },
       "recent_items": 17,
       "unique_items": 17,
-      "material_items": 13,
-      "relevant_items": 13,
-      "excluded_items": 4,
-      "rejected": 4,
-      "deferred": 13,
+      "material_items": 11,
+      "relevant_items": 11,
+      "excluded_items": 6,
+      "rejected": 6,
+      "deferred": 11,
       "discovered": 17,
       "new": 0,
       "published": 0,
@@ -2822,7 +2830,7 @@
     "global_ema": {
       "name": "EMA (European Medicines Agency)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-05T01:23:30.658510+00:00",
+      "checked_at": "2026-11-05T19:42:55.778329+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -2893,7 +2901,7 @@
     "global_fda": {
       "name": "US FDA (press releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-05T01:23:32.875545+00:00",
+      "checked_at": "2026-11-05T19:42:58.044240+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -2961,7 +2969,7 @@
     "global_cdc": {
       "name": "US CDC (newsroom + MMWR)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-05T01:23:36.478271+00:00",
+      "checked_at": "2026-11-05T19:43:01.784657+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -3104,7 +3112,7 @@
     "global_ecdc": {
       "name": "ECDC",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-05T01:23:41.799352+00:00",
+      "checked_at": "2026-11-05T19:43:07.020772+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -3175,7 +3183,7 @@
     "global_ec_health": {
       "name": "European Commission (Public Health)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-05T01:23:44.643366+00:00",
+      "checked_at": "2026-11-05T19:43:10.149184+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -3191,11 +3199,11 @@
       },
       "recent_items": 30,
       "unique_items": 30,
-      "material_items": 6,
-      "relevant_items": 6,
-      "excluded_items": 24,
-      "rejected": 24,
-      "deferred": 6,
+      "material_items": 5,
+      "relevant_items": 5,
+      "excluded_items": 25,
+      "rejected": 25,
+      "deferred": 5,
       "discovered": 30,
       "new": 0,
       "published": 0,
@@ -3313,7 +3321,7 @@
     },
     "superintendencia_noticias": {
       "name": "Superintendencia de Salud",
-      "checked_at": "2026-11-05T00:46:11.296185+00:00",
+      "checked_at": "2026-11-05T19:01:21.166807+00:00",
       "last_signal_at": "2026-11-02",
       "discovered": 2,
       "new": 0,
@@ -3342,7 +3350,7 @@
     },
     "fne_competencia": {
       "name": "Fiscalía Nacional Económica (FNE)",
-      "checked_at": "2026-11-05T00:46:11.499012+00:00",
+      "checked_at": "2026-11-05T19:01:21.356230+00:00",
       "last_signal_at": "2026-11-02",
       "discovered": 1,
       "new": 0,
@@ -3373,14 +3381,14 @@
           {
             "url": "https://www.fne.gob.cl/comunicaciones/noticias-2/",
             "rows": 6,
-            "oldest": "2026-10-29",
-            "sha256": "835e2b735b442a5f965f6a458c182851c1302f7f20e5edb8bba0642db8544415"
+            "oldest": "2026-10-30",
+            "sha256": "827e2964812bdb21806d35f786290f9e73fa84ed6a934ca3823f8dc7fe3d3c57"
           },
           {
             "url": "https://www.fne.gob.cl/comunicaciones/noticias-2/page/2/",
             "rows": 6,
-            "oldest": "2026-10-21",
-            "sha256": "caa15f01bc3263fba377a543b8ce3d478c4cf24daa1b43e38e90b068f4febd4c"
+            "oldest": "2026-10-22",
+            "sha256": "be2b89bc533814f5949dd9f370a39ed08db3324bc26ccf23bf80168dbc65dc89"
           }
         ],
         "errors": [],
@@ -3397,13 +3405,13 @@
           "deferred_urls": []
         }
       },
-      "engine_checked_at": "2026-11-05T00:46:11.499012+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.356230+00:00",
       "poll_mode": "daily_engine",
       "latest_verified_publication_at": null
     },
     "congreso_tramitacion": {
       "name": "Congreso Nacional · Tramitación (Senado, datos abiertos)",
-      "checked_at": "2026-11-05T00:46:11.505502+00:00",
+      "checked_at": "2026-11-05T19:01:21.362828+00:00",
       "last_signal_at": "2026-11-02",
       "discovered": 0,
       "new": 0,
@@ -3441,12 +3449,12 @@
       "discovery_diagnostics": {
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-11-05T00:46:11.505502+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.362828+00:00",
       "poll_mode": "daily_engine"
     },
     "bcn_leychile_watch": {
       "name": "Biblioteca del Congreso Nacional · LeyChile (vigilancia de normas clave)",
-      "checked_at": "2026-11-05T00:46:11.511749+00:00",
+      "checked_at": "2026-11-05T19:01:21.369080+00:00",
       "last_signal_at": null,
       "discovered": 0,
       "new": 0,
@@ -3473,7 +3481,7 @@
         "rejected": "cumulative_queue"
       },
       "discovery_diagnostics": {
-        "status": "skipped_already_checked_today",
+        "status": "ok",
         "probe_status": "passed",
         "probe": {
           "passed": true,
@@ -3511,9 +3519,17 @@
           "failure": null
         },
         "endpoint": "https://www.leychile.cl/Consulta/obtxml",
-        "requests_this_run": 0,
-        "requested_urls": [],
-        "robots": {},
+        "requests_this_run": 5,
+        "requested_urls": [
+          "https://www.leychile.cl/Consulta/obtxml?opt=7&idNorma=229834",
+          "https://www.leychile.cl/Consulta/obtxml?opt=61&cadena=texto%20refundido%20decreto%20ley%202763%20leyes%2018933%2018469",
+          "https://www.leychile.cl/Consulta/obtxml?opt=7&idNorma=1039348",
+          "https://www.leychile.cl/Consulta/obtxml?opt=61&cadena=reglamento%20autorizacion%20licencias%20medicas%20COMPIN%20instituciones%20de%20salud%20previsional",
+          "https://www.leychile.cl/Consulta/obtxml?opt=7&idNorma=1203779"
+        ],
+        "robots": {
+          "www.leychile.cl": "parsed"
+        },
         "norms": {
           "ley_19966": {
             "status": "watching",
@@ -3576,11 +3592,11 @@
         "terms_policy": "metadata_and_link_only_license_unresolved",
         "poll_mode": "daily_engine"
       },
-      "engine_checked_at": "2026-11-05T00:46:11.511749+00:00",
+      "engine_checked_at": "2026-11-05T19:01:21.369080+00:00",
       "poll_mode": "daily_engine"
     }
   },
-  "generated_at": "2026-11-05T00:46:56.771376+00:00",
+  "generated_at": "2026-11-05T19:01:21.394817+00:00",
   "occupational_sources_checked_at": "2026-10-11T08:09:52.626810+00:00",
   "public_data_sources_checked_at": "2026-10-11T05:38:00.741627+00:00",
   "integration_revalidation_recorded_at": "2026-10-11T15:07:30.832140+00:00"
