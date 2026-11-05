@@ -60,13 +60,17 @@ def test_header_row_is_detected_and_skipped(tmp_path):
 
 
 def test_price_disclosure_rule():
+    """Dirección 5-nov-2026: price with >= 2 providers and >= 30 frecuencia (p25-p75 only with >= 3); exactly 1
+    provider: no price, only a concentration flag; every provider counts nationally; top share always shown."""
     a = agg.PrestacionesAgg()
-    # region 13: 3 providers, total freq 30 -> publishable
+    # region 13: 3 providers, total freq 30 -> median and p25-p75
     for prov, unit in (("A", 100), ("B", 200), ("C", 300)):
         a.add(prest_row(prov=prov, freq=10, fact=unit * 10))
-    # region 5: 2 providers -> concentration flag, no price
+    # region 5: 2 providers, freq 50 -> median only
     a.add(prest_row(prov="A", region="5", freq=40, fact=4000))
     a.add(prest_row(prov="D", region="5", freq=10, fact=5000))
+    # region 6: 1 provider, large frecuencia -> concentration flag, no price, no facturado
+    a.add(prest_row(prov="H", region="6", freq=500, fact=50000))
     # region 8: 3 providers but freq 3 -> suppressed
     for prov in "EFG":
         a.add(prest_row(prov=prov, region="8", freq=1, fact=500))
@@ -76,15 +80,35 @@ def test_price_disclosure_rule():
     rows = {(r[0], r[1]): dict(zip(t["columns"], r)) for r in t["rows"]}
     p13 = rows[("0101001", "13")]
     assert p13["estado"] == "publicable" and p13["precio_mediana"] == 200 and p13["precio_p25"] == 150
+    assert p13["precio_p75"] == 250 and p13["share_prestador_mayor_pct"] == pytest.approx(33.33)
     p5 = rows[("0101001", "5")]
-    assert p5["estado"] == "concentracion_revision_direccion" and p5["precio_mediana"] is None
-    assert p5["facturado"] is None and p5["n_prestadores"] == 2 and p5["share_prestador_mayor_pct"] == 80.0
+    assert p5["estado"] == "publicable" and p5["precio_mediana"] == 300  # (100 + 500) / 2
+    assert p5["precio_p25"] is None and p5["precio_p75"] is None and p5["n_prestadores"] == 2
+    assert p5["share_prestador_mayor_pct"] == 80.0
+    p6 = rows[("0101001", "6")]
+    assert p6["estado"] == "concentracion_un_prestador" and p6["n_prestadores"] == 1
+    assert all(p6[k] is None for k in ("precio_mediana", "precio_p25", "precio_p75", "facturado", "pct_bonificado"))
+    assert p6["frecuencia"] == 500 and p6["share_prestador_mayor_pct"] == 100.0
     assert rows[("0101001", "8")]["estado"] == "suprimido_frecuencia_menor_30"
+    assert rows[("0101001", "8")]["precio_mediana"] is None
     assert ("X1", "13") not in rows
     nat = rows[("0101001", "NACIONAL")]
-    assert nat["n_prestadores"] == 7 and nat["estado"] == "publicable"
+    assert nat["n_prestadores"] == 8 and nat["estado"] == "publicable"  # H (alone in region 6) counts nationally
+    assert nat["frecuencia"] == 30 + 50 + 500 + 3
+    est = {(e["estado"], e["nacional"]): e for e in t["conteo_estados"]}
+    assert est[("concentracion_un_prestador", False)]["frecuencia"] == 500
     dumped = json.dumps(t)
-    assert '"A"' not in dumped and "SECRET" not in dumped
+    assert '"A"' not in dumped and "SECRET" not in dumped and '"H"' not in dumped
+
+
+def test_top_codes_rank_by_national_frecuencia():
+    a = agg.PrestacionesAgg()
+    a.add(prest_row(prov="A", codigo="0101001", freq=5, fact=500, bonif=300, copago=200))
+    a.add(prest_row(prov="B", codigo="0301045", region="5", freq=9, fact=900, bonif=450, copago=450))
+    a.add(prest_row(prov="C", codigo="0301045", region="6", freq=2, fact=200, bonif=100, copago=100))
+    top = a.top_codes(2)
+    assert [c["codigo_prestacion"] for c in top] == ["0301045", "0101001"]
+    assert top[0]["frecuencia"] == 11 and top[0]["pct_bonificado"] == 50.0 and top[1]["pct_copago"] == 40.0
 
 
 def test_cross_isapre_index():
@@ -124,7 +148,8 @@ def test_profile_never_exposes_sensitive_values():
     a = agg.PrestacionesAgg()
     row = prest_row()
     row[29] = "078880554"
-    a.add(row)
+    for _ in range(10):
+        a.add(row)
     prof = json.dumps(a.profile.result())
     assert "078880554" not in prof
     assert "SECRET" not in prof and "P1" not in prof and "0101001" in prof
@@ -158,44 +183,67 @@ def test_licencias_day_dates_give_median():
     assert lic.result()["total"]["mediana_dias_recepcion_resolucion"] == 4.0
 
 
-def test_run_end_to_end_local(tmp_path):
+def test_run_end_to_end_local_both_quarters(tmp_path):
     pz = make_zip(tmp_path / "p2.zip", "Prestaciones_Bonificadas_2026t2.txt",
                   [prest_row(prov=p, isapre=i) for p in "ABC" for i in ("67", "78")])
     pz1 = make_zip(tmp_path / "p1.zip", "Prestaciones_Bonificadas_2026t1.txt", [prest_row(prov="A")])
     lz = make_zip(tmp_path / "l.zip", "Licencias_Medicas_2026t2.txt", [lic_row() for _ in range(12)], "utf-8")
+    lz1 = make_zip(tmp_path / "l1.zip", "Licencias_Medicas_2026t1.txt", [lic_row() for _ in range(11)], "utf-8")
+    line = "76|202604|202603|ISAPRE|UF|0101001|0|CONSULTA X|Prestaci\u00f3n Incluida en el Arancel Fonasa| | | |1|0|0|0|2026|"
+    az = make_zip(tmp_path / "a.zip", "a.txt", [line])
     out = tmp_path / "out"
-    rec = agg.run("2026t2", "2026t1", out, local={"prest_2026t2": pz, "prest_2026t1": pz1, "lic_2026t2": lz})
-    assert [f.get("parse", {}).get("rows_ok") for f in rec["files"]] == [6, 1, None, 12]
-    assert all(len(f["sha256"]) == 64 for f in rec["files"] if "error" not in f)
-    names = sorted(p.name for p in out.iterdir())
+    recs = agg.run("2026t2", "2026t1", out, local={"prest_2026t2": pz, "prest_2026t1": pz1, "lic_2026t2": lz,
+                                                     "lic_2026t1": lz1, "arancel_2026": az})
+    assert list(recs) == ["2026t1", "2026t2"]
+    assert [f.get("parse", {}).get("rows_ok") for f in recs["2026t2"]["files"]] == [6, None, 12]
+    assert all(len(f["sha256"]) == 64 for f in recs["2026t2"]["files"])
+    assert recs["2026t2"]["script_version"] == agg.SCRIPT_VERSION
+    names = sorted(p.name for p in (out / "2026t2").iterdir())
     assert names == ["licencias_2026t2.json", "prestaciones_2026t2_consistencia_ids.json",
-                     "prestaciones_2026t2_ejemplo_codigos.json",
                      "prestaciones_2026t2_indice_isapre_mismo_prestador.json",
                      "prestaciones_2026t2_precios_fonasa_region.json", "prestaciones_2026t2_resumen.json",
-                     "receipts_2026t2_licencias+prestaciones.json"]
-    blob = "".join(p.read_text() for p in out.iterdir())
+                     "prestaciones_2026t2_top_codigos.json", "receipts_2026t2.json"]
+    assert "prestaciones_2026t1_consistencia_ids.json" not in [p.name for p in (out / "2026t1").iterdir()]
+    blob = "".join(p.read_text() for q in ("2026t1", "2026t2") for p in (out / q).iterdir())
     assert "SECRET" not in blob
-    ids = json.loads((out / "prestaciones_2026t2_consistencia_ids.json").read_text())
+    ids = json.loads((out / "2026t2" / "prestaciones_2026t2_consistencia_ids.json").read_text())
     assert ids["entre_trimestres"]["pct_overlap_sobre_actual"] == pytest.approx(33.33)
+    top = json.loads((out / "2026t2" / "prestaciones_2026t2_top_codigos.json").read_text())
+    assert top["codigos"][0]["descripcion_arancel_isapre"][0]["descripcion"] == "CONSULTA X"
+    lic = json.loads((out / "2026t2" / "licencias_2026t2.json").read_text())
+    assert lic["sha256_archivo"] == recs["2026t2"]["files"][2]["sha256"] and lic["filas"] == 12
 
 
-def test_focus_code_worked_example():
-    a = agg.PrestacionesAgg(focus=["0405001"])
-    for prov, unit in (("A", 100), ("B", 200), ("C", 300)):
-        a.add(prest_row(prov=prov, codigo="0405001", isapre="67", freq=10, fact=unit * 10, bonif=unit * 6,
-                        copago=unit * 4))
-        a.add(prest_row(prov=prov, codigo="0405001", isapre="78", freq=10, fact=unit * 10, bonif=unit * 4,
-                        copago=unit * 6))
-    a.add(prest_row(prov="D", codigo="0405001", region="5", freq=50, fact=5000))
-    rep = a.focus_report()["0405001"]
-    rows = {x["region"]: x for x in rep["filas"]}
-    r13 = rows["13"]
-    assert r13["estado"] == "publicable" and r13["precio_mediana"] == 200 and r13["pct_bonificado"] == 50.0
-    idx = {x["isapre"]: x["indice_bonif_unit_mediana_pct"] for x in r13["indice_isapre_mismo_prestador"]}
-    assert idx == {"67": 20.0, "78": -20.0}
-    assert rows["5"]["estado"] == "concentracion_revision_direccion" and "precio_mediana" not in rows["5"]
-    assert "pct_bonificado" not in rows["5"]
-    assert rows["NACIONAL"]["n_prestadores"] == 4
+def test_quarter_discovery_never_guesses():
+    links = ["https://datos.superdesalud.gob.cl/archivos/Prestaciones%20Bonificadas/2026/Prestaciones_Bonificadas_2026t1.zip",
+             "https://datos.superdesalud.gob.cl/archivos/Prestaciones%20Bonificadas/2026/Prestaciones_Bonificadas_2026t2.zip",
+             "https://datos.superdesalud.gob.cl/archivos/Licencias%20Medicas/2026/Licencias_Medicas_2026t3.zip"]
+    assert agg.latest_quarter(links) == "2026t2"
+    assert agg.latest_quarter([]) is None
+    assert agg.previous_quarter("2026t1") == "2025t4" and agg.previous_quarter("2026t3") == "2026t2"
+    assert agg.discover("Prestaciones Bonificadas", "2026t2", links) == links[1]
+
+
+def test_download_cap_is_one_gib():
+    assert agg.MAX_FILE_BYTES == 1 << 30 and set(agg.MAX_BYTES.values()) == {1 << 30}
+
+
+def test_profile_lists_only_values_seen_ten_times():
+    p = agg.Profiler(["a"], set())
+    for v in ["x"] * 10 + ["rare"] * 3:
+        p.add([v])
+    assert p.result()[0]["top_values"] == [["x", 10]]
+
+
+def test_licencias_isapre_by_diagnosis_cross_has_min_cell():
+    lic = agg.LicenciasAgg()
+    for _ in range(10):
+        lic.add(lic_row(isapre="81", diag="F00-F99", resol="Rechácese", aut=0))
+    for _ in range(4):
+        lic.add(lic_row(isapre="99", diag="F00-F99"))
+    cr = lic.result()["cruces"]["isapre_x_diagnostico"]
+    assert [(r["isapre"], r["diagnostico"], r["pct_rechazadas"]) for r in cr["filas"]] == [("81", "F00-F99", 100.0)]
+    assert cr["celdas_suprimidas_menor_10"] == 1 and cr["licencias_en_celdas_suprimidas"] == 4
 
 
 def test_arancel_description_is_verbatim(tmp_path):

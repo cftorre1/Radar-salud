@@ -1,59 +1,84 @@
 name: SIS open data aggregates
 
-# Dirección 5-nov-2026: first aggregation pipeline on SIS open data (Prestaciones Bonificadas, Licencias Médicas).
-# Runs only on its own branch; never touches staging data. Downloads stay in the runner temp dir; only aggregate JSON
-# and receipts (URL, bytes, SHA-256, row counts) are committed back to this branch.
+# Dirección 5-nov-2026: aggregates of SIS open data (Prestaciones Bonificadas, Licencias Médicas) for fichas F12/F13.
+# The newest quarter linked on the SIS page and the quarter before are aggregated into
+# data/sis_open_data_aggregates/<quarter>/. Downloads (cap 1 GiB per file, robots.txt honoured, probe User-Agent) stay
+# in the runner temp dir and are deleted after parsing; only aggregate JSON and receipts (URL, bytes, SHA-256, rows)
+# are committed. Callable from the daily pipeline (workflow_call): with skip_unchanged it downloads nothing while the
+# remote files keep the Content-Length and Last-Modified of the committed receipts.
 on:
   push:
-    branches: [claude/sis-open-data-aggregates]
+    branches: [claude/f12-f13-sis-open-data]
     paths:
       - .github/workflows/sis-open-data-aggregates.yml
       - scripts/aggregate_sis_open_data.py
+      - tests/test_aggregate_sis_open_data.py
+  workflow_dispatch:
+    inputs:
+      period:
+        description: "latest or yyyytq"
+        default: latest
+        type: string
+  workflow_call:
+    inputs:
+      period:
+        description: "latest or yyyytq"
+        default: latest
+        type: string
+      skip_unchanged:
+        description: "download nothing when the committed receipts still match the remote files"
+        default: true
+        type: boolean
+      commit:
+        description: "commit aggregates and receipts back to the calling branch"
+        default: true
+        type: boolean
 
 permissions:
   contents: write
 
 concurrency:
-  group: sis-open-data-aggregates
+  group: sis-open-data-aggregates-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   aggregate:
-    if: github.ref == 'refs/heads/claude/sis-open-data-aggregates'
+    if: github.ref_name != 'main' && github.ref_name != 'production-stable'
     runs-on: ubuntu-latest
     timeout-minutes: 150
     env:
-      OUT: data/sis_open_data_aggregates/2026t2
+      OUT_ROOT: data/sis_open_data_aggregates
+      PERIOD: ${{ inputs.period || 'latest' }}
+      # inputs.skip_unchanged is set only by workflow_call (default true); push and dispatch always aggregate.
+      SKIP: ${{ inputs.skip_unchanged && '--skip-unchanged' || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: claude/sis-open-data-aggregates
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Unit tests (synthetic fixtures)
         run: pip install -q pytest && python -m pytest -q -p no:cacheprovider --noconftest tests/test_aggregate_sis_open_data.py
-      - name: Licencias Médicas 2026t2 (robots.txt honoured)
-        continue-on-error: true
-        run: python scripts/aggregate_sis_open_data.py --period 2026t2 --previous "" --only licencias --output-dir "$OUT"
-      - name: Prestaciones Bonificadas 2026t2 + IDs 2026t1 (robots.txt honoured)
-        continue-on-error: true
-        run: python scripts/aggregate_sis_open_data.py --period 2026t2 --previous 2026t1 --only prestaciones --output-dir "$OUT"
+      - name: Aggregate latest quarter and the previous one (robots.txt honoured)
+        run: python scripts/aggregate_sis_open_data.py --period "$PERIOD" --previous auto --output-root "$OUT_ROOT" $SKIP
       - name: Guard - only small aggregate JSON
         run: |
-          ls -la "$OUT" || true
-          if find "$OUT" -type f ! -name '*.json' | grep -q .; then echo "non-JSON file"; exit 1; fi
-          if find "$OUT" -type f -size +40M | grep -q .; then echo "file too large"; exit 1; fi
+          find "$OUT_ROOT" -type f | sort
+          if find "$OUT_ROOT" -type f ! -name '*.json' | grep -q .; then echo "non-JSON file"; exit 1; fi
+          if find "$OUT_ROOT" -type f -size +40M | grep -q .; then echo "file too large"; exit 1; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: sis-open-data-aggregates-${{ github.run_id }}
           path: data/sis_open_data_aggregates/
-      - name: Commit aggregates and receipts to this branch only
+      - name: Commit aggregates and receipts to the calling branch
+        # In a called workflow github.event_name is the caller's event: only push/dispatch commit unconditionally.
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || inputs.commit
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
           git add data/sis_open_data_aggregates
           git commit -m "chore: agregados datos abiertos SIS run ${GITHUB_RUN_ID}" || exit 0
-          git pull --rebase origin claude/sis-open-data-aggregates
-          git push origin HEAD:claude/sis-open-data-aggregates
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

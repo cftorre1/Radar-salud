@@ -9,9 +9,18 @@ Owner rules enforced here (mandatory):
 - encrypted IDs (RUN/RUT/folios) are used only as opaque grouping keys in memory; never reversed, never written;
 - Licencias: aggregates only by Isapre, diagnosis group, industry, region and tipo profesional; cells < 10 records
   are suppressed;
-- Prestaciones: providers only as pseudonymous keys inside aggregates; region x prestación prices are publishable
-  only with >= 3 distinct providers AND >= 30 frecuencia; with 1-2 providers only a concentration flag (n providers,
-  share), no price, marked "revisión Dirección".
+- Prestaciones: providers only as pseudonymous keys inside aggregates. Disclosure rule (Dirección 5-nov-2026, v2):
+  a region x prestación price (Fonasa-arancel codes only) is published when the cell has >= 2 distinct providers AND
+  >= 30 frecuencia: the median, plus p25-p75 only with >= 3 providers. With exactly 1 provider: NO price and no
+  facturado, only a concentration flag. Every provider still counts in the NATIONAL aggregate. The top provider's
+  share of frecuencia is always reported as information;
+- download cap 1 GiB per file; robots.txt honoured with the probe's User-Agent; ZIPs are streamed to the runner's
+  temp dir and deleted after parsing.
+
+Layout per quarter (``--period latest`` discovers the newest quarter on the SIS page; the previous quarter is always
+aggregated too): ``<output-root>/<quarter>/`` with ``receipts_<q>.json`` (URL, bytes, SHA-256, rows per file) and the
+aggregate JSON files. ``--skip-unchanged`` re-downloads nothing when every remote file still has the Content-Length
+and Last-Modified recorded in the committed receipts (cheap daily call).
 """
 from __future__ import annotations
 
@@ -38,15 +47,19 @@ from urllib.request import Request, urlopen
 PAGE = "https://www.superdesalud.gob.cl/tax-biblioteca-digital/datos-abiertos-de-isapres-6988/"
 FILE_HOST = "datos.superdesalud.gob.cl"
 UA = "AlicantoSaludBot/1.0 (+https://alicantosalud.cl; datos abiertos SIS, lectura acotada)"
-# Prestaciones: Dirección allowed "~400 MB"; run 41962408457 showed the 2026t2 ZIP is 458,865,683 bytes
-# (Content-Length), so the bound is 460 MiB (482 MB). Integration owner to confirm or revert.
-MAX_BYTES = {"Prestaciones Bonificadas": 460 * 1024 * 1024, "Licencias Medicas": 60 * 1024 * 1024,
-             "Arancel Isapre": 20 * 1024 * 1024}
+# Dirección 5-nov-2026: download cap 1 GiB per file (the 2026t2 Prestaciones ZIP is 458,865,683 bytes).
+MAX_FILE_BYTES = 1 << 30
+MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
+             "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
+SCRIPT_VERSION = "sis_open_data_agg_v2"
 
-PRICE_MIN_PROVIDERS = 3
-PRICE_MIN_FREQ = 30
+PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
+PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
+IQR_MIN_PROVIDERS = 3     # p25-p75 only with >= 3 providers
+TOP_CODES = 15            # most-billed Fonasa codes (national frecuencia) described from the Arancel Isapre
 LIC_MIN_CELL = 10
+PROFILE_MIN_COUNT = 10    # a profile value is listed only when it appears in >= 10 rows
 NO_PROVIDER = ("", "0")
 
 # ---------------------------------------------------------------- layouts (official dictionaries, 1-based -> 0-based)
@@ -224,7 +237,8 @@ class Profiler:
                 d["value_length_hist"] = {str(k): v for k, v in sorted(self.lengths[i].most_common(6))}
             else:
                 d["distinct_values"] = f">{self.cap}" if self.overflow[i] else len(self.values[i])
-                d["top_values"] = self.values[i].most_common(self.top)
+                # Only values seen in >= PROFILE_MIN_COUNT rows: the profile is a layout check, never a row listing.
+                d["top_values"] = [[v, c] for v, c in self.values[i].most_common(self.top) if c >= PROFILE_MIN_COUNT]
             out.append(d)
         return out
 
@@ -235,12 +249,8 @@ def is_fonasa(pertenencia: str) -> bool:
 
 
 class PrestacionesAgg:
-    def __init__(self, ids_only: bool = False, focus: Iterable[str] = ()):
+    def __init__(self, ids_only: bool = False):
         self.ids_only = ids_only
-        self.focus = set(focus)
-        self.focus_cells: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0])  # (cod, reg, prov)
-        self.focus_isapre: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0])        # (cod, reg, prov, isapre)
-        self.focus_meta: dict[str, Counter] = defaultdict(Counter)
         self.err: Counter = Counter()
         self.prov_isapres: dict[str, set] = defaultdict(set)
         self.prov_fact: dict[str, float] = defaultdict(float)
@@ -251,7 +261,7 @@ class PrestacionesAgg:
             return
         self.profile = Profiler(PREST_NAMES, PREST_SENSITIVE)
         self.isapre_atencion: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0])
-        self.price: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])          # (codigo, region, prov)
+        self.price: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])  # (codigo, region, prov)
         self.cross: dict[tuple, dict] = defaultdict(dict)                         # (prov, codigo) -> isapre
         self.region_prov: dict[tuple, float] = defaultdict(float)
         self.region_tipo: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0])
@@ -283,19 +293,11 @@ class PrestacionesAgg:
         if prov in NO_PROVIDER:
             return
         self.region_prov[(region, prov)] += fact
-        if self.focus and f[P_CODIGO].strip() in self.focus:
-            codigo = f[P_CODIGO].strip()
-            fc = self.focus_cells[(codigo, region, prov)]
-            fc[0] += fact; fc[1] += bonif; fc[2] += copago; fc[3] += freq; fc[4] += 1
-            fi = self.focus_isapre[(codigo, region, prov, isapre)]
-            fi[0] += bonif; fi[1] += fact; fi[2] += freq
-            self.focus_meta[codigo]["pertenencia=" + f[P_PERTENENCIA].strip()] += 1
-            self.focus_meta[codigo]["tipo_atencion=" + atencion] += 1
         if is_fonasa(f[P_PERTENENCIA]):
             self.fonasa_rows += 1
             codigo = f[P_CODIGO].strip()
             p = self.price[(codigo, region, prov)]
-            p[0] += fact; p[1] += freq
+            p[0] += fact; p[1] += freq; p[2] += bonif; p[3] += copago
             c = self.cross[(prov, codigo)].setdefault(isapre, [0.0, 0.0, 0.0])
             c[0] += bonif; c[1] += fact; c[2] += freq
 
@@ -316,42 +318,81 @@ class PrestacionesAgg:
                 "facturado": round(v[1]), "bonificado": round(v[2]), "copago": round(v[3]),
                 "pct_bonificado": pct(v[2], v[1]), "pct_copago": pct(v[3], v[1])}
 
-    def price_table(self) -> dict:
+    def _cells(self) -> dict[tuple, list]:
+        """(codigo, region|NACIONAL) -> [(unit price, freq, fact, bonif, copago)] per pseudonymous provider with
+        frecuencia > 0 and facturado > 0. NACIONAL sums each provider across regions: every provider counts there,
+        including the ones that are alone in their region (Dirección 5-nov-2026)."""
         cells: dict[tuple, list] = defaultdict(list)
-        nat: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])
-        for (codigo, region, prov), (fact, freq) in self.price.items():
-            if freq > 0 and fact > 0:
-                cells[(codigo, region)].append((fact / freq, freq, fact))
+        nat: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])
+        for (codigo, region, prov), v in self.price.items():
+            if v[1] > 0 and v[0] > 0:
+                cells[(codigo, region)].append((v[0] / v[1], v[1], v[0], v[2], v[3]))
             n = nat[(codigo, prov)]
-            n[0] += fact; n[1] += freq
-        for (codigo, prov), (fact, freq) in nat.items():
-            if freq > 0 and fact > 0:
-                cells[(codigo, "NACIONAL")].append((fact / freq, freq, fact))
-        cols = ["codigo_prestacion", "region", "estado", "n_prestadores", "frecuencia", "facturado",
-                "precio_mediana", "precio_p25", "precio_p75", "share_prestador_mayor_pct"]
-        rows, status = [], Counter()
-        for (codigo, region), lst in sorted(cells.items()):
-            n, freq, fact = len(lst), sum(x[1] for x in lst), sum(x[2] for x in lst)
-            top_share = pct(max(x[1] for x in lst), freq)
-            if n >= PRICE_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ:
-                u = sorted(x[0] for x in lst)
-                row = [codigo, region, "publicable", n, round(freq), round(fact), r(quantile(u, .5), 0),
-                       r(quantile(u, .25), 0), r(quantile(u, .75), 0), top_share]
-            elif n <= 2:
-                row = [codigo, region, "concentracion_revision_direccion", n, round(freq), None, None, None, None,
-                       top_share]
-            else:
-                row = [codigo, region, "suprimido_frecuencia_menor_30", n, round(freq), None, None, None, None, None]
-            status[(row[2], region == "NACIONAL")] += 1
-            rows.append(row)
-        return {"regla": {"publicable": f">= {PRICE_MIN_PROVIDERS} prestadores distintos Y >= {PRICE_MIN_FREQ} "
-                                        "frecuencia; precio unitario = facturado/frecuencia por prestador; "
-                                        "mediana/p25/p75 entre prestadores (no ponderado)",
-                          "concentracion": "1-2 prestadores: sin precio; n prestadores y share de frecuencia del "
-                                           "mayor; marcar 'revisión Dirección'",
+            for k in range(4):
+                n[k] += v[k]
+        for (codigo, prov), v in nat.items():
+            if v[1] > 0 and v[0] > 0:
+                cells[(codigo, "NACIONAL")].append((v[0] / v[1], v[1], v[0], v[2], v[3]))
+        return cells
+
+    @staticmethod
+    def disclose(lst: list) -> dict:
+        """The disclosure rule for one region x prestación cell (Dirección 5-nov-2026, v2)."""
+        n, freq = len(lst), sum(x[1] for x in lst)
+        out = {"n_prestadores": n, "frecuencia": round(freq),
+               "share_prestador_mayor_pct": pct(max(x[1] for x in lst), freq) if lst else None}
+        if n >= PRICE_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ:
+            u = sorted(x[0] for x in lst)
+            fact, bonif, cop = (sum(x[k] for x in lst) for k in (2, 3, 4))
+            out.update(estado="publicable", precio_mediana=r(quantile(u, .5), 0),
+                       precio_p25=r(quantile(u, .25), 0) if n >= IQR_MIN_PROVIDERS else None,
+                       precio_p75=r(quantile(u, .75), 0) if n >= IQR_MIN_PROVIDERS else None,
+                       facturado=round(fact), pct_bonificado=pct(bonif, fact), pct_copago=pct(cop, fact))
+        elif n == 1:
+            out.update(estado="concentracion_un_prestador", precio_mediana=None, precio_p25=None, precio_p75=None,
+                       facturado=None, pct_bonificado=None, pct_copago=None)
+        else:
+            out.update(estado="suprimido_frecuencia_menor_30", precio_mediana=None, precio_p25=None, precio_p75=None,
+                       facturado=None, pct_bonificado=None, pct_copago=None)
+        return out
+
+    PRICE_COLS = ["codigo_prestacion", "region", "estado", "n_prestadores", "frecuencia", "facturado",
+                  "precio_mediana", "precio_p25", "precio_p75", "share_prestador_mayor_pct", "pct_bonificado",
+                  "pct_copago"]
+
+    def price_table(self) -> dict:
+        rows, status, status_freq = [], Counter(), Counter()
+        for (codigo, region), lst in sorted(self._cells().items()):
+            d = self.disclose(lst)
+            rows.append([codigo, region] + [d[c] for c in self.PRICE_COLS[2:]])
+            key = (d["estado"], region == "NACIONAL")
+            status[key] += 1
+            status_freq[key] += d["frecuencia"]
+        return {"regla": {"version": "precio_v2_dir_2026_11_05",
+                          "publicable": f">= {PRICE_MIN_PROVIDERS} prestadores distintos Y >= {PRICE_MIN_FREQ} "
+                                        "frecuencia: mediana del precio unitario (facturado/frecuencia por prestador, "
+                                        f"no ponderada); p25-p75 sólo con >= {IQR_MIN_PROVIDERS} prestadores",
+                          "concentracion": "1 prestador: sin precio ni facturado; sólo bandera de concentración",
+                          "suprimido": f">= 2 prestadores con frecuencia < {PRICE_MIN_FREQ}: sin precio",
+                          "nacional": "NACIONAL suma cada prestador entre regiones: todos cuentan, también los que "
+                                      "están solos en su región",
+                          "share": "share_prestador_mayor_pct = frecuencia del mayor prestador / frecuencia de la "
+                                   "celda; se informa siempre",
                           "filtro": "pertenencia del código = Fonasa; prestadores con frecuencia>0 y facturado>0"},
-                "conteo_estados": [{"estado": k[0], "nacional": k[1], "celdas": v} for k, v in sorted(status.items())],
-                "columns": cols, "rows": rows}
+                "conteo_estados": [{"estado": k[0], "nacional": k[1], "celdas": v, "frecuencia": status_freq[k]}
+                                   for k, v in sorted(status.items())],
+                "columns": self.PRICE_COLS, "rows": rows}
+
+    def top_codes(self, n: int = TOP_CODES) -> list[dict]:
+        """The n Fonasa codes with the most national frecuencia, with their national totals (all providers)."""
+        tot: dict[str, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])
+        for (codigo, _region, _prov), v in self.price.items():
+            for k in range(4):
+                tot[codigo][k] += v[k]
+        ranked = sorted(tot.items(), key=lambda kv: (-kv[1][1], kv[0]))[:n]
+        return [{"rank": i + 1, "codigo_prestacion": c, "frecuencia": round(v[1]), "facturado": round(v[0]),
+                 "bonificado": round(v[2]), "copago": round(v[3]), "pct_bonificado": pct(v[2], v[0]),
+                 "pct_copago": pct(v[3], v[0])} for i, (c, v) in enumerate(ranked)]
 
     def cross_isapre(self) -> dict:
         per_isapre: dict[str, dict] = defaultdict(lambda: {"bonif": [], "fact": [], "w": []})
@@ -392,7 +433,7 @@ class PrestacionesAgg:
             if codigo not in top_codes:
                 continue
             provs = {x[2] for x in lst}
-            if len(provs) < PRICE_MIN_PROVIDERS:
+            if len(provs) < IQR_MIN_PROVIDERS:
                 continue
             vals = sorted(x[0] for x in lst if x[0] is not None)
             by_code.append({"codigo_prestacion": codigo, "isapre": i, "n_prestadores": len(provs),
@@ -431,60 +472,6 @@ class PrestacionesAgg:
         return {"definicion": "HHI sobre facturado entre prestadores (seudónimos) de la región del prestador, escala "
                               "0-10000; top5/top1 share de facturado. NACIONAL suma cada prestador entre regiones.",
                 "regiones": out}
-
-    def focus_report(self) -> dict:
-        """Worked example per focus code: national and by region, disclosure rule applied (Dirección 5-nov)."""
-        out = {}
-        for codigo in sorted(self.focus):
-            provs: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0])
-            for (c, reg, prov), v in self.focus_cells.items():
-                if c != codigo:
-                    continue
-                for key in ((reg, prov), ("NACIONAL", prov)):
-                    for k in range(5):
-                        provs[key][k] += v[k]
-            isap: dict[tuple, dict] = defaultdict(dict)
-            for (c, reg, prov, i), v in self.focus_isapre.items():
-                if c != codigo:
-                    continue
-                for key in ((reg, prov), ("NACIONAL", prov)):
-                    t = isap[key].setdefault(i, [0.0, 0.0, 0.0])
-                    for k in range(3):
-                        t[k] += v[k]
-            regions = sorted({k[0] for k in provs}, key=lambda x: (x != "NACIONAL", x))
-            rows = []
-            for reg in regions:
-                cell = [(prov, v) for (rg, prov), v in provs.items() if rg == reg and v[3] > 0 and v[0] > 0]
-                n, freq = len(cell), sum(v[3] for _, v in cell)
-                fact, bonif, cop = (sum(v[k] for _, v in cell) for k in range(3))
-                row: dict = {"region": reg, "n_prestadores": n, "frecuencia": round(freq)}
-                if n >= PRICE_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ:
-                    u = sorted(v[0] / v[3] for _, v in cell)
-                    row.update(estado="publicable", precio_mediana=r(quantile(u, .5), 0),
-                               precio_p25=r(quantile(u, .25), 0), precio_p75=r(quantile(u, .75), 0),
-                               facturado=round(fact), pct_bonificado=pct(bonif, fact), pct_copago=pct(cop, fact))
-                    # same pseudonymous provider, >=2 Isapres: index of each Isapre's bonificado/frecuencia
-                    idx: dict[str, list] = defaultdict(list)
-                    for prov, _ in cell:
-                        by = {i: v for i, v in isap[(reg, prov)].items() if v[2] > 0}
-                        if len(by) < 2:
-                            continue
-                        mb = sum(v[0] / v[2] for v in by.values()) / len(by)
-                        if mb <= 0:
-                            continue
-                        for i, v in by.items():
-                            idx[i].append((v[0] / v[2] / mb - 1) * 100)
-                    row["indice_isapre_mismo_prestador"] = [
-                        {"isapre": i, "n_prestadores": len(v), "indice_bonif_unit_mediana_pct": r(quantile(sorted(v), .5))}
-                        for i, v in sorted(idx.items()) if len(v) >= PRICE_MIN_PROVIDERS]
-                elif n <= 2:
-                    row.update(estado="concentracion_revision_direccion",
-                               share_prestador_mayor_pct=pct(max(v[3] for _, v in cell), freq) if cell else None)
-                else:
-                    row["estado"] = "suprimido_frecuencia_menor_30"
-                rows.append(row)
-            out[codigo] = {"perfil_filas": dict(self.focus_meta[codigo].most_common(12)), "filas": rows}
-        return out
 
     def id_summary(self) -> dict:
         n = len(self.prov_isapres)
@@ -573,6 +560,8 @@ class LicenciasAgg:
         self.err: Counter = Counter()
         self.profile = Profiler(LIC_NAMES, LIC_SENSITIVE)
         self.groups: dict[str, dict[str, LicGroup]] = {d: defaultdict(LicGroup) for d in LIC_DIMENSIONS}
+        # Two-way cell Isapre x diagnosis group (both allowed dimensions; same minimum cell).
+        self.isapre_diag: dict[tuple, LicGroup] = defaultdict(LicGroup)
         self.total = LicGroup()
         self.date_kinds: Counter = Counter()
 
@@ -593,6 +582,7 @@ class LicenciasAgg:
         else:
             self.date_kinds["no_parse"] += 1
         groups = [self.total] + [self.groups[d][f[i].strip() or "(vacío)"] for d, i in LIC_DIMENSIONS.items()]
+        groups.append(self.isapre_diag[(f[L_ISAPRE].strip() or "(vacío)", f[L_DIAG].strip() or "(vacío)")])
         for g in groups:
             g.n += 1
             g.kinds[kind] += 1
@@ -631,6 +621,12 @@ class LicenciasAgg:
             sup = [g for g in groups.values() if g.n < LIC_MIN_CELL]
             out["breakdowns"][dim] = {"filas": rows, "celdas_suprimidas_menor_10": len(sup),
                                       "licencias_en_celdas_suprimidas": sum(g.n for g in sup)}
+        cells = self.isapre_diag
+        sup = [g for g in cells.values() if g.n < LIC_MIN_CELL]
+        out["cruces"] = {"isapre_x_diagnostico": {
+            "filas": [{**self.row(f"{i}|{d}", g), "isapre": i, "diagnostico": d}
+                      for (i, d), g in sorted(cells.items(), key=lambda kv: (kv[0][0], -kv[1].n)) if g.n >= LIC_MIN_CELL],
+            "celdas_suprimidas_menor_10": len(sup), "licencias_en_celdas_suprimidas": sum(g.n for g in sup)}}
         if self.date_kinds.get("d"):
             out["nota_fechas"] = "Fechas de recepción/resolución con día: mediana en días calculada."
         else:
@@ -679,21 +675,72 @@ def allowed(url: str) -> tuple[bool, str]:
     return ok, "robots_ok" if ok else "robots_disallow"
 
 
-def discover(dataset: str, period: str) -> str:
-    """URL from the SIS page links; falls back to the probe-observed pattern."""
-    fname = f"{dataset.replace(' ', '_')}_{period}.zip"
+FILE_RX = re.compile(r"/([A-Za-z_]+)_(\d{4})t([1-4])\.zip$", re.I)
+
+
+def page_links() -> list[str]:
+    """Links of the SIS open-data page that point to the file host (robots.txt honoured; [] on any failure)."""
     try:
         ok, _ = allowed(PAGE)
-        if ok:
-            st, body, _ = get(PAGE, limit=8 * 1024 * 1024, timeout=60)
-            if st == 200:
-                for m in re.findall(r'href=["\']([^"\']+)["\']', body.decode("utf-8", "replace")):
-                    u = urljoin(PAGE, html.unescape(m))
-                    if urlparse(u).netloc == FILE_HOST and unquote(u).lower().endswith("/" + fname.lower()):
-                        return u
+        if not ok:
+            return []
+        st, body, _ = get(PAGE, limit=8 * 1024 * 1024, timeout=60)
     except (URLError, OSError, ValueError):
-        pass
+        return []
+    if st != 200:
+        return []
+    out = []
+    for m in re.findall(r'href=["\']([^"\']+)["\']', body.decode("utf-8", "replace")):
+        u = urljoin(PAGE, html.unescape(m))
+        if urlparse(u).netloc == FILE_HOST:
+            out.append(u)
+    return out
+
+
+def quarter_key(q: str) -> int:
+    m = QUARTER.match(q)
+    if not m:
+        raise ValueError(f"invalid_quarter:{q}")
+    return int(m.group(1)) * 4 + int(m.group(2)) - 1
+
+
+def previous_quarter(q: str) -> str:
+    k = quarter_key(q) - 1
+    return f"{k // 4}t{k % 4 + 1}"
+
+
+def latest_quarter(links: list[str], dataset: str = "Prestaciones Bonificadas") -> str | None:
+    """Newest quarter for which the SIS page links a ``<Dataset>_<yyyy>t<q>.zip`` file; never guessed."""
+    want = dataset.replace(" ", "_").lower()
+    qs = []
+    for u in links:
+        m = FILE_RX.search(unquote(u))
+        if m and m.group(1).lower() == want:
+            qs.append(f"{m.group(2)}t{m.group(3)}")
+    return max(qs, key=quarter_key) if qs else None
+
+
+def discover(dataset: str, period: str, links: list[str] | None = None) -> str:
+    """URL from the SIS page links; falls back to the probe-observed pattern."""
+    fname = f"{dataset.replace(' ', '_')}_{period}.zip"
+    for u in (page_links() if links is None else links):
+        if unquote(u).lower().endswith("/" + fname.lower()):
+            return u
     return f"https://{FILE_HOST}/archivos/{quote(dataset)}/{period[:4]}/{fname}"
+
+
+def head(url: str) -> dict:
+    """Content-Length and Last-Modified of a remote file (robots.txt honoured), to skip unchanged files."""
+    ok, why = allowed(url)
+    if not ok:
+        return {"error": why}
+    try:
+        with urlopen(Request(url, headers={"User-Agent": UA}, method="HEAD"), timeout=60) as resp:
+            return {"content_length": resp.headers.get("Content-Length"), "last_modified": resp.headers.get("Last-Modified")}
+    except HTTPError as e:
+        return {"error": f"http_{e.code}"}
+    except (URLError, OSError, ValueError) as e:
+        return {"error": f"{type(e).__name__}"}
 
 
 def download(url: str, dest: Path, limit: int) -> dict:
@@ -777,14 +824,96 @@ def arancel_descriptions(path: Path, codes: set[str], rec: dict) -> dict:
             for c in sorted(codes)}
 
 
-def run(period: str, prev: str | None, out: Path, local: dict[str, Path] | None = None,
-        which: Iterable[str] = ("prestaciones", "licencias"), focus: Iterable[str] = ("0405001",),
-        arancel_year: str = "2026") -> dict:
-    receipts: dict = {"generated_at": datetime.now(timezone.utc).isoformat(), "user_agent": UA,
+DATASETS = (("Prestaciones Bonificadas", "prest"), ("Licencias Medicas", "lic"))
+
+
+def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "PrestacionesAgg | None" = None,
+                      prev_period: str | None = None, which: Iterable[str] = ("prestaciones", "licencias")):
+    """Full aggregates of one quarter into ``out``. Returns (receipts, provider-id aggregate for the next quarter)."""
+    receipts: dict = {"generated_at": datetime.now(timezone.utc).isoformat(), "script_version": SCRIPT_VERSION,
+                      "user_agent": UA, "max_file_bytes": MAX_FILE_BYTES,
                       "github_run_id": os.environ.get("GITHUB_RUN_ID"), "github_sha": os.environ.get("GITHUB_SHA"),
-                      "period": period, "previous_period": prev, "files": []}
-    tmp = Path(tempfile.mkdtemp(prefix="sis_agg_"))
+                      "period": period, "files": []}
+    ids = None
     which = set(which)
+    if "prestaciones" in which:
+        cur = PrestacionesAgg()
+        p, rec = fetch("Prestaciones Bonificadas", period, f"prest_{period}")
+        if p:
+            process_zip(p, PREST_N, cur.add, rec)
+            rec["numeric_parse_errors"] = dict(cur.err)
+            drop(p)
+        receipts["files"].append(rec)
+        if p:
+            meta = {"periodo": period, "script_version": SCRIPT_VERSION, "sha256_archivo": rec["sha256"],
+                    "filas": cur.rows}
+            write_json(out / f"prestaciones_{period}_resumen.json", {
+                **meta, "periodos_en_archivo": dict(cur.periods.most_common(10)),
+                "filas_pertenencia_fonasa": cur.fonasa_rows,
+                "por_isapre_tipo_atencion": cur.isapre_table(), "concentracion": cur.concentration(),
+                "perfil_columnas": cur.profile.result()})
+            write_json(out / f"prestaciones_{period}_precios_fonasa_region.json", {**meta, **cur.price_table()})
+            write_json(out / f"prestaciones_{period}_indice_isapre_mismo_prestador.json", {**meta, **cur.cross_isapre()})
+            top = cur.top_codes()
+            tx: dict = {**meta, "criterio": f"los {TOP_CODES} códigos Fonasa con más frecuencia nacional (todos los "
+                                            "prestadores)", "codigos": top}
+            ap, arec = fetch("Arancel Isapre", period[:4], f"arancel_{period[:4]}")
+            if ap:
+                desc = arancel_descriptions(ap, {c["codigo_prestacion"] for c in top}, arec)
+                for c in top:
+                    c["descripcion_arancel_isapre"] = desc.get(c["codigo_prestacion"]) or []
+                tx["sha256_arancel"] = arec["sha256"]
+                drop(ap)
+            receipts["files"].append(arec)
+            write_json(out / f"prestaciones_{period}_top_codigos.json", tx)
+            if prev_ids is not None:
+                write_json(out / f"prestaciones_{period}_consistencia_ids.json",
+                           {**meta, "periodo_anterior": prev_period, **id_consistency(cur, prev_ids)})
+            ids = PrestacionesAgg(ids_only=True)  # keep only the pseudonymous-ID sets for the next quarter
+            ids.prov_isapres, ids.prov_fact, ids.prov_rows, ids.rows = cur.prov_isapres, cur.prov_fact, cur.prov_rows, cur.rows
+        del cur
+    if "licencias" in which:
+        lic = LicenciasAgg()
+        p, rec = fetch("Licencias Medicas", period, f"lic_{period}")
+        if p:
+            process_zip(p, LIC_N, lic.add, rec)
+            rec["numeric_parse_errors"] = dict(lic.err)
+            write_json(out / f"licencias_{period}.json", {"periodo": period, "script_version": SCRIPT_VERSION,
+                                                          "sha256_archivo": rec["sha256"], "filas": rec["parse"]["rows_ok"],
+                                                          **lic.result(), "perfil_columnas": lic.profile.result()})
+            drop(p)
+        receipts["files"].append(rec)
+    receipts["finished_at"] = datetime.now(timezone.utc).isoformat()
+    write_json(out / f"receipts_{period}.json", receipts)
+    return receipts, ids
+
+
+def unchanged(out_root: Path, quarters: list[str], links: list[str] | None) -> bool:
+    """True when every remote file of every quarter still has the Content-Length and Last-Modified recorded in the
+    committed receipts written by this script version (no download needed)."""
+    for q in quarters:
+        try:
+            rec = json.loads((out_root / q / f"receipts_{q}.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return False
+        if rec.get("script_version") != SCRIPT_VERSION:
+            return False
+        by = {(f.get("dataset"), f.get("period")): f for f in rec.get("files") or []}
+        for dataset, _ in DATASETS:
+            old = by.get((dataset, q)) or {}
+            if not old.get("sha256"):
+                return False
+            now = head(discover(dataset, q, links))
+            if now.get("error") or now.get("content_length") != old.get("content_length") \
+                    or now.get("last_modified") != old.get("last_modified"):
+                return False
+    return True
+
+
+def run(period: str, prev: str | None, out_root: Path, local: dict[str, Path] | None = None,
+        which: Iterable[str] = ("prestaciones", "licencias"), links: list[str] | None = None) -> dict:
+    """Aggregates ``prev`` (if any) and then ``period``, each into ``out_root/<quarter>/``."""
+    tmp = Path(tempfile.mkdtemp(prefix="sis_agg_"))
 
     def fetch(dataset: str, per: str, key: str) -> tuple[Path | None, dict]:
         if local is not None:
@@ -794,88 +923,55 @@ def run(period: str, prev: str | None, out: Path, local: dict[str, Path] | None 
             data = p.read_bytes()
             return p, {"dataset": dataset, "period": per, "url": f"local:{p.name}", "bytes": len(data),
                        "sha256": hashlib.sha256(data).hexdigest()}
-        url = discover(dataset, per)
+        url = discover(dataset, per, links)
         dest = tmp / f"{key}.zip"
         rec = {"dataset": dataset, "period": per, **download(url, dest, MAX_BYTES[dataset])}
+        if "sha256" not in rec and dest.exists():
+            dest.unlink()  # a partial or refused download is never kept
         return (dest if "sha256" in rec else None), rec
 
     def drop(p: Path) -> None:
         if local is None and p.exists():
             p.unlink()
 
+    out: dict = {}
     try:
-        if "prestaciones" in which:
-            cur = PrestacionesAgg(focus=focus)
-            p, rec = fetch("Prestaciones Bonificadas", period, f"prest_{period}")
-            if p:
-                process_zip(p, PREST_N, cur.add, rec)
-                rec["numeric_parse_errors"] = dict(cur.err)
-                drop(p)
-            receipts["files"].append(rec)
-            prev_agg = None
-            if prev and p:
-                prev_agg = PrestacionesAgg(ids_only=True)
-                pp, prec = fetch("Prestaciones Bonificadas", prev, f"prest_{prev}")
-                if pp:
-                    process_zip(pp, PREST_N, prev_agg.add, prec)
-                    drop(pp)
-                else:
-                    prev_agg = None
-                receipts["files"].append(prec)
-            if p:
-                meta = {"periodo": period, "sha256_archivo": rec["sha256"], "filas": cur.rows}
-                write_json(out / f"prestaciones_{period}_resumen.json", {
-                    **meta, "periodos_en_archivo": dict(cur.periods.most_common(10)),
-                    "filas_pertenencia_fonasa": cur.fonasa_rows,
-                    "por_isapre_tipo_atencion": cur.isapre_table(), "concentracion": cur.concentration(),
-                    "perfil_columnas": cur.profile.result()})
-                write_json(out / f"prestaciones_{period}_precios_fonasa_region.json", {**meta, **cur.price_table()})
-                write_json(out / f"prestaciones_{period}_indice_isapre_mismo_prestador.json",
-                           {**meta, **cur.cross_isapre()})
-                fx: dict = {**meta, "codigos": cur.focus_report()}
-                ap, arec = fetch("Arancel Isapre", arancel_year, f"arancel_{arancel_year}")
-                if ap:
-                    fx["descripcion_arancel_isapre"] = arancel_descriptions(ap, set(focus), arec)
-                    fx["sha256_arancel"] = arec["sha256"]
-                    drop(ap)
-                receipts["files"].append(arec)
-                write_json(out / f"prestaciones_{period}_ejemplo_codigos.json", fx)
-                write_json(out / f"prestaciones_{period}_consistencia_ids.json",
-                           {**meta, "periodo_anterior": prev,
-                            **({"sha256_archivo_anterior": prec.get("sha256")} if prev_agg else {}),
-                            **id_consistency(cur, prev_agg)})
-            del cur, prev_agg
-        if "licencias" in which:
-            lic = LicenciasAgg()
-            p, rec = fetch("Licencias Medicas", period, f"lic_{period}")
-            if p:
-                process_zip(p, LIC_N, lic.add, rec)
-                rec["numeric_parse_errors"] = dict(lic.err)
-                write_json(out / f"licencias_{period}.json", {"periodo": period, "sha256_archivo": rec["sha256"],
-                                                              **lic.result(), "perfil_columnas": lic.profile.result()})
-                drop(p)
-            receipts["files"].append(rec)
+        ids = None
+        for q in ([prev] if prev else []) + [period]:
+            rec, ids = aggregate_quarter(q, out_root / q, fetch, drop, prev_ids=ids if q == period else None,
+                                         prev_period=prev if q == period else None, which=which)
+            out[q] = rec
     finally:
         for f in tmp.glob("*"):
             f.unlink()
         tmp.rmdir()
-    receipts["finished_at"] = datetime.now(timezone.utc).isoformat()
-    write_json(out / f"receipts_{period}_{'+'.join(sorted(which))}.json", receipts)
-    return receipts
+    return out
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--period", default="2026t2")
-    ap.add_argument("--previous", default="2026t1")
-    ap.add_argument("--output-dir", required=True)
+    ap.add_argument("--period", default="latest", help="'latest' (newest quarter linked on the SIS page) or yyyytq")
+    ap.add_argument("--previous", default="auto", help="'auto' (the quarter before), '' (none) or yyyytq")
+    ap.add_argument("--output-root", required=True, help="quarters are written to <output-root>/<quarter>/")
     ap.add_argument("--only", choices=["prestaciones", "licencias"], action="append")
+    ap.add_argument("--skip-unchanged", action="store_true",
+                    help="download nothing when the committed receipts still match the remote files")
     a = ap.parse_args()
-    rec = run(a.period, a.previous or None, Path(a.output_dir), which=a.only or ("prestaciones", "licencias"))
-    print(json.dumps([{k: f.get(k) for k in ("dataset", "period", "status", "bytes", "sha256", "error")}
-                      | {"rows_ok": f.get("parse", {}).get("rows_ok"),
-                         "malformed": f.get("parse", {}).get("rows_malformed")}
-                      for f in rec["files"]], ensure_ascii=False, indent=1))
+    links = page_links()
+    period = latest_quarter(links) if a.period == "latest" else a.period
+    if not period:
+        raise SystemExit("no quarter linked on the SIS page (robots, network or layout): nothing is guessed")
+    prev = previous_quarter(period) if a.previous == "auto" else (a.previous or None)
+    quarters = [q for q in (prev, period) if q]
+    out_root = Path(a.output_root)
+    if a.skip_unchanged and unchanged(out_root, quarters, links):
+        print(json.dumps({"status": "unchanged", "quarters": quarters}))
+        return
+    recs = run(period, prev, out_root, which=a.only or ("prestaciones", "licencias"), links=links)
+    print(json.dumps({q: [{k: f.get(k) for k in ("dataset", "period", "status", "bytes", "sha256", "error")}
+                          | {"rows_ok": f.get("parse", {}).get("rows_ok"),
+                             "malformed": f.get("parse", {}).get("rows_malformed")}
+                          for f in rec["files"]] for q, rec in recs.items()}, ensure_ascii=False, indent=1))
 
 
 if __name__ == "__main__":
