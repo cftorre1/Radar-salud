@@ -1299,6 +1299,99 @@
           "technical_failures": []
         }
       }
+    },
+    {
+      "run_id": "41936904299",
+      "generated_at": "2026-11-05T01:23:44.889072+00:00",
+      "as_of": "2026-11-04",
+      "network_requests": 17,
+      "sources": {
+        "kff_health_news": {
+          "checked_at": "2026-11-05T01:23:26.510081+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 17,
+            "90": 17
+          },
+          "relevant_items": 13,
+          "excluded_items": 4,
+          "technical_failures": []
+        },
+        "ema": {
+          "checked_at": "2026-11-05T01:23:30.658510+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 13,
+            "90": 13
+          },
+          "relevant_items": 2,
+          "excluded_items": 11,
+          "technical_failures": []
+        },
+        "fda": {
+          "checked_at": "2026-11-05T01:23:32.875545+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 9,
+            "90": 20
+          },
+          "relevant_items": 6,
+          "excluded_items": 14,
+          "technical_failures": []
+        },
+        "cdc": {
+          "checked_at": "2026-11-05T01:23:36.478271+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 0,
+            "90": 0
+          },
+          "relevant_items": 0,
+          "excluded_items": 0,
+          "technical_failures": []
+        },
+        "nih": {
+          "checked_at": null,
+          "technical_status": "error",
+          "counts": {
+            "30": 0,
+            "90": 0
+          },
+          "relevant_items": 0,
+          "excluded_items": 0,
+          "technical_failures": [
+            {
+              "source": "nih",
+              "section": "news_releases",
+              "url": "https://www.nih.gov/news-releases/feed.xml",
+              "stage": "robots",
+              "error": "ValueError: http_403"
+            }
+          ]
+        },
+        "ecdc": {
+          "checked_at": "2026-11-05T01:23:41.799352+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 20,
+            "90": 20
+          },
+          "relevant_items": 2,
+          "excluded_items": 18,
+          "technical_failures": []
+        },
+        "ec_health": {
+          "checked_at": "2026-11-05T01:23:44.643366+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 30,
+            "90": 30
+          },
+          "relevant_items": 6,
+          "excluded_items": 24,
+          "technical_failures": []
+        }
+      }
     }
   ]
 }

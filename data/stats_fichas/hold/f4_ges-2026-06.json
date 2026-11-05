@@ -2,7 +2,7 @@
   "status": "hold",
   "family": "F4",
   "period": "2026-06",
-  "generated_at": "2026-11-04T13:26:59.493916+00:00",
+  "generated_at": "2026-11-05T00:46:56.870801+00:00",
   "decision": {
     "decision": "HOLD",
     "holds": [
@@ -31,9 +31,9 @@
     "release_key": "2026-06:5a84c70ca52440c8",
     "kicker": "Casos GES",
     "kicker_meta": "datos de enero–junio de 2026 · publicado por la SIS el 14 oct · se actualiza cada trimestre",
-    "headline": "Casos GES entre enero y junio de 2026: 1.987.954, −7,0% frente a enero–junio de 2025",
-    "headline_type": "ytd_yoy",
-    "dek": "Fonasa informó 1.910.382 casos y las Isapres 77.572 entre enero y junio de 2026. Tasa bruta Isapre: 31,0 casos de enero a junio de 2026 por 1.000 beneficiarios. La variación incluye 3 problemas nuevos por decreto; comparable: −7,4%.",
+    "headline": "Cáncer Cérvicouterino reúne el 22,1% de los 1.987.954 casos GES entre enero y junio de 2026",
+    "headline_type": "ytd_lead_problem",
+    "dek": "Fonasa informó 1.910.382 casos y las Isapres 77.572 entre enero y junio de 2026. El T2 2025 de las Isapres es atípico en los datos SIS; Fonasa: −2,9% a/a. Cada caso es una solicitud de acceso a la GES.",
     "dek_emphasis": "1.910.382 casos",
     "kpis": [
       {
@@ -45,8 +45,8 @@
           "−7,0% vs. ene–jun 2025",
           "−7,4% solo problemas comparables"
         ],
-        "badge": "Cruza umbral (5% a/a)",
-        "badge_kind": "crossed",
+        "badge": "Comparación con un trimestre atípico",
+        "badge_kind": "muted",
         "refs": [
           "ges.ytd.2026-06.total",
           "ges.yoy.total_pct"
@@ -74,6 +74,8 @@
           "−54,1% vs. ene–jun 2025",
           "3,9% de los casos de ambos seguros"
         ],
+        "badge": "Comparación con un trimestre atípico",
+        "badge_kind": "muted",
         "refs": [
           "ges.ytd.2026-06.isapre",
           "ges.ytd.2026-06.isapre_share"
@@ -161,7 +163,9 @@
         ],
         "text": [
           "Entre enero y junio de 2026 Fonasa e Isapres informaron 1.987.954 casos GES, 148.850 menos que entre enero y junio de 2025 (−7,0%).",
-          "Con solo los problemas presentes en ambos períodos la variación es −7,4%: la lista de problemas cambió entre ambos años (posible cambio de decreto GES)."
+          "Con solo los problemas presentes en ambos períodos la variación es −7,4%: la lista de problemas cambió entre ambos años (posible cambio de decreto GES).",
+          "El período enero–junio de 2025 incluye el segundo trimestre de 2025 de las Isapres, atípico en los datos SIS: 126.128 casos, 3,1 veces la mediana de los demás trimestres (41.246). La SIS no informa el motivo.",
+          "Solo Fonasa: −2,9% frente a enero–junio de 2025."
         ],
         "spark": {
           "chart": "f4-totales",
@@ -298,7 +302,8 @@
         "text": [
           "Se ordenan los problemas que crecen, con al menos 500 casos entre enero y junio de 2025; cruzan el umbral los que crecen 15% o más.",
           "62 problemas comparables bajaron frente a ene–jun 2025; no se grafican en este ranking de crecimiento.",
-          "La lista de problemas cambió entre ene–jun 2025 y ene–jun 2026 (posible cambio de decreto GES). Problemas sin base comparable: 3; que ya no aparecen: 0. No entran al ranking."
+          "La lista de problemas cambió entre ene–jun 2025 y ene–jun 2026 (posible cambio de decreto GES). Problemas sin base comparable: 3; que ya no aparecen: 0. No entran al ranking.",
+          "La base por problema incluye el segundo trimestre de 2025 de las Isapres, atípico en los datos SIS: las variaciones por problema pueden estar distorsionadas."
         ],
         "spark": {
           "chart": "f4-top",
@@ -442,7 +447,8 @@
         ],
         "text": [
           "Las Isapres informaron el 3,9% de los casos entre enero y junio de 2026; es una parte de los casos, no de la población.",
-          "Tasa bruta Isapre entre enero y junio de 2026: 31,0 casos por 1.000 beneficiarios Isapre. Fonasa: tasa no disponible, porque Alicanto no tiene capturados sus beneficiarios."
+          "Tasa bruta Isapre entre enero y junio de 2026: 31,0 casos por 1.000 beneficiarios Isapre. Fonasa: tasa no disponible, porque Alicanto no tiene capturados sus beneficiarios.",
+          "El T2 2025 de las Isapres es atípico en los datos SIS (ver Totales)."
         ],
         "spark": {
           "chart": "f4-share",
@@ -560,7 +566,7 @@
     "facts": {
       "heading": "Qué muestran los datos",
       "paragraphs": [
-        "Entre enero y junio de 2026 Fonasa e Isapres informaron 1.987.954 casos GES, 148.850 menos que entre enero y junio de 2025 (−7,0%).",
+        "Entre enero y junio de 2026 Fonasa e Isapres informaron 1.987.954 casos GES, 148.850 menos que entre enero y junio de 2025 (−7,0%). El período enero–junio de 2025 incluye el segundo trimestre de 2025 de las Isapres, atípico en los datos SIS: 126.128 casos, 3,1 veces la mediana de los demás trimestres (41.246). La SIS no informa el motivo.",
         "Las Isapres informaron el 3,9% de los casos entre enero y junio de 2026; es una parte de los casos, no de la población.",
         "Se ordenan los problemas que crecen, con al menos 500 casos entre enero y junio de 2025; cruzan el umbral los que crecen 15% o más."
       ],
@@ -573,7 +579,7 @@
       },
       {
         "headline": "Cáncer Colorectal en personas de 15 años y más: +17,4% a/a.",
-        "explanation": "Un salto en un problema puede venir de un cambio de decreto o de registro; la ficha no infiere la causa."
+        "explanation": "La base incluye un trimestre atípico de los datos SIS: la variación puede estar distorsionada."
       }
     ],
     "notes": [
@@ -595,7 +601,11 @@
       },
       {
         "id": "n5",
-        "text": "Según las notas de la SIS: desde julio de 2012 la fuente es el archivo de solicitudes de acceso a las GES; Fonasa no informa casos de VIH anteriores a 2014; algunas diferencias en problemas de salud puntuales se deben a que una Isapre eliminó casos del archivo."
+        "text": "Según las notas de la SIS: desde julio de 2012 la fuente es el archivo de solicitudes de acceso a las GES; Fonasa no informa casos de VIH anteriores a 2014; desde 2021, las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo; las del problema 11 en diciembre de 2022 también se deben a que una Isapre eliminó casos del archivo."
+      },
+      {
+        "id": "n8",
+        "text": "Trimestre atípico (regla del registro): un trimestre de un seguro con 2 veces o más, o la mitad o menos, la mediana de sus demás trimestres. Se muestran los datos tal como los publica la SIS, que no informa el motivo: Isapres T2 2025: 126.128 casos, mediana de los demás 41.246. Por eso el titular no usa la comparación con enero–junio de 2025."
       },
       {
         "id": "n7",
@@ -617,7 +627,7 @@
         "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
         "sha256": "b1dc62eb1a40b0f34452f67e7fdecefb91adc175235ffc046b60a6e5e0c7e4ee",
         "published_at": "2026-10-02",
-        "fetched_at": "2026-11-04T13:13:08.174944+00:00",
+        "fetched_at": "2026-11-05T00:30:51.019560+00:00",
         "label": "SIS · Cartera mensual de beneficiarios Isapre (xlsx), ficha F1",
         "role": "denominador de la tasa Isapre: beneficiarios al cierre de cada mes",
         "locator": "fila Total Sistema",
@@ -638,7 +648,7 @@
       "cost_usd": 0.0
     },
     "status": "AWAITING_FIRST_REVIEW",
-    "generated_at": "2026-11-04T13:26:59.493916+00:00",
+    "generated_at": "2026-11-05T00:46:56.870801+00:00",
     "builder_version": "f4_ytd_v4",
     "verification": {
       "verdict": "PASS",
@@ -1408,6 +1418,39 @@
           "inputs": [
             "ges.q.2026T2.isapre",
             "ges.q.2026T2.total"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "ges.q.2025T2.isapre.mediana_otros": {
+          "id": "ges.q.2025T2.isapre.mediana_otros",
+          "value": 41246,
+          "unit": "casos",
+          "period": "2025-06",
+          "source": null,
+          "locator": null,
+          "formula": "mediana de los casos de los demás trimestres del mismo seguro",
+          "inputs": [
+            "ges.q.2025T1.isapre",
+            "ges.q.2025T3.isapre",
+            "ges.q.2025T4.isapre",
+            "ges.q.2026T1.isapre",
+            "ges.q.2026T2.isapre"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "ges.q.2025T2.isapre.veces_mediana": {
+          "id": "ges.q.2025T2.isapre.veces_mediana",
+          "value": 3.0579450128497307,
+          "unit": "x",
+          "period": "2025-06",
+          "source": null,
+          "locator": null,
+          "formula": "casos del trimestre / mediana de los demás trimestres",
+          "inputs": [
+            "ges.q.2025T2.isapre",
+            "ges.q.2025T2.isapre.mediana_otros"
           ],
           "kind": "derived",
           "revised": null
@@ -11748,6 +11791,21 @@
           "kind": "derived",
           "revised": null
         },
+        "ges.p.ps03.share_ytd.2026-06": {
+          "id": "ges.p.ps03.share_ytd.2026-06",
+          "value": 22.108157432214227,
+          "unit": "%",
+          "period": "2026-06",
+          "source": null,
+          "locator": null,
+          "formula": "casos del problema / casos GES totales del período × 100",
+          "inputs": [
+            "ges.p.ps03.ytd.2026-06",
+            "ges.ytd.2026-06.total"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "cartera.isapre.2026-01": {
           "id": "cartera.isapre.2026-01",
           "value": 2514038,
@@ -11895,7 +11953,10 @@
         49.0,
         55.0,
         60.0,
-        65.0
+        65.0,
+        11.0,
+        57.0,
+        2.0
       ],
       "entity_codes": [],
       "entity_keys": [
@@ -12010,33 +12071,6 @@
           "base": "beneficiarios_mismo_seguro"
         },
         {
-          "id": "ges.yoy.total",
-          "value": -148850,
-          "unit": "casos",
-          "metric": "casos",
-          "entity": null,
-          "signed": true,
-          "periods": [
-            "2025-01",
-            "2025-02",
-            "2025-03",
-            "2025-04",
-            "2025-05",
-            "2025-06",
-            "2026-01",
-            "2026-02",
-            "2026-03",
-            "2026-04",
-            "2026-05",
-            "2026-06"
-          ],
-          "requires_period": true,
-          "scope": "system",
-          "period_kind": "ytd",
-          "trivial": false,
-          "base": null
-        },
-        {
           "id": "ges.yoy.fonasa",
           "value": -57593,
           "unit": "casos",
@@ -12064,60 +12098,6 @@
           "base": null
         },
         {
-          "id": "ges.yoy.isapre",
-          "value": -91257,
-          "unit": "casos",
-          "metric": "casos",
-          "entity": null,
-          "signed": true,
-          "periods": [
-            "2025-01",
-            "2025-02",
-            "2025-03",
-            "2025-04",
-            "2025-05",
-            "2025-06",
-            "2026-01",
-            "2026-02",
-            "2026-03",
-            "2026-04",
-            "2026-05",
-            "2026-06"
-          ],
-          "requires_period": true,
-          "scope": "isapres",
-          "period_kind": "ytd",
-          "trivial": false,
-          "base": null
-        },
-        {
-          "id": "ges.yoy.total_pct",
-          "value": -6.966010920982926,
-          "unit": "%",
-          "metric": null,
-          "entity": null,
-          "signed": true,
-          "periods": [
-            "2025-01",
-            "2025-02",
-            "2025-03",
-            "2025-04",
-            "2025-05",
-            "2025-06",
-            "2026-01",
-            "2026-02",
-            "2026-03",
-            "2026-04",
-            "2026-05",
-            "2026-06"
-          ],
-          "requires_period": true,
-          "scope": "system",
-          "period_kind": "ytd",
-          "trivial": false,
-          "base": "casos_mismo_periodo_anio_anterior"
-        },
-        {
           "id": "ges.yoy.fonasa_pct",
           "value": -2.9265107534394494,
           "unit": "%",
@@ -12143,81 +12123,6 @@
           "period_kind": "ytd",
           "trivial": false,
           "base": "casos_mismo_periodo_anio_anterior"
-        },
-        {
-          "id": "ges.yoy.isapre_pct",
-          "value": -54.052917449016455,
-          "unit": "%",
-          "metric": null,
-          "entity": null,
-          "signed": true,
-          "periods": [
-            "2025-01",
-            "2025-02",
-            "2025-03",
-            "2025-04",
-            "2025-05",
-            "2025-06",
-            "2026-01",
-            "2026-02",
-            "2026-03",
-            "2026-04",
-            "2026-05",
-            "2026-06"
-          ],
-          "requires_period": true,
-          "scope": "isapres",
-          "period_kind": "ytd",
-          "trivial": false,
-          "base": "casos_mismo_periodo_anio_anterior"
-        },
-        {
-          "id": "ges.yoy.isapre_share_pp",
-          "value": -3.9989030642667664,
-          "unit": "pp",
-          "metric": null,
-          "entity": null,
-          "signed": true,
-          "periods": [
-            "2025-01",
-            "2025-02",
-            "2025-03",
-            "2025-04",
-            "2025-05",
-            "2025-06",
-            "2026-01",
-            "2026-02",
-            "2026-03",
-            "2026-04",
-            "2026-05",
-            "2026-06"
-          ],
-          "requires_period": true,
-          "scope": "isapres",
-          "period_kind": "ytd",
-          "trivial": false,
-          "base": "casos_ambos_seguros"
-        },
-        {
-          "id": "ges.ytd.2025-06.total",
-          "value": 2136804,
-          "unit": "casos",
-          "metric": "casos",
-          "entity": null,
-          "signed": false,
-          "periods": [
-            "2025-01",
-            "2025-02",
-            "2025-03",
-            "2025-04",
-            "2025-05",
-            "2025-06"
-          ],
-          "requires_period": true,
-          "scope": "system",
-          "period_kind": "ytd",
-          "trivial": false,
-          "base": null
         }
       ],
       "derived_ratios": [
