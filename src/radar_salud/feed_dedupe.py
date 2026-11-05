@@ -15,6 +15,14 @@ Two deterministic collapses, applied to the curated snapshot cards (``scripts/ex
    bills, statistics fichas, syntheses and other aggregates never merge. The kept card is the official one (else the
    open one, else the earliest); the others go to ``same_event_sources`` ("También informaron"), title and link only.
 
+3. ``group_act_series`` (Dirección 4-nov-2026): the same act issued the same day for several health services — e.g.
+   'Res. exenta CP 14.658/2026 · Aprueba actualización de Arsenal Farmacológico …, del Servicio de Salud Araucanía
+   Norte' and 'Res. exenta CP 24.861/2026 · Actualiza Arsenal Farmacológico …, del Servicio de Salud Araucanía Sur'.
+   They are different acts, so nothing is merged away: one grouped card names every act number and every service,
+   and its ficha lists each act with its own link (``group_items``, "Actos incluidos"). Grouped only when: Diario
+   Oficial, same day, same kind of act, an operative text that ends in ', del Servicio de Salud <X>', the same text
+   before it (once 'aprueba actualización de' reads as 'actualiza'), and a different service in each act.
+
 Both are conservative: when in doubt the cards stay separate. Every merge is recorded in ``dedupe`` on the kept card.
 """
 from __future__ import annotations
@@ -271,5 +279,102 @@ def merge_same_event(cards: list[dict]) -> list[dict]:
     return [c for i, c in enumerate(out) if i not in drop]
 
 
+# ---------------------------------------------------------------------------------------------------------------
+# 3. One act, several health services (Diario Oficial)
+
+ACT_TITLE = re.compile(r"^(?P<kind>.+?) (?P<num>(?:[A-Z]{1,3} )?\d[\d.]*)/(?P<year>\d{4}) · (?P<op>.+)$")
+SERVICE_TAIL = re.compile(r"^(?P<core>.+?),? del Servicio de Salud (?P<svc>[^,.;·]+?)\.?$")
+VERB_SYNONYMS = (("aprueba actualizacion de ", "actualiza "),)
+
+
+def _publishable(card: dict) -> bool:
+    """The browser's individualCardAllowed, on the fields known here: a held card never joins (or hides) a group."""
+    verdict = str((card.get("editorial_committee") or {}).get("verdict") or "PASS").upper()
+    return card.get("feed_visibility") is not False and verdict not in ("HOLD", "REJECT")
+
+
+def _num_key(num: str) -> tuple:
+    digits = re.sub(r"\D", "", num)
+    return (int(digits) if digits else 0, num)
+
+
+def act_parts(card: dict) -> dict | None:
+    """(kind, number, year, operative core, service) of a Diario Oficial act title, or None."""
+    if (card.get("source_name") != "Diario Oficial" or card.get("stats_ficha") or card.get("group_items")
+            or not card.get("event_date") or not _publishable(card)):
+        return None
+    m = ACT_TITLE.match(_title(card).strip())
+    if not m:
+        return None
+    t = SERVICE_TAIL.match(m["op"].strip())
+    if not t:
+        return None
+    core = " ".join(_fold(t["core"]).split())
+    for a, b in VERB_SYNONYMS:
+        if core.startswith(a):
+            core = b + core[len(a):]
+    return {"kind": m["kind"], "num": m["num"], "year": m["year"], "op": t["core"].strip(), "core": core,
+            "service": t["svc"].strip()}
+
+
+def _join(xs: list[str]) -> str:
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " y " + xs[-1]
+
+
+def group_act_series(cards: list[dict]) -> list[dict]:
+    buckets: dict[tuple, list[int]] = {}
+    for i, c in enumerate(cards):
+        p = act_parts(c)
+        if p:
+            buckets.setdefault((c.get("event_date"), _fold(p["kind"]), p["year"], p["core"]), []).append(i)
+    drop: set[int] = set()
+    out = list(cards)
+    for idx in buckets.values():
+        parts = [act_parts(cards[i]) for i in idx]
+        services = [p["service"] for p in parts]
+        if len(idx) < 2 or len(set(_fold(x) for x in services)) != len(services):
+            continue
+        order = sorted(range(len(idx)), key=lambda k: _num_key(parts[k]["num"]))
+        members = [cards[idx[k]] for k in order]
+        ps = [parts[k] for k in order]
+        first = dict(members[0])
+        kind, year = ps[0]["kind"], ps[0]["year"]
+        # Object of the act, without its verb: every act in the group does it; the kinds' own words are kept.
+        obj = re.sub(r"^(?:aprueba actualización de|aprueba actualizacion de|actualiza)\s+", "", ps[0]["op"], flags=re.I)
+        obj = obj[:1].upper() + obj[1:]
+        nums = _join([p["num"] for p in ps])
+        # The services go before the object: they are what tells these acts apart, and a long title is clamped in the feed.
+        title = f"{kind} {nums}/{year} · Servicios de Salud {_join([p['service'] for p in ps])} · {obj}"
+        whats = [f"{_title(m).split(' · ')[0]} (Servicio de Salud {p['service']}): {m.get('what_happened') or m.get('card_what') or ''}".rstrip(': ')
+                 for m, p in zip(members, ps)]
+        # 'title' keeps the official long form ('Resolución exenta números …, de 2026.- …'): the Diario Oficial
+        # publication gate checks it (editorial_gate.malformed_official_listing_title); the compact one is for display.
+        long_kind = re.split(r"\s+n[uú]mero\b", str(members[0].get("title") or ""), maxsplit=1, flags=re.I)[0].strip()
+        long_title = (f"{long_kind} números {nums}, de {year}.- Servicios de Salud {_join([p['service'] for p in ps])}: {obj}"
+                      if long_kind and long_kind != str(members[0].get("title") or "").strip() else title)
+        first.update(title=long_title, display_title=title, short_title=title, source_title_full=long_title,
+                     # One paragraph per act in the ficha ('Qué pasó' renders what_happened, then each key point).
+                     what_happened=whats[0], key_points=whats[1:], key_facts=[], card_what=None, card_why=None,
+                     # Each act's own reason, kept (the feed's publication contract requires one; the ficha omits it).
+                     why_it_matters=" ".join(f"{_title(m).split(' · ')[0]}: {w}" for m in members
+                                             if (w := str(m.get("why_it_matters") or m.get("card_why") or "").strip())) or None,
+                     group_items=[_ref(m) for m in members],
+                     source_documents=[d for m in members for d in (m.get("source_documents") or [])])
+        # Union of what each act carries for WATCH and search; single-act texts that would describe only one act go.
+        first["watch_tags"] = list(dict.fromkeys(t for m in members for t in (m.get("watch_tags") or [])))
+        issuers = list(dict.fromkeys(str(m.get("issuer")) for m in members if m.get("issuer")))
+        first["issuer"] = " · ".join(issuers) if issuers else None
+        # normative_document_label stays: the feed's publication contract needs it on normativa cards.
+        for k in ("original_title", "original_what_happened", "evidence_map"):
+            first.pop(k, None)
+        if isinstance(first.get("editorial_committee"), dict):
+            first["editorial_committee"] = {k: v for k, v in first["editorial_committee"].items()
+                                             if k not in ("public_title", "what_happened", "why_it_matters", "evidence_map")}
+        first["dedupe"] = {"rule": "act_series", "acts": [p["num"] for p in ps], "services": [p["service"] for p in ps]}
+        out[idx[order[0]]] = _absorb(first, members[1:])
+        drop.update(idx[k] for k in order[1:])
+    return [c for i, c in enumerate(out) if i not in drop]
+
+
 def apply(cards: list[dict]) -> list[dict]:
-    return merge_same_event(collapse_bill_milestones(cards))
+    return group_act_series(merge_same_event(collapse_bill_milestones(cards)))

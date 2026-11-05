@@ -13,6 +13,19 @@ def _copy_clean(source: Path, target: Path) -> None:
     shutil.copytree(source, target)
 
 
+# Review previews (Dirección 4-nov-2026) live only under /staging/: the production root never carries them.
+STAGING_ONLY = ("preview.html", "data/preview")
+
+
+def _strip_staging_only(directory: Path) -> None:
+    for rel in STAGING_ONLY:
+        target = directory / rel
+        if target.is_dir():
+            shutil.rmtree(target)
+        elif target.exists():
+            target.unlink()
+
+
 def _stamp(directory: Path, sha: str) -> None:
     product = json.loads((directory / "data/product.json").read_text(encoding="utf-8"))
     version = product.get("version")
@@ -36,10 +49,12 @@ def assemble(mode: str, accepted: Path, checked: Path, output: Path, sha: str) -
         raise ValueError("Incomplete checked candidate")
     if mode == "staging":
         _copy_clean(accepted, output)
+        _strip_staging_only(output)
         _copy_clean(checked, output / "staging")
         _stamp(output / "staging", sha)
     elif mode == "production":
         _copy_clean(checked, output)
+        _strip_staging_only(output)
         _stamp(output, sha)
         _copy_clean(checked, output / "staging")
         _stamp(output / "staging", sha)
