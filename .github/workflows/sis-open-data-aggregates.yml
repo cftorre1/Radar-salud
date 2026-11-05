@@ -32,7 +32,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Unit tests (synthetic fixtures)
-        run: pip install -q pytest && python -m pytest -q -p no:cacheprovider tests/test_aggregate_sis_open_data.py
+        run: pip install -q pytest && python -m pytest -q -p no:cacheprovider --noconftest tests/test_aggregate_sis_open_data.py
       - name: Licencias Médicas 2026t2 (robots.txt honoured)
         continue-on-error: true
         run: python scripts/aggregate_sis_open_data.py --period 2026t2 --previous "" --only licencias --output-dir "$OUT"
