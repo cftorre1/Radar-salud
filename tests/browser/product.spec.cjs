@@ -352,7 +352,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody')).not.toContainText('Enriquecimiento editorial');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
- const isapre=page.locator('article[data-card]').filter({hasText:'Datos a 2026-08'}).filter({hasText:'Superintendencia de Salud'});
+ const isapre=page.locator('article[data-card="stats-ficha:F1:2026-08"]');
  await expect(isapre).toHaveCount(1);
  await expect(isapre.locator('.card-meta')).toContainText('Publicado 02 oct 2026');
  await isapre.locator('[data-detail]').first().click();
@@ -522,7 +522,7 @@ test('F1 ficha presents stock KPIs with separate contracts and mobility views',a
    }
  }
  // F1 ficha: contracts and mobility live in their own topic (between cuts, never monthly).
- const ficha=page.locator('article[data-card]').filter({hasText:'Datos a 2026-08'});
+ const ficha=page.locator('article[data-card="stats-ficha:F1:2026-08"]');
  await expect(ficha).toHaveCount(1);await ficha.locator('[data-detail]').first().click();
  const detail=page.locator('#detailBody');
  await expect(detail.locator('.sf-dek')).toContainText('2.486.683');

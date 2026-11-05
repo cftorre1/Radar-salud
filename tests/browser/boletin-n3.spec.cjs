@@ -42,7 +42,7 @@ test('loose N°3 PDFs read as one card whose ficha says the figures are being ve
  await expect(body.locator('#detailTitle')).toHaveText(TITLE);
  await expect(body.locator('.bulletin-status')).toHaveText(N3.bulletin_status.text);
  expect(await body.locator('.ficha-sources li a').evaluateAll(xs=>xs.map(a=>[a.getAttribute('href'),a.textContent.trim()]))).toEqual(DOCS.map(d=>[d.url,`${d.title} ↗`]));
- await expect(body.locator('.ficha-sources > p.source')).toHaveText(/^SIS · Intendencia de Prestadores · 29 oct\.? 2026 \(detección\) · Fuente original ↗$/);
+ await expect(body.locator('.ficha-sources > p.source')).toHaveText(/^Superintendencia de Salud \(SIS\) · Intendencia de Prestadores · 29 oct\.? 2026 \(detección\) · Fuente original ↗$/);
  await expect(body).not.toContainText(/Período de datos|fecha de publicación no informada|tema: |\d+ prestadores acreditados/);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1}),{timeout:3000}).toBe(true);  // settled layout (a topic switch can overflow for a frame)
@@ -58,7 +58,7 @@ test('news ficha shows the compact sources line',async({page})=>{
  const row=page.locator('article[data-card]').filter({hasText:NEWS.title});
  await row.locator('[data-detail]').first().click();
  const line=page.locator('#detailBody .ficha-sources > p.source');
- await expect(line).toHaveText(/^Minsal · 28 oct\.? 2026 \(publicación\) · Fuente original ↗$/);
+ await expect(line).toHaveText(/^Ministerio de Salud \(Minsal\) · 28 oct\.? 2026 \(publicación\) · Fuente original ↗$/);
  await expect(line.locator('a')).toHaveAttribute('href',NEWS.source_url);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  fs.mkdirSync(SHOTS,{recursive:true});
