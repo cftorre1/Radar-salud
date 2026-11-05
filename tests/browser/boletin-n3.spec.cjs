@@ -42,8 +42,9 @@ test('loose N°3 PDFs read as one card whose ficha says the figures are being ve
  await expect(body.locator('#detailTitle')).toHaveText(TITLE);
  await expect(body.locator('.bulletin-status')).toHaveText(N3.bulletin_status.text);
  expect(await body.locator('.ficha-sources li a').evaluateAll(xs=>xs.map(a=>[a.getAttribute('href'),a.textContent.trim()]))).toEqual(DOCS.map(d=>[d.url,`${d.title} ↗`]));
- await expect(body.locator('.ficha-sources > p.source')).toHaveText(/^Superintendencia de Salud \(SIS\) · Intendencia de Prestadores · 29 oct\.? 2026 \(detección\) · Fuente original ↗$/);
- await expect(body).not.toContainText(/Período de datos|fecha de publicación no informada|tema: |\d+ prestadores acreditados/);
+ // Source and date right under the title (Dirección 4-nov-2026); 'Fuente original' is in the action bar.
+ await expect(body.locator('p.ficha-origin')).toHaveText(/^Superintendencia de Salud \(SIS\) · Intendencia de Prestadores · 29 oct\.? 2026 \(detección\)$/);
+ await expect(body).not.toContainText(/Período de datos|fecha de publicación no informada|(?<!Seguir |Siguiendo )tema: |\d+ prestadores acreditados/);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1}),{timeout:3000}).toBe(true);  // settled layout (a topic switch can overflow for a frame)
  fs.mkdirSync(SHOTS,{recursive:true});
@@ -57,9 +58,9 @@ test('news ficha shows the compact sources line',async({page})=>{
  await load(page);
  const row=page.locator('article[data-card]').filter({hasText:NEWS.title});
  await row.locator('[data-detail]').first().click();
- const line=page.locator('#detailBody .ficha-sources > p.source');
- await expect(line).toHaveText(/^Ministerio de Salud \(Minsal\) · 28 oct\.? 2026 \(publicación\) · Fuente original ↗$/);
- await expect(line.locator('a')).toHaveAttribute('href',NEWS.source_url);
+ const line=page.locator('#detailBody p.ficha-origin');
+ await expect(line).toHaveText(/^Ministerio de Salud \(Minsal\) · 28 oct\.? 2026 \(publicación\)$/);
+ await expect(line.locator('a')).toHaveCount(0);await expect(page.locator('#detailActs .act-src')).toHaveAttribute('href',NEWS.source_url);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
  fs.mkdirSync(SHOTS,{recursive:true});
  await page.screenshot({path:path.join(SHOTS,`news-sources-line-${test.info().project.name}.png`),fullPage:false});
