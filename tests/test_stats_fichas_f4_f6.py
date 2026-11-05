@@ -1071,9 +1071,12 @@ def test_f4_first_publication_waits_for_a_human_review_of_that_release(root):
     # Once a year-to-date ficha is live, later releases follow the normal policy (no new review needed).
     registry["families"]["F4"]["first_review"].update(reviewed_sha256="f" * 64)
     assert f4.run(root, today=TODAY, registry=registry, llm=False)["status"] in ("pass", "no_change")
-    # The committed registry keeps the gate on and records no review yet.
+    # The committed registry keeps the gate on and records Dirección's review of the June-2026 file (5-nov-2026).
     committed = reg()["families"]["F4"]
-    assert committed["first_pass_requires_review"] is True and committed["first_review"]["reviewed_sha256"] is None
+    assert committed["first_pass_requires_review"] is True
+    review = committed["first_review"]
+    assert review["reviewed_by"].startswith("Dirección (cftorre1)") and review["reviewed_at"]
+    assert re.fullmatch(r"[0-9a-f]{64}", review["reviewed_sha256"])
 
 
 def test_f4_dek_names_the_rate_period_and_the_decree_caveat(root):
