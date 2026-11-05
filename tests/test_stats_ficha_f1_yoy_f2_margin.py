@@ -338,7 +338,7 @@ def test_margin_per_beneficiary_uses_the_same_isapres_and_months(tmp_path):
     assert card["id"] == "tema-margen" and card["value"] == f2.money(want["sistema"])
     assert card["lines"][0] == f"enero–marzo 2026; {sf.fmt_int(sum(avg.values()))} beneficiarios promedio"
     table = tab["charts"][-1]["table"]
-    assert table["columns"][-3:] == ["Res. operacional (MM$)", "Benef. promedio", "$ por benef."]
+    assert table["columns"][-3:] == ["Res. operacional (MM$)", "Benef. promedio", "$ por beneficiario, enero–marzo (pesos)"]
     assert table["rows"][-1][-1] == f2.money(want["sistema"])
     n4 = next(n["text"] for n in fi["notes"] if n["id"] == "n4")
     assert "ganancia bruta − gastos de administración" in n4 and "Denominador: promedio simple" in n4
@@ -404,7 +404,7 @@ def test_margin_year_on_year_needs_the_previous_year_cartera(tmp_path):
     assert not any(v.startswith("margen_beneficiario.") and v.endswith(".pct") for v in ev)
     assert ev["cartera.67.beneficiarios.2025-01"]["source"] == "cartera_prev"
     card = next(t for t in fi["tabs"] if t["id"] == "resultados")["kpis"][0]
-    assert card["lines"][-1] == f"marzo 2025: {f2.money(want_prev['sistema'])}"
+    assert card["lines"][-1] == f"enero–marzo 2025: {f2.money(want_prev['sistema'])}"
     assert {s["key"] for s in fi["sources"]} >= {"fefi", "fefi_prev", "cartera", "cartera_prev"}
     assert not any(n["id"] == "n4b" for n in fi["notes"]) and fi["verification"]["verdict"] == "PASS"
 
