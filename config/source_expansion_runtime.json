@@ -12,6 +12,12 @@
       "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-2026/"
     },
     {
+      "package": "isapres",
+      "kind": "cartera_release_prior",
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-mensual-de-cartera-de-beneficiarios-del-sistema-isapre-ano-{prior_year}/",
+      "note": "Planilla mensual del año anterior al de cartera_release (base a/a de F1 y denominador de F2 t−12). {prior_year} = año de cartera_release − 1; se omite cuando data/market/isapre_portfolio_{prior_year}.json ya tiene los 12 meses cuadrados."
+    },
+    {
       "package": "cmf",
       "kind": "1",
       "url": "https://www.cmfchile.cl/institucional/mercados/entidad.php?control=svs&grupo=0&mercado=V&pestania=1&row=AAAwy2ACTAAABy7AAk&rut=93930000&tipoentidad=RVEMI&vig=VI"

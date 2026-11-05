@@ -450,7 +450,7 @@
           "status": "se agrega cuando se capturen precios/planes"
         }
       ],
-      "builder_version": "f1_index_topic_v9"
+      "builder_version": "f1_index_topic_v10"
     },
     "F2": {
       "slug": "f2_financieras",
@@ -975,7 +975,7 @@
           "label": "Licencias (SIL)"
         }
       ],
-      "builder_version": "f2_index_topic_v5",
+      "builder_version": "f2_index_topic_v6",
       "kpis": {
         "siniestralidad": {
           "formula": "(costo de prestaciones de salud + subsidios por incapacidad laboral) / total ingresos de actividades ordinarias × 100",
@@ -1062,14 +1062,16 @@
           "pitfalls": []
         },
         "margen_beneficiario": {
-          "formula": "(ingresos − costo de ventas) / beneficiarios promedio",
-          "denominator": "Promedio de stocks mensuales F1",
-          "period_rule": "YTD mensualizado",
-          "threshold": {
-            "real_pct": 5.0
-          },
+          "label": "Margen por beneficiario",
+          "formula": "resultado operacional / beneficiarios promedio, en pesos; resultado operacional = ganancia bruta − gastos de administración y otros gastos por función (= ingresos − costo de ventas − GAV), acumulado enero–t",
+          "denominator": "Promedio simple de los stocks a fin de mes enero–t de la misma Isapre, de la cartera F1 (data/market/isapre_portfolio.json o isapre_portfolio_<año>.json; un hash, 10 códigos, Σ = Total Sistema); el sistema suma las mismas Isapres de la ficha (sin Esencial mientras rija la exclusión)",
+          "period_rule": "YTD vs. YTD t−12 (mismos meses); niveles y cambio absoluto, sin variación % (es un resultado). Si no calzan meses o Isapres, esa cifra se retiene con su motivo",
+          "changed": "4-nov-2026 (incremento 4 del roadmap): numerador pasa de ganancia bruta a resultado operacional, a pedido del integrador",
+          "threshold": null,
           "pitfalls": [
-            "Usar el promedio, no el stock final."
+            "Usar el promedio, no el stock final.",
+            "No es el resultado del ejercicio: excluye otros ingresos y gastos, resultado financiero e impuestos.",
+            "Montos nominales: el valor real (UF) queda pendiente."
           ]
         }
       },

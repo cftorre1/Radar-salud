@@ -216,7 +216,10 @@ Convención: `sf` = `src/radar_salud/stats_fichas.py`; `js` = `web/stats-ficha.j
 
 **Pendiente conocido.**
 - El valor real (UF) requiere capturar la serie UF.
-- `margen_beneficiario` necesita el promedio de cartera F1.
+- `margen_beneficiario` (v6, 4 nov): resultado operacional (ganancia bruta − gastos de administración y otros gastos por
+  función) / beneficiarios promedio (promedio simple de los stocks enero–t de la misma Isapre, cartera F1), en pesos. Va
+  como tarjeta del tema Resultados y en «Ver datos». Si los meses o las Isapres no calzan exactamente, esa cifra se
+  retiene con su motivo (`stats_ficha_f2.average_beneficiaries`); el a/a espera la cartera del año anterior.
 - Patrimonio e indicadores necesitan una hoja "E. Sit. Fin. I." verificada en miles.
 - F6 adopta `figure_templates` cuando se mergee #112.
 
