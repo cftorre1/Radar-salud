@@ -98,7 +98,7 @@ def test_apply_on_the_committed_snapshot_only_removes_cards_it_lists_on_a_kept_c
     cards = snap["signals"]
     out = fd.apply(cards)
     removed = {c.get("source_url") for c in cards} - {c.get("source_url") for c in out}
-    listed = {r["url"] for c in out for k in ("bill_history", "same_event_sources") for r in c.get(k) or []}
+    listed = {r["url"] for c in out for k in ("bill_history", "same_event_sources", "group_items") for r in c.get(k) or []}
     assert removed <= listed
     assert fd.apply(out) == out  # idempotent
 
@@ -189,3 +189,65 @@ def test_kept_card_inherits_entity_refs_and_identity_keys_of_merged_cards():
 
 def test_v3_cards_never_merge():
     assert len(fd.merge_same_event([dict(MINSAL, editorial_schema_version="3"), PULSO])) == 2
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# 3. One act, several health services (Dirección 4-nov-2026)
+
+DO_URL = "https://www.diariooficial.interior.gob.cl/publicaciones/2026/11/04/44590/01/{}.pdf"
+
+
+def act(num, op, day="2026-11-04", kind="Res. exenta", pdf="1", **kw):
+    t = f"{kind} {num}/2026 · {op}"
+    return {"title": t, "display_title": t, "source_name": "Diario Oficial", "source_type": "official",
+            "event_type": "LEGAL", "event_date": day, "source_url": DO_URL.format(pdf),
+            "what_happened": f"Acto {num}.", "source_documents": [{"url": DO_URL.format(pdf)}], **kw}
+
+
+NORTE = act("CP 14.658", "Aprueba actualización de Arsenal Farmacológico para establecimientos de Atención Primaria de "
+            "Salud, del Servicio de Salud Araucanía Norte", pdf="2893118")
+SUR = act("CP 24.861", "Actualiza Arsenal Farmacológico para Establecimientos de Atención Primaria de Salud, del Servicio "
+          "de Salud Araucanía Sur", pdf="2893117")
+
+
+def test_one_act_for_two_services_is_one_card_that_keeps_every_act_number_and_link():
+    other = news("Ministerio de Salud", "Otra noticia", stype="official")
+    out = fd.apply([SUR, other, NORTE])
+    assert len(out) == 2
+    g = next(c for c in out if c.get("group_items"))
+    # Both normative IDs and both services stay in the title; services come first (the feed clamps long titles).
+    assert g["title"] == ("Res. exenta CP 14.658 y CP 24.861/2026 · Servicios de Salud Araucanía Norte y Araucanía Sur · "
+                          "Arsenal Farmacológico para establecimientos de Atención Primaria de Salud")
+    assert [x["url"] for x in g["group_items"]] == [NORTE["source_url"], SUR["source_url"]]
+    assert g["what_happened"] == "Res. exenta CP 14.658/2026 (Servicio de Salud Araucanía Norte): Acto CP 14.658."
+    assert g["key_points"] == ["Res. exenta CP 24.861/2026 (Servicio de Salud Araucanía Sur): Acto CP 24.861."]
+    assert g["dedupe"] == {"rule": "act_series", "acts": ["CP 14.658", "CP 24.861"],
+                           "services": ["Araucanía Norte", "Araucanía Sur"]}
+    # A shared link of the absorbed act opens the group.
+    assert any(k.get("source_url") == SUR["source_url"] for k in g["merged_from"])
+    assert {d["url"] for d in g["source_documents"]} == {NORTE["source_url"], SUR["source_url"]}
+    assert "group_items" not in NORTE and "group_items" not in SUR  # inputs are never mutated
+
+
+def test_act_series_stays_apart_when_any_condition_fails():
+    sur_tomorrow = {**SUR, "event_date": "2026-11-05"}
+    same_service = act("CP 24.861", "Actualiza Arsenal Farmacológico para Establecimientos de Atención Primaria de Salud, "
+                       "del Servicio de Salud Araucanía Norte", pdf="9")
+    other_object = act("CP 24.862", "Aprueba Norma Técnica de farmacia, del Servicio de Salud Araucanía Sur", pdf="8")
+    decree = act("CP 24.861", SUR["title"].split(" · ", 1)[1], kind="Decreto exento", pdf="7")
+    press = {**SUR, "source_name": "Pulso / La Tercera", "source_type": "press_high_trust"}
+    for b in (sur_tomorrow, same_service, other_object, decree, press):
+        assert len(fd.group_act_series([NORTE, b])) == 2, b["title"]
+    # Two acts on different products (no health service in the title) are not this rule.
+    tramadol = act("E 5.187", "Modifica folletos de información de productos con tramadol", pdf="5")
+    metamizol = act("E 5.188", "Modifica folletos de información de productos con metamizol", pdf="6")
+    assert len(fd.group_act_series([tramadol, metamizol])) == 2
+
+
+def test_three_services_are_named_in_order():
+    c = act("CP 30.001", "Actualiza Arsenal Farmacológico para Establecimientos de Atención Primaria de Salud, del "
+            "Servicio de Salud Aconcagua", pdf="3")
+    out = fd.group_act_series([SUR, c, NORTE])
+    assert len(out) == 1
+    assert out[0]["title"].startswith("Res. exenta CP 14.658, CP 24.861 y CP 30.001/2026 · Servicios de Salud "
+                                      "Araucanía Norte, Araucanía Sur y Aconcagua · ")
