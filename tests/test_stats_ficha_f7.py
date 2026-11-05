@@ -463,3 +463,13 @@ def test_card_links_the_latest_report_first():
     assert fi["sources"][0]["url"] == p["primary_source"]["url"]
     from radar_salud.stats_fichas import ficha_card
     assert ficha_card({**fi, "status": "PASS"}, reg["families"]["F7"])["source_url"] == p["primary_source"]["url"]
+
+
+def test_verifier_rejects_a_ficha_whose_first_source_is_not_the_primary():
+    from radar_salud.stats_fichas import verify_ficha
+    reg = reg_open()
+    p = f7.build_package(REPO, reg)
+    fi = f7.compose(p, reg, today=TODAY)
+    assert "first_source_not_primary" not in verify_ficha(fi, p)["errors"]
+    fi["sources"] = fi["sources"][::-1]
+    assert "first_source_not_primary" in verify_ficha(fi, p)["errors"]
