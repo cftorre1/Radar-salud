@@ -274,7 +274,7 @@ test('WATCH by topic (Dirección 4-nov-2026): following persists, never filters 
  vm.runInContext("activeInterests.add('siguiendo')",c);assert.equal(vm.runInContext('interestMatch(isa)',c),true);assert.equal(vm.runInContext('interestMatch(pre)',c),false);assert.equal(vm.runInContext("INTERESTS.find(x=>x.k==='siguiendo').group",c),'Actores');
  vm.runInContext('persistFilters()',c);const st=JSON.parse(saved.at(-1)[1]);assert.deepEqual(st.topics,['isapres']);assert.deepEqual(st.entities,['cl:org:bupa']);
  // A stored 'siguiendo' or a non-string is never a followed topic.
- const c2=context(Date,JSON.stringify({topics:['siguiendo',3,'farma']}));assert.equal(vm.runInContext('JSON.stringify([...followedTopics])',c2),'["farma"]')});
+ const c2=context(Date,JSON.stringify({topics:['siguiendo',3,'farma','renombrado']}));assert.equal(vm.runInContext('JSON.stringify([...followedTopics])',c2),'["farma"]')});
 test('Global headline fichas follow the feed schema 2 contract: verbatim description, "…" when cut, also_reported_by, OGL attribution',()=>{
  const c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map,URL};vm.createContext(c);vm.runInContext(fs.readFileSync('web/global.js','utf8').split('AlicantoRead.subscribe(')[0],c);
  const base={id:'a1',title:'MHRA approves a new medicine',url:'https://www.gov.uk/government/news/x',published_at:'2026-10-27',source_label:'MHRA (Reino Unido)',bylines:[],tags_es:[]};
