@@ -363,7 +363,8 @@ def group_act_series(cards: list[dict]) -> list[dict]:
         for k in ("original_title", "original_what_happened", "evidence_map"):
             first.pop(k, None)
         if isinstance(first.get("editorial_committee"), dict):
-            first["editorial_committee"] = {k: v for k, v in first["editorial_committee"].items() if k != "public_title"}
+            first["editorial_committee"] = {k: v for k, v in first["editorial_committee"].items()
+                                             if k not in ("public_title", "what_happened", "why_it_matters", "evidence_map")}
         first["dedupe"] = {"rule": "act_series", "acts": [p["num"] for p in ps], "services": [p["service"] for p in ps]}
         out[idx[order[0]]] = _absorb(first, members[1:])
         drop.update(idx[k] for k in order[1:])
