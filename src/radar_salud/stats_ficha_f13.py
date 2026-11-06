@@ -32,7 +32,7 @@ from .stats_ficha_f12 import fmt, money
 from .stats_fichas import value
 
 FAMILY = "F13"
-BUILDER_VERSION = "f13_licencias_v2"  # v2 (review of PR #152): complementary suppression, counts
+BUILDER_VERSION = "f13_licencias_v3"  # v3 (Dirección 5-nov 21:25): no Isapre minimum, open-only comparisons
 DATASET = "Licencias Medicas"
 MIN_CELL = 10
 DIMS = {"isapre": "isapre", "diagnostico": "diag", "actividad_laboral": "act", "region": "region", "tipo_profesional": "prof"}
@@ -224,9 +224,16 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         ratio = values[m]["value"] / values[r_]["value"]
         values["ratio.mental_resp"] = value("ratio.mental_resp", ratio, unit="veces", period=so.period_of(q), source=None,
                                             formula="% rechazo F00–F99 / % rechazo J00–J99", inputs=[m, r_], kind="derived")
-    min_head = int(cfg.get("headline_min_licencias") or 1000)
-    big = [c for c in keys.get("isapre", []) if values[f"lic.{q}.isapre.{c}.licencias"]["value"] >= min_head]
+    # Dirección 5-nov 21:25: no Isapre-level minimum; Isapres are compared (index line, headline) among open ones only.
+    types = so.isapre_types(root)
+    missing = [c for c in keys.get("isapre", []) if types.get(c) not in ("open", "closed")]
+    if missing:
+        return _hold(package, [f"isapre_without_type:{c}" for c in missing])
+    small_base = int(cfg.get("small_base_licencias") or 1000)
+    big = [c for c in keys.get("isapre", []) if types[c] == "open"]
     big = sorted(big, key=lambda c: -values[f"lic.{q}.isapre.{c}.pct_rech"]["value"])
+    closed = [c for c in keys.get("isapre", []) if types[c] == "closed"]
+    small = [c for c in keys.get("isapre", []) if values[f"lic.{q}.isapre.{c}.licencias"]["value"] < small_base]
     ev = so.evidence_sha256(sources)
     detected = str(cur.get("generated_at") or "")[:10] or None
     package.update(
@@ -237,8 +244,8 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         entities=[{"code": int(c), "name": names[c]} for c in keys.get("isapre", []) if c.isdigit()],
         entity_codes=[int(c) for c in keys.get("isapre", []) if c.isdigit()],
         revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
-        constants=[0, 1, 2, 3, 4, 10, 100, 256, min_head],
-        kpis={"q": q, "pq": pq if prev else None, "keys": keys, "ratio": ratio, "big": big},
+        constants=[0, 1, 2, 3, 4, 10, 100, 256, small_base],
+        kpis={"q": q, "pq": pq if prev else None, "keys": keys, "ratio": ratio, "big": big, "closed": closed, "small": small},
     )
     package["reconciliation"].update(ok=True, failures=[])
     return package
@@ -266,7 +273,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     def bars(cid: str, dim: str, metric: str, headline: str, subtitle: str, groups: list[str], source: str, unit: str = "%",
              digits: int = 1, table: dict | None = None) -> dict:
-        rows = [{"label": lab(dim, g), "value": V(vid(dim, g, metric)), "ref": vid(dim, g, metric)}
+        rows = [{"label": lab(dim, g), "value": V(vid(dim, g, metric)), "ref": vid(dim, g, metric),
+                 **({"tag": "cerrada"} if dim == "isapre" and g in k["closed"] else {})}
                 for g in groups if vid(dim, g, metric) in v][:12]
         return {"id": cid, "form": "bars", "unit": unit, "digits": digits, "headline": headline, "subtitle": subtitle,
                 "rows": rows, "table": table or {"columns": ["Grupo", "Valor"], "rows": [[r["label"], fmt(r["value"], digits)] for r in rows]},
@@ -306,9 +314,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     big = k["big"]
     if len(big) >= 2:
         hi, lo = big[0], big[-1]
-        sf.topic_fields(tab, f"Rechazo: {names[lo]} {pc(vid('isapre', lo, 'pct_rech'))} a {names[hi]} {pc(vid('isapre', hi, 'pct_rech'))}",
+        sf.topic_fields(tab, f"Abiertas: {names[lo]} {pc(vid('isapre', lo, 'pct_rech'))} a {names[hi]} {pc(vid('isapre', hi, 'pct_rech'))}",
                         index_refs=[vid("isapre", lo, "pct_rech"), vid("isapre", hi, "pct_rech")], kpis=[])
-        paragraphs.append(f"Entre las Isapres con más de {fmt(cfg.get('headline_min_licencias') or 1000, 0)} licencias, el rechazo va de "
+        paragraphs.append(f"Entre las Isapres abiertas, el rechazo va de "
                           f"{pc(vid('isapre', lo, 'pct_rech'))} ({names[lo]}) a {pc(vid('isapre', hi, 'pct_rech'))} ({names[hi]}).")
     else:
         sf.topic_fields(tab, None, kpis=[])
@@ -462,6 +470,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              "cifrados de la SIS no se intentan revertir."},
         {"id": "n5", "text": "El diagnóstico es el capítulo CIE-10 del diagnóstico principal. Las diferencias entre Isapres no ajustan por "
                              "mezcla de diagnósticos, tipo de trabajador ni licencias de continuación."},
+        *([{"id": "n0", "text": f"{', '.join(names[c] for c in k['closed'])}: Isapre cerrada (afiliación restringida). Aparecen "
+                                "marcadas en los gráficos; las comparaciones entre Isapres del texto usan solo abiertas."}] if k["closed"] else []),
+        *([{"id": "n0b", "text": f"Base pequeña: {', '.join(names[c] for c in k['small'])} (menos de {fmt(cfg.get('small_base_licencias') or 1000, 0)} "
+                                 "licencias en el trimestre). Se incluye; sus porcentajes cambian mucho con pocas licencias."}] if k["small"] else []),
         {"id": "n6", "text": "Subsidio líquido según el archivo: cuando paga el empleador (p. ej. sector público), el monto viene en cero."},
         {"id": "n7", "text": "Archivo: ZIP trimestral de datos abiertos de la SIS. Su huella SHA-256 está en Fuentes; cada agregado nombra "
                              "esa misma huella y, si no calza, la ficha queda retenida."},

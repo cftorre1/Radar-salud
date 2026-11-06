@@ -9,7 +9,9 @@ What the ficha shows (Dirección 5-nov-2026):
 - % bonificado and % copago over facturado, by Isapre and for the system (Σ bonificado / Σ facturado);
 - the same provider, a different Isapre: for every pseudonymous provider × Fonasa code billed by ≥ 2 Isapres, each
   Isapre's bonificado per unit against the mean of the Isapres of that cell (median per Isapre). The coverage gap is
-  the highest minus the lowest median among Isapres with at least ``cross_min_cells`` cells;
+  the highest minus the lowest median among open Isapres whose median and frecuencia-weighted mean agree in sign and
+  are both ≥ 3 % (no Isapre-level volume minimum; an Isapre with fewer than ``cross_min_cells`` cells gets a
+  small-base note). The headline never compares Isapres on coverage: it leads with prices (Dirección 5-nov-2026);
 - prices of the most frequent Fonasa codes: national median, p25–p75 and p75/p25 (dispersion), and by region under
   the disclosure rule: a price only with ≥ 2 distinct providers and ≥ 30 frecuencia (p25–p75 only with ≥ 3); with
   exactly 1 provider no price, only a concentration flag; every provider counts nationally; the top provider's share
@@ -27,6 +29,7 @@ Lectura stays off (``lectura_enabled: false``): no model call.
 """
 from __future__ import annotations
 
+import re
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
@@ -39,7 +42,7 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_prestaciones_v2"  # v2 (review of PR #152): open-Isapre headline, both measures, n=2 rule
+BUILDER_VERSION = "f12_prestaciones_v3"  # v3 (Dirección 5-nov 21:25 + review of PR #152): price-led headline
 DATASET = "Prestaciones Bonificadas"
 PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 3
 NATIONAL = "NACIONAL"
@@ -68,6 +71,15 @@ def money(x: float) -> str:
 def attention(label: str) -> str | None:
     n = sf._fold(label)
     return AMB if "ambul" in n else HOSP if "hospital" in n else None
+
+
+def short_desc(desc: str | None) -> str | None:
+    """'ATENCIÓN KINESIOLÓGICA INTEGRAL AMBULATORIA' → 'Atención kinesiológica integral ambulatoria': the literal Arancel
+    Isapre description, lower-cased, cut before a parenthesis or comma. None without a description."""
+    if not desc:
+        return None
+    t = re.split(r"\s*[(,]", str(desc).strip(), maxsplit=1)[0].strip().lower()
+    return (t[:1].upper() + t[1:]) if t else None
 
 
 def disclosure_failures(cols: list[str], rows: list[list]) -> list[str]:
@@ -265,29 +277,35 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                 if r.get(k) is not None:
                     put(f"cruce.{code}.{vid}", r[k], "%", q, cur, loc)
             put(f"cruce.{code}.celdas", r["celdas_prestador_prestacion"], "celdas", q, cur, loc)
-            if r["celdas_prestador_prestacion"] >= min_cells:
-                qualified.append(code)
+            qualified.append(code)  # Dirección 5-nov 21:25: no Isapre-level minimum (Cruz del Norte included)
         put("cruce.celdas_multi", cur["cross"].get("celdas_con_2_o_mas_isapres"), "celdas", q, cur, loc)
         idsum = (cons.get("trimestre_actual") or {}).get("pct_facturado_de_codigos_en_2_o_mas_isapres")
         if idsum is not None:
             put("ids.pct_facturado_multi", idsum, "%", q, cur, f"prestaciones_{q}_consistencia_ids.json")
     gap = None
-    open_q = [c for c in qualified if types[c] == "open" and f"cruce.{c}.ponderada" in values]
+    qualified = [c for c in qualified if f"cruce.{c}.ponderada" in values]
+    open_q = [c for c in qualified if types[c] == "open"]
+    # Robust: median and weighted mean agree in sign and both reach HEADLINE_MIN_INDEX (open Isapres only).
+    strong = [c for c in open_q if (values[f"cruce.{c}.mediana"]["value"] > 0) == (values[f"cruce.{c}.ponderada"]["value"] > 0)
+              and min(abs(values[f"cruce.{c}.mediana"]["value"]), abs(values[f"cruce.{c}.ponderada"]["value"])) >= HEADLINE_MIN_INDEX]
     if len(open_q) >= 2:
         hi_c = max(open_q, key=lambda c: values[f"cruce.{c}.mediana"]["value"])
         lo_c = min(open_q, key=lambda c: values[f"cruce.{c}.mediana"]["value"])
-        gap = derived("cruce.brecha_pp", values[f"cruce.{hi_c}.mediana"]["value"] - values[f"cruce.{lo_c}.mediana"]["value"], "pp",
-                      f"mediana más alta − más baja del índice de bonificado por unidad, Isapres abiertas con ≥ {min_cells} celdas",
-                      [f"cruce.{hi_c}.mediana", f"cruce.{lo_c}.mediana"])
+        pos = [c for c in strong if values[f"cruce.{c}.mediana"]["value"] > 0]
+        neg = [c for c in strong if values[f"cruce.{c}.mediana"]["value"] < 0]
+        if pos and neg:
+            gp, gn = max(pos, key=lambda c: values[f"cruce.{c}.mediana"]["value"]), min(neg, key=lambda c: values[f"cruce.{c}.mediana"]["value"])
+            gap = derived("cruce.brecha_pp", values[f"cruce.{gp}.mediana"]["value"] - values[f"cruce.{gn}.mediana"]["value"], "pp",
+                          "mediana más alta − más baja del índice de bonificado por unidad, Isapres abiertas cuya mediana y media "
+                          "ponderada coinciden en signo y son ≥ 3%", [f"cruce.{gp}.mediana", f"cruce.{gn}.mediana"])
+            gap = (gp, gn)
         fact_meds = [values[f"cruce.{c}.fact_mediana"]["value"] for c in qualified if f"cruce.{c}.fact_mediana" in values]
         derived("cruce.fact_mediana_max_abs", max(abs(x) for x in fact_meds), "%",
                 "máximo |mediana del índice de facturado por unidad| entre las Isapres calificadas",
                 [f"cruce.{c}.fact_mediana" for c in qualified])
     else:
         hi_c = lo_c = None
-    # Headline-eligible: median and weighted mean agree in sign and both reach HEADLINE_MIN_INDEX (open Isapres).
-    strong = [c for c in open_q if (values[f"cruce.{c}.mediana"]["value"] > 0) == (values[f"cruce.{c}.ponderada"]["value"] > 0)
-              and min(abs(values[f"cruce.{c}.mediana"]["value"]), abs(values[f"cruce.{c}.ponderada"]["value"])) >= HEADLINE_MIN_INDEX]
+    small = [c for c in qualified if values[f"cruce.{c}.celdas"]["value"] < min_cells]
 
     # 3. Prices of the most frequent Fonasa codes.
     top = [c for c in cur["top"].get("codigos") or [] if isinstance(c, dict)]
@@ -329,6 +347,13 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                     put(f"{base}.{k.split('_')[1]}", cell[k], "$", q, cur, loc)
             if reg != NATIONAL:
                 status_count[cell["estado"]] = status_count.get(cell["estado"], 0) + 1
+        rm = f"precio.{code}.13.mediana"
+        for reg in so.REGIONS:
+            rv = f"precio.{code}.{reg}.mediana"
+            if reg not in ("13", "0") and rm in values and rv in values and values[rm]["value"] > 0:
+                derived(f"precio.{code}.{reg}.vs_rm", (values[rv]["value"] / values[rm]["value"] - 1) * 100, "%",
+                        "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+                        [rv, rm])
         nat = f"precio.{code}.{NATIONAL}"
         if f"{nat}.p25" in values and values[f"{nat}.p25"]["value"] > 0:
             ratios.append(derived(f"{nat}.ratio", values[f"{nat}.p75"]["value"] / values[f"{nat}.p25"]["value"], "veces",
@@ -379,7 +404,8 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                    *desc_numbers],
         kpis={"q": q, "pq": pq if prev else None, "isapres": isapres, "hi_b": hi_b, "lo_b": lo_b, "cross_valid": cross_valid,
               "qualified": qualified, "hi_c": hi_c, "lo_c": lo_c, "gap": gap, "opens": opens, "strong": strong,
-              "closed": [c for c in isapres if types[c] == "closed"], "bands": bands, "codes": codes, "status_count": status_count,
+              "closed": [c for c in isapres if types[c] == "closed"], "bands": bands, "small": small,
+              "cross_topic": len(open_q) >= 2, "codes": codes, "status_count": status_count,
               "regions": sorted(conc, key=lambda r: (r == NATIONAL, -(conc[r]["hhi"] or 0)))},
     )
     package["reconciliation"].update(ok=True, failures=[])
@@ -400,7 +426,14 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     ql = so.quarter_label(q)
     tabs, paragraphs, notes, kpis = [], [], [], []
 
-    # KPI cards.
+    # KPI cards: prices first (Dirección 5-nov 21:25), then coverage.
+    c1 = k["codes"][0]["code"]
+    n1 = f"precio.{c1}.{NATIONAL}"
+    d1 = short_desc(k["codes"][0]["desc"]) or f"código {c1}"
+    kpis.append({"id": "dispersion_precios", "label": "Dispersión de precios (p75/p25)", "value": f"{fmt(V('dispersion.mediana'), 1)} veces",
+                 "prov": "C", "lines": [f"mediana de los {len(k['codes'])} códigos Fonasa más frecuentes",
+                                        f"{d1[:40]}: {money(V(f'{n1}.p25'))} a {money(V(f'{n1}.p75'))}"],
+                 "refs": ["dispersion.mediana", f"{n1}.p25", f"{n1}.p75"]})
     lines = [f"del facturado, {ql}", f"copago: {pc(f'sistema.{q}.pct_copago')}"]
     refs = [f"sistema.{q}.pct_bonif", f"sistema.{q}.pct_copago"]
     if pq:
@@ -409,18 +442,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     kpis.append({"id": "bonificado_sistema", "label": "Bonificado por las Isapres", "value": pc(f"sistema.{q}.pct_bonif"),
                  "prov": "C", "lines": lines, "refs": refs})
     if k["gap"] is not None:
-        hi, lo = k["hi_c"], k["lo_c"]
+        gp, gn = k["gap"]
         kpis.append({"id": "brecha_mismo_prestador", "label": "Brecha de cobertura, mismo prestador",
                      "value": f"{fmt(V('cruce.brecha_pp'), 1)} pp", "prov": "C",
-                     "lines": [f"{nm(hi)} {fmt(V(f'cruce.{hi}.mediana'), 1, True)}% · {nm(lo)} {fmt(V(f'cruce.{lo}.mediana'), 1, True)}%",
-                               "medianas del índice vs. la media de la celda; Isapres abiertas"],
-                     "refs": ["cruce.brecha_pp", f"cruce.{hi}.mediana", f"cruce.{lo}.mediana"]})
-    c1 = k["codes"][0]["code"]
-    n1 = f"precio.{c1}.{NATIONAL}"
-    kpis.append({"id": "dispersion_precios", "label": "Dispersión de precios (p75/p25)", "value": f"{fmt(V('dispersion.mediana'), 1)} veces",
-                 "prov": "C", "lines": [f"mediana de los {len(k['codes'])} códigos Fonasa más frecuentes",
-                                        f"código {c1}: {money(V(f'{n1}.p25'))} a {money(V(f'{n1}.p75'))}"],
-                 "refs": ["dispersion.mediana", f"{n1}.p25", f"{n1}.p75"]})
+                     "lines": [f"{nm(gp)} {fmt(V(f'cruce.{gp}.mediana'), 1, True)}% · {nm(gn)} {fmt(V(f'cruce.{gn}.mediana'), 1, True)}%",
+                               "medianas vs. la media de la celda; abiertas con mediana y media ponderada del mismo signo"],
+                     "refs": ["cruce.brecha_pp", f"cruce.{gp}.mediana", f"cruce.{gn}.mediana"]})
     kpis.append({"id": "precio_publicable", "label": "Atenciones con precio publicable", "value": pc("divulgacion.pct_publicable"),
                  "prov": "C", "lines": ["celdas región × código Fonasa",
                                         f"{fmt(V('divulgacion.celdas_un_prestador'), 0)} celdas con 1 prestador: sin precio"],
@@ -468,7 +495,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     # Topic 2: same provider, different Isapre. Both measures are shown: the median across cells (unweighted) and the
     # frecuencia-weighted mean; closed Isapres stay in the topic, marked (review of PR #152).
-    if k["gap"] is not None:
+    if k["cross_topic"]:
         qual = sorted([c for c in k["qualified"] if f"cruce.{c}.ponderada" in v], key=lambda c: -V(f"cruce.{c}.mediana"))
         closed_q = [nm(c) for c in qual if c in closed]
         src_cl = (f" {', '.join(closed_q)}: Isapre cerrada (afiliación restringida)." if closed_q else "")
@@ -495,11 +522,13 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                    "source": base + src_cl + " Cuando las dos medidas difieren en signo, la diferencia no es robusta."}]
         tab = {"id": "mismo-prestador", "label": "Mismo prestador", "charts": charts, "text": [], "dek": None}
         hi, lo = k["hi_c"], k["lo_c"]
-        sf.topic_fields(tab, f"Abiertas: {nm(hi)} {fmt(V(f'cruce.{hi}.mediana'), 1, True)}% · {nm(lo)} {fmt(V(f'cruce.{lo}.mediana'), 1, True)}%",
+        sf.topic_fields(tab, f"Medianas, abiertas: {nm(hi)} {fmt(V(f'cruce.{hi}.mediana'), 1, True)}% · {nm(lo)} {fmt(V(f'cruce.{lo}.mediana'), 1, True)}%",
                         index_refs=[f"cruce.{hi}.mediana", f"cruce.{lo}.mediana"], kpis=[])
         tabs.append(tab)
-        paragraphs.append(f"En un mismo prestador y código, la mediana del índice de bonificado por unidad de {nm(hi)} queda "
-                          f"{fmt(V('cruce.brecha_pp'), 1)} puntos sobre la de {nm(lo)}.")
+        if k["gap"] is not None:
+            gp, gn = k["gap"]
+            paragraphs.append(f"En un mismo prestador y código, la mediana del índice de bonificado por unidad de {nm(gp)} queda "
+                              f"{fmt(V('cruce.brecha_pp'), 1)} puntos sobre la de {nm(gn)}; sus medias ponderadas tienen el mismo signo.")
 
     def share(b: str) -> str:
         """Top provider's share of atenciones: exact, or a band for a 2-provider cell."""
@@ -596,39 +625,45 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     tabs.append(tab)
 
     # Headline: the first candidate of the configured priority that the verified data supports.
+    # Headline: prices, never coverage (Dirección 5-nov-2026 21:25). Candidates in order of the volume behind them:
+    # the most frequent code with a national p25–p75 (all providers), then its gap against Metropolitana (only cells
+    # under the disclosure rule), then the dispersion across the top codes. The prestación is named by its literal
+    # Arancel Isapre description.
     lead = None
+    named = [c for c in codes if short_desc(c["desc"]) and f"precio.{c['code']}.{NATIONAL}.ratio" in v]
     for cand in cfg.get("headline_priority") or []:
-        if cand == "brecha_mismo_prestador" and k["strong"]:
-            # Only open Isapres whose median and frecuencia-weighted mean agree in sign and both reach
-            # HEADLINE_MIN_INDEX; the headline names the measure (median) and never calls it an average.
-            st = k["strong"]
-            pos = max((c for c in st if V(f"cruce.{c}.mediana") > 0), key=lambda c: V(f"cruce.{c}.mediana"), default=None)
-            neg = min((c for c in st if V(f"cruce.{c}.mediana") < 0), key=lambda c: V(f"cruce.{c}.mediana"), default=None)
-            if pos and neg:
-                lead = (f"Mismo prestador y código: {nm(pos)} bonifica por unidad {fmt(V(f'cruce.{pos}.mediana'), 1)}% sobre la media "
-                        f"de la celda y {nm(neg)}, {fmt(abs(V(f'cruce.{neg}.mediana')), 1)}% bajo ella (medianas)")
-            else:
-                c = pos or neg
-                m, w = V(f"cruce.{c}.mediana"), V(f"cruce.{c}.ponderada")
-                word = "sobre" if m > 0 else "bajo"
-                lead = (f"Mismo prestador y código: {nm(c)} bonifica por unidad {fmt(abs(m), 1)}% {word} la media de la celda "
-                        f"(mediana; {fmt(abs(w), 1)}% ponderado por atenciones)")
-        elif cand == "bonificado_por_isapre":
-            lead = (f"Entre las Isapres abiertas, {nm(hi_b)} bonifica el {pc(f'isapre.{hi_b}.{q}.total.pct_bonif')} de lo facturado "
-                    f"y {nm(lo_b)} el {pc(f'isapre.{lo_b}.{q}.total.pct_bonif')} en {ql}")
+        if cand == "precio_codigo_dispersion" and named:
+            c = named[0]
+            b = f"precio.{c['code']}.{NATIONAL}"
+            lead = (f"{short_desc(c['desc'])} cuesta entre {money(V(f'{b}.p25'))} y {money(V(f'{b}.p75'))} según el prestador "
+                    f"(p25–p75, {ql})")
+        elif cand == "precio_codigo_region" and named:
+            c = named[0]
+            gaps = [r for r in so.REGIONS if r not in ("13", "0") and f"precio.{c['code']}.{r}.vs_rm" in v]
+            if gaps:
+                r = max(gaps, key=lambda r: (abs(V(f"precio.{c['code']}.{r}.vs_rm")), V(f"precio.{c['code']}.{r}.frec")))
+                g = V(f"precio.{c['code']}.{r}.vs_rm")
+                lead = (f"{short_desc(c['desc'])} cuesta {fmt(abs(g), 1)}% {'más' if g > 0 else 'menos'} en {so.REGIONS[r]} que en la "
+                        f"Metropolitana (mediana entre prestadores, {ql})")
         elif cand == "dispersion_precios":
             lead = (f"El precio de las prestaciones Fonasa más frecuentes varía {fmt(V('dispersion.mediana'), 1)} veces "
                     f"entre prestadores en {ql}")
         if lead and len(lead) <= 140:
             break
         lead = None
-    headline = lead or f"Prestaciones bonificadas por las Isapres en {ql}"
-    dek_parts = [f"Las Isapres bonificaron el {pc(f'sistema.{q}.pct_bonif')} de lo facturado; "
-                 f"entre las abiertas, de {pc(f'isapre.{lo_b}.{q}.total.pct_bonif')} a {pc(f'isapre.{hi_b}.{q}.total.pct_bonif')}."]
-    if k["gap"] is not None and V("cruce.fact_mediana_max_abs") <= FACT_STABLE_MAX:
-        dek_parts.append(f"Lo que cobra el prestador por unidad casi no cambia entre Isapres (mediana dentro de ±{fmt(V('cruce.fact_mediana_max_abs'), 1)}%).")
+    headline = lead or f"Precios de prestaciones bonificadas por las Isapres en {ql}"
+    dek_parts = []
+    if named:
+        b = f"precio.{named[0]['code']}.{NATIONAL}"
+        dek_parts.append(f"Mediana nacional {money(V(f'{b}.mediana'))} entre {fmt(V(f'{b}.n'), 0)} prestadores.")
+    dek_parts.append(f"En los {len(codes)} códigos Fonasa más frecuentes, el p75 equivale a {fmt(V('dispersion.mediana'), 1)} veces el p25 "
+                     f"(mediana). Las Isapres bonificaron el {pc(f'sistema.{q}.pct_bonif')} de lo facturado.")
     dek = " ".join(dek_parts)
 
+    if k["small"]:
+        notes.append({"id": "n0b", "text": f"Base pequeña en la comparación mismo prestador: {', '.join(nm(c) for c in k['small'])} "
+                                           f"(menos de {fmt(cfg.get('cross_min_cells') or 1000, 0)} celdas prestador × código). Se incluye "
+                                           "igual; leer su índice con cautela."})
     if k["closed"]:
         notes.append({"id": "n0", "text": f"{closed_names}: Isapre cerrada (afiliación restringida). Aparecen en los temas, marcadas, "
                                           "pero no en el titular ni en los rangos entre Isapres abiertas."})

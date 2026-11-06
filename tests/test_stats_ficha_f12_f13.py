@@ -118,7 +118,6 @@ def reg_open(**over):
         reg["families"][fam]["first_pass_requires_review"] = False
     reg["families"]["F12"]["cross_min_cells"] = over.get("cross_min_cells", 1)
     reg["families"]["F12"]["top_codes"] = 15
-    reg["families"]["F13"]["headline_min_licencias"] = 10
     return reg
 
 
@@ -157,10 +156,15 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     assert k["bonificado_sistema"]["value"] == f12.fmt(bonif / fact * 100, 1) + "%"
     # same provider and code: 67 covers 0.8, 78 0.6, 99 0.7 → index vs. the mean 0.7: +14,3% and −14,3%
     assert k["brecha_mismo_prestador"]["value"] == f12.fmt(0.8 / 0.7 * 100 - 0.6 / 0.7 * 100, 1) + " pp"
-    # open Isapres, median and weighted mean agree in sign and both ≥ 3 %: the comparison leads, named as medians
-    assert fi["headline"] == ("Mismo prestador y código: Colmena bonifica por unidad 14,3% sobre la media de la celda y "
-                              "Cruz Blanca, 14,3% bajo ella (medianas)")
-    assert "promedio" not in fi["headline"]
+    # Dirección 5-nov 21:25: the headline leads with prices — the most frequent code, named by its Arancel description,
+    # national p25–p75 over all providers (unit prices 10, 10, 10, 11, 12, 14, 15, 15, 16 thousand → 10.000 and 15.000)
+    units = sorted([10000, 12000, 14000, 16000, 10000, 15000, 11000, 10000, 15000])
+    assert (agg.quantile(units, .25), agg.quantile(units, .75)) == (10000, 15000)
+    assert fi["headline"] == "Consulta medica electiva cuesta entre $10.000 y $15.000 según el prestador (p25–p75, abril–junio 2026)"
+    assert not any(n in fi["headline"] for n in ("Colmena", "Cruz Blanca", "Banmédica", "bonific"))
+    # open Isapres whose median and weighted mean agree in sign and are ≥ 3 %: the coverage gap card, named as medians
+    assert "medianas" in k["brecha_mismo_prestador"]["lines"][1] and "promedio" not in json.dumps(k["brecha_mismo_prestador"])
+    assert [x["id"] for x in fi["kpis"]][:2] == ["dispersion_precios", "bonificado_sistema"]
     assert fi["kicker"] == "Prestaciones bonificadas · abril–junio 2026" and fi["date_basis"] == "first_detected"
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t2.zip")
     assert [t["id"] for t in fi["tabs"]] == ["cobertura", "mismo-prestador", "precios", "regiones", "concentracion"]
@@ -239,7 +243,7 @@ def test_f12_cross_headline_needs_median_and_weighted_mean_to_agree(root):
     edit(root, "2026t2", "prestaciones_2026t2_indice_isapre_mismo_prestador.json", flip)
     fi = f12.run(root, today=TODAY, registry=reg_open(), llm=False)["ficha"]
     assert fi["verification"]["verdict"] == "PASS"
-    assert fi["headline"].startswith("Entre las Isapres abiertas, Colmena bonifica el ")
+    assert "brecha_mismo_prestador" not in [x["id"] for x in fi["kpis"]]  # no robust gap: no card, no claim
     tab = next(t for t in fi["tabs"] if t["id"] == "mismo-prestador")
     assert [c["id"] for c in tab["charts"]] == ["f12-mismo-prestador", "f12-mismo-prestador-ponderada"]
 
@@ -255,17 +259,29 @@ def test_f12_closed_isapres_stay_in_topics_but_never_lead(root):
             e["isapre_type"] = "closed"
     (root / "data/entities/isapres.json").write_text(json.dumps(ent))
     fi = f12.run(root, today=TODAY, registry=reg, llm=False)["ficha"]
-    assert "Colmena" not in fi["headline"] and fi["verification"]["verdict"] == "PASS"
+    assert fi["verification"]["verdict"] == "PASS"
+    assert "Colmena" not in json.dumps([x for x in fi["kpis"] if x["id"] == "brecha_mismo_prestador"], ensure_ascii=False)
     cob = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-bonif-isapre")
     assert any(r.get("tag") == "cerrada" and r["label"] == names["67"] for r in cob["rows"])
     assert any("Isapre cerrada (afiliación restringida)" in n["text"] for n in fi["notes"])
     assert p["kpis"]["strong"]
 
 
-def test_f12_cross_topic_needs_qualified_isapres_and_valid_ids(root):
-    fi = f12.run(root, today=TODAY, registry=reg_open(cross_min_cells=10 ** 6), llm=False)["ficha"]
-    assert "mismo-prestador" not in [t["id"] for t in fi["tabs"]] and not fi["headline"].startswith("En el mismo prestador")
+def test_f12_small_isapre_is_included_with_a_note_and_regional_fallback(root):
+    """Dirección 5-nov 21:25: no Isapre-level minimum excludes an Isapre; below cross_min_cells it gets a note."""
+    reg = reg_open(cross_min_cells=10 ** 6)
+    fi = f12.run(root, today=TODAY, registry=reg, llm=False)["ficha"]
+    assert "mismo-prestador" in [t["id"] for t in fi["tabs"]] and fi["verification"]["verdict"] == "PASS"
+    assert any(n["text"].startswith("Base pequeña") for n in fi["notes"])
+    reg["families"]["F12"]["headline_priority"] = ["precio_codigo_region"]
+    fi = f12.run(root, today=TODAY, registry=reg, llm=False)["ficha"]
+    # region 5 (2 providers, median 12.500) vs. Metropolitana (median 13.000): only disclosure-rule cells
+    assert fi["headline"] == ("Consulta medica electiva cuesta 3,8% menos en Valparaíso que en la Metropolitana "
+                              "(mediana entre prestadores, abril–junio 2026)")
     assert fi["verification"]["verdict"] == "PASS"
+
+
+def test_f12_cross_topic_needs_valid_ids(root):
     edit(root, "2026t2", "prestaciones_2026t2_consistencia_ids.json", lambda d: d["veredicto"].update(cross_isapre_valido=False))
     fi = f12.run(root, today=TODAY, registry=reg_open(), llm=False)["ficha"]
     assert "mismo-prestador" not in [t["id"] for t in fi["tabs"]]

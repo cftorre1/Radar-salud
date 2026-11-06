@@ -1533,8 +1533,8 @@
       "source_short": "SIS",
       "source_name": "Superintendencia de Salud",
       "datos_kpis": [
-        "bonificado_sistema",
-        "brecha_mismo_prestador"
+        "dispersion_precios",
+        "bonificado_sistema"
       ],
       "cadence": "trimestral (datos abiertos SIS)",
       "cadence_phrase": "trimestral",
@@ -1575,14 +1575,16 @@
         "codes": "solo códigos del arancel Fonasa (pertenencia FONASA)"
       },
       "cross_min_cells": 1000,
+      "cross_min_cells_rule": "Dirección, 5-nov-2026 21:25: ningún mínimo por Isapre excluye (Cruz del Norte se incluye); bajo este número de celdas la ficha agrega una nota de base pequeña. Se mantiene el piso de 10 atenciones por par.",
       "cross_min_frecuencia_par": 10,
       "headline_cross_rule": "revisión PR #152: la comparación mismo prestador es titular solo para Isapres abiertas cuya mediana y media ponderada por frecuencia tienen el mismo signo y ambas ≥ 3%; si no, rango de bonificación entre abiertas",
       "top_codes": 15,
       "headline_priority": [
-        "brecha_mismo_prestador",
-        "bonificado_por_isapre",
+        "precio_codigo_dispersion",
+        "precio_codigo_region",
         "dispersion_precios"
       ],
+      "headline_decided": "Dirección, 5-nov-2026 21:25: el titular va por precios (dispersión de un código Fonasa de alto volumen o brecha regional contra la Metropolitana, solo celdas con la regla de divulgación), nombrando la prestación por su descripción del Arancel; cobertura y bonificación quedan como temas. Si un titular compara Isapres, solo abiertas.",
       "templates": {
         "kicker": "{label} · {quarter_label}",
         "kicker_meta": "datos de {quarter_label} (trimestre) · detectado por Alicanto el {published_label}",
@@ -1610,7 +1612,7 @@
           "label": "Concentración"
         }
       ],
-      "builder_version": "f12_prestaciones_v2",
+      "builder_version": "f12_prestaciones_v3",
       "kpis": {
         "bonificado_sistema": {
           "label": "Bonificado por las Isapres",
@@ -1698,7 +1700,8 @@
       "decided": "Dirección, 5-nov-2026: licencias solo agregadas por Isapre, grupo diagnóstico, industria, región y tipo de profesional, celda mínima 10; nunca por médico, trabajador ni empleador.",
       "min_cell": 10,
       "complementary_suppression": "revisión PR #152: si lo suprimido de un grupo publicado suma 1–9 licencias, se suprime la celda publicada más chica hasta ≥ 10 (dimensiones; cruce por Isapre y por diagnóstico); también cubre días y subsidio",
-      "headline_min_licencias": 1000,
+      "isapre_rule": "Dirección, 5-nov-2026 21:25: sin mínimo de licencias por Isapre (Cruz del Norte incluida, con nota de base pequeña bajo small_base_licencias); comparaciones entre Isapres en titular o línea índice solo entre abiertas; las cerradas van marcadas.",
+      "small_base_licencias": 1000,
       "headline_priority": [
         "salud_mental_vs_respiratorias",
         "rechazo_por_isapre"
@@ -1734,7 +1737,7 @@
           "label": "Subsidio"
         }
       ],
-      "builder_version": "f13_licencias_v2",
+      "builder_version": "f13_licencias_v3",
       "kpis": {
         "rechazo": {
           "label": "Licencias rechazadas",
