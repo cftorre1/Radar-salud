@@ -221,7 +221,7 @@ def test_run_end_to_end_local_both_quarters(tmp_path):
     assert recs["2026t2"]["script_version"] == agg.SCRIPT_VERSION
     names = sorted(p.name for p in (out / "2026t2").iterdir() if "cambio_mismo_prestador" not in p.name)
     assert (out / "2026t2" / "prestaciones_2026t2_cambio_mismo_prestador.json").exists()
-    assert names == ["licencias_2026t2.json", "prestaciones_2026t2_consistencia_ids.json",
+    assert names == ["licencias_2026t2.json", "prestaciones_2026t2_atencion_codigo.json", "prestaciones_2026t2_consistencia_ids.json",
                      "prestaciones_2026t2_indice_isapre_mismo_prestador.json",
                      "prestaciones_2026t2_precios_fonasa_region.json", "prestaciones_2026t2_precios_tipo_prestador.json",
                      "prestaciones_2026t2_resumen.json", "prestaciones_2026t2_top_codigos.json", "receipts_2026t2.json"]
@@ -389,3 +389,34 @@ def test_same_provider_price_change_uses_only_providers_in_both_quarters():
     for i in range(3):
         prev3.add(prest_row(prov=f"P{i}", freq=20, fact=2000))
     assert agg.price_change(cur, prev3.price)["rows"] == []  # 3 matched providers: not published
+
+
+def test_arancel_mle_rows_are_read_only_with_six_amounts():
+    lines = ["01 01 001 CONSULTA MEDICINA GENERAL 12.080 4.830 12.930 5.680 15.130 7.880",
+             "03 02 047 GLUCOSA EN SANGRE 1.280 640 1.660 1.020 2.050 1.410",
+             "02 01 001 DIA CAMA 45.000 9.000",                      # 2 amounts: counted, not read
+             "04 01 001 RX 9.000 1.000 8.000 1.000 10.000 2.000",    # levels not increasing: rejected
+             "CÓDIGO PRESTC DENOMINACIÓN NIVEL 1 NIVEL 2 NIVEL 3"]
+    table, stats = agg.parse_mle_text(lines)
+    assert table == {"0101001": {"nivel1_total": 12080, "nivel1_benef": 4830, "nivel2_total": 12930, "nivel3_total": 15130},
+                     "0302047": {"nivel1_total": 1280, "nivel1_benef": 640, "nivel2_total": 1660, "nivel3_total": 2050}}
+    assert stats["filas_con_2_montos"] == 1 and stats["niveles_no_crecientes"] == 1
+    t2, s2 = agg.parse_mle_text(lines[:1] + ["01 01 001 CONSULTA MEDICINA GENERAL 12.081 4.830 12.930 5.680 15.130 7.880"])
+    assert t2 == {} and s2["codigos_en_conflicto"] == 1
+
+
+def test_arancel_mle_rejects_other_hosts(tmp_path):
+    with pytest.raises(ValueError):
+        agg.fetch_arancel_mle(tmp_path, url="https://example.com/x.pdf")
+
+
+def test_care_type_split_by_code_and_provider_type():
+    a = agg.PrestacionesAgg()
+    for prov in "ABC":
+        a.add(prest_row(prov=prov, freq=2, fact=200, atencion="Atención Ambulatoria"))
+    a.add(prest_row(prov="D", freq=1, fact=500, atencion="Atención Hospitalaria", tipo_prest="Público"))
+    t = a.atencion_table()
+    rows = {(r[1], r[2]): dict(zip(t["columns"], r)) for r in t["rows"]}
+    assert rows[("Atención Ambulatoria", "Privado")]["facturado"] == 600 and rows[("Atención Ambulatoria", "Privado")]["frecuencia"] == 6
+    assert rows[("Atención Hospitalaria", "Público")]["facturado"] is None  # 1 provider
+    assert {(x["tipo_atencion"], x["tipo_prestador"]): x["facturado"] for x in t["totales"]}[("Atención Hospitalaria", "Público")] == 500

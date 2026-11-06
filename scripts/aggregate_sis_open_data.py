@@ -52,7 +52,7 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v5"
+SCRIPT_VERSION = "sis_open_data_agg_v6"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
@@ -309,6 +309,7 @@ class PrestacionesAgg:
         self.region_prov: dict[tuple, float] = defaultdict(float)
         self.tipo_price: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])      # (codigo, region, tipo, prov)
         self.fonasa_tot = [0.0, 0.0]                                              # facturado, frecuencia
+        self.code_att: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])        # (codigo, atencion, tipo, prov)
         self.region_tipo: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0])
         self.fonasa_rows = 0
         self.periods: Counter = Counter()
@@ -345,6 +346,8 @@ class PrestacionesAgg:
             p[0] += fact; p[1] += freq; p[2] += bonif; p[3] += copago
             tp = self.tipo_price[(codigo, region, f[P_TIPO_PRESTADOR].strip() or "(vacío)", prov)]
             tp[0] += fact; tp[1] += freq
+            ca = self.code_att[(codigo, atencion, f[P_TIPO_PRESTADOR].strip() or "(vacío)", prov)]
+            ca[0] += freq; ca[1] += fact
             self.fonasa_tot[0] += fact; self.fonasa_tot[1] += freq
             c = self.cross[(prov, codigo)].setdefault(isapre, [0.0, 0.0, 0.0])
             c[0] += bonif; c[1] += fact; c[2] += freq
@@ -536,6 +539,25 @@ class PrestacionesAgg:
     def fonasa_totals(self) -> dict:
         """System totals of Fonasa-arancel codes (all providers, all regions): the denominator of basket coverage."""
         return {"facturado_fonasa": round(self.fonasa_tot[0]), "frecuencia_fonasa": round(self.fonasa_tot[1])}
+
+    def atencion_table(self) -> dict:
+        """Fonasa-arancel codes by tipo de atención (field 20 of the SIS file: ambulatoria / hospitalaria) and tipo de
+        prestador, nationally (Dirección 6-nov-2026 20:09): per (code, atención, tipo) frecuencia and number of providers;
+        facturado only with >= 3 providers. System totals per (atención, tipo) are not suppressed."""
+        cells: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0])
+        tot: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])
+        for (codigo, att, tipo, _prov), (freq, fact) in self.code_att.items():
+            c = cells[(codigo, att, tipo)]
+            c[0] += freq; c[1] += fact; c[2] += 1
+            t = tot[(att, tipo)]
+            t[0] += freq; t[1] += fact
+        cols = ["codigo_prestacion", "tipo_atencion", "tipo_prestador", "n_prestadores", "frecuencia", "facturado"]
+        rows = [[c, a, t, v[2], round(v[0]), round(v[1]) if v[2] >= IQR_MIN_PROVIDERS - 1 else None]
+                for (c, a, t), v in sorted(cells.items())]
+        return {"regla": "facturado por código sólo con >= 3 prestadores; totales del sistema sin supresión",
+                "totales": [{"tipo_atencion": a, "tipo_prestador": t, "frecuencia": round(v[0]), "facturado": round(v[1])}
+                            for (a, t), v in sorted(tot.items())],
+                "columns": cols, "rows": rows}
 
     def tipo_table(self) -> dict:
         """Public vs private prices of the same code and region (Dirección 6-nov-2026): per (code, region|NACIONAL,
@@ -955,6 +977,76 @@ def arancel_descriptions(path: Path, codes: set[str], rec: dict) -> dict:
 DATASETS = (("Prestaciones Bonificadas", "prest"), ("Licencias Medicas", "lic"))
 
 
+MLE_PAGE_HOSTS = ("www.fonasa.gob.cl", "nuevo.fonasa.gob.cl")
+MLE_URL = "https://www.fonasa.gob.cl/wp-content/uploads/sites/3/2026/03/1-Libro-Arancel-MLE-2026.pdf"
+MLE_ROW = re.compile(r"^\s*(\d{2})\s+(\d{2})\s+(\d{3})\s+(.*?)((?:\s+\d{1,3}(?:\.\d{3})*){2,6})\s*$")
+
+
+def parse_mle_text(lines: Iterable[str]) -> tuple[dict, dict]:
+    """Code → values from the text of FONASA's 'Libro Arancel MLE' (columns: código en tres partes, denominación, and
+    for nivel 1, 2 and 3 the TOTAL value and the beneficiary's part). Only rows with exactly 6 trailing amounts are
+    read; nivel 1 TOTAL is the reference value. Anything else is counted, never guessed. A code read twice with
+    different values is dropped and recorded."""
+    out: dict[str, dict] = {}
+    conflicts, stats = set(), Counter()
+    for line in lines:
+        m = MLE_ROW.match(line)
+        if not m:
+            continue
+        nums = [int(x.replace(".", "")) for x in m.group(5).split()]
+        code = m.group(1) + m.group(2) + m.group(3)
+        if len(nums) != 6:
+            stats[f"filas_con_{len(nums)}_montos"] += 1
+            continue
+        v = {"nivel1_total": nums[0], "nivel1_benef": nums[1], "nivel2_total": nums[2], "nivel3_total": nums[4]}
+        if not (0 < nums[0] <= nums[2] <= nums[4]):
+            stats["niveles_no_crecientes"] += 1
+            continue
+        if code in out and out[code] != v:
+            conflicts.add(code)
+        out[code] = v
+        stats["filas_leidas"] += 1
+    for c in conflicts:
+        out.pop(c, None)
+    stats["codigos_en_conflicto"] = len(conflicts)
+    return out, dict(stats)
+
+
+def fetch_arancel_mle(out_dir: Path, url: str = MLE_URL, local: Path | None = None) -> dict:
+    """Downloads FONASA's Arancel MLE 2026 (robots.txt honoured, 1 GiB cap), parses it with pypdf and writes only the
+    code → value table and its receipt (URL, bytes, SHA-256, date, pages, rows). The PDF is deleted."""
+    tmp = Path(tempfile.mkdtemp(prefix="mle_"))
+    rec: dict = {"dataset": "Arancel Fonasa MLE 2026", "fetched_at": datetime.now(timezone.utc).isoformat(), "user_agent": UA}
+    try:
+        if local is not None:
+            data = local.read_bytes()
+            rec.update(url=f"local:{local.name}", bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
+            pdf = local
+        else:
+            if urlparse(url).hostname not in MLE_PAGE_HOSTS or urlparse(url).scheme != "https":
+                raise ValueError("host_not_allowed")
+            pdf = tmp / "mle.pdf"
+            rec.update(download(url, pdf, MAX_FILE_BYTES))
+            if "sha256" not in rec:
+                write_json(out_dir / "receipt_arancel_mle_2026.json", rec)
+                return rec
+        from pypdf import PdfReader
+        reader = PdfReader(str(pdf))
+        lines = [ln for page in reader.pages for ln in (page.extract_text() or "").splitlines()]
+        table, stats = parse_mle_text(lines)
+        rec.update(pages=len(reader.pages), parse=stats, codigos=len(table), pypdf=__import__("pypdf").__version__)
+        write_json(out_dir / "arancel_mle_2026.json", {
+            "fuente": "FONASA, Arancel de Prestaciones de Salud año 2026, Modalidad Libre Elección (Libro Arancel MLE)",
+            "url": rec["url"], "sha256": rec["sha256"], "valor_referencia": "nivel1_total (pesos; nivel 1, valor total)",
+            "codigos": dict(sorted(table.items()))})
+    finally:
+        for f in tmp.glob("*"):
+            f.unlink()
+        tmp.rmdir()
+    write_json(out_dir / "receipt_arancel_mle_2026.json", rec)
+    return rec
+
+
 def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "PrestacionesAgg | None" = None,
                       prev_period: str | None = None, which: Iterable[str] = ("prestaciones", "licencias")):
     """Full aggregates of one quarter into ``out``. Returns (receipts, provider-id aggregate for the next quarter)."""
@@ -984,6 +1076,7 @@ def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "Prestacion
             write_json(out / f"prestaciones_{period}_precios_fonasa_region.json", {**meta, **cur.price_table()})
             write_json(out / f"prestaciones_{period}_indice_isapre_mismo_prestador.json", {**meta, **cur.cross_isapre()})
             write_json(out / f"prestaciones_{period}_precios_tipo_prestador.json", {**meta, **cur.tipo_table()})
+            write_json(out / f"prestaciones_{period}_atencion_codigo.json", {**meta, **cur.atencion_table()})
             if prev_ids is not None and getattr(prev_ids, "price", None):
                 write_json(out / f"prestaciones_{period}_cambio_mismo_prestador.json",
                            {**meta, "periodo_anterior": prev_period, **price_change(cur, prev_ids.price)})
@@ -1088,9 +1181,17 @@ def main() -> None:
     ap.add_argument("--previous", default="auto", help="'auto' (the quarter before), '' (none) or yyyytq")
     ap.add_argument("--output-root", required=True, help="quarters are written to <output-root>/<quarter>/")
     ap.add_argument("--only", choices=["prestaciones", "licencias"], action="append")
+    ap.add_argument("--arancel-mle-only", action="store_true", help="only fetch and parse FONASA's Arancel MLE 2026")
     ap.add_argument("--skip-unchanged", action="store_true",
                     help="download nothing when the committed receipts still match the remote files")
     a = ap.parse_args()
+    if a.arancel_mle_only:
+        rec = fetch_arancel_mle(Path(a.output_root) / "arancel_mle")
+        print(json.dumps({k: rec.get(k) for k in ("url", "status", "bytes", "sha256", "pages", "codigos", "parse", "error", "robots")},
+                         ensure_ascii=False))
+        if not rec.get("codigos"):
+            raise SystemExit("arancel MLE not read")
+        return
     links = page_links()
     period = latest_quarter(links) if a.period == "latest" else a.period
     if not period:
