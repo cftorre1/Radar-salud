@@ -415,9 +415,9 @@ def test_registry_runner_and_datos_rows(root):
 
 def test_disclosure_rule_registered_as_decided():
     rule = sf.load_registry()["families"]["F12"]["disclosure_rule"]
-    assert (rule["price_min_providers"], rule["price_min_frecuencia"], rule["iqr_min_providers"]) == (2, 30, 3)
+    assert (rule["price_min_providers"], rule["price_min_frecuencia"], rule["iqr_min_providers"]) == (2, 30, 4)
     assert (f12.PRICE_MIN_PROVIDERS, f12.PRICE_MIN_FREQ, f12.IQR_MIN_PROVIDERS) == (agg.PRICE_MIN_PROVIDERS, agg.PRICE_MIN_FREQ,
-                                                                                   agg.IQR_MIN_PROVIDERS) == (2, 30, 3)
+                                                                                   agg.IQR_MIN_PROVIDERS) == (2, 30, 4)
     assert so.SCRIPT_VERSION == agg.SCRIPT_VERSION and so.MAX_FILE_BYTES == agg.MAX_FILE_BYTES == 1 << 30
     assert sf.load_registry()["families"]["F13"]["min_cell"] == f13.MIN_CELL == agg.LIC_MIN_CELL == 10
 

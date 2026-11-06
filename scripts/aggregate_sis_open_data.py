@@ -52,11 +52,12 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v3"
+SCRIPT_VERSION = "sis_open_data_agg_v4"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
-IQR_MIN_PROVIDERS = 3     # p25-p75 only with >= 3 providers
+IQR_MIN_PROVIDERS = 4     # p25-p75 only with >= 4 providers (with 3, p25/median/p75 reveal all three prices)
+CROSS_CODE_MIN_PROVIDERS = 3  # per-code detail of the same-provider index
 CROSS_MIN_FREQ = 10       # same-provider index: an Isapre enters a provider x code cell only with >= 10 frecuencia
 TOP_CODES = 15            # most-billed Fonasa codes (national frecuencia) described from the Arancel Isapre
 LIC_MIN_CELL = 10
@@ -415,7 +416,7 @@ class PrestacionesAgg:
             key = (d["estado"], region == "NACIONAL")
             status[key] += 1
             status_freq[key] += d["frecuencia"]
-        return {"regla": {"version": "precio_v3_pr152",
+        return {"regla": {"version": "precio_v4_iqr4",
                           "publicable": f">= {PRICE_MIN_PROVIDERS} prestadores distintos Y >= {PRICE_MIN_FREQ} "
                                         "frecuencia: mediana del precio unitario (facturado/frecuencia por prestador, "
                                         f"no ponderada); p25-p75 sólo con >= {IQR_MIN_PROVIDERS} prestadores",
@@ -482,7 +483,7 @@ class PrestacionesAgg:
             if codigo not in top_codes:
                 continue
             provs = {x[2] for x in lst}
-            if len(provs) < IQR_MIN_PROVIDERS:
+            if len(provs) < CROSS_CODE_MIN_PROVIDERS:
                 continue
             vals = sorted(x[0] for x in lst if x[0] is not None)
             by_code.append({"codigo_prestacion": codigo, "isapre": i, "n_prestadores": len(provs),

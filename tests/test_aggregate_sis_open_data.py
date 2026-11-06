@@ -60,10 +60,10 @@ def test_header_row_is_detected_and_skipped(tmp_path):
 
 
 def test_price_disclosure_rule():
-    """Dirección 5-nov-2026: price with >= 2 providers and >= 30 frecuencia (p25-p75 only with >= 3); exactly 1
+    """Dirección 5-nov-2026: price with >= 2 providers and >= 30 frecuencia (p25-p75 only with >= 4); exactly 1
     provider: no price, only a concentration flag; every provider counts nationally; top share always shown."""
     a = agg.PrestacionesAgg()
-    # region 13: 3 providers, total freq 30 -> median and p25-p75
+    # region 13: 3 providers, total freq 30 -> median only
     for prov, unit in (("A", 100), ("B", 200), ("C", 300)):
         a.add(prest_row(prov=prov, freq=10, fact=unit * 10))
     # region 5: 2 providers, freq 50 -> median only
@@ -79,8 +79,10 @@ def test_price_disclosure_rule():
     t = a.price_table()
     rows = {(r[0], r[1]): dict(zip(t["columns"], r)) for r in t["rows"]}
     p13 = rows[("0101001", "13")]
-    assert p13["estado"] == "publicable" and p13["precio_mediana"] == 200 and p13["precio_p25"] == 150
-    assert p13["precio_p75"] == 250 and p13["share_prestador_mayor_pct"] == pytest.approx(33.33)
+    # 3 providers: median only (p25, median and p75 would give away all three unit prices)
+    assert p13["estado"] == "publicable" and p13["precio_mediana"] == 200 and p13["precio_p25"] is None
+    assert p13["precio_p75"] is None and p13["share_prestador_mayor_pct"] == pytest.approx(33.33)
+    assert p13["facturado"] == 6000
     p5 = rows[("0101001", "5")]
     assert p5["estado"] == "publicable" and p5["precio_mediana"] == 300  # (100 + 500) / 2
     assert p5["precio_p25"] is None and p5["precio_p75"] is None and p5["n_prestadores"] == 2
@@ -99,6 +101,25 @@ def test_price_disclosure_rule():
     assert est[("concentracion_un_prestador", False)]["frecuencia"] == 500
     dumped = json.dumps(t)
     assert '"A"' not in dumped and "SECRET" not in dumped and '"H"' not in dumped
+
+
+def test_p25_p75_only_with_four_or_more_providers():
+    """With 3 providers, p25/median/p75 (linear quantiles) solve all three unit prices: a = 2·p25 − m, c = 2·p75 − m.
+    So the range needs >= 4 providers; with 4 the published p25/median/p75 fit more than one set of prices."""
+    def row(units):
+        a = agg.PrestacionesAgg()
+        for i, u in enumerate(units):
+            a.add(prest_row(prov=f"P{i}", freq=10, fact=u * 10))
+        t = a.price_table()
+        return {r[1]: dict(zip(t["columns"], r)) for r in t["rows"]}["13"]
+    three = row([100, 200, 300])
+    assert three["precio_mediana"] == 200 and three["precio_p25"] is None and three["precio_p75"] is None
+    x, y = row([100, 175, 225, 300]), row([97, 176, 224, 303])
+    for r in (x, y):
+        assert r["precio_p25"] is not None and r["precio_p75"] is not None
+    # different individual prices, identical published quartiles → not recoverable
+    assert (x["precio_p25"], x["precio_mediana"], x["precio_p75"]) == (y["precio_p25"], y["precio_mediana"], y["precio_p75"])
+    assert agg.IQR_MIN_PROVIDERS == 4
 
 
 def test_top_codes_rank_by_national_frecuencia():

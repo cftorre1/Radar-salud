@@ -13,7 +13,7 @@ What the ficha shows (Dirección 5-nov-2026):
   are both ≥ 3 % (no Isapre-level volume minimum; an Isapre with fewer than ``cross_min_cells`` cells gets a
   small-base note). The headline never compares Isapres on coverage: it leads with prices (Dirección 5-nov-2026);
 - prices of the most frequent Fonasa codes: national median, p25–p75 and p75/p25 (dispersion), and by region under
-  the disclosure rule: a price only with ≥ 2 distinct providers and ≥ 30 frecuencia (p25–p75 only with ≥ 3); with
+  the disclosure rule: a price only with ≥ 2 distinct providers and ≥ 30 frecuencia (p25–p75 only with ≥ 4: with 3, p25, median and p75 reveal every price); with
   exactly 1 provider no price, only a concentration flag; every provider counts nationally; the top provider's share
   of frecuencia is always shown;
 - concentration of facturado among providers by region (HHI, top-1, top-5).
@@ -42,9 +42,9 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_prestaciones_v3"  # v3 (Dirección 5-nov 21:25 + review of PR #152): price-led headline
+BUILDER_VERSION = "f12_prestaciones_v4"  # v3 (Dirección 5-nov 21:25 + review of PR #152): price-led headline
 DATASET = "Prestaciones Bonificadas"
-PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 3
+PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
 NATIONAL = "NACIONAL"
 AMB, HOSP = "amb", "hosp"
 # "Casi no cambia" is written only when every qualified Isapre's median facturado index is within ± this many %.
@@ -145,7 +145,7 @@ def _quarter(root: Path, q: str, names: dict[str, str]) -> tuple[dict, list[str]
         if not (tot.get("facturado") or 0) > 0:
             failures.append(f"isapre_facturado_not_positive:{code}")
     cols = prices.get("columns") or []
-    if (prices.get("regla") or {}).get("version") != "precio_v3_pr152":
+    if (prices.get("regla") or {}).get("version") != "precio_v4_iqr4":
         failures.append(f"disclosure_rule_version:{q}")
     failures += disclosure_failures(cols, prices.get("rows") or [])
     cells: dict[tuple, dict] = {(r[0], r[1]): dict(zip(cols, r)) for r in prices.get("rows") or []}
@@ -586,7 +586,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                "rows": [{"label": so.REGIONS[r], "value": V(f"precio.{c1}.{r}.mediana"), "ref": f"precio.{c1}.{r}.mediana"} for r in pub],
                "table": {"columns": ["Código", "Región", "Prestadores", "Atenciones", "Precio (p25–p75)", "Mayor prestador"],
                          "rows": reg_rows},
-               "source": "SIS, datos abiertos. Regla: precio con ≥ 2 prestadores y ≥ 30 atenciones; p25–p75 con ≥ 3; con 1 prestador, sin precio."}]
+               "source": "SIS, datos abiertos. Regla: precio con ≥ 2 prestadores y ≥ 30 atenciones; p25–p75 con ≥ 4; con 1 prestador, sin precio."}]
     st = k["status_count"]
     lab = {"publicable": "Con precio", "concentracion_un_prestador": "1 prestador", "suprimido_frecuencia_menor_30": "Menos de 30"}
     st_rows = [(lab[e], f"conteo.celdas.{e}") for e in lab if e in st]
@@ -632,7 +632,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     # under the disclosure rule), then the dispersion across the top codes. The prestación is named by its literal
     # Arancel Isapre description.
     lead = None
-    named = [c for c in codes if short_desc(c["desc"]) and f"precio.{c['code']}.{NATIONAL}.ratio" in v]
+    named = [c for c in codes if short_desc(c["desc"]) and f"precio.{c['code']}.{NATIONAL}.ratio" in v
+             and V(f"precio.{c['code']}.{NATIONAL}.n") >= IQR_MIN_PROVIDERS]
     for cand in cfg.get("headline_priority") or []:
         if cand == "precio_codigo_dispersion" and named:
             c = named[0]
@@ -676,7 +677,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              "Facturado no es gasto de bolsillo: el copago puede reducirse después con seguros complementarios "
                              "u otros reembolsos que estos datos no registran."},
         {"id": "n3", "text": f"Regla de divulgación (Dirección): el precio de una región y código del arancel Fonasa se muestra solo con "
-                             f"≥ 2 prestadores distintos y ≥ 30 atenciones (mediana; p25–p75 solo con ≥ 3). Con 2 prestadores no se "
+                             f"≥ 2 prestadores distintos y ≥ 30 atenciones (mediana; p25–p75 solo con ≥ 4). Con 2 prestadores no se "
                              "muestra el facturado y el % del mayor va en tramos (50–60%, 60–80%, más de 80%). Con 1 prestador no hay "
                              "precio, solo la marca de concentración. Todos los prestadores cuentan en el total nacional. Siempre se "
                              "informa el % de atenciones del mayor prestador."},

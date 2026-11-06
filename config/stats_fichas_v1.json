@@ -1567,7 +1567,8 @@
         "decided": "Dirección, 5-nov-2026",
         "price_min_providers": 2,
         "price_min_frecuencia": 30,
-        "iqr_min_providers": 3,
+        "iqr_min_providers": 4,
+        "iqr_rule": "p25–p75 solo con ≥ 4 prestadores (con 3, p25, mediana y p75 revelan los tres precios); con 2 o 3, solo la mediana. Umbral interno, no de Dirección; la regla de Dirección (precio desde 2 prestadores) sigue igual.",
         "single_provider": "sin precio ni facturado; solo bandera de concentración",
         "national": "todos los prestadores cuentan en el agregado nacional",
         "top_share": "siempre se informa el % de atenciones del mayor prestador",
@@ -1612,7 +1613,7 @@
           "label": "Concentración"
         }
       ],
-      "builder_version": "f12_prestaciones_v3",
+      "builder_version": "f12_prestaciones_v4",
       "kpis": {
         "bonificado_sistema": {
           "label": "Bonificado por las Isapres",
