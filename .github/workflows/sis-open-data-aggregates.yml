@@ -60,9 +60,6 @@ jobs:
           python-version: '3.11'
       - name: Unit tests (synthetic fixtures)
         run: pip install -q pytest && python -m pytest -q -p no:cacheprovider --noconftest tests/test_aggregate_sis_open_data.py
-      - name: Arancel Fonasa MLE 2026 (robots.txt honoured; code → value table only)
-        continue-on-error: true
-        run: pip install -q "pypdf==6.20.0" && python scripts/aggregate_sis_open_data.py --arancel-mle-only --output-root "$OUT_ROOT"
       - name: Aggregate latest quarter and the previous one (robots.txt honoured)
         run: python scripts/aggregate_sis_open_data.py --period "$PERIOD" --previous auto --output-root "$OUT_ROOT" $SKIP
       - name: Guard - only small aggregate JSON

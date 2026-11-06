@@ -52,7 +52,7 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v7"
+SCRIPT_VERSION = "sis_open_data_agg_v8"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
@@ -295,7 +295,7 @@ class PrestacionesAgg:
     def __init__(self, ids_only: bool = False, mle_codes: Iterable[str] | None = None):
         self.ids_only = ids_only
         self.mle_codes = set(mle_codes) if mle_codes is not None else None
-        self.funnel: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])         # (pertenencia, atencion, en_mle)
+        self.funnel: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])  # (pertenencia, atencion, en_mle, grupo)
         self.err: Counter = Counter()
         self.prov_isapres: dict[str, set] = defaultdict(set)
         self.prov_fact: dict[str, float] = defaultdict(float)
@@ -339,7 +339,10 @@ class PrestacionesAgg:
         t = self.region_tipo[(region, f[P_TIPO_PRESTADOR].strip() or "(vacío)")]
         t[0] += fact; t[1] += freq; t[2] += 1
         if self.mle_codes is not None:
-            fu = self.funnel[(f[P_PERTENENCIA].strip() or "(vacío)", atencion, f[P_CODIGO].strip() in self.mle_codes)]
+            code = f[P_CODIGO].strip()
+            inm = code in self.mle_codes
+            grupo = ("pabellon" if code.startswith("00000") else code[:2]) if inm else None
+            fu = self.funnel[(f[P_PERTENENCIA].strip() or "(vacío)", atencion, inm, grupo)]
             fu[0] += fact; fu[1] += freq
         if prov in NO_PROVIDER:
             return
@@ -548,8 +551,9 @@ class PrestacionesAgg:
             return None
         return {"definicion": "en_arancel_mle = el código de la fila está en la lista oficial del Arancel MLE 2026 de "
                               "FONASA; pertenencia = campo 16 del archivo SIS", "codigos_mle": len(self.mle_codes),
-                "filas": [{"pertenencia": p, "tipo_atencion": a, "en_arancel_mle": m, "facturado": round(v[0]),
-                           "frecuencia": round(v[1])} for (p, a, m), v in sorted(self.funnel.items(), key=str)]}
+                "filas": [{"pertenencia": p, "tipo_atencion": a, "en_arancel_mle": m, "grupo_mle": g,
+                           "facturado": round(v[0]), "frecuencia": round(v[1])}
+                          for (p, a, m, g), v in sorted(self.funnel.items(), key=str)]}
 
     def fonasa_totals(self) -> dict:
         """System totals of Fonasa-arancel codes (all providers, all regions): the denominator of basket coverage."""
@@ -992,6 +996,7 @@ def arancel_descriptions(path: Path, codes: set[str], rec: dict) -> dict:
 DATASETS = (("Prestaciones Bonificadas", "prest"), ("Licencias Medicas", "lic"))
 
 
+MLE_REFERENCE = Path(__file__).resolve().parents[1] / "data" / "reference" / "fonasa_mle_2026.json"
 MLE_PAGE_HOSTS = ("www.fonasa.gob.cl", "nuevo.fonasa.gob.cl")
 MLE_URL = "https://www.fonasa.gob.cl/wp-content/uploads/sites/3/2026/03/1-Libro-Arancel-MLE-2026.pdf"
 MLE_ROW = re.compile(r"^\s*(\d{2})\s+(\d{2})\s+(\d{3})\s+(.*?)((?:\s+\d{1,3}(?:\.\d{3})*){2,6})\s*$")
@@ -1160,8 +1165,8 @@ def run(period: str, prev: str | None, out_root: Path, local: dict[str, Path] | 
     """Aggregates ``prev`` (if any) and then ``period``, each into ``out_root/<quarter>/``. When the MLE code table
     (``out_root/arancel_mle/arancel_mle_2026.json``) exists, the coverage funnel is computed against it."""
     mle = None
-    try:
-        mle = list(json.loads((Path(out_root) / "arancel_mle" / "arancel_mle_2026.json").read_text(encoding="utf-8"))["codigos"])
+    try:  # FONASA's official MLE 2026 code list (incl. pabellón 0000001-0000014), parsed by scripts/fonasa_mle.py
+        mle = list(json.loads(MLE_REFERENCE.read_text(encoding="utf-8"))["codigos"])
     except (OSError, ValueError, KeyError):
         pass
     tmp = Path(tempfile.mkdtemp(prefix="sis_agg_"))

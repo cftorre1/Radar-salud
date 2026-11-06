@@ -222,6 +222,7 @@ def test_run_end_to_end_local_both_quarters(tmp_path):
     names = sorted(p.name for p in (out / "2026t2").iterdir() if "cambio_mismo_prestador" not in p.name)
     assert (out / "2026t2" / "prestaciones_2026t2_cambio_mismo_prestador.json").exists()
     assert names == ["licencias_2026t2.json", "prestaciones_2026t2_atencion_codigo.json", "prestaciones_2026t2_consistencia_ids.json",
+                     "prestaciones_2026t2_embudo_arancel_mle.json",
                      "prestaciones_2026t2_indice_isapre_mismo_prestador.json",
                      "prestaciones_2026t2_precios_fonasa_region.json", "prestaciones_2026t2_precios_tipo_prestador.json",
                      "prestaciones_2026t2_resumen.json", "prestaciones_2026t2_top_codigos.json", "receipts_2026t2.json"]
@@ -427,6 +428,47 @@ def test_coverage_funnel_matches_codes_against_the_mle_list():
     a.add(prest_row(codigo="0101001", fact=800, freq=8))
     a.add(prest_row(codigo="9999901", pertenencia="Asegurador", fact=200, freq=2, atencion="Atención Hospitalaria"))
     f = {(x["pertenencia"], x["tipo_atencion"], x["en_arancel_mle"]): x for x in a.funnel_table()["filas"]}
-    assert f[("Fonasa", "Ambulatorio", True)]["facturado"] == 800
+    assert f[("Fonasa", "Ambulatorio", True)]["facturado"] == 800 and f[("Fonasa", "Ambulatorio", True)]["grupo_mle"] == "01"
     assert f[("Asegurador", "Atención Hospitalaria", False)]["frecuencia"] == 2
     assert agg.PrestacionesAgg().funnel_table() is None
+
+
+FONASA_MLE = importlib.util.spec_from_file_location("fonasa_mle", Path(__file__).resolve().parents[1] / "scripts" / "fonasa_mle.py")
+mle = importlib.util.module_from_spec(FONASA_MLE)
+FONASA_MLE.loader.exec_module(mle)
+LAYOUT = """
+01 01 001   CONSULTA MEDICINA GENERAL                                                             12.080       4.830   12.930       5.680   15.130       7.880
+02 01 001   DÍA CAMA DE HOSPITALIZACIÓN INTEGRAL CUIDADOS BÁSICOS. (SALA 1 CAMA)                        9.440       4.720
+03 05 097   CUANTIFICACIÓN DE CÉLULAS PROGENITORAS HEMATOPOYÉTICAS CD 34                      82.680       41.340
+11 03 001    7    MALFORMACIONES VASCULARES DEL CUERO CABELLUDO INCLUYE ANEURISMA CIRSOIDEO                      2      56.110    38.570   148.370    74.180      192.880   118.690      237.390   163.200
+15 02 014    4    PLASTÍAS EN Z, HASTA 3                                                                           2                         152.190    76.090   197.850   121.750   243.500   167.400
+17 01 034   CARDIOVERSIÓN                                   1          25.030       12.510     32.540       20.020      40.050      27.530
+18 02 004    7    LAPAROTOMÍA EXPLORADORA, C/S LIBERACIÓN DE ADHERENCIAS, C/S DRENAJE, C/S
+    CÓDIGOS Y VALORES PABELLÓN
+      1             =                     10550
+     14             =                    212910
+"""
+
+
+def test_fonasa_mle_parser_known_codes():
+    codes, pab, stats = mle.parse_layout(LAYOUT)
+    assert codes["0101001"]["nivel1_total"] == 12080 and codes["0101001"]["nivel3_total"] == 15130
+    assert codes["0201001"] == {"descripcion": "DÍA CAMA DE HOSPITALIZACIÓN INTEGRAL CUIDADOS BÁSICOS. (SALA 1 CAMA)",
+                                "cod_pabellon": None, "equipo": None, "nivel1_total": 9440, "nivel1_benef": 4720}
+    assert codes["0305097"]["nivel1_total"] == 82680 and codes["0305097"]["descripcion"].endswith("CD 34")
+    c = codes["1103001"]
+    assert (c["cod_pabellon"], c["equipo"], c["anestesia_total"], c["nivel1_total"]) == (7, 2, 56110, 148370)
+    assert codes["1502014"]["descripcion"] == "PLASTÍAS EN Z, HASTA 3" and codes["1502014"]["nivel1_total"] == 152190
+    assert codes["1701034"]["equipo"] == 1 and codes["1701034"]["nivel1_total"] == 25030
+    assert "1802004" not in codes and stats["filas_codigo_sin_montos"] == 1  # amounts on another page: not guessed
+    assert pab == {"0000001": 10550, "0000014": 212910}
+
+
+def test_committed_mle_reference_matches_the_parser_on_known_codes():
+    ref = json.loads((Path(__file__).resolve().parents[1] / "data/reference/fonasa_mle_2026.json").read_text(encoding="utf-8"))
+    r = ref["receipt"]
+    assert r["sha256"] == "79b0021be23a702fb750022a6c85bca30a05b4430329bb7933a71c24e797cf6a" and r["pages"] == 143
+    c = ref["codigos"]
+    assert c["0101001"]["nivel1_total"] == 12080 and c["0601105"]["nivel1_total"] == 7120
+    assert all(f"{i:07d}" in c and c[f"{i:07d}"]["pabellon"] for i in range(1, 15))
+    assert r["codes"] == len(c) and r["parse"]["codigos_en_conflicto"] == 0
