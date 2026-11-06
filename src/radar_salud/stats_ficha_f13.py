@@ -44,7 +44,7 @@ DIAG = {"A00-B99": "Infecciosas", "C00-D48": "Tumores", "D50-D89": "Sangre", "E0
         "O00-O99": "Embarazo y parto", "P00-P96": "Perinatales", "Q00-Q99": "Congénitas", "R00-R99": "Síntomas (R)",
         "S00-T98": "Traumatismos", "U00-U99": "Códigos U", "V01-Y98": "Causas externas", "Z00-Z99": "Factores (Z)",
         "(vacío)": "Sin diagnóstico"}
-ACT = {"Electricidad,gas,agua": "Electricidad y agua", "Mineria": "Minería", "Construccion": "Construcción"}
+ACT = {"Electricidad,gas,agua": "Electricidad/agua", "Mineria": "Minería", "Construccion": "Construcción"}
 PROF = {"Medico": "Médico", "Matrona": "Matrona", "Dentista": "Dentista"}
 METRICS = {"licencias": ("licencias", "licencias"), "pct_rechazadas": ("pct_rech", "%"), "pct_reducidas": ("pct_red", "%"),
            "pct_autorizadas": ("pct_aut", "%"), "ratio_autorizados_solicitados_pct": ("dias_ratio", "%"),
@@ -59,15 +59,9 @@ def slug(text: str) -> str:
 
 
 def label(dim: str, key: str) -> str:
-    if dim == "diagnostico":
-        return DIAG.get(key, key)
-    if dim == "actividad_laboral":
-        return ACT.get(key, key)
-    if dim == "tipo_profesional":
-        return PROF.get(key, key)
-    if dim == "region":
-        return so.REGIONS.get(key, key)
-    return key
+    """Short label (≤ 18 characters, chart rule); an unknown group keeps the SIS text, shortened."""
+    out = {"diagnostico": DIAG, "actividad_laboral": ACT, "tipo_profesional": PROF, "region": so.REGIONS}.get(dim, {}).get(key, key)
+    return out if len(out) <= 18 else out[:17] + "…"
 
 
 def row_failures(row: dict, tag: str) -> list[str]:
