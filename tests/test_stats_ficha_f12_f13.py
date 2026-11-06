@@ -75,7 +75,8 @@ def lic_rows(q):
         rows += [lic(isapre, diag="J00-J99", q=q, resol="Rechácese", aut=0, sub=0)]
         rows += [lic(isapre, diag="J00-J99", q=q, resol="Redúcese", dias=10, aut=5, sub=50000) for _ in range(2)]
         rows += [lic(isapre, diag="J00-J99", q=q, act="Mineria", region="2", prof="Matrona") for _ in range(11)]
-    rows += [lic("99", diag="M00-M99", q=q) for _ in range(4)]  # Isapre cell under 10: suppressed
+    rows += [lic("99", diag="M00-M99", q=q) for _ in range(4)]  # Isapre cells under 10: suppressed (4 + 6 = 10)
+    rows += [lic("94", diag="M00-M99", q=q) for _ in range(6)]
     return rows
 
 
@@ -156,8 +157,10 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     assert k["bonificado_sistema"]["value"] == f12.fmt(bonif / fact * 100, 1) + "%"
     # same provider and code: 67 covers 0.8, 78 0.6, 99 0.7 → index vs. the mean 0.7: +14,3% and −14,3%
     assert k["brecha_mismo_prestador"]["value"] == f12.fmt(0.8 / 0.7 * 100 - 0.6 / 0.7 * 100, 1) + " pp"
-    assert fi["headline"].startswith("En el mismo prestador y código, Colmena bonifica 14,3% más")
-    assert "Cruz Blanca, 14,3% menos" in fi["headline"]
+    # open Isapres, median and weighted mean agree in sign and both ≥ 3 %: the comparison leads, named as medians
+    assert fi["headline"] == ("Mismo prestador y código: Colmena bonifica por unidad 14,3% sobre la media de la celda y "
+                              "Cruz Blanca, 14,3% bajo ella (medianas)")
+    assert "promedio" not in fi["headline"]
     assert fi["kicker"] == "Prestaciones bonificadas · abril–junio 2026" and fi["date_basis"] == "first_detected"
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t2.zip")
     assert [t["id"] for t in fi["tabs"]] == ["cobertura", "mismo-prestador", "precios", "regiones", "concentracion"]
@@ -175,6 +178,7 @@ def test_f12_disclosure_rule_one_provider_no_price_two_providers_price_national_
     assert v[f"{b}.6.share_top"]["value"] == 100.0
     # region 5: 2 providers and ≥ 30 frecuencia → median (unit prices 10.000 and 15.000), no p25–p75
     assert v[f"{b}.5.mediana"]["value"] == 12500 and f"{b}.5.p25" not in v
+    assert f"{b}.5.share_top" not in v and p["kpis"]["bands"][f"{b}.5"] == "50-60"  # n = 2: share only as a band
     # region 8: 2 providers but frecuencia < 30 → no price
     assert f"{b}.8.mediana" not in v and v[f"{b}.8.n"]["value"] == 2
     # national: every provider counts, including the one alone in region 6
@@ -185,7 +189,7 @@ def test_f12_disclosure_rule_one_provider_no_price_two_providers_price_national_
     r6 = next(r for r in table if r[0] == "0101001" and r[1] == "O'Higgins")
     assert r6[4] == "1 prestador: sin precio" and r6[5] == "100,0%"
     r5 = next(r for r in table if r[0] == "0101001" and r[1] == "Valparaíso")
-    assert r5[4] == "$12.500"
+    assert r5[4] == "$12.500" and r5[5] == "50–60%"
     assert any("≥ 2 prestadores distintos y ≥ 30 atenciones" in n["text"] for n in fi["notes"])
 
 
@@ -225,6 +229,39 @@ def test_f12_holds_on_mismatched_files(root, q, name, fn, reason):
     assert out["status"] == "hold" and any(reason in e for e in out["errors"]), out["errors"]
 
 
+def test_f12_cross_headline_needs_median_and_weighted_mean_to_agree(root):
+    """Review of PR #152: if the weighted mean disagrees in sign (or is under 3 %), the comparison is not the headline;
+    the fallback is the bonification range among open Isapres. Closed Isapres never lead."""
+    def flip(d):
+        for r in d["resumen_por_isapre"]:
+            if r["isapre"] in ("67", "78"):
+                r["indice_bonif_unit_media_ponderada_frec_pct"] = -r["indice_bonif_unit_media_ponderada_frec_pct"]
+    edit(root, "2026t2", "prestaciones_2026t2_indice_isapre_mismo_prestador.json", flip)
+    fi = f12.run(root, today=TODAY, registry=reg_open(), llm=False)["ficha"]
+    assert fi["verification"]["verdict"] == "PASS"
+    assert fi["headline"].startswith("Entre las Isapres abiertas, Colmena bonifica el ")
+    tab = next(t for t in fi["tabs"] if t["id"] == "mismo-prestador")
+    assert [c["id"] for c in tab["charts"]] == ["f12-mismo-prestador", "f12-mismo-prestador-ponderada"]
+
+
+def test_f12_closed_isapres_stay_in_topics_but_never_lead(root):
+    reg = reg_open()
+    names = so.isapre_names(root)
+    p = f12.build_package(root, reg)
+    # make Colmena (open, top) look closed: the headline must switch to the other open Isapres
+    ent = json.loads((root / "data/entities/isapres.json").read_text())
+    for e in ent["entities"]:
+        if e["official_code"] == 67:
+            e["isapre_type"] = "closed"
+    (root / "data/entities/isapres.json").write_text(json.dumps(ent))
+    fi = f12.run(root, today=TODAY, registry=reg, llm=False)["ficha"]
+    assert "Colmena" not in fi["headline"] and fi["verification"]["verdict"] == "PASS"
+    cob = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-bonif-isapre")
+    assert any(r.get("tag") == "cerrada" and r["label"] == names["67"] for r in cob["rows"])
+    assert any("Isapre cerrada (afiliación restringida)" in n["text"] for n in fi["notes"])
+    assert p["kpis"]["strong"]
+
+
 def test_f12_cross_topic_needs_qualified_isapres_and_valid_ids(root):
     fi = f12.run(root, today=TODAY, registry=reg_open(cross_min_cells=10 ** 6), llm=False)["ficha"]
     assert "mismo-prestador" not in [t["id"] for t in fi["tabs"]] and not fi["headline"].startswith("En el mismo prestador")
@@ -260,24 +297,35 @@ def test_f13_pass_recomputes_kpis_and_headline(root):
     assert [t["id"] for t in fi["tabs"]] == ["isapres", "diagnostico", "industria", "region", "dias", "subsidio"]
     assert any("no se calculan días hasta la resolución" in n["text"] for n in fi["notes"])
     blob = json.dumps(fi, ensure_ascii=False)
-    assert "SECRET" not in blob and "Vida Tres" not in blob  # no figure for an Isapre whose cells are all < 10
+    assert "SECRET" not in blob and "Banmédica" not in blob and "Cruz del Norte" not in blob  # cells < 10: never shown
+    assert k["rechazo"]["lines"][0] == f"{f13.fmt(rej, 0)} de {f13.fmt(n, 0)} licencias informadas"
+    assert fi["dek"].startswith(f"De {f13.fmt(n, 0)} licencias informadas, las Isapres rechazaron {rej} (")
 
 
 def test_f13_min_cell_suppressed_isapre_never_shown_and_rechecked(root):
     p = f13.build_package(root, reg_open())
     assert p["reconciliation"]["ok"], p["reconciliation"]["failures"]
     assert not any(k.startswith("lic.2026t2.isapre.99.") for k in p["values"])
-    assert p["values"]["lic.2026t2.isapre.suprimidas"]["value"] == 4
+    assert not any(k.startswith("lic.2026t2.isapre.94.") for k in p["values"])
+    assert p["values"]["lic.2026t2.isapre.suprimidas"]["value"] == 10
     # a cell under 10 that slipped into the aggregate HOLDs
     edit(root, "2026t2", "licencias_2026t2.json",
          lambda d: d["breakdowns"]["isapre"]["filas"].append({**d["breakdowns"]["isapre"]["filas"][0], "grupo": "99", "licencias": 4})
-         or d["breakdowns"]["isapre"].update(licencias_en_celdas_suprimidas=0))
+         or d["breakdowns"]["isapre"].update(licencias_en_celdas_suprimidas=6))
     out = f13.run(root, today=TODAY, registry=reg_open(), llm=False)
     assert out["status"] == "hold" and any(e.startswith("HOLD_RECONCILIATION") and "cell_under_min" in e for e in out["errors"])
 
 
+def _expose_one(d):
+    """An aggregate without complementary suppression: one published cell of 1 licence moved out of the remainder."""
+    b = d["breakdowns"]["isapre"]
+    b["filas"].append({**b["filas"][0], "grupo": "94", "licencias": 6})
+    b["licencias_en_celdas_suprimidas"] = 4
+
+
 @pytest.mark.parametrize("fn,reason", [
     (lambda d: d["breakdowns"]["region"].update(licencias_en_celdas_suprimidas=7), "breakdown_does_not_add"),
+    (_expose_one, "recoverable_remainder"),
     (lambda d: d.update(sha256_archivo="0" * 64), "aggregate_hash_mismatch"),
     (lambda d: d["total"].update(pct_rechazadas=50.0), "resolution_shares_do_not_add"),
     (lambda d: d.update(regla_celda_minima=5), "min_cell_rule"),

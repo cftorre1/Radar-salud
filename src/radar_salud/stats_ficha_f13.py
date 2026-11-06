@@ -32,7 +32,7 @@ from .stats_ficha_f12 import fmt, money
 from .stats_fichas import value
 
 FAMILY = "F13"
-BUILDER_VERSION = "f13_licencias_v1"
+BUILDER_VERSION = "f13_licencias_v2"  # v2 (review of PR #152): complementary suppression, counts
 DATASET = "Licencias Medicas"
 MIN_CELL = 10
 DIMS = {"isapre": "isapre", "diagnostico": "diag", "actividad_laboral": "act", "region": "region", "tipo_profesional": "prof"}
@@ -46,7 +46,7 @@ DIAG = {"A00-B99": "Infecciosas", "C00-D48": "Tumores", "D50-D89": "Sangre", "E0
         "(vacío)": "Sin diagnóstico"}
 ACT = {"Electricidad,gas,agua": "Electricidad/agua", "Mineria": "Minería", "Construccion": "Construcción"}
 PROF = {"Medico": "Médico", "Matrona": "Matrona", "Dentista": "Dentista"}
-METRICS = {"licencias": ("licencias", "licencias"), "pct_rechazadas": ("pct_rech", "%"), "pct_reducidas": ("pct_red", "%"),
+METRICS = {"licencias": ("licencias", "licencias"), "rechazadas": ("n_rech", "licencias"), "reducidas": ("n_red", "licencias"), "pct_rechazadas": ("pct_rech", "%"), "pct_reducidas": ("pct_red", "%"),
            "pct_autorizadas": ("pct_aut", "%"), "ratio_autorizados_solicitados_pct": ("dias_ratio", "%"),
            "dias_solicitados": ("dias_sol", "días"), "dias_autorizados": ("dias_aut", "días"),
            "subsidio_total": ("subsidio_mm", "MM$"), "subsidio_por_licencia": ("subsidio_lic", "$"),
@@ -75,6 +75,23 @@ def row_failures(row: dict, tag: str) -> list[str]:
     return f
 
 
+def remainder_failures(rows: list[dict], b: dict, total, tag: str) -> list[str]:
+    """Published cells + the suppressed total = the file total, and what subtraction recovers (total − published) is
+    0 or ≥ MIN_CELL licences: a remainder of 1–9 would expose those licences (review of PR #152)."""
+    shown = sum(r.get("licencias") or 0 for r in rows)
+    rest = (total or 0) - shown
+    hidden = b.get("licencias_en_celdas_suprimidas")
+    f = []
+    if hidden is None:
+        if not (0 < rest < MIN_CELL and b.get("licencias_en_celdas_suprimidas_texto") == f"<{MIN_CELL}"):
+            f.append(f"breakdown_does_not_add:{tag}")
+    elif hidden != rest:
+        f.append(f"breakdown_does_not_add:{tag}")
+    if 0 < rest < MIN_CELL:
+        f.append(f"recoverable_remainder:{tag}:{rest}")
+    return f
+
+
 def _quarter(root: Path, q: str, names: dict[str, str]) -> tuple[dict, list[str]]:
     data, failures = so.load_quarter(root, q, DATASET)
     if failures:
@@ -93,8 +110,7 @@ def _quarter(root: Path, q: str, names: dict[str, str]) -> tuple[dict, list[str]
             failures.append(f"breakdown_missing:{q}:{dim}")
             continue
         rows = b.get("filas") or []
-        if sum(r.get("licencias") or 0 for r in rows) + (b.get("licencias_en_celdas_suprimidas") or 0) != tot.get("licencias"):
-            failures.append(f"breakdown_does_not_add:{q}:{dim}")
+        failures += remainder_failures(rows, b, tot.get("licencias"), f"{q}:{dim}")
         for r in rows:
             failures += row_failures(r, f"{q}:{dim}:{r.get('grupo')}")
             if dim == "isapre" and str(r.get("grupo")) not in names:
@@ -102,8 +118,16 @@ def _quarter(root: Path, q: str, names: dict[str, str]) -> tuple[dict, list[str]
     cross = ((lic.get("cruces") or {}).get("isapre_x_diagnostico") or {})
     for r in cross.get("filas") or []:
         failures += row_failures(r, f"{q}:xd:{r.get('grupo')}")
-    if sum(r.get("licencias") or 0 for r in cross.get("filas") or []) + (cross.get("licencias_en_celdas_suprimidas") or 0) != tot.get("licencias"):
-        failures.append(f"cross_does_not_add:{q}")
+    failures += [x.replace("breakdown_does_not_add", "cross_does_not_add") for x in
+                 remainder_failures(cross.get("filas") or [], cross, tot.get("licencias"), f"{q}:xd")]
+    # Complementary suppression, re-checked: within each published Isapre (row) and diagnosis (column) of the cross,
+    # what subtraction recovers is 0 or ≥ MIN_CELL licences.
+    for dim, key in (("isapre", "isapre"), ("diagnostico", "diagnostico")):
+        for r in (bd.get(dim) or {}).get("filas") or []:
+            shown = sum(x.get("licencias") or 0 for x in cross.get("filas") or [] if str(x.get(key)) == str(r.get("grupo")))
+            rest = (r.get("licencias") or 0) - shown
+            if 0 < rest < MIN_CELL:
+                failures.append(f"recoverable_remainder:{q}:xd:{dim}:{r.get('grupo')}:{rest}")
     data["lic"] = lic
     return data, sorted(set(failures))
 
@@ -132,6 +156,7 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
             "cada archivo agregado nombra el trimestre, la versión del script y el SHA-256 del ZIP de su recibo",
             "licencias agregadas = filas leídas del ZIP; ≤ 0,1 % de filas malformadas; ZIP ≤ 1 GiB desde datos.superdesalud.gob.cl",
             "cada celda mostrada tiene ≥ 10 licencias; celdas publicadas + suprimidas = total, en cada desglose y en el cruce",
+            "ninguna resta (total − celdas publicadas; en el cruce, por Isapre y por diagnóstico) deja entre 1 y 9 licencias",
             "rechazadas + reducidas + autorizadas + ampliadas entre 99 % y 100 % en cada fila",
             "toda Isapre con nombre en data/entities/isapres.json"]},
         "lectura_pool": [], "derived_ratios": [], "ranks": [],
@@ -262,7 +287,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
             rows.append(r)
         sup = V(f"lic.{q}.{DIMS[dim]}.suprimidas")
         if sup:
-            rows.append(["Celdas con menos de 10 licencias (sin desglose)", fmt(sup, 0), "", "", "", "", ""] + ([""] if pq else []))
+            rows.append(["Celdas suprimidas (menos de 10 o complementarias)", fmt(sup, 0), "", "", "", "", ""] + ([""] if pq else []))
         return {"columns": cols, "rows": rows}
 
     src = "SIS, datos abiertos de licencias médicas (ZIP trimestral); agregados de Alicanto con celda mínima de 10 licencias."
@@ -388,10 +413,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         return ([f"{so.quarter_tag(pq)}: {pc(p)}"], [p]) if p and p in v else ([], [])
     pl, pr = prev_line("pct_rech")
     kpis = [{"id": "rechazo", "label": "Licencias rechazadas", "value": pc(f"{T}.pct_rech"), "prov": "C",
-             "lines": [f"de {fmt(V(f'{T}.licencias'), 0)} licencias, {ql}", *pl], "refs": [f"{T}.pct_rech", f"{T}.licencias", *pr]}]
+             "lines": [f"{fmt(V(f'{T}.n_rech'), 0)} de {fmt(V(f'{T}.licencias'), 0)} licencias informadas", *pl],
+             "refs": [f"{T}.pct_rech", f"{T}.n_rech", f"{T}.licencias", *pr]}]
     pl, pr = prev_line("pct_red")
     kpis.append({"id": "reduccion", "label": "Licencias reducidas", "value": pc(f"{T}.pct_red"), "prov": "C",
-                 "lines": ["con menos días que los pedidos", *pl], "refs": [f"{T}.pct_red", *pr]})
+                 "lines": [f"{fmt(V(f'{T}.n_red'), 0)} con menos días que los pedidos (aparte de las rechazadas)", *pl],
+                 "refs": [f"{T}.pct_red", f"{T}.n_red", *pr]})
     kpis.append({"id": "dias", "label": "Días autorizados / solicitados", "value": pc(f"{T}.dias_ratio"), "prov": "C",
                  "lines": [f"{fmt(V(f'{T}.dias_aut'), 0)} de {fmt(V(f'{T}.dias_sol'), 0)} días"],
                  "refs": [f"{T}.dias_ratio", f"{T}.dias_aut", f"{T}.dias_sol"]})
@@ -416,8 +443,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
             break
         lead = None
     headline = lead or f"Licencias médicas en Isapres, {ql}"
-    dek = (f"De {fmt(V(f'{T}.licencias'), 0)} licencias, las Isapres rechazaron el {pc(f'{T}.pct_rech')} y redujeron el "
-           f"{pc(f'{T}.pct_red')}; autorizaron el {pc(f'{T}.dias_ratio')} de los días pedidos.")
+    dek = (f"De {fmt(V(f'{T}.licencias'), 0)} licencias informadas, las Isapres rechazaron {fmt(V(f'{T}.n_rech'), 0)} "
+           f"({pc(f'{T}.pct_rech')}) y redujeron otras {fmt(V(f'{T}.n_red'), 0)} ({pc(f'{T}.pct_red')}); autorizaron el "
+           f"{pc(f'{T}.dias_ratio')} de los días pedidos.")
 
     notes = [
         {"id": "n1", "text": f"Base trimestral: licencias del archivo de {ql}; cada cifra es un flujo del trimestre, no un stock, y los "
@@ -429,7 +457,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         {"id": "n3", "text": "Fechas: la SIS publica la recepción y la resolución solo como trimestre (p. ej. 2.º trimestre), por eso no se "
                              "calculan días hasta la resolución; se informa el % resuelto en el mismo trimestre de recepción."},
         {"id": "n4", "text": "Privacidad: solo agregados por Isapre, grupo de diagnóstico, actividad laboral, región y tipo de profesional, "
-                             "con un mínimo de 10 licencias por celda. Nunca hay desglose por médico, trabajador ni empleador, y los RUT "
+                             "con un mínimo de 10 licencias por celda y supresión complementaria: si lo suprimido en un desglose suma menos de 10, se "
+                             "oculta también la celda siguiente más chica, para que ninguna resta revele menos de 10 licencias. Nunca hay desglose por médico, trabajador ni empleador, y los RUT "
                              "cifrados de la SIS no se intentan revertir."},
         {"id": "n5", "text": "El diagnóstico es el capítulo CIE-10 del diagnóstico principal. Las diferencias entre Isapres no ajustan por "
                              "mezcla de diagnósticos, tipo de trabajador ni licencias de continuación."},

@@ -28,7 +28,7 @@ from urllib.parse import urlsplit
 from . import stats_fichas as sf
 
 AGG_ROOT = Path("data/sis_open_data_aggregates")
-SCRIPT_VERSION = "sis_open_data_agg_v2"  # mirrors scripts/aggregate_sis_open_data.py SCRIPT_VERSION
+SCRIPT_VERSION = "sis_open_data_agg_v3"  # mirrors scripts/aggregate_sis_open_data.py SCRIPT_VERSION
 FILE_HOST = "datos.superdesalud.gob.cl"
 MAX_FILE_BYTES = 1 << 30
 MAX_MALFORMED_SHARE = 0.001
@@ -110,6 +110,13 @@ def isapre_names(root: Path) -> dict[str, str]:
     d = load_json(Path(root) / "data/entities/isapres.json") or {}
     return {str(e.get("official_code")): str(e.get("commercial_name")) for e in d.get("entities") or []
             if e.get("official_code") is not None and e.get("commercial_name")}
+
+
+def isapre_types(root: Path) -> dict[str, str]:
+    """official_code → 'open' / 'closed' (data/entities/isapres.json, isapre_type)."""
+    d = load_json(Path(root) / "data/entities/isapres.json") or {}
+    return {str(e.get("official_code")): str(e.get("isapre_type")) for e in d.get("entities") or []
+            if e.get("official_code") is not None and e.get("isapre_type")}
 
 
 def region_name(code: str) -> str | None:
