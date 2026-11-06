@@ -420,3 +420,13 @@ def test_care_type_split_by_code_and_provider_type():
     assert rows[("Atención Ambulatoria", "Privado")]["facturado"] == 600 and rows[("Atención Ambulatoria", "Privado")]["frecuencia"] == 6
     assert rows[("Atención Hospitalaria", "Público")]["facturado"] is None  # 1 provider
     assert {(x["tipo_atencion"], x["tipo_prestador"]): x["facturado"] for x in t["totales"]}[("Atención Hospitalaria", "Público")] == 500
+
+
+def test_coverage_funnel_matches_codes_against_the_mle_list():
+    a = agg.PrestacionesAgg(mle_codes={"0101001"})
+    a.add(prest_row(codigo="0101001", fact=800, freq=8))
+    a.add(prest_row(codigo="9999901", pertenencia="Asegurador", fact=200, freq=2, atencion="Atención Hospitalaria"))
+    f = {(x["pertenencia"], x["tipo_atencion"], x["en_arancel_mle"]): x for x in a.funnel_table()["filas"]}
+    assert f[("Fonasa", "Ambulatorio", True)]["facturado"] == 800
+    assert f[("Asegurador", "Atención Hospitalaria", False)]["frecuencia"] == 2
+    assert agg.PrestacionesAgg().funnel_table() is None

@@ -52,7 +52,7 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v6"
+SCRIPT_VERSION = "sis_open_data_agg_v7"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
@@ -292,8 +292,10 @@ def suppressed_count(n: int) -> dict:
 
 
 class PrestacionesAgg:
-    def __init__(self, ids_only: bool = False):
+    def __init__(self, ids_only: bool = False, mle_codes: Iterable[str] | None = None):
         self.ids_only = ids_only
+        self.mle_codes = set(mle_codes) if mle_codes is not None else None
+        self.funnel: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])         # (pertenencia, atencion, en_mle)
         self.err: Counter = Counter()
         self.prov_isapres: dict[str, set] = defaultdict(set)
         self.prov_fact: dict[str, float] = defaultdict(float)
@@ -336,6 +338,9 @@ class PrestacionesAgg:
         a[0] += freq; a[1] += fact; a[2] += bonif; a[3] += copago; a[4] += 1
         t = self.region_tipo[(region, f[P_TIPO_PRESTADOR].strip() or "(vacío)")]
         t[0] += fact; t[1] += freq; t[2] += 1
+        if self.mle_codes is not None:
+            fu = self.funnel[(f[P_PERTENENCIA].strip() or "(vacío)", atencion, f[P_CODIGO].strip() in self.mle_codes)]
+            fu[0] += fact; fu[1] += freq
         if prov in NO_PROVIDER:
             return
         self.region_prov[(region, prov)] += fact
@@ -535,6 +540,16 @@ class PrestacionesAgg:
         return {"definicion": "HHI sobre facturado entre prestadores (seudónimos) de la región del prestador, escala "
                               "0-10000; top1/top3/top5/top10/top50 share de facturado. NACIONAL suma cada prestador entre regiones.",
                 "regiones": out}
+
+    def funnel_table(self) -> dict | None:
+        """Coverage funnel (Dirección 6-nov-2026 20:13): all Isapre facturado and frecuencia by the SIS 'pertenencia'
+        flag × tipo de atención × whether the code is in FONASA's official MLE 2026 code list. System totals only."""
+        if self.mle_codes is None:
+            return None
+        return {"definicion": "en_arancel_mle = el código de la fila está en la lista oficial del Arancel MLE 2026 de "
+                              "FONASA; pertenencia = campo 16 del archivo SIS", "codigos_mle": len(self.mle_codes),
+                "filas": [{"pertenencia": p, "tipo_atencion": a, "en_arancel_mle": m, "facturado": round(v[0]),
+                           "frecuencia": round(v[1])} for (p, a, m), v in sorted(self.funnel.items(), key=str)]}
 
     def fonasa_totals(self) -> dict:
         """System totals of Fonasa-arancel codes (all providers, all regions): the denominator of basket coverage."""
@@ -1048,7 +1063,8 @@ def fetch_arancel_mle(out_dir: Path, url: str = MLE_URL, local: Path | None = No
 
 
 def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "PrestacionesAgg | None" = None,
-                      prev_period: str | None = None, which: Iterable[str] = ("prestaciones", "licencias")):
+                      prev_period: str | None = None, which: Iterable[str] = ("prestaciones", "licencias"),
+                      mle_codes: Iterable[str] | None = None):
     """Full aggregates of one quarter into ``out``. Returns (receipts, provider-id aggregate for the next quarter)."""
     receipts: dict = {"generated_at": datetime.now(timezone.utc).isoformat(), "script_version": SCRIPT_VERSION,
                       "user_agent": UA, "max_file_bytes": MAX_FILE_BYTES,
@@ -1057,7 +1073,7 @@ def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "Prestacion
     ids = None
     which = set(which)
     if "prestaciones" in which:
-        cur = PrestacionesAgg()
+        cur = PrestacionesAgg(mle_codes=mle_codes)
         p, rec = fetch("Prestaciones Bonificadas", period, f"prest_{period}")
         if p:
             process_zip(p, PREST_N, cur.add, rec)
@@ -1077,6 +1093,8 @@ def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "Prestacion
             write_json(out / f"prestaciones_{period}_indice_isapre_mismo_prestador.json", {**meta, **cur.cross_isapre()})
             write_json(out / f"prestaciones_{period}_precios_tipo_prestador.json", {**meta, **cur.tipo_table()})
             write_json(out / f"prestaciones_{period}_atencion_codigo.json", {**meta, **cur.atencion_table()})
+            if cur.mle_codes is not None:
+                write_json(out / f"prestaciones_{period}_embudo_arancel_mle.json", {**meta, **cur.funnel_table()})
             if prev_ids is not None and getattr(prev_ids, "price", None):
                 write_json(out / f"prestaciones_{period}_cambio_mismo_prestador.json",
                            {**meta, "periodo_anterior": prev_period, **price_change(cur, prev_ids.price)})
@@ -1139,7 +1157,13 @@ def unchanged(out_root: Path, quarters: list[str], links: list[str] | None) -> b
 
 def run(period: str, prev: str | None, out_root: Path, local: dict[str, Path] | None = None,
         which: Iterable[str] = ("prestaciones", "licencias"), links: list[str] | None = None) -> dict:
-    """Aggregates ``prev`` (if any) and then ``period``, each into ``out_root/<quarter>/``."""
+    """Aggregates ``prev`` (if any) and then ``period``, each into ``out_root/<quarter>/``. When the MLE code table
+    (``out_root/arancel_mle/arancel_mle_2026.json``) exists, the coverage funnel is computed against it."""
+    mle = None
+    try:
+        mle = list(json.loads((Path(out_root) / "arancel_mle" / "arancel_mle_2026.json").read_text(encoding="utf-8"))["codigos"])
+    except (OSError, ValueError, KeyError):
+        pass
     tmp = Path(tempfile.mkdtemp(prefix="sis_agg_"))
 
     def fetch(dataset: str, per: str, key: str) -> tuple[Path | None, dict]:
@@ -1166,7 +1190,7 @@ def run(period: str, prev: str | None, out_root: Path, local: dict[str, Path] | 
         ids = None
         for q in ([prev] if prev else []) + [period]:
             rec, ids = aggregate_quarter(q, out_root / q, fetch, drop, prev_ids=ids if q == period else None,
-                                         prev_period=prev if q == period else None, which=which)
+                                         prev_period=prev if q == period else None, which=which, mle_codes=mle)
             out[q] = rec
     finally:
         for f in tmp.glob("*"):
