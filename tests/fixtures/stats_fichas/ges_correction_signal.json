@@ -1,0 +1,172 @@
+{
+ "title": "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a junio 2026",
+ "source_name": "Superintendencia de Salud",
+ "source_type": "official",
+ "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026/",
+ "category": "Aseguramiento",
+ "subcategory": "Estadísticas",
+ "system_domain": "HEALTH_INSURANCE",
+ "what_happened": "La Superintendencia actualizó a junio 2026 los casos y tasas de uso GES de Fonasa e Isapres por problema de salud.",
+ "event_date": "2026-10-14",
+ "detected_at": "2026-10-25T19:38:33.003989+00:00",
+ "primary_source_url": null,
+ "event_type": "OTHER",
+ "strategic_theme": [],
+ "institution_types": [],
+ "entity_refs": [
+  {
+   "canonical_id": "cl:org:fonasa",
+   "name": "Fonasa",
+   "kind": "asegurador_publico",
+   "basis": "text"
+  }
+ ],
+ "country": "CL",
+ "topics": [],
+ "entities": [],
+ "people": [],
+ "geography": [],
+ "key_facts": [
+  "Contiene información trimestral de la cantidad de Casos GES (AUGE) y tasas de uso, por problema de salud y seguro (FONASA e ISAPRE), desde los inicios de las Garantías Explícitas en Salud.",
+  "Información actualizada a junio 2026."
+ ],
+ "key_numbers": [],
+ "why_it_matters": "Permite detectar cambios de utilización por patología y dimensionar exposición asistencial y financiera entre seguros.",
+ "who_cares": [
+  "estrategia",
+  "estudios",
+  "isapres",
+  "fonasa",
+  "prestadores"
+ ],
+ "possible_implications": [],
+ "watch_tags": [
+  "superintendencia",
+  "ges",
+  "fonasa",
+  "isapres"
+ ],
+ "connection_keys": [],
+ "trend_keys": [],
+ "prospective_evidence": false,
+ "economic_impact_score": 45,
+ "regulatory_impact_score": 65,
+ "scope_score": 85,
+ "novelty_score": 70,
+ "actionability_score": 75,
+ "source_quality_score": 100,
+ "radar_score": 69,
+ "confidence_score": 100,
+ "distribution": "archive",
+ "validation_status": "automatic",
+ "corroboration_status": "unknown",
+ "additional_sources": [],
+ "source_documents": [
+  {
+   "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-junio-2026.xlsx",
+   "label": "Descargar 2 MB XLSX"
+  }
+ ],
+ "key_points": [],
+ "risk_notes": [],
+ "data_insights": [],
+ "data_insight_meta": {
+  "family": "ges",
+  "status": "HOLD",
+  "hold_reason": "HOLD_GES_UNPINNED_OR_UNRECONCILED",
+  "parser": "ges_pinned_year_reconciled_v2",
+  "superseded_meta": {
+   "family": "ges",
+   "status": "validated",
+   "sheet": "Año 2005",
+   "period": "2026-06",
+   "rows": 24,
+   "evidence": {
+    "header_row": 3,
+    "fonasa_column": 3,
+    "isapre_column": 4,
+    "aggregation": "none"
+   },
+   "withdrawn_insight_texts": [
+    "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
+   ],
+   "withdrawn_data_insights": [
+    "21 presenta el mayor volumen combinado entre las filas comparables detectadas en la tabla GES del corte 2026-06; no se infiere prevalencia ni causalidad."
+   ],
+   "withdrawn_insights": 1,
+   "corrected_at": "2026-10-28",
+   "reason": "parser leía hoja Año 2005",
+   "superseded_parser": "ges_first_sheet_v1",
+   "corrected_by_parser": "ges_pinned_year_reconciled_v2"
+  }
+ },
+ "validity_text": null,
+ "related_reference_ids": [],
+ "original_language": "es",
+ "display_language": "es",
+ "translation_status": "not_required",
+ "original_title": null,
+ "original_what_happened": null,
+ "original_why_it_matters": null,
+ "distribution_free": "weekly_digest",
+ "distribution_pro": "web",
+ "signal_types": [
+  "Datos"
+ ],
+ "scopes": [
+  "Isapres"
+ ],
+ "ingestion_mode": "BACKFILL",
+ "statistical_view": {
+  "family": "ges",
+  "publication_status": "HOLD",
+  "hold_reason": "HOLD_GES_UNPINNED_OR_UNRECONCILED",
+  "limitations": [
+   "La lectura automática de la planilla GES no fijó la hoja del año en curso ni concilió la suma con el total declarado; el hallazgo queda retenido hasta la ficha GES (F4)."
+  ],
+  "correction": {
+   "corrected_at": "2026-10-28",
+   "label": "28 oct",
+   "text": "Corregido el 28 oct: se retiró un hallazgo automático que leía la hoja de otro año de la planilla y no conciliaba con el total declarado; vuelve con la ficha GES."
+  },
+  "source_url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026/"
+ },
+ "publication_ready_score": 100,
+ "publication_gate_reason": "ok",
+ "statistical_value_level": "central_finding",
+ "card_what": "La publicación reúne casos y tasas de uso GES por problema de salud y seguro (Fonasa e Isapres). Información actualizada a junio 2026.",
+ "card_why": "Permite saber qué patologías y tasas pueden compararse entre seguros; Alicanto aún no ha calculado variaciones entre períodos para esta entrega.",
+ "related_context": [],
+ "source_alternatives": [],
+ "editorial_decision": "accept",
+ "editorial_committee": {
+  "check_kind": "structured_check",
+  "independent_review": false,
+  "committee_version": "1.0",
+  "signal_type": "Datos",
+  "members": [
+   "editorial_intelligence",
+   "health_business",
+   "data_analytics",
+   "decision_intelligence",
+   "evidence_research"
+  ],
+  "materiality_decision": "accept",
+  "public_title": "Estadística Trimestral de Casos GES (AUGE) de Fonasa y Sistema ISAPRE – a junio 2026",
+  "what_happened": "La publicación reúne casos y tasas de uso GES por problema de salud y seguro (Fonasa e Isapres). Información actualizada a junio 2026.",
+  "why_it_matters": "Permite saber qué patologías y tasas pueden compararse entre seguros; Alicanto aún no ha calculado variaciones entre períodos para esta entrega.",
+  "evidence_map": [
+   {
+    "source": "Superintendencia de Salud",
+    "url": "https://www.superdesalud.gob.cl/biblioteca-digital/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026/"
+   }
+  ],
+  "uncertainties": [],
+  "value_level": "central_finding",
+  "publication_decision": "accept",
+  "critical_objections": [],
+  "verdict": "PASS",
+  "parser_or_research_debt_if_any": null
+ },
+ "feed_visibility": true
+}

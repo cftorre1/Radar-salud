@@ -260,8 +260,11 @@ test('the F1 share page redirects to the ficha deep link',async({page})=>{
 
 test('the withdrawn GES finding shows a dated public correction',async({page})=>{
  const snap=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
- const ges=snap.signals.find(s=>s.statistical_view&&s.statistical_view.correction);
- expect(ges).toBeTruthy();
+ // The loose GES card leaves the snapshot once the live F4 ficha absorbs it (POLICY.md, F4 rules); then the card as
+ // committed in staging's snapshot dd9bc519 (fixture) is rendered instead.
+ const ges=snap.signals.find(s=>s.statistical_view&&s.statistical_view.correction)
+  ||JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/ges_correction_signal.json','utf8'));
+ expect(ges&&ges.statistical_view.correction).toBeTruthy();
  // The GES release (14-oct) is after the suite's pinned fixture day; pin the clock to the correction day.
  await page.clock.setFixedTime(new Date('2026-10-28T12:00:00-03:00'));
  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-28',generated_at:'2026-10-28T12:00:00Z',signals:[ges]}}));
