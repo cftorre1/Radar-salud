@@ -2,7 +2,7 @@
   "status": "hold",
   "family": "F12",
   "period": "2026-09",
-  "generated_at": "2026-11-06T00:05:25.610142+00:00",
+  "generated_at": "2026-11-06T00:37:19.061399+00:00",
   "decision": {
     "decision": "HOLD",
     "holds": [
@@ -26,17 +26,32 @@
     "family_label": "Prestaciones bonificadas",
     "slug": "f12_prestaciones",
     "period": "2026-09",
-    "published_at": "2026-11-05",
+    "published_at": "2026-11-06",
     "release_key": "2026-09:d60c3c59a3db6308",
     "evidence_sha256": "d60c3c59a3db630813f3c3ec294134583d6360728c110011a1606f703a6c1550",
     "kicker": "Prestaciones bonificadas · julio–septiembre 2026",
-    "kicker_meta": "datos de julio–septiembre 2026 (trimestre) · detectado por Alicanto el 5 nov",
+    "kicker_meta": "datos de julio–septiembre 2026 (trimestre) · detectado por Alicanto el 6 nov",
     "date_basis": "first_detected",
-    "headline": "En el mismo prestador y código, Isalud bonifica 11,0% más que el promedio de las Isapres y Fundación, 7,2% menos",
+    "headline": "Atención kinesiológica integral ambulatoria cuesta entre $18.880 y $34.870 según el prestador (p25–p75, julio–septiembre 2026)",
     "headline_type": "default",
-    "dek": "Las Isapres bonificaron el 66,7% de lo facturado; por Isapre, de 59,5% a 76,4%. Lo que cobra el prestador por unidad casi no cambia entre Isapres (mediana dentro de ±0,7%).",
+    "dek": "Mediana nacional $25.000 entre 7.844 prestadores. En los 15 códigos Fonasa más frecuentes, el p75 equivale a 1,6 veces el p25 (mediana). Las Isapres bonificaron el 66,7% de lo facturado.",
     "dek_emphasis": null,
     "kpis": [
+      {
+        "id": "dispersion_precios",
+        "label": "Dispersión de precios (p75/p25)",
+        "value": "1,6 veces",
+        "prov": "C",
+        "lines": [
+          "mediana de los 15 códigos Fonasa más frecuentes",
+          "Atención kinesiológica integral ambulatoria: $18.880 a $34.870"
+        ],
+        "refs": [
+          "dispersion.mediana",
+          "precio.0601105.NACIONAL.p25",
+          "precio.0601105.NACIONAL.p75"
+        ]
+      },
       {
         "id": "bonificado_sistema",
         "label": "Bonificado por las Isapres",
@@ -56,31 +71,16 @@
       {
         "id": "brecha_mismo_prestador",
         "label": "Brecha de cobertura, mismo prestador",
-        "value": "18,3 pp",
+        "value": "17,1 pp",
         "prov": "C",
         "lines": [
-          "Isalud +11,0% · Fundación −7,2%",
-          "mediana del bonificado por unidad vs. promedio"
+          "Esencial +11,2% · Banmédica −5,9%",
+          "medianas vs. la media de la celda; abiertas con mediana y media ponderada del mismo signo"
         ],
         "refs": [
           "cruce.brecha_pp",
-          "cruce.63.mediana",
-          "cruce.76.mediana"
-        ]
-      },
-      {
-        "id": "dispersion_precios",
-        "label": "Dispersión de precios (p75/p25)",
-        "value": "1,6 veces",
-        "prov": "C",
-        "lines": [
-          "mediana de los 15 códigos Fonasa más frecuentes",
-          "código 0601105: $18.880 a $34.870"
-        ],
-        "refs": [
-          "dispersion.mediana",
-          "precio.0601105.NACIONAL.p25",
-          "precio.0601105.NACIONAL.p75"
+          "cruce.108.mediana",
+          "cruce.99.mediana"
         ]
       },
       {
@@ -99,607 +99,6 @@
       }
     ],
     "tabs": [
-      {
-        "id": "cobertura",
-        "label": "Cobertura por Isapre",
-        "charts": [
-          {
-            "id": "f12-bonif-isapre",
-            "form": "bars",
-            "unit": "%",
-            "digits": 1,
-            "headline": "Bonificado sobre lo facturado, por Isapre",
-            "subtitle": "% de lo facturado por los prestadores que pagó la Isapre, julio–septiembre 2026",
-            "rows": [
-              {
-                "label": "Isalud",
-                "value": 76.44,
-                "ref": "isapre.63.2026t3.total.pct_bonif",
-                "emphasis": true
-              },
-              {
-                "label": "Cruz Blanca",
-                "value": 68.3,
-                "ref": "isapre.78.2026t3.total.pct_bonif",
-                "emphasis": false
-              },
-              {
-                "label": "Colmena",
-                "value": 67.64,
-                "ref": "isapre.67.2026t3.total.pct_bonif",
-                "emphasis": false
-              },
-              {
-                "label": "Banmédica",
-                "value": 67.28,
-                "ref": "isapre.99.2026t3.total.pct_bonif",
-                "emphasis": false
-              },
-              {
-                "label": "Vida Tres",
-                "value": 66.72,
-                "ref": "isapre.80.2026t3.total.pct_bonif",
-                "emphasis": false
-              },
-              {
-                "label": "Esencial",
-                "value": 66.64,
-                "ref": "isapre.108.2026t3.total.pct_bonif",
-                "emphasis": false
-              },
-              {
-                "label": "Cruz del Norte",
-                "value": 65.29,
-                "ref": "isapre.94.2026t3.total.pct_bonif",
-                "emphasis": false
-              },
-              {
-                "label": "Nueva Masvida",
-                "value": 63.23,
-                "ref": "isapre.81.2026t3.total.pct_bonif",
-                "emphasis": false
-              },
-              {
-                "label": "Consalud",
-                "value": 63.19,
-                "ref": "isapre.107.2026t3.total.pct_bonif",
-                "emphasis": false
-              },
-              {
-                "label": "Fundación",
-                "value": 59.48,
-                "ref": "isapre.76.2026t3.total.pct_bonif",
-                "emphasis": true
-              }
-            ],
-            "table": {
-              "columns": [
-                "Isapre",
-                "Bonificado",
-                "Copago",
-                "Ambulatoria",
-                "Hospitalaria",
-                "Facturado (MM$)",
-                "2.º trim. 2026"
-              ],
-              "rows": [
-                [
-                  "Isalud",
-                  "76,4%",
-                  "23,6%",
-                  "82,9%",
-                  "69,9%",
-                  "45.790",
-                  "77,8%"
-                ],
-                [
-                  "Cruz Blanca",
-                  "68,3%",
-                  "31,0%",
-                  "61,7%",
-                  "73,4%",
-                  "202.213",
-                  "68,3%"
-                ],
-                [
-                  "Colmena",
-                  "67,6%",
-                  "31,8%",
-                  "56,4%",
-                  "78,1%",
-                  "304.137",
-                  "67,5%"
-                ],
-                [
-                  "Banmédica",
-                  "67,3%",
-                  "32,7%",
-                  "58,1%",
-                  "74,8%",
-                  "293.774",
-                  "68,0%"
-                ],
-                [
-                  "Vida Tres",
-                  "66,7%",
-                  "33,3%",
-                  "57,1%",
-                  "75,2%",
-                  "100.545",
-                  "67,3%"
-                ],
-                [
-                  "Esencial",
-                  "66,6%",
-                  "33,2%",
-                  "57,9%",
-                  "77,8%",
-                  "50.891",
-                  "66,0%"
-                ],
-                [
-                  "Cruz del Norte",
-                  "65,3%",
-                  "34,4%",
-                  "72,8%",
-                  "56,8%",
-                  "691",
-                  "66,3%"
-                ],
-                [
-                  "Nueva Masvida",
-                  "63,2%",
-                  "36,8%",
-                  "60,0%",
-                  "67,3%",
-                  "112.353",
-                  "64,3%"
-                ],
-                [
-                  "Consalud",
-                  "63,2%",
-                  "36,0%",
-                  "58,7%",
-                  "67,0%",
-                  "214.828",
-                  "63,2%"
-                ],
-                [
-                  "Fundación",
-                  "59,5%",
-                  "39,0%",
-                  "57,5%",
-                  "61,1%",
-                  "16.587",
-                  "58,1%"
-                ],
-                [
-                  "Sistema",
-                  "66,7%",
-                  "32,9%",
-                  "",
-                  "",
-                  "1.341.810",
-                  "67,0%"
-                ]
-              ]
-            },
-            "source": "SIS, datos abiertos de prestaciones bonificadas (ZIP trimestral); agregados por Isapre."
-          },
-          {
-            "id": "f12-bonif-amb",
-            "form": "bars",
-            "unit": "%",
-            "digits": 1,
-            "headline": "Bonificado en atención ambulatoria",
-            "subtitle": "% de lo facturado en atención ambulatoria, julio–septiembre 2026",
-            "rows": [
-              {
-                "label": "Isalud",
-                "value": 82.85,
-                "ref": "isapre.63.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Cruz del Norte",
-                "value": 72.84,
-                "ref": "isapre.94.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Cruz Blanca",
-                "value": 61.69,
-                "ref": "isapre.78.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Nueva Masvida",
-                "value": 60.0,
-                "ref": "isapre.81.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Consalud",
-                "value": 58.73,
-                "ref": "isapre.107.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Banmédica",
-                "value": 58.14,
-                "ref": "isapre.99.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Esencial",
-                "value": 57.91,
-                "ref": "isapre.108.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Fundación",
-                "value": 57.53,
-                "ref": "isapre.76.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Vida Tres",
-                "value": 57.09,
-                "ref": "isapre.80.2026t3.amb.pct_bonif"
-              },
-              {
-                "label": "Colmena",
-                "value": 56.38,
-                "ref": "isapre.67.2026t3.amb.pct_bonif"
-              }
-            ],
-            "table": {
-              "columns": [
-                "Isapre",
-                "Ambulatoria",
-                "Hospitalaria"
-              ],
-              "rows": [
-                [
-                  "Isalud",
-                  "82,9%",
-                  "69,9%"
-                ],
-                [
-                  "Cruz Blanca",
-                  "61,7%",
-                  "73,4%"
-                ],
-                [
-                  "Colmena",
-                  "56,4%",
-                  "78,1%"
-                ],
-                [
-                  "Banmédica",
-                  "58,1%",
-                  "74,8%"
-                ],
-                [
-                  "Vida Tres",
-                  "57,1%",
-                  "75,2%"
-                ],
-                [
-                  "Esencial",
-                  "57,9%",
-                  "77,8%"
-                ],
-                [
-                  "Cruz del Norte",
-                  "72,8%",
-                  "56,8%"
-                ],
-                [
-                  "Nueva Masvida",
-                  "60,0%",
-                  "67,3%"
-                ],
-                [
-                  "Consalud",
-                  "58,7%",
-                  "67,0%"
-                ],
-                [
-                  "Fundación",
-                  "57,5%",
-                  "61,1%"
-                ]
-              ]
-            },
-            "source": "SIS, datos abiertos de prestaciones bonificadas; tipo de atención declarado en cada fila."
-          }
-        ],
-        "text": [],
-        "dek": null,
-        "spark": {
-          "chart": "f12-bonif-isapre",
-          "form": "bars"
-        },
-        "index_line": "De 59,5% (Fundación) a 76,4% (Isalud)",
-        "index_refs": [
-          "isapre.76.2026t3.total.pct_bonif",
-          "isapre.63.2026t3.total.pct_bonif"
-        ],
-        "kpis": []
-      },
-      {
-        "id": "mismo-prestador",
-        "label": "Mismo prestador",
-        "charts": [
-          {
-            "id": "f12-mismo-prestador",
-            "form": "diverging",
-            "unit": "%",
-            "digits": 1,
-            "headline": "Mismo prestador y código, distinta Isapre",
-            "subtitle": "Bonificado por unidad vs. el promedio de las Isapres del mismo prestador y código; mediana, %",
-            "rows": [
-              {
-                "label": "Isalud",
-                "value": 11.04,
-                "ref": "cruce.63.mediana"
-              },
-              {
-                "label": "Esencial",
-                "value": 6.27,
-                "ref": "cruce.108.mediana"
-              },
-              {
-                "label": "Cruz Blanca",
-                "value": 3.05,
-                "ref": "cruce.78.mediana"
-              },
-              {
-                "label": "Colmena",
-                "value": 2.32,
-                "ref": "cruce.67.mediana"
-              },
-              {
-                "label": "Nueva Masvida",
-                "value": 0.06,
-                "ref": "cruce.81.mediana"
-              },
-              {
-                "label": "Cruz del Norte",
-                "value": -1.27,
-                "ref": "cruce.94.mediana"
-              },
-              {
-                "label": "Vida Tres",
-                "value": -1.73,
-                "ref": "cruce.80.mediana"
-              },
-              {
-                "label": "Consalud",
-                "value": -6.11,
-                "ref": "cruce.107.mediana"
-              },
-              {
-                "label": "Banmédica",
-                "value": -6.21,
-                "ref": "cruce.99.mediana"
-              },
-              {
-                "label": "Fundación",
-                "value": -7.22,
-                "ref": "cruce.76.mediana"
-              }
-            ],
-            "table": {
-              "columns": [
-                "Isapre",
-                "Mediana",
-                "p25",
-                "p75",
-                "Ponderada por frecuencia",
-                "Celdas"
-              ],
-              "rows": [
-                [
-                  "Isalud",
-                  "+11,0%",
-                  "−12,0%",
-                  "+35,2%",
-                  "−1,2%",
-                  "14.576"
-                ],
-                [
-                  "Esencial",
-                  "+6,3%",
-                  "−12,5%",
-                  "+29,6%",
-                  "+20,6%",
-                  "20.424"
-                ],
-                [
-                  "Cruz Blanca",
-                  "+3,1%",
-                  "−13,9%",
-                  "+20,8%",
-                  "+2,4%",
-                  "69.953"
-                ],
-                [
-                  "Colmena",
-                  "+2,3%",
-                  "−12,6%",
-                  "+18,5%",
-                  "−0,8%",
-                  "95.527"
-                ],
-                [
-                  "Nueva Masvida",
-                  "+0,1%",
-                  "−17,5%",
-                  "+16,0%",
-                  "−4,4%",
-                  "75.956"
-                ],
-                [
-                  "Cruz del Norte",
-                  "−1,3%",
-                  "−17,9%",
-                  "+20,2%",
-                  "−0,4%",
-                  "1.606"
-                ],
-                [
-                  "Vida Tres",
-                  "−1,7%",
-                  "−17,2%",
-                  "+13,6%",
-                  "+0,5%",
-                  "43.528"
-                ],
-                [
-                  "Consalud",
-                  "−6,1%",
-                  "−21,6%",
-                  "+8,0%",
-                  "−6,9%",
-                  "84.658"
-                ],
-                [
-                  "Banmédica",
-                  "−6,2%",
-                  "−21,0%",
-                  "+7,6%",
-                  "−6,8%",
-                  "85.294"
-                ],
-                [
-                  "Fundación",
-                  "−7,2%",
-                  "−21,6%",
-                  "+7,5%",
-                  "0,0%",
-                  "23.263"
-                ]
-              ]
-            },
-            "source": "SIS, datos abiertos; prestadores seudónimos con ≥ 2 Isapres en el mismo código Fonasa. Isapres con ≥ 1.000 celdas."
-          },
-          {
-            "id": "f12-mismo-prestador-fact",
-            "form": "diverging",
-            "unit": "%",
-            "digits": 1,
-            "headline": "Lo que cobra el prestador casi no cambia",
-            "subtitle": "Facturado por unidad vs. el promedio de las Isapres del mismo prestador y código; mediana, %",
-            "rows": [
-              {
-                "label": "Isalud",
-                "value": 0.0,
-                "ref": "cruce.63.fact_mediana"
-              },
-              {
-                "label": "Esencial",
-                "value": 0.69,
-                "ref": "cruce.108.fact_mediana"
-              },
-              {
-                "label": "Cruz Blanca",
-                "value": 0.0,
-                "ref": "cruce.78.fact_mediana"
-              },
-              {
-                "label": "Colmena",
-                "value": 0.0,
-                "ref": "cruce.67.fact_mediana"
-              },
-              {
-                "label": "Nueva Masvida",
-                "value": 0.0,
-                "ref": "cruce.81.fact_mediana"
-              },
-              {
-                "label": "Cruz del Norte",
-                "value": 0.0,
-                "ref": "cruce.94.fact_mediana"
-              },
-              {
-                "label": "Vida Tres",
-                "value": 0.0,
-                "ref": "cruce.80.fact_mediana"
-              },
-              {
-                "label": "Consalud",
-                "value": 0.0,
-                "ref": "cruce.107.fact_mediana"
-              },
-              {
-                "label": "Banmédica",
-                "value": 0.0,
-                "ref": "cruce.99.fact_mediana"
-              },
-              {
-                "label": "Fundación",
-                "value": 0.31,
-                "ref": "cruce.76.fact_mediana"
-              }
-            ],
-            "table": {
-              "columns": [
-                "Isapre",
-                "Facturado por unidad (mediana)"
-              ],
-              "rows": [
-                [
-                  "Isalud",
-                  "0,0%"
-                ],
-                [
-                  "Esencial",
-                  "+0,7%"
-                ],
-                [
-                  "Cruz Blanca",
-                  "0,0%"
-                ],
-                [
-                  "Colmena",
-                  "0,0%"
-                ],
-                [
-                  "Nueva Masvida",
-                  "0,0%"
-                ],
-                [
-                  "Cruz del Norte",
-                  "0,0%"
-                ],
-                [
-                  "Vida Tres",
-                  "0,0%"
-                ],
-                [
-                  "Consalud",
-                  "0,0%"
-                ],
-                [
-                  "Banmédica",
-                  "0,0%"
-                ],
-                [
-                  "Fundación",
-                  "+0,3%"
-                ]
-              ]
-            },
-            "source": "SIS, datos abiertos; mismo cálculo con el facturado en vez del bonificado."
-          }
-        ],
-        "text": [],
-        "dek": null,
-        "spark": {
-          "chart": "f12-mismo-prestador",
-          "form": "diverging"
-        },
-        "index_line": "Isalud +11,0% · Fundación −7,2%",
-        "index_refs": [
-          "cruce.63.mediana",
-          "cruce.76.mediana"
-        ],
-        "kpis": []
-      },
       {
         "id": "precios",
         "label": "Precios",
@@ -3105,6 +2504,675 @@
         "kpis": []
       },
       {
+        "id": "cobertura",
+        "label": "Cobertura por Isapre",
+        "charts": [
+          {
+            "id": "f12-bonif-isapre",
+            "form": "bars",
+            "unit": "%",
+            "digits": 1,
+            "headline": "Bonificado sobre lo facturado, por Isapre",
+            "subtitle": "% de lo facturado por los prestadores que pagó la Isapre, julio–septiembre 2026",
+            "rows": [
+              {
+                "label": "Isalud",
+                "value": 76.44,
+                "ref": "isapre.63.2026t3.total.pct_bonif",
+                "emphasis": false,
+                "tag": "cerrada"
+              },
+              {
+                "label": "Cruz Blanca",
+                "value": 68.3,
+                "ref": "isapre.78.2026t3.total.pct_bonif",
+                "emphasis": true
+              },
+              {
+                "label": "Colmena",
+                "value": 67.64,
+                "ref": "isapre.67.2026t3.total.pct_bonif",
+                "emphasis": false
+              },
+              {
+                "label": "Banmédica",
+                "value": 67.28,
+                "ref": "isapre.99.2026t3.total.pct_bonif",
+                "emphasis": false
+              },
+              {
+                "label": "Vida Tres",
+                "value": 66.72,
+                "ref": "isapre.80.2026t3.total.pct_bonif",
+                "emphasis": false
+              },
+              {
+                "label": "Esencial",
+                "value": 66.64,
+                "ref": "isapre.108.2026t3.total.pct_bonif",
+                "emphasis": false
+              },
+              {
+                "label": "Cruz del Norte",
+                "value": 65.29,
+                "ref": "isapre.94.2026t3.total.pct_bonif",
+                "emphasis": false,
+                "tag": "cerrada"
+              },
+              {
+                "label": "Nueva Masvida",
+                "value": 63.23,
+                "ref": "isapre.81.2026t3.total.pct_bonif",
+                "emphasis": false
+              },
+              {
+                "label": "Consalud",
+                "value": 63.19,
+                "ref": "isapre.107.2026t3.total.pct_bonif",
+                "emphasis": true
+              },
+              {
+                "label": "Fundación",
+                "value": 59.48,
+                "ref": "isapre.76.2026t3.total.pct_bonif",
+                "emphasis": false,
+                "tag": "cerrada"
+              }
+            ],
+            "table": {
+              "columns": [
+                "Isapre",
+                "Tipo",
+                "Bonificado",
+                "Copago",
+                "Ambulatoria",
+                "Hospitalaria",
+                "Facturado (MM$)",
+                "2.º trim. 2026"
+              ],
+              "rows": [
+                [
+                  "Isalud",
+                  "cerrada",
+                  "76,4%",
+                  "23,6%",
+                  "82,9%",
+                  "69,9%",
+                  "45.790",
+                  "77,8%"
+                ],
+                [
+                  "Cruz Blanca",
+                  "abierta",
+                  "68,3%",
+                  "31,0%",
+                  "61,7%",
+                  "73,4%",
+                  "202.213",
+                  "68,3%"
+                ],
+                [
+                  "Colmena",
+                  "abierta",
+                  "67,6%",
+                  "31,8%",
+                  "56,4%",
+                  "78,1%",
+                  "304.137",
+                  "67,5%"
+                ],
+                [
+                  "Banmédica",
+                  "abierta",
+                  "67,3%",
+                  "32,7%",
+                  "58,1%",
+                  "74,8%",
+                  "293.774",
+                  "68,0%"
+                ],
+                [
+                  "Vida Tres",
+                  "abierta",
+                  "66,7%",
+                  "33,3%",
+                  "57,1%",
+                  "75,2%",
+                  "100.545",
+                  "67,3%"
+                ],
+                [
+                  "Esencial",
+                  "abierta",
+                  "66,6%",
+                  "33,2%",
+                  "57,9%",
+                  "77,8%",
+                  "50.891",
+                  "66,0%"
+                ],
+                [
+                  "Cruz del Norte",
+                  "cerrada",
+                  "65,3%",
+                  "34,4%",
+                  "72,8%",
+                  "56,8%",
+                  "691",
+                  "66,3%"
+                ],
+                [
+                  "Nueva Masvida",
+                  "abierta",
+                  "63,2%",
+                  "36,8%",
+                  "60,0%",
+                  "67,3%",
+                  "112.353",
+                  "64,3%"
+                ],
+                [
+                  "Consalud",
+                  "abierta",
+                  "63,2%",
+                  "36,0%",
+                  "58,7%",
+                  "67,0%",
+                  "214.828",
+                  "63,2%"
+                ],
+                [
+                  "Fundación",
+                  "cerrada",
+                  "59,5%",
+                  "39,0%",
+                  "57,5%",
+                  "61,1%",
+                  "16.587",
+                  "58,1%"
+                ],
+                [
+                  "Sistema",
+                  "",
+                  "66,7%",
+                  "32,9%",
+                  "",
+                  "",
+                  "1.341.810",
+                  "67,0%"
+                ]
+              ]
+            },
+            "source": "SIS, datos abiertos de prestaciones bonificadas (ZIP trimestral); agregados por Isapre."
+          },
+          {
+            "id": "f12-bonif-amb",
+            "form": "bars",
+            "unit": "%",
+            "digits": 1,
+            "headline": "Bonificado en atención ambulatoria",
+            "subtitle": "% de lo facturado en atención ambulatoria, julio–septiembre 2026",
+            "rows": [
+              {
+                "label": "Isalud",
+                "value": 82.85,
+                "ref": "isapre.63.2026t3.amb.pct_bonif",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Cruz del Norte",
+                "value": 72.84,
+                "ref": "isapre.94.2026t3.amb.pct_bonif",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Cruz Blanca",
+                "value": 61.69,
+                "ref": "isapre.78.2026t3.amb.pct_bonif"
+              },
+              {
+                "label": "Nueva Masvida",
+                "value": 60.0,
+                "ref": "isapre.81.2026t3.amb.pct_bonif"
+              },
+              {
+                "label": "Consalud",
+                "value": 58.73,
+                "ref": "isapre.107.2026t3.amb.pct_bonif"
+              },
+              {
+                "label": "Banmédica",
+                "value": 58.14,
+                "ref": "isapre.99.2026t3.amb.pct_bonif"
+              },
+              {
+                "label": "Esencial",
+                "value": 57.91,
+                "ref": "isapre.108.2026t3.amb.pct_bonif"
+              },
+              {
+                "label": "Fundación",
+                "value": 57.53,
+                "ref": "isapre.76.2026t3.amb.pct_bonif",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Vida Tres",
+                "value": 57.09,
+                "ref": "isapre.80.2026t3.amb.pct_bonif"
+              },
+              {
+                "label": "Colmena",
+                "value": 56.38,
+                "ref": "isapre.67.2026t3.amb.pct_bonif"
+              }
+            ],
+            "table": {
+              "columns": [
+                "Isapre",
+                "Ambulatoria",
+                "Hospitalaria"
+              ],
+              "rows": [
+                [
+                  "Isalud",
+                  "82,9%",
+                  "69,9%"
+                ],
+                [
+                  "Cruz Blanca",
+                  "61,7%",
+                  "73,4%"
+                ],
+                [
+                  "Colmena",
+                  "56,4%",
+                  "78,1%"
+                ],
+                [
+                  "Banmédica",
+                  "58,1%",
+                  "74,8%"
+                ],
+                [
+                  "Vida Tres",
+                  "57,1%",
+                  "75,2%"
+                ],
+                [
+                  "Esencial",
+                  "57,9%",
+                  "77,8%"
+                ],
+                [
+                  "Cruz del Norte",
+                  "72,8%",
+                  "56,8%"
+                ],
+                [
+                  "Nueva Masvida",
+                  "60,0%",
+                  "67,3%"
+                ],
+                [
+                  "Consalud",
+                  "58,7%",
+                  "67,0%"
+                ],
+                [
+                  "Fundación",
+                  "57,5%",
+                  "61,1%"
+                ]
+              ]
+            },
+            "source": "SIS, datos abiertos de prestaciones bonificadas; tipo de atención declarado en cada fila."
+          }
+        ],
+        "text": [],
+        "dek": null,
+        "spark": {
+          "chart": "f12-bonif-isapre",
+          "form": "bars"
+        },
+        "index_line": "De 63,2% (Consalud) a 68,3% (Cruz Blanca)",
+        "index_refs": [
+          "isapre.107.2026t3.total.pct_bonif",
+          "isapre.78.2026t3.total.pct_bonif"
+        ],
+        "kpis": []
+      },
+      {
+        "id": "mismo-prestador",
+        "label": "Mismo prestador",
+        "charts": [
+          {
+            "id": "f12-mismo-prestador",
+            "form": "diverging",
+            "unit": "%",
+            "digits": 1,
+            "headline": "Mismo prestador y código: mediana",
+            "subtitle": "Bonificado por unidad de la Isapre vs. la media de las Isapres de la celda; mediana entre celdas, %",
+            "rows": [
+              {
+                "label": "Esencial",
+                "value": 11.21,
+                "ref": "cruce.108.mediana"
+              },
+              {
+                "label": "Isalud",
+                "value": 6.16,
+                "ref": "cruce.63.mediana",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Cruz Blanca",
+                "value": 4.27,
+                "ref": "cruce.78.mediana"
+              },
+              {
+                "label": "Colmena",
+                "value": 3.02,
+                "ref": "cruce.67.mediana"
+              },
+              {
+                "label": "Cruz del Norte",
+                "value": 2.3,
+                "ref": "cruce.94.mediana",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Nueva Masvida",
+                "value": -0.02,
+                "ref": "cruce.81.mediana"
+              },
+              {
+                "label": "Vida Tres",
+                "value": -0.58,
+                "ref": "cruce.80.mediana"
+              },
+              {
+                "label": "Fundación",
+                "value": -2.58,
+                "ref": "cruce.76.mediana",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Consalud",
+                "value": -4.68,
+                "ref": "cruce.107.mediana"
+              },
+              {
+                "label": "Banmédica",
+                "value": -5.88,
+                "ref": "cruce.99.mediana"
+              }
+            ],
+            "table": {
+              "columns": [
+                "Isapre",
+                "Tipo",
+                "Mediana",
+                "p25",
+                "p75",
+                "Media ponderada por frecuencia",
+                "Facturado por unidad (mediana)",
+                "Celdas"
+              ],
+              "rows": [
+                [
+                  "Esencial",
+                  "abierta",
+                  "+11,2%",
+                  "−2,7%",
+                  "+29,9%",
+                  "+20,0%",
+                  "+0,9%",
+                  "4.242"
+                ],
+                [
+                  "Isalud",
+                  "cerrada",
+                  "+6,2%",
+                  "−12,8%",
+                  "+26,8%",
+                  "+0,4%",
+                  "−0,2%",
+                  "2.609"
+                ],
+                [
+                  "Cruz Blanca",
+                  "abierta",
+                  "+4,3%",
+                  "−8,4%",
+                  "+17,3%",
+                  "+3,6%",
+                  "0,0%",
+                  "17.279"
+                ],
+                [
+                  "Colmena",
+                  "abierta",
+                  "+3,0%",
+                  "−7,2%",
+                  "+14,7%",
+                  "+0,5%",
+                  "0,0%",
+                  "28.793"
+                ],
+                [
+                  "Cruz del Norte",
+                  "cerrada",
+                  "+2,3%",
+                  "−11,3%",
+                  "+28,9%",
+                  "+3,1%",
+                  "+4,1%",
+                  "118"
+                ],
+                [
+                  "Nueva Masvida",
+                  "abierta",
+                  "0,0%",
+                  "−12,9%",
+                  "+9,4%",
+                  "−3,3%",
+                  "0,0%",
+                  "17.281"
+                ],
+                [
+                  "Vida Tres",
+                  "abierta",
+                  "−0,6%",
+                  "−11,4%",
+                  "+9,8%",
+                  "+1,7%",
+                  "−0,1%",
+                  "10.734"
+                ],
+                [
+                  "Fundación",
+                  "cerrada",
+                  "−2,6%",
+                  "−15,3%",
+                  "+9,9%",
+                  "+3,8%",
+                  "+2,4%",
+                  "3.145"
+                ],
+                [
+                  "Consalud",
+                  "abierta",
+                  "−4,7%",
+                  "−15,0%",
+                  "+4,6%",
+                  "−5,6%",
+                  "0,0%",
+                  "23.290"
+                ],
+                [
+                  "Banmédica",
+                  "abierta",
+                  "−5,9%",
+                  "−16,1%",
+                  "+3,8%",
+                  "−5,6%",
+                  "0,0%",
+                  "24.605"
+                ]
+              ]
+            },
+            "source": "SIS, datos abiertos; prestadores seudónimos con ≥ 2 Isapres (≥ 10 atenciones cada una) en el mismo código Fonasa. Isalud, Cruz del Norte, Fundación: Isapre cerrada (afiliación restringida)."
+          },
+          {
+            "id": "f12-mismo-prestador-ponderada",
+            "form": "diverging",
+            "unit": "%",
+            "digits": 1,
+            "headline": "Mismo prestador y código: media ponderada",
+            "subtitle": "El mismo índice, promediado con el peso de las atenciones de cada celda, %",
+            "rows": [
+              {
+                "label": "Esencial",
+                "value": 20.04,
+                "ref": "cruce.108.ponderada"
+              },
+              {
+                "label": "Fundación",
+                "value": 3.82,
+                "ref": "cruce.76.ponderada",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Cruz Blanca",
+                "value": 3.57,
+                "ref": "cruce.78.ponderada"
+              },
+              {
+                "label": "Cruz del Norte",
+                "value": 3.13,
+                "ref": "cruce.94.ponderada",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Vida Tres",
+                "value": 1.69,
+                "ref": "cruce.80.ponderada"
+              },
+              {
+                "label": "Colmena",
+                "value": 0.5,
+                "ref": "cruce.67.ponderada"
+              },
+              {
+                "label": "Isalud",
+                "value": 0.39,
+                "ref": "cruce.63.ponderada",
+                "tag": "cerrada"
+              },
+              {
+                "label": "Nueva Masvida",
+                "value": -3.33,
+                "ref": "cruce.81.ponderada"
+              },
+              {
+                "label": "Banmédica",
+                "value": -5.57,
+                "ref": "cruce.99.ponderada"
+              },
+              {
+                "label": "Consalud",
+                "value": -5.58,
+                "ref": "cruce.107.ponderada"
+              }
+            ],
+            "table": {
+              "columns": [
+                "Isapre",
+                "Tipo",
+                "Media ponderada",
+                "Mediana"
+              ],
+              "rows": [
+                [
+                  "Esencial",
+                  "abierta",
+                  "+20,0%",
+                  "+11,2%"
+                ],
+                [
+                  "Isalud",
+                  "cerrada",
+                  "+0,4%",
+                  "+6,2%"
+                ],
+                [
+                  "Cruz Blanca",
+                  "abierta",
+                  "+3,6%",
+                  "+4,3%"
+                ],
+                [
+                  "Colmena",
+                  "abierta",
+                  "+0,5%",
+                  "+3,0%"
+                ],
+                [
+                  "Cruz del Norte",
+                  "cerrada",
+                  "+3,1%",
+                  "+2,3%"
+                ],
+                [
+                  "Nueva Masvida",
+                  "abierta",
+                  "−3,3%",
+                  "0,0%"
+                ],
+                [
+                  "Vida Tres",
+                  "abierta",
+                  "+1,7%",
+                  "−0,6%"
+                ],
+                [
+                  "Fundación",
+                  "cerrada",
+                  "+3,8%",
+                  "−2,6%"
+                ],
+                [
+                  "Consalud",
+                  "abierta",
+                  "−5,6%",
+                  "−4,7%"
+                ],
+                [
+                  "Banmédica",
+                  "abierta",
+                  "−5,6%",
+                  "−5,9%"
+                ]
+              ]
+            },
+            "source": "SIS, datos abiertos; prestadores seudónimos con ≥ 2 Isapres (≥ 10 atenciones cada una) en el mismo código Fonasa. Isalud, Cruz del Norte, Fundación: Isapre cerrada (afiliación restringida). Cuando las dos medidas difieren en signo, la diferencia no es robusta."
+          }
+        ],
+        "text": [],
+        "dek": null,
+        "spark": {
+          "chart": "f12-mismo-prestador",
+          "form": "diverging"
+        },
+        "index_line": "Medianas, abiertas: Esencial +11,2% · Banmédica −5,9%",
+        "index_refs": [
+          "cruce.108.mediana",
+          "cruce.99.mediana"
+        ],
+        "kpis": []
+      },
+      {
         "id": "concentracion",
         "label": "Concentración",
         "charts": [
@@ -3335,7 +3403,7 @@
       "heading": "Qué muestran los datos",
       "paragraphs": [
         "En julio–septiembre 2026, las Isapres bonificaron el 66,7% de lo facturado por los prestadores.",
-        "En un mismo prestador y código, la mediana del bonificado por unidad de Isalud queda 18,3 puntos sobre la de Fundación.",
+        "En un mismo prestador y código, la mediana del índice de bonificado por unidad de Esencial queda 17,1 puntos sobre la de Banmédica; sus medias ponderadas tienen el mismo signo.",
         "Entre prestadores, el precio por unidad de los códigos Fonasa más frecuentes varía 1,6 veces entre el percentil 25 y el 75 (mediana de los códigos)."
       ],
       "rendered_in_tabs": true
@@ -3348,6 +3416,14 @@
     ],
     "notes": [
       {
+        "id": "n0b",
+        "text": "Base pequeña en la comparación mismo prestador: Cruz del Norte (menos de 1.000 celdas prestador × código). Se incluye igual; leer su índice con cautela."
+      },
+      {
+        "id": "n0",
+        "text": "Isalud, Fundación, Cruz del Norte: Isapre cerrada (afiliación restringida). Aparecen en los temas, marcadas, pero no en el titular ni en los rangos entre Isapres abiertas."
+      },
+      {
         "id": "n1",
         "text": "Base trimestral: cada cifra es un flujo de julio–septiembre 2026, no un stock; los trimestres no se suman. La comparación con el 2.º trim. 2026 no está ajustada por estacionalidad."
       },
@@ -3357,7 +3433,7 @@
       },
       {
         "id": "n3",
-        "text": "Regla de divulgación (Dirección): el precio de una región y código del arancel Fonasa se muestra solo con ≥ 2 prestadores distintos y ≥ 30 atenciones (mediana; p25–p75 solo con ≥ 3). Con 1 prestador no hay precio, solo la marca de concentración. Todos los prestadores cuentan en el total nacional. Siempre se informa el % de atenciones del mayor prestador."
+        "text": "Regla de divulgación (Dirección): el precio de una región y código del arancel Fonasa se muestra solo con ≥ 2 prestadores distintos y ≥ 30 atenciones (mediana; p25–p75 solo con ≥ 3). Con 2 prestadores no se muestra el facturado y el % del mayor va en tramos (50–60%, 60–80%, más de 80%). Con 1 prestador no hay precio, solo la marca de concentración. Todos los prestadores cuentan en el total nacional. Siempre se informa el % de atenciones del mayor prestador."
       },
       {
         "id": "n4",
@@ -3369,7 +3445,7 @@
       },
       {
         "id": "n6",
-        "text": "Mismo prestador: para cada prestador seudónimo y código Fonasa con ≥ 2 Isapres, el bonificado por unidad de cada Isapre se compara con el promedio simple de las Isapres de esa celda. No ajusta por plan ni por bonificación restringida."
+        "text": "Mismo prestador: para cada prestador seudónimo y código Fonasa con ≥ 2 Isapres, el bonificado por unidad de cada Isapre (con ≥ 10 atenciones en la celda) se compara con la media simple de las Isapres de esa celda. Se muestran la mediana de ese índice entre celdas y su media ponderada por atenciones; el titular usa esta comparación solo si ambas medidas tienen el mismo signo y al menos 3%. No ajusta por plan ni por bonificación restringida."
       },
       {
         "id": "n7",
@@ -3381,7 +3457,7 @@
         "url": "https://datos.superdesalud.gob.cl/archivos/Prestaciones%20Bonificadas/2026/Prestaciones_Bonificadas_2026t3.zip",
         "sha256": "4d923a86e7ee5e53ec111edb8fa42dedf6ec12d2503d553363794e328fa625ee",
         "published_at": null,
-        "fetched_at": "2026-11-05",
+        "fetched_at": "2026-11-06",
         "label": "SIS · Prestaciones bonificadas julio–septiembre 2026 (datos abiertos)",
         "role": "ZIP trimestral; agregados de Alicanto por Isapre, prestador seudónimo, código y región",
         "locator": "19090545 filas; agregación en GitHub Actions",
@@ -3391,7 +3467,7 @@
         "url": "https://datos.superdesalud.gob.cl/archivos/Arancel%20Isapre/2026/Arancel_Isapre_2026.zip",
         "sha256": "97e948591adebead01f9fb1c0d71265e69a3112ddf4951d6c8e0fc574d6fbd22",
         "published_at": null,
-        "fetched_at": "2026-11-05",
+        "fetched_at": "2026-11-06",
         "label": "SIS · Arancel Isapre 2026 (datos abiertos)",
         "role": "descripción literal de cada código",
         "locator": "campo 8 del archivo",
@@ -3401,14 +3477,14 @@
         "url": "https://datos.superdesalud.gob.cl/archivos/Prestaciones%20Bonificadas/2026/Prestaciones_Bonificadas_2026t2.zip",
         "sha256": "865ba8d546953945734d5948ea1f737b4c276c3309c0710ea36f295d1584a5b9",
         "published_at": null,
-        "fetched_at": "2026-11-05",
+        "fetched_at": "2026-11-06",
         "label": "SIS · Prestaciones bonificadas abril–junio 2026 (datos abiertos)",
         "role": "ZIP trimestral; agregados de Alicanto por Isapre, prestador seudónimo, código y región",
         "locator": "18602168 filas; agregación en GitHub Actions",
         "key": "prest_2026t2"
       }
     ],
-    "machine_note": "Ficha generada por la regla \"nuevo período\" (agregados calculados por Alicanto el 5 nov). Las cifras vienen del paquete de evidencia, sin descargas en este paso; la Lectura Alicanto está desactivada. Lectura Alicanto omitida (sin modelo en esta corrida).",
+    "machine_note": "Ficha generada por la regla \"nuevo período\" (agregados calculados por Alicanto el 6 nov). Las cifras vienen del paquete de evidencia, sin descargas en este paso; la Lectura Alicanto está desactivada. Lectura Alicanto omitida (sin modelo en esta corrida).",
     "featured": false,
     "triggers": [
       "new_period"
@@ -3421,8 +3497,8 @@
       "cost_usd": 0.0
     },
     "status": "AWAITING_FIRST_REVIEW",
-    "generated_at": "2026-11-06T00:05:25.610142+00:00",
-    "builder_version": "f12_prestaciones_v1",
+    "generated_at": "2026-11-06T00:37:19.061399+00:00",
+    "builder_version": "f12_prestaciones_v3",
     "verification": {
       "verdict": "PASS",
       "errors": [],
@@ -5262,7 +5338,7 @@
         },
         "cruce.107.mediana": {
           "id": "cruce.107.mediana",
-          "value": -6.11,
+          "value": -4.68,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5274,7 +5350,7 @@
         },
         "cruce.107.p25": {
           "id": "cruce.107.p25",
-          "value": -21.59,
+          "value": -14.96,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5286,7 +5362,7 @@
         },
         "cruce.107.p75": {
           "id": "cruce.107.p75",
-          "value": 7.96,
+          "value": 4.55,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5310,7 +5386,7 @@
         },
         "cruce.107.ponderada": {
           "id": "cruce.107.ponderada",
-          "value": -6.88,
+          "value": -5.58,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5322,7 +5398,7 @@
         },
         "cruce.107.celdas": {
           "id": "cruce.107.celdas",
-          "value": 84658,
+          "value": 23290,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5334,7 +5410,7 @@
         },
         "cruce.108.mediana": {
           "id": "cruce.108.mediana",
-          "value": 6.27,
+          "value": 11.21,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5346,7 +5422,7 @@
         },
         "cruce.108.p25": {
           "id": "cruce.108.p25",
-          "value": -12.53,
+          "value": -2.66,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5358,7 +5434,7 @@
         },
         "cruce.108.p75": {
           "id": "cruce.108.p75",
-          "value": 29.61,
+          "value": 29.91,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5370,7 +5446,7 @@
         },
         "cruce.108.fact_mediana": {
           "id": "cruce.108.fact_mediana",
-          "value": 0.69,
+          "value": 0.93,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5382,7 +5458,7 @@
         },
         "cruce.108.ponderada": {
           "id": "cruce.108.ponderada",
-          "value": 20.64,
+          "value": 20.04,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5394,7 +5470,7 @@
         },
         "cruce.108.celdas": {
           "id": "cruce.108.celdas",
-          "value": 20424,
+          "value": 4242,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5406,7 +5482,7 @@
         },
         "cruce.63.mediana": {
           "id": "cruce.63.mediana",
-          "value": 11.04,
+          "value": 6.16,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5418,7 +5494,7 @@
         },
         "cruce.63.p25": {
           "id": "cruce.63.p25",
-          "value": -11.95,
+          "value": -12.83,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5430,7 +5506,7 @@
         },
         "cruce.63.p75": {
           "id": "cruce.63.p75",
-          "value": 35.2,
+          "value": 26.77,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5442,7 +5518,7 @@
         },
         "cruce.63.fact_mediana": {
           "id": "cruce.63.fact_mediana",
-          "value": 0.0,
+          "value": -0.22,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5454,7 +5530,7 @@
         },
         "cruce.63.ponderada": {
           "id": "cruce.63.ponderada",
-          "value": -1.2,
+          "value": 0.39,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5466,7 +5542,7 @@
         },
         "cruce.63.celdas": {
           "id": "cruce.63.celdas",
-          "value": 14576,
+          "value": 2609,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5478,7 +5554,7 @@
         },
         "cruce.67.mediana": {
           "id": "cruce.67.mediana",
-          "value": 2.32,
+          "value": 3.02,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5490,7 +5566,7 @@
         },
         "cruce.67.p25": {
           "id": "cruce.67.p25",
-          "value": -12.61,
+          "value": -7.22,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5502,7 +5578,7 @@
         },
         "cruce.67.p75": {
           "id": "cruce.67.p75",
-          "value": 18.47,
+          "value": 14.71,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5526,7 +5602,7 @@
         },
         "cruce.67.ponderada": {
           "id": "cruce.67.ponderada",
-          "value": -0.76,
+          "value": 0.5,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5538,7 +5614,7 @@
         },
         "cruce.67.celdas": {
           "id": "cruce.67.celdas",
-          "value": 95527,
+          "value": 28793,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5550,7 +5626,7 @@
         },
         "cruce.76.mediana": {
           "id": "cruce.76.mediana",
-          "value": -7.22,
+          "value": -2.58,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5562,7 +5638,7 @@
         },
         "cruce.76.p25": {
           "id": "cruce.76.p25",
-          "value": -21.63,
+          "value": -15.29,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5574,7 +5650,7 @@
         },
         "cruce.76.p75": {
           "id": "cruce.76.p75",
-          "value": 7.52,
+          "value": 9.87,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5586,7 +5662,7 @@
         },
         "cruce.76.fact_mediana": {
           "id": "cruce.76.fact_mediana",
-          "value": 0.31,
+          "value": 2.4,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5598,7 +5674,7 @@
         },
         "cruce.76.ponderada": {
           "id": "cruce.76.ponderada",
-          "value": -0.04,
+          "value": 3.82,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5610,7 +5686,7 @@
         },
         "cruce.76.celdas": {
           "id": "cruce.76.celdas",
-          "value": 23263,
+          "value": 3145,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5622,7 +5698,7 @@
         },
         "cruce.78.mediana": {
           "id": "cruce.78.mediana",
-          "value": 3.05,
+          "value": 4.27,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5634,7 +5710,7 @@
         },
         "cruce.78.p25": {
           "id": "cruce.78.p25",
-          "value": -13.94,
+          "value": -8.42,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5646,7 +5722,7 @@
         },
         "cruce.78.p75": {
           "id": "cruce.78.p75",
-          "value": 20.83,
+          "value": 17.27,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5670,7 +5746,7 @@
         },
         "cruce.78.ponderada": {
           "id": "cruce.78.ponderada",
-          "value": 2.4,
+          "value": 3.57,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5682,7 +5758,7 @@
         },
         "cruce.78.celdas": {
           "id": "cruce.78.celdas",
-          "value": 69953,
+          "value": 17279,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5694,7 +5770,7 @@
         },
         "cruce.80.mediana": {
           "id": "cruce.80.mediana",
-          "value": -1.73,
+          "value": -0.58,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5706,7 +5782,7 @@
         },
         "cruce.80.p25": {
           "id": "cruce.80.p25",
-          "value": -17.21,
+          "value": -11.38,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5718,7 +5794,7 @@
         },
         "cruce.80.p75": {
           "id": "cruce.80.p75",
-          "value": 13.58,
+          "value": 9.79,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5730,7 +5806,7 @@
         },
         "cruce.80.fact_mediana": {
           "id": "cruce.80.fact_mediana",
-          "value": 0.0,
+          "value": -0.1,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5742,7 +5818,7 @@
         },
         "cruce.80.ponderada": {
           "id": "cruce.80.ponderada",
-          "value": 0.53,
+          "value": 1.69,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5754,7 +5830,7 @@
         },
         "cruce.80.celdas": {
           "id": "cruce.80.celdas",
-          "value": 43528,
+          "value": 10734,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5766,7 +5842,7 @@
         },
         "cruce.81.mediana": {
           "id": "cruce.81.mediana",
-          "value": 0.06,
+          "value": -0.02,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5778,7 +5854,7 @@
         },
         "cruce.81.p25": {
           "id": "cruce.81.p25",
-          "value": -17.49,
+          "value": -12.9,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5790,7 +5866,7 @@
         },
         "cruce.81.p75": {
           "id": "cruce.81.p75",
-          "value": 16.0,
+          "value": 9.39,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5802,7 +5878,7 @@
         },
         "cruce.81.fact_mediana": {
           "id": "cruce.81.fact_mediana",
-          "value": 0.0,
+          "value": -0.04,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5814,7 +5890,7 @@
         },
         "cruce.81.ponderada": {
           "id": "cruce.81.ponderada",
-          "value": -4.35,
+          "value": -3.33,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5826,7 +5902,7 @@
         },
         "cruce.81.celdas": {
           "id": "cruce.81.celdas",
-          "value": 75956,
+          "value": 17281,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5838,7 +5914,7 @@
         },
         "cruce.94.mediana": {
           "id": "cruce.94.mediana",
-          "value": -1.27,
+          "value": 2.3,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5850,7 +5926,7 @@
         },
         "cruce.94.p25": {
           "id": "cruce.94.p25",
-          "value": -17.9,
+          "value": -11.31,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5862,7 +5938,7 @@
         },
         "cruce.94.p75": {
           "id": "cruce.94.p75",
-          "value": 20.21,
+          "value": 28.87,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5874,7 +5950,7 @@
         },
         "cruce.94.fact_mediana": {
           "id": "cruce.94.fact_mediana",
-          "value": 0.0,
+          "value": 4.09,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5886,7 +5962,7 @@
         },
         "cruce.94.ponderada": {
           "id": "cruce.94.ponderada",
-          "value": -0.44,
+          "value": 3.13,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5898,7 +5974,7 @@
         },
         "cruce.94.celdas": {
           "id": "cruce.94.celdas",
-          "value": 1606,
+          "value": 118,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5910,7 +5986,7 @@
         },
         "cruce.99.mediana": {
           "id": "cruce.99.mediana",
-          "value": -6.21,
+          "value": -5.88,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5922,7 +5998,7 @@
         },
         "cruce.99.p25": {
           "id": "cruce.99.p25",
-          "value": -20.99,
+          "value": -16.13,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5934,7 +6010,7 @@
         },
         "cruce.99.p75": {
           "id": "cruce.99.p75",
-          "value": 7.55,
+          "value": 3.84,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5958,7 +6034,7 @@
         },
         "cruce.99.ponderada": {
           "id": "cruce.99.ponderada",
-          "value": -6.81,
+          "value": -5.57,
           "unit": "%",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5970,7 +6046,7 @@
         },
         "cruce.99.celdas": {
           "id": "cruce.99.celdas",
-          "value": 85294,
+          "value": 24605,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -5982,7 +6058,7 @@
         },
         "cruce.celdas_multi": {
           "id": "cruce.celdas_multi",
-          "value": 131665,
+          "value": 36108,
           "unit": "celdas",
           "period": "2026-09",
           "source": "prest_2026t3",
@@ -6006,22 +6082,22 @@
         },
         "cruce.brecha_pp": {
           "id": "cruce.brecha_pp",
-          "value": 18.259999999999998,
+          "value": 17.09,
           "unit": "pp",
           "period": "2026-09",
           "source": null,
           "locator": null,
-          "formula": "mediana más alta − más baja del índice de bonificado por unidad, Isapres con ≥ 1000 celdas",
+          "formula": "mediana más alta − más baja del índice de bonificado por unidad, Isapres abiertas cuya mediana y media ponderada coinciden en signo y son ≥ 3%",
           "inputs": [
-            "cruce.63.mediana",
-            "cruce.76.mediana"
+            "cruce.108.mediana",
+            "cruce.99.mediana"
           ],
           "kind": "derived",
           "revised": null
         },
         "cruce.fact_mediana_max_abs": {
           "id": "cruce.fact_mediana_max_abs",
-          "value": 0.69,
+          "value": 4.09,
           "unit": "%",
           "period": "2026-09",
           "source": null,
@@ -7362,6 +7438,231 @@
           "kind": "captured",
           "revised": null
         },
+        "precio.0601105.1.vs_rm": {
+          "id": "precio.0601105.1.vs_rm",
+          "value": -29.696287964004497,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.1.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.2.vs_rm": {
+          "id": "precio.0601105.2.vs_rm",
+          "value": -27.850815523059612,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.2.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.3.vs_rm": {
+          "id": "precio.0601105.3.vs_rm",
+          "value": -20.90832395950506,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.3.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.4.vs_rm": {
+          "id": "precio.0601105.4.vs_rm",
+          "value": -22.83816085489314,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.4.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.5.vs_rm": {
+          "id": "precio.0601105.5.vs_rm",
+          "value": -16.018700787401574,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.5.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.6.vs_rm": {
+          "id": "precio.0601105.6.vs_rm",
+          "value": -22.665916760404947,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.6.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.7.vs_rm": {
+          "id": "precio.0601105.7.vs_rm",
+          "value": -37.408605174353205,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.7.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.8.vs_rm": {
+          "id": "precio.0601105.8.vs_rm",
+          "value": -29.696287964004497,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.8.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.9.vs_rm": {
+          "id": "precio.0601105.9.vs_rm",
+          "value": -22.665916760404947,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.9.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.10.vs_rm": {
+          "id": "precio.0601105.10.vs_rm",
+          "value": -26.339285714285708,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.10.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.11.vs_rm": {
+          "id": "precio.0601105.11.vs_rm",
+          "value": -11.322412823397077,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.11.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.12.vs_rm": {
+          "id": "precio.0601105.12.vs_rm",
+          "value": -26.181102362204722,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.12.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.14.vs_rm": {
+          "id": "precio.0601105.14.vs_rm",
+          "value": -32.26588863892014,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.14.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.15.vs_rm": {
+          "id": "precio.0601105.15.vs_rm",
+          "value": -29.696287964004497,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.15.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0601105.16.vs_rm": {
+          "id": "precio.0601105.16.vs_rm",
+          "value": -36.72665916760405,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0601105.16.mediana",
+            "precio.0601105.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "precio.0601105.NACIONAL.ratio": {
           "id": "precio.0601105.NACIONAL.ratio",
           "value": 1.8469279661016949,
@@ -8695,6 +8996,231 @@
           "formula": null,
           "inputs": [],
           "kind": "captured",
+          "revised": null
+        },
+        "precio.0101001.1.vs_rm": {
+          "id": "precio.0101001.1.vs_rm",
+          "value": -2.797015868387165,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.1.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.2.vs_rm": {
+          "id": "precio.0101001.2.vs_rm",
+          "value": -2.797015868387165,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.2.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.3.vs_rm": {
+          "id": "precio.0101001.3.vs_rm",
+          "value": -2.797015868387165,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.3.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.4.vs_rm": {
+          "id": "precio.0101001.4.vs_rm",
+          "value": -1.1834463318023847,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.4.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.5.vs_rm": {
+          "id": "precio.0101001.5.vs_rm",
+          "value": -2.797015868387165,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.5.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.6.vs_rm": {
+          "id": "precio.0101001.6.vs_rm",
+          "value": -14.07985225146412,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.6.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.7.vs_rm": {
+          "id": "precio.0101001.7.vs_rm",
+          "value": -2.797015868387165,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.7.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.8.vs_rm": {
+          "id": "precio.0101001.8.vs_rm",
+          "value": -7.657165074967798,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.8.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.9.vs_rm": {
+          "id": "precio.0101001.9.vs_rm",
+          "value": -14.947388884838764,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.9.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.10.vs_rm": {
+          "id": "precio.0101001.10.vs_rm",
+          "value": -6.6608344876187715,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.10.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.11.vs_rm": {
+          "id": "precio.0101001.11.vs_rm",
+          "value": -9.418969162353285,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.11.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.12.vs_rm": {
+          "id": "precio.0101001.12.vs_rm",
+          "value": -2.797015868387165,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.12.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.14.vs_rm": {
+          "id": "precio.0101001.14.vs_rm",
+          "value": -27.097761901290372,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.14.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.15.vs_rm": {
+          "id": "precio.0101001.15.vs_rm",
+          "value": -27.097761901290372,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.15.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101001.16.vs_rm": {
+          "id": "precio.0101001.16.vs_rm",
+          "value": -23.04682753760541,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101001.16.mediana",
+            "precio.0101001.13.mediana"
+          ],
+          "kind": "derived",
           "revised": null
         },
         "precio.0101001.NACIONAL.ratio": {
@@ -10032,6 +10558,231 @@
           "kind": "captured",
           "revised": null
         },
+        "precio.0302032.1.vs_rm": {
+          "id": "precio.0302032.1.vs_rm",
+          "value": -11.127379209370424,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.1.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.2.vs_rm": {
+          "id": "precio.0302032.2.vs_rm",
+          "value": -23.64568081991215,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.2.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.3.vs_rm": {
+          "id": "precio.0302032.3.vs_rm",
+          "value": -5.380673499267941,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.3.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.4.vs_rm": {
+          "id": "precio.0302032.4.vs_rm",
+          "value": -22.437774524158126,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.4.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.5.vs_rm": {
+          "id": "precio.0302032.5.vs_rm",
+          "value": -20.607613469985363,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.5.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.6.vs_rm": {
+          "id": "precio.0302032.6.vs_rm",
+          "value": -22.730600292825763,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.6.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.7.vs_rm": {
+          "id": "precio.0302032.7.vs_rm",
+          "value": -22.76720351390923,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.7.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.8.vs_rm": {
+          "id": "precio.0302032.8.vs_rm",
+          "value": -22.327964860907755,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.8.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.9.vs_rm": {
+          "id": "precio.0302032.9.vs_rm",
+          "value": -14.23865300146413,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.9.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.10.vs_rm": {
+          "id": "precio.0302032.10.vs_rm",
+          "value": -24.194729136163986,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.10.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.11.vs_rm": {
+          "id": "precio.0302032.11.vs_rm",
+          "value": -3.8433382137628147,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.11.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.12.vs_rm": {
+          "id": "precio.0302032.12.vs_rm",
+          "value": -13.213762811127383,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.12.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.14.vs_rm": {
+          "id": "precio.0302032.14.vs_rm",
+          "value": -22.76720351390923,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.14.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.15.vs_rm": {
+          "id": "precio.0302032.15.vs_rm",
+          "value": -19.070278184480237,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.15.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302032.16.vs_rm": {
+          "id": "precio.0302032.16.vs_rm",
+          "value": -26.79355783308931,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302032.16.mediana",
+            "precio.0302032.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "precio.0302032.NACIONAL.ratio": {
           "id": "precio.0302032.NACIONAL.ratio",
           "value": 1.8288912579957357,
@@ -11365,6 +12116,231 @@
           "formula": null,
           "inputs": [],
           "kind": "captured",
+          "revised": null
+        },
+        "precio.0307011.1.vs_rm": {
+          "id": "precio.0307011.1.vs_rm",
+          "value": -12.33373639661427,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.1.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.2.vs_rm": {
+          "id": "precio.0307011.2.vs_rm",
+          "value": -11.729141475211613,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.2.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.3.vs_rm": {
+          "id": "precio.0307011.3.vs_rm",
+          "value": -3.2648125755743607,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.3.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.4.vs_rm": {
+          "id": "precio.0307011.4.vs_rm",
+          "value": -10.157194679564697,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.4.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.5.vs_rm": {
+          "id": "precio.0307011.5.vs_rm",
+          "value": -11.064087061668681,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.5.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.6.vs_rm": {
+          "id": "precio.0307011.6.vs_rm",
+          "value": -11.729141475211613,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.6.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.7.vs_rm": {
+          "id": "precio.0307011.7.vs_rm",
+          "value": -18.379685610640873,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.7.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.8.vs_rm": {
+          "id": "precio.0307011.8.vs_rm",
+          "value": -11.729141475211613,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.8.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.9.vs_rm": {
+          "id": "precio.0307011.9.vs_rm",
+          "value": -12.696493349455862,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.9.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.10.vs_rm": {
+          "id": "precio.0307011.10.vs_rm",
+          "value": -16.56590084643289,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.10.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.11.vs_rm": {
+          "id": "precio.0307011.11.vs_rm",
+          "value": 11.668681983071338,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.11.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.12.vs_rm": {
+          "id": "precio.0307011.12.vs_rm",
+          "value": -3.1438935912938337,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.12.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.14.vs_rm": {
+          "id": "precio.0307011.14.vs_rm",
+          "value": -18.379685610640873,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.14.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.15.vs_rm": {
+          "id": "precio.0307011.15.vs_rm",
+          "value": -11.547762998790812,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.15.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0307011.16.vs_rm": {
+          "id": "precio.0307011.16.vs_rm",
+          "value": -15.840386940749696,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0307011.16.mediana",
+            "precio.0307011.13.mediana"
+          ],
+          "kind": "derived",
           "revised": null
         },
         "precio.0307011.NACIONAL.ratio": {
@@ -12702,6 +13678,231 @@
           "kind": "captured",
           "revised": null
         },
+        "precio.0902001.1.vs_rm": {
+          "id": "precio.0902001.1.vs_rm",
+          "value": -5.000000000000004,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.1.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.2.vs_rm": {
+          "id": "precio.0902001.2.vs_rm",
+          "value": -10.052499999999998,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.2.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.3.vs_rm": {
+          "id": "precio.0902001.3.vs_rm",
+          "value": -12.5,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.3.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.4.vs_rm": {
+          "id": "precio.0902001.4.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.4.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.5.vs_rm": {
+          "id": "precio.0902001.5.vs_rm",
+          "value": -10.855000000000004,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.5.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.6.vs_rm": {
+          "id": "precio.0902001.6.vs_rm",
+          "value": -12.5,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.6.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.7.vs_rm": {
+          "id": "precio.0902001.7.vs_rm",
+          "value": -12.5,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.7.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.8.vs_rm": {
+          "id": "precio.0902001.8.vs_rm",
+          "value": -5.225000000000001,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.8.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.9.vs_rm": {
+          "id": "precio.0902001.9.vs_rm",
+          "value": -9.860000000000003,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.9.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.10.vs_rm": {
+          "id": "precio.0902001.10.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.10.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.11.vs_rm": {
+          "id": "precio.0902001.11.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.11.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.12.vs_rm": {
+          "id": "precio.0902001.12.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.12.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.14.vs_rm": {
+          "id": "precio.0902001.14.vs_rm",
+          "value": -10.042499999999999,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.14.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.15.vs_rm": {
+          "id": "precio.0902001.15.vs_rm",
+          "value": -12.5,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.15.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902001.16.vs_rm": {
+          "id": "precio.0902001.16.vs_rm",
+          "value": -12.5,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902001.16.mediana",
+            "precio.0902001.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "precio.0902001.NACIONAL.ratio": {
           "id": "precio.0902001.NACIONAL.ratio",
           "value": 1.6458333333333333,
@@ -14035,6 +15236,231 @@
           "formula": null,
           "inputs": [],
           "kind": "captured",
+          "revised": null
+        },
+        "precio.0301045.1.vs_rm": {
+          "id": "precio.0301045.1.vs_rm",
+          "value": 1.131668762349558,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.1.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.2.vs_rm": {
+          "id": "precio.0301045.2.vs_rm",
+          "value": -8.909646128974313,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.2.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.3.vs_rm": {
+          "id": "precio.0301045.3.vs_rm",
+          "value": -3.053709358721035,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.3.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.4.vs_rm": {
+          "id": "precio.0301045.4.vs_rm",
+          "value": -1.0957427698940148,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.4.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.5.vs_rm": {
+          "id": "precio.0301045.5.vs_rm",
+          "value": -8.316867253457872,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.5.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.6.vs_rm": {
+          "id": "precio.0301045.6.vs_rm",
+          "value": -8.909646128974313,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.6.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.7.vs_rm": {
+          "id": "precio.0301045.7.vs_rm",
+          "value": -14.801508891683135,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.7.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.8.vs_rm": {
+          "id": "precio.0301045.8.vs_rm",
+          "value": -8.604275193102207,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.8.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.9.vs_rm": {
+          "id": "precio.0301045.9.vs_rm",
+          "value": -6.1433447098976135,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.9.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.10.vs_rm": {
+          "id": "precio.0301045.10.vs_rm",
+          "value": -10.220944853601576,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.10.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.11.vs_rm": {
+          "id": "precio.0301045.11.vs_rm",
+          "value": 22.417819292257946,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.11.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.12.vs_rm": {
+          "id": "precio.0301045.12.vs_rm",
+          "value": 0.21555595473325972,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.12.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.14.vs_rm": {
+          "id": "precio.0301045.14.vs_rm",
+          "value": -7.795940362852527,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.14.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.15.vs_rm": {
+          "id": "precio.0301045.15.vs_rm",
+          "value": -4.939823962636969,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.15.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0301045.16.vs_rm": {
+          "id": "precio.0301045.16.vs_rm",
+          "value": -11.047242680079039,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0301045.16.mediana",
+            "precio.0301045.13.mediana"
+          ],
+          "kind": "derived",
           "revised": null
         },
         "precio.0301045.NACIONAL.ratio": {
@@ -15372,6 +16798,231 @@
           "kind": "captured",
           "revised": null
         },
+        "precio.0302023.1.vs_rm": {
+          "id": "precio.0302023.1.vs_rm",
+          "value": -5.834621329211743,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.1.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.2.vs_rm": {
+          "id": "precio.0302023.2.vs_rm",
+          "value": -16.074188562596603,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.2.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.3.vs_rm": {
+          "id": "precio.0302023.3.vs_rm",
+          "value": -0.9659969088098963,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.3.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.4.vs_rm": {
+          "id": "precio.0302023.4.vs_rm",
+          "value": 1.391035548686248,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.4.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.5.vs_rm": {
+          "id": "precio.0302023.5.vs_rm",
+          "value": -14.45131375579598,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.5.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.6.vs_rm": {
+          "id": "precio.0302023.6.vs_rm",
+          "value": -15.301391035548683,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.6.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.7.vs_rm": {
+          "id": "precio.0302023.7.vs_rm",
+          "value": -19.822256568778982,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.7.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.8.vs_rm": {
+          "id": "precio.0302023.8.vs_rm",
+          "value": -9.659969088098919,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.8.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.9.vs_rm": {
+          "id": "precio.0302023.9.vs_rm",
+          "value": -10.973724884080372,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.9.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.10.vs_rm": {
+          "id": "precio.0302023.10.vs_rm",
+          "value": -15.494590417310661,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.10.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.11.vs_rm": {
+          "id": "precio.0302023.11.vs_rm",
+          "value": 14.489953632148378,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.11.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.12.vs_rm": {
+          "id": "precio.0302023.12.vs_rm",
+          "value": 8.693972179289023,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.12.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.14.vs_rm": {
+          "id": "precio.0302023.14.vs_rm",
+          "value": -13.060278207109732,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.14.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.15.vs_rm": {
+          "id": "precio.0302023.15.vs_rm",
+          "value": -16.306027820710977,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.15.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302023.16.vs_rm": {
+          "id": "precio.0302023.16.vs_rm",
+          "value": -15.37867078825348,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302023.16.mediana",
+            "precio.0302023.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "precio.0302023.NACIONAL.ratio": {
           "id": "precio.0302023.NACIONAL.ratio",
           "value": 1.7025773195876288,
@@ -16705,6 +18356,231 @@
           "formula": null,
           "inputs": [],
           "kind": "captured",
+          "revised": null
+        },
+        "precio.0302075.1.vs_rm": {
+          "id": "precio.0302075.1.vs_rm",
+          "value": 5.341701534170151,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.1.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.2.vs_rm": {
+          "id": "precio.0302075.2.vs_rm",
+          "value": -9.225941422594142,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.2.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.3.vs_rm": {
+          "id": "precio.0302075.3.vs_rm",
+          "value": -0.17433751743375359,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.3.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.4.vs_rm": {
+          "id": "precio.0302075.4.vs_rm",
+          "value": 0.7043235704323525,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.4.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.5.vs_rm": {
+          "id": "precio.0302075.5.vs_rm",
+          "value": -0.07670850767085291,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.5.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.6.vs_rm": {
+          "id": "precio.0302075.6.vs_rm",
+          "value": -0.01394700139469851,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.6.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.7.vs_rm": {
+          "id": "precio.0302075.7.vs_rm",
+          "value": -13.075313807531385,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.7.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.8.vs_rm": {
+          "id": "precio.0302075.8.vs_rm",
+          "value": -0.9762900976290068,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.8.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.9.vs_rm": {
+          "id": "precio.0302075.9.vs_rm",
+          "value": -0.006973500697349255,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.9.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.10.vs_rm": {
+          "id": "precio.0302075.10.vs_rm",
+          "value": -8.60529986052999,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.10.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.11.vs_rm": {
+          "id": "precio.0302075.11.vs_rm",
+          "value": 20.230125523012553,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.11.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.12.vs_rm": {
+          "id": "precio.0302075.12.vs_rm",
+          "value": 9.97210599721059,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.12.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.14.vs_rm": {
+          "id": "precio.0302075.14.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.14.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.15.vs_rm": {
+          "id": "precio.0302075.15.vs_rm",
+          "value": -17.196652719665273,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.15.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302075.16.vs_rm": {
+          "id": "precio.0302075.16.vs_rm",
+          "value": -9.414225941422593,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302075.16.mediana",
+            "precio.0302075.13.mediana"
+          ],
+          "kind": "derived",
           "revised": null
         },
         "precio.0302075.NACIONAL.ratio": {
@@ -18042,6 +19918,231 @@
           "kind": "captured",
           "revised": null
         },
+        "precio.0302034.1.vs_rm": {
+          "id": "precio.0302034.1.vs_rm",
+          "value": 3.3398628795298757,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.1.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.2.vs_rm": {
+          "id": "precio.0302034.2.vs_rm",
+          "value": -7.688540646425068,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.2.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.3.vs_rm": {
+          "id": "precio.0302034.3.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.3.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.4.vs_rm": {
+          "id": "precio.0302034.4.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.4.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.5.vs_rm": {
+          "id": "precio.0302034.5.vs_rm",
+          "value": -0.009794319294809117,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.5.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.6.vs_rm": {
+          "id": "precio.0302034.6.vs_rm",
+          "value": -0.009794319294809117,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.6.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.7.vs_rm": {
+          "id": "precio.0302034.7.vs_rm",
+          "value": -11.586679725759064,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.7.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.8.vs_rm": {
+          "id": "precio.0302034.8.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.8.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.9.vs_rm": {
+          "id": "precio.0302034.9.vs_rm",
+          "value": -0.009794319294809117,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.9.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.10.vs_rm": {
+          "id": "precio.0302034.10.vs_rm",
+          "value": -9.030362389813906,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.10.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.11.vs_rm": {
+          "id": "precio.0302034.11.vs_rm",
+          "value": 21.449559255631723,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.11.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.12.vs_rm": {
+          "id": "precio.0302034.12.vs_rm",
+          "value": 9.98041136141039,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.12.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.14.vs_rm": {
+          "id": "precio.0302034.14.vs_rm",
+          "value": -9.412340842311462,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.14.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.15.vs_rm": {
+          "id": "precio.0302034.15.vs_rm",
+          "value": -9.187071498530852,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.15.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302034.16.vs_rm": {
+          "id": "precio.0302034.16.vs_rm",
+          "value": -4.93633692458374,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302034.16.mediana",
+            "precio.0302034.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "precio.0302034.NACIONAL.ratio": {
           "id": "precio.0302034.NACIONAL.ratio",
           "value": 1.4342011834319526,
@@ -19375,6 +21476,231 @@
           "formula": null,
           "inputs": [],
           "kind": "captured",
+          "revised": null
+        },
+        "precio.0303024.1.vs_rm": {
+          "id": "precio.0303024.1.vs_rm",
+          "value": -0.5066666666666664,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.1.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.2.vs_rm": {
+          "id": "precio.0303024.2.vs_rm",
+          "value": -6.666666666666665,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.2.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.3.vs_rm": {
+          "id": "precio.0303024.3.vs_rm",
+          "value": -1.306666666666667,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.3.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.4.vs_rm": {
+          "id": "precio.0303024.4.vs_rm",
+          "value": -1.0133333333333328,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.4.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.5.vs_rm": {
+          "id": "precio.0303024.5.vs_rm",
+          "value": -1.0666666666666713,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.5.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.6.vs_rm": {
+          "id": "precio.0303024.6.vs_rm",
+          "value": -1.0533333333333283,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.6.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.7.vs_rm": {
+          "id": "precio.0303024.7.vs_rm",
+          "value": -12.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.7.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.8.vs_rm": {
+          "id": "precio.0303024.8.vs_rm",
+          "value": -2.080000000000004,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.8.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.9.vs_rm": {
+          "id": "precio.0303024.9.vs_rm",
+          "value": -1.0666666666666713,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.9.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.10.vs_rm": {
+          "id": "precio.0303024.10.vs_rm",
+          "value": -7.640000000000002,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.10.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.11.vs_rm": {
+          "id": "precio.0303024.11.vs_rm",
+          "value": 24.33333333333334,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.11.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.12.vs_rm": {
+          "id": "precio.0303024.12.vs_rm",
+          "value": 8.879999999999999,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.12.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.14.vs_rm": {
+          "id": "precio.0303024.14.vs_rm",
+          "value": -1.0666666666666713,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.14.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.15.vs_rm": {
+          "id": "precio.0303024.15.vs_rm",
+          "value": -13.973333333333338,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.15.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303024.16.vs_rm": {
+          "id": "precio.0303024.16.vs_rm",
+          "value": -7.373333333333331,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303024.16.mediana",
+            "precio.0303024.13.mediana"
+          ],
+          "kind": "derived",
           "revised": null
         },
         "precio.0303024.NACIONAL.ratio": {
@@ -20712,6 +23038,231 @@
           "kind": "captured",
           "revised": null
         },
+        "precio.0902002.1.vs_rm": {
+          "id": "precio.0902002.1.vs_rm",
+          "value": -8.111747710689976,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.1.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.2.vs_rm": {
+          "id": "precio.0902002.2.vs_rm",
+          "value": -8.182753048332604,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.2.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.3.vs_rm": {
+          "id": "precio.0902002.3.vs_rm",
+          "value": -9.406983007688163,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.3.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.4.vs_rm": {
+          "id": "precio.0902002.4.vs_rm",
+          "value": -8.591645854757356,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.4.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.5.vs_rm": {
+          "id": "precio.0902002.5.vs_rm",
+          "value": -12.707506978110771,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.5.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.6.vs_rm": {
+          "id": "precio.0902002.6.vs_rm",
+          "value": -13.079672885754857,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.6.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.7.vs_rm": {
+          "id": "precio.0902002.7.vs_rm",
+          "value": -14.303902845110429,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.7.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.8.vs_rm": {
+          "id": "precio.0902002.8.vs_rm",
+          "value": -11.706086871357913,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.8.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.9.vs_rm": {
+          "id": "precio.0902002.9.vs_rm",
+          "value": -7.972185495323436,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.9.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.10.vs_rm": {
+          "id": "precio.0902002.10.vs_rm",
+          "value": -2.0616032515547666,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.10.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.11.vs_rm": {
+          "id": "precio.0902002.11.vs_rm",
+          "value": -2.0616032515547666,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.11.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.12.vs_rm": {
+          "id": "precio.0902002.12.vs_rm",
+          "value": -2.0616032515547666,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.12.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.14.vs_rm": {
+          "id": "precio.0902002.14.vs_rm",
+          "value": -10.457372312815238,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.14.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.15.vs_rm": {
+          "id": "precio.0902002.15.vs_rm",
+          "value": -14.303902845110429,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.15.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0902002.16.vs_rm": {
+          "id": "precio.0902002.16.vs_rm",
+          "value": -14.303902845110429,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0902002.16.mediana",
+            "precio.0902002.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "precio.0902002.NACIONAL.ratio": {
           "id": "precio.0902002.NACIONAL.ratio",
           "value": 1.597444089456869,
@@ -22045,6 +24596,231 @@
           "formula": null,
           "inputs": [],
           "kind": "captured",
+          "revised": null
+        },
+        "precio.0302076.1.vs_rm": {
+          "id": "precio.0302076.1.vs_rm",
+          "value": 15.26221692491061,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.1.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.2.vs_rm": {
+          "id": "precio.0302076.2.vs_rm",
+          "value": -8.426698450536351,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.2.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.3.vs_rm": {
+          "id": "precio.0302076.3.vs_rm",
+          "value": 1.2932061978545795,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.3.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.4.vs_rm": {
+          "id": "precio.0302076.4.vs_rm",
+          "value": 0.0238379022646118,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.4.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.5.vs_rm": {
+          "id": "precio.0302076.5.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.5.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.6.vs_rm": {
+          "id": "precio.0302076.6.vs_rm",
+          "value": -0.20262216924911147,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.6.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.7.vs_rm": {
+          "id": "precio.0302076.7.vs_rm",
+          "value": -12.276519666269369,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.7.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.8.vs_rm": {
+          "id": "precio.0302076.8.vs_rm",
+          "value": 1.3110846245530494,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.8.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.9.vs_rm": {
+          "id": "precio.0302076.9.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.9.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.10.vs_rm": {
+          "id": "precio.0302076.10.vs_rm",
+          "value": -9.988081048867702,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.10.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.11.vs_rm": {
+          "id": "precio.0302076.11.vs_rm",
+          "value": 27.657926102502973,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.11.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.12.vs_rm": {
+          "id": "precio.0302076.12.vs_rm",
+          "value": 10.0238379022646,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.12.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.14.vs_rm": {
+          "id": "precio.0302076.14.vs_rm",
+          "value": -4.660309892729442,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.14.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.15.vs_rm": {
+          "id": "precio.0302076.15.vs_rm",
+          "value": -10.476758045292012,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.15.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0302076.16.vs_rm": {
+          "id": "precio.0302076.16.vs_rm",
+          "value": -8.40286054827175,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0302076.16.mediana",
+            "precio.0302076.13.mediana"
+          ],
+          "kind": "derived",
           "revised": null
         },
         "precio.0302076.NACIONAL.ratio": {
@@ -23382,6 +26158,231 @@
           "kind": "captured",
           "revised": null
         },
+        "precio.0101310.1.vs_rm": {
+          "id": "precio.0101310.1.vs_rm",
+          "value": 18.357202035743867,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.1.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.2.vs_rm": {
+          "id": "precio.0101310.2.vs_rm",
+          "value": -3.2429873357793793,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.2.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.3.vs_rm": {
+          "id": "precio.0101310.3.vs_rm",
+          "value": -4.130666351047463,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.3.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.4.vs_rm": {
+          "id": "precio.0101310.4.vs_rm",
+          "value": 6.521481832169496,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.4.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.5.vs_rm": {
+          "id": "precio.0101310.5.vs_rm",
+          "value": -6.4978103917623375,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.5.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.6.vs_rm": {
+          "id": "precio.0101310.6.vs_rm",
+          "value": -17.673097407977277,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.6.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.7.vs_rm": {
+          "id": "precio.0101310.7.vs_rm",
+          "value": 1.117291987217417,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.7.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.8.vs_rm": {
+          "id": "precio.0101310.8.vs_rm",
+          "value": -5.169842584921291,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.8.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.9.vs_rm": {
+          "id": "precio.0101310.9.vs_rm",
+          "value": 8.000946857616276,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.9.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.10.vs_rm": {
+          "id": "precio.0101310.10.vs_rm",
+          "value": 6.521481832169496,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.10.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.11.vs_rm": {
+          "id": "precio.0101310.11.vs_rm",
+          "value": 16.319091016688358,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.11.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.12.vs_rm": {
+          "id": "precio.0101310.12.vs_rm",
+          "value": 12.818084980471056,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.12.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.14.vs_rm": {
+          "id": "precio.0101310.14.vs_rm",
+          "value": -0.21541010770504965,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.14.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.15.vs_rm": {
+          "id": "precio.0101310.15.vs_rm",
+          "value": -15.372233400402413,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.15.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0101310.16.vs_rm": {
+          "id": "precio.0101310.16.vs_rm",
+          "value": -5.3142383714049,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0101310.16.mediana",
+            "precio.0101310.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "precio.0101310.NACIONAL.ratio": {
           "id": "precio.0101310.NACIONAL.ratio",
           "value": 1.5524575402862733,
@@ -24715,6 +27716,231 @@
           "formula": null,
           "inputs": [],
           "kind": "captured",
+          "revised": null
+        },
+        "precio.0309022.1.vs_rm": {
+          "id": "precio.0309022.1.vs_rm",
+          "value": -2.3644752018454396,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.1.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.2.vs_rm": {
+          "id": "precio.0309022.2.vs_rm",
+          "value": -10.351787773933108,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.2.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.3.vs_rm": {
+          "id": "precio.0309022.3.vs_rm",
+          "value": 1.038062283737018,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.3.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.4.vs_rm": {
+          "id": "precio.0309022.4.vs_rm",
+          "value": -5.594002306805079,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.4.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.5.vs_rm": {
+          "id": "precio.0309022.5.vs_rm",
+          "value": -9.45790080738178,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.5.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.6.vs_rm": {
+          "id": "precio.0309022.6.vs_rm",
+          "value": -9.45790080738178,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.6.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.7.vs_rm": {
+          "id": "precio.0309022.7.vs_rm",
+          "value": -17.4163783160323,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.7.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.8.vs_rm": {
+          "id": "precio.0309022.8.vs_rm",
+          "value": -7.900807381776243,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.8.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.9.vs_rm": {
+          "id": "precio.0309022.9.vs_rm",
+          "value": -9.45790080738178,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.9.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.10.vs_rm": {
+          "id": "precio.0309022.10.vs_rm",
+          "value": -17.531718569780853,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.10.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.11.vs_rm": {
+          "id": "precio.0309022.11.vs_rm",
+          "value": 29.123414071510958,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.11.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.12.vs_rm": {
+          "id": "precio.0309022.12.vs_rm",
+          "value": 2.623990772779705,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.12.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.14.vs_rm": {
+          "id": "precio.0309022.14.vs_rm",
+          "value": -9.45790080738178,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.14.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.15.vs_rm": {
+          "id": "precio.0309022.15.vs_rm",
+          "value": -14.648212226066892,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.15.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0309022.16.vs_rm": {
+          "id": "precio.0309022.16.vs_rm",
+          "value": -12.312572087658591,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0309022.16.mediana",
+            "precio.0309022.13.mediana"
+          ],
+          "kind": "derived",
           "revised": null
         },
         "precio.0309022.NACIONAL.ratio": {
@@ -26052,6 +29278,231 @@
           "kind": "captured",
           "revised": null
         },
+        "precio.0303026.1.vs_rm": {
+          "id": "precio.0303026.1.vs_rm",
+          "value": 0.6323185011709587,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.1.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.2.vs_rm": {
+          "id": "precio.0303026.2.vs_rm",
+          "value": -10.843091334894616,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.2.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.3.vs_rm": {
+          "id": "precio.0303026.3.vs_rm",
+          "value": -4.309133489461359,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.3.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.4.vs_rm": {
+          "id": "precio.0303026.4.vs_rm",
+          "value": 0.011709601873532982,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.4.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.5.vs_rm": {
+          "id": "precio.0303026.5.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.5.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.6.vs_rm": {
+          "id": "precio.0303026.6.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.6.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.7.vs_rm": {
+          "id": "precio.0303026.7.vs_rm",
+          "value": -10.281030444964866,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.7.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.8.vs_rm": {
+          "id": "precio.0303026.8.vs_rm",
+          "value": -0.5737704918032827,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.8.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.9.vs_rm": {
+          "id": "precio.0303026.9.vs_rm",
+          "value": 0.0,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.9.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.10.vs_rm": {
+          "id": "precio.0303026.10.vs_rm",
+          "value": -8.196721311475407,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.10.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.11.vs_rm": {
+          "id": "precio.0303026.11.vs_rm",
+          "value": 25.807962529273997,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.11.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.12.vs_rm": {
+          "id": "precio.0303026.12.vs_rm",
+          "value": 10.644028103044501,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.12.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.14.vs_rm": {
+          "id": "precio.0303026.14.vs_rm",
+          "value": -1.87353629976581,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.14.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.15.vs_rm": {
+          "id": "precio.0303026.15.vs_rm",
+          "value": -10.409836065573774,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.15.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
+        "precio.0303026.16.vs_rm": {
+          "id": "precio.0303026.16.vs_rm",
+          "value": -6.75644028103044,
+          "unit": "%",
+          "period": "2026-09",
+          "source": null,
+          "locator": null,
+          "formula": "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+          "inputs": [
+            "precio.0303026.16.mediana",
+            "precio.0303026.13.mediana"
+          ],
+          "kind": "derived",
+          "revised": null
+        },
         "precio.0303026.NACIONAL.ratio": {
           "id": "precio.0303026.NACIONAL.ratio",
           "value": 1.4338973329509608,
@@ -27060,10 +30511,14 @@
         5,
         30,
         10,
+        50,
+        60,
+        80,
         100,
         256,
         10000,
         5.0,
+        3.0,
         15,
         1000,
         15,

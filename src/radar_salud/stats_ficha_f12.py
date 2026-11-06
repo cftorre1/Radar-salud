@@ -52,6 +52,8 @@ FACT_STABLE_MAX = 5.0
 # The same-provider comparison can be the headline only when, for an open Isapre, the unweighted median and the
 # frecuencia-weighted mean of its index agree in sign and both are at least this many % (review of PR #152).
 HEADLINE_MIN_INDEX = 3.0
+# Prices first (Dirección 5-nov-2026 21:25); coverage and concentration follow.
+TAB_ORDER = ["precios", "regiones", "cobertura", "mismo-prestador", "concentracion"]
 SHARE_BANDS = {"50-60": "50–60%", "60-80": "60–80%", ">80": "más de 80%"}
 
 
@@ -432,7 +434,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     d1 = short_desc(k["codes"][0]["desc"]) or f"código {c1}"
     kpis.append({"id": "dispersion_precios", "label": "Dispersión de precios (p75/p25)", "value": f"{fmt(V('dispersion.mediana'), 1)} veces",
                  "prov": "C", "lines": [f"mediana de los {len(k['codes'])} códigos Fonasa más frecuentes",
-                                        f"{d1[:40]}: {money(V(f'{n1}.p25'))} a {money(V(f'{n1}.p75'))}"],
+                                        f"{d1}: {money(V(f'{n1}.p25'))} a {money(V(f'{n1}.p75'))}"],
                  "refs": ["dispersion.mediana", f"{n1}.p25", f"{n1}.p75"]})
     lines = [f"del facturado, {ql}", f"copago: {pc(f'sistema.{q}.pct_copago')}"]
     refs = [f"sistema.{q}.pct_bonif", f"sistema.{q}.pct_copago"]
@@ -712,7 +714,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "kicker": tpl["kicker"].format(label=cfg["label"], quarter_label=ql),
         "kicker_meta": tpl["kicker_meta"].format(quarter_label=ql, published_label=sf.day_label(package["published_at"])),
         "date_basis": "first_detected", "headline": headline, "headline_type": "default", "dek": dek, "dek_emphasis": None,
-        "kpis": kpis[:5], "tabs": tabs,
+        "kpis": kpis[:5], "tabs": sorted(tabs, key=lambda t: TAB_ORDER.index(t["id"])),
         "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs, "rendered_in_tabs": True},
         "watch": watch[:2], "notes": notes, "sources": sources, "machine_note": machine,
         "featured": bool((decision or {}).get("featured")), "triggers": triggers, "late_release": late,

@@ -167,7 +167,7 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     assert [x["id"] for x in fi["kpis"]][:2] == ["dispersion_precios", "bonificado_sistema"]
     assert fi["kicker"] == "Prestaciones bonificadas · abril–junio 2026" and fi["date_basis"] == "first_detected"
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t2.zip")
-    assert [t["id"] for t in fi["tabs"]] == ["cobertura", "mismo-prestador", "precios", "regiones", "concentracion"]
+    assert [t["id"] for t in fi["tabs"]] == ["precios", "regiones", "cobertura", "mismo-prestador", "concentracion"]
     blob = json.dumps(fi, ensure_ascii=False)
     assert "SECRET" not in blob and '"P1"' not in blob and "P9" not in blob
 
