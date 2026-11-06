@@ -84,7 +84,7 @@ def test_price_disclosure_rule():
     p5 = rows[("0101001", "5")]
     assert p5["estado"] == "publicable" and p5["precio_mediana"] == 300  # (100 + 500) / 2
     assert p5["precio_p25"] is None and p5["precio_p75"] is None and p5["n_prestadores"] == 2
-    assert p5["share_prestador_mayor_pct"] == 80.0
+    assert p5["share_prestador_mayor_pct"] == "60-80" and p5["facturado"] is None and p5["pct_bonificado"] is None
     p6 = rows[("0101001", "6")]
     assert p6["estado"] == "concentracion_un_prestador" and p6["n_prestadores"] == 1
     assert all(p6[k] is None for k in ("precio_mediana", "precio_p25", "precio_p75", "facturado", "pct_bonificado"))
@@ -113,9 +113,9 @@ def test_top_codes_rank_by_national_frecuencia():
 
 def test_cross_isapre_index():
     a = agg.PrestacionesAgg()
-    a.add(prest_row(isapre="67", prov="A", freq=1, bonif=120))
-    a.add(prest_row(isapre="78", prov="A", freq=1, bonif=80))
-    a.add(prest_row(isapre="67", prov="B", freq=2, bonif=200))  # single-Isapre cell: excluded
+    a.add(prest_row(isapre="67", prov="A", freq=10, bonif=1200))
+    a.add(prest_row(isapre="78", prov="A", freq=10, bonif=800))
+    a.add(prest_row(isapre="67", prov="B", freq=20, bonif=2000))  # single-Isapre cell: excluded
     out = a.cross_isapre()
     assert out["celdas_prestador_prestacion"] == 2 and out["celdas_con_2_o_mas_isapres"] == 1
     s = {x["isapre"]: x for x in out["resumen_por_isapre"]}
@@ -170,8 +170,8 @@ def test_licencias_rates_min_cell_and_quarter_dates():
     assert t["pct_resuelta_mismo_trimestre_recepcion"] == pytest.approx(92.31)
     assert "mediana_dias_recepcion_resolucion" not in t and "NO es calculable" in out["nota_fechas"]
     isap = out["breakdowns"]["isapre"]
-    assert [r["grupo"] for r in isap["filas"]] == ["81"] and isap["celdas_suprimidas_menor_10"] == 1
-    assert isap["licencias_en_celdas_suprimidas"] == 3
+    # 99 (3) is under 10; 81 (10) is then suppressed too, or total − 81 would reveal 99's three licences
+    assert isap["filas"] == [] and isap["celdas_suprimidas"] == 2 and isap["licencias_en_celdas_suprimidas"] == 13
     assert set(out["breakdowns"]) == {"isapre", "diagnostico", "actividad_laboral", "region", "tipo_profesional"}
     assert "SECRET" not in json.dumps(out) + json.dumps(lic.profile.result())
 
@@ -237,13 +237,90 @@ def test_profile_lists_only_values_seen_ten_times():
 
 def test_licencias_isapre_by_diagnosis_cross_has_min_cell():
     lic = agg.LicenciasAgg()
+    for isapre, n in (("81", 30), ("99", 25)):
+        for _ in range(n):
+            lic.add(lic_row(isapre=isapre, diag="J00-J99"))
     for _ in range(10):
         lic.add(lic_row(isapre="81", diag="F00-F99", resol="Rechácese", aut=0))
-    for _ in range(4):
+    for _ in range(12):
         lic.add(lic_row(isapre="99", diag="F00-F99"))
+    lic.add(lic_row(isapre="99", diag="M00-M99"))
     cr = lic.result()["cruces"]["isapre_x_diagnostico"]
-    assert [(r["isapre"], r["diagnostico"], r["pct_rechazadas"]) for r in cr["filas"]] == [("81", "F00-F99", 100.0)]
-    assert cr["celdas_suprimidas_menor_10"] == 1 and cr["licencias_en_celdas_suprimidas"] == 4
+    shown = {(r["isapre"], r["diagnostico"]) for r in cr["filas"]}
+    # 99×M (1) is under 10 → within Isapre 99 the next-smallest cell (99×F, 12) is also suppressed; then within
+    # diagnosis F the remainder 12 ≥ 10, so 81×F stays; every row/column remainder is 0 or ≥ 10.
+    assert shown == {("81", "J00-J99"), ("99", "J00-J99"), ("81", "F00-F99")}
+    assert cr["celdas_suprimidas"] == 2 and cr["licencias_en_celdas_suprimidas"] == 13
+    assert next(r for r in cr["filas"] if r["diagnostico"] == "F00-F99")["rechazadas"] == 10
+
+
+def test_complementary_suppression_never_leaves_a_remainder_under_10():
+    """Review of PR #152: one suppressed actividad with 1 licence could be recovered as total − published cells."""
+    lic = agg.LicenciasAgg()
+    for act, n in (("Servicios", 40), ("Comercio", 15), ("Mineria", 11), ("Agricultura", 1)):
+        for _ in range(n):
+            lic.add(lic_row(act=act, dias=7, aut=3, sub=12345))
+    out = lic.result()
+    b = out["breakdowns"]["actividad_laboral"]
+    assert [r["grupo"] for r in b["filas"]] == ["Servicios", "Comercio"]  # Mineria (11) suppressed with Agricultura (1)
+    assert b["licencias_en_celdas_suprimidas"] == 12
+    tot = out["total"]
+    for key in ("licencias", "dias_solicitados", "dias_autorizados", "subsidio_total"):
+        remainder = tot[key] - sum(r[key] for r in b["filas"])
+        # what subtraction recovers always covers ≥ 10 licences (here 12), never one licence
+        assert remainder == {"licencias": 12, "dias_solicitados": 84, "dias_autorizados": 36, "subsidio_total": 12 * 12345}[key]
+    # the rule on any synthetic table: the suppressed total of every group is 0 or ≥ 10
+    import random
+    rng = random.Random(7)
+    for _ in range(200):
+        cells = {f"c{i}": rng.randint(1, 40) for i in range(rng.randint(1, 8))}
+        sup = agg.complementary_suppression(cells, [list(cells)])
+        hidden = sum(cells[k] for k in sup)
+        assert hidden == 0 or hidden >= 10 or len(sup) == len(cells)
+        assert all(k in sup for k, n in cells.items() if n < 10)
+    assert agg.suppressed_count(4) == {"licencias_en_celdas_suprimidas": None, "licencias_en_celdas_suprimidas_texto": "<10"}
+
+
+def test_two_provider_cell_never_reveals_each_provider_price():
+    """Review of PR #152: with n = 2, median + facturado + frecuencia + exact top share solve both unit prices.
+    Now facturado, % bonificado and % copago are null and the share is a band: two different pairs of providers
+    with the same median, frecuencia and band publish identical rows, so no combination recovers the prices."""
+    def cell(p1, f1, p2, f2):
+        a = agg.PrestacionesAgg()
+        a.add(prest_row(prov="A", region="3", freq=f1, fact=p1 * f1, bonif=p1 * f1 // 2, copago=p1 * f1 // 2))
+        a.add(prest_row(prov="B", region="3", freq=f2, fact=p2 * f2, bonif=p2 * f2 // 2, copago=p2 * f2 // 2))
+        t = a.price_table()
+        return {r[1]: dict(zip(t["columns"], r)) for r in t["rows"]}
+    x = cell(59000, 20, 68000, 13)   # median 63.500, freq 33, top share 60,6 % → band 60-80
+    y = cell(55000, 25, 72000, 8)    # median 63.500, freq 33, top share 75,8 % → band 60-80
+    for cells in (x, y):
+        r3 = cells["3"]
+        assert r3["n_prestadores"] == 2 and r3["precio_mediana"] == 63500 and r3["share_prestador_mayor_pct"] == "60-80"
+        assert r3["facturado"] is None and r3["pct_bonificado"] is None and r3["pct_copago"] is None
+        assert r3["precio_p25"] is None and r3["precio_p75"] is None
+    assert x["3"] == y["3"]  # same published row, different individual prices: not recoverable
+    # the national cell has the same 2 providers here, so it obeys the same rule
+    assert x["NACIONAL"]["facturado"] is None and x["NACIONAL"]["share_prestador_mayor_pct"] == "60-80"
+    assert [agg.share_band(s) for s in (50, 60, 60.1, 80, 80.1)] == ["50-60", "50-60", "60-80", "60-80", ">80"]
+
+
+def test_two_provider_rule_leaves_system_totals_untouched():
+    a = agg.PrestacionesAgg()
+    a.add(prest_row(isapre="67", prov="A", region="3", freq=20, fact=2000, bonif=1500, copago=500))
+    a.add(prest_row(isapre="67", prov="B", region="3", freq=20, fact=3000, bonif=1500, copago=1500))
+    tot = {(r["isapre"], r["tipo_atencion"]): r for r in a.isapre_table()}[("67", "TOTAL")]
+    assert tot["facturado"] == 5000 and tot["pct_bonificado"] == 60.0
+    assert {r["region"]: r for r in a.concentration()["regiones"]}["NACIONAL"]["facturado"] == 5000
+    assert a.top_codes(1)[0]["facturado"] == 5000
+
+
+def test_cross_index_needs_ten_frecuencia_per_isapre():
+    a = agg.PrestacionesAgg()
+    a.add(prest_row(isapre="67", prov="A", freq=10, bonif=1200))
+    a.add(prest_row(isapre="78", prov="A", freq=9, bonif=800))
+    assert a.cross_isapre()["celdas_con_2_o_mas_isapres"] == 0
+    a.add(prest_row(isapre="78", prov="A", freq=1, bonif=100))
+    assert a.cross_isapre()["celdas_con_2_o_mas_isapres"] == 1
 
 
 def test_arancel_description_is_verbatim(tmp_path):

@@ -52,11 +52,12 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v2"
+SCRIPT_VERSION = "sis_open_data_agg_v3"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
 IQR_MIN_PROVIDERS = 3     # p25-p75 only with >= 3 providers
+CROSS_MIN_FREQ = 10       # same-provider index: an Isapre enters a provider x code cell only with >= 10 frecuencia
 TOP_CODES = 15            # most-billed Fonasa codes (national frecuencia) described from the Arancel Isapre
 LIC_MIN_CELL = 10
 PROFILE_MIN_COUNT = 10    # a profile value is listed only when it appears in >= 10 rows
@@ -248,6 +249,45 @@ def is_fonasa(pertenencia: str) -> bool:
     return "fonasa" in norm(pertenencia)
 
 
+def share_band(share: float | None) -> str | None:
+    """Top-provider share of a 2-provider cell as a band (it is always >= 50)."""
+    if share is None:
+        return None
+    return "50-60" if share <= 60 else "60-80" if share <= 80 else ">80"
+
+
+def complementary_suppression(cells: dict, groups: list[list]) -> set:
+    """Cells to suppress so no remainder of fewer than LIC_MIN_CELL licences can be recovered by subtraction.
+
+    ``cells`` maps a key to its licence count; ``groups`` lists the key sets whose total is published (each
+    dimension, or each row and column of a two-way table). A cell under the minimum is suppressed; then, while the
+    suppressed total of a group is > 0 and < LIC_MIN_CELL, the next-smallest published cell of that group is also
+    suppressed. Repeats until stable (rows and columns interact). Days and subsidy sums of the suppressed cells are
+    never published, and their remainder then always covers >= LIC_MIN_CELL licences."""
+    sup = {k for k, n in cells.items() if n < LIC_MIN_CELL}
+    changed = True
+    while changed:
+        changed = False
+        for g in groups:
+            hidden = sum(cells[k] for k in g if k in sup)
+            while 0 < hidden < LIC_MIN_CELL:
+                rest = sorted((cells[k], str(k)) for k in g if k not in sup)
+                if not rest:
+                    break
+                key = next(k for k in g if str(k) == rest[0][1] and k not in sup)
+                sup.add(key)
+                hidden += cells[key]
+                changed = True
+    return sup
+
+
+def suppressed_count(n: int) -> dict:
+    """A suppressed total is published only when >= LIC_MIN_CELL; otherwise '<10'."""
+    if 0 < n < LIC_MIN_CELL:
+        return {"licencias_en_celdas_suprimidas": None, "licencias_en_celdas_suprimidas_texto": f"<{LIC_MIN_CELL}"}
+    return {"licencias_en_celdas_suprimidas": n}
+
+
 class PrestacionesAgg:
     def __init__(self, ids_only: bool = False):
         self.ids_only = ids_only
@@ -337,17 +377,24 @@ class PrestacionesAgg:
 
     @staticmethod
     def disclose(lst: list) -> dict:
-        """The disclosure rule for one region x prestación cell (Dirección 5-nov-2026, v2)."""
+        """The disclosure rule for one region x prestación cell (Dirección 5-nov-2026, v2; review of PR #152, v3).
+
+        With exactly 2 providers the median is published (Dirección) but facturado, % bonificado and % copago are
+        null and the top share is a band ("50-60", "60-80", ">80"): median + facturado + frecuencia + exact share
+        would let anyone solve both unit prices. National cells follow the same rule; system totals are untouched."""
         n, freq = len(lst), sum(x[1] for x in lst)
         out = {"n_prestadores": n, "frecuencia": round(freq),
                "share_prestador_mayor_pct": pct(max(x[1] for x in lst), freq) if lst else None}
+        if n == 2:
+            out["share_prestador_mayor_pct"] = share_band(out["share_prestador_mayor_pct"])
         if n >= PRICE_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ:
             u = sorted(x[0] for x in lst)
             fact, bonif, cop = (sum(x[k] for x in lst) for k in (2, 3, 4))
             out.update(estado="publicable", precio_mediana=r(quantile(u, .5), 0),
                        precio_p25=r(quantile(u, .25), 0) if n >= IQR_MIN_PROVIDERS else None,
                        precio_p75=r(quantile(u, .75), 0) if n >= IQR_MIN_PROVIDERS else None,
-                       facturado=round(fact), pct_bonificado=pct(bonif, fact), pct_copago=pct(cop, fact))
+                       facturado=round(fact) if n > 2 else None, pct_bonificado=pct(bonif, fact) if n > 2 else None,
+                       pct_copago=pct(cop, fact) if n > 2 else None)
         elif n == 1:
             out.update(estado="concentracion_un_prestador", precio_mediana=None, precio_p25=None, precio_p75=None,
                        facturado=None, pct_bonificado=None, pct_copago=None)
@@ -368,11 +415,13 @@ class PrestacionesAgg:
             key = (d["estado"], region == "NACIONAL")
             status[key] += 1
             status_freq[key] += d["frecuencia"]
-        return {"regla": {"version": "precio_v2_dir_2026_11_05",
+        return {"regla": {"version": "precio_v3_pr152",
                           "publicable": f">= {PRICE_MIN_PROVIDERS} prestadores distintos Y >= {PRICE_MIN_FREQ} "
                                         "frecuencia: mediana del precio unitario (facturado/frecuencia por prestador, "
                                         f"no ponderada); p25-p75 sólo con >= {IQR_MIN_PROVIDERS} prestadores",
                           "concentracion": "1 prestador: sin precio ni facturado; sólo bandera de concentración",
+                          "dos_prestadores": "2 prestadores: mediana sí; facturado, % bonificado y % copago nulos; share "
+                                             "del mayor en banda 50-60 / 60-80 / >80",
                           "suprimido": f">= 2 prestadores con frecuencia < {PRICE_MIN_FREQ}: sin precio",
                           "nacional": "NACIONAL suma cada prestador entre regiones: todos cuentan, también los que "
                                       "están solos en su región",
@@ -400,7 +449,7 @@ class PrestacionesAgg:
         code_freq: Counter = Counter()
         n_cells = n_cells_multi = 0
         for (prov, codigo), by in self.cross.items():
-            valid = {i: v for i, v in by.items() if v[2] > 0}
+            valid = {i: v for i, v in by.items() if v[2] >= CROSS_MIN_FREQ}
             n_cells += 1
             if len(valid) < 2:
                 continue
@@ -441,7 +490,8 @@ class PrestacionesAgg:
                             "indice_bonif_unit_mediana_pct": r(quantile(vals, .5))})
         return {"definicion": "Por celda prestador(seudónimo) x código Fonasa atendida por >=2 Isapres: índice = "
                               "(bonificado/frecuencia de la Isapre) / (media no ponderada entre Isapres de la celda) - 1,"
-                              " en %. Análogo para facturado/frecuencia. Detalle por código sólo con >=3 prestadores.",
+                              " en %. Análogo para facturado/frecuencia. Una Isapre entra a la celda sólo con >= "
+                              f"{CROSS_MIN_FREQ} de frecuencia. Detalle por código sólo con >=3 prestadores.",
                 "celdas_prestador_prestacion": n_cells, "celdas_con_2_o_mas_isapres": n_cells_multi,
                 "resumen_por_isapre": summary,
                 "por_prestacion_top40_frecuencia": by_code}
@@ -600,7 +650,8 @@ class LicenciasAgg:
 
     @staticmethod
     def row(key: str, g: LicGroup) -> dict:
-        d = {"grupo": key, "licencias": g.n, "pct_rechazadas": pct(g.kinds["rechazada"], g.n),
+        d = {"grupo": key, "licencias": g.n, "rechazadas": g.kinds["rechazada"], "reducidas": g.kinds["reducida"],
+             "pct_rechazadas": pct(g.kinds["rechazada"], g.n),
              "pct_reducidas": pct(g.kinds["reducida"], g.n), "pct_autorizadas": pct(g.kinds["autorizada"], g.n),
              "pct_ampliadas": pct(g.kinds["ampliada"], g.n), "dias_solicitados": round(g.dias_sol),
              "dias_autorizados": round(g.dias_aut), "ratio_autorizados_solicitados_pct": pct(g.dias_aut, g.dias_sol),
@@ -616,17 +667,25 @@ class LicenciasAgg:
 
     def result(self) -> dict:
         out: dict = {"regla_celda_minima": LIC_MIN_CELL, "total": self.row("TOTAL", self.total), "breakdowns": {}}
+        out["regla_supresion"] = ("celda < 10 suprimida; supresión complementaria: si lo suprimido de un grupo publicado "
+                                  "suma entre 1 y 9 licencias, se suprime también la celda publicada más chica hasta "
+                                  "llegar a >= 10 (por dimensión; en el cruce, por Isapre y por diagnóstico)")
         for dim, groups in self.groups.items():
-            rows = [self.row(k, g) for k, g in sorted(groups.items(), key=lambda kv: -kv[1].n) if g.n >= LIC_MIN_CELL]
-            sup = [g for g in groups.values() if g.n < LIC_MIN_CELL]
-            out["breakdowns"][dim] = {"filas": rows, "celdas_suprimidas_menor_10": len(sup),
-                                      "licencias_en_celdas_suprimidas": sum(g.n for g in sup)}
+            sup = complementary_suppression({k: g.n for k, g in groups.items()}, [list(groups)])
+            rows = [self.row(k, g) for k, g in sorted(groups.items(), key=lambda kv: -kv[1].n) if k not in sup]
+            out["breakdowns"][dim] = {"filas": rows, "celdas_suprimidas": len(sup),
+                                      **suppressed_count(sum(groups[k].n for k in sup))}
         cells = self.isapre_diag
-        sup = [g for g in cells.values() if g.n < LIC_MIN_CELL]
+        published_isapres = {r["grupo"] for r in out["breakdowns"]["isapre"]["filas"]}
+        published_diags = {r["grupo"] for r in out["breakdowns"]["diagnostico"]["filas"]}
+        # Row totals (Isapre) and column totals (diagnosis) are published in the breakdowns, and so is the grand total.
+        by_i = [[k for k in cells if k[0] == i] for i in published_isapres]
+        by_d = [[k for k in cells if k[1] == d] for d in published_diags]
+        sup = complementary_suppression({k: g.n for k, g in cells.items()}, by_i + by_d + [list(cells)])
         out["cruces"] = {"isapre_x_diagnostico": {
             "filas": [{**self.row(f"{i}|{d}", g), "isapre": i, "diagnostico": d}
-                      for (i, d), g in sorted(cells.items(), key=lambda kv: (kv[0][0], -kv[1].n)) if g.n >= LIC_MIN_CELL],
-            "celdas_suprimidas_menor_10": len(sup), "licencias_en_celdas_suprimidas": sum(g.n for g in sup)}}
+                      for (i, d), g in sorted(cells.items(), key=lambda kv: (kv[0][0], -kv[1].n)) if (i, d) not in sup],
+            "celdas_suprimidas": len(sup), **suppressed_count(sum(cells[k].n for k in sup))}}
         if self.date_kinds.get("d"):
             out["nota_fechas"] = "Fechas de recepción/resolución con día: mediana en días calculada."
         else:

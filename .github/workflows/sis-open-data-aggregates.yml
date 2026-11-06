@@ -30,8 +30,8 @@ on:
         default: true
         type: boolean
       commit:
-        description: "commit aggregates and receipts back to the calling branch"
-        default: true
+        description: "commit aggregates and receipts back to the calling branch (off by default: a caller such as staging is never pushed to unless it asks)"
+        default: false
         type: boolean
 
 permissions:
