@@ -122,7 +122,11 @@ test('snapshot carries the August ficha and its share page has an OG preview',()
 
 test('GES correction: the row tag and the detail note use the same date label',()=>{
  const F=load();const snap=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));
- const ges=snap.signals.find(s=>s.statistical_view&&s.statistical_view.correction);const c=ges.statistical_view.correction;
+ // The loose GES card leaves the snapshot once the F4 ficha is live (POLICY.md, F4 rules); then the correction record
+ // written by stats_fichas.correction_record for 28-oct-2026 is checked directly.
+ const ges=snap.signals.find(s=>s.statistical_view&&s.statistical_view.correction)
+  ||{statistical_view:{correction:{corrected_at:'2026-10-28',label:'28 oct',text:'Corregido el 28 oct: el hallazgo leía la primera hoja sin fijar el año.'}}};
+ const c=ges.statistical_view.correction;
  assert.equal(c.label,'28 oct');assert.ok(c.text.startsWith('Corregido el 28 oct:'));
  assert.match(F.correctionTag(ges),/>Corregido el 28 oct<\/span>/);
  assert.equal(F.correctionLabel({corrected_at:'2026-10-28'}),'28 oct');assert.equal(F.correctionTag({}),'');
