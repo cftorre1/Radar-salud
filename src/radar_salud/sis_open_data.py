@@ -28,7 +28,7 @@ from urllib.parse import urlsplit
 from . import stats_fichas as sf
 
 AGG_ROOT = Path("data/sis_open_data_aggregates")
-SCRIPT_VERSION = "sis_open_data_agg_v4"  # mirrors scripts/aggregate_sis_open_data.py SCRIPT_VERSION
+SCRIPT_VERSION = "sis_open_data_agg_v5"  # mirrors scripts/aggregate_sis_open_data.py SCRIPT_VERSION
 FILE_HOST = "datos.superdesalud.gob.cl"
 MAX_FILE_BYTES = 1 << 30
 MAX_MALFORMED_SHARE = 0.001

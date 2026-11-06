@@ -219,11 +219,12 @@ def test_run_end_to_end_local_both_quarters(tmp_path):
     assert [f.get("parse", {}).get("rows_ok") for f in recs["2026t2"]["files"]] == [6, None, 12]
     assert all(len(f["sha256"]) == 64 for f in recs["2026t2"]["files"])
     assert recs["2026t2"]["script_version"] == agg.SCRIPT_VERSION
-    names = sorted(p.name for p in (out / "2026t2").iterdir())
+    names = sorted(p.name for p in (out / "2026t2").iterdir() if "cambio_mismo_prestador" not in p.name)
+    assert (out / "2026t2" / "prestaciones_2026t2_cambio_mismo_prestador.json").exists()
     assert names == ["licencias_2026t2.json", "prestaciones_2026t2_consistencia_ids.json",
                      "prestaciones_2026t2_indice_isapre_mismo_prestador.json",
-                     "prestaciones_2026t2_precios_fonasa_region.json", "prestaciones_2026t2_resumen.json",
-                     "prestaciones_2026t2_top_codigos.json", "receipts_2026t2.json"]
+                     "prestaciones_2026t2_precios_fonasa_region.json", "prestaciones_2026t2_precios_tipo_prestador.json",
+                     "prestaciones_2026t2_resumen.json", "prestaciones_2026t2_top_codigos.json", "receipts_2026t2.json"]
     assert "prestaciones_2026t1_consistencia_ids.json" not in [p.name for p in (out / "2026t1").iterdir()]
     blob = "".join(p.read_text() for q in ("2026t1", "2026t2") for p in (out / q).iterdir())
     assert "SECRET" not in blob
@@ -350,3 +351,41 @@ def test_arancel_description_is_verbatim(tmp_path):
     out = agg.arancel_descriptions(z, {"0405001"}, {})
     assert out == {"0405001": [{"descripcion": "DESCRIPCION X",
                                 "clasificacion": "Prestaci\u00f3n Incluida en el Arancel Fonasa", "filas_isapre_plan": 1}]}
+
+
+def test_concentration_top3_top10_top50_and_fonasa_totals():
+    a = agg.PrestacionesAgg()
+    for i, f in enumerate([50, 20, 10, 5, 5, 5, 5]):
+        a.add(prest_row(prov=f"P{i}", fact=f, bonif=0, copago=f))
+    reg = {x["region"]: x for x in a.concentration()["regiones"]}["13"]
+    assert (reg["share_top1_pct"], reg["share_top3_pct"], reg["share_top5_pct"]) == (50.0, 80.0, 90.0)
+    assert reg["share_top10_pct"] == reg["share_top50_pct"] == 100.0
+    assert a.fonasa_totals() == {"facturado_fonasa": 100, "frecuencia_fonasa": 7}
+
+
+def test_public_private_prices_follow_the_disclosure_rule():
+    a = agg.PrestacionesAgg()
+    for prov, unit in (("A", 100), ("B", 300)):
+        a.add(prest_row(prov=prov, freq=20, fact=unit * 20, tipo_prest="Privado"))
+    a.add(prest_row(prov="C", freq=50, fact=50 * 80, tipo_prest="Público"))
+    t = a.tipo_table()
+    rows = {(r[1], r[2]): dict(zip(t["columns"], r)) for r in t["rows"]}
+    assert rows[("13", "Privado")]["precio_mediana"] == 200 and rows[("13", "Privado")]["n_prestadores"] == 2
+    assert rows[("13", "Público")]["precio_mediana"] is None  # 1 provider: no price
+    assert '"C"' not in json.dumps(t)
+
+
+def test_same_provider_price_change_uses_only_providers_in_both_quarters():
+    prev, cur = agg.PrestacionesAgg(), agg.PrestacionesAgg()
+    for i, (p0, p1) in enumerate([(100, 110), (200, 220), (300, 330), (400, 440)]):
+        prev.add(prest_row(prov=f"P{i}", freq=10, fact=p0 * 10))
+        cur.add(prest_row(prov=f"P{i}", freq=10, fact=p1 * 10))
+    cur.add(prest_row(prov="NEW", freq=100, fact=100 * 10))  # only in the current quarter: ignored
+    t = agg.price_change(cur, prev.price)
+    rows = {r[1]: dict(zip(t["columns"], r)) for r in t["rows"]}
+    assert rows["13"]["n_prestadores_ambos"] == 4 and rows["13"]["indice_laspeyres_pct"] == 10.0
+    assert rows["13"]["mediana_relativos_pct"] == 10.0 and rows["NACIONAL"]["indice_laspeyres_pct"] == 10.0
+    prev3 = agg.PrestacionesAgg()
+    for i in range(3):
+        prev3.add(prest_row(prov=f"P{i}", freq=20, fact=2000))
+    assert agg.price_change(cur, prev3.price)["rows"] == []  # 3 matched providers: not published

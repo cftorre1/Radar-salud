@@ -52,14 +52,16 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v4"
+SCRIPT_VERSION = "sis_open_data_agg_v5"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
 IQR_MIN_PROVIDERS = 4     # p25-p75 only with >= 4 providers (with 3, p25/median/p75 reveal all three prices)
 CROSS_CODE_MIN_PROVIDERS = 3  # per-code detail of the same-provider index
 CROSS_MIN_FREQ = 10       # same-provider index: an Isapre enters a provider x code cell only with >= 10 frecuencia
-TOP_CODES = 15            # most-billed Fonasa codes (national frecuencia) described from the Arancel Isapre
+TOP_CODES = 100           # most-billed Fonasa codes (national frecuencia) with totals and Arancel Isapre description
+CHANGE_MIN_PROVIDERS = 4  # same-provider price change of a code x region: >= 4 providers present in both quarters
+TIPO_MIN_PROVIDERS = 2    # public/private price cell: same disclosure rule as prices (>= 2 providers, >= 30 frecuencia)
 LIC_MIN_CELL = 10
 PROFILE_MIN_COUNT = 10    # a profile value is listed only when it appears in >= 10 rows
 NO_PROVIDER = ("", "0")
@@ -305,6 +307,8 @@ class PrestacionesAgg:
         self.price: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])  # (codigo, region, prov)
         self.cross: dict[tuple, dict] = defaultdict(dict)                         # (prov, codigo) -> isapre
         self.region_prov: dict[tuple, float] = defaultdict(float)
+        self.tipo_price: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])      # (codigo, region, tipo, prov)
+        self.fonasa_tot = [0.0, 0.0]                                              # facturado, frecuencia
         self.region_tipo: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0, 0])
         self.fonasa_rows = 0
         self.periods: Counter = Counter()
@@ -339,6 +343,9 @@ class PrestacionesAgg:
             codigo = f[P_CODIGO].strip()
             p = self.price[(codigo, region, prov)]
             p[0] += fact; p[1] += freq; p[2] += bonif; p[3] += copago
+            tp = self.tipo_price[(codigo, region, f[P_TIPO_PRESTADOR].strip() or "(vacío)", prov)]
+            tp[0] += fact; tp[1] += freq
+            self.fonasa_tot[0] += fact; self.fonasa_tot[1] += freq
             c = self.cross[(prov, codigo)].setdefault(isapre, [0.0, 0.0, 0.0])
             c[0] += bonif; c[1] += fact; c[2] += freq
 
@@ -518,11 +525,40 @@ class PrestacionesAgg:
             tf = sum(v[0] for v in tipo.values())
             out.append({"region": region, "n_prestadores": len(vals), "facturado": round(tot), "hhi": r(hhi, 0),
                         "share_top5_pct": pct(sum(vals[:5]), tot), "share_top1_pct": pct(vals[0], tot) if vals else None,
+                        "share_top3_pct": pct(sum(vals[:3]), tot), "share_top10_pct": pct(sum(vals[:10]), tot),
+                        "share_top50_pct": pct(sum(vals[:50]), tot),
                         "split_tipo_prestador": {t: {"facturado": round(v[0]), "share_facturado_pct": pct(v[0], tf),
                                                      "frecuencia": round(v[1])} for t, v in sorted(tipo.items())}})
         return {"definicion": "HHI sobre facturado entre prestadores (seudónimos) de la región del prestador, escala "
-                              "0-10000; top5/top1 share de facturado. NACIONAL suma cada prestador entre regiones.",
+                              "0-10000; top1/top3/top5/top10/top50 share de facturado. NACIONAL suma cada prestador entre regiones.",
                 "regiones": out}
+
+    def fonasa_totals(self) -> dict:
+        """System totals of Fonasa-arancel codes (all providers, all regions): the denominator of basket coverage."""
+        return {"facturado_fonasa": round(self.fonasa_tot[0]), "frecuencia_fonasa": round(self.fonasa_tot[1])}
+
+    def tipo_table(self) -> dict:
+        """Public vs private prices of the same code and region (Dirección 6-nov-2026): per (code, region|NACIONAL,
+        tipo de prestador) the median unit price among providers, under the disclosure rule (>= 2 providers and >= 30
+        frecuencia; 1 provider: no price; 2 providers: no facturado). Unit price = facturado / frecuencia."""
+        cells: dict[tuple, list] = defaultdict(list)
+        nat: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])
+        for (codigo, region, tipo, prov), (fact, freq) in self.tipo_price.items():
+            if freq > 0 and fact > 0:
+                cells[(codigo, region, tipo)].append((fact / freq, freq))
+            n = nat[(codigo, tipo, prov)]
+            n[0] += fact; n[1] += freq
+        for (codigo, tipo, prov), (fact, freq) in nat.items():
+            if freq > 0 and fact > 0:
+                cells[(codigo, "NACIONAL", tipo)].append((fact / freq, freq))
+        cols = ["codigo_prestacion", "region", "tipo_prestador", "n_prestadores", "frecuencia", "precio_mediana"]
+        rows = []
+        for (codigo, region, tipo), lst in sorted(cells.items()):
+            n, freq = len(lst), sum(x[1] for x in lst)
+            ok = n >= TIPO_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ
+            rows.append([codigo, region, tipo, n, round(freq), r(quantile(sorted(x[0] for x in lst), .5), 0) if ok else None])
+        return {"regla": f"mediana con >= {TIPO_MIN_PROVIDERS} prestadores y >= {PRICE_MIN_FREQ} frecuencia; si no, nula",
+                "columns": cols, "rows": rows}
 
     def id_summary(self) -> dict:
         n = len(self.prov_isapres)
@@ -536,6 +572,38 @@ class PrestacionesAgg:
                 "histograma_n_isapres_por_codigo": {("6+" if k == 6 else str(k)): v for k, v in sorted(hist.items())},
                 "filas_sin_codigo_prestador": self.empty_prov,
                 "pct_filas_del_codigo_mas_frecuente": pct(top_rows, self.rows)}
+
+
+def price_change(cur: PrestacionesAgg, prev_price: dict) -> dict:
+    """Same-provider price change between quarters (Dirección 6-nov-2026). For each (code, region|NACIONAL), only the
+    pseudonymous providers with frecuencia > 0 and facturado > 0 in BOTH quarters: a fixed-quantity (Laspeyres) index
+    Σ q_prev·p_cur / Σ q_prev·p_prev − 1 and the median of the providers' price relatives p_cur/p_prev − 1. Published
+    only with >= CHANGE_MIN_PROVIDERS matched providers and >= PRICE_MIN_FREQ previous frecuencia; never per provider."""
+    def per(price: dict) -> dict:
+        out: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])
+        for (codigo, region, prov), v in price.items():
+            for key in ((codigo, region, prov), (codigo, "NACIONAL", prov)):
+                out[key][0] += v[0]; out[key][1] += v[1]
+        return out
+    a, b = per(prev_price), per(cur.price)
+    cells: dict[tuple, list] = defaultdict(list)
+    for key, (f0, q0) in a.items():
+        f1, q1 = b.get(key, (0.0, 0.0))
+        if f0 > 0 and q0 > 0 and f1 > 0 and q1 > 0:
+            cells[(key[0], key[1])].append((f0 / q0, f1 / q1, q0, q1))
+    cols = ["codigo_prestacion", "region", "n_prestadores_ambos", "frecuencia_anterior", "frecuencia_actual",
+            "indice_laspeyres_pct", "mediana_relativos_pct"]
+    rows = []
+    for (codigo, region), lst in sorted(cells.items()):
+        n, q0 = len(lst), sum(x[2] for x in lst)
+        if n < CHANGE_MIN_PROVIDERS or q0 < PRICE_MIN_FREQ:
+            continue
+        las = sum(x[2] * x[1] for x in lst) / sum(x[2] * x[0] for x in lst) - 1
+        rel = sorted(x[1] / x[0] - 1 for x in lst)
+        rows.append([codigo, region, n, round(q0), round(sum(x[3] for x in lst)), r(las * 100), r(quantile(rel, .5) * 100)])
+    return {"definicion": "mismos prestadores seudónimos en ambos trimestres; índice de cantidades fijas del trimestre "
+                          f"anterior y mediana de relativos; >= {CHANGE_MIN_PROVIDERS} prestadores y >= {PRICE_MIN_FREQ} "
+                          "frecuencia anterior", "columns": cols, "rows": rows}
 
 
 def id_consistency(cur: PrestacionesAgg, prev: PrestacionesAgg | None) -> dict:
@@ -911,9 +979,14 @@ def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "Prestacion
                 **meta, "periodos_en_archivo": dict(cur.periods.most_common(10)),
                 "filas_pertenencia_fonasa": cur.fonasa_rows,
                 "por_isapre_tipo_atencion": cur.isapre_table(), "concentracion": cur.concentration(),
+                "totales_fonasa": cur.fonasa_totals(),
                 "perfil_columnas": cur.profile.result()})
             write_json(out / f"prestaciones_{period}_precios_fonasa_region.json", {**meta, **cur.price_table()})
             write_json(out / f"prestaciones_{period}_indice_isapre_mismo_prestador.json", {**meta, **cur.cross_isapre()})
+            write_json(out / f"prestaciones_{period}_precios_tipo_prestador.json", {**meta, **cur.tipo_table()})
+            if prev_ids is not None and getattr(prev_ids, "price", None):
+                write_json(out / f"prestaciones_{period}_cambio_mismo_prestador.json",
+                           {**meta, "periodo_anterior": prev_period, **price_change(cur, prev_ids.price)})
             top = cur.top_codes()
             tx: dict = {**meta, "criterio": f"los {TOP_CODES} códigos Fonasa con más frecuencia nacional (todos los "
                                             "prestadores)", "codigos": top}
@@ -931,6 +1004,7 @@ def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "Prestacion
                            {**meta, "periodo_anterior": prev_period, **id_consistency(cur, prev_ids)})
             ids = PrestacionesAgg(ids_only=True)  # keep only the pseudonymous-ID sets for the next quarter
             ids.prov_isapres, ids.prov_fact, ids.prov_rows, ids.rows = cur.prov_isapres, cur.prov_fact, cur.prov_rows, cur.rows
+            ids.price = cur.price  # provider x code x region (fact, freq, ...) for the next quarter's same-provider change
         del cur
     if "licencias" in which:
         lic = LicenciasAgg()
