@@ -1,0 +1,52 @@
+name: SIS compendio archivos maestros
+on:
+  push:
+    branches: [claude/sis-compendio-maestros]
+    paths: [.github/workflows/sis-compendio.yml]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download respecting robots.txt
+        env:
+          URL: https://www.superdesalud.gob.cl/app/uploads/2025/07/compendio-de-archivos-maestros-version-actualizada-07-09-2026.pdf
+        run: |
+          set -euo pipefail
+          UA="AlicantoSaludBot/1.0 (+https://alicantosalud.cl)"
+          mkdir -p data/reference/sis_compendio
+          code=$(curl -sS -A "$UA" -o /tmp/robots.txt -w '%{http_code}' https://www.superdesalud.gob.cl/robots.txt || echo 000)
+          echo "robots status $code"; cat /tmp/robots.txt || true
+          python3 - <<'PY'
+          import urllib.robotparser, os, sys
+          rp = urllib.robotparser.RobotFileParser()
+          rp.parse(open('/tmp/robots.txt').read().splitlines())
+          ok = rp.can_fetch("AlicantoSaludBot", os.environ["URL"])
+          print("can_fetch", ok)
+          sys.exit(0 if ok else 3)
+          PY
+          curl -sS -A "$UA" --max-filesize 209715200 -o data/reference/sis_compendio/compendio_archivos_maestros_2026-09-07.pdf "$URL"
+          sudo apt-get install -y -qq poppler-utils >/dev/null
+          f=data/reference/sis_compendio/compendio_archivos_maestros_2026-09-07.pdf
+          pdftotext -layout "$f" data/reference/sis_compendio/compendio_archivos_maestros_2026-09-07.txt
+          python3 - <<'PY'
+          import hashlib, json, os, subprocess, datetime
+          f='data/reference/sis_compendio/compendio_archivos_maestros_2026-09-07.pdf'
+          b=open(f,'rb').read()
+          pages=subprocess.run(['pdfinfo',f],capture_output=True,text=True).stdout
+          rec={"source":"Superintendencia de Salud, Compendio de Normas Administrativas en Materia de Archivos Maestros (versión actualizada al 07.09.2026)",
+               "url":os.environ["URL"],"bytes":len(b),"sha256":hashlib.sha256(b).hexdigest(),
+               "pdfinfo":pages,"retrieved_at":datetime.datetime.utcnow().isoformat()+"Z","robots":"allowed",
+               "requested_by":"Dirección, 6-nov-2026"}
+          json.dump(rec,open('data/reference/sis_compendio/receipt.json','w'),ensure_ascii=False,indent=2)
+          print(rec["bytes"],rec["sha256"])
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/reference/sis_compendio
+          git commit -m "Compendio de archivos maestros SIS (07.09.2026) con recibo" && git push
