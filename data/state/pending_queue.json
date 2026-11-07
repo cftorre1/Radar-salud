@@ -806869,12 +806869,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:26:07.335285+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "official_news_requires_primary_enforcement_review",
     "classification_watermark": "2026-11-05T18:39:44.225147+00:00",
     "deferred_detail": "official_news_requires_primary_enforcement_review",
-    "updated_at": "2026-11-07T06:48:30.342081+00:00",
-    "retry_at": "2026-11-07T08:48:30.342096+00:00"
+    "updated_at": "2026-11-07T13:06:40.608265+00:00",
+    "retry_at": "2026-11-07T17:06:40.608282+00:00"
   },
   "b0e8d8ed673966e482c62a586d300620ca50647526e74dd924fb1484366f3186": {
     "raw": {
@@ -806975,12 +806975,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:26:07.335285+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "official_news_requires_primary_enforcement_review",
     "classification_watermark": "2026-11-05T18:39:44.225147+00:00",
     "deferred_detail": "official_news_requires_primary_enforcement_review",
-    "updated_at": "2026-11-07T06:48:55.971743+00:00",
-    "retry_at": "2026-11-07T08:48:55.971757+00:00"
+    "updated_at": "2026-11-07T13:06:46.149504+00:00",
+    "retry_at": "2026-11-07T17:06:46.149524+00:00"
   },
   "c456f2f33e9b989648e8ae017416151c16b748e9eacd5d036a90ece0ad877417": {
     "raw": {
@@ -886448,12 +886448,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:26:59.975034+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "df_analysis_deferred",
     "classification_watermark": "2026-11-05T18:40:43.908838+00:00",
     "deferred_detail": "DF pendiente de evaluación IA",
-    "updated_at": "2026-11-07T06:52:35.070117+00:00",
-    "retry_at": "2026-11-07T08:52:35.070123+00:00"
+    "updated_at": "2026-11-07T13:07:26.496824+00:00",
+    "retry_at": "2026-11-07T17:07:26.496829+00:00"
   },
   "ad67cf3ada17c25faafc2adc508b4d53db9862c85122ea1646e6bab16c28d72a": {
     "raw": {
@@ -887602,13 +887602,21 @@
           "requested_at": "2026-11-07T06:54:10.380464+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "4536394b41d2c2144e91c4e1ce08aef5dc27ae6bb98e1f9ee372a413a3284ae1",
-          "attempts": 1,
+          "attempts": 2,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
           "history": [
             {
               "requested_at": "2026-11-07T06:54:10.380464+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-07T13:07:44.551779+00:00",
               "outcome": "failed_unbilled",
               "error_type": "RateLimitError",
               "response_id": null,
@@ -887637,12 +887645,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T06:54:11.013627+00:00",
-    "retry_at": "2026-11-07T08:54:11.013634+00:00"
+    "updated_at": "2026-11-07T13:07:45.018608+00:00",
+    "retry_at": "2026-11-07T17:07:45.018613+00:00"
   },
   "fb2992065b8cda697e2c4f096f6b7f85d241e2f123d9f1ebe437e207b54af077": {
     "raw": {
@@ -888063,13 +888071,21 @@
           "requested_at": "2026-11-07T06:52:43.784594+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "903665c97d29aa82428a0f731fa41af2a4d91ec40cc06c160bcc52351eb0d9bd",
-          "attempts": 1,
+          "attempts": 2,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
           "history": [
             {
               "requested_at": "2026-11-07T06:52:43.784594+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-07T13:07:32.095391+00:00",
               "outcome": "failed_unbilled",
               "error_type": "RateLimitError",
               "response_id": null,
@@ -888098,12 +888114,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T06:52:44.318776+00:00",
-    "retry_at": "2026-11-07T08:52:44.318784+00:00"
+    "updated_at": "2026-11-07T13:07:33.082152+00:00",
+    "retry_at": "2026-11-07T17:07:33.082158+00:00"
   },
   "aa16fd4d52b3274d87a83dd6cc78cb3d8f8f43e319199abeb85cfd388616fad8": {
     "raw": {
@@ -889427,13 +889443,21 @@
           "requested_at": "2026-11-07T06:55:45.513499+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "aa9c7cb5176d5aa71cc1ca273ec459f220820dc90fa8e7ff95ea691bddd1b475",
-          "attempts": 1,
+          "attempts": 2,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
           "history": [
             {
               "requested_at": "2026-11-07T06:55:45.513499+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-07T13:07:50.479871+00:00",
               "outcome": "failed_unbilled",
               "error_type": "RateLimitError",
               "response_id": null,
@@ -889462,12 +889486,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T06:55:46.029735+00:00",
-    "retry_at": "2026-11-07T08:55:46.029742+00:00"
+    "updated_at": "2026-11-07T13:07:50.964863+00:00",
+    "retry_at": "2026-11-07T17:07:50.964869+00:00"
   },
   "df1501f7ca72992ce78bf910e5a19011f27a3baa31b0685252007acbb9f99e2d": {
     "raw": {
@@ -889609,13 +889633,21 @@
           "requested_at": "2026-11-07T06:55:54.578854+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "ee115a1dfa0cdb7d292969dfa639d8f498f71cb0507d46d9dbab722b4f4b60f6",
-          "attempts": 1,
+          "attempts": 2,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
           "history": [
             {
               "requested_at": "2026-11-07T06:55:54.578854+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-07T13:07:56.095812+00:00",
               "outcome": "failed_unbilled",
               "error_type": "RateLimitError",
               "response_id": null,
@@ -889644,12 +889676,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T06:55:55.051844+00:00",
-    "retry_at": "2026-11-07T08:55:55.051852+00:00"
+    "updated_at": "2026-11-07T13:07:56.838228+00:00",
+    "retry_at": "2026-11-07T17:07:56.838233+00:00"
   },
   "7dea36ff6b52c4b3aa489235cd90285963d7c006fa7629653f70afe7e3721369": {
     "raw": {
@@ -890398,12 +890430,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T06:59:04.252961+00:00",
-    "retry_at": "2026-11-07T08:59:04.252969+00:00"
+    "updated_at": "2026-11-07T13:08:02.178585+00:00",
+    "retry_at": "2026-11-07T17:08:02.178591+00:00"
   },
   "faf2f607476bd9e7eae8675f5cc30e842238b568ad43afe3ad4645863edcde49": {
     "raw": {
@@ -891297,12 +891329,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_sponsored_content_review_required",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_sponsored_content_review_required",
-    "updated_at": "2026-11-07T06:59:13.002149+00:00",
-    "retry_at": "2026-11-07T08:59:13.002155+00:00"
+    "updated_at": "2026-11-07T13:08:07.513141+00:00",
+    "retry_at": "2026-11-07T17:08:07.513148+00:00"
   },
   "21ef72113a75b64e483c05ec2226f658bc592b08372348db87d175a183d51386": {
     "raw": {
@@ -891564,12 +891596,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T06:59:21.492983+00:00",
-    "retry_at": "2026-11-07T08:59:21.492991+00:00"
+    "updated_at": "2026-11-07T13:08:12.832851+00:00",
+    "retry_at": "2026-11-07T17:08:12.832858+00:00"
   },
   "2dc848f93b7e83d23cda3c3af1fd4c298d8cf53b1616f9ce2ca76f5015a405ae": {
     "raw": {
@@ -891689,12 +891721,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T06:59:30.032208+00:00",
-    "retry_at": "2026-11-07T08:59:30.032215+00:00"
+    "updated_at": "2026-11-07T13:08:17.996088+00:00",
+    "retry_at": "2026-11-07T17:08:17.996094+00:00"
   },
   "1cb38d23921a4d79d4a55f733c17e651972b3e6dfcee581e5b4b098f2695b3a6": {
     "raw": {
@@ -891817,12 +891849,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T06:59:38.517819+00:00",
-    "retry_at": "2026-11-07T08:59:38.517826+00:00"
+    "updated_at": "2026-11-07T13:08:23.283987+00:00",
+    "retry_at": "2026-11-07T17:08:23.283994+00:00"
   },
   "f0163dc152699023a904c84b9a7b3aeef2d8258b0da23d6ff2db0c090628357d": {
     "raw": {
@@ -891943,12 +891975,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T06:59:47.204504+00:00",
-    "retry_at": "2026-11-07T08:59:47.204512+00:00"
+    "updated_at": "2026-11-07T13:08:28.630604+00:00",
+    "retry_at": "2026-11-07T17:08:28.630611+00:00"
   },
   "28595cb48a448396873cc5d218bec808f2a1fea57b8664c2bc1935855a46113b": {
     "raw": {
@@ -892071,12 +892103,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T06:59:55.698178+00:00",
-    "retry_at": "2026-11-07T08:59:55.698185+00:00"
+    "updated_at": "2026-11-07T13:08:34.177931+00:00",
+    "retry_at": "2026-11-07T17:08:34.177937+00:00"
   },
   "128b69d5127e7ee78d736f5cd39841ae523b42e8eec99237ab4b18ef2ee90fb8": {
     "raw": {
@@ -893110,13 +893142,21 @@
           "requested_at": "2026-11-07T06:53:01.503641+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "10560867941e39f99c3fd9d84359b0f000524f244052be64a5b5c816ef707538",
-          "attempts": 1,
+          "attempts": 2,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
           "history": [
             {
               "requested_at": "2026-11-07T06:53:01.503641+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-07T13:07:38.596698+00:00",
               "outcome": "failed_unbilled",
               "error_type": "RateLimitError",
               "response_id": null,
@@ -893145,12 +893185,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T06:53:01.902081+00:00",
-    "retry_at": "2026-11-07T08:53:01.902088+00:00"
+    "updated_at": "2026-11-07T13:07:38.992892+00:00",
+    "retry_at": "2026-11-07T17:07:38.992897+00:00"
   },
   "24b3d67230ed5f9dd04a51e51e88fd939320642ee422187e39c29c5a8ecce0ce": {
     "raw": {
@@ -893863,12 +893903,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T07:00:04.241138+00:00",
-    "retry_at": "2026-11-07T09:00:04.241144+00:00"
+    "updated_at": "2026-11-07T13:08:39.564491+00:00",
+    "retry_at": "2026-11-07T17:08:39.564498+00:00"
   },
   "d0e8bc48753357d7c32203977b50366897bb2ca94eee0672fe1a544497412e15": {
     "raw": {
@@ -894298,12 +894338,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_conflicting_publication_dates",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_conflicting_publication_dates",
-    "updated_at": "2026-11-07T07:00:12.947240+00:00",
-    "retry_at": "2026-11-07T09:00:12.947250+00:00"
+    "updated_at": "2026-11-07T13:08:45.261432+00:00",
+    "retry_at": "2026-11-07T17:08:45.261443+00:00"
   },
   "95baff8a074823c434a10c4b3fb654005eb1f6de416c306205787ac8e59cf80b": {
     "raw": {
@@ -894429,12 +894469,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_conflicting_publication_dates",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_conflicting_publication_dates",
-    "updated_at": "2026-11-07T07:00:21.521509+00:00",
-    "retry_at": "2026-11-07T09:00:21.521518+00:00"
+    "updated_at": "2026-11-07T13:08:50.805320+00:00",
+    "retry_at": "2026-11-07T17:08:50.805330+00:00"
   },
   "fcf2879e1b8da562a80f85401dc3c0622bd4ef48fa9a2d244772510e89b6de3a": {
     "raw": {
@@ -894460,12 +894500,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:30:32.083606+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "Diario Oficial pendiente de evaluación IA",
     "classification_watermark": "2026-11-05T18:44:49.887325+00:00",
     "deferred_detail": "Diario Oficial pendiente de evaluación IA",
-    "updated_at": "2026-11-07T06:49:08.218027+00:00",
-    "retry_at": "2026-11-07T08:49:08.218034+00:00"
+    "updated_at": "2026-11-07T13:06:56.344237+00:00",
+    "retry_at": "2026-11-07T17:06:56.344243+00:00"
   },
   "24d076584e48e657dfbc153d2ebde3fdceccb857ed268669ae9911138852187e": {
     "raw": {
@@ -894491,12 +894531,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:30:32.083606+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "Diario Oficial pendiente de evaluación IA",
     "classification_watermark": "2026-11-05T18:44:49.887325+00:00",
     "deferred_detail": "Diario Oficial pendiente de evaluación IA",
-    "updated_at": "2026-11-07T06:49:18.258932+00:00",
-    "retry_at": "2026-11-07T08:49:18.258939+00:00"
+    "updated_at": "2026-11-07T13:07:03.751985+00:00",
+    "retry_at": "2026-11-07T17:07:03.751992+00:00"
   },
   "3772182bb93bd1e0e88aa01bc12c8dc1c935ea3b29409c616503bfed8ea041f4": {
     "raw": {
@@ -894522,12 +894562,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:30:32.083606+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "Diario Oficial pendiente de evaluación IA",
     "classification_watermark": "2026-11-05T18:44:49.887325+00:00",
     "deferred_detail": "Diario Oficial pendiente de evaluación IA",
-    "updated_at": "2026-11-07T06:49:28.186888+00:00",
-    "retry_at": "2026-11-07T08:49:28.186896+00:00"
+    "updated_at": "2026-11-07T13:07:12.536701+00:00",
+    "retry_at": "2026-11-07T17:07:12.536707+00:00"
   },
   "c74f4d7a20bd6116769dde33a62dbcb82667df2a9260883d5c06f5f16d463b4f": {
     "raw": {
@@ -894553,11 +894593,11 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:30:32.083606+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "Diario Oficial pendiente de evaluación IA",
     "classification_watermark": "2026-11-05T18:44:49.887325+00:00",
     "deferred_detail": "Diario Oficial pendiente de evaluación IA",
-    "updated_at": "2026-11-07T06:49:40.443487+00:00",
-    "retry_at": "2026-11-07T08:49:40.443494+00:00"
+    "updated_at": "2026-11-07T13:07:19.578381+00:00",
+    "retry_at": "2026-11-07T17:07:19.578388+00:00"
   }
 }
