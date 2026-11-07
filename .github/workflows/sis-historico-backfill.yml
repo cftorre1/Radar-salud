@@ -1,0 +1,104 @@
+name: SIS historico backfill
+
+# Dirección 6-nov-2026 aprobó el backfill histórico de Prestaciones Bonificadas 2021t1-2026t3. Primero 2025t1-2026t3
+# (job "prioritario"), después el resto. Cada bloque descarga además el trimestre anterior como calentamiento en memoria.
+# Cada trimestre commitea sólo agregados y recibos en data/sis_open_data_history/<q>/ apenas termina. Los identificadores
+# cifrados viven sólo en memoria. Reanudable: un trimestre con recibo de la versión actual no se reprocesa.
+on:
+  push:
+    branches: [claude/sis-historico]
+    paths:
+      - .github/workflows/sis-historico-backfill.yml
+      - scripts/sis_historico_backfill.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sis-historico-backfill-${{ github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  HIST_COMMIT: "1"
+
+jobs:
+  tests:
+    if: github.ref_name != 'main' && github.ref_name != 'production-stable' && github.ref_name != 'staging'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install -q pytest && python -m pytest -q -p no:cacheprovider --noconftest tests/test_sis_historico.py tests/test_aggregate_sis_open_data.py
+
+  prioritario:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        block: ["2026t1..2026t3", "2025t1..2025t4"]
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.ref_name }}'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Agregar bloque ${{ matrix.block }}
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          python scripts/sis_historico_backfill.py --quarters "${{ matrix.block }}"
+      - name: Guardia - sólo JSON pequeños
+        if: always()
+        run: |
+          if find data/sis_open_data_history -type f ! -name '*.json' | grep -q .; then echo "archivo no JSON"; exit 1; fi
+          if find data/sis_open_data_history -type f -size +40M | grep -q .; then echo "archivo demasiado grande"; exit 1; fi
+
+  resto:
+    needs: [tests, prioritario]
+    if: always() && needs.tests.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        block: ["2024t1..2024t4", "2023t1..2023t4", "2022t1..2022t4", "2021t1..2021t4"]
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.ref_name }}'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Agregar bloque ${{ matrix.block }}
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          python scripts/sis_historico_backfill.py --quarters "${{ matrix.block }}"
+      - name: Guardia - sólo JSON pequeños
+        if: always()
+        run: |
+          if find data/sis_open_data_history -type f ! -name '*.json' | grep -q .; then echo "archivo no JSON"; exit 1; fi
+          if find data/sis_open_data_history -type f -size +40M | grep -q .; then echo "archivo demasiado grande"; exit 1; fi
+
+
+  resumen:
+    needs: [prioritario, resto]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.ref_name }}'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Resumen interanual desde los agregados publicados
+        run: |
+          git pull -q origin "${GITHUB_REF_NAME}"
+          python scripts/sis_historico_resumen.py
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/sis_open_data_history/resumen_interanual.json
+          git commit -m "Resumen interanual histórico SIS, run ${GITHUB_RUN_ID}" || exit 0
+          for i in 1 2 3 4 5 6; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep $((i*10)); done; exit 1

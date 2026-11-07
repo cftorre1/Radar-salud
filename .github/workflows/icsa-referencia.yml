@@ -1,0 +1,34 @@
+name: ICSA referencia oficial
+
+# Dirección 6-nov-2026: metodología y resultados oficiales del ICSA (Ley 21.350) como referencia, con recibos.
+on:
+  push:
+    branches: [claude/sis-historico]
+    paths:
+      - .github/workflows/icsa-referencia.yml
+      - scripts/fetch_icsa_reference.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    if: github.ref_name != 'main' && github.ref_name != 'production-stable' && github.ref_name != 'staging'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.ref_name }}'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: sudo apt-get install -y -qq poppler-utils >/dev/null
+      - name: Descargar (robots.txt honrado)
+        run: python scripts/fetch_icsa_reference.py
+      - name: Commit
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/reference/icsa
+          git commit -m "Referencia oficial ICSA 2023-2025 (SIS) con recibos, run ${GITHUB_RUN_ID}" || exit 0
+          for i in 1 2 3 4 5 6; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep $((i*10)); done; exit 1

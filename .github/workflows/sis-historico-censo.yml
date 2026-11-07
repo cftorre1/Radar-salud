@@ -1,0 +1,69 @@
+name: SIS historico censo
+
+# Dirección 6-nov-2026: censo de todos los trimestres de Prestaciones Bonificadas y Licencias Médicas (datos abiertos SIS).
+# Por trimestre: URL, bytes, SHA-256, filas, n° de campos y huella de esquema. Cada ZIP se descarga al runner (robots.txt,
+# User-Agent del bot, tope 1 GiB), se cuenta en streaming y se borra. Sólo se commitea data/sis_open_data_history/census.json.
+on:
+  push:
+    branches: [claude/sis-historico]
+    paths:
+      - .github/workflows/sis-historico-censo.yml
+      - scripts/sis_historico_census.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sis-historico-censo-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  tests:
+    if: github.ref_name != 'main' && github.ref_name != 'production-stable' && github.ref_name != 'staging'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install -q pytest && python -m pytest -q -p no:cacheprovider --noconftest tests/test_sis_historico.py
+
+  censo:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        years: ["2026,2025", "2024,2023", "2022,2021", "2020,2019", "2018,2017", "2016"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Censo (robots.txt, tope 1 GiB, ZIP borrado tras contar)
+        run: python scripts/sis_historico_census.py run --years "${{ matrix.years }}" --out "censo_parte.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: censo-${{ strategy.job-index }}
+          path: censo_parte.json
+
+  merge:
+    needs: [tests, censo]
+    if: always() && needs.tests.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.ref_name }}'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/download-artifact@v4
+        with: {path: partes}
+      - name: Unir y commitear census.json
+        run: |
+          python scripts/sis_historico_census.py merge --out data/sis_open_data_history/census.json partes/*/censo_parte.json
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/sis_open_data_history/census.json
+          git commit -m "Censo histórico SIS (Prestaciones y Licencias), run ${GITHUB_RUN_ID}" || exit 0
+          for i in 1 2 3 4 5 6; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep $((i*10)); done; exit 1
