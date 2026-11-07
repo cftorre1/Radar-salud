@@ -52,7 +52,7 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v8"
+SCRIPT_VERSION = "sis_open_data_agg_v9"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
@@ -551,7 +551,8 @@ class PrestacionesAgg:
             return None
         return {"definicion": "en_arancel_mle = el código de la fila está en la lista oficial del Arancel MLE 2026 de "
                               "FONASA; pertenencia = campo 16 del archivo SIS", "codigos_mle": len(self.mle_codes),
-                "filas": [{"pertenencia": p, "tipo_atencion": a, "en_arancel_mle": m, "grupo_mle": g,
+                # "celdas", not "filas": the file's metadata keeps "filas" = rows read from the ZIP (v9 fix).
+                "celdas": [{"pertenencia": p, "tipo_atencion": a, "en_arancel_mle": m, "grupo_mle": g,
                            "facturado": round(v[0]), "frecuencia": round(v[1])}
                           for (p, a, m, g), v in sorted(self.funnel.items(), key=str)]}
 

@@ -229,6 +229,8 @@ def test_run_end_to_end_local_both_quarters(tmp_path):
     assert "prestaciones_2026t1_consistencia_ids.json" not in [p.name for p in (out / "2026t1").iterdir()]
     blob = "".join(p.read_text() for q in ("2026t1", "2026t2") for p in (out / q).iterdir())
     assert "SECRET" not in blob
+    fu = json.loads((out / "2026t2" / "prestaciones_2026t2_embudo_arancel_mle.json").read_text())
+    assert fu["filas"] == 6 and "celdas" in fu  # metadata row count is not overwritten by the funnel cells
     ids = json.loads((out / "2026t2" / "prestaciones_2026t2_consistencia_ids.json").read_text())
     assert ids["entre_trimestres"]["pct_overlap_sobre_actual"] == pytest.approx(33.33)
     top = json.loads((out / "2026t2" / "prestaciones_2026t2_top_codigos.json").read_text())
@@ -427,7 +429,7 @@ def test_coverage_funnel_matches_codes_against_the_mle_list():
     a = agg.PrestacionesAgg(mle_codes={"0101001"})
     a.add(prest_row(codigo="0101001", fact=800, freq=8))
     a.add(prest_row(codigo="9999901", pertenencia="Asegurador", fact=200, freq=2, atencion="Atención Hospitalaria"))
-    f = {(x["pertenencia"], x["tipo_atencion"], x["en_arancel_mle"]): x for x in a.funnel_table()["filas"]}
+    f = {(x["pertenencia"], x["tipo_atencion"], x["en_arancel_mle"]): x for x in a.funnel_table()["celdas"]}
     assert f[("Fonasa", "Ambulatorio", True)]["facturado"] == 800 and f[("Fonasa", "Ambulatorio", True)]["grupo_mle"] == "01"
     assert f[("Asegurador", "Atención Hospitalaria", False)]["frecuencia"] == 2
     assert agg.PrestacionesAgg().funnel_table() is None
