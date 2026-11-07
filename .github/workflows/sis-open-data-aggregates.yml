@@ -73,8 +73,10 @@ jobs:
           name: sis-open-data-aggregates-${{ github.run_id }}
           path: data/sis_open_data_aggregates/
       - name: Commit aggregates and receipts to the calling branch
-        # In a called workflow github.event_name is the caller's event: only push/dispatch commit unconditionally.
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || inputs.commit
+        # A direct run (push to this branch, manual dispatch) has no `commit` input: inputs.commit is null and it commits.
+        # A reusable call always has it (default false), and there github.event_name is the CALLER's event, so a
+        # push- or dispatch-started caller must not commit unless it passes commit: true (review of PR #152).
+        if: inputs.commit || (inputs.commit == null && (github.event_name == 'push' || github.event_name == 'workflow_dispatch'))
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"

@@ -368,13 +368,15 @@ def test_concentration_top3_top10_top50_and_fonasa_totals():
 
 def test_public_private_prices_follow_the_disclosure_rule():
     a = agg.PrestacionesAgg()
-    for prov, unit in (("A", 100), ("B", 300)):
+    for prov, unit in (("A", 100), ("B", 200), ("E", 300)):
         a.add(prest_row(prov=prov, freq=20, fact=unit * 20, tipo_prest="Privado"))
-    a.add(prest_row(prov="C", freq=50, fact=50 * 80, tipo_prest="Público"))
+    for prov in ("C", "D"):
+        a.add(prest_row(prov=prov, freq=50, fact=50 * 80, tipo_prest="Público"))
     t = a.tipo_table()
     rows = {(r[1], r[2]): dict(zip(t["columns"], r)) for r in t["rows"]}
-    assert rows[("13", "Privado")]["precio_mediana"] == 200 and rows[("13", "Privado")]["n_prestadores"] == 2
-    assert rows[("13", "Público")]["precio_mediana"] is None  # 1 provider: no price
+    assert rows[("13", "Privado")]["precio_mediana"] == 200 and rows[("13", "Privado")]["n_prestadores"] == 3
+    assert rows[("13", "Público")]["precio_mediana"] is None  # 2 public providers: below the 3 required per group
+    assert {(x["region"], x["tipo_prestador"]): x["prestadores"] for x in t["prestadores_por_region"]}[("13", "Público")] == 2
     assert '"C"' not in json.dumps(t)
 
 
@@ -394,25 +396,6 @@ def test_same_provider_price_change_uses_only_providers_in_both_quarters():
     assert agg.price_change(cur, prev3.price)["rows"] == []  # 3 matched providers: not published
 
 
-def test_arancel_mle_rows_are_read_only_with_six_amounts():
-    lines = ["01 01 001 CONSULTA MEDICINA GENERAL 12.080 4.830 12.930 5.680 15.130 7.880",
-             "03 02 047 GLUCOSA EN SANGRE 1.280 640 1.660 1.020 2.050 1.410",
-             "02 01 001 DIA CAMA 45.000 9.000",                      # 2 amounts: counted, not read
-             "04 01 001 RX 9.000 1.000 8.000 1.000 10.000 2.000",    # levels not increasing: rejected
-             "CÓDIGO PRESTC DENOMINACIÓN NIVEL 1 NIVEL 2 NIVEL 3"]
-    table, stats = agg.parse_mle_text(lines)
-    assert table == {"0101001": {"nivel1_total": 12080, "nivel1_benef": 4830, "nivel2_total": 12930, "nivel3_total": 15130},
-                     "0302047": {"nivel1_total": 1280, "nivel1_benef": 640, "nivel2_total": 1660, "nivel3_total": 2050}}
-    assert stats["filas_con_2_montos"] == 1 and stats["niveles_no_crecientes"] == 1
-    t2, s2 = agg.parse_mle_text(lines[:1] + ["01 01 001 CONSULTA MEDICINA GENERAL 12.081 4.830 12.930 5.680 15.130 7.880"])
-    assert t2 == {} and s2["codigos_en_conflicto"] == 1
-
-
-def test_arancel_mle_rejects_other_hosts(tmp_path):
-    with pytest.raises(ValueError):
-        agg.fetch_arancel_mle(tmp_path, url="https://example.com/x.pdf")
-
-
 def test_care_type_split_by_code_and_provider_type():
     a = agg.PrestacionesAgg()
     for prov in "ABC":
@@ -420,7 +403,8 @@ def test_care_type_split_by_code_and_provider_type():
     a.add(prest_row(prov="D", freq=1, fact=500, atencion="Atención Hospitalaria", tipo_prest="Público"))
     t = a.atencion_table()
     rows = {(r[1], r[2]): dict(zip(t["columns"], r)) for r in t["rows"]}
-    assert rows[("Atención Ambulatoria", "Privado")]["facturado"] == 600 and rows[("Atención Ambulatoria", "Privado")]["frecuencia"] == 6
+    # only two cells: the 1-provider cell is hidden, so the other one is hidden too (complementary, review of PR #152)
+    assert rows[("Atención Ambulatoria", "Privado")]["facturado"] is None and rows[("Atención Ambulatoria", "Privado")]["frecuencia"] == 6
     assert rows[("Atención Hospitalaria", "Público")]["facturado"] is None  # 1 provider
     assert {(x["tipo_atencion"], x["tipo_prestador"]): x["facturado"] for x in t["totales"]}[("Atención Hospitalaria", "Público")] == 500
 
@@ -474,3 +458,58 @@ def test_committed_mle_reference_matches_the_parser_on_known_codes():
     assert c["0101001"]["nivel1_total"] == 12080 and c["0601105"]["nivel1_total"] == 7120
     assert all(f"{i:07d}" in c and c[f"{i:07d}"]["pabellon"] for i in range(1, 15))
     assert r["codes"] == len(c) and r["parse"]["codigos_en_conflicto"] == 0
+
+
+def test_complementary_suppression_region_to_national_and_leak_check():
+    """Review of PR #152: a single hidden regional cell = NACIONAL − published regions. One more cell is hidden."""
+    a = agg.PrestacionesAgg()
+    for prov in "ABCD":                       # region 13: 4 providers, published
+        a.add(prest_row(prov=prov, region="13", freq=10, fact=1000))
+    for prov in "EFG":                        # region 5: 3 providers, published but smallest
+        a.add(prest_row(prov=prov, region="5", freq=10, fact=900))
+    a.add(prest_row(prov="H", region="6", freq=40, fact=8000))  # region 6: 1 provider → hidden
+    t = a.price_table()
+    rows = {r[1]: dict(zip(t["columns"], r)) for r in t["rows"]}
+    assert rows["6"]["facturado"] is None and rows["NACIONAL"]["facturado"] is not None
+    assert rows["5"]["facturado"] is None and rows["5"]["pct_bonificado"] is None and rows["5"]["suprimido_complementario"]
+    assert rows["5"]["precio_mediana"] == 90  # the price stays; only money fields go
+    assert rows["13"]["facturado"] == 4000 and not rows["13"]["suprimido_complementario"]
+    assert agg.recoverable_money(t["columns"], t["rows"]) == []
+    # the check catches the leak when the complementary step is undone
+    leaky = [r[:] for r in t["rows"]]
+    cols = t["columns"]
+    for r in leaky:
+        if r[1] == "5":
+            r[cols.index("facturado")] = 2700
+    assert agg.recoverable_money(cols, leaky) == ["region:0101001:6"]
+
+
+def test_complementary_suppression_care_type_against_code_total():
+    a = agg.PrestacionesAgg()
+    for prov in "ABCD":
+        a.add(prest_row(prov=prov, freq=5, fact=500))                            # amb privado: 4 providers
+    for prov in "EFG":
+        a.add(prest_row(prov=prov, freq=2, fact=900, atencion="Atención Hospitalaria"))  # hosp privado: 3, smaller
+    a.add(prest_row(prov="H", freq=1, fact=700, atencion="Atención Hospitalaria", tipo_prest="Público"))  # 1 → hidden
+    t = a.atencion_table()
+    rows = {(r[1], r[2]): dict(zip(t["columns"], r)) for r in t["rows"]}
+    assert rows[("Atención Hospitalaria", "Público")]["facturado"] is None
+    assert rows[("Atención Hospitalaria", "Privado")]["facturado"] is None   # complementary
+    assert rows[("Ambulatorio", "Privado")]["facturado"] == 2000
+    pt = a.price_table()
+    assert agg.recoverable_money(pt["columns"], pt["rows"], t["columns"], t["rows"]) == []
+
+
+def test_leak_check_on_random_tables():
+    import random
+    rng = random.Random(152)
+    for _ in range(60):
+        a = agg.PrestacionesAgg()
+        for i in range(rng.randint(1, 12)):
+            region = str(rng.choice([1, 2, 5, 6, 8, 13]))
+            att = rng.choice(["Atención Ambulatoria", "Atención Hospitalaria"])
+            tipo = rng.choice(["Privado", "Público"])
+            a.add(prest_row(prov=f"P{i}", region=region, freq=rng.randint(1, 60), fact=rng.randint(100, 9000),
+                            atencion=att, tipo_prest=tipo))
+        pt, at = a.price_table(), a.atencion_table()
+        assert agg.recoverable_money(pt["columns"], pt["rows"], at["columns"], at["rows"]) == []

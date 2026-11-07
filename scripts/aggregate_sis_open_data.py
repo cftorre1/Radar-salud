@@ -52,7 +52,7 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v9"
+SCRIPT_VERSION = "sis_open_data_agg_v10"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
@@ -61,7 +61,7 @@ CROSS_CODE_MIN_PROVIDERS = 3  # per-code detail of the same-provider index
 CROSS_MIN_FREQ = 10       # same-provider index: an Isapre enters a provider x code cell only with >= 10 frecuencia
 TOP_CODES = 100           # most-billed Fonasa codes (national frecuencia) with totals and Arancel Isapre description
 CHANGE_MIN_PROVIDERS = 4  # same-provider price change of a code x region: >= 4 providers present in both quarters
-TIPO_MIN_PROVIDERS = 2    # public/private price cell: same disclosure rule as prices (>= 2 providers, >= 30 frecuencia)
+TIPO_MIN_PROVIDERS = 3    # public/private price cell: >= 3 providers in the group (review of PR #152) and >= 30 frecuencia
 LIC_MIN_CELL = 10
 PROFILE_MIN_COUNT = 10    # a profile value is listed only when it appears in >= 10 rows
 NO_PROVIDER = ("", "0")
@@ -291,6 +291,53 @@ def suppressed_count(n: int) -> dict:
     return {"licencias_en_celdas_suprimidas": n}
 
 
+MONEY_FIELDS = ("facturado", "pct_bonificado", "pct_copago")
+
+
+def complementary_money(children: dict, freq: dict) -> set:
+    """Children (keys) whose money fields must also be hidden so that no hidden child can be recovered as parent total
+    minus the published siblings (review of PR #152). ``children`` maps key → True when its money is hidden. While
+    exactly one child is hidden and another is published, the published child with the least frecuencia is hidden too."""
+    extra: set = set()
+    hidden = {k for k, h in children.items() if h}
+    while len(hidden) == 1 and len(hidden) < len(children):
+        pick = min((k for k in children if k not in hidden), key=lambda k: (freq[k], str(k)))
+        hidden.add(pick)
+        extra.add(pick)
+    return extra
+
+
+def recoverable_money(price_cols: list, price_rows: list, att_cols: list | None = None, att_rows: list | None = None) -> list[str]:
+    """Leak check (review of PR #152): a hidden money cell is recoverable when it is the only hidden child of a
+    published total. Region cells → the code's NACIONAL row; atencion_codigo rows → the code's NACIONAL facturado.
+    Returns one entry per recoverable cell."""
+    out = []
+    by: dict[str, dict] = defaultdict(dict)
+    for raw in price_rows:
+        d = dict(zip(price_cols, raw))
+        by[d["codigo_prestacion"]][d["region"]] = d
+    for code, regs in by.items():
+        nat = regs.get("NACIONAL")
+        if not nat or nat.get("facturado") is None:
+            continue
+        kids = [r for r in regs if r != "NACIONAL"]
+        hidden = [r for r in kids if regs[r].get("facturado") is None]
+        if len(hidden) == 1 and len(kids) > 1:
+            out.append(f"region:{code}:{hidden[0]}")
+    if att_rows is not None:
+        ab: dict[str, list] = defaultdict(list)
+        for raw in att_rows:
+            d = dict(zip(att_cols, raw))
+            ab[d["codigo_prestacion"]].append(d)
+        for code, kids in ab.items():
+            hidden = [k for k in kids if k.get("facturado") is None]
+            # The code total is published as soon as any total of the code is (NACIONAL price row, top codes): treat
+            # every code as having a published parent, so one hidden row alone is always a leak.
+            if len(hidden) == 1 and len(kids) > 1:
+                out.append(f"atencion:{code}:{hidden[0]['tipo_atencion']}:{hidden[0]['tipo_prestador']}")
+    return out
+
+
 class PrestacionesAgg:
     def __init__(self, ids_only: bool = False, mle_codes: Iterable[str] | None = None):
         self.ids_only = ids_only
@@ -424,17 +471,31 @@ class PrestacionesAgg:
 
     PRICE_COLS = ["codigo_prestacion", "region", "estado", "n_prestadores", "frecuencia", "facturado",
                   "precio_mediana", "precio_p25", "precio_p75", "share_prestador_mayor_pct", "pct_bonificado",
-                  "pct_copago"]
+                  "pct_copago", "suprimido_complementario"]
 
     def price_table(self) -> dict:
         rows, status, status_freq = [], Counter(), Counter()
-        for (codigo, region), lst in sorted(self._cells().items()):
-            d = self.disclose(lst)
-            rows.append([codigo, region] + [d[c] for c in self.PRICE_COLS[2:]])
-            key = (d["estado"], region == "NACIONAL")
-            status[key] += 1
-            status_freq[key] += d["frecuencia"]
-        return {"regla": {"version": "precio_v4_iqr4",
+        by_code: dict[str, dict] = defaultdict(dict)
+        for (codigo, region), lst in self._cells().items():
+            by_code[codigo][region] = {**self.disclose(lst), "suprimido_complementario": False}
+        # Complementary suppression region → NACIONAL: national money is the sum of the regions, so a single hidden
+        # regional cell would be national minus the published others (review of PR #152).
+        for codigo, regs in by_code.items():
+            if (regs.get("NACIONAL") or {}).get("facturado") is None:
+                continue
+            kids = {rg: d["facturado"] is None for rg, d in regs.items() if rg != "NACIONAL"}
+            for rg in complementary_money(kids, {x: regs[x]["frecuencia"] for x in kids}):
+                regs[rg].update({f: None for f in MONEY_FIELDS}, suprimido_complementario=True)
+        for codigo in sorted(by_code):
+            for region in sorted(by_code[codigo]):
+                d = by_code[codigo][region]
+                rows.append([codigo, region] + [d[c] for c in self.PRICE_COLS[2:]])
+                key = (d["estado"], region == "NACIONAL")
+                status[key] += 1
+                status_freq[key] += d["frecuencia"]
+        return {"regla": {"version": "precio_v5_complementaria",
+                          "complementaria": "si en un código queda una sola celda regional sin montos, también se ocultan "
+                                            "los montos de la celda publicada con menos frecuencia (suprimido_complementario)",
                           "publicable": f">= {PRICE_MIN_PROVIDERS} prestadores distintos Y >= {PRICE_MIN_FREQ} "
                                         "frecuencia: mediana del precio unitario (facturado/frecuencia por prestador, "
                                         f"no ponderada); p25-p75 sólo con >= {IQR_MIN_PROVIDERS} prestadores",
@@ -572,9 +633,17 @@ class PrestacionesAgg:
             t = tot[(att, tipo)]
             t[0] += freq; t[1] += fact
         cols = ["codigo_prestacion", "tipo_atencion", "tipo_prestador", "n_prestadores", "frecuencia", "facturado"]
-        rows = [[c, a, t, v[2], round(v[0]), round(v[1]) if v[2] >= IQR_MIN_PROVIDERS - 1 else None]
+        hid = {key: v[2] < IQR_MIN_PROVIDERS - 1 for key, v in cells.items()}
+        by_code: dict[str, dict] = defaultdict(dict)
+        for key in cells:
+            by_code[key[0]][key] = hid[key]
+        for code, kids in by_code.items():  # complementary suppression against the code total (review of PR #152)
+            for key in complementary_money(kids, {x: cells[x][0] for x in kids}):
+                hid[key] = True
+        rows = [[c, a, t, v[2], round(v[0]), None if hid[(c, a, t)] else round(v[1])]
                 for (c, a, t), v in sorted(cells.items())]
-        return {"regla": "facturado por código sólo con >= 3 prestadores; totales del sistema sin supresión",
+        return {"regla": "facturado por código sólo con >= 3 prestadores y supresión complementaria contra el total del "
+                         "código; totales del sistema sin supresión",
                 "totales": [{"tipo_atencion": a, "tipo_prestador": t, "frecuencia": round(v[0]), "facturado": round(v[1])}
                             for (a, t), v in sorted(tot.items())],
                 "columns": cols, "rows": rows}
@@ -594,12 +663,18 @@ class PrestacionesAgg:
             if freq > 0 and fact > 0:
                 cells[(codigo, "NACIONAL", tipo)].append((fact / freq, freq))
         cols = ["codigo_prestacion", "region", "tipo_prestador", "n_prestadores", "frecuencia", "precio_mediana"]
+        provs: dict[tuple, set] = defaultdict(set)
+        for (codigo, region, tipo, prov), (fact, freq) in self.tipo_price.items():
+            if freq > 0 and fact > 0:
+                provs[(region, tipo)].add(prov)
         rows = []
         for (codigo, region, tipo), lst in sorted(cells.items()):
             n, freq = len(lst), sum(x[1] for x in lst)
             ok = n >= TIPO_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ
             rows.append([codigo, region, tipo, n, round(freq), r(quantile(sorted(x[0] for x in lst), .5), 0) if ok else None])
-        return {"regla": f"mediana con >= {TIPO_MIN_PROVIDERS} prestadores y >= {PRICE_MIN_FREQ} frecuencia; si no, nula",
+        return {"regla": f"mediana con >= {TIPO_MIN_PROVIDERS} prestadores del grupo y >= {PRICE_MIN_FREQ} frecuencia; si no, nula",
+                "prestadores_por_region": [{"region": rg, "tipo_prestador": t, "prestadores": len(v)}
+                                           for (rg, t), v in sorted(provs.items())],
                 "columns": cols, "rows": rows}
 
     def id_summary(self) -> dict:
@@ -998,76 +1073,6 @@ DATASETS = (("Prestaciones Bonificadas", "prest"), ("Licencias Medicas", "lic"))
 
 
 MLE_REFERENCE = Path(__file__).resolve().parents[1] / "data" / "reference" / "fonasa_mle_2026.json"
-MLE_PAGE_HOSTS = ("www.fonasa.gob.cl", "nuevo.fonasa.gob.cl")
-MLE_URL = "https://www.fonasa.gob.cl/wp-content/uploads/sites/3/2026/03/1-Libro-Arancel-MLE-2026.pdf"
-MLE_ROW = re.compile(r"^\s*(\d{2})\s+(\d{2})\s+(\d{3})\s+(.*?)((?:\s+\d{1,3}(?:\.\d{3})*){2,6})\s*$")
-
-
-def parse_mle_text(lines: Iterable[str]) -> tuple[dict, dict]:
-    """Code → values from the text of FONASA's 'Libro Arancel MLE' (columns: código en tres partes, denominación, and
-    for nivel 1, 2 and 3 the TOTAL value and the beneficiary's part). Only rows with exactly 6 trailing amounts are
-    read; nivel 1 TOTAL is the reference value. Anything else is counted, never guessed. A code read twice with
-    different values is dropped and recorded."""
-    out: dict[str, dict] = {}
-    conflicts, stats = set(), Counter()
-    for line in lines:
-        m = MLE_ROW.match(line)
-        if not m:
-            continue
-        nums = [int(x.replace(".", "")) for x in m.group(5).split()]
-        code = m.group(1) + m.group(2) + m.group(3)
-        if len(nums) != 6:
-            stats[f"filas_con_{len(nums)}_montos"] += 1
-            continue
-        v = {"nivel1_total": nums[0], "nivel1_benef": nums[1], "nivel2_total": nums[2], "nivel3_total": nums[4]}
-        if not (0 < nums[0] <= nums[2] <= nums[4]):
-            stats["niveles_no_crecientes"] += 1
-            continue
-        if code in out and out[code] != v:
-            conflicts.add(code)
-        out[code] = v
-        stats["filas_leidas"] += 1
-    for c in conflicts:
-        out.pop(c, None)
-    stats["codigos_en_conflicto"] = len(conflicts)
-    return out, dict(stats)
-
-
-def fetch_arancel_mle(out_dir: Path, url: str = MLE_URL, local: Path | None = None) -> dict:
-    """Downloads FONASA's Arancel MLE 2026 (robots.txt honoured, 1 GiB cap), parses it with pypdf and writes only the
-    code → value table and its receipt (URL, bytes, SHA-256, date, pages, rows). The PDF is deleted."""
-    tmp = Path(tempfile.mkdtemp(prefix="mle_"))
-    rec: dict = {"dataset": "Arancel Fonasa MLE 2026", "fetched_at": datetime.now(timezone.utc).isoformat(), "user_agent": UA}
-    try:
-        if local is not None:
-            data = local.read_bytes()
-            rec.update(url=f"local:{local.name}", bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
-            pdf = local
-        else:
-            if urlparse(url).hostname not in MLE_PAGE_HOSTS or urlparse(url).scheme != "https":
-                raise ValueError("host_not_allowed")
-            pdf = tmp / "mle.pdf"
-            rec.update(download(url, pdf, MAX_FILE_BYTES))
-            if "sha256" not in rec:
-                write_json(out_dir / "receipt_arancel_mle_2026.json", rec)
-                return rec
-        from pypdf import PdfReader
-        reader = PdfReader(str(pdf))
-        lines = [ln for page in reader.pages for ln in (page.extract_text() or "").splitlines()]
-        table, stats = parse_mle_text(lines)
-        rec.update(pages=len(reader.pages), parse=stats, codigos=len(table), pypdf=__import__("pypdf").__version__)
-        write_json(out_dir / "arancel_mle_2026.json", {
-            "fuente": "FONASA, Arancel de Prestaciones de Salud año 2026, Modalidad Libre Elección (Libro Arancel MLE)",
-            "url": rec["url"], "sha256": rec["sha256"], "valor_referencia": "nivel1_total (pesos; nivel 1, valor total)",
-            "codigos": dict(sorted(table.items()))})
-    finally:
-        for f in tmp.glob("*"):
-            f.unlink()
-        tmp.rmdir()
-    write_json(out_dir / "receipt_arancel_mle_2026.json", rec)
-    return rec
-
-
 def aggregate_quarter(period: str, out: Path, fetch, drop, prev_ids: "PrestacionesAgg | None" = None,
                       prev_period: str | None = None, which: Iterable[str] = ("prestaciones", "licencias"),
                       mle_codes: Iterable[str] | None = None):
@@ -1211,17 +1216,9 @@ def main() -> None:
     ap.add_argument("--previous", default="auto", help="'auto' (the quarter before), '' (none) or yyyytq")
     ap.add_argument("--output-root", required=True, help="quarters are written to <output-root>/<quarter>/")
     ap.add_argument("--only", choices=["prestaciones", "licencias"], action="append")
-    ap.add_argument("--arancel-mle-only", action="store_true", help="only fetch and parse FONASA's Arancel MLE 2026")
     ap.add_argument("--skip-unchanged", action="store_true",
                     help="download nothing when the committed receipts still match the remote files")
     a = ap.parse_args()
-    if a.arancel_mle_only:
-        rec = fetch_arancel_mle(Path(a.output_root) / "arancel_mle")
-        print(json.dumps({k: rec.get(k) for k in ("url", "status", "bytes", "sha256", "pages", "codigos", "parse", "error", "robots")},
-                         ensure_ascii=False))
-        if not rec.get("codigos"):
-            raise SystemExit("arancel MLE not read")
-        return
     links = page_links()
     period = latest_quarter(links) if a.period == "latest" else a.period
     if not period:
