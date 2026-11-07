@@ -7,7 +7,7 @@ permissions:
   contents: read
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # The integrated suite includes immutable paid-history replays (3800+ cases). It reached ~23 min in Nov-2026 and
     # PRs #129, #130 and #131 were cancelled at 25 min with tests still passing (3-nov-2026): 45 min of headroom.
     timeout-minutes: 45
@@ -35,7 +35,7 @@ jobs:
   staging:
     needs: tests
     environment: staging
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -86,7 +86,7 @@ jobs:
             web/
   reviewer:
     needs: staging
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4

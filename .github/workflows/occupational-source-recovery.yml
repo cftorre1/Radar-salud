@@ -24,7 +24,7 @@ concurrency:
 jobs:
   public-origin-capture:
     if: github.ref == 'refs/heads/codex/e-salud-laboral-20261011'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4

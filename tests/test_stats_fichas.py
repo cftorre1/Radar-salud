@@ -1069,9 +1069,14 @@ def test_repo_snapshot_has_august_ficha_and_no_wrong_ges_finding():
     families = [s["stats_ficha"]["family"] for s in rows if s.get("stats_ficha")]
     assert len(families) == len(set(families))
     assert not any(str(s.get("title", "")).startswith("Pulso Isapre") for s in rows)
-    ges = next(s for s in rows if "casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026" in str(s.get("source_url")))
-    assert ges["data_insights"] == [] and ges["statistical_view"]["publication_status"] == "HOLD"
-    assert ges["statistical_view"]["correction"]["text"].startswith("Corregido el 28 oct:")
+    ges = next((s for s in rows if "casos-ges-auge-de-fonasa-y-sistema-isapre-a-junio-2026" in str(s.get("source_url"))), None)
+    if ges is None:
+        # POLICY.md (F4 rules): the live F4 ficha in PASS supersedes the loose GES card of the period it covers.
+        f4 = [s for s in rows if (s.get("stats_ficha") or {}).get("family") == "F4"]
+        assert len(f4) == 1 and f4[0]["stats_ficha"]["status"] == "PASS" and f4[0]["data_period"] >= "2026-06"
+    else:
+        assert ges["data_insights"] == [] and ges["statistical_view"]["publication_status"] == "HOLD"
+        assert ges["statistical_view"]["correction"]["text"].startswith("Corregido el 28 oct:")
     # The withdrawn sentence survives only inside the correction record, never in a displayed field.
     shown = json.dumps([{k: v for k, v in s.items() if k != "data_insight_meta"} for s in rows], ensure_ascii=False)
     assert "presenta el mayor volumen" not in shown
