@@ -201,14 +201,23 @@ def analyze(root: Path, cfg: dict, q: str, pq: str | None, cur: dict, prev: dict
     tp = files[f"{q}.precios_tipo_prestador"]
     tr = {(r[0], r[1], r[2]): dict(zip(tp["columns"], r)) for r in tp["rows"]}
     for w in WORLDS:
-        pairs = [(fact[c], tr[(c, r, "Público")]["precio_mediana"] / tr[(c, r, "Privado")]["precio_mediana"])
-                 for c in basket[w] for r in ALL16
-                 if (tr.get((c, r, "Público")) or {}).get("precio_mediana") and (tr.get((c, r, "Privado")) or {}).get("precio_mediana")]
+        ok = lambda c, r, t: bool((tr.get((c, r, t)) or {}).get("precio_mediana")) and tr[(c, r, t)]["n_prestadores"] >= 3  # noqa: E731
+        pairs = [(fact[c], tr[(c, r, "Público")]["precio_mediana"] / tr[(c, r, "Privado")]["precio_mediana"], r)
+                 for c in basket[w] for r in ALL16 if ok(c, r, "Público") and ok(c, r, "Privado")]
+        for r in ALL16:
+            nr = sum(1 for p in pairs if p[2] == r)
+            if nr:
+                derived(f"pubpriv.{w}.{r}.celdas", nr, "celdas", "celdas con ≥ 3 prestadores públicos y ≥ 3 privados", [f"canasta.{w}.n"])
+        pairs = [(a, b) for a, b, _ in pairs]
         if len(pairs) >= 10:
             derived(f"pubpriv.{w}.ponderado", (wavg(pairs) - 1) * 100, "%", "mediana pública / mediana privada − 1, ponderado",
                     [f"canasta.{w}.n"])
             derived(f"pubpriv.{w}.mediana", (median(x for _, x in pairs) - 1) * 100, "%", "mediana de las celdas", [f"canasta.{w}.n"])
             derived(f"pubpriv.{w}.celdas", len(pairs), "celdas", "celdas código × región con ambos precios", [f"canasta.{w}.n"])
+    for x in tp.get("prestadores_por_region") or []:
+        if x["region"] in ALL16:
+            put(f"pubpriv.prest.{x['region']}.{x['tipo_prestador']}", x["prestadores"], "prestadores", q, cur,
+                f"prestaciones_{q}_precios_tipo_prestador.json · prestadores_por_region")
     tot_tipo = {}
     for x in at.get("totales") or []:
         tot_tipo.setdefault(x["tipo_prestador"], 0)
@@ -269,6 +278,18 @@ def analyze(root: Path, cfg: dict, q: str, pq: str | None, cur: dict, prev: dict
 def _largest(values: dict, q: str, regs: list[str], n: int = 12) -> list[str]:
     """The n regions with most Isapre facturado (charts hold <= 12 rows; every region is in «Ver datos»)."""
     return sorted(regs, key=lambda r: -values.get(f"conc3.{q}.{r}.facturado_mm", {"value": 0})["value"])[:n]
+
+
+def rm_phrase(world: str, wm: float, um: float, *, first: bool, fmt: Callable) -> tuple[str, bool]:
+    """Title clause for one world vs. the Metropolitana. When the weighted and unweighted simple averages of the
+    regions agree in sign it states the weighted figure ("en promedio" on the first clause); when they differ it says
+    «mixto» and names both measures (review of PR #152). Returns (clause, measures agree)."""
+    lab = world.capitalize() if first else world
+    if (wm < 0) == (um < 0) and round(wm, 1) != 0:
+        word = "más baratas" if wm < 0 else "más caras"
+        return ((f"{lab}: regiones {fmt(abs(wm), 1)}% {word} que RM en promedio" if first
+                 else f"{lab}, {fmt(abs(wm), 1)}% {word}"), True)
+    return f"{lab}, mixto ({fmt(wm, 1, True)}% ponderado, {fmt(um, 1, True)}% sin ponderar)", False
 
 
 def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) -> dict:
@@ -382,13 +403,12 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                       "refs": [cid, f"idx.{q}.{w}.media"] + [f"idx.{q}.{w}.{r}.n" for r in regs[:1]]})
         package["values"][f"vs_rm_{w}_n"] = {**package["values"][cid], "id": f"vs_rm_{w}_n", "value": len(regs)}
         cards[-1]["refs"].append(f"vs_rm_{w}_n")
-        if k["idx_robust"][w]:
-            phrase.append(f"{WORLD_LABEL[w].capitalize()}: regiones {fmt(abs(V(f'idx.{q}.{w}.media')), 1)}% más baratas que RM en promedio")
-            drefs.append(f"idx.{q}.{w}.media")
-        else:
-            phrase.append(f"{WORLD_LABEL[w]}, sin descuento regional")
+        wm, um = V(f"idx.{q}.{w}.media"), V(f"idx.{q}.{w}.media_unw")
+        text, agree = rm_phrase(WORLD_LABEL[w], wm, um, first=not phrase, fmt=fmt)
+        phrase.append(text)
+        drefs += [f"idx.{q}.{w}.media"] + ([] if agree else [f"idx.{q}.{w}.media_unw"])
     tab = {"id": "vs-rm", "label": "Regiones vs. RM", "charts": charts, "text": [],
-           "dek": "; ".join(p if i == 0 else p[0].lower() + p[1:] for i, p in enumerate(phrase)), "dek_refs": drefs}
+           "dek": "; ".join(phrase), "dek_refs": drefs}
     topic_fields(tab, f"Ambulatorio {sg(f'idx.{q}.amb.media')} · hospitalario {sg(f'idx.{q}.hosp.media')} vs. RM, promedio",
                  index_refs=[f"idx.{q}.amb.media", f"idx.{q}.hosp.media"], kpis=cards)
     tabs.append(tab)
@@ -400,10 +420,15 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
         charts = [{"id": "f12-pub-priv", "form": "diverging", "unit": "%", "digits": 1,
                    "headline": "Mediana pública frente a la privada",
                    "subtitle": f"% de diferencia en el mismo código y región, {ql}",
-                   "rows": rows, "table": {"columns": ["Mundo y medida", "Público vs. privado", "Celdas"],
-                                           "rows": [[r["label"], fmt(r["value"], 1, True) + "%",
-                                                     fmt(V(f"pubpriv.{'amb' if r['label'].startswith('Amb') else 'hosp'}.celdas"), 0)] for r in rows]},
-                   "source": src + " Tipo de prestador según la SIS."}]
+                   "rows": rows,
+                   "table": {"columns": ["Región", "Prestadores públicos", "Prestadores privados", "Celdas amb.", "Celdas hosp."],
+                             "rows": [[R[r], fmt(V(f"pubpriv.prest.{r}.Público"), 0) if f"pubpriv.prest.{r}.Público" in v else "0",
+                                       fmt(V(f"pubpriv.prest.{r}.Privado"), 0) if f"pubpriv.prest.{r}.Privado" in v else "0",
+                                       fmt(V(f"pubpriv.amb.{r}.celdas"), 0) if f"pubpriv.amb.{r}.celdas" in v else "0",
+                                       fmt(V(f"pubpriv.hosp.{r}.celdas"), 0) if f"pubpriv.hosp.{r}.celdas" in v else "0"]
+                                      for r in ALL16 if f"pubpriv.prest.{r}.Público" in v]
+                             + [[r["label"], fmt(r["value"], 1, True) + "%", "", "", ""] for r in rows]},
+                   "source": src + " Tipo de prestador según la SIS; celdas con ≥ 3 prestadores públicos y ≥ 3 privados."}]
         tab = {"id": "publico-privado", "label": "Público y privado", "charts": charts, "text": [],
                "dek": (f"Mismo código y región, mediana pública vs. privada: ambulatorio {sg('pubpriv.amb.ponderado')} ponderado y "
                        f"{sg('pubpriv.amb.mediana')} en la mediana; hospitalario {sg('pubpriv.hosp.ponderado')} y {sg('pubpriv.hosp.mediana')}"),
@@ -422,14 +447,17 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                    "subtitle": f"% entre {so.quarter_label(pq)} y {ql}; solo prestadores presentes en ambos trimestres",
                    "rows": rows, "table": {"columns": ["Mundo y medida", "Cambio"], "rows": [[r["label"], fmt(r["value"], 1, True) + "%"] for r in rows]},
                    "source": "SIS, datos abiertos; índice de cantidades fijas del trimestre anterior y mediana de los cambios por prestador."}]
-        still = all(abs(V(f"cambio.{w}.mediana_prestador")) < 0.5 for w in WORLDS)
-        first = ("El prestador mediano no movió precios" if still else
-                 f"El prestador mediano cambió {sg('cambio.amb.mediana_prestador')} y {sg('cambio.hosp.mediana_prestador')}")
-        up = lambda w: "subió" if V(f"cambio.{w}.ponderado") > 0 else "bajó"  # noqa: E731
-        dk = (f"{first}; el promedio ponderado {up('amb')} {fmt(abs(V('cambio.amb.ponderado')), 1)}% (ambulatorio) y "
-              f"{'' if up('hosp') == up('amb') else up('hosp') + ' '}{fmt(abs(V('cambio.hosp.ponderado')), 1)}% (hospitalario)")
+        def med(w: str) -> str:
+            m = V(f"cambio.{w}.mediana_prestador")
+            return (f"no movió precios en {WORLD_LABEL[w]} ({fmt(m, 1)}%)" if round(m, 1) == 0
+                    else f"{fmt(m, 1, True)}% en {WORLD_LABEL[w]}")
+        first = f"El prestador mediano {med('amb')} y {med('hosp').replace('no movió precios en', 'sin cambio en')}"
+        if round(V("cambio.amb.mediana_prestador"), 1) != 0:
+            first = f"El prestador mediano cambió {med('amb')} y {med('hosp')}"
+        dk = f"{first}; ponderado {sg('cambio.amb.ponderado')} y {sg('cambio.hosp.ponderado')}"
+        still = False
         tab = {"id": "cambio", "label": "Cambio trimestral", "charts": charts, "text": [], "dek": dk,
-               "dek_refs": ["cambio.amb.ponderado", "cambio.hosp.ponderado"] + ([] if still else ["cambio.amb.mediana_prestador", "cambio.hosp.mediana_prestador"])}
+               "dek_refs": ["cambio.amb.ponderado", "cambio.hosp.ponderado", "cambio.amb.mediana_prestador", "cambio.hosp.mediana_prestador"]}
         topic_fields(tab, f"Ponderado: {sg('cambio.amb.ponderado')} amb. · {sg('cambio.hosp.ponderado')} hosp.",
                      index_refs=["cambio.amb.ponderado", "cambio.hosp.ponderado"], kpis=[])
         tabs.append(tab)

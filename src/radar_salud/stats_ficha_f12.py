@@ -43,7 +43,7 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_informe_v5"  # v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
+BUILDER_VERSION = "f12_informe_v6"  # v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
 DATASET = "Prestaciones Bonificadas"
 PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
 NATIONAL = "NACIONAL"
@@ -97,6 +97,8 @@ def disclosure_failures(cols: list[str], rows: list[list]) -> list[str]:
             f.append(f"price_row_counts_invalid:{tag}")
             continue
         sh = r.get("share_prestador_mayor_pct")
+        if r.get("suprimido_complementario") and any(r.get(k) is not None for k in ("facturado", "pct_bonificado", "pct_copago")):
+            f.append(f"complementary_cell_with_money:{tag}")
         if n == 2:
             # median + facturado + frecuencia + an exact share would solve both unit prices (review of PR #152)
             if sh not in SHARE_BANDS or any(r.get(k) is not None for k in ("facturado", "pct_bonificado", "pct_copago")):
@@ -146,9 +148,12 @@ def _quarter(root: Path, q: str, names: dict[str, str]) -> tuple[dict, list[str]
         if not (tot.get("facturado") or 0) > 0:
             failures.append(f"isapre_facturado_not_positive:{code}")
     cols = prices.get("columns") or []
-    if (prices.get("regla") or {}).get("version") != "precio_v4_iqr4":
+    if (prices.get("regla") or {}).get("version") != "precio_v5_complementaria":
         failures.append(f"disclosure_rule_version:{q}")
     failures += disclosure_failures(cols, prices.get("rows") or [])
+    att = files.get(f"prestaciones_{q}_atencion_codigo.json") or {}
+    failures += [f"money_cell_recoverable:{x}" for x in
+                 so.recoverable_money(cols, prices.get("rows") or [], att.get("columns"), att.get("rows"))][:20]
     cells: dict[tuple, dict] = {(r[0], r[1]): dict(zip(cols, r)) for r in prices.get("rows") or []}
     for code in {c for c, _ in cells}:
         regs = [v for (c, reg), v in cells.items() if c == code and reg != NATIONAL]

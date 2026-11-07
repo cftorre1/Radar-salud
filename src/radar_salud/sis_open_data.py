@@ -28,7 +28,7 @@ from urllib.parse import urlsplit
 from . import stats_fichas as sf
 
 AGG_ROOT = Path("data/sis_open_data_aggregates")
-SCRIPT_VERSION = "sis_open_data_agg_v9"  # mirrors scripts/aggregate_sis_open_data.py SCRIPT_VERSION
+SCRIPT_VERSION = "sis_open_data_agg_v10"  # mirrors scripts/aggregate_sis_open_data.py SCRIPT_VERSION
 FILE_HOST = "datos.superdesalud.gob.cl"
 MAX_FILE_BYTES = 1 << 30
 MAX_MALFORMED_SHARE = 0.001
@@ -194,6 +194,35 @@ def load_quarter(root: Path, q: str, dataset: str) -> tuple[dict, list[str]]:
             if arancel and arancel.get("sha256") != top.get("sha256_arancel"):
                 failures.append(f"arancel_hash_mismatch:{q}")
     return {"receipt": entry, "files": files, "arancel": arancel, "generated_at": (rec or {}).get("generated_at")}, failures
+
+
+def recoverable_money(price_cols: list, price_rows: list, att_cols: list | None = None, att_rows: list | None = None) -> list[str]:
+    """Leak check, re-run by the reader (mirrors scripts/aggregate_sis_open_data.recoverable_money; review of PR #152):
+    a hidden money cell is recoverable when it is the only hidden child of a published total (region → NACIONAL;
+    care type × provider type → code total)."""
+    out = []
+    by: dict[str, dict] = {}
+    for raw in price_rows:
+        d = dict(zip(price_cols, raw))
+        by.setdefault(d["codigo_prestacion"], {})[d["region"]] = d
+    for code, regs in by.items():
+        nat = regs.get("NACIONAL")
+        if not nat or nat.get("facturado") is None:
+            continue
+        kids = [r for r in regs if r != "NACIONAL"]
+        hidden = [r for r in kids if regs[r].get("facturado") is None]
+        if len(hidden) == 1 and len(kids) > 1:
+            out.append(f"region:{code}:{hidden[0]}")
+    if att_rows is not None:
+        ab: dict[str, list] = {}
+        for raw in att_rows:
+            d = dict(zip(att_cols, raw))
+            ab.setdefault(d["codigo_prestacion"], []).append(d)
+        for code, kids in ab.items():
+            hidden = [k for k in kids if k.get("facturado") is None]
+            if len(hidden) == 1 and len(kids) > 1:
+                out.append(f"atencion:{code}")
+    return out
 
 
 def evidence_sha256(sources: dict) -> str:

@@ -53,8 +53,8 @@ COVER = {"67": 0.8, "78": 0.6, "99": 0.7}
 
 
 # Stratified-basket fixture (F12 report, Dirección 6-nov-2026): 10 ambulatory MLE codes priced in RM + 13 regions and
-# 10 hospital MLE codes priced in RM + 8 regions; 4 providers per cell at base × (1; 1,2; 1,4; 1,6) × the region factor
-# (providers 0-1 public, 2-3 private); the previous quarter is 1% cheaper for the same providers.
+# 10 hospital MLE codes priced in RM + 8 regions; 6 providers per cell at base × (1 + 0,2·i) × the region factor
+# (providers 0-2 public, 3-5 private: >= 3 per group); the previous quarter is 1% cheaper for the same providers.
 AMB_CODES = ["0302001", "0302002", "0302004", "0302005", "0302008", "0302009", "0302010", "0302011", "0302012", "0302013"]
 HOSP_CODES = ["0201001", "0201002", "0201101", "0201102", "0201201", "0201202", "0201203", "0201301", "0201302", "0201303"]
 AMB_REG = ["13", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "14"]
@@ -68,11 +68,11 @@ def strata_rows(q):
                                    (HOSP_CODES, HOSP_REG, "Atención Hospitalaria", 1000000)):
         for ci, code in enumerate(codes):
             for r in regs:
-                for i in range(4):
+                for i in range(6):
                     unit = round(base * (ci + 1) * (1 + 0.2 * i) * RF[r] * qf)
                     for isapre in COVER:
                         rows.append(prest(q, isapre, f"S{r}_{i}", code, r, 10, unit * 10, int(unit * 10 * COVER[isapre]), att,
-                                          "Público" if i < 2 else "Privado"))
+                                          "Público" if i < 3 else "Privado"))
     return rows
 
 
@@ -187,24 +187,23 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     # Report (Dirección 6-nov-2026 21:54): the title names the report and the quarter; sections state findings.
     assert fi["headline"] == "Mismo código, distinto precio: el mapa de prestaciones Isapre, abr–jun 2026"
     assert fi["headline_type"] == "report_title"
-    # Within-region dispersion, recomputed: p75/p25 of base × (1; 1,2; 1,4; 1,6) = 1,45 / 1,15 in every cell.
-    assert k["dispersion_amb"]["value"] == k["dispersion_hosp"]["value"] == f12.fmt(1.45 / 1.15, 2) + " veces"
+    # Within-region dispersion, recomputed: linear p25/p75 of base × (1 + 0,2·i), i = 0..5 → 1,25 and 1,75.
+    assert k["dispersion_amb"]["value"] == k["dispersion_hosp"]["value"] == f12.fmt(1.75 / 1.25, 2) + " veces"
     disp = next(t for t in fi["tabs"] if t["id"] == "dispersion")
-    assert disp["dek"] == ("Mismo código, misma región: el cuartil caro factura 1,26 veces el barato en ambulatorio y 1,26 en "
+    assert disp["dek"] == ("Mismo código, misma región: el cuartil caro factura 1,40 veces el barato en ambulatorio y 1,40 en "
                            "hospitalario")
     # Regional index vs RM: every code's median scales with the region factor → (RF[r] / RF[RM] − 1), simple average.
     amb_idx = sum(RF[r] / RF["13"] - 1 for r in AMB_REG[1:]) / 13 * 100
     hosp_idx = sum(RF[r] / RF["13"] - 1 for r in HOSP_REG[1:]) / 8 * 100
     vs = next(t for t in fi["tabs"] if t["id"] == "vs-rm")
-    assert vs["dek"].startswith(f"Ambulatorio: regiones {f12.fmt(abs(amb_idx), 1)}% más baratas que RM en promedio; "
-                                f"hospitalario: regiones {f12.fmt(abs(hosp_idx), 1)}% más baratas")
-    # Public (providers 0-1) vs private (2-3) in the same code and region: (1 + 1,2) / (1,4 + 1,6) − 1.
+    assert vs["dek"] == (f"Ambulatorio: regiones {f12.fmt(abs(amb_idx), 1)}% más baratas que RM en promedio; "
+                         f"hospitalario, {f12.fmt(abs(hosp_idx), 1)}% más baratas")
+    # Public (providers 0-2, median 1,2) vs private (3-5, median 1,8) in the same code and region.
     pp = next(t for t in fi["tabs"] if t["id"] == "publico-privado")
-    assert f"ambulatorio {f12.fmt((2.2 / 3.0 - 1) * 100, 1, True)}% ponderado" in pp["dek"]
+    assert f"ambulatorio {f12.fmt((1.2 / 1.8 - 1) * 100, 1, True)}% ponderado" in pp["dek"]
     # Same providers, previous quarter 1% cheaper.
     ch = next(t for t in fi["tabs"] if t["id"] == "cambio")
-    assert ch["dek"] == ("El prestador mediano cambió +1,0% y +1,0%; el promedio ponderado subió 1,0% (ambulatorio) y "
-                         "1,0% (hospitalario)")
+    assert ch["dek"] == "El prestador mediano cambió +1,0% en ambulatorio y +1,0% en hospitalario; ponderado +1,0% y +1,0%"
     assert fi["kicker"] == "Prestaciones bonificadas · abril–junio 2026" and fi["date_basis"] == "first_detected"
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t2.zip")
     assert [t["id"] for t in fi["tabs"]] == ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio",
@@ -524,3 +523,36 @@ def test_f12_funnel_must_use_the_same_mle_list(root):
     edit(root, "2026t2", "prestaciones_2026t2_embudo_arancel_mle.json", lambda d: d.update(codigos_mle=5))
     out = f12.run(root, today=TODAY, registry=reg_open(), llm=False)
     assert out["status"] == "hold" and any("funnel_mle_list_mismatch" in e for e in out["errors"])
+
+
+def test_reader_holds_when_a_money_cell_is_recoverable(root):
+    """Review of PR #152: the reader re-runs the leak check; one hidden regional cell beside a published NACIONAL HOLDs."""
+    def leak(d):
+        cols = d["columns"]
+        rows = [r for r in d["rows"] if r[0] == AMB_CODES[0]]
+        target = next(r for r in rows if r[1] == "1")
+        target[cols.index("facturado")] = None
+        target[cols.index("pct_bonificado")] = None
+        target[cols.index("pct_copago")] = None
+    edit(root, "2026t2", "prestaciones_2026t2_precios_fonasa_region.json", leak)
+    out = f12.run(root, today=TODAY, registry=reg_open(), llm=False)
+    assert out["status"] == "hold" and any("money_cell_recoverable:region" in e for e in out["errors"])
+
+
+def test_vs_rm_title_says_mixed_when_the_measures_differ_in_sign():
+    from radar_salud import f12_report as rep
+    assert rep.rm_phrase("ambulatorio", -3.8, -2.0, first=True, fmt=f12.fmt) == (
+        "Ambulatorio: regiones 3,8% más baratas que RM en promedio", True)
+    assert rep.rm_phrase("hospitalario", -2.3, 0.6, first=False, fmt=f12.fmt) == (
+        "hospitalario, mixto (−2,3% ponderado, +0,6% sin ponderar)", False)
+    assert rep.rm_phrase("hospitalario", 2.3, 1.1, first=False, fmt=f12.fmt)[0] == "hospitalario, 2,3% más caras"
+
+
+@pytest.mark.skipif(not _real(), reason="no committed aggregates of the current version yet")
+def test_committed_tables_have_no_recoverable_money_cell():
+    """Review of PR #152: every published money cell table, region → NACIONAL and care type × provider type → code."""
+    for q in _real():
+        base = REPO / so.AGG_ROOT / q
+        pr = so.load_json(base / f"prestaciones_{q}_precios_fonasa_region.json")
+        at = so.load_json(base / f"prestaciones_{q}_atencion_codigo.json")
+        assert so.recoverable_money(pr["columns"], pr["rows"], at["columns"], at["rows"]) == []
