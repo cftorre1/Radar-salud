@@ -73,10 +73,11 @@ jobs:
           name: sis-open-data-aggregates-${{ github.run_id }}
           path: data/sis_open_data_aggregates/
       - name: Commit aggregates and receipts to the calling branch
-        # A direct run (push to this branch, manual dispatch) has no `commit` input: inputs.commit is null and it commits.
-        # A reusable call always has it (default false), and there github.event_name is the CALLER's event, so a
-        # push- or dispatch-started caller must not commit unless it passes commit: true (review of PR #152).
-        if: inputs.commit || (inputs.commit == null && (github.event_name == 'push' || github.event_name == 'workflow_dispatch'))
+        # Two separate paths (review of PR #152, round 3; Actions coerces false/null to 0 in ==, so compare JSON):
+        # - reusable call: inputs.commit is always defined (default false); commit only when the caller passed true.
+        # - direct run (push to this branch, manual dispatch): there is no `commit` input at all (JSON 'null').
+        # github.event_name is the CALLER's event under workflow_call, so it never decides alone.
+        if: toJSON(inputs.commit) == 'true' || (toJSON(inputs.commit) == 'null' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch'))
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"

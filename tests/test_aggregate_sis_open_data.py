@@ -411,11 +411,13 @@ def test_care_type_split_by_code_and_provider_type():
 
 def test_coverage_funnel_matches_codes_against_the_mle_list():
     a = agg.PrestacionesAgg(mle_codes={"0101001"})
-    a.add(prest_row(codigo="0101001", fact=800, freq=8))
-    a.add(prest_row(codigo="9999901", pertenencia="Asegurador", fact=200, freq=2, atencion="Atención Hospitalaria"))
+    for i in range(3):
+        a.add(prest_row(prov=f"P{i}", codigo="0101001", fact=800, freq=10))
+    for i in range(3):
+        a.add(prest_row(prov=f"Q{i}", codigo="9999901", pertenencia="Asegurador", fact=200, freq=10, atencion="Atención Hospitalaria"))
     f = {(x["pertenencia"], x["tipo_atencion"], x["en_arancel_mle"]): x for x in a.funnel_table()["celdas"]}
-    assert f[("Fonasa", "Ambulatorio", True)]["facturado"] == 800 and f[("Fonasa", "Ambulatorio", True)]["grupo_mle"] == "01"
-    assert f[("Asegurador", "Atención Hospitalaria", False)]["frecuencia"] == 2
+    assert f[("Fonasa", "Ambulatorio", True)]["facturado"] == 2400 and f[("Fonasa", "Ambulatorio", True)]["grupo_mle"] == "01"
+    assert f[("Asegurador", "Atención Hospitalaria", False)]["frecuencia"] == 30
     assert agg.PrestacionesAgg().funnel_table() is None
 
 
@@ -513,3 +515,20 @@ def test_leak_check_on_random_tables():
                             atencion=att, tipo_prest=tipo))
         pt, at = a.price_table(), a.atencion_table()
         assert agg.recoverable_money(pt["columns"], pt["rows"], at["columns"], at["rows"]) == []
+
+
+def test_funnel_folds_small_cells_into_otros_keeping_totals():
+    """Review of PR #152 (round 3): no funnel cell with < 3 providers or < 30 frecuencia; totals unchanged."""
+    a = agg.PrestacionesAgg(mle_codes={"0101001", "0201001"})
+    for i in range(4):
+        a.add(prest_row(prov=f"A{i}", codigo="0101001", fact=1000, freq=10))
+    a.add(prest_row(prov="B", codigo="0201001", fact=777, freq=1))                 # MLE group 02: 1 provider, freq 1
+    a.add(prest_row(prov="C", codigo="9999901", pertenencia="Asegurador", fact=555, freq=2))  # non-MLE, tiny
+    for i in range(3):
+        a.add(prest_row(prov=f"D{i}", codigo="9999902", pertenencia="Superintendencia", fact=900, freq=20))
+    cells = a.funnel_table()["celdas"]
+    assert all(c["prestadores_min_3"] and c["frecuencia"] >= 30 for c in cells)
+    assert sum(c["facturado"] for c in cells) == 4000 + 777 + 555 + 2700
+    assert sum(c["frecuencia"] for c in cells) == 40 + 1 + 2 + 60
+    assert sum(c["facturado"] for c in cells if c["en_arancel_mle"]) == 4777  # MLE share intact
+    assert 777 not in [c["facturado"] for c in cells] and 555 not in [c["facturado"] for c in cells]

@@ -292,6 +292,13 @@ def rm_phrase(world: str, wm: float, um: float, *, first: bool, fmt: Callable) -
     return f"{lab}, mixto ({fmt(wm, 1, True)}% ponderado, {fmt(um, 1, True)}% sin ponderar)", False
 
 
+def pubpriv_title(amb: float, hosp: float, fmt: Callable) -> str:
+    """Section title (≤ 16 words, review of PR #152 round 3): the direction only when both worlds agree."""
+    word = "más" if amb > 0 and hosp > 0 else "menos" if amb < 0 and hosp < 0 else "distinto"
+    return (f"Mismo código y región: los públicos facturan {word} — ambulatorio {fmt(amb, 1, True)}%, "
+            f"hospitalario {fmt(hosp, 1, True)}% (ponderado)")
+
+
 def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) -> dict:
     v = package["values"]
     k = package["kpis"]
@@ -419,7 +426,9 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                 for w in WORLDS for m, key in (("ponderado", "ponderado"), ("mediana", "mediana"))]
         charts = [{"id": "f12-pub-priv", "form": "diverging", "unit": "%", "digits": 1,
                    "headline": "Mediana pública frente a la privada",
-                   "subtitle": f"% de diferencia en el mismo código y región, {ql}",
+                   "subtitle": (f"% de diferencia en el mismo código y región, {ql}"
+                                + (f"; los públicos tienen el {pc('pubpriv.publico.pct_atenciones')} de las atenciones Fonasa"
+                                   if "pubpriv.publico.pct_atenciones" in v else "")),
                    "rows": rows,
                    "table": {"columns": ["Región", "Prestadores públicos", "Prestadores privados", "Celdas amb.", "Celdas hosp."],
                              "rows": [[R[r], fmt(V(f"pubpriv.prest.{r}.Público"), 0) if f"pubpriv.prest.{r}.Público" in v else "0",
@@ -430,12 +439,11 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                              + [[r["label"], fmt(r["value"], 1, True) + "%", "", "", ""] for r in rows]},
                    "source": src + " Tipo de prestador según la SIS; celdas con ≥ 3 prestadores públicos y ≥ 3 privados."}]
         tab = {"id": "publico-privado", "label": "Público y privado", "charts": charts, "text": [],
-               "dek": (f"Mismo código y región, mediana pública vs. privada: ambulatorio {sg('pubpriv.amb.ponderado')} ponderado y "
-                       f"{sg('pubpriv.amb.mediana')} en la mediana; hospitalario {sg('pubpriv.hosp.ponderado')} y {sg('pubpriv.hosp.mediana')}"),
-               "dek_refs": ["pubpriv.amb.ponderado", "pubpriv.amb.mediana", "pubpriv.hosp.ponderado", "pubpriv.hosp.mediana"]}
-        line, lrefs = ("Públicos: " + pc("pubpriv.publico.pct_atenciones") + " de las atenciones Fonasa",
-                       ["pubpriv.publico.pct_atenciones"]) if "pubpriv.publico.pct_atenciones" in v else (None, [])
-        topic_fields(tab, line, index_refs=lrefs, headline_refs=[], kpis=[])
+               "dek": pubpriv_title(V("pubpriv.amb.ponderado"), V("pubpriv.hosp.ponderado"), fmt),
+               "dek_refs": ["pubpriv.amb.ponderado", "pubpriv.hosp.ponderado"]}
+        # The medians go in the topic body (index line); the title carries the weighted figures (review round 3).
+        topic_fields(tab, f"Medianas: ambulatorio {sg('pubpriv.amb.mediana')} · hospitalario {sg('pubpriv.hosp.mediana')}",
+                     index_refs=["pubpriv.amb.mediana", "pubpriv.hosp.mediana"], kpis=[])
         tabs.append(tab)
 
     # 6. Same-provider change (descriptive).

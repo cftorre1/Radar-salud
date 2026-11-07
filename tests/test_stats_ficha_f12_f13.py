@@ -200,7 +200,11 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
                          f"hospitalario, {f12.fmt(abs(hosp_idx), 1)}% más baratas")
     # Public (providers 0-2, median 1,2) vs private (3-5, median 1,8) in the same code and region.
     pp = next(t for t in fi["tabs"] if t["id"] == "publico-privado")
-    assert f"ambulatorio {f12.fmt((1.2 / 1.8 - 1) * 100, 1, True)}% ponderado" in pp["dek"]
+    x = f12.fmt((1.2 / 1.8 - 1) * 100, 1, True)
+    assert pp["dek"] == f"Mismo código y región: los públicos facturan menos — ambulatorio {x}%, hospitalario {x}% (ponderado)"
+    assert len(pp["dek"].split()) <= 16 and pp["index_line"].startswith("Medianas: ambulatorio ")
+    ch_tab = next(t for t in fi["tabs"] if t["id"] == "cambio")
+    assert ch_tab["dek"] and all(t["dek"] for t in fi["tabs"][:6])  # every report section carries its finding title
     # Same providers, previous quarter 1% cheaper.
     ch = next(t for t in fi["tabs"] if t["id"] == "cambio")
     assert ch["dek"] == "El prestador mediano cambió +1,0% en ambulatorio y +1,0% en hospitalario; ponderado +1,0% y +1,0%"

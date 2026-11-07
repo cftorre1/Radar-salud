@@ -52,7 +52,7 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v10"
+SCRIPT_VERSION = "sis_open_data_agg_v11"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
@@ -61,6 +61,7 @@ CROSS_CODE_MIN_PROVIDERS = 3  # per-code detail of the same-provider index
 CROSS_MIN_FREQ = 10       # same-provider index: an Isapre enters a provider x code cell only with >= 10 frecuencia
 TOP_CODES = 100           # most-billed Fonasa codes (national frecuencia) with totals and Arancel Isapre description
 CHANGE_MIN_PROVIDERS = 4  # same-provider price change of a code x region: >= 4 providers present in both quarters
+FUNNEL_MIN_PROVIDERS = 3  # funnel cell: >= 3 providers and >= 30 frecuencia, else folded into "otros"
 TIPO_MIN_PROVIDERS = 3    # public/private price cell: >= 3 providers in the group (review of PR #152) and >= 30 frecuencia
 LIC_MIN_CELL = 10
 PROFILE_MIN_COUNT = 10    # a profile value is listed only when it appears in >= 10 rows
@@ -343,6 +344,7 @@ class PrestacionesAgg:
         self.ids_only = ids_only
         self.mle_codes = set(mle_codes) if mle_codes is not None else None
         self.funnel: dict[tuple, list] = defaultdict(lambda: [0.0, 0.0])  # (pertenencia, atencion, en_mle, grupo)
+        self.funnel_prov: dict[tuple, set] = defaultdict(set)
         self.err: Counter = Counter()
         self.prov_isapres: dict[str, set] = defaultdict(set)
         self.prov_fact: dict[str, float] = defaultdict(float)
@@ -389,7 +391,9 @@ class PrestacionesAgg:
             code = f[P_CODIGO].strip()
             inm = code in self.mle_codes
             grupo = ("pabellon" if code.startswith("00000") else code[:2]) if inm else None
-            fu = self.funnel[(f[P_PERTENENCIA].strip() or "(vacío)", atencion, inm, grupo)]
+            key = (f[P_PERTENENCIA].strip() or "(vacío)", atencion, inm, grupo)
+            fu = self.funnel[key]
+            self.funnel_prov[key].add(prov)
             fu[0] += fact; fu[1] += freq
         if prov in NO_PROVIDER:
             return
@@ -607,15 +611,38 @@ class PrestacionesAgg:
 
     def funnel_table(self) -> dict | None:
         """Coverage funnel (Dirección 6-nov-2026 20:13): all Isapre facturado and frecuencia by the SIS 'pertenencia'
-        flag × tipo de atención × whether the code is in FONASA's official MLE 2026 code list. System totals only."""
+        flag × tipo de atención × whether the code is in FONASA's official MLE 2026 code list (and its MLE group).
+        Cells below the disclosure thresholds (< 3 providers or < 30 frecuencia) are folded into "otros", first the
+        group, then the pertenencia, then into the largest cell of the same atención × en_mle; totals stay intact
+        (review of PR #152, round 3)."""
         if self.mle_codes is None:
             return None
+        cells = {k: [v[0], v[1], set(self.funnel_prov[k])] for k, v in self.funnel.items()}
+        small = lambda c: len(c[2]) < FUNNEL_MIN_PROVIDERS or c[1] < PRICE_MIN_FREQ  # noqa: E731
+
+        def fold(key_of) -> None:
+            for k in [k for k, c in cells.items() if small(c)]:
+                nk = key_of(k)
+                if nk == k or k not in cells:
+                    continue
+                c = cells.pop(k)
+                t = cells.setdefault(nk, [0.0, 0.0, set()])
+                t[0] += c[0]; t[1] += c[1]; t[2] |= c[2]
+        fold(lambda k: (k[0], k[1], k[2], "otros" if k[2] else None))
+        fold(lambda k: ("otros", k[1], k[2], k[3]))
+        for k in [k for k, c in cells.items() if small(c)]:
+            peers = [p for p in cells if p != k and p[1] == k[1] and p[2] == k[2] and not small(cells[p])]
+            if peers and k in cells:
+                tgt = max(peers, key=lambda p: cells[p][1])
+                c = cells.pop(k)
+                cells[tgt][0] += c[0]; cells[tgt][1] += c[1]; cells[tgt][2] |= c[2]
         return {"definicion": "en_arancel_mle = el código de la fila está en la lista oficial del Arancel MLE 2026 de "
-                              "FONASA; pertenencia = campo 16 del archivo SIS", "codigos_mle": len(self.mle_codes),
+                              "FONASA; pertenencia = campo 16 del archivo SIS; celdas con < 3 prestadores o < 30 de "
+                              "frecuencia agrupadas en «otros»", "codigos_mle": len(self.mle_codes),
                 # "celdas", not "filas": the file's metadata keeps "filas" = rows read from the ZIP (v9 fix).
                 "celdas": [{"pertenencia": p, "tipo_atencion": a, "en_arancel_mle": m, "grupo_mle": g,
-                           "facturado": round(v[0]), "frecuencia": round(v[1])}
-                          for (p, a, m, g), v in sorted(self.funnel.items(), key=str)]}
+                            "facturado": round(v[0]), "frecuencia": round(v[1]), "prestadores_min_3": len(v[2]) >= FUNNEL_MIN_PROVIDERS}
+                           for (p, a, m, g), v in sorted(cells.items(), key=str)]}
 
     def fonasa_totals(self) -> dict:
         """System totals of Fonasa-arancel codes (all providers, all regions): the denominator of basket coverage."""
