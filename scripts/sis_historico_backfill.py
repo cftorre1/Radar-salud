@@ -43,7 +43,7 @@ from typing import Iterable
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import aggregate_sis_open_data as base  # noqa: E402  (robots, tope 1 GiB, streaming, RowReader)
 
-SCRIPT_VERSION = "sis_historico_v2"
+SCRIPT_VERSION = "sis_historico_v3"
 ROOT = Path(__file__).resolve().parents[1]
 OUT_ROOT = ROOT / "data" / "sis_open_data_history"
 GES_REF = ROOT / "data" / "reference" / "ges_problemas_ds29_2025.json"
@@ -340,9 +340,8 @@ class QuarterAgg:
                     e[9] += 1
                 elif atn == "Ambulatoria":
                     fl |= 16
-                compl = f[I_PAM_COMPL].strip()
-                if compl not in ("", "0"):
-                    fl |= 32
+                if f[I_PAM_COMPL].strip() == folio:
+                    fl |= 32  # el complementario repite el folio del principal (Compendio, campo 15)
                 e[2] = fl
                 if not self.warmup:
                     e[5] += fact; e[6] += bonif
@@ -360,8 +359,7 @@ class QuarterAgg:
                     cr = CAMA_RANK.get(code)
                     if cr is not None and (e[8] is None or cr[0] < e[8]):
                         e[8] = cr[0]
-        compl_raw = f[I_PAM_COMPL].strip()
-        if compl_raw not in ("", "0"):
+        if folio and f[I_PAM_COMPL].strip() == folio:
             self.rows_compl[atn or "(desconocido)"] += 1
         if self.warmup:
             return
@@ -506,14 +504,15 @@ class QuarterAgg:
                                    "no_hospitalarias": rows_real["no_hospitalaria"],
                                    "pct_de_hospitalarias_con_pam": pct(rows_real["Hospitalaria"], hosp_total),
                                    "pct_de_ambulatorias_con_pam": pct(rows_real["no_hospitalaria"], no_hosp_total)},
-            "filas_con_pam_complementario_distinto_de_0": dict(self.rows_compl),
+            "filas_con_complementario_igual_al_principal": dict(self.rows_compl),
+            "nota_complementario": "el 0 del campo 15 también viene cifrado; sólo se mide si repite el valor del PAM",
             "pam": {"n": n, "valores_folio_distintos": n_vals,
                     "pct_valores_folio_en_2_o_mas_isapres": pct(multi_isapre_vals, n_vals),
                     "pct_pam_con_mas_de_un_beneficiario": pct(multi_ben, n),
                     "pct_pam_con_mas_de_un_codigo": pct(multi_code, n),
                     "pct_pam_con_mas_de_un_prestador": pct(multi_prov, n),
                     "pct_pam_con_filas_ambulatorias_y_hospitalarias": pct(mixed, n),
-                    "pct_pam_con_complementario": pct(with_compl, n),
+                    "pct_pam_con_complementario_igual_al_principal": pct(with_compl, n),
                     "filas_por_pam": {"p50": quantile(sizes, .5), "p90": quantile(sizes, .9),
                                       "p99": quantile(sizes, .99)} if sizes else None},
             "entre_trimestres": None if overlap is None else {
@@ -654,9 +653,8 @@ class QuarterAgg:
                 spec = CAMA_BY_RANK[e[8]]
             else:
                 spec = "sin_clasificar"
-            for t in (tipo, "TOTAL"):
-                c = cells[(spec, t)]
-                c[0].append(e[5]); c[1][prov] += 1; c[2] += e[5]; c[3] += e[6]
+            c = cells[(spec, tipo)]
+            c[0].append(e[5]); c[1][prov] += 1; c[2] += e[5]; c[3] += e[6]
             isapre_cnt[k[0]]["episodios"] += 1
             isapre_cnt[k[0]]["sin_clasificar"] += spec == "sin_clasificar"
 
@@ -669,9 +667,8 @@ class QuarterAgg:
         init = {k for k, c in cells.items() if fails(c)}
         groups: dict = defaultdict(list)
         for k in cells:
-            groups[("spec", k[0])].append(k)   # Ambulatoria + Hospitalaria = TOTAL publicado
-            if k[1] != "TOTAL":
-                groups[("tipo", k[1])].append(k)  # suma sobre especialidades = total nacional del tipo
+            # sin fila TOTAL por especialidad (redundante); el total nacional por tipo sí se publica
+            groups[("tipo", k[1])].append(k)
         sup = complementary(sizes, init, list(groups.values()), SPEC_MIN_EPISODES)
         rows = []
         for (spec, tipo), c in sorted(cells.items()):
@@ -691,8 +688,7 @@ class QuarterAgg:
         tot = Counter()
         tot_fact = defaultdict(float)
         for (spec, tipo), c in cells.items():
-            if tipo != "TOTAL":
-                tot[tipo] += len(c[0]); tot_fact[tipo] += c[2]
+            tot[tipo] += len(c[0]); tot_fact[tipo] += c[2]
         return {
             "experimental": True,
             "definicion": "EXPERIMENTAL v0. Episodio = (Isapre, PAM principal) del trimestre de bonificación, sólo PAM "

@@ -195,6 +195,7 @@ def test_folio_probe_counts_only_and_detects_placeholder():
     assert p["marcador_sin_pam"]["filas"] == 30
     assert p["pam"]["n"] == 20 and p["pam"]["pct_pam_con_mas_de_un_beneficiario"] == 0
     assert p["pam"]["pct_pam_con_mas_de_un_codigo"] == 100
+    assert p["pam"]["pct_pam_con_complementario_igual_al_principal"] == 0
     assert p["filas_con_pam_real"]["pct_de_hospitalarias_con_pam"] == 100
     assert p["veredicto"]["agrupacion_por_pam_valida"]
     assert p["entre_trimestres"]["pam_del_trimestre_presentes_en_el_anterior"] == 0
@@ -252,8 +253,10 @@ def test_specialty_complementary_hides_lone_suppressed_tipo():
     t = spec_table(rows)
     by = {(r["especialidad"], r["tipo_atencion"]): r["estado"] for r in t["filas"]}
     assert by[("traumatologia", "Ambulatoria")] == "suprimido"
-    # Hospitalaria + Ambulatoria = TOTAL: con un único oculto se despejaría, así que se oculta otra celda
-    assert "suprimido" in (by[("traumatologia", "Hospitalaria")], by[("traumatologia", "TOTAL")])
+    assert ("traumatologia", "TOTAL") not in by  # sin total por especialidad: el oculto no se despeja por resta
+    # el total nacional Ambulatorio se publica: con un único oculto en la columna se despejaría
+    assert t["totales_nacionales"]["Ambulatoria"]["episodios"] == 3
+    assert all(s == "suprimido" for (sp, tp), s in by.items() if tp == "Ambulatoria")
 
 
 def test_specialty_fallback_dia_cama_and_multiespecialidad():
