@@ -559969,12 +559969,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:26:59.975034+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "df_analysis_deferred",
     "classification_watermark": "2026-11-05T18:40:43.908838+00:00",
     "deferred_detail": "DF pendiente de evaluación IA",
-    "updated_at": "2026-11-07T13:07:26.496824+00:00",
-    "retry_at": "2026-11-07T17:07:26.496829+00:00"
+    "updated_at": "2026-11-07T18:06:06.356463+00:00",
+    "retry_at": "2026-11-08T02:06:06.356470+00:00"
   },
   "ad67cf3ada17c25faafc2adc508b4d53db9862c85122ea1646e6bab16c28d72a": {
     "raw": {
@@ -561101,6 +561101,13 @@
             "characters": 47,
             "reason": "paywalled_press_public_teaser_only",
             "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "metadata.editorial_assessment.reason",
+            "sha256": "47b649892367be4540404ab82f196227d52723a55a8a190d38b279d5fb5e5e73",
+            "characters": 43,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
           }
         ],
         "article_body_complete": true,
@@ -561158,7 +561165,9 @@
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72
+          "threshold": 72,
+          "retry_after": "2026-11-07T19:07:44.551779+00:00",
+          "unbilled_failures": 2
         }
       }
     },
@@ -561167,11 +561176,12 @@
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
     "attempts": 2,
-    "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "reason": "pulso_paywalled_reanalysis_unbilled_backoff",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T13:07:45.018608+00:00",
-    "retry_at": "2026-11-07T17:07:45.018613+00:00"
+    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_backoff",
+    "updated_at": "2026-11-07T18:06:31.528613+00:00",
+    "retry_at": "2026-11-07T22:06:31.528618+00:00",
+    "uncounted_deferrals": 1
   },
   "fb2992065b8cda697e2c4f096f6b7f85d241e2f123d9f1ebe437e207b54af077": {
     "raw": {
@@ -561570,6 +561580,13 @@
             "characters": 47,
             "reason": "paywalled_press_public_teaser_only",
             "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "metadata.editorial_assessment.reason",
+            "sha256": "47b649892367be4540404ab82f196227d52723a55a8a190d38b279d5fb5e5e73",
+            "characters": 43,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
           }
         ],
         "article_body_complete": true,
@@ -561627,7 +561644,9 @@
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72
+          "threshold": 72,
+          "retry_after": "2026-11-07T19:07:32.095391+00:00",
+          "unbilled_failures": 2
         }
       }
     },
@@ -561636,11 +561655,12 @@
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
     "attempts": 2,
-    "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "reason": "pulso_paywalled_reanalysis_unbilled_backoff",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T13:07:33.082152+00:00",
-    "retry_at": "2026-11-07T17:07:33.082158+00:00"
+    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_backoff",
+    "updated_at": "2026-11-07T18:06:14.806516+00:00",
+    "retry_at": "2026-11-07T22:06:14.806520+00:00",
+    "uncounted_deferrals": 1
   },
   "aa16fd4d52b3274d87a83dd6cc78cb3d8f8f43e319199abeb85cfd388616fad8": {
     "raw": {
@@ -562942,6 +562962,13 @@
             "characters": 47,
             "reason": "paywalled_press_public_teaser_only",
             "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "metadata.editorial_assessment.reason",
+            "sha256": "47b649892367be4540404ab82f196227d52723a55a8a190d38b279d5fb5e5e73",
+            "characters": 43,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
           }
         ],
         "article_body_complete": true,
@@ -562999,7 +563026,9 @@
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72
+          "threshold": 72,
+          "retry_after": "2026-11-07T19:07:50.479871+00:00",
+          "unbilled_failures": 2
         }
       }
     },
@@ -563008,11 +563037,12 @@
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
     "attempts": 2,
-    "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "reason": "pulso_paywalled_reanalysis_unbilled_backoff",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T13:07:50.964863+00:00",
-    "retry_at": "2026-11-07T17:07:50.964869+00:00"
+    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_backoff",
+    "updated_at": "2026-11-07T18:06:39.935843+00:00",
+    "retry_at": "2026-11-07T22:06:39.935848+00:00",
+    "uncounted_deferrals": 1
   },
   "df1501f7ca72992ce78bf910e5a19011f27a3baa31b0685252007acbb9f99e2d": {
     "raw": {
@@ -563132,6 +563162,13 @@
             "characters": 47,
             "reason": "paywalled_press_public_teaser_only",
             "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "metadata.editorial_assessment.reason",
+            "sha256": "47b649892367be4540404ab82f196227d52723a55a8a190d38b279d5fb5e5e73",
+            "characters": 43,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
           }
         ],
         "article_body_complete": true,
@@ -563189,7 +563226,9 @@
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72
+          "threshold": 72,
+          "retry_after": "2026-11-07T19:07:56.095812+00:00",
+          "unbilled_failures": 2
         }
       }
     },
@@ -563198,11 +563237,12 @@
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
     "attempts": 2,
-    "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "reason": "pulso_paywalled_reanalysis_unbilled_backoff",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T13:07:56.838228+00:00",
-    "retry_at": "2026-11-07T17:07:56.838233+00:00"
+    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_backoff",
+    "updated_at": "2026-11-07T18:06:48.303069+00:00",
+    "retry_at": "2026-11-07T22:06:48.303073+00:00",
+    "uncounted_deferrals": 1
   },
   "7dea36ff6b52c4b3aa489235cd90285963d7c006fa7629653f70afe7e3721369": {
     "raw": {
@@ -563951,12 +563991,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T13:08:02.178585+00:00",
-    "retry_at": "2026-11-07T17:08:02.178591+00:00"
+    "updated_at": "2026-11-07T18:07:17.083346+00:00",
+    "retry_at": "2026-11-08T02:07:17.083353+00:00"
   },
   "faf2f607476bd9e7eae8675f5cc30e842238b568ad43afe3ad4645863edcde49": {
     "raw": {
@@ -564850,12 +564890,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_sponsored_content_review_required",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_sponsored_content_review_required",
-    "updated_at": "2026-11-07T13:08:07.513141+00:00",
-    "retry_at": "2026-11-07T17:08:07.513148+00:00"
+    "updated_at": "2026-11-07T18:07:25.457882+00:00",
+    "retry_at": "2026-11-08T02:07:25.457889+00:00"
   },
   "21ef72113a75b64e483c05ec2226f658bc592b08372348db87d175a183d51386": {
     "raw": {
@@ -565117,12 +565157,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T13:08:12.832851+00:00",
-    "retry_at": "2026-11-07T17:08:12.832858+00:00"
+    "updated_at": "2026-11-07T18:07:33.855494+00:00",
+    "retry_at": "2026-11-08T02:07:33.855501+00:00"
   },
   "2dc848f93b7e83d23cda3c3af1fd4c298d8cf53b1616f9ce2ca76f5015a405ae": {
     "raw": {
@@ -565242,12 +565282,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T13:08:17.996088+00:00",
-    "retry_at": "2026-11-07T17:08:17.996094+00:00"
+    "updated_at": "2026-11-07T18:07:42.175557+00:00",
+    "retry_at": "2026-11-08T02:07:42.175568+00:00"
   },
   "1cb38d23921a4d79d4a55f733c17e651972b3e6dfcee581e5b4b098f2695b3a6": {
     "raw": {
@@ -565370,12 +565410,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T13:08:23.283987+00:00",
-    "retry_at": "2026-11-07T17:08:23.283994+00:00"
+    "updated_at": "2026-11-07T18:07:50.584300+00:00",
+    "retry_at": "2026-11-08T02:07:50.584307+00:00"
   },
   "f0163dc152699023a904c84b9a7b3aeef2d8258b0da23d6ff2db0c090628357d": {
     "raw": {
@@ -565496,12 +565536,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T13:08:28.630604+00:00",
-    "retry_at": "2026-11-07T17:08:28.630611+00:00"
+    "updated_at": "2026-11-07T18:07:58.990479+00:00",
+    "retry_at": "2026-11-08T02:07:58.990485+00:00"
   },
   "28595cb48a448396873cc5d218bec808f2a1fea57b8664c2bc1935855a46113b": {
     "raw": {
@@ -565624,12 +565664,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T13:08:34.177931+00:00",
-    "retry_at": "2026-11-07T17:08:34.177937+00:00"
+    "updated_at": "2026-11-07T18:08:07.322990+00:00",
+    "retry_at": "2026-11-08T02:08:07.322997+00:00"
   },
   "128b69d5127e7ee78d736f5cd39841ae523b42e8eec99237ab4b18ef2ee90fb8": {
     "raw": {
@@ -566641,6 +566681,13 @@
             "characters": 47,
             "reason": "paywalled_press_public_teaser_only",
             "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "metadata.editorial_assessment.reason",
+            "sha256": "47b649892367be4540404ab82f196227d52723a55a8a190d38b279d5fb5e5e73",
+            "characters": 43,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
           }
         ],
         "article_body_complete": true,
@@ -566698,7 +566745,9 @@
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72
+          "threshold": 72,
+          "retry_after": "2026-11-07T19:07:38.596698+00:00",
+          "unbilled_failures": 2
         }
       }
     },
@@ -566707,11 +566756,12 @@
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
     "attempts": 2,
-    "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "reason": "pulso_paywalled_reanalysis_unbilled_backoff",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T13:07:38.992892+00:00",
-    "retry_at": "2026-11-07T17:07:38.992897+00:00"
+    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_backoff",
+    "updated_at": "2026-11-07T18:06:23.127962+00:00",
+    "retry_at": "2026-11-07T22:06:23.127967+00:00",
+    "uncounted_deferrals": 1
   },
   "24b3d67230ed5f9dd04a51e51e88fd939320642ee422187e39c29c5a8ecce0ce": {
     "raw": {
@@ -567424,12 +567474,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T13:08:39.564491+00:00",
-    "retry_at": "2026-11-07T17:08:39.564498+00:00"
+    "updated_at": "2026-11-07T18:08:15.720022+00:00",
+    "retry_at": "2026-11-08T02:08:15.720029+00:00"
   },
   "d0e8bc48753357d7c32203977b50366897bb2ca94eee0672fe1a544497412e15": {
     "raw": {
@@ -567859,12 +567909,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_conflicting_publication_dates",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_conflicting_publication_dates",
-    "updated_at": "2026-11-07T13:08:45.261432+00:00",
-    "retry_at": "2026-11-07T17:08:45.261443+00:00"
+    "updated_at": "2026-11-07T18:08:24.142750+00:00",
+    "retry_at": "2026-11-08T02:08:24.142759+00:00"
   },
   "95baff8a074823c434a10c4b3fb654005eb1f6de416c306205787ac8e59cf80b": {
     "raw": {
@@ -567990,12 +568040,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "publisher_conflicting_publication_dates",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
     "deferred_detail": "publisher_conflicting_publication_dates",
-    "updated_at": "2026-11-07T13:08:50.805320+00:00",
-    "retry_at": "2026-11-07T17:08:50.805330+00:00"
+    "updated_at": "2026-11-07T18:08:32.573271+00:00",
+    "retry_at": "2026-11-08T02:08:32.573280+00:00"
   },
   "fcf2879e1b8da562a80f85401dc3c0622bd4ef48fa9a2d244772510e89b6de3a": {
     "raw": {
@@ -568021,12 +568071,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:30:32.083606+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "Diario Oficial pendiente de evaluación IA",
     "classification_watermark": "2026-11-05T18:44:49.887325+00:00",
     "deferred_detail": "Diario Oficial pendiente de evaluación IA",
-    "updated_at": "2026-11-07T13:06:56.344237+00:00",
-    "retry_at": "2026-11-07T17:06:56.344243+00:00"
+    "updated_at": "2026-11-07T18:05:16.052459+00:00",
+    "retry_at": "2026-11-08T02:05:16.052467+00:00"
   },
   "24d076584e48e657dfbc153d2ebde3fdceccb857ed268669ae9911138852187e": {
     "raw": {
@@ -568052,12 +568102,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:30:32.083606+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "Diario Oficial pendiente de evaluación IA",
     "classification_watermark": "2026-11-05T18:44:49.887325+00:00",
     "deferred_detail": "Diario Oficial pendiente de evaluación IA",
-    "updated_at": "2026-11-07T13:07:03.751985+00:00",
-    "retry_at": "2026-11-07T17:07:03.751992+00:00"
+    "updated_at": "2026-11-07T18:05:26.312379+00:00",
+    "retry_at": "2026-11-08T02:05:26.312388+00:00"
   },
   "3772182bb93bd1e0e88aa01bc12c8dc1c935ea3b29409c616503bfed8ea041f4": {
     "raw": {
@@ -568083,12 +568133,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:30:32.083606+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "Diario Oficial pendiente de evaluación IA",
     "classification_watermark": "2026-11-05T18:44:49.887325+00:00",
     "deferred_detail": "Diario Oficial pendiente de evaluación IA",
-    "updated_at": "2026-11-07T13:07:12.536701+00:00",
-    "retry_at": "2026-11-07T17:07:12.536707+00:00"
+    "updated_at": "2026-11-07T18:05:36.550283+00:00",
+    "retry_at": "2026-11-08T02:05:36.550296+00:00"
   },
   "c74f4d7a20bd6116769dde33a62dbcb82667df2a9260883d5c06f5f16d463b4f": {
     "raw": {
@@ -568114,12 +568164,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:30:32.083606+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "Diario Oficial pendiente de evaluación IA",
     "classification_watermark": "2026-11-05T18:44:49.887325+00:00",
     "deferred_detail": "Diario Oficial pendiente de evaluación IA",
-    "updated_at": "2026-11-07T13:07:19.578381+00:00",
-    "retry_at": "2026-11-07T17:07:19.578388+00:00"
+    "updated_at": "2026-11-07T18:05:48.242239+00:00",
+    "retry_at": "2026-11-08T02:05:48.242253+00:00"
   },
   "15d7e98b3e499fac01f6a841d3eb6141a882d5a0ab3420d7dcc57d9da6be8690": {
     "raw": {
@@ -815257,12 +815307,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:26:07.335285+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "official_news_requires_primary_enforcement_review",
     "classification_watermark": "2026-11-05T18:39:44.225147+00:00",
     "deferred_detail": "official_news_requires_primary_enforcement_review",
-    "updated_at": "2026-11-07T13:06:40.608265+00:00",
-    "retry_at": "2026-11-07T17:06:40.608282+00:00"
+    "updated_at": "2026-11-07T18:04:54.447492+00:00",
+    "retry_at": "2026-11-08T02:04:54.447506+00:00"
   },
   "b0e8d8ed673966e482c62a586d300620ca50647526e74dd924fb1484366f3186": {
     "raw": {
@@ -815363,12 +815413,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T06:26:07.335285+00:00",
-    "attempts": 2,
+    "attempts": 3,
     "reason": "official_news_requires_primary_enforcement_review",
     "classification_watermark": "2026-11-05T18:39:44.225147+00:00",
     "deferred_detail": "official_news_requires_primary_enforcement_review",
-    "updated_at": "2026-11-07T13:06:46.149504+00:00",
-    "retry_at": "2026-11-07T17:06:46.149524+00:00"
+    "updated_at": "2026-11-07T18:05:02.783011+00:00",
+    "retry_at": "2026-11-08T02:05:02.783027+00:00"
   },
   "c456f2f33e9b989648e8ae017416151c16b748e9eacd5d036a90ece0ad877417": {
     "raw": {
@@ -895034,13 +895084,21 @@
           "requested_at": "2026-11-07T15:19:44.140584+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "f71a9608186d9af83efa043387d8ef00ac00580887156f01117f5308fac9f298",
-          "attempts": 1,
+          "attempts": 2,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
           "history": [
             {
               "requested_at": "2026-11-07T15:19:44.140584+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-07T18:05:56.635204+00:00",
               "outcome": "failed_unbilled",
               "error_type": "RateLimitError",
               "response_id": null,
@@ -895069,12 +895127,12 @@
     "lane": "LIVE",
     "status": "retry",
     "detected_at": "2026-11-07T15:03:49.958837+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-07T06:29:46.791170+00:00",
     "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
-    "updated_at": "2026-11-07T15:19:46.082124+00:00",
-    "retry_at": "2026-11-07T17:19:46.082130+00:00"
+    "updated_at": "2026-11-07T18:05:57.139400+00:00",
+    "retry_at": "2026-11-07T22:05:57.139408+00:00"
   },
   "820f062243f8cda290b0fc9a9dc02ec60c268cdc4471bf01e4b9d30932c147a7": {
     "raw": {
@@ -896406,12 +896464,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T15:03:49.958837+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-07T06:29:46.791170+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-07T15:21:13.061340+00:00",
-    "retry_at": "2026-11-07T17:21:13.061346+00:00"
+    "updated_at": "2026-11-07T18:06:56.706441+00:00",
+    "retry_at": "2026-11-07T22:06:56.706449+00:00"
   },
   "d88f3d7fc62d7a3ebdae9e4ccfa622356485513e2c1939f1bcbe31e44b4d2d9e": {
     "raw": {
@@ -897037,13 +897095,16 @@
         "materiality_reason": "capacity_or_investment_change",
         "capture_evidence": {
           "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fslep-gabriela-mistral-fortalece-su-gestion-preventiva-con-acompanamiento-de-mutual",
-          "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/slep-gabriela-mistral-fortalece-su-gestion-preventiva-con-acompanamiento-de-mutual/!ut/p/z1/jVLLbsIwEPwWPsDa9TPmSHrgVdKKyAT7ggxOqrQloAoRwdc3SFUl2mK6t5VmdnZmFxwswTX-WL_4Q71r_HvXW6dWnE7VmGvG-rM0QZVkQkv9SPGJQXENeEZDUaXZbKqR87Gh4CJ8reL8XIr_8fFGDfAefwE2BasOr4u2_bnMb7curlWAu9b7I44YIJf8HkB8ASJb2M5FcttFAsWxLlswze5j2504v0zcb-oAllVBea_XJJSUEiF9RbQOksiwEQwxlKLiMEKYRFO9fMXDd6aOwn5rjGlO5G0-OqcZGZpBr_cJZIFPJA!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
-          "captured_at": "2026-11-07T15:16:43.090884+00:00",
-          "sha256": "44fda1ccf92c1de9917485d7163af0641cd3d0a2e7dc9a9fe9d966ec1b3865c3",
+          "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/slep-gabriela-mistral-fortalece-su-gestion-preventiva-con-acompanamiento-de-mutual/!ut/p/z1/jVLLTsMwEPyWfoC162fMseZAnykiMql9QW6dlIg2jSpUBF9PKiGkAnXZ20ozOzuzCx6W4NtwbDbhtdm3Ydv3zqsnTqdqzDVjN3OTocpyoaWeUVwwKM8B92gpKpPPpxo5H1sKPsHXKs0vpPgfHy_UEK_xH8EZcOzZdG7zc5nfbn1aqwR_rvdHHClAIfk1gPgCJLZwvYvssosMymNTvYFt94ddf-LiNLFbN7GPoY4qBL0isaKUCBlqonWURMa1YIixEjWHEcIkmerpK26_M_UUup21tn0nLw-jD5OTOzscDD4Byg7lSw!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+          "captured_at": "2026-11-07T18:07:06.493783+00:00",
+          "sha256": "e4f1171d8e998e469545f959442786ebb17d8449d531b440fc78e5bfa6b5a445",
           "http_status": 200,
           "tls_verified": true,
-          "artifact": "/home/runner/work/Radar-salud/Radar-salud/data/audits/source_e_recovery/runtime/20261107T151615925328/capture/349a728b732265003d19-1.body",
-          "environment": "github_actions"
+          "artifact": "/home/runner/work/Radar-salud/Radar-salud/data/audits/source_e_recovery/runtime/20261107T180705133526-processing/capture/349a728b732265003d19-1.body",
+          "environment": "github_actions",
+          "capture_mode": "same_run_verified",
+          "fetched_at": "2026-11-07T18:07:06.493783+00:00",
+          "bytes": 98641
         },
         "content_kind": "news",
         "listing_capture_evidence": {
@@ -897059,19 +897120,33 @@
         "editorial_assessment": {
           "decision": "pending",
           "reason": "analysis_unavailable"
-        }
+        },
+        "capture_evidence_history": [
+          {
+            "url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/?1dmy&page=publico.empresa.home.nuestraMutual.noticias.noticiasDetalle&urile=wcm%3apath%3a%2FMutual%2B2024%2BPaginas%2BSitio%2BPublico%2BEmpresa%2FSA_SitioEmpresa%2FSA_Home%2FSA_NuestraMutual%2FSA_Noticias%2FSA_Noticias_Detalle%2Fslep-gabriela-mistral-fortalece-su-gestion-preventiva-con-acompanamiento-de-mutual",
+            "final_url": "https://www.mutual.cl/portal/publico/empresa/home/nuestra-mutual/noticias/noticias_detalle/slep-gabriela-mistral-fortalece-su-gestion-preventiva-con-acompanamiento-de-mutual/!ut/p/z1/jVLLbsIwEPwWPsDa9TPmSHrgVdKKyAT7ggxOqrQloAoRwdc3SFUl2mK6t5VmdnZmFxwswTX-WL_4Q71r_HvXW6dWnE7VmGvG-rM0QZVkQkv9SPGJQXENeEZDUaXZbKqR87Gh4CJ8reL8XIr_8fFGDfAefwE2BasOr4u2_bnMb7curlWAu9b7I44YIJf8HkB8ASJb2M5FcttFAsWxLlswze5j2504v0zcb-oAllVBea_XJJSUEiF9RbQOksiwEQwxlKLiMEKYRFO9fMXDd6aOwn5rjGlO5G0-OqcZGZpBr_cJZIFPJA!!/dz/d5/L2dBISEvZ0FBIS9nQSEh/",
+            "captured_at": "2026-11-07T15:16:43.090884+00:00",
+            "sha256": "44fda1ccf92c1de9917485d7163af0641cd3d0a2e7dc9a9fe9d966ec1b3865c3",
+            "http_status": 200,
+            "tls_verified": true,
+            "artifact": "/home/runner/work/Radar-salud/Radar-salud/data/audits/source_e_recovery/runtime/20261107T151615925328/capture/349a728b732265003d19-1.body",
+            "environment": "github_actions",
+            "superseded_reason": "artifact_unavailable_in_this_run",
+            "key": "capture_evidence"
+          }
+        ]
       }
     },
     "source": "mutual_seguridad",
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-07T15:18:19.327433+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "curated beta source pending assessment",
     "classification_watermark": null,
     "deferred_detail": "curated beta source pending assessment",
-    "updated_at": "2026-11-07T15:21:22.397036+00:00",
-    "retry_at": "2026-11-07T17:21:22.397042+00:00"
+    "updated_at": "2026-11-07T18:07:08.765491+00:00",
+    "retry_at": "2026-11-07T22:07:08.765498+00:00"
   },
   "ab7e06248ba905fedf77e51ea281d6464eea2a18ea44f094721cc28855714531": {
     "raw": {
