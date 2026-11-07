@@ -1524,6 +1524,298 @@
       "kpis": {},
       "decided": "Dirección, 3-nov-2026: próxima familia estadística (servicio BENCHMARK).",
       "scope_note": "No publicar 'costo por prestación' como comparación entre Isapres: depende de la mezcla y de qué cuenta como prestación. Candidatas: costo por beneficiario (ajustado por edad y sexo si hay datos), precio de una misma prestación, frecuencia de uso por beneficiario, peso hospitalario, % de bonificación y copago, siniestralidad, alza de costo descompuesta en precio y uso (lógica IRCI). Numerador y denominador de la misma fuente y período; nunca mezclar costo FEFI con conteos estadísticos. Las columnas por Isapre del cap. 3 están sin confirmar: abrir la planilla capturada antes de diseñar."
+    },
+    "F12": {
+      "slug": "f12_prestaciones",
+      "label": "Prestaciones bonificadas",
+      "status": "active",
+      "group": "prestadores",
+      "source_short": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "datos_kpis": [
+        "dispersion_amb",
+        "top10_nacional"
+      ],
+      "cadence": "trimestral (datos abiertos SIS)",
+      "cadence_phrase": "trimestral",
+      "period_kind": "quarter",
+      "series": [
+        "sis_datos_abiertos_prestaciones_bonificadas",
+        "sis_datos_abiertos_arancel_isapre"
+      ],
+      "primary_series": "sis_datos_abiertos_prestaciones_bonificadas",
+      "input": "data/sis_open_data_aggregates/<trimestre>/ (scripts/aggregate_sis_open_data.py en GitHub Actions); sin descargas en el paso de fichas",
+      "scopes": [
+        "Isapres",
+        "Prestadores"
+      ],
+      "supersedes": {
+        "event_titles_prefix": [],
+        "stat_families": []
+      },
+      "calendar": {
+        "expected_release_interval_days": 92,
+        "late_tolerance_days": 60,
+        "source": "La SIS publica un ZIP por trimestre en datos abiertos (2026t2: Last-Modified 5-ago-2026). Sin calendario oficial verificado: la fecha base es el cálculo de los agregados por Alicanto (detección), nunca una publicación."
+      },
+      "lectura_enabled": false,
+      "first_pass_requires_review": true,
+      "first_review": null,
+      "first_review_rule": "La primera ficha queda en HOLD awaiting_first_review con la ficha completa en hold/<slug>-<período>.json y se ve en staging en web/preview.html. Publica solo cuando Dirección la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = evidence_sha256 de esa ficha (SHA-256 de la lista ordenada URL + SHA-256 de los ZIP que usa). Después rige la política normal.",
+      "decided": "Dirección, 5-nov-2026: fichas F12/F13 desde datos abiertos SIS; prioridad máxima.",
+      "disclosure_rule": {
+        "decided": "Dirección, 5-nov-2026",
+        "price_min_providers": 2,
+        "price_min_frecuencia": 30,
+        "iqr_min_providers": 4,
+        "iqr_rule": "p25–p75 solo con ≥ 4 prestadores (con 3, p25, mediana y p75 revelan los tres precios); con 2 o 3, solo la mediana. Umbral interno, no de Dirección; la regla de Dirección (precio desde 2 prestadores) sigue igual.",
+        "single_provider": "sin precio ni facturado; solo bandera de concentración",
+        "national": "todos los prestadores cuentan en el agregado nacional",
+        "top_share": "siempre se informa el % de atenciones del mayor prestador",
+        "two_providers": "revisión PR #152: mediana sí; facturado, % bonificado y % copago nulos; % del mayor en tramos 50–60 / 60–80 / más de 80",
+        "codes": "solo códigos del arancel Fonasa (pertenencia FONASA)"
+      },
+      "strata": {
+        "decided": "Dirección, 6-nov-2026 21:54: canasta estratificada; mundos combinados por su peso en lo facturado con código MLE (embudo)",
+        "amb": {"size": 100, "min_other_regions": 13},
+        "hosp": {"size": 100, "min_other_regions": 8}
+      },
+      "cross_min_cells": 1000,
+      "cross_min_cells_rule": "Dirección, 5-nov-2026 21:25: ningún mínimo por Isapre excluye (Cruz del Norte se incluye); bajo este número de celdas la ficha agrega una nota de base pequeña. Se mantiene el piso de 10 atenciones por par.",
+      "cross_min_frecuencia_par": 10,
+      "headline_cross_rule": "revisión PR #152: la comparación mismo prestador es titular solo para Isapres abiertas cuya mediana y media ponderada por frecuencia tienen el mismo signo y ambas ≥ 3%; si no, rango de bonificación entre abiertas",
+      "top_codes": 15,
+      "headline_priority": [
+        "precio_codigo_dispersion",
+        "precio_codigo_region",
+        "dispersion_precios"
+      ],
+      "headline_decided": "Dirección, 5-nov-2026 21:25: el titular va por precios (dispersión de un código Fonasa de alto volumen o brecha regional contra la Metropolitana, solo celdas con la regla de divulgación), nombrando la prestación por su descripción del Arancel; cobertura y bonificación quedan como temas. Si un titular compara Isapres, solo abiertas.",
+      "templates": {
+        "kicker": "{label} · {quarter_label}",
+        "kicker_meta": "datos de {quarter_label} (trimestre) · detectado por Alicanto el {published_label}",
+        "report_title": "Mismo código, distinto precio: el mapa de prestaciones Isapre, {quarter_short}",
+        "headline_rule": "Dirección, 6-nov-2026 21:54: título de informe (headline_type report_title, solo F12, con el trimestre); cada sección lleva un título que enuncia su hallazgo, con cifras exactas trazadas, sin causas y «en promedio» donde aplique. Nombres de Isapres desde data/entities/isapres.json; nunca nombres de prestadores."
+      },
+      "tabs": [
+        {
+          "id": "dispersion",
+          "label": "Dispersión en la región"
+        },
+        {
+          "id": "concentracion",
+          "label": "Concentración regional"
+        },
+        {
+          "id": "nacional",
+          "label": "Concentración nacional"
+        },
+        {
+          "id": "vs-rm",
+          "label": "Regiones vs. RM"
+        },
+        {
+          "id": "publico-privado",
+          "label": "Público y privado"
+        },
+        {
+          "id": "cambio",
+          "label": "Cambio trimestral"
+        },
+        {
+          "id": "cobertura",
+          "label": "Cobertura por Isapre"
+        },
+        {
+          "id": "mismo-prestador",
+          "label": "Mismo prestador"
+        },
+        {
+          "id": "regiones",
+          "label": "Precios por región"
+        }
+      ],
+      "builder_version": "f12_informe_v7",
+      "kpis": {
+        "bonificado_sistema": {
+          "label": "Bonificado por las Isapres",
+          "kind": "share",
+          "formula": "Σ bonificado / Σ facturado × 100, todas las Isapres",
+          "denominator": "Facturado por los prestadores a la Isapre (no es gasto de bolsillo)",
+          "period_rule": "Trimestre; vs. trimestre anterior sin ajuste estacional",
+          "threshold": null,
+          "pitfalls": [
+            "Facturado ≠ gasto de bolsillo.",
+            "Depende de la mezcla de planes y prestaciones de cada cartera."
+          ]
+        },
+        "brecha_mismo_prestador": {
+          "label": "Brecha de cobertura, mismo prestador",
+          "kind": "pp",
+          "formula": "mediana más alta − más baja del índice (bonificado/frecuencia de la Isapre) / (media simple de las Isapres de la celda prestador × código) − 1",
+          "denominator": "Media no ponderada del bonificado por unidad de las Isapres en la misma celda",
+          "period_rule": "Trimestre",
+          "threshold": null,
+          "pitfalls": [
+            "Solo Isapres con ≥ cross_min_cells celdas.",
+            "No ajusta por tipo de plan ni bonificación restringida.",
+            "Válido solo si la verificación de RUT cifrados entre Isapres se cumple."
+          ]
+        },
+        "dispersion_precios": {
+          "label": "Dispersión de precios (p75/p25)",
+          "kind": "ratio",
+          "formula": "mediana entre los códigos top de p75/p25 del precio por unidad entre prestadores, nacional",
+          "denominator": "p25 del precio por unidad",
+          "period_rule": "Trimestre",
+          "threshold": null,
+          "pitfalls": [
+            "Precio = facturado / frecuencia por prestador; no ponderado."
+          ]
+        },
+        "precio_publicable": {
+          "label": "Atenciones con precio publicable",
+          "kind": "share",
+          "formula": "frecuencia de celdas región × código publicables / frecuencia de todas las celdas regionales",
+          "denominator": "Frecuencia regional de códigos Fonasa",
+          "period_rule": "Trimestre",
+          "threshold": null,
+          "pitfalls": []
+        }
+      }
+    },
+    "F13": {
+      "slug": "f13_licencias",
+      "label": "Licencias médicas Isapre",
+      "status": "active",
+      "group": "empleadores_licencias",
+      "source_short": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "datos_kpis": [
+        "rechazo",
+        "dias"
+      ],
+      "cadence": "trimestral (datos abiertos SIS)",
+      "cadence_phrase": "trimestral",
+      "period_kind": "quarter",
+      "series": [
+        "sis_datos_abiertos_licencias_medicas"
+      ],
+      "primary_series": "sis_datos_abiertos_licencias_medicas",
+      "input": "data/sis_open_data_aggregates/<trimestre>/licencias_<trimestre>.json (scripts/aggregate_sis_open_data.py en GitHub Actions); sin descargas en el paso de fichas",
+      "scopes": [
+        "Isapres",
+        "Licencias"
+      ],
+      "supersedes": {
+        "event_titles_prefix": [],
+        "stat_families": []
+      },
+      "calendar": {
+        "expected_release_interval_days": 92,
+        "late_tolerance_days": 60,
+        "source": "La SIS publica un ZIP por trimestre en datos abiertos (2026t2: Last-Modified 5-ago-2026). Sin calendario oficial verificado: la fecha base es el cálculo de los agregados por Alicanto (detección), nunca una publicación."
+      },
+      "lectura_enabled": false,
+      "first_pass_requires_review": true,
+      "first_review": null,
+      "first_review_rule": "La primera ficha queda en HOLD awaiting_first_review con la ficha completa en hold/<slug>-<período>.json y se ve en staging en web/preview.html. Publica solo cuando Dirección la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = evidence_sha256 de esa ficha (SHA-256 de la lista ordenada URL + SHA-256 de los ZIP que usa). Después rige la política normal.",
+      "decided": "Dirección, 5-nov-2026: licencias solo agregadas por Isapre, grupo diagnóstico, industria, región y tipo de profesional, celda mínima 10; nunca por médico, trabajador ni empleador.",
+      "min_cell": 10,
+      "complementary_suppression": "revisión PR #152: si lo suprimido de un grupo publicado suma 1–9 licencias, se suprime la celda publicada más chica hasta ≥ 10 (dimensiones; cruce por Isapre y por diagnóstico); también cubre días y subsidio",
+      "isapre_rule": "Dirección, 5-nov-2026 21:25: sin mínimo de licencias por Isapre (Cruz del Norte incluida, con nota de base pequeña bajo small_base_licencias); comparaciones entre Isapres en titular o línea índice solo entre abiertas; las cerradas van marcadas.",
+      "small_base_licencias": 1000,
+      "headline_priority": [
+        "salud_mental_vs_respiratorias",
+        "rechazo_por_isapre"
+      ],
+      "templates": {
+        "kicker": "{label} · {quarter_label}",
+        "kicker_meta": "datos de {quarter_label} (trimestre) · detectado por Alicanto el {published_label}",
+        "headline_rule": "Titular desde el primer candidato de headline_priority que sostienen los datos verificados; sin causas; sin días hasta la resolución (fechas trimestrales)."
+      },
+      "tabs": [
+        {
+          "id": "isapres",
+          "label": "Por Isapre"
+        },
+        {
+          "id": "diagnostico",
+          "label": "Diagnóstico"
+        },
+        {
+          "id": "industria",
+          "label": "Industria y emisor"
+        },
+        {
+          "id": "region",
+          "label": "Región"
+        },
+        {
+          "id": "dias",
+          "label": "Días autorizados"
+        },
+        {
+          "id": "subsidio",
+          "label": "Subsidio"
+        }
+      ],
+      "builder_version": "f13_licencias_v3",
+      "kpis": {
+        "rechazo": {
+          "label": "Licencias rechazadas",
+          "kind": "share",
+          "formula": "licencias con resolución «Rechácese» / licencias del archivo × 100",
+          "denominator": "Licencias del archivo trimestral",
+          "period_rule": "Trimestre; vs. trimestre anterior sin ajuste estacional",
+          "threshold": null,
+          "pitfalls": [
+            "Sin ajuste por mezcla de diagnósticos."
+          ]
+        },
+        "reduccion": {
+          "label": "Licencias reducidas",
+          "kind": "share",
+          "formula": "licencias «Redúcese» / licencias del archivo × 100",
+          "denominator": "Licencias del archivo trimestral",
+          "period_rule": "Trimestre",
+          "threshold": null,
+          "pitfalls": []
+        },
+        "dias": {
+          "label": "Días autorizados / solicitados",
+          "kind": "share",
+          "formula": "Σ días autorizados / Σ días solicitados × 100",
+          "denominator": "Días solicitados",
+          "period_rule": "Trimestre",
+          "threshold": null,
+          "pitfalls": [
+            "Rechazadas cuentan con 0 días autorizados."
+          ]
+        },
+        "subsidio": {
+          "label": "Subsidio por licencia",
+          "kind": "level",
+          "formula": "Σ subsidio líquido / licencias del archivo",
+          "denominator": "Todas las licencias (y, aparte, las con subsidio > 0)",
+          "period_rule": "Trimestre",
+          "threshold": null,
+          "pitfalls": [
+            "Cuando paga el empleador (sector público) el monto viene en cero."
+          ]
+        },
+        "salud_mental": {
+          "label": "Rechazo salud mental vs. respiratorias",
+          "kind": "ratio",
+          "formula": "% rechazo F00–F99 / % rechazo J00–J99",
+          "denominator": "% rechazo J00–J99",
+          "period_rule": "Trimestre",
+          "threshold": null,
+          "pitfalls": [
+            "Capítulo CIE-10 del diagnóstico principal."
+          ]
+        }
+      }
     }
   },
   "lenses": {

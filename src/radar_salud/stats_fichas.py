@@ -900,7 +900,9 @@ def lens_checks(ficha: dict, package: dict) -> dict:
     if not 3 <= len(ficha.get("kpis") or []) <= 5:
         out["ui"].append("kpis_out_of_range")
     tabs = ficha.get("tabs") or []
-    if tabs and not 2 <= len(tabs) <= 6:
+    # A report (headline_type "report_title", F12 only) carries one section per finding: up to REPORT_MAX_TABS.
+    max_tabs = REPORT_MAX_TABS if ficha.get("headline_type") == "report_title" else 6
+    if tabs and not 2 <= len(tabs) <= max_tabs:
         out["ui"].append("tabs_out_of_range")
     for tab in tabs:
         if len(tab.get("charts") or []) > 2:
@@ -939,6 +941,31 @@ def lens_checks(ficha: dict, package: dict) -> dict:
     return out
 
 
+# Report title (Dirección, 6-nov-2026 21:54): the F12 ficha is a report whose title names it and the quarter, while each
+# section's title states its finding. Allowed only for these families; the title must carry the ficha's quarter
+# ('jul–sep 2026') and no figure.
+REPORT_TITLE_FAMILIES = frozenset({"F12"})
+REPORT_MAX_TABS = 10
+
+
+def report_title_errors(ficha: dict) -> list[str]:
+    if ficha.get("headline_type") != "report_title":
+        return []
+    errors = []
+    if ficha.get("family") not in REPORT_TITLE_FAMILIES:
+        errors.append("report_title_not_allowed")
+    try:
+        y, m = period_parts(str(ficha.get("period") or ""))
+    except ValueError:
+        return errors + ["report_title_period_invalid"]
+    label = f"{MONTHS_ES[m - 3][:3]}–{MONTHS_ES[m - 1][:3]} {y}" if m % 3 == 0 else None
+    if not label or label not in str(ficha.get("headline") or ""):
+        errors.append("report_title_without_period")
+    if numbers_in(str(ficha.get("headline") or "")):
+        errors.append("report_title_with_figures")
+    return errors
+
+
 SIGNED_WITH_WORD = re.compile(r"(?<![\w.,])[−+-]\s?\d[\d.,]*\s?(?:%|pp\b)?\s+(?:menos|más|mas|mayor|menor)\b", re.I)
 
 
@@ -953,6 +980,7 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
     first = ((ficha.get("sources") or [{}])[0] or {}).get("url")
     if prim and first != prim:
         errors.append("first_source_not_primary")
+    errors += report_title_errors(ficha)
     pool = number_pool(package)
     # Derived counts ('3 Isapres crecen') are not in this pool: a count traces only through the line that cites it.
     # The Lectura's figures are traced by verify_lectura (pool, unit, sign, entity, period), not by value alone.

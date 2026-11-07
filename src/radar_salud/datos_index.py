@@ -22,12 +22,15 @@ SCHEMA = "datos_index_v1"
 SOURCE_SHORT = {"Superintendencia de Salud": "SIS"}
 
 
-def period_short(period: str | None) -> str | None:
-    """'2026-08' → 'ago 2026' (Spanish month, three letters)."""
+def period_short(period: str | None, kind: str | None = None) -> str | None:
+    """'2026-08' → 'ago 2026' (Spanish month, three letters); a quarterly family (``period_kind: quarter``, F12/F13,
+    whose period is the quarter's last month) → 'abr–jun 2026'."""
     try:
         y, m = sf.period_parts(str(period or ""))
     except ValueError:
         return None
+    if kind == "quarter" and m % 3 == 0:
+        return f"{sf.MONTHS_ES[m - 3][:3]}–{sf.MONTHS_ES[m - 1][:3]} {y}"
     return f"{sf.MONTHS_ES[m - 1][:3]} {y}"
 
 
@@ -95,14 +98,14 @@ def build(cards: list[dict], *, registry: dict | None = None, root: Path | None 
             "headline": ficha["headline"],
             "kpis": _kpis(ficha, cfg.get("datos_kpis")),
             "period": ficha["period"],
-            "period_label": period_short(ficha["period"]),
+            "period_label": period_short(ficha["period"], cfg.get("period_kind")),
             "source": cfg.get("source_short") or SOURCE_SHORT.get(source_name) or source_name,
             "source_name": source_name,
             "published_at": _day(ficha.get("published_at")),
             # Same day the inbox sorts by: first verification by Alicanto, else validation, else SIS publication.
             "updated_on": _day(card.get("feed_date")) or _day(card.get("validation_date")) or _day(card.get("event_date")),
             "status": "updating" if held else "current",
-            **({"updating_period": held, "updating_period_label": period_short(held)} if held else {}),
+            **({"updating_period": held, "updating_period_label": period_short(held, cfg.get("period_kind"))} if held else {}),
             "share_url": card.get("share_url"),
         })
         families.append(row)

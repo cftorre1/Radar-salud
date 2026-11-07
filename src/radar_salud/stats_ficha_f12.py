@@ -1,0 +1,649 @@
+"""F12 · Prestaciones bonificadas (SIS, datos abiertos): package, ficha and checks.
+
+Input: ``data/sis_open_data_aggregates/<quarter>/`` only (``sis_open_data.load_quarter``): the latest quarter and the
+one before, aggregated in GitHub Actions from the SIS quarterly ZIP "Prestaciones Bonificadas" (and the Arancel Isapre
+for code descriptions). Nothing is downloaded here; no provider, beneficiary or folio identifier exists in the input.
+
+What the ficha shows (Dirección 5-nov-2026):
+
+- % bonificado and % copago over facturado, by Isapre and for the system (Σ bonificado / Σ facturado);
+- the same provider, a different Isapre: for every pseudonymous provider × Fonasa code billed by ≥ 2 Isapres, each
+  Isapre's bonificado per unit against the mean of the Isapres of that cell (median per Isapre). The coverage gap is
+  the highest minus the lowest median among open Isapres whose median and frecuencia-weighted mean agree in sign and
+  are both ≥ 3 % (no Isapre-level volume minimum; an Isapre with fewer than ``cross_min_cells`` cells gets a
+  small-base note). The headline never compares Isapres on coverage: it leads with prices (Dirección 5-nov-2026);
+- prices of the most frequent Fonasa codes: national median, p25–p75 and p75/p25 (dispersion), and by region under
+  the disclosure rule: a price only with ≥ 2 distinct providers and ≥ 30 frecuencia (p25–p75 only with ≥ 4: with 3, p25, median and p75 reveal every price); with
+  exactly 1 provider no price, only a concentration flag; every provider counts nationally; the top provider's share
+  of frecuencia is always shown;
+- concentration of facturado among providers by region (HHI, top-1, top-5).
+
+Reconciliation (any failure → HOLD): the files of both quarters match their receipts (``sis_open_data``); the
+Isapre table adds up (ambulatoria + hospitalaria = total per Isapre); every Isapre code has a name; every price row
+obeys the disclosure rule (re-checked here, not trusted); the national cell of a code counts at least as many
+providers as any of its regions; the cross-Isapre index is valid only when the aggregator's ID check says so.
+
+First publication: like F4/F7, a PASS waits in ``hold/`` (``awaiting_first_review``, previewed on staging) until
+``families.F12.first_review`` records ``reviewed_by`` and ``reviewed_sha256`` = the ficha's ``evidence_sha256``. The
+Lectura stays off (``lectura_enabled: false``): no model call.
+"""
+from __future__ import annotations
+
+import re
+from datetime import date
+from decimal import ROUND_HALF_UP, Decimal
+from pathlib import Path
+from statistics import median
+from typing import Any, Callable
+
+from . import f12_report as rep
+from . import sis_open_data as so
+from . import stats_fichas as sf
+from .stats_fichas import value
+from .weekly_freshness import numbers_in
+
+FAMILY = "F12"
+BUILDER_VERSION = "f12_informe_v7"  # v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
+DATASET = "Prestaciones Bonificadas"
+PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
+NATIONAL = "NACIONAL"
+AMB, HOSP = "amb", "hosp"
+# "Casi no cambia" is written only when every qualified Isapre's median facturado index is within ± this many %.
+FACT_STABLE_MAX = 5.0
+# The same-provider comparison can be the headline only when, for an open Isapre, the unweighted median and the
+# frecuencia-weighted mean of its index agree in sign and both are at least this many % (review of PR #152).
+HEADLINE_MIN_INDEX = 3.0
+# Prices first (Dirección 5-nov-2026 21:25); coverage and concentration follow.
+TAB_ORDER = ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio", "cobertura", "mismo-prestador", "regiones"]
+SHARE_BANDS = {"50-60": "50–60%", "60-80": "60–80%", ">80": "más de 80%"}
+
+
+def fmt(x: float, digits: int = 1, signed: bool = False) -> str:
+    """Half-up rounding (the verifier's rule), Chilean separators, typographic minus."""
+    q = Decimal(str(float(x))).quantize(Decimal(1).scaleb(-digits), rounding=ROUND_HALF_UP)
+    if q == 0:
+        q = abs(q)
+    s = f"{abs(q):,.{digits}f}".replace(",", "_").replace(".", ",").replace("_", ".")
+    return ("−" if q < 0 else "+" if signed and q > 0 else "") + s
+
+
+def money(x: float) -> str:
+    return "$" + fmt(x, 0)
+
+
+def attention(label: str) -> str | None:
+    n = sf._fold(label)
+    return AMB if "ambul" in n else HOSP if "hospital" in n else None
+
+
+def short_desc(desc: str | None) -> str | None:
+    """'ATENCIÓN KINESIOLÓGICA INTEGRAL AMBULATORIA' → 'Atención kinesiológica integral ambulatoria': the literal Arancel
+    Isapre description, lower-cased, cut before a parenthesis or comma. None without a description."""
+    if not desc:
+        return None
+    t = re.split(r"\s*[(,]", str(desc).strip(), maxsplit=1)[0].strip().lower()
+    return (t[:1].upper() + t[1:]) if t else None
+
+
+def disclosure_failures(cols: list[str], rows: list[list]) -> list[str]:
+    """The disclosure rule is re-checked on every price row, never trusted from the aggregator."""
+    f = []
+    for raw in rows:
+        r = dict(zip(cols, raw))
+        tag = f"{r.get('codigo_prestacion')}:{r.get('region')}"
+        n, freq, est = r.get("n_prestadores"), r.get("frecuencia"), r.get("estado")
+        price = [r.get(k) for k in ("precio_mediana", "precio_p25", "precio_p75")]
+        if not isinstance(n, int) or not isinstance(freq, int) or n < 1:
+            f.append(f"price_row_counts_invalid:{tag}")
+            continue
+        sh = r.get("share_prestador_mayor_pct")
+        if r.get("suprimido_complementario") and any(r.get(k) is not None for k in ("facturado", "pct_bonificado", "pct_copago")):
+            f.append(f"complementary_cell_with_money:{tag}")
+        if n == 2:
+            # median + facturado + frecuencia + an exact share would solve both unit prices (review of PR #152)
+            if sh not in SHARE_BANDS or any(r.get(k) is not None for k in ("facturado", "pct_bonificado", "pct_copago")):
+                f.append(f"two_provider_row_reveals_prices:{tag}")
+        elif not isinstance(sh, (int, float)) or isinstance(sh, bool) or not 0 < sh <= 100:
+            f.append(f"price_row_without_top_share:{tag}")
+        if n == 1:
+            if est != "concentracion_un_prestador" or any(x is not None for x in price) or r.get("facturado") is not None \
+                    or r.get("pct_bonificado") is not None:
+                f.append(f"single_provider_with_price:{tag}")
+        elif n >= PRICE_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ:
+            if est != "publicable" or price[0] is None or ((price[1] is None) != (n < IQR_MIN_PROVIDERS)) \
+                    or ((price[2] is None) != (n < IQR_MIN_PROVIDERS)):
+                f.append(f"publishable_row_inconsistent:{tag}")
+        elif est != "suprimido_frecuencia_menor_30" or any(x is not None for x in price):
+            f.append(f"suppressed_row_with_price:{tag}")
+    return f
+
+
+def _quarter(root: Path, q: str, names: dict[str, str]) -> tuple[dict, list[str]]:
+    data, failures = so.load_quarter(root, q, DATASET)
+    if failures:
+        return data, failures
+    files = data["files"]
+    res = files[f"prestaciones_{q}_resumen.json"]
+    prices = files[f"prestaciones_{q}_precios_fonasa_region.json"]
+    cross = files[f"prestaciones_{q}_indice_isapre_mismo_prestador.json"]
+    by: dict[str, dict] = {}
+    for row in res.get("por_isapre_tipo_atencion") or []:
+        code = str(row.get("isapre"))
+        kind = "total" if row.get("tipo_atencion") == "TOTAL" else attention(str(row.get("tipo_atencion")))
+        if kind is None:
+            failures.append(f"attention_unknown:{code}:{row.get('tipo_atencion')}")
+            continue
+        by.setdefault(code, {})[kind] = row
+    for code, kinds in sorted(by.items()):
+        if code not in names:
+            failures.append(f"isapre_without_name:{code}")
+        tot = kinds.get("total")
+        parts = [kinds[k] for k in (AMB, HOSP) if k in kinds]
+        if not tot or len(parts) != 2:
+            failures.append(f"isapre_table_incomplete:{code}")
+            continue
+        for key in ("frecuencia", "facturado", "bonificado", "copago", "registros"):
+            if abs(sum(p.get(key) or 0 for p in parts) - (tot.get(key) or 0)) > 1:
+                failures.append(f"isapre_split_mismatch:{code}:{key}")
+        if not (tot.get("facturado") or 0) > 0:
+            failures.append(f"isapre_facturado_not_positive:{code}")
+    cols = prices.get("columns") or []
+    if (prices.get("regla") or {}).get("version") != "precio_v5_complementaria":
+        failures.append(f"disclosure_rule_version:{q}")
+    failures += disclosure_failures(cols, prices.get("rows") or [])
+    att = files.get(f"prestaciones_{q}_atencion_codigo.json") or {}
+    failures += [f"money_cell_recoverable:{x}" for x in
+                 so.recoverable_money(cols, prices.get("rows") or [], att.get("columns"), att.get("rows"))][:20]
+    cells: dict[tuple, dict] = {(r[0], r[1]): dict(zip(cols, r)) for r in prices.get("rows") or []}
+    for code in {c for c, _ in cells}:
+        regs = [v for (c, reg), v in cells.items() if c == code and reg != NATIONAL]
+        nat = cells.get((code, NATIONAL))
+        if regs and (not nat or nat["n_prestadores"] < max(v["n_prestadores"] for v in regs)):
+            failures.append(f"national_cell_smaller_than_region:{code}")
+    for row in cross.get("resumen_por_isapre") or []:
+        if str(row.get("isapre")) not in names:
+            failures.append(f"isapre_without_name:{row.get('isapre')}")
+    data.update(by_isapre=by, cells=cells, cross=cross, resumen=res, prices=prices,
+                top=files[f"prestaciones_{q}_top_codigos.json"],
+                consistency=so.load_json(Path(root) / so.AGG_ROOT / q / f"prestaciones_{q}_consistencia_ids.json"))
+    return data, sorted(set(failures))
+
+
+def _hold(package: dict, failures: list[str]) -> dict:
+    package["reconciliation"].update(ok=False, failures=failures)
+    package.update(findings=[], kpis={}, revisions=[], constants=[])
+    return package
+
+
+def build_package(root: Path, registry: dict | None = None, previous_live: dict | None = None) -> dict:
+    registry = registry or sf.load_registry()
+    cfg = registry["families"][FAMILY]
+    root = Path(root)
+    names = so.isapre_names(root)
+    qs = [q for q in so.quarters(root)
+          if (so.load_json(root / so.AGG_ROOT / q / f"receipts_{q}.json") or {}).get("script_version") == so.SCRIPT_VERSION
+          and any(f.get("dataset") == DATASET for f in (so.load_json(root / so.AGG_ROOT / q / f"receipts_{q}.json") or {}).get("files") or [])]
+    package: dict[str, Any] = {
+        "family": FAMILY, "period": None, "periods": [], "published_at": None, "date_basis": "first_detected",
+        "release_key": None, "primary_source": {}, "sources": {}, "values": {}, "entities": [], "entity_codes": [],
+        "entity_keys": [], "causal_note": None, "provisional": False,
+        "reconciliation": {"ok": False, "failures": [], "checks": [
+            "cada archivo agregado nombra el trimestre, la versión del script y el SHA-256 del ZIP de su recibo",
+            "filas agregadas = filas leídas del ZIP; ≤ 0,1 % de filas malformadas; ZIP ≤ 1 GiB desde datos.superdesalud.gob.cl",
+            "el trimestre declarado dentro del archivo es el de la carpeta",
+            "ambulatoria + hospitalaria = total, por Isapre y por cada monto",
+            "regla de divulgación re-verificada en cada fila de precios (1 prestador: sin precio)",
+            "la celda nacional de un código cuenta al menos tantos prestadores como cualquiera de sus regiones",
+            "toda Isapre con nombre en data/entities/isapres.json"]},
+        "lectura_pool": [], "derived_ratios": [], "ranks": [],
+    }
+    if not qs:
+        package["reconciliation"]["failures"] = ["no_quarter_aggregated"]
+        return package
+    q = qs[-1]
+    package["period"] = so.period_of(q)
+    cur, failures = _quarter(root, q, names)
+    pq = so.previous_quarter(q)
+    prev = None
+    if pq in qs:
+        prev, pf = _quarter(root, pq, names)
+        failures += [f"previous:{x}" for x in pf]
+    if failures:
+        return _hold(package, failures)
+
+    values: dict[str, dict] = {}
+    sources: dict[str, dict] = {}
+    detected = str(cur.get("generated_at") or "")[:10] or None
+
+    def src(data: dict, qq: str) -> str:
+        e = data["receipt"]
+        key = "prest_" + qq
+        if key not in sources:
+            sources[key] = so.source_for(e, label=f"SIS · Prestaciones bonificadas {so.quarter_label(qq)} (datos abiertos)",
+                                         role="ZIP trimestral; agregados de Alicanto por Isapre, prestador seudónimo, código y región",
+                                         locator=f"{(e.get('parse') or {}).get('rows_ok')} filas; agregación en GitHub Actions",
+                                         detected=str(data.get("generated_at") or "")[:10] or None)
+        return key
+
+    def put(vid: str, val: float, unit: str, qq: str, data: dict | None, locator: str | None = None) -> float:
+        values[vid] = value(vid, val, unit=unit, period=so.period_of(qq), source=src(data, qq) if data else None,
+                            locator=locator)
+        return val
+
+    def derived(vid: str, val: float, unit: str, formula: str, inputs: list[str], qq: str = q) -> float:
+        values[vid] = value(vid, val, unit=unit, period=so.period_of(qq), source=None, formula=formula, inputs=inputs,
+                            kind="derived")
+        return val
+
+    # 1. Coverage by Isapre (both quarters).
+    isapres = sorted(cur["by_isapre"], key=lambda c: -cur["by_isapre"][c]["total"]["facturado"])
+    for qq, data in ((q, cur), (pq, prev)):
+        if not data:
+            continue
+        sums = {"facturado": 0, "bonificado": 0, "copago": 0, "frecuencia": 0}
+        for code, kinds in data["by_isapre"].items():
+            for kind, row in kinds.items():
+                loc = f"prestaciones_{qq}_resumen.json · por_isapre_tipo_atencion · {code} · {kind}"
+                put(f"isapre.{code}.{qq}.{kind}.pct_bonif", row["pct_bonificado"], "%", qq, data, loc)
+                put(f"isapre.{code}.{qq}.{kind}.pct_copago", row["pct_copago"], "%", qq, data, loc)
+                if kind == "total":
+                    put(f"isapre.{code}.{qq}.total.facturado_mm", round(row["facturado"] / 1e6, 3), "MM$", qq, data, loc)
+                    for k in sums:
+                        sums[k] += row[k]
+        for k in ("facturado", "bonificado", "copago"):
+            put(f"sistema.{qq}.{k}_mm", round(sums[k] / 1e6, 3), "MM$", qq, data, "Σ Isapres, fila TOTAL")
+        derived(f"sistema.{qq}.pct_bonif", sums["bonificado"] / sums["facturado"] * 100, "%",
+                "Σ bonificado / Σ facturado × 100 (todas las Isapres, ambulatoria + hospitalaria)",
+                [f"sistema.{qq}.bonificado_mm", f"sistema.{qq}.facturado_mm"], qq)
+        derived(f"sistema.{qq}.pct_copago", sums["copago"] / sums["facturado"] * 100, "%",
+                "Σ copago / Σ facturado × 100", [f"sistema.{qq}.copago_mm", f"sistema.{qq}.facturado_mm"], qq)
+    types = so.isapre_types(root)
+    missing = [c for c in isapres if types.get(c) not in ("open", "closed")]
+    if missing:
+        return _hold(package, [f"isapre_without_type:{c}" for c in missing])
+    opens = [c for c in isapres if types[c] == "open"]
+    if len(opens) < 2:
+        return _hold(package, ["open_isapres_under_2"])
+    # The headline speaks of open Isapres only; closed ones (restricted affiliation) stay in the topics, tagged.
+    hi_b = max(opens, key=lambda c: values[f"isapre.{c}.{q}.total.pct_bonif"]["value"])
+    lo_b = min(opens, key=lambda c: values[f"isapre.{c}.{q}.total.pct_bonif"]["value"])
+
+    # 2. Same provider, different Isapre.
+    min_cells = int(cfg.get("cross_min_cells") or 1000)
+    cons = cur.get("consistency") or {}
+    cross_valid = (cons.get("veredicto") or {}).get("cross_isapre_valido") is True
+    cross_rows = {str(r["isapre"]): r for r in cur["cross"].get("resumen_por_isapre") or []}
+    qualified = []
+    if cross_valid:
+        loc = f"prestaciones_{q}_indice_isapre_mismo_prestador.json · resumen_por_isapre"
+        for code, r in cross_rows.items():
+            if r.get("indice_bonif_unit_mediana_pct") is None:
+                continue
+            for k, vid in (("indice_bonif_unit_mediana_pct", "mediana"), ("p25", "p25"), ("p75", "p75"),
+                           ("indice_facturado_unit_mediana_pct", "fact_mediana"),
+                           ("indice_bonif_unit_media_ponderada_frec_pct", "ponderada")):
+                if r.get(k) is not None:
+                    put(f"cruce.{code}.{vid}", r[k], "%", q, cur, loc)
+            put(f"cruce.{code}.celdas", r["celdas_prestador_prestacion"], "celdas", q, cur, loc)
+            qualified.append(code)  # Dirección 5-nov 21:25: no Isapre-level minimum (Cruz del Norte included)
+        put("cruce.celdas_multi", cur["cross"].get("celdas_con_2_o_mas_isapres"), "celdas", q, cur, loc)
+        idsum = (cons.get("trimestre_actual") or {}).get("pct_facturado_de_codigos_en_2_o_mas_isapres")
+        if idsum is not None:
+            put("ids.pct_facturado_multi", idsum, "%", q, cur, f"prestaciones_{q}_consistencia_ids.json")
+    gap = None
+    qualified = [c for c in qualified if f"cruce.{c}.ponderada" in values]
+    open_q = [c for c in qualified if types[c] == "open"]
+    # Robust: median and weighted mean agree in sign and both reach HEADLINE_MIN_INDEX (open Isapres only).
+    strong = [c for c in open_q if (values[f"cruce.{c}.mediana"]["value"] > 0) == (values[f"cruce.{c}.ponderada"]["value"] > 0)
+              and min(abs(values[f"cruce.{c}.mediana"]["value"]), abs(values[f"cruce.{c}.ponderada"]["value"])) >= HEADLINE_MIN_INDEX]
+    if len(open_q) >= 2:
+        hi_c = max(open_q, key=lambda c: values[f"cruce.{c}.mediana"]["value"])
+        lo_c = min(open_q, key=lambda c: values[f"cruce.{c}.mediana"]["value"])
+        pos = [c for c in strong if values[f"cruce.{c}.mediana"]["value"] > 0]
+        neg = [c for c in strong if values[f"cruce.{c}.mediana"]["value"] < 0]
+        if pos and neg:
+            gp, gn = max(pos, key=lambda c: values[f"cruce.{c}.mediana"]["value"]), min(neg, key=lambda c: values[f"cruce.{c}.mediana"]["value"])
+            gap = derived("cruce.brecha_pp", values[f"cruce.{gp}.mediana"]["value"] - values[f"cruce.{gn}.mediana"]["value"], "pp",
+                          "mediana más alta − más baja del índice de bonificado por unidad, Isapres abiertas cuya mediana y media "
+                          "ponderada coinciden en signo y son ≥ 3%", [f"cruce.{gp}.mediana", f"cruce.{gn}.mediana"])
+            gap = (gp, gn)
+        fact_meds = [values[f"cruce.{c}.fact_mediana"]["value"] for c in qualified if f"cruce.{c}.fact_mediana" in values]
+        derived("cruce.fact_mediana_max_abs", max(abs(x) for x in fact_meds), "%",
+                "máximo |mediana del índice de facturado por unidad| entre las Isapres calificadas",
+                [f"cruce.{c}.fact_mediana" for c in qualified])
+    else:
+        hi_c = lo_c = None
+    small = [c for c in qualified if values[f"cruce.{c}.celdas"]["value"] < min_cells]
+
+    # 3. Prices of the most frequent Fonasa codes.
+    top = [c for c in cur["top"].get("codigos") or [] if isinstance(c, dict)]
+    n_top = int(cfg.get("top_codes") or 15)
+    top = sorted(top, key=lambda c: c.get("rank") or 99)[:n_top]
+    if len(top) < 3:
+        return _hold(package, ["top_codes_under_3"])
+    arancel = cur.get("arancel")
+    if arancel:
+        sources["arancel_" + q[:4]] = so.source_for(arancel, label=f"SIS · Arancel Isapre {q[:4]} (datos abiertos)",
+                                                    role="descripción literal de cada código", locator="campo 8 del archivo",
+                                                    detected=detected)
+    desc_numbers: list[float] = []
+    bands: dict[str, str] = {}
+    codes = []
+    ratios = []
+    status_count: dict[str, int] = {}
+    for c in top:
+        code = str(c["codigo_prestacion"])
+        d = (c.get("descripcion_arancel_isapre") or [{}])[0].get("descripcion") if arancel else None
+        desc_numbers += [v for _, v, _ in numbers_in(d or "")]
+        codes.append({"code": code, "desc": d, "rank": c["rank"]})
+        put(f"top.{code}.frecuencia", c["frecuencia"], "atenciones", q, cur, f"prestaciones_{q}_top_codigos.json")
+        if c.get("pct_bonificado") is not None:
+            put(f"top.{code}.pct_bonif", c["pct_bonificado"], "%", q, cur, f"prestaciones_{q}_top_codigos.json")
+        for (cc, reg), cell in cur["cells"].items():
+            if cc != code:
+                continue
+            loc = f"prestaciones_{q}_precios_fonasa_region.json · {code} · {reg}"
+            base = f"precio.{code}.{reg}"
+            put(f"{base}.n", cell["n_prestadores"], "prestadores", q, cur, loc)
+            put(f"{base}.frec", cell["frecuencia"], "atenciones", q, cur, loc)
+            if isinstance(cell["share_prestador_mayor_pct"], (int, float)):
+                put(f"{base}.share_top", cell["share_prestador_mayor_pct"], "%", q, cur, loc)
+            else:
+                bands[f"{base}"] = cell["share_prestador_mayor_pct"]
+            for k in ("precio_mediana", "precio_p25", "precio_p75"):
+                if cell.get(k) is not None:
+                    put(f"{base}.{k.split('_')[1]}", cell[k], "$", q, cur, loc)
+            if reg != NATIONAL:
+                status_count[cell["estado"]] = status_count.get(cell["estado"], 0) + 1
+        rm = f"precio.{code}.13.mediana"
+        for reg in so.REGIONS:
+            rv = f"precio.{code}.{reg}.mediana"
+            if reg not in ("13", "0") and rm in values and rv in values and values[rm]["value"] > 0:
+                derived(f"precio.{code}.{reg}.vs_rm", (values[rv]["value"] / values[rm]["value"] - 1) * 100, "%",
+                        "(mediana de la región / mediana de la Metropolitana − 1) × 100; ambas celdas con la regla de divulgación",
+                        [rv, rm])
+        nat = f"precio.{code}.{NATIONAL}"
+        if f"{nat}.p25" in values and values[f"{nat}.p25"]["value"] > 0:
+            ratios.append(derived(f"{nat}.ratio", values[f"{nat}.p75"]["value"] / values[f"{nat}.p25"]["value"], "veces",
+                                  "p75 / p25 del precio por unidad entre prestadores, nacional", [f"{nat}.p75", f"{nat}.p25"]))
+    if len(ratios) < 3:
+        return _hold(package, ["dispersion_under_3_codes"])
+    derived("dispersion.mediana", median(ratios), "veces", "mediana de p75/p25 entre los códigos más frecuentes con precio nacional",
+            [f"precio.{c['code']}.{NATIONAL}.ratio" for c in codes if f"precio.{c['code']}.{NATIONAL}.ratio" in values])
+    for est, n in status_count.items():
+        derived(f"conteo.celdas.{est}", n, "count", f"celdas región × código (top) con estado {est}",
+                [f"precio.{c['code']}" for c in codes])
+    estados = {(e["estado"], e["nacional"]): e for e in cur["prices"].get("conteo_estados") or []}
+    reg_freq = sum(e.get("frecuencia") or 0 for (est, nat), e in estados.items() if not nat)
+    pub_freq = (estados.get(("publicable", False)) or {}).get("frecuencia") or 0
+    one = estados.get(("concentracion_un_prestador", False)) or {}
+    put("divulgacion.frec_regional", reg_freq, "atenciones", q, cur, f"prestaciones_{q}_precios_fonasa_region.json · conteo_estados")
+    put("divulgacion.frec_publicable", pub_freq, "atenciones", q, cur, f"prestaciones_{q}_precios_fonasa_region.json · conteo_estados")
+    put("divulgacion.celdas_un_prestador", one.get("celdas") or 0, "celdas", q, cur, "conteo_estados")
+    if reg_freq <= 0:
+        return _hold(package, ["regional_frecuencia_not_positive"])
+    derived("divulgacion.pct_publicable", pub_freq / reg_freq * 100, "%",
+            "frecuencia de celdas región × código con precio publicable / frecuencia de todas las celdas regionales × 100",
+            ["divulgacion.frec_publicable", "divulgacion.frec_regional"])
+
+    # 4. Concentration by region.
+    conc = {str(r["region"]): r for r in (cur["resumen"].get("concentracion") or {}).get("regiones") or []}
+    for reg, r in conc.items():
+        loc = f"prestaciones_{q}_resumen.json · concentracion · {reg}"
+        put(f"conc.{reg}.hhi", r["hhi"], "HHI", q, cur, loc)
+        put(f"conc.{reg}.top1", r["share_top1_pct"], "%", q, cur, loc)
+        put(f"conc.{reg}.top5", r["share_top5_pct"], "%", q, cur, loc)
+        put(f"conc.{reg}.n", r["n_prestadores"], "prestadores", q, cur, loc)
+    put("filas", cur["receipt"]["parse"]["rows_ok"], "filas", q, cur, "recibo del ZIP")
+    # 5. Report sections (Dirección 6-nov-2026 21:54): funnel, stratified basket and systemic findings.
+    report, rf = rep.analyze(root, cfg, q, pq if prev else None, cur, prev, put, derived, values, sources)
+    if rf:
+        return _hold(package, rf)
+
+    ev = so.evidence_sha256(sources)
+    cnt = {"isapres": len(isapres), "qualified": len(qualified)}
+    for k, n in cnt.items():
+        package["derived_ratios"].append({"id": f"conteo.{k}", "value": n, "unit": "count"})
+    package.update(
+        period=so.period_of(q), periods=[so.period_of(x) for x in (pq, q) if x == q or prev],
+        published_at=detected, date_basis="first_detected", release_key=sf.release_key(so.period_of(q), ev),
+        evidence_sha256=ev, primary_source={"url": cur["receipt"]["url"], "sha256": cur["receipt"]["sha256"]},
+        sources=sources, values=values, findings=[],
+        entities=[{"code": int(c), "name": names[c]} for c in isapres if c.isdigit()],
+        entity_codes=[int(c) for c in isapres if c.isdigit()],
+        revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
+        constants=[0, 1, 2, 3, 4, 5, 8, 12, 13, 16, 30, 10, 50, 60, 80, 100, 256, 10000, FACT_STABLE_MAX, HEADLINE_MIN_INDEX, n_top, min_cells, len(top), *[int(c["code"]) for c in codes if c["code"].isdigit()],
+                   *desc_numbers],
+        kpis={"q": q, "pq": pq if prev else None, "isapres": isapres, "hi_b": hi_b, "lo_b": lo_b, "cross_valid": cross_valid,
+              "qualified": qualified, "hi_c": hi_c, "lo_c": lo_c, "gap": gap, "opens": opens, "strong": strong,
+              "closed": [c for c in isapres if types[c] == "closed"], "bands": bands, "small": small,
+              "cross_topic": len(open_q) >= 2, "codes": codes, "status_count": status_count,
+              "regions": sorted(conc, key=lambda r: (r == NATIONAL, -(conc[r]["hhi"] or 0))), **report},
+    )
+    package["reconciliation"].update(ok=True, failures=[])
+    return package
+
+
+def compose(package: dict, registry: dict | None = None, *, today: date, decision: dict | None = None) -> dict:
+    registry = registry or sf.load_registry()
+    cfg = registry["families"][FAMILY]
+    tpl = cfg["templates"]
+    v = package["values"]
+    k = package["kpis"]
+    q, pq = k["q"], k["pq"]
+    V = lambda vid: v[vid]["value"]  # noqa: E731
+    pc = lambda vid, d=1: fmt(V(vid), d) + "%"  # noqa: E731
+    names = {e["code"]: e["name"] for e in package["entities"]}
+    nm = lambda code: names[int(code)]  # noqa: E731
+    ql = so.quarter_label(q)
+    tabs, paragraphs, notes, kpis = [], [], [], []
+    tpl = cfg["templates"]
+
+    report = rep.sections(package, cfg, fmt, sf.topic_fields)
+    kpis = report["kpis"]
+    tabs += report["tabs"]
+    paragraphs += report["paragraphs"]
+
+    # Topic 1: coverage by Isapre.
+    iss = sorted(k["isapres"], key=lambda c: -V(f"isapre.{c}.{q}.total.pct_bonif"))
+    closed = set(k["closed"])
+    tag = lambda c: {"tag": "cerrada"} if c in closed else {}  # noqa: E731
+    kind = lambda c: "cerrada" if c in closed else "abierta"  # noqa: E731
+    closed_names = ", ".join(nm(c) for c in k["closed"])
+    head = ["Isapre", "Tipo", "Bonificado", "Copago", "Ambulatoria", "Hospitalaria", "Facturado (MM$)"] + ([so.quarter_tag(pq)] if pq else [])
+
+    def row_cov(c: str) -> list[str]:
+        out = [nm(c), kind(c), pc(f"isapre.{c}.{q}.total.pct_bonif"), pc(f"isapre.{c}.{q}.total.pct_copago"),
+               pc(f"isapre.{c}.{q}.amb.pct_bonif"), pc(f"isapre.{c}.{q}.hosp.pct_bonif"),
+               fmt(V(f"isapre.{c}.{q}.total.facturado_mm"), 0)]
+        if pq:
+            out.append(pc(f"isapre.{c}.{pq}.total.pct_bonif") if f"isapre.{c}.{pq}.total.pct_bonif" in v else "sin dato")
+        return out
+    table = {"columns": head, "rows": [row_cov(c) for c in iss]
+             + [["Sistema", "", pc(f"sistema.{q}.pct_bonif"), pc(f"sistema.{q}.pct_copago"), "", "", fmt(V(f"sistema.{q}.facturado_mm"), 0)]
+                + ([pc(f"sistema.{pq}.pct_bonif")] if pq else [])]}
+    charts = [{"id": "f12-bonif-isapre", "form": "bars", "unit": "%", "digits": 1,
+               "headline": "Bonificado sobre lo facturado, por Isapre",
+               "subtitle": f"% de lo facturado por los prestadores que pagó la Isapre, {ql}",
+               "rows": [{"label": nm(c), "value": V(f"isapre.{c}.{q}.total.pct_bonif"), "ref": f"isapre.{c}.{q}.total.pct_bonif",
+                         "emphasis": c in (k["hi_b"], k["lo_b"]), **tag(c)} for c in iss[:12]],
+               "table": table,
+               "source": "SIS, datos abiertos de prestaciones bonificadas (ZIP trimestral); agregados por Isapre."},
+              {"id": "f12-bonif-amb", "form": "bars", "unit": "%", "digits": 1,
+               "headline": "Bonificado en atención ambulatoria",
+               "subtitle": f"% de lo facturado en atención ambulatoria, {ql}",
+               "rows": [{"label": nm(c), "value": V(f"isapre.{c}.{q}.amb.pct_bonif"), "ref": f"isapre.{c}.{q}.amb.pct_bonif", **tag(c)}
+                        for c in sorted(iss, key=lambda c: -V(f"isapre.{c}.{q}.amb.pct_bonif"))[:12]],
+               "table": {"columns": ["Isapre", "Ambulatoria", "Hospitalaria"],
+                         "rows": [[nm(c), pc(f"isapre.{c}.{q}.amb.pct_bonif"), pc(f"isapre.{c}.{q}.hosp.pct_bonif")] for c in iss]},
+               "source": "SIS, datos abiertos de prestaciones bonificadas; tipo de atención declarado en cada fila."}]
+    tab = {"id": "cobertura", "label": "Cobertura por Isapre", "charts": charts, "text": [], "dek": None}
+    hi_b, lo_b = k["hi_b"], k["lo_b"]
+    sf.topic_fields(tab, f"De {pc(f'isapre.{lo_b}.{q}.total.pct_bonif')} ({nm(lo_b)}) a {pc(f'isapre.{hi_b}.{q}.total.pct_bonif')} ({nm(hi_b)})",
+                    index_refs=[f"isapre.{lo_b}.{q}.total.pct_bonif", f"isapre.{hi_b}.{q}.total.pct_bonif"], kpis=[])
+    tabs.append(tab)
+    paragraphs.append(f"En {ql}, las Isapres bonificaron el {pc(f'sistema.{q}.pct_bonif')} de lo facturado por los prestadores.")
+
+    # Topic 2: same provider, different Isapre. Both measures are shown: the median across cells (unweighted) and the
+    # frecuencia-weighted mean; closed Isapres stay in the topic, marked (review of PR #152).
+    if k["cross_topic"]:
+        qual = sorted([c for c in k["qualified"] if f"cruce.{c}.ponderada" in v], key=lambda c: -V(f"cruce.{c}.mediana"))
+        closed_q = [nm(c) for c in qual if c in closed]
+        src_cl = (f" {', '.join(closed_q)}: Isapre cerrada (afiliación restringida)." if closed_q else "")
+        tbl = {"columns": ["Isapre", "Tipo", "Mediana", "p25", "p75", "Media ponderada por frecuencia",
+                           "Facturado por unidad (mediana)", "Celdas"],
+               "rows": [[nm(c), kind(c), fmt(V(f"cruce.{c}.mediana"), 1, True) + "%", fmt(V(f"cruce.{c}.p25"), 1, True) + "%",
+                         fmt(V(f"cruce.{c}.p75"), 1, True) + "%", fmt(V(f"cruce.{c}.ponderada"), 1, True) + "%",
+                         fmt(V(f"cruce.{c}.fact_mediana"), 1, True) + "%" if f"cruce.{c}.fact_mediana" in v else "",
+                         fmt(V(f"cruce.{c}.celdas"), 0)] for c in qual]}
+        base = f"SIS, datos abiertos; prestadores seudónimos con ≥ 2 Isapres (≥ 10 atenciones cada una) en el mismo código Fonasa."
+        charts = [{"id": "f12-mismo-prestador", "form": "diverging", "unit": "%", "digits": 1,
+                   "headline": "Mismo prestador y código: mediana",
+                   "subtitle": "Bonificado por unidad de la Isapre vs. la media de las Isapres de la celda; mediana entre celdas, %",
+                   "rows": [{"label": nm(c), "value": V(f"cruce.{c}.mediana"), "ref": f"cruce.{c}.mediana", **tag(c)} for c in qual[:12]],
+                   "table": tbl, "source": base + src_cl},
+                  {"id": "f12-mismo-prestador-ponderada", "form": "diverging", "unit": "%", "digits": 1,
+                   "headline": "Mismo prestador y código: media ponderada",
+                   "subtitle": "El mismo índice, promediado con el peso de las atenciones de cada celda, %",
+                   "rows": [{"label": nm(c), "value": V(f"cruce.{c}.ponderada"), "ref": f"cruce.{c}.ponderada", **tag(c)}
+                            for c in sorted(qual, key=lambda c: -V(f"cruce.{c}.ponderada"))[:12]],
+                   "table": {"columns": ["Isapre", "Tipo", "Media ponderada", "Mediana"],
+                             "rows": [[nm(c), kind(c), fmt(V(f"cruce.{c}.ponderada"), 1, True) + "%",
+                                       fmt(V(f"cruce.{c}.mediana"), 1, True) + "%"] for c in qual]},
+                   "source": base + src_cl + " Cuando las dos medidas difieren en signo, la diferencia no es robusta."}]
+        tab = {"id": "mismo-prestador", "label": "Mismo prestador", "charts": charts, "text": [], "dek": None}
+        hi, lo = k["hi_c"], k["lo_c"]
+        sf.topic_fields(tab, f"Medianas, abiertas: {nm(hi)} {fmt(V(f'cruce.{hi}.mediana'), 1, True)}% · {nm(lo)} {fmt(V(f'cruce.{lo}.mediana'), 1, True)}%",
+                        index_refs=[f"cruce.{hi}.mediana", f"cruce.{lo}.mediana"], kpis=[])
+        tabs.append(tab)
+        if k["gap"] is not None:
+            gp, gn = k["gap"]
+            paragraphs.append(f"En un mismo prestador y código, la mediana del índice de bonificado por unidad de {nm(gp)} queda "
+                              f"{fmt(V('cruce.brecha_pp'), 1)} puntos sobre la de {nm(gn)}; sus medias ponderadas tienen el mismo signo.")
+
+    def share(b: str) -> str:
+        """Top provider's share of atenciones: exact, or a band for a 2-provider cell."""
+        return pc(f"{b}.share_top") if f"{b}.share_top" in v else SHARE_BANDS[k["bands"][b]]
+
+    codes = k["codes"]
+
+    # Topic 4: prices by region (top codes), disclosure rule applied.
+    reg_rows = []
+    for c in codes:
+        for reg in sorted(so.REGIONS, key=lambda r: (r == "0", int(r))):
+            b = f"precio.{c['code']}.{reg}"
+            if f"{b}.n" not in v:
+                continue
+            n = V(f"{b}.n")
+            if f"{b}.mediana" in v:
+                state = money(V(f"{b}.mediana")) + (f" ({money(V(f'{b}.p25'))}–{money(V(f'{b}.p75'))})" if f"{b}.p25" in v else "")
+            elif n == 1:
+                state = "1 prestador: sin precio"
+            else:
+                state = f"menos de {PRICE_MIN_FREQ} atenciones: sin precio"
+            reg_rows.append([c["code"], so.REGIONS[reg], fmt(n, 0), fmt(V(f"{b}.frec"), 0), state, share(b)])
+    c1 = codes[0]["code"]
+    pub = [r for r in so.REGIONS if f"precio.{c1}.{r}.mediana" in v and r != "0"]
+    pub = sorted(pub, key=lambda r: -V(f"precio.{c1}.{r}.frec"))[:12]
+    charts = [{"id": "f12-precio-region", "form": "bars", "unit": "$", "digits": 0,
+               "headline": f"Precio mediano del código {c1} por región",
+               "subtitle": f"$ por unidad, mediana entre prestadores, {ql}; regiones con precio publicable",
+               "rows": [{"label": so.REGIONS[r], "value": V(f"precio.{c1}.{r}.mediana"), "ref": f"precio.{c1}.{r}.mediana"} for r in pub],
+               "table": {"columns": ["Código", "Región", "Prestadores", "Atenciones", "Precio (p25–p75)", "Mayor prestador"],
+                         "rows": reg_rows},
+               "source": "SIS, datos abiertos. Regla: precio con ≥ 2 prestadores y ≥ 30 atenciones; p25–p75 con ≥ 4; con 1 prestador, sin precio."}]
+    st = k["status_count"]
+    lab = {"publicable": "Con precio", "concentracion_un_prestador": "1 prestador", "suprimido_frecuencia_menor_30": "Menos de 30"}
+    st_rows = [(lab[e], f"conteo.celdas.{e}") for e in lab if e in st]
+    if len(st_rows) >= 2:
+        charts.append({"id": "f12-divulgacion", "form": "bars", "unit": "celdas",
+                       "headline": "Celdas región × código, según la regla",
+                       "subtitle": f"Los {len(codes)} códigos más frecuentes, {ql}",
+                       "rows": [{"label": lb, "value": V(ref), "ref": ref} for lb, ref in st_rows],
+                       "table": {"columns": ["Estado", "Celdas"], "rows": [[lb, fmt(V(ref), 0)] for lb, ref in st_rows]},
+                       "source": "Regla de divulgación de Alicanto aplicada a los agregados SIS."})
+    for e, n in st.items():
+        package["derived_ratios"].append({"id": f"conteo.celdas.{e}", "value": n, "unit": "count"})
+    tab = {"id": "regiones", "label": "Precios por región", "charts": charts, "text": [], "dek": None}
+    rr = pub[0] if pub else None
+    if rr:
+        sf.topic_fields(tab, f"Código más frecuente en {so.REGIONS[rr]}: {money(V(f'precio.{c1}.{rr}.mediana'))}",
+                        index_refs=[f"precio.{c1}.{rr}.mediana"], kpis=[])
+    else:
+        sf.topic_fields(tab, None, kpis=[])
+    tabs.append(tab)
+
+    # Report title (headline_type "report_title", F12 only) and dek from the strongest findings.
+    headline = tpl["report_title"].format(quarter_short=so.quarter_short(q))
+    dek = report["dek"]
+    notes += report["notes"]
+
+    if k["small"]:
+        notes.append({"id": "n0b", "text": f"Base pequeña en la comparación mismo prestador: {', '.join(nm(c) for c in k['small'])} "
+                                           f"(menos de {fmt(cfg.get('cross_min_cells') or 1000, 0)} celdas prestador × código). Se incluye "
+                                           "igual; leer su índice con cautela."})
+    if k["closed"]:
+        notes.append({"id": "n0", "text": f"{closed_names}: Isapre cerrada (afiliación restringida). Aparecen en los temas, marcadas, "
+                                          "pero no en los rangos entre Isapres abiertas."})
+    notes += [
+        {"id": "n1", "text": f"Base trimestral: cada cifra es un flujo de {ql}, no un stock; los trimestres no se suman. "
+                             + (f"La comparación con el {so.quarter_tag(pq)} no está ajustada por estacionalidad." if pq else "")},
+        {"id": "n2", "text": "Denominador: el % bonificado y el % de copago dividen por lo facturado por el prestador a la Isapre. "
+                             "Facturado no es gasto de bolsillo: el copago puede reducirse después con seguros complementarios "
+                             "u otros reembolsos que estos datos no registran."},
+        {"id": "n3", "text": f"Regla de divulgación (Dirección): el precio de una región y código del arancel Fonasa se muestra solo con "
+                             f"≥ 2 prestadores distintos y ≥ 30 atenciones (mediana; p25–p75 solo con ≥ 4). Con 2 prestadores no se "
+                             "muestra el facturado y el % del mayor va en tramos (50–60%, 60–80%, más de 80%). Con 1 prestador no hay "
+                             "precio, solo la marca de concentración. Todos los prestadores cuentan en el total nacional. Siempre se "
+                             "informa el % de atenciones del mayor prestador."},
+        {"id": "n4", "text": "Los prestadores llegan con su RUT cifrado por la SIS: aparecen solo como agregados seudónimos. "
+                             "Alicanto nunca intenta revertir el cifrado y nunca muestra nombres de prestadores."},
+        {"id": "n5", "text": "Precio por unidad = facturado / frecuencia de cada prestador en el código; la mediana y los percentiles "
+                             "son entre prestadores, no ponderados por atenciones."},
+        {"id": "n6", "text": f"Mismo prestador: para cada prestador seudónimo y código Fonasa con ≥ 2 Isapres, el bonificado por unidad "
+                             "de cada Isapre (con ≥ 10 atenciones en la celda) se compara con la media simple de las Isapres de esa celda. Se "
+                             "muestran la mediana de ese índice entre celdas y su media ponderada por atenciones; la brecha entre Isapres "
+                             f"abiertas se informa solo si ambas medidas tienen el mismo signo y al menos {fmt(HEADLINE_MIN_INDEX, 0)}%. No ajusta por plan ni por "
+                             "bonificación restringida."},
+        {"id": "n7", "text": f"Archivo: ZIP trimestral de datos abiertos de la SIS ({fmt(V('filas'), 0)} filas). Su huella SHA-256 está "
+                             "en Fuentes; cada agregado nombra esa misma huella y, si no calza, la ficha queda retenida."},
+    ]
+    if not k["cross_valid"]:
+        notes.append({"id": "n8", "text": "La comparación por mismo prestador queda fuera: la verificación de los RUT cifrados entre Isapres no se cumplió."})
+    nq = so.next_quarter(q)
+    watch = [{"headline": f"Datos de {so.quarter_label(nq)}.",
+              "explanation": "La SIS publica un ZIP por trimestre; Alicanto lo agrega cuando aparece en datos abiertos."}]
+    late = (decision or {}).get("late_release")
+    if late:
+        watch = [{"headline": f"Datos de {so.quarter_label(nq)}: sin archivo nuevo.",
+                  "explanation": f"Lleva {late['days_late']} días más allá del intervalo esperado."}]
+    triggers = (decision or {}).get("triggers") or []
+    rule = "nuevo período" if "new_period" in triggers else ("revisión" if "revision" in triggers else "publicación vigente")
+    machine = (f"Ficha generada por la regla \"{rule}\" (agregados calculados por Alicanto el {sf.day_label(package['published_at'])}). "
+               "Las cifras vienen del paquete de evidencia, sin descargas en este paso; la Lectura Alicanto está desactivada.")
+    prim = package["primary_source"]["url"]
+    sources = sorted(({**s, "key": key} for key, s in package["sources"].items()), key=lambda x: (x.get("url") != prim, x["key"]))
+    return {
+        "schema_version": sf.SCHEMA, "id": f"stats-ficha:{FAMILY}:{package['period']}", "family": FAMILY,
+        "family_label": cfg["label"], "slug": cfg["slug"], "period": package["period"], "published_at": package["published_at"],
+        "release_key": package["release_key"], "evidence_sha256": package["evidence_sha256"],
+        "kicker": tpl["kicker"].format(label=cfg["label"], quarter_label=ql),
+        "kicker_meta": tpl["kicker_meta"].format(quarter_label=ql, published_label=sf.day_label(package["published_at"])),
+        "date_basis": "first_detected", "headline": headline, "headline_type": "report_title", "dek": dek, "dek_emphasis": None,
+        "kpis": kpis[:5], "tabs": sorted(tabs, key=lambda t: TAB_ORDER.index(t["id"])),
+        "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs, "rendered_in_tabs": True},
+        "watch": watch[:2], "notes": notes, "sources": sources, "machine_note": machine,
+        "featured": bool((decision or {}).get("featured")), "triggers": triggers, "late_release": late,
+        "revisions": package.get("revisions") or [],
+    }
+
+
+def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = True,
+        model_call: Callable[..., Any] | None = None, budget: Callable[[float], tuple[bool, str]] | None = None) -> dict:
+    """The Lectura stays off for F12 (no paid call) until Dirección sets ``families.F12.lectura_enabled``."""
+    registry = registry or sf.load_registry()
+    cfg = registry["families"][FAMILY]
+    llm = llm and cfg.get("lectura_enabled") is True
+    out = sf.run_family(FAMILY, builder_version=BUILDER_VERSION, build_package=build_package, compose=compose, root=Path(root),
+                        today=today, registry=registry, llm=llm, model_call=model_call, budget=budget)
+    return so.first_review_gate(out, cfg, Path(root), FAMILY, "f12_")
