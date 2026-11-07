@@ -19,9 +19,6 @@ concurrency:
   group: sis-historico-backfill-${{ github.ref_name }}
   cancel-in-progress: false
 
-env:
-  HIST_COMMIT: "1"
-
 jobs:
   tests:
     if: github.ref_name != 'main' && github.ref_name != 'production-stable' && github.ref_name != 'staging'
@@ -47,6 +44,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - name: Agregar bloque ${{ matrix.block }}
+        env:
+          HIST_COMMIT: "1"
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
@@ -73,6 +72,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - name: Agregar bloque ${{ matrix.block }}
+        env:
+          HIST_COMMIT: "1"
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"

@@ -277,7 +277,8 @@ def make_zip(path: Path, rows, n=None) -> Path:
     return path
 
 
-def test_run_block_end_to_end_writes_no_encrypted_ids(tmp_path):
+def test_run_block_end_to_end_writes_no_encrypted_ids(tmp_path, monkeypatch):
+    monkeypatch.delenv("HIST_COMMIT", raising=False)
     prev, cur = price_rows(4, 1000, 1200, code="1202064")  # grupo 12, ausente de pam_rows
     z1 = make_zip(tmp_path / "a.zip", prev + pam_rows(12) + ges_rows(7, "67", "13", 11))
     z2 = make_zip(tmp_path / "b.zip", cur + pam_rows(12) + ges_rows(7, "67", "13", 11))
