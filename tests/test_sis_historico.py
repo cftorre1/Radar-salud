@@ -154,6 +154,17 @@ def test_price_relatives_require_previous_frequency():
     assert all(r[3].startswith("suprimido_frecuencia") for r in t["rows"]) or t["rows"] == []
 
 
+def test_icsa_basket_suppresses_amounts_under_three_providers():
+    rows = [row(prov=f"ENCP{i}", codigo="0101001", atencion="Atención Ambulatoria") for i in range(3)]
+    rows += [row(prov="ENCP9", codigo="0301045", atencion="Atención Ambulatoria")] * 2
+    b = feed(rows).icsa_basket()
+    d = {r[0]: dict(zip(b["columns"], r)) for r in b["rows"]}
+    assert d["0101001"]["estado"] == "publicable" and d["0101001"]["bonificado"] == 18000
+    assert d["0301045"]["bonificado"] is None and d["0301045"]["frecuencia"] is None
+    assert b["totales_por_tipo_atencion"]["Ambulatoria"]["frecuencia"] == 5
+    assert_no_secret(b)
+
+
 def test_price_index_scope_excludes_ges_and_non_fonasa():
     a = feed([row(cobertura="GES"), row(pertenencia="Asegurador"), row(tipo_reg="Examen Medicina Preventiva"),
               row(fact=0), row()])
@@ -287,6 +298,7 @@ def test_run_block_end_to_end_writes_no_encrypted_ids(tmp_path, monkeypatch):
     hist.run_block(["2026t2", "2026t3", "2026t4"], out, local={"2026t1": z1, "2026t2": z1, "2026t3": z2, "2026t4": bad})
     files = sorted(p.name for p in out.rglob("*.json"))
     assert "indice_precios_2026t2_2026t3.json" in files and "ges_gpp_2026t3.json" in files
+    assert "icsa_canasta_2026t3.json" in files
     rec4 = json.loads((out / "2026t4" / "receipts_2026t4.json").read_text())
     assert rec4["estado"] == "omitido" and rec4["razon_omision"]
     assert not (out / "2026t4" / "ges_gpp_2026t4.json").exists()

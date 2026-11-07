@@ -235,6 +235,8 @@ class QuarterAgg:
         self._c_tracer: dict = {}
         # índice de precios: (prov, codigo, region, atencion) -> [facturado, frecuencia, bonificado]
         self.price: dict[tuple, list] = {}
+        # canasta ICSA: (codigo, atencion) -> [bonificado, frecuencia, facturado, prestadores]
+        self.code_tot: dict[tuple, list] = {}
         self.scope = Counter()        # facturado por alcance del índice
         self.tot_atn: dict[str, list] = defaultdict(lambda: [0.0, 0.0, 0.0, 0])  # fact, bonif, frec, filas
         # PAM: (isapre, folio) -> [filas, ben, flags, codigo, prov, fact, bonif, trazadoras, cama_rank, filas_hosp]
@@ -302,6 +304,11 @@ class QuarterAgg:
             else:
                 v[0] += fact; v[1] += freq; v[2] += bonif
             self.scope["indice"] += fact
+            if not self.warmup:
+                c = self.code_tot.get((code, atn))
+                if c is None:
+                    c = self.code_tot[(code, atn)] = [0.0, 0.0, 0.0, set()]
+                c[0] += bonif; c[1] += freq; c[2] += fact; c[3].add(prov)
         self.scope["total"] += fact
 
         # (c)/(d) PAM principal (campo 14 del Compendio = folio_1 del archivo público)
@@ -422,6 +429,29 @@ class QuarterAgg:
         self.pams = {}
         self.ges = {}
         self.ges_letter = {}
+        self.code_tot = {}
+
+    # ---------------------------------------------------------------- insumo ICSA (valor unitario por código)
+    def icsa_basket(self) -> dict:
+        """Totales por código MLE x tipo de atención en el alcance del ICSA (todas las Isapres y prestadores, sin
+        emparejar): lo que el ICSA usa para su IVUBI (bonificado / frecuencia) y su ICBI (frecuencia). Con < 3
+        prestadores la celda no publica montos (entra sólo al total del tipo de atención)."""
+        rows, tot = [], defaultdict(lambda: [0.0, 0.0, 0.0])
+        for (code, atn), c in sorted(self.code_tot.items()):
+            t = tot[atn]
+            t[0] += c[0]; t[1] += c[1]; t[2] += c[2]
+            n = len(c[3])
+            if n < REL_MIN_PROVIDERS:
+                rows.append([code, atn, "suprimido_menos_de_3_prestadores", n, None, None, None])
+            else:
+                rows.append([code, atn, "publicable", n, round(c[0]), round(c[1]), round(c[2])])
+        return {"definicion": self.icsa_basket.__doc__.replace("\n        ", " "),
+                "alcance": "pertenencia FONASA (MLE), curativa, cobertura CAEC / GES-CAEC / Plan Complementario, "
+                           "facturado > 0, prestador informado (memoria de cálculo ICSA 2025, tabla AMPB)",
+                "totales_por_tipo_atencion": {a: {"bonificado": round(v[0]), "frecuencia": round(v[1]),
+                                                  "facturado": round(v[2])} for a, v in sorted(tot.items())},
+                "columns": ["codigo_prestacion", "tipo_atencion", "estado", "n_prestadores", "bonificado",
+                            "frecuencia", "facturado"], "rows": rows}
 
     # ---------------------------------------------------------------- (c) probe de folios
     def folio_probe(self, prev_pam_hashes: set | None) -> dict:
@@ -891,6 +921,9 @@ def run_block(quarters: list[str], out_root: Path = OUT_ROOT, local: dict[str, P
                     written.append(fp.name)
                 else:
                     rec["indice_precios"] = f"sin_trimestre_anterior_valido:{prev_q}"
+                fp = qdir / f"icsa_canasta_{q}.json"
+                write_json(fp, {"periodo": q, "script_version": SCRIPT_VERSION, **agg.icsa_basket()})
+                written.append(fp.name)
                 fp = qdir / f"ges_gpp_{q}.json"
                 write_json(fp, {"periodo": q, "script_version": SCRIPT_VERSION, **agg.ges_tables(ges_ref)})
                 written.append(fp.name)
