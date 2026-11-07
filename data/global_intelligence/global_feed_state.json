@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-11-05",
-  "generated_at": "2026-11-05T19:43:11.742503+00:00",
+  "as_of": "2026-11-07",
+  "generated_at": "2026-11-07T07:25:43.382771+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -15,7 +15,7 @@
   "window_days": 90,
   "retention_days": 90,
   "freshness": {
-    "newest_published_at": "2026-11-04",
+    "newest_published_at": "2026-11-06",
     "items_last_2_days": 1,
     "items_last_7_days": 6,
     "status": "fresh",
@@ -46,12 +46,12 @@
   "held": {
     "feed_not_authorized_for_display": 17,
     "not_global_interest:facility_opening": 1,
-    "not_global_interest:no_global_interest_signal": 28,
+    "not_global_interest:no_global_interest_signal": 29,
     "not_global_interest:source_rule_exclusion": 5,
-    "not_material_or_unverified": 313,
-    "not_relevant_or_undated": 68,
-    "official_title_without_executive_keyword": 170,
-    "publication_activation_pending_who": 254
+    "not_material_or_unverified": 323,
+    "not_relevant_or_undated": 78,
+    "official_title_without_executive_keyword": 182,
+    "publication_activation_pending_who": 259
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
@@ -59,38 +59,86 @@
   "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
   "weekly_signal": [
     {
-      "segment": "regulation",
-      "label_es": "Regulación",
-      "count": 4,
-      "item_ids": [
-        "9f6107626b27a8db0e39",
-        "5ef15afad6e02a4dcb95",
-        "d77abcc1a0e5b3cc3bb5",
-        "6041c398b60aaa07606b"
-      ]
-    },
-    {
       "segment": "healthtech",
       "label_es": "Salud digital y dispositivos",
       "count": 4,
       "item_ids": [
-        "9f6107626b27a8db0e39",
         "5ef15afad6e02a4dcb95",
         "b0ede540040d093065b1",
-        "d77abcc1a0e5b3cc3bb5"
+        "d77abcc1a0e5b3cc3bb5",
+        "a6882e45cce8334ef3e7"
       ]
     },
     {
       "segment": "pharma",
       "label_es": "Medicamentos y farma",
-      "count": 2,
+      "count": 3,
       "item_ids": [
         "5ef15afad6e02a4dcb95",
+        "6041c398b60aaa07606b",
+        "a6882e45cce8334ef3e7"
+      ]
+    },
+    {
+      "segment": "regulation",
+      "label_es": "Regulación",
+      "count": 3,
+      "item_ids": [
+        "5ef15afad6e02a4dcb95",
+        "d77abcc1a0e5b3cc3bb5",
         "6041c398b60aaa07606b"
       ]
     }
   ],
   "items": [
+    {
+      "id": "a6882e45cce8334ef3e7",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Commission publishes joint clinical assessment report on new breast cancer medicine",
+      "url": "https://ec.europa.eu/newsroom/sante/newsletter-archives/81226",
+      "published_at": "2026-11-06",
+      "segments": [
+        "pharma",
+        "healthtech"
+      ],
+      "description": "Commission publishes joint clinical assessment report on new breast cancer medicine",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 76,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-11-07",
+      "translation": {
+        "status": "pending",
+        "reason": "model_error"
+      }
+    },
     {
       "id": "d77abcc1a0e5b3cc3bb5",
       "source": "ec_health",
@@ -922,7 +970,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-05",
+      "first_seen_on": "2026-11-07",
       "title_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "description_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
       "translation": {
@@ -2450,46 +2498,6 @@
       "translation": {
         "status": "source_in_spanish"
       }
-    },
-    {
-      "id": "befc123e56959065d4b3",
-      "source": "paho",
-      "source_label": "OPS",
-      "attribution": "Organización Panamericana de la Salud (OPS)",
-      "bylines": [],
-      "title": "PAHO urges countries to strengthen vaccination and surveillance amid rising measles cases in the Americas",
-      "url": "https://www.paho.org/en/news/8-8-2026-paho-urges-countries-strengthen-vaccination-and-surveillance-amid-rising-measles",
-      "published_at": "2026-08-08",
-      "segments": [
-        "pharma"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Medicamentos y farma"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 95,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-11-03",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
-      }
     }
   ],
   "translation": {
@@ -2498,8 +2506,8 @@
     "from_cache": 16,
     "verification_failed": 7,
     "review_failed": 0,
-    "not_allowed": 22,
-    "pending": 0,
+    "not_allowed": 21,
+    "pending": 1,
     "source_in_spanish": 7
   },
   "ai_text_items": 16,

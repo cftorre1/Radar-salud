@@ -1,6 +1,6 @@
 {
   "schema_version": "datos_index_v1",
-  "generated_at": "2026-11-06T03:29:29.396953+00:00",
+  "generated_at": "2026-11-07T07:01:47.315848+00:00",
   "groups": [
     {
       "key": "aseguradores",
@@ -201,6 +201,22 @@
       "order": 8,
       "cadence": "anual (Series Estadísticas SIS, cap. 3 y 5) + trimestral (FEFI)",
       "state": "planned"
+    },
+    {
+      "family": "F12",
+      "label": "Prestaciones bonificadas",
+      "group": "prestadores",
+      "order": 9,
+      "cadence": "trimestral (datos abiertos SIS)",
+      "state": "pending"
+    },
+    {
+      "family": "F13",
+      "label": "Licencias médicas Isapre",
+      "group": "empleadores_licencias",
+      "order": 10,
+      "cadence": "trimestral (datos abiertos SIS)",
+      "state": "pending"
     }
   ]
 }
