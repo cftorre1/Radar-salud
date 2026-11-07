@@ -62,7 +62,8 @@ def test_non_daily_policy_never_exempts_daily_capture_sources():
     policy=json.loads(Path("config/source_freshness_policy.json").read_text())
     daily=json.loads(Path("config/sources.json").read_text())+json.loads(Path("config/beta_source_configs.json").read_text())
     exempt=set(policy["non_daily_sources"])
-    assert exempt <= {"dipres_health_budget","cmf_health_ecosystem","sis_isapre_universe"}
+    # global_the_conversation: Global feed disabled by Dirección 29-oct-2026 (CC BY-ND); kept visible as a warning.
+    assert exempt <= {"dipres_health_budget","cmf_health_ecosystem","sis_isapre_universe","global_the_conversation"}
     ids={s.get("slug") or s.get("id") for s in daily if isinstance(s,dict)}
     assert len(ids)>20 and "suseso" in ids
     assert not (exempt & ids), "A source in the daily capture can never be exempted from the 7-day rule"
