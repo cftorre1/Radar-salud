@@ -43,7 +43,7 @@ from typing import Iterable
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import aggregate_sis_open_data as base  # noqa: E402  (robots, tope 1 GiB, streaming, RowReader)
 
-SCRIPT_VERSION = "sis_historico_v1"
+SCRIPT_VERSION = "sis_historico_v2"
 ROOT = Path(__file__).resolve().parents[1]
 OUT_ROOT = ROOT / "data" / "sis_open_data_history"
 GES_REF = ROOT / "data" / "reference" / "ges_problemas_ds29_2025.json"

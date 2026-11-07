@@ -58,7 +58,7 @@ jobs:
 
   resto:
     needs: [tests, prioritario]
-    if: always() && needs.tests.result == 'success'
+    if: ${{ !cancelled() && needs.tests.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 330
     strategy:
@@ -87,7 +87,7 @@ jobs:
 
   resumen:
     needs: [prioritario, resto]
-    if: always()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
