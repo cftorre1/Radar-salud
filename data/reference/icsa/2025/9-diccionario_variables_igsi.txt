@@ -1,0 +1,53 @@
+ Departamento de Estudios y Desarrollo
+
+
+
+     Diccionario de variables del archivo que servirá como insumo para el
+        cálculo del índice IGSI general a nivel del Sistema de Isapres.
+
+
+1. Diccionario de variables
+
+
+La tabla siguiente describe las variables de la Base de datos que se entrega al público general para
+el para cálculo de índice IGSI (Índice de Gasto por Subsidio de Incapacidad Laboral (SIL) de
+cargo de las Isapres) del periodo comprendido entre enero 2024 y diciembre 2025 inclusive.
+Es importante indicar que la base de datos entregada corresponde a una Tabla de montos
+agregados que deriva del Archivo Maestro de Licencias Médicas (AMLM) y del Archivo Maestro de
+Cotizantes y Cargas (AMCC) y que en consecuencia no hay divulgación de datos personales de las
+personas beneficiarias del sistema de Isapres (abiertas y cerradas). Por otro lado, los montos en
+pesos son nominales (corrientes de cada periodo).
+
+El contenido de la base de datos es suficiente para calcular el siguiente índice:
+
+     1. IGSI: Índice de Gasto por Subsidio de Incapacidad Laboral.
+
+                        Tabla 1: Descripción de variables de base de datos
+
+  N° de variable            Nombre            Tipo                      Descripción
+    (orden en               Variable        variable
+      BBDD)
+ 1                           periodo       Numérica      Corresponde al mes y año en que se
+                                                         realizó el gasto por SIL. Formato
+                                                         AAAAMM, donde: AAAA = año y MM =
+                                                         mes.
+ 2                       cotizantes_SIL    Numérica      Corresponde al número de cotizantes con
+                                                         derecho a SIL del periodo.
+ 3                       suma_gastoSIL     Numérica      Corresponde a la suma del gasto total en
+                                                         SIL del periodo (montos en pesos ($)
+                                                         corrientes de cada periodo)
+
+
+2. Verificación de lectura del archivo
+
+
+Para verificación/validación de la correcta lectura de la base de datos, se informa que la cantidad
+de registros es de 24 casos (filas). Además, para complementar el contraste, se informa que la
+suma en los 24 meses estudio, de los montos de Gasto en SIL es de $1.514.240.859.414 y la
+suma de la variable del número de cotizantes en los mismos 24 meses es de 52.299.785.
+
+
+
+
+                                                                                           Pág. 1 de 1
+

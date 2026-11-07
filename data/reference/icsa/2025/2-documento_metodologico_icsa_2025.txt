@@ -1,0 +1,715 @@
+Documento Metodológico
+          ICSA 2025
+
+
+
+
+Departamento de Estudios y Desarrollo
+
+            Marzo 2026
+                                         Tabla de Contenidos
+
+
+  1.      Resumen ejecutivo ................................................................................ 3
+  2.      Introducción ......................................................................................... 4
+  3.      Algoritmo de cálculo del ICSA 2025 ........................................................ 4
+    4.1. Cálculo de variación de costos de prestaciones ........................................... 4
+       4.1.1. Variación de costos de prestaciones MLE de las Isapres ......................... 4
+       4.1.2. Índice de Valor Unitario Bonificado de las Isapres. ................................ 4
+       4.1.3. Índice de frecuencia de uso de prestaciones Bonificadas por las Isapres. . 7
+       4.1.4. Índice del Costo en Prestaciones de Salud MLE de las Isapres ............... 10
+    4.2. Cálculo de variación de costos de prestaciones MLE de las Isapres. ............. 10
+    4.5. Cálculo de variación de costo del SIL de las Isapres. ................................. 10
+    4.6. Variación del Índice de Gasto en SIL de cargo de las Isapres. .................... 12
+    4.7. Cálculo del ICSA. .................................................................................. 12
+  Anexo 1: Arquitectura de los índices .............................................................. 13
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                                    Pág. 2 de 14
+1.    Resumen ejecutivo
+
+Este documento metodológico tiene como objetivo presentar los elementos contenidos
+en Norma Técnica (NT) Nº220 del Algoritmo de Cálculo para determinar el Indicador de
+Costos de la Salud (ICSA), incorporando las modificaciones legales introducidas para el
+Indicador de Costos de la Salud (ICSA) 2025.
+
+Cabe destacar que, para el ICSA 2025, no se consideró el ajuste por la variación
+porcentual promedio del índice de costos en prestaciones de salud MLE del Fonasa.
+
+Asimismo, debe tenerse en cuenta que el ICSA 2025 se calcula para el conjunto del
+sistema, abarcando la totalidad de las Isapres en funcionamiento al 31 de diciembre de
+2025.
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                              Pág. 3 de 14
+2.    Introducción
+
+El ICSA es un indicador de variación de costos interanual, con base de cálculo mensual,
+compuesto por dos fuentes de costos: variación del costo en prestaciones de salud
+(∆%ICPRE) y variación de costos en Subsidios por Incapacidad Laboral (∆%IGSI). Su
+fórmula general se expresa como el promedio ponderado de dos índices
+correspondientes a estas dos fuentes de variación de costo:
+
+                                  𝐈𝐈𝐈𝐈𝐈𝐈𝐈𝐈 =𝛂𝛂∗(∆%ICPRE) + 𝛃𝛃∗(∆%IGSI)
+
+Cada componente tiene un peso específico en el ICSA.
+
+El ponderador (o peso específico) de la componente de variación de costo en
+prestaciones corresponde a 𝛂𝛂, que representa el costo en prestaciones de salud sobre el
+costo total (en prestaciones y en SIL) en todo el período en estudio (24 meses, año base
+y año de análisis) 1.
+
+El ponderador de la componente de variación de costo en Subsidios por Incapacidad
+Laboral corresponde a 𝛃𝛃, que representa el costo en SIL sobre costo total (prestaciones
+y SIL) en todo el período en estudio (24 meses, año base y año de análisis).
+
+3.    Algoritmo de cálculo del ICSA 2025
+
+4.1. Cálculo de variación de costos de prestaciones
+      4.1.1. Variación de costos de prestaciones MLE de las Isapres 2
+
+Se calcula un índice de costos en prestaciones MLE para todo el sistema Isapre (ICPRE),
+abiertas y cerradas. Este índice se calcula como el producto de un índice de valor unitario
+bonificado por las Isapres y de un índice de frecuencia de uso de prestaciones. Al calcular
+de esta forma el índice de costos en prestaciones, es posible cuantificar el efecto tanto
+de la variación de los precios (índice de valor unitario), como de las cantidades
+bonificadas (índice de frecuencia de uso de prestaciones) en la variación del costo de
+prestaciones MLE de las Isapres.
+
+        4.1.2. Índice de Valor Unitario de Prestaciones Bonificadas por las
+        Isapres.
+
+El Índice de Valor Unitario de Prestaciones Bonificadas por las Isapres (ICBI) es un índice
+mensual, con 24 valores, 12 para el año base y 12 para el año de análisis, que da cuenta
+del promedio de las variaciones a doce meses del valor unitario de las prestaciones de
+salud contenidas en el Arancel Fonasa MLE entre un año (periodo de análisis) y el año
+anterior (periodo base).
+
+
+
+1
+  Para el caso del ICSA 2025, el periodo de estudio son los meses de enero 2024 a diciembre 2025, el periodo
+de análisis enero-diciembre 2025 y el periodo base enero-diciembre 2024.
+2
+  La metodología empleada en la norma técnica para la construcción del ICSA sigue las recomendaciones de
+la OIT (OIT, FMI, OCDE, Oficina Estadística de las Comunidades Europeas, ONU, Banco Mundial. 2006. Manual
+del índice de precios al consumidor: Teoría y práctica. FMI ed. Washington DC, 659. Capítulos 1 y 15.).
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                               Pág. 4 de 14
+a) Selección de canasta de prestaciones de salud MLE.
+
+Existe una importante variación en el precio dependiendo del tipo de atención,
+ambulatoria u hospitalaria, en la cual es otorgada una prestación de salud. Es por ello
+que se calculan micro índices por tipo de atención, para conocer el efecto de la variación
+del costo en prestaciones ambulatorias y de prestaciones hospitalarias por separado en
+las variaciones del ICSA.
+
+Por otra parte, dado que las prestaciones MLE no presentan una clasificación exhaustiva
+y excluyente por códigos de prestaciones específicas, es decir, que algunas
+prestaciones se otorgan tanto en atención hospitalaria como ambulatoria, para el
+cálculo del índice, se las considera como prestaciones distintas, dependiendo del tipo
+de atención, para efectos de cálculo y análisis.
+
+Las prestaciones de salud consideradas para el cálculo de los índices elementales son
+aquellas que, conjuntamente, acumularon el 90% superior del gasto bonificado en cada
+tipo de atención (ambulatoria y hospitalaria) durante el periodo base.
+b) Ponderación
+Las ponderaciones empleadas para la obtención del Índice de Valor Unitario de
+Prestaciones Bonificadas por las Isapres del año p, se calculan respecto al periodo base
+de cálculo (año calendario p-1). Es decir, el peso de cada monto bonificado sobre el total
+bonificado en el año calendario p-1.
+c) Procedimiento de cálculo
+Para calcular el Índice de Valor Unitario de Prestaciones Bonificadas por las Isapres por
+tipo de atención, ambulatoria u hospitalaria, y a nivel general, se parte por calcular
+índices elementales de Valor Unitario Bonificado por prestación.
+
+Con los índices elementales de Valor Unitario Bonificado por prestación, se construyen
+los micro-índices de precio por cada prestación de salud en cada mes del periodo de
+estudio (24 meses). Luego estos micro-índices se promedian, como medias aritméticas
+ponderadas, para obtener los micro-índices por tipo de atención de salud, los que a su
+vez componen, en función de la ponderación que tenga cada tipo de atención
+(ambulatoria u hospitalaria) en el gasto total bonificado del periodo base (año p-1), el
+IVUBI.
+d) Índice elemental de Valor Unitario Bonificado de las Isapres
+Se calculan 24 índices elementales de Valor Unitario de Prestaciones Bonificadas por las
+Isapres para cuantificar la variación del precio bonificado del mes del año de análisis (p),
+en comparación con el mismo mes del año base anterior (p-1), por el conjunto de las
+Isapres, para cada una de las prestaciones MLE de la canasta.
+
+Para calcular los Índices Elementales de Valor Unitario de Prestaciones Bonificadas por
+las Isapres se consideran los valores unitarios mensuales de precios de las prestaciones
+seleccionadas en la canasta, las que deben contar con registro de frecuencia mayor a
+cero, sistemáticamente, en todos los meses del periodo de estudio (24 meses, de enero
+del año p-1 a diciembre del año p).
+
+Las prestaciones que no satisfacen esas condiciones, y para las cuales no se calculan
+índices elementales, quedan representadas por el ponderador del nivel siguiente de
+agregación (que agrega por el tipo de atención, ambulatoria u hospitalaria), a pesar de
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                 Pág. 5 de 14
+que queden fuera de seguimiento por su escasa frecuencia y/o baja participación en el
+gasto total.
+
+El valor unitario o precio (𝑃𝑃𝑡𝑡𝑖𝑖 ) de la prestación i, bonificada por las Isapres, en el mes t,
+se calcula como la ratio entre el monto total bonificado de la prestación 𝑖𝑖 en el mes 𝑡𝑡
+sobre la frecuencia de prestaciones bonificadas de la prestación 𝑖𝑖 en el mes 𝑡𝑡.
+
+                                                                  𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖
+                                                   𝑃𝑃𝑡𝑡𝑖𝑖 =
+                                                              𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝑡𝑡𝑖𝑖
+
+El índice elemental de valor unitario bonificado por las Isapres 𝐼𝐼𝐼𝐼𝑡𝑡𝑖𝑖 , por prestación i en el
+mes t se calcula como la ratio entre el valor unitario de la prestación 𝑖𝑖 en el mes 𝑡𝑡 (proxy
+del precio; 𝑃𝑃𝑡𝑡𝑖𝑖 ) y el de la prestación i en el mes anterior 𝑃𝑃𝑡𝑡−1
+                                                                   𝑖𝑖
+                                                                       .
+
+                      𝑃𝑃𝑡𝑡𝑖𝑖
+(1)     𝐼𝐼𝐼𝐼𝑡𝑡𝑖𝑖 =      𝑖𝑖
+                     𝑃𝑃𝑡𝑡−1
+
+
+Posteriormente, se construyen los micro índices de precios (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ) por prestación i,
+bonificada por las Isapres, para el mes t, con base en el valor de la prestación i del mes
+anterior 𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡−1
+                𝑖𝑖
+                    , y el índice elemental de la prestación i en el mes t, 𝐼𝐼𝐼𝐼𝑡𝑡𝑖𝑖 , por prestación:
+
+(2)     𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 = 𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡−1
+                            𝑖𝑖
+                                ∗ 𝐼𝐼𝐼𝐼𝑡𝑡𝑖𝑖
+
+       Para ello se asume que el primer MIP (correspondiente al primer mes del período
+base), es igual a 100.
+
+(3)            𝑖𝑖
+        𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡=1 = 100
+
+e) Corrección por IPC
+
+Todos los valores del micro índice de precios (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ) son deflactados por IPC, para de
+esta forma calcular con variaciones reales, que no consideran el efecto de la inflación:
+se divide por un índice de precios con base igual a 100 en mismo periodo que el primer
+       𝑖𝑖
+𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡=1 y se multiplica por 100.
+
+El índice de precios con base igual a 100, se construye a partir de información oficial
+publicada por el Instituto Nacional de Estadísticas (INE).
+
+f) Micro índice por tipo de atención
+
+A partir de los micro índices de precios (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ) de la prestación i en el mes t bonificada
+por las Isapres, se construyen los micro índices de precios de prestaciones bonificadas
+por tipo de atención en el mes t (𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ), como el promedio ponderado de los micro
+índices de precio por prestación (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ) en el mes t.
+
+La prestación i tendrá distinta ponderación (𝑤𝑤𝑎𝑎𝑖𝑖 ), según el tipo de atención (𝑎𝑎) en la que
+haya sido bonificada, ambulatoria u hospitalaria en el mes t:
+                               𝑛𝑛
+(4)     𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑎𝑎 = �𝑖𝑖=1 𝑤𝑤𝑎𝑎𝑖𝑖 ∗ 𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                          Pág. 6 de 14
+El ponderador (𝑤𝑤𝑎𝑎𝑖𝑖 ) representa la proporción del gasto efectuado en la prestación 𝑖𝑖,
+respecto del gasto total efectuado en las prestaciones seleccionadas del tipo de atención
+𝑎𝑎, durante el periodo base, es decir:
+
+                                        𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔 𝑝𝑝𝑟𝑟𝑒𝑒𝑒𝑒𝑒𝑒𝑒𝑒𝑒𝑒𝑒𝑒ó𝑛𝑛 𝑖𝑖 𝑝𝑝𝑝𝑝𝑝𝑝 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎ó𝑛𝑛 𝑎𝑎 𝑒𝑒𝑒𝑒 𝑒𝑒𝑒𝑒 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏
+                        𝑤𝑤𝑎𝑎𝑖𝑖 =
+                                                   𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔 𝑝𝑝𝑝𝑝𝑝𝑝 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎ó𝑛𝑛 𝑎𝑎 𝑒𝑒𝑒𝑒 𝑒𝑒𝑒𝑒 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏
+
+El Índice de Valor Unitario de Prestaciones Bonificadas por las Isapres es un índice
+mensual, con 24 valores, 12 para el año base y 12 para el año de análisis. El índice de
+valor unitario de prestaciones bonificadas de las Isapres en el mes t, se obtiene del
+promedio ponderado de los micro índices por tipo de atención (𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑎𝑎 ), ambulatoria u
+hospitalaria:
+
+(5)                     𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡 = ∑2𝑎𝑎=1 𝑤𝑤 𝑎𝑎 ∗ 𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑎𝑎
+
+Donde la ponderación de cada tipo de atención en el valor total bonificado, se calcula
+con referencia en el periodo base del índice (año (p-1)):
+
+                                                    𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑒𝑒𝑒𝑒 𝑡𝑡𝑡𝑡𝑡𝑡𝑜𝑜 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎ó𝑛𝑛 𝑎𝑎 𝑒𝑒𝑒𝑒 𝑒𝑒𝑒𝑒 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏
+                                 𝑤𝑤 𝑎𝑎 =
+                                                                        𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑒𝑒𝑒𝑒 𝑒𝑒𝑒𝑒 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏
+
+g) Cálculo año base (procedimiento aplicado en todos los niveles de agregación)
+
+Inicialmente se ha definido enero 2024 como el periodo base de los micro-índices
+(formula (3)). Sin embargo, el periodo base es todo el año 2024 y no el primer mes. Es
+por esto que los niveles de los micro-índices se deben recalcular de forma tal que el
+promedio (media aritmética) de los doce primeros meses (año base) sea igual a 100.
+
+Con esta finalidad, primero se calcula el promedio aritmético de los 12 primeros (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ):
+
+                                   12 1
+(6)     𝑋𝑋�𝑀𝑀𝑀𝑀𝑀𝑀𝑎𝑎ñ𝑜𝑜
+                  𝑖𝑖
+                       𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏 = ∑𝑡𝑡=1 𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖
+                                                      12
+
+
+Luego se recalculan todos los (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ), ajustados por el promedio de los meses
+considerados dentro del periodo base (𝑋𝑋�𝑀𝑀𝑀𝑀𝑀𝑀𝑎𝑎ñ𝑜𝑜
+                                                𝑖𝑖
+                                                     𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏 ), es decir:
+
+
+             𝑖𝑖                        𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖
+(7)   𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡_𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟 = �        𝑖𝑖                  ∗ 100
+                             𝑋𝑋𝑀𝑀𝑀𝑀𝑀𝑀𝑎𝑎ñ𝑜𝑜 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏
+
+
+Por último, el promedio de los doce meses de la base será igual a 100, es decir:
+                        𝑖𝑖
+                 𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡_𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟
+(8)     ∑12
+         𝑡𝑡=1                           = 100
+                        12
+
+
+        4.1.3. Índice de Frecuencia de Uso de Prestaciones Bonificadas por
+        las Isapres.
+
+
+El Índice de Frecuencia de Uso de Prestaciones Bonificadas, o Índice de Cantidad de
+Prestaciones Bonificadas por las Isapres, ICBI, es un índice mensual, con 24 valores, 12
+del año base y 12 del año de análisis, y se calcula para medir la evolución de la frecuencia
+de uso de las prestaciones de salud contenidas en el Arancel Fonasa MLE en el año
+calendario p (periodo de análisis) y en el año calendario p-1 (periodo base).
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                                                                                      Pág. 7 de 14
+a) Selección de canasta de prestaciones de salud MLE
+
+Se utiliza la misma canasta de prestaciones que fue seleccionada en el Índice de Valor
+Unitario de Prestaciones Bonificadas por las Isapres. Es decir, los índices elementales de
+cantidad se calculan para las mismas prestaciones que acumularon conjuntamente el
+90% superior del gasto bonificado en cada tipo de atención (ambulatoria y hospitalaria)
+durante el periodo base.
+
+b) Ponderación
+Para el Índice de Cantidad de Prestaciones Bonificadas por las Isapres, se calculan
+ponderaciones respecto al periodo de análisis (año calendario p). Es decir, el peso de
+cada monto bonificado sobre el total bonificado del año de análisis p.
+
+c) Procedimiento de cálculo
+
+Para calcular el Índice de Cantidad de Prestaciones Bonificadas por las Isapres por tipo
+de atención, ambulatoria u hospitalaria, y a nivel general, se parte por calcular índices
+elementales de frecuencia de uso por prestación.
+
+Con los índices elementales de Frecuencia de uso por prestación, se construyen los
+micro-índices para cada prestación de salud para cada mes t del período de estudio (24
+meses). Luego estos micro-índices se promedian, como medias aritméticas ponderadas,
+para obtener los micro-índices por tipo de atención de salud, los que a su vez componen,
+en función de la ponderación que tenga cada tipo de atención (ambulatoria u
+hospitalaria) en el gasto total bonificado del periodo de análisis (año p), el ICBI.
+
+d) Índice elemental de frecuencia de uso por prestación.
+
+El primer nivel del índice está definido por las variaciones de cantidad bonificada o
+frecuencia de uso para cada una de las prestaciones de salud específicas contenidas en
+el arancel de la MLE del Fonasa.
+
+Se consideran las cantidades mensuales y se hace seguimiento sólo a aquellas
+prestaciones con registro de frecuencia mayor a cero todos los meses del periodo de
+estudio (24 meses, de enero del año p-1 a diciembre del año p).
+
+Las prestaciones que no satisfacen esas condiciones, y para las cuales no se calculan
+índices elementales, quedan representadas por el ponderador del nivel siguiente de
+agregación, a pesar de que queden fuera de seguimiento por su escasa frecuencia y/o
+baja participación en el gasto total.
+
+Entonces, se calcula el índice elemental de frecuencia de uso de la prestación 𝑖𝑖 para el
+mes 𝑡𝑡 (𝐼𝐼𝐼𝐼𝑡𝑡𝑖𝑖 ), se calcula como la ratio entre la frecuencia de la prestación 𝑖𝑖 en el mes 𝑡𝑡
+(𝐹𝐹𝑡𝑡𝑖𝑖 ) y su frecuencia en el mes anterior (𝐹𝐹𝑡𝑡−1
+                                                 𝑖𝑖
+                                                     ).
+
+                     𝐹𝐹𝐹𝐹𝑡𝑡𝑖𝑖
+(9)     𝐼𝐼𝐼𝐼𝑡𝑡𝑖𝑖 =      𝑖𝑖
+                     𝐹𝐹𝑡𝑡−1
+
+
+Luego, el micro-índice de frecuencia de uso por prestación 𝑖𝑖 en el mes 𝑡𝑡 se calcula de la
+siguiente forma:
+
+(10)    𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 = 𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡−1
+                            𝑖𝑖
+                                ∗ 𝐼𝐼𝐼𝐼𝑡𝑡𝑖𝑖
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                     Pág. 8 de 14
+Donde, se asume que el primer MIF es igual a 100.
+
+Es decir:
+
+(11)           𝑖𝑖
+        𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡=1 = 100
+
+e) Corrección por crecimiento de la cartera de personas beneficiarias
+
+Todos los micro índices de frecuencia de uso (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ) de las prestaciones i en el mes t son
+deflactados. Para deflactar, se divide por un índice de cartera de personas beneficiarias
+con base igual a 100 en mismo periodo que el primer (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡=1   𝑖𝑖
+                                                                     )y se multiplica por 100.
+
+Este índice de cartera de personas beneficiarias con base igual a 100, se construye a
+partir de información oficial publicada por la Superintendencia de Salud.
+
+f) Micro índice por tipo de atención
+
+A partir de los micro índices de frecuencia de uso (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ) de la prestación i en el mes t,
+se construyen los micro índices de frecuencia de uso de prestaciones según tipo de
+atención (𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑎𝑎 ), ambulatoria u hospitalaria, en el mes t, como el promedio ponderado
+de los índices elementales de frecuencia por prestación i, distintos según el tipo de
+atención (𝑎𝑎).
+
+(12)    𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑎𝑎 = ∑𝑛𝑛𝑖𝑖=1 𝑤𝑤𝑤𝑤𝑎𝑎𝑖𝑖 ∗ 𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖
+
+A diferencia del índice de precio unitario, el de frecuencia de uso utiliza un ponderador
+𝑤𝑤𝑤𝑤𝑎𝑎𝑖𝑖 , que representa la proporción del gasto bonificado en la prestación 𝑖𝑖, respecto del
+gasto total en las prestaciones seleccionadas del tipo de atención 𝑎𝑎 (ambulatoria u
+hospitalaria), en el año de análisis p:
+
+                              𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝ó𝑛𝑛 𝑖𝑖 𝑝𝑝𝑝𝑝𝑝𝑝 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎ó𝑛𝑛 𝑎𝑎 𝑒𝑒𝑒𝑒 𝑒𝑒𝑒𝑒 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎á𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙
+                 𝑤𝑤𝑤𝑤𝑎𝑎𝑖𝑖 =
+                                         𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔 𝑝𝑝𝑝𝑝𝑝𝑝 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎ó𝑛𝑛 𝑎𝑎 𝑒𝑒𝑒𝑒 𝑒𝑒𝑒𝑒 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎á𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙
+
+Finalmente, el Índice de Frecuencia de Uso de Prestaciones Bonificadas por las Isapres
+se obtiene del promedio ponderado de los micro índices de frecuencia de uso de
+prestaciones por tipo de atención, calculando así 24 valores mensuales para este índice,
+en donde para cada mes t se calcula:
+
+(13)    𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡 = ∑2𝑎𝑎=1 𝑤𝑤𝑤𝑤 𝑎𝑎 ∗ 𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑎𝑎
+
+Donde la ponderación según tipo de atención, ambulatoria u hospitalaria, en el gasto
+total, se calcula sobre el periodo de análisis:
+
+                                     𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑒𝑒𝑒𝑒 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎ó𝑛𝑛 𝑎𝑎 𝑒𝑒𝑛𝑛 𝑒𝑒𝑒𝑒 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎á𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙
+                        𝑤𝑤𝑤𝑤 𝑎𝑎 =
+                                                         𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔𝑔 𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 𝑒𝑒𝑒𝑒 𝑒𝑒𝑒𝑒 𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝𝑝 𝑑𝑑𝑑𝑑 𝑎𝑎𝑎𝑎á𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙𝑙
+El índice de frecuencia de uso de prestaciones bonificadas por las Isapres, es un índice
+mensual, con 24 valores, 12 del año base y 12 del año de análisis.
+
+g) Cálculo año base (procedimiento aplicado en todos los niveles de agregación)
+
+Inicialmente se ha definido enero 2024 como el periodo base de los micro-índices
+(formula (11)). Sin embargo, el periodo base es todo el año 2024 y no el primer mes.
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                                                                                        Pág. 9 de 14
+Es por esto que los niveles de los micro-índices se deben recalcular de forma tal que el
+promedio (media aritmética) de los doce primeros meses (año base) sea igual a 100.
+Con este fin es que primero se calcula el promedio aritmético de los 12 primeros (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ):
+
+                                        1
+(14)    𝑋𝑋�𝑀𝑀𝑀𝑀𝑀𝑀𝑎𝑎ñ𝑜𝑜
+                  𝑖𝑖               12
+                       𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏 = ∑𝑚𝑚=1   𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖
+                                                    12
+
+
+Con esto se recalculan todos los (𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖 ), ajustados por el promedio de los meses
+considerados dentro del periodo base (𝑋𝑋�𝑀𝑀𝑀𝑀𝑀𝑀𝑎𝑎ñ𝑜𝑜
+                                                𝑖𝑖
+                                                     𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏 ), es decir:
+
+
+              𝑖𝑖                       𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡𝑖𝑖
+(15)   𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡_𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟 = �          𝑖𝑖              ∗ 100
+                               𝑋𝑋𝑀𝑀𝑀𝑀𝑀𝑀𝑎𝑎ñ𝑜𝑜 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏
+
+
+Luego, el promedio de los doce meses de la base será igual a 100, es decir:
+                        𝑖𝑖
+                 𝑀𝑀𝑀𝑀𝑀𝑀𝑡𝑡_𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟
+(16)    ∑12
+         𝑡𝑡=1                          = 100
+                        12
+
+
+        4.1.4. Índice del Costo en Prestaciones de Salud MLE de las
+        Isapres
+
+El Índice de Costo en Prestaciones de salud MLE de las Isapres, ICPRE del mes t, se
+calcula como el producto entre el Índice del valor unitario de prestaciones bonificadas
+por las Isapres en el mes t (𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡 ) y el Índice de frecuencia de uso de prestaciones
+bonificadas de las Isapres en el mes t (𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡 ), divido por cien.
+                                                                                     𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡 ∗𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡
+                                                                    𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡 =
+                                                                                             100
+
+Al calcular el Índice de Costo en Prestaciones de salud MLE de las Isapres, como producto
+de dos índices, de precio y cantidad, es posible cuantificar los efectos aislados de la
+variación de los precios, por un lado, y de las cantidades por otro, en la variación total.
+
+
+4.2. Cálculo de variación de costos de prestaciones MLE de las Isapres.
+
+       Se calcula la variación porcentual a doce meses (variación de un mes t con
+respecto al mismo mes del año anterior (𝑡𝑡 − 12)):
+
+                                                                                                   𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡
+                                                            ∆%12𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚 𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼 = �                         − 1� ∗ 100
+                                                                                                𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡−12
+
+Donde:
+∆%12𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚 𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼 es la variación porcentual a doce meses del Índice de Costos en
+Prestaciones de salud MLE de las Isapres.
+A partir de las 12 variaciones así obtenidas, se calcula la variación promedio anual.
+
+
+4.5. Cálculo de variación de costo del SIL de las Isapres.
+
+a) Selección de canasta de licencias médicas.
+
+El Índice de costo en Subsidios por Incapacidad Laboral (IGSI) de cargo de las Isapres
+mide la evolución del costo correspondiente a las licencias médicas por enfermedad o
+accidente que no entran en la categoría de accidentes del trabajo (cuyo financiamiento
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                                                               Pág. 10 de 14
+no es de cargo de las Isapres) y a las licencias médicas por patologías del embarazo,
+que son licencias pagadas por las Isapres a los cotizantes.
+
+La evolución de este gasto será medida para el conjunto de las Isapres y se presenta
+deflactado por el IPC, de manera de no considerar la inflación en la variación del costo.
+
+
+b) Índice elemental del gasto per cápita en licencias médicas de cargo de las Isapres.
+
+Para calcular el Índice de Gasto en SIL de cargo de las Isapres, se calcula primero el
+gasto per cápita en licencias médicas de cargo de las Isapres en el mes t (𝑚𝑚𝑡𝑡 ):
+
+                       𝑀𝑀𝑡𝑡
+(17)        𝑚𝑚𝑡𝑡 =
+                      𝐶𝐶𝐶𝐶𝐶𝐶𝑡𝑡
+Donde, 𝑀𝑀𝑡𝑡 es el monto total de gasto en licencias médicas tramitadas o reclamadas
+durante el mes 𝑡𝑡, mientras 𝐶𝐶𝐶𝐶𝐶𝐶𝑡𝑡 es el número de beneficiarios en el mes t 3.
+Con lo anterior, se construye el índice elemental en el mes t del Subsidio de Incapacidad
+Laboral 𝐼𝐼𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡 :
+
+                                  𝑚𝑚𝑡𝑡
+(18)          𝐼𝐼𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡 =
+                                 𝑚𝑚𝑡𝑡−1
+
+
+El índice general de SIL para el mes t (𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡 ), corresponde al producto entre el índice
+elemental en el mes 𝑡𝑡 (𝐼𝐼𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡 ) y el índice general de SIL en el mes anterior (𝑡𝑡 − 1)
+(𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡−1 ):
+
+(19)    𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡 = 𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡−1 ∗ 𝐼𝐼𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡
+
+Donde, se asume que el primer valor mensual para el índice general:
+
+(20)    𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡=1 = 100
+
+c) Corrección por IPC
+
+Todos los índices generales mensuales de SIL (I_SIL) son deflactados (se corrige por
+IPC), donde se divide por con un índice de precios con base igual a 100 en mismo periodo
+que el primer mes I_SIL y luego se multiplica por 100.
+El índice de precios con base igual a 100, se construye a partir de información oficial
+publicada por el Instituto Nacional de Estadísticas (INE).
+
+d) Cálculo año base
+
+Inicialmente se ha definido enero 2024 como el periodo base del índice (formula (20)).
+Sin embargo, el periodo base es todo el año 2024 y no únicamente el primer mes. Es
+por esto que los niveles del índice se deben recalcular de forma tal que el promedio
+(media aritmética) de los doce primeros meses (año base) sea igual a 100. Con este fin
+es que primero se calcula el promedio aritmético de los 12 primeros (𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡 ):
+
+
+3
+  El universo posible de personas beneficiarias con derecho a subsidio por incapacidad laboral son todas las
+personas que podrían eventualmente cotizar dentro del sistema previsional chileno.
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                              Pág. 11 de 14
+                                                  1
+(21)          𝑋𝑋� 𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑎𝑎ñ𝑜𝑜 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏 = ∑12
+                                             𝑡𝑡=1   𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡
+                                                        12
+
+
+Con esto se recalculan todos los índices mensuales 𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆, ajustados por el promedio de
+los 𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆 para los meses del periodo base (enero a diciembre t-1) (𝑋𝑋�𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑎𝑎ñ𝑜𝑜 𝑏𝑏𝑏𝑏𝑏𝑏𝑏𝑏 ), de modo
+tal que el promedio de los doce meses de base sea igual a 100:
+
+                       𝐼𝐼_𝑆𝑆𝑆𝑆𝑆𝑆𝑡𝑡_𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟𝑟
+(22)           ∑12
+                𝑡𝑡=1                            = 100
+                               12
+
+
+4.6. Variación del Índice de Gasto en SIL de cargo de las Isapres.
+
+Se calcula la variación porcentual a doce meses (variación del mes t con respecto al
+mismo mes del año anterior (𝑡𝑡 − 12).
+
+                                                                                   𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡
+                                                  ∆%12𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚 𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼 = �                 − 1� ∗ 100
+                                                                                𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝑡𝑡−12
+
+Donde (∆%12𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚𝑚 𝐼𝐼𝐼𝐼𝐼𝐼𝐼𝐼) corresponde a la variación porcentual a 12 meses del mes t, del
+Índice de Gasto en Subsidios por Incapacidad Laboral de las Isapres. Se calculan así
+doce variaciones mensuales, para luego calcular su promedio.
+
+Este es insumo final para la construcción de la componente de gasto en licencias médicas
+(SIL) del ICSA.
+
+4.7. Cálculo del ICSA.
+
+Como resultado de las etapas previas, el Indicador de la variación del Costo de la Salud
+(ICSA) se obtiene la variación porcentual del costo en prestaciones de salud MLE y la
+variación porcentual promedio del gasto en SIL en Isapres.
+
+Los ponderadores se estimarán con base en la representación que tengan el costo en
+prestaciones y el gasto en SIL sobre el total del costo operacional de Isapres. Es decir:
+
+                                                  𝐈𝐈𝐈𝐈𝐈𝐈𝐈𝐈: =𝛂𝛂∗(∆%𝑰𝑰𝑰𝑰𝑰𝑰𝑰𝑰𝑰𝑰)+𝛃𝛃∗(∆%IGSI)
+
+En donde:
+𝜶𝜶:           Ponderación del costo en prestaciones de salud MLE sobre el total del costo
+              operacional de Isapres en el periodo de estudio.
+𝜷𝜷:           Ponderación del costo en SIL sobre el sobre el total del costo operacional de
+              Isapres en el periodo de estudio.
+∆%𝑰𝑰𝑰𝑰𝑰𝑰𝑰𝑰𝑰𝑰: Variación porcentual promedio anual del Índice de costo en prestaciones de
+              salud MLE de las Isapres.
+∆%IGSI:       Variación porcentual promedio anual del Índice de Gasto en Subsidios por
+              Incapacidad Laboral.
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                                           Pág. 12 de 14
+Anexo 1: Arquitectura de los índices
+
+    1. Índices de valor unitario bonificado por las Isapres (IVUBI)
+       (proxy de precio)
+
+
+                                                    Índice de Valor Unitario
+             Nivel General                          Bonificado o Facturado
+
+
+                                                 MIT
+             Nivel Tipo de Atención                                    MIT hospitalario
+                                              ambulatorio
+
+
+
+
+             Nivel prestación          IE     IE            IE             IE             IE       IE
+
+
+
+
+    2. Índice de Cantidad Bonificada (ICBI) (frecuencia de uso de
+       prestaciones)
+
+
+                                               Índice de Cantidad de prestaciones
+           Nivel General                                   Bonificadas
+
+
+
+
+                                                MITF                       MITF
+           Nivel Tipo de Atención
+                                              ambulatorio               hospitalario
+
+
+
+
+           Nivel prestación           IF     IF          IF               IF              IF       IF
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                               Pág. 13 de 14
+    3. Índice de gasto en Licencias médicas (Subsidios por Incapacidad
+       Laboral)
+
+
+
+                                                             Gasto SIL
+            Nivel General
+
+
+
+
+             Índices elementales           IE_SIL              IE_SIL              IE_SIL
+
+
+                        Nota: El resto de los índices de gasto, tienen la misma estructura.
+
+
+    4. Variación del costo en prestaciones MLE
+
+
+                                                           Variación de costo en
+             Nivel General                                     prestaciones
+
+
+
+
+                                                    Variación del
+             Nivel general                              IVUBI               Variación del ICBI
+
+
+
+
+    5. Indicador de Costos de la Salud (ICSA)
+
+
+
+                                                                    ICSA
+               Indicador de costos de la
+               salud
+
+
+
+                                               Variación del costo en
+                                                                            Variación del
+               Fuentes de costo                prestaciones MLE en
+                                                                            costo en SIL
+                                                       Isapres
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+
+                                                                                                 Pág. 14 de 14
+

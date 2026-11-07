@@ -1,0 +1,787 @@
+     Documento Técnico
+Memoria de cálculo ICSA 2025
+
+
+
+
+    Departamento de Estudios y Desarrollo
+
+                Marzo 2026
+                                                       Contenido
+
+
+1.    Antecedentes ............................................................................................... 3
+2.    Prestaciones de Salud MLE............................................................................. 4
+2.1 Arancel FONASA MLE ..................................................................................... 4
+2.2 Preparación de bases de datos de prestaciones Isapres...................................... 5
+2.2.1 Base de Datos de Prestaciones de Salud bonificadas por Isapres. ..................... 6
+3.    Licencias Médicas y SIL ................................................................................. 7
+3.1    Licencias Médicas Tramitadas ....................................................................... 7
+3.2      Licencias Médicas Reclamadas..................................................................... 8
+3.3      Licencias Médicas Reliquidadas.................................................................. 12
+4.    Beneficiarios con Derecho a SIL.................................................................... 15
+5.    Índices utilizados para los ajustes por IPC y Cartera ....................................... 17
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                        Pág. 2 de 17
+1. Antecedentes
+
+El cálculo del ICSA 2025 está regulado mediante el decreto exento N°20 de fecha 15 de
+marzo del año 2022 que aprueba Norma Técnica N°220 del algoritmo de cálculo ICSA y
+modificado mediante el Decreto Exento N°12, de 12 de febrero de 2025, de los
+ministerios de Salud y Economía, Fomento y Turismo, que modifican los artículos 2° y
+3° del Decreto Exento N°10, que a su vez modifica parte de la Norma Técnica Nº220 de
+2022, del Algoritmo de Cálculo para determinar el Indicador de Costos de la Salud
+(ICSA), que señala en su artículo 2 “que las prestaciones y a la variación de frecuencia
+de uso que se realicen en la modalidad de libre elección MLE del Fondo Nacional de
+Salud, en las etapas previas para la determinación del algoritmo, no serán consideradas
+para efectos del análisis para el cálculo del Indicador para el proceso de adecuación
+2024”, para hacer aplicable la modificación de la Norma Técnica Nº220, de 2022, del
+algoritmo de cálculo para determinar el Indicador de Costos de la Salud (ICSA) del
+artículo 198, del Decreto con Fuerza de Ley Nº1, de 2005, del Ministerio de Salud,
+aprobada por el Decreto Exento N°20 de 2022, a los procesos de adecuación
+correspondientes a los años 2025, 2026 y 2027, en cumplimiento de lo dispuesto en el
+referido artículo 11° transitorio de la Ley N°21.674.
+
+En el cálculo del ICSA 2025, se incorporan tres índices que reflejan la evolución del costo
+de las prestaciones de salud aranceladas por el Fonasa en su Modalidad de Libre Elección
+(MLE) y un cuarto índice que describe la evolución del costo en Subsidios de Incapacidad
+Laboral (SIL):
+
+          1)   IVUBI: Índice de Valor Unitario Bonificado por las Isapres
+          2)   ICBI: Índice de Cantidad de Prestaciones Bonificadas por las Isapres
+          3)   ICPRE: Índice de Costo en Prestaciones de Salud MLE de las Isapres
+          4)   IGSI: Índice de Gasto en Subsidios de Incapacidad Laboral
+
+Los índices mencionados anteriormente, comparten mismo periodo de estudio, de
+análisis y período base:
+
+
+
+                              Periodo base (t-1): enero - diciembre 2024
+
+                           Periodo de análisis (t): enero - diciembre 2025
+
+                    Periodo de estudio (t-1; t): enero 2024 - diciembre 2025
+
+
+
+
+En la primera parte de este documento se describen los campos y filtros utilizados para
+definir el universo de prestaciones de salud que se utilizan para la construcción de los
+índices de costo de prestaciones de las Isapres, y en una segunda parte, se indican los
+campos y filtros utilizados para definir las Licencias Médicas que son consideradas para
+estimar el costo SIL y en consecuencia el IGSI.
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                  Pág. 3 de 17
+2. Prestaciones de Salud MLE
+
+2.1 Arancel FONASA MLE
+
+El Arancel de Modalidad Libre Elección (MLE) es actualizado anualmente por el Fonasa
+durante el primer trimestre de cada año. Las Isapres y/o prestadores pasan por un
+periodo de ajuste de la nueva codificación y glosa, por lo que no es inmediato el uso
+efectivo del arancel Fonasa MLE del año en curso por parte del sector privado de salud.
+
+Para el cálculo del ICSA 2025, por tanto, se realizó un proceso de homologación de los
+últimos 3 aranceles disponibles para fines estadísticos. De esta forma, prestaciones que
+en realidad son las mismas, pero que han recibido modificaciones tanto en su codificación
+como en la glosa técnica que las describe, son consideradas dentro del marco de
+prestaciones a ser analizadas y eventualmente participar de la canasta de prestaciones
+de salud a las cuales se le hará seguimiento, siendo condición necesaria su presencia en
+los tres años.
+
+Para este trabajo entonces, se utilizan los Aranceles Fonasa MLE de 2023, 2024 y 2025.
+
+Estos archivos son vinculados a través del campo “Código de prestación” y en algunos
+casos, de acuerdo con directrices del Fonasa, se agrupan prestaciones de salud.
+
+Los criterios de análisis para homologar y/o agrupar códigos de prestaciones de salud
+son los siguientes:
+
+1.- Mantener todas aquellas prestaciones de salud que tienen misma codificación en los
+Aranceles 2023, 2024 y 2025.
+
+2.- Descartar todas aquellas prestaciones de salud que no existan o no tengan misma
+codificación en los mencionados aranceles y que no exista una clara directriz por parte
+del Fonasa para agruparlas bajo un mismo código.
+
+3.- Revisar si la prestación de salud se encuentra contenida en los aranceles, pero bajo
+distinto código, agrupar y/o recodificar de acuerdo con directriz Fonasa.
+
+En relación con este criterio de revisión, a continuación, se mencionan algunos casos de
+interés de prestaciones y grupos de prestaciones de salud que tuvieron cambios
+importantes en 2025, mencionados en mayor detalle en la Resolución Exenta N°173 de
+14 de febrero de 2025 que aprueba Arancel 2025 1.
+
+
+
+a)         Reformulación Grupo 09, subgrupo 02, Psicología Clínica.
+
+           Se reformula el grupo 09, subgrupo 02 "Psicología Clínica, integrando los test y/o
+           evaluaciones (12 códigos de prestaciones), a las consultas y psicoterapias
+           (presenciales y tele rehabilitación).
+
+
+
+1
+    Para más detalle, revisar resolución publicada por el Fonasa en siguiente link: Resolución Exenta N°173
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                    Pág. 4 de 17
+b)        Reformulación Grupo 13, subgrupo 03, Fonoaudiología.
+
+          Se reformula el grupo 13, subgrupo 03 "Fonoaudiología", integrando las
+          evaluaciones y las rehabilitaciones, pasando de 12 códigos de prestaciones a 4.
+
+Este proceso resulta en un arancel Fonasa MLE homologado para los últimos 3 años, que
+luego es empleado en la preparación de las bases de datos que sirven de insumo para
+la construcción de los índices de prestaciones de salud.
+
+Adjunto a este documento se publica el listado de prestaciones de salud MLE del Fonasa
+utilizadas para la extracción de las bases de datos, identificadas por su código y glosa.
+También se anexa el de prestaciones homologadas, señalando el código inicial (sin
+homologar) y el código de agrupación final.
+
+2.2 Preparación de bases de datos de prestaciones Isapres
+
+Desde el Archivo Maestro de Prestaciones Bonificadas se descarga la base de datos del
+periodo completo de estudio enero 2024 – diciembre 2025.
+
+Nombre Archivo: VAL_PRESTACIONES_BONIFICADAS
+
+                                      Tabla 1: Campos y filtros AMPB
+      Campo                              Nombre en AM                                  Filtro          Observación
+ Fecha de                                                                                             Enero 2024 a
+                            ptn_bnd_fecha_informacion                         202401 – 202512
+ información                                                                                          diciembre 2025
+ Código
+                                                                              63, 67, 76, 78, 80,
+ aseguradora                ptn_bnd_codigo_aseguradora                                                -
+                                                                              81, 94, 99, 107,108
+                                                                                                      Listado de
+                                                                                                      Prestaciones de
+                                                                              Prestaciones Arancel
+ Código prestación          ptn_bnd_codigo_prestacion                                                 Salud MLE
+                                                                              Fonasa MLE
+                                                                                                      (2023, 2024 y
+                                                                                                      2025)
+                                                                                                      Se excluye
+ Tipo de registro           Ptn_bnd_tipo_registro                             Curativa                Medicina
+                                                                                                      Preventiva
+                                                                                                      Se excluye al
+ Cobertura de                                                                 CAEC, GES-CAEC,
+                            ptn_bnd_cobertura_financiamiento                                          financiamiento
+ financiamiento                                                               Plan Complementario
+                                                                                                      GES
+                                                                              Atención Ambulatoria,
+ Tipo atención              ptn_bnd_tipo_atencion                                                     -
+                                                                              Atención Hospitalaria
+                                                                                                      El valor
+                                                                                                      facturado por la
+ Valor facturado            ptn_bnd_valor_facturado                           >0                      prestación debe
+                                                                                                      ser mayor a
+                                                                                                      cero.
+ frecuencia                 ptn_bnd_frecuencia                                Sin filtro              -
+ Valor bonificado           ptn_bnd_valor_bonificado                          Sin filtro              -
+
+
+
+En el proceso de construcción de la base de datos se diseñan dos bases: para la atención
+ambulatoria y para la atención hospitalaria. Estos dos archivos luego se concatenan para
+formar una sola base de datos de prestaciones de salud MLE bonificadas por las Isapres.
+
+A continuación, de acuerdo con los campos y filtros descritos en la tabla anterior, se
+describe la forma en que se preparan la base de datos de prestaciones de salud MLE.
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                             Pág. 5 de 17
+2.2.1 Base de Datos de Prestaciones de Salud bonificadas por
+Isapres.
+
+Para el periodo de cálculo, correspondiente a los 24 meses del período de estudio del
+ICSA 2025, es decir desde enero 2024 a diciembre 2025, se realizan los filtros descritos
+en la Tabla 1 y que se presentan también en la Imagen 1.
+
+Para la extracción de la información, se suma la frecuencia y el valor bonificado
+agrupados por código de prestación, tipo de atención y fecha de información.
+
+Se añaden las restricciones descritas en la tabla 1.
+
+
+
+Imagen 1: Ejemplo de Consulta en SQL a través del software estadístico R para
+obtener Valor Bonificado y Frecuencia de prestaciones proveniente del Archivo
+Maestro de Prestaciones Bonificadas, periodo enero 2024 a diciembre 2025.
+
+
+
+
+Luego, con la extracción de esta información, se tienen los datos necesarios para la
+construcción de los índices de costo en prestaciones de salud MLE (IVUBI & ICBI).
+
+Adjunto a este documento se publica el listado de prestaciones de salud ambulatorias,
+identificadas por código MLE de Fonasa y glosa respectiva, contenidas en la canasta
+utilizada para el cálculo de los índices de costo, así como la ponderación asociada a estas
+prestaciones, tanto en el periodo base como en el de análisis. De igual manera, se
+reporta las bases de datos finales utilizadas.
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                 Pág. 6 de 17
+3. Licencias Médicas y SIL
+
+Fuentes de Información
+
+     1) Archivo Maestro de Licencias Médicas Tramitadas
+         (Tabla: Val_Licencias_Medicas_Cir69)  AMLM tramitadas
+     2) Archivo Maestro de Licencias Médicas Reclamadas
+        (Tabla: Val_Licencias_Reclamadas_Cir69)  AMLM reclamadas.
+
+
+
+Definición Costo SIL
+
+     1) El COSTO SIL se define como la suma de monto subsidio líquido; del monto aporte
+        previsional a pensiones (AFP); del aporte previsional a salud (Isapre); y del
+        monto de cotización del seguro de cesantía.
+
+
+3.1      Licencias Médicas Tramitadas
+
+Se realiza una primera consulta SQL al servidor de la Superintendencia que aloja el
+Archivo Maestro de Licencias Médicas Tramitadas (Tabla: Val_Licencias_Medicas_Cir69)
+para obtener el Costo SIL.
+
+El Costo SIL por Licencias Médicas (LM) Tramitadas es el pagado por la Isapre en una
+primera instancia, sin necesidad de reclamo o apelación por parte del cotizante.
+
+Restricciones de la consulta:
+
+          1) El periodo de estudio. se consideran las licencias médicas curativas de cargo
+             de las Isapres registradas en los 24 meses del período de estudio (enero
+             2024-diciembre 2025).
+          2) Únicamente se considera el costo de aquellas licencias que la Isapre resolvió
+             en una primera instancia autorizar íntegralmente, reducir o ampliar. Es decir,
+             todas aquellas licencias médicas que no fueron rechazadas por la Isapre y
+             significaron un costo para la Isapre.
+          3) Solo se consideran aquellas licencias médicas que son de cargo de la Isapre.
+             Estas son por Enfermedad o accidente común y Patologías del Embarazo.
+
+
+
+Nombre Archivo: Val_Licencias_Médicas_Cir69
+
+                            Tabla 2: Campos y filtros AMLM Tramitadas
+
+       Campo                                        Nombre en AM                      Filtro
+ Fecha           de
+                                      Ano_Mes                                 202401 – 202512
+ información
+ Código aseguradora                                                           63, 67, 76, 78, 80, 81,
+                                      Codigo_Isapre
+                                                                              94, 99, 107, 108
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                               Pág. 7 de 17
+            Campo                                   Nombre en AM                      Filtro
+                                                                              Enf. O Acc. No del
+ Descripción tipo de                                                          Trabajo
+                                      Desc_Tipo_De_Licencia
+ licencia                                                                     Patología      del
+                                                                              Embarazo
+ Descripción tipo de
+                                      Desc_Tipo_Resolucion                    Distinto a “Rechácese”
+ resolución
+ Monto       subsidio
+                                      Monto_subsidio_liquido                  Sin filtro
+ líquido
+ Monto         aporte
+                                      Monto_aporte_previsional
+ previsional                                                                  Sin filtro
+                                      pensiones
+ pensiones
+ Monto         aporte
+                                      Monto_aporte_previsional Isapre         Sin filtro
+ previsional Isapre
+ Monto     cotización
+                                      Monto_Cotizacion_Seguro_Cesantia        Sin filtro
+ seguro de cesantía
+
+
+Imagen 2: Ejemplo de Consulta SQL para obtener el Costo SIL proveniente del
+             Archivo Maestro de Licencias Médicas Tramitadas
+
+
+
+
+Luego, de esta consulta se obtienen los montos SIL mensuales (24 meses del período
+de estudio del ICSA 2025) asociados a LM Tramitadas, los que posteriormente se suman
+mes a mes con los montos de SIL correspondientes a LM Reclamadas.
+
+3.2 Licencias Médicas Reclamadas
+
+A) Se realiza una segunda consulta SQL al servidor de la Superintendencia que aloja
+   el    Archivo     Maestro    de     Licencias    Médicas       Tramitadas    (Tabla:
+   Val_Licencias_Medicas_Cir69) para obtener todas aquellas licencias médicas que han
+   sido “rechazadas” o “reducidas” por las Isapres en el último tiempo, y cuyo pagador
+   debería ser la Isapre (Enfermedades o Accidentes no del Trabajo y Patologías del
+   Embarazo).
+
+     Así se identifican todas las licencias médicas reducidas o reclamadas, para luego
+     seleccionarlas en el Archivo Maestro de Licencias Médicas Reclamadas. Las licencias
+     médicas se identifican mediante el cruce de los campos identificador de la licencia,
+     RUT del cotizante, identificador de Isapre y periodo de referencia, conformando así
+     el identificador único de la licencia médica.
+
+     Restricciones de la consulta:
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                            Pág. 8 de 17
+         1) El periodo de búsqueda de licencias médicas. Se va a buscar 13 meses hacía
+            atrás todas las licencias médicas que cumplen con la condición de ser
+            susceptibles de ser reclamadas y que son de cargo de la Isapre. Por ejemplo,
+            en enero 2024, se buscaron las licencias médicas reclamadas a partir de enero
+            2023 2.
+         2) Se analizan todas las licencias que la Isapre resolvió en una primera instancia
+            rechazar o reducir, es decir, todas aquellas licencias médicas susceptibles de
+            ser reclamadas por los cotizantes.
+         3) Solo se consideran aquellas Licencias Médicas que son de cargo de la Isapre.
+            Estas son Enfermedad o accidente común y Patologías del Embarazo.
+
+
+Nombre Archivo: Val_Licencias_Médicas_Cir69
+
+                                    Tabla 3: Campos y filtros AMLM Tramitadas
+
+        Campo                                       Nombre en AM                           Filtro
+ Fecha             de
+                                      Ano_Mes                                 202301 – 202512
+ información
+ Identificador de la
+                                      Identificacion_Licencia                 Sin filtro
+ LM
+ Rut del Cotizante                    Rut_Cotizante                           Sin filtro
+ Código            de
+                                      Codigo_Diagnostico                      Sin filtro
+ Diagnostico CIE-10
+ Código aseguradora                                                           63, 67, 76, 78, 80, 81,
+                                      Codigo_Isapre
+                                                                              94, 99, 107,108
+                                                                              Enf. O Acc. No del
+ Descripción tipo de
+                                      Desc_Tipo_De_Licencia                   Trabajo
+ licencia
+                                                                              Patología del Embarazo
+ Descripción tipo de                                                          Igual a “Rechácese” o
+                                      Desc_Tipo_Resolucion
+ resolución                                                                   “Reducese”
+
+
+   Imagen 3: Ejemplo de Consulta SQL para obtener todas aquellas Licencias
+    Médicas del Archivo Maestro de Licencias Médicas Tramitadas que fueron
+                    rechazadas o reducidas por las Isapres
+
+
+
+
+2
+  Se han realizado varias pruebas de análisis retrospectivo con distintas ventanas temporales, en meses, y se
+observa que la mayor cantidad de LM reclamadas fueron tramitadas dentro del mismo mes del reclamo o
+dentro de los 2 meses inmediatamente anteriores. Sin embargo, por criterio de exhaustividad, se ha optado
+por una búsqueda retrospectiva en una ventana de tiempo más amplia de 13 meses, para recoger aquellos
+casos donde el reclamo se encuentre pendiente de resolución por un plazo más amplio.
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                    Pág. 9 de 17
+          Finalmente, se revisan aleatoriamente 3 casos de licencias médicas duplicadas 4.
+          De estas licencias médicas repetidas, se conserva en la base la primera de ellas
+          para poder correctamente vincular ambos archivos y continuar con el análisis.
+
+B) Luego, se realiza una tercera consulta SQL al servidor de la Superintendencia
+   que aloja el Archivo Maestro de Licencias Médicas Reclamadas (Tabla:
+   Val_Licencias_Reclamadas_Cir69) para obtener el Costo SIL de las LM relevantes
+   (i.e., rechazadas o reducidas que luego fueron reclamadas y finalmente pagadas,
+   parcial o totalmente)
+
+     En este caso, el costo SIL se obtiene mediante el identificador asignado para cada
+     licencia: identificadora licencia, RUT del cotizante, identificador de Isapre y periodo
+     de referencia. Luego se construye el identificador único de la Licencia concatenando
+     los campos mencionados anteriormente, para vincular este costo SIL, con aquellas
+     licencias que efectivamente fueron rechazadas o reducidas en primera instancia, y
+     que son de cargo de la Isapre (se rescata la información desde el AMLM tramitadas).
+
+     Restricciones de la consulta:
+
+         1) El periodo de extracción corresponde a los 24 meses de estudio. Sin embargo,
+            el proceso de búsqueda se realiza iterativamente, para cada mes de estudio
+            (24 meses).
+         2) En concordancia con la Circular IF N°453 del 28/12/2023, se analizan las
+            licencias médicas para las cuales la Isapre, COMPIN o SUSESO han resuelto
+            fallar a favor del cotizante, acogiendo parcial o totalmente el reclamo. Así como
+            también los fallos: “Sin pronunciamiento COMPIN” & “Resuelto por la SUSESO”
+            de acuerdo al siguiente cuadro:
+
+                Tabla 4: Combinaciones posibles para los campos: Tipo de situación
+                                         y Tipo de fallo.
+
+
+
+
+Archivo: Val_Licencias_Reclamadas_Cir69
+
+                                    Tabla 5: Campos y filtros AMLM Reclamadas
+
+            Campo                                   Nombre en AM                         Filtro
+ Fecha                         de
+                                      Ano_Mes                                 202401 - 202512
+ información
+
+3
+  El orden para eliminar las licencias duplicadas corresponde a: código Isapre, Rut cotizante, id. Licencia y
+periodo (año mes).
+4
+  Se han hecho distintas pruebas en donde la cantidad de licencias duplicadas es siempre menor al 1% del
+total de LM.
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                Pág. 10 de 17
+           Campo                                    Nombre en AM                              Filtro
+    Identificador de la
+                                      Identificacion_Licencia                    Sin filtro
+    LM
+    Rut del Cotizante                 Rut_Cotizante                              Sin filtro
+    Código aseguradora                                                           63, 67, 76, 78, 80, 81,
+                                      Codigo_Isapre
+                                                                                 94, 99, 107,108
+                                                                                 Tipo_Situacion igual a
+    Tipo de Situación                 Tipo_Situacion                             'Redictamen      Emitido
+                                                                                 COMPIN' y Tipo_Fallo
+                                                                                 distinto a 'Z. Sin
+                                                                                 Clasificar'             o
+                                                                                 Tipo_Situacion igual a
+                                                                                 'Reconsideracion
+                                                                                 Emitida     ISAPRE'     y
+    Tipo de fallo                     Tipo_Fallo
+                                                                                 Tipo_Fallo distinto a:
+                                                                                 'Z.     Sin   Clasificar',
+                                                                                 'Resuelto      por     la
+                                                                                 SUSESO' y 'Compin no
+                                                                                 se pronuncia'
+    Monto        subsidio
+                                      Monto_subsidio_liquido                     Sin filtro
+    líquido
+    Monto          aporte
+                                      Monto_aporte_previsional
+    previsional                                                                  Sin filtro
+                                      pensiones
+    pensiones
+    Monto          aporte
+                                      Monto_aporte_previsional Isapre            Sin filtro
+    previsional Isapre
+
+
+       Imagen 4: Ejemplo de Consulta SQL para obtener costo SIL de aquellas
+    Licencias Médicas del Archivo Maestro de Licencias Médicas Reclamadas que
+        fueron reclamas por cotizantes, y cuyo reclamo fue acogido parcial o
+                             totalmente por la Isapre.
+
+
+
+
+Finalmente, se revisan aleatoriamente 5 los casos de licencias médicas duplicadas 6. En el
+caso de presentarse duplicados, se conserva la primera de ellas para poder
+correctamente vincular ambos archivos.
+
+
+
+
+5
+ El orden para eliminar las licencias duplicadas corresponde a: código Isapre, Rut cotizante, id. Licencia y
+periodo (año mes).
+6
+    Se han hecho pruebas y la cantidad de licencias duplicadas fue siempre 0 o menor al 0,1%.
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                   Pág. 11 de 17
+3.3 Licencias Médicas Reliquidadas
+
+A) Para las licencias médicas reliquidadas, el procedimiento de cálculo es análogo al
+   aplicado a las licencias médicas reclamadas. En este contexto, se realiza una consulta
+   SQL al servidor de la Superintendencia que aloja el Archivo Maestro de Licencias
+   Médicas Tramitadas (tabla: Val_Licencias_Medicas_Cir69), con el objetivo de obtener
+   todas aquellas licencias médicas que han sido tramitadas por las Isapres en el período
+   reciente, y cuyo pagador corresponde a la Isapre, específicamente en los casos de
+   enfermedades o accidentes no laborales y patologías asociadas al embarazo.
+
+     A partir de esta información, se identifican todas las licencias que hayan sido objeto
+     de reliquidación en el Archivo Maestro de Licencias Médicas Reclamadas, como
+     consecuencia de cambios o ajustes en las bases de cálculo.
+
+     La identificación de cada licencia médica se realiza mediante los siguientes campos:
+     Identificador de la licencia médica, RUT del cotizante, Identificador de la Isapre y
+     Período de referencia. Luego se construye el identificador único de la Licencia
+     concatenando los campos mencionados anteriormente.
+
+     La combinación de estos campos conforma la clave única de la licencia médica, lo
+     que permite su trazabilidad y correcta vinculación entre las distintas bases de datos
+     utilizadas en el proceso.
+
+     Restricciones de la consulta:
+
+         1) El periodo de búsqueda de licencias médicas. Se va a buscar 13 meses hacía
+            atrás todas las licencias médicas que cumplen con la condición de ser
+            reliquidadas y que son de cargo de la Isapre. Por ejemplo, en enero 2024, se
+            buscaron las licencias médicas reclamadas a partir de enero 2023 7.
+
+         2) Se analizan todas las licencias que la Isapre resolvió en una primera instancia
+            y que, posteriormente, fueron reliquidadas producto de cambios o ajustes en
+            las bases de cálculo.
+
+         3) Solo se consideran aquellas Licencias Médicas que son de cargo de la Isapre.
+            Estas son Enfermedad o accidente común y Patologías del Embarazo.
+
+Nombre Archivo: Val_Licencias_Médicas_Cir69
+
+                                    Tabla 6: Campos y filtros AMLM Tramitadas
+
+            Campo                                   Nombre en AM                         Filtro
+ Fecha                         de
+                                      Ano_Mes                                 202301 – 202512
+ información
+
+
+7
+  Se han realizado varias pruebas de análisis retrospectivo con distintas ventanas temporales, en meses, y se
+observa que la mayor cantidad de LM reclamadas fueron tramitadas dentro del mismo mes del reclamo o
+dentro de los 2 meses inmediatamente anteriores. Sin embargo, por criterio de exhaustividad, se ha optado
+por una búsqueda retrospectiva en una ventana de tiempo más amplia de 13 meses, para recoger aquellos
+casos donde el reclamo se encuentre pendiente de resolución por un plazo más amplio.
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                Pág. 12 de 17
+        Campo                                       Nombre en AM                           Filtro
+ Identificador de la
+                                      Identificacion_Licencia                 Sin filtro
+ LM
+ Rut del Cotizante                    Rut_Cotizante                           Sin filtro
+ Código            de
+                                      Codigo_Diagnostico                      Sin filtro
+ Diagnostico CIE-10
+ Código aseguradora                                                           63, 67, 76, 78, 80, 81,
+                                      Codigo_Isapre
+                                                                              94, 99, 107,108
+                                                                              Enf. O Acc. No del
+ Descripción tipo de
+                                      Desc_Tipo_De_Licencia                   Trabajo
+ licencia
+                                                                              Patología del Embarazo
+
+
+  Imagen 5: Ejemplo de Consulta SQL para obtener todas aquellas Licencias
+ Médicas del Archivo Maestro de Licencias Médicas Tramitadas por las Isapres
+
+
+
+
+Finalmente, se revisan aleatoriamente 8 casos de licencias médicas duplicadas 9. De estas
+licencias médicas repetidas, se conserva en la base la primera de ellas para poder
+correctamente vincular ambos archivos y continuar con el análisis.
+
+B) Luego, se realiza una tercera consulta SQL al servidor de la Superintendencia que
+   aloja   el  Archivo   Maestro    de   Licencias   Médicas    Reclamadas    (Tabla:
+   Val_Licencias_Reclamadas_Cir69) para obtener el Costo SIL de las LM reliquidadas.
+
+     En este caso, el costo SIL se obtiene mediante el identificador asignado para cada
+     licencia: identificadora licencia, RUT del cotizante, identificador de Isapre y periodo
+     de referencia. Luego se construye el identificador único de la Licencia concatenando
+     los campos mencionados anteriormente, para vincular este costo SIL, con aquellas
+     licencias que efectivamente fueron reliquidadas y que son de cargo de la Isapre.
+
+     Restricciones de la consulta:
+
+         1) El periodo de extracción corresponde a los 24 meses de estudio. Sin embargo,
+            el proceso de búsqueda se realiza iterativamente, para cada mes de estudio
+            (24 meses).
+         2) En concordancia con la Circular IF N°453 del 28/12/2023, se analizan las
+            licencias médicas que hayan sido objeto de reliquidación en el Archivo Maestro
+            de Licencias Médicas Reclamadas, como consecuencia de cambios o ajustes en
+            las bases de cálculo. Es decir, que se informen en el campo tipo de situación
+
+
+8
+  El orden para eliminar las licencias duplicadas corresponde a: código Isapre, Rut cotizante, id. Licencia y
+periodo (año mes).
+9
+  Se han hecho distintas pruebas en donde la cantidad de licencias duplicadas es siempre menor al 1% del
+total de LM.
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                Pág. 13 de 17
+              “Reliquidación” y un tipo de fallo “0: En caso de efectuarse sólo una
+              reliquidación”, de acuerdo al cuadro informado en Tabla 4.
+
+Archivo: Val_Licencias_Reclamadas_Cir69
+
+
+
+                                    Tabla 7: Campos y filtros AMLM Reclamadas
+
+        Campo                                       Nombre en AM                              Filtro
+ Fecha             de
+                                      Ano_Mes                                    202401 - 202512
+ información
+ Identificador de la
+                                      Identificacion_Licencia                    Sin filtro
+ LM
+ Rut del Cotizante                    Rut_Cotizante                              Sin filtro
+ Código aseguradora                                                              63, 67, 76, 78, 80, 81,
+                                      Codigo_Isapre
+                                                                                 94, 99, 107,108
+                                                                                 Tipo_Situacion igual a '
+ Tipo de Situación                    Tipo_SItuacion
+                                                                                 Reliquidación'
+                                                                                 Tipo_Fallo igual a '0:
+ Tipo de fallo                        Tipo_Fallo                                 En caso de efectuarse
+                                                                                 sólo una reliquidación'
+ Monto        subsidio
+                                      Monto_subsidio_liquido                     Sin filtro
+ líquido
+ Monto          aporte
+                                      Monto_aporte_previsional
+ previsional                                                                     Sin filtro
+                                      pensiones
+ pensiones
+ Monto          aporte
+                                      Monto_aporte_previsional Isapre            Sin filtro
+ previsional Isapre
+
+
+    Imagen 6: Ejemplo de Consulta SQL para obtener costo SIL de aquellas
+ Licencias Médicas del Archivo Maestro de Licencias Médicas Reclamadas que
+                      fueron objeto de un reliquidación.
+
+
+
+
+Finalmente, se revisan aleatoriamente 10 los casos de licencias médicas duplicadas 11. En
+el caso de presentarse duplicados, se conserva la primera de ellas para poder
+correctamente vincular ambos archivos.
+
+
+10
+  El orden para eliminar las licencias duplicadas corresponde a: código Isapre, Rut cotizante, id. Licencia y
+periodo (año mes).
+11
+     Se han hecho pruebas y la cantidad de licencias duplicadas fue siempre 0 o menor al 0,1%.
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                   Pág. 14 de 17
+Costo SIL de Licencias Médicas Tramitadas, Reclamadas y Reliquidadas.
+
+Tanto para las Licencias Médicas Reclamadas como para las Licencias Médicas
+Reliquidadas, lo obtenido en (B) es asignado, mediante el identificador único de licencia,
+con lo obtenido (A). De esta manera, se descartan todas aquellas LM reclamadas y
+pagadas que no son cargo de la Isapre, y que fueron rechazadas o reducidas en una
+primera instancia por la Isapre.
+
+El proceso (A) seguido de (B), es iterativo y su cálculo es mensual. Este proceso es
+análogo en el caso de las Licencias Médicas Reclamadas y las Licencias Médicas
+Reliquidadas, y su cálculo es independiente la una de la otra.
+
+Finalmente, el costo SIL de LM tramitadas, costo SIL de LM reclamadas y costo SIL de
+LM reliquidadas, se suman mes a mes y se obtiene el costo SIL mensual, que es el
+insumo principal para luego construir el Índice de gasto en Subsidios de Incapacidad
+Laboral (IGSI).
+
+
+
+4.       Beneficiarios con Derecho a SIL
+
+Análogamente, del Archivo Maestro de Beneficiarios, se extrae el número de personas
+beneficiarias de 15 o más años de edad que mensualmente tienen derecho a SIL
+
+   Imagen 7: Ejemplo de Consulta SQL para obtener cotizantes con derecho a
+                                    SIL
+
+
+
+
+Con este valor mensual se calcula el gasto mensual per cápita en SIL: se divide el monto
+total (Monto SIL reclamado + Monto SIL tramitado) por el número de personas
+beneficiarias de 15 o más años de edad por mes.
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                               Pág. 15 de 17
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                              Pág. 16 de 17
+5. Índices utilizados para los ajustes por IPC y Cartera
+
+Los índices utilizados en el ajuste de los índices de precio y cantidad de prestaciones, y
+de gasto en SIL, son calculados con base en los datos oficialmente emitidos por las
+instituciones encargadas de la estadística oficial.
+
+En el caso del IPC, se calcula una serie para los 24 meses del período de estudio (enero
+2024-diciembre 2025) con la información publicada por el INE.
+
+El Índice de ajuste por Cartera de Personas Beneficiarias, es construido con base en la
+información de cartera de cotizantes y cargas, proveniente de la Superintendencia de
+Salud.
+
+El índice IVUBI se deflacta por IPC y el ICBI por cartera. En el caso del IGSI, solo por
+IPC, dado que este índice da cuenta de la evolución de montos de Subsidios por
+Incapacidad Laboral per cápita.
+
+Tabla 8: Índices de precios al Consumidor y cartera de personas beneficiarias
+           Isapres, utilizados para deflactar los índices de costo*.
+
+               Periodo                        Índice IPC                      Índice Cartera ISAPRE
+                    ene-24                           100.00                                100.00
+                    feb-24                           100.59                                 99.38
+                   mar-24                            100.96                                 98.80
+                    abr-24                           101.49                                 98.22
+                   may-24                            101.77                                 97.59
+                    jun-24                           101.67                                 97.12
+                     jul-24                          102.43                                 96.75
+                    ago-24                           102.68                                 96.41
+                   sept-24                           102.77                                 96.06
+                     oct-24                          103.78                                 95.78
+                    nov-24                           104.04                                 95.31
+                     dic-24                          103.83                                 94.84
+                    ene-25                           104.94                                 94.22
+                    feb-25                           105.35                                 93.73
+                   mar-25                            105.88                                 93.28
+                    abr-25                           106.09                                 92.92
+                   may-25                            106.29                                 92.51
+                    jun-25                           105.86                                 92.13
+                     jul-25                          106.78                                 91.82
+                    ago-25                           106.82                                 91.51
+                   sept-25                           107.29                                 91.29
+                     oct-25                          107.34                                 91.13
+                    nov-25                           107.62                                 90.89
+                     dic-25                          107.41                                 90.78
+             Fuente: Elaboración propia con base a información INE y Superintendencia de Salud.
+          *Para efectos de presentación en este documento, se muestran los índices con 2 decimales
+
+
+
+
+Documento elaborado por M. Mercedes Jeria, Diego Inostroza, Pablo Guerrero.
+                                                                                                  Pág. 17 de 17
+

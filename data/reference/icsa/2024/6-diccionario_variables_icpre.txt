@@ -1,0 +1,68 @@
+ Departamento de Estudios y Desarrollo
+
+
+
+     Diccionario de variables del archivo que servirá como insumo para el
+                   cálculo del ICPRE (índices IVUBI & ICBI)
+
+
+1. Diccionario de variables
+
+
+La tabla siguiente describe las variables de la Base de datos que se entrega al público general para
+el cálculo de índices del periodo comprendido entre enero 2023 y diciembre 2024 inclusive. Es
+importante indicar que la base de datos entregada corresponde a una Tabla de montos agregados
+que deriva del Archivo Maestro de Prestaciones Bonificadas (AMPB) y que en consecuencia no hay
+divulgación de datos personales de los beneficiarios del sistema de Isapres. Por otro lado, los montos
+en pesos son nominales (corrientes de cada periodo).
+
+El contenido de la base de datos es suficiente para calcular los siguientes índices:
+
+     1. IVUBI: Índice del valor unitario bonificado por sistema Isapres (abiertas y cerradas).
+     2. ICBI: Índice de cantidad de uso de prestaciones bonificadas por sistema Isapres (abiertas
+        y cerradas).
+     3. ICPRE: Índice de costo en prestaciones de salud MLE por sistema Isapres (abiertas y
+        cerradas).
+
+                        Tabla 1: Descripción de variables de base de datos
+
+  N° de variable            Nombre            Tipo                      Descripción
+    (orden en               Variable        variable
+      BBDD)
+ 1                        tipo_atencion    Numérica      Identifica la modalidad de atención en que
+                                                         se otorga la prestación.
+                                                         Existen dos categorías posibles:
+                                                         1: Atención Ambulatoria
+                                                         2: Atención Hospitalaria
+ 2                     codigo_prestacion   Numérica      Corresponde al código que identifica la o
+                                                         las prestaciones de salud bonificadas a las
+                                                         personas beneficiarias. Todas estas
+                                                         prestaciones corresponden a las incluidas
+                                                         en el Arancel de prestaciones FONASA
+                                                         MLE.
+ 3                           periodo       Numérica      Corresponde al mes y año en que se
+                                                         bonificaron las prestaciones. Formato
+                                                         AAAAMM, donde: AAAA = año y MM =
+                                                         mes.
+ 4                      suma_bonificado    Numérica      Corresponde al monto nominal total en
+                                                         pesos bonificado por tipo de atención,
+                                                         código de prestación y periodo.
+ 5                      suma_frecuencia    Numérica      Corresponde al número de veces que se
+                                                         bonificó la prestación por tipo de
+                                                         atención, código de prestación y periodo.
+
+
+                                                                                             Pág. 1 de 2
+2. Verificación de lectura del archivo
+
+
+Para verificación/validación de la correcta lectura de la base de datos, se informa que la cantidad
+de registros es de 68.960 filas. Además, para complementar el contraste, se informa que la suma
+en los 24 meses estudio del monto total bonificado ascendió a $3.908.427.091.168 mientras que
+la suma total de la frecuencia de bonificación a 132.914.648.
+
+
+
+
+                                                                                           Pág. 2 de 2
+
