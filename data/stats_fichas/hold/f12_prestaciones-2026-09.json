@@ -2,7 +2,7 @@
   "status": "hold",
   "family": "F12",
   "period": "2026-09",
-  "generated_at": "2026-11-07T02:16:04.518203+00:00",
+  "generated_at": "2026-11-07T03:18:12.544986+00:00",
   "decision": {
     "decision": "HOLD",
     "holds": [
@@ -1199,7 +1199,7 @@
             "unit": "%",
             "digits": 1,
             "headline": "Mediana pública frente a la privada",
-            "subtitle": "% de diferencia en el mismo código y región, julio–septiembre 2026",
+            "subtitle": "% de diferencia en el mismo código y región, julio–septiembre 2026; los públicos tienen el 2,6% de las atenciones Fonasa",
             "rows": [
               {
                 "label": "Amb. ponderado",
@@ -1377,20 +1377,19 @@
           }
         ],
         "text": [],
-        "dek": "Mismo código y región, mediana pública vs. privada: ambulatorio +9,7% ponderado y +15,2% en la mediana; hospitalario +18,3% y +24,8%",
+        "dek": "Mismo código y región: los públicos facturan más — ambulatorio +9,7%, hospitalario +18,3% (ponderado)",
         "dek_refs": [
           "pubpriv.amb.ponderado",
-          "pubpriv.amb.mediana",
-          "pubpriv.hosp.ponderado",
-          "pubpriv.hosp.mediana"
+          "pubpriv.hosp.ponderado"
         ],
         "spark": {
           "chart": "f12-pub-priv",
           "form": "diverging"
         },
-        "index_line": "Públicos: 2,6% de las atenciones Fonasa",
+        "index_line": "Medianas: ambulatorio +15,2% · hospitalario +24,8%",
         "index_refs": [
-          "pubpriv.publico.pct_atenciones"
+          "pubpriv.amb.mediana",
+          "pubpriv.hosp.mediana"
         ],
         "kpis": []
       },
@@ -4415,8 +4414,8 @@
       "cost_usd": 0.0
     },
     "status": "AWAITING_FIRST_REVIEW",
-    "generated_at": "2026-11-07T02:16:04.518203+00:00",
-    "builder_version": "f12_informe_v6",
+    "generated_at": "2026-11-07T03:18:12.544986+00:00",
+    "builder_version": "f12_informe_v7",
     "verification": {
       "verdict": "PASS",
       "errors": [],
@@ -31488,7 +31487,7 @@
         },
         "embudo.2026t3.facturado.pct_flag": {
           "id": "embudo.2026t3.facturado.pct_flag",
-          "value": 70.91840198298138,
+          "value": 70.91944746978521,
           "unit": "%",
           "period": "2026-09",
           "source": null,
@@ -31597,7 +31596,7 @@
         },
         "embudo.2026t3.frecuencia.pct_flag": {
           "id": "embudo.2026t3.frecuencia.pct_flag",
-          "value": 74.02124941819166,
+          "value": 74.02141811792326,
           "unit": "%",
           "period": "2026-09",
           "source": null,
@@ -31706,7 +31705,7 @@
         },
         "embudo.2026t2.facturado.pct_flag": {
           "id": "embudo.2026t2.facturado.pct_flag",
-          "value": 71.0663797810839,
+          "value": 71.06721997289601,
           "unit": "%",
           "period": "2026-06",
           "source": null,
@@ -31720,7 +31719,7 @@
         },
         "embudo.2026t2.facturado.pct_pab": {
           "id": "embudo.2026t2.facturado.pct_pab",
-          "value": 7.091808982728153,
+          "value": 7.091429444757366,
           "unit": "%",
           "period": "2026-06",
           "source": null,
@@ -31734,7 +31733,7 @@
         },
         "embudo.2026t2.facturado.pct_pab_hosp": {
           "id": "embudo.2026t2.facturado.pct_pab_hosp",
-          "value": 87.43604330584198,
+          "value": 87.44068624162006,
           "unit": "%",
           "period": "2026-06",
           "source": null,
@@ -31815,7 +31814,7 @@
         },
         "embudo.2026t2.frecuencia.pct_flag": {
           "id": "embudo.2026t2.frecuencia.pct_flag",
-          "value": 74.53421119623604,
+          "value": 74.5343095187051,
           "unit": "%",
           "period": "2026-06",
           "source": null,
@@ -31829,7 +31828,7 @@
         },
         "embudo.2026t2.frecuencia.pct_pab": {
           "id": "embudo.2026t2.frecuencia.pct_pab",
-          "value": 0.957038773297156,
+          "value": 0.956915654861642,
           "unit": "%",
           "period": "2026-06",
           "source": null,
@@ -31843,7 +31842,7 @@
         },
         "embudo.2026t2.frecuencia.pct_pab_hosp": {
           "id": "embudo.2026t2.frecuencia.pct_pab_hosp",
-          "value": 54.83969054984124,
+          "value": 54.84382218947196,
           "unit": "%",
           "period": "2026-06",
           "source": null,
