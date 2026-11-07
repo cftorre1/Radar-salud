@@ -36,13 +36,14 @@ from pathlib import Path
 from statistics import median
 from typing import Any, Callable
 
+from . import f12_report as rep
 from . import sis_open_data as so
 from . import stats_fichas as sf
 from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_prestaciones_v4"  # v3 (Dirección 5-nov 21:25 + review of PR #152): price-led headline
+BUILDER_VERSION = "f12_informe_v5"  # v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
 DATASET = "Prestaciones Bonificadas"
 PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
 NATIONAL = "NACIONAL"
@@ -53,7 +54,7 @@ FACT_STABLE_MAX = 5.0
 # frecuencia-weighted mean of its index agree in sign and both are at least this many % (review of PR #152).
 HEADLINE_MIN_INDEX = 3.0
 # Prices first (Dirección 5-nov-2026 21:25); coverage and concentration follow.
-TAB_ORDER = ["precios", "regiones", "cobertura", "mismo-prestador", "concentracion"]
+TAB_ORDER = ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio", "cobertura", "mismo-prestador", "regiones"]
 SHARE_BANDS = {"50-60": "50–60%", "60-80": "60–80%", ">80": "más de 80%"}
 
 
@@ -389,6 +390,10 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         put(f"conc.{reg}.top5", r["share_top5_pct"], "%", q, cur, loc)
         put(f"conc.{reg}.n", r["n_prestadores"], "prestadores", q, cur, loc)
     put("filas", cur["receipt"]["parse"]["rows_ok"], "filas", q, cur, "recibo del ZIP")
+    # 5. Report sections (Dirección 6-nov-2026 21:54): funnel, stratified basket and systemic findings.
+    report, rf = rep.analyze(root, cfg, q, pq if prev else None, cur, prev, put, derived, values, sources)
+    if rf:
+        return _hold(package, rf)
 
     ev = so.evidence_sha256(sources)
     cnt = {"isapres": len(isapres), "qualified": len(qualified)}
@@ -402,13 +407,13 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         entities=[{"code": int(c), "name": names[c]} for c in isapres if c.isdigit()],
         entity_codes=[int(c) for c in isapres if c.isdigit()],
         revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
-        constants=[0, 1, 2, 3, 4, 5, 30, 10, 50, 60, 80, 100, 256, 10000, FACT_STABLE_MAX, HEADLINE_MIN_INDEX, n_top, min_cells, len(top), *[int(c["code"]) for c in codes if c["code"].isdigit()],
+        constants=[0, 1, 2, 3, 4, 5, 8, 12, 13, 16, 30, 10, 50, 60, 80, 100, 256, 10000, FACT_STABLE_MAX, HEADLINE_MIN_INDEX, n_top, min_cells, len(top), *[int(c["code"]) for c in codes if c["code"].isdigit()],
                    *desc_numbers],
         kpis={"q": q, "pq": pq if prev else None, "isapres": isapres, "hi_b": hi_b, "lo_b": lo_b, "cross_valid": cross_valid,
               "qualified": qualified, "hi_c": hi_c, "lo_c": lo_c, "gap": gap, "opens": opens, "strong": strong,
               "closed": [c for c in isapres if types[c] == "closed"], "bands": bands, "small": small,
               "cross_topic": len(open_q) >= 2, "codes": codes, "status_count": status_count,
-              "regions": sorted(conc, key=lambda r: (r == NATIONAL, -(conc[r]["hhi"] or 0)))},
+              "regions": sorted(conc, key=lambda r: (r == NATIONAL, -(conc[r]["hhi"] or 0))), **report},
     )
     package["reconciliation"].update(ok=True, failures=[])
     return package
@@ -427,33 +432,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     nm = lambda code: names[int(code)]  # noqa: E731
     ql = so.quarter_label(q)
     tabs, paragraphs, notes, kpis = [], [], [], []
+    tpl = cfg["templates"]
 
-    # KPI cards: prices first (Dirección 5-nov 21:25), then coverage.
-    c1 = k["codes"][0]["code"]
-    n1 = f"precio.{c1}.{NATIONAL}"
-    d1 = short_desc(k["codes"][0]["desc"]) or f"código {c1}"
-    kpis.append({"id": "dispersion_precios", "label": "Dispersión de precios (p75/p25)", "value": f"{fmt(V('dispersion.mediana'), 1)} veces",
-                 "prov": "C", "lines": [f"mediana de los {len(k['codes'])} códigos Fonasa más frecuentes",
-                                        f"{d1}: {money(V(f'{n1}.p25'))} a {money(V(f'{n1}.p75'))}"],
-                 "refs": ["dispersion.mediana", f"{n1}.p25", f"{n1}.p75"]})
-    lines = [f"del facturado, {ql}", f"copago: {pc(f'sistema.{q}.pct_copago')}"]
-    refs = [f"sistema.{q}.pct_bonif", f"sistema.{q}.pct_copago"]
-    if pq:
-        lines.append(f"{so.quarter_tag(pq)}: {pc(f'sistema.{pq}.pct_bonif')}")
-        refs.append(f"sistema.{pq}.pct_bonif")
-    kpis.append({"id": "bonificado_sistema", "label": "Bonificado por las Isapres", "value": pc(f"sistema.{q}.pct_bonif"),
-                 "prov": "C", "lines": lines, "refs": refs})
-    if k["gap"] is not None:
-        gp, gn = k["gap"]
-        kpis.append({"id": "brecha_mismo_prestador", "label": "Brecha de cobertura, mismo prestador",
-                     "value": f"{fmt(V('cruce.brecha_pp'), 1)} pp", "prov": "C",
-                     "lines": [f"{nm(gp)} {fmt(V(f'cruce.{gp}.mediana'), 1, True)}% · {nm(gn)} {fmt(V(f'cruce.{gn}.mediana'), 1, True)}%",
-                               "medianas vs. la media de la celda; abiertas con mediana y media ponderada del mismo signo"],
-                     "refs": ["cruce.brecha_pp", f"cruce.{gp}.mediana", f"cruce.{gn}.mediana"]})
-    kpis.append({"id": "precio_publicable", "label": "Atenciones con precio publicable", "value": pc("divulgacion.pct_publicable"),
-                 "prov": "C", "lines": ["celdas región × código Fonasa",
-                                        f"{fmt(V('divulgacion.celdas_un_prestador'), 0)} celdas con 1 prestador: sin precio"],
-                 "refs": ["divulgacion.pct_publicable", "divulgacion.celdas_un_prestador"]})
+    report = rep.sections(package, cfg, fmt, sf.topic_fields)
+    kpis = report["kpis"]
+    tabs += report["tabs"]
+    paragraphs += report["paragraphs"]
 
     # Topic 1: coverage by Isapre.
     iss = sorted(k["isapres"], key=lambda c: -V(f"isapre.{c}.{q}.total.pct_bonif"))
@@ -536,31 +520,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         """Top provider's share of atenciones: exact, or a band for a 2-provider cell."""
         return pc(f"{b}.share_top") if f"{b}.share_top" in v else SHARE_BANDS[k["bands"][b]]
 
-    # Topic 3: price dispersion (national) of the most frequent codes.
     codes = k["codes"]
-    with_ratio = [c for c in codes if f"precio.{c['code']}.{NATIONAL}.ratio" in v]
-    nat_rows = []
-    for c in codes:
-        b = f"precio.{c['code']}.{NATIONAL}"
-        has = f"{b}.mediana" in v
-        nat_rows.append([c["code"], (c["desc"] or "sin descripción en el arancel")[:60],
-                         fmt(V(f"top.{c['code']}.frecuencia"), 0), fmt(V(f"{b}.n"), 0),
-                         money(V(f"{b}.mediana")) if has else "sin precio",
-                         f"{money(V(f'{b}.p25'))}–{money(V(f'{b}.p75'))}" if f"{b}.p25" in v else "",
-                         fmt(V(f"{b}.ratio"), 1) if f"{b}.ratio" in v else "", share(b)])
-    charts = [{"id": "f12-dispersion", "form": "bars", "unit": "veces", "digits": 1,
-               "headline": "Cuánto varía el precio entre prestadores",
-               "subtitle": f"p75 / p25 del precio por unidad, nacional, {ql}",
-               "rows": [{"label": c["code"], "value": V(f"precio.{c['code']}.{NATIONAL}.ratio"),
-                         "ref": f"precio.{c['code']}.{NATIONAL}.ratio", "emphasis": c["code"] == codes[0]["code"]} for c in with_ratio[:12]],
-               "table": {"columns": ["Código", "Descripción (Arancel Isapre)", "Atenciones", "Prestadores", "Mediana", "p25–p75",
-                                     "p75/p25", "Mayor prestador (% atenciones)"], "rows": nat_rows},
-               "source": "SIS, datos abiertos de prestaciones bonificadas (códigos del arancel Fonasa) y Arancel Isapre para la descripción."}]
-    tab = {"id": "precios", "label": "Precios", "charts": charts, "text": [], "dek": None}
-    sf.topic_fields(tab, f"p75/p25 mediano: {fmt(V('dispersion.mediana'), 1)} veces", index_refs=["dispersion.mediana"], kpis=[])
-    tabs.append(tab)
-    paragraphs.append(f"Entre prestadores, el precio por unidad de los códigos Fonasa más frecuentes varía {fmt(V('dispersion.mediana'), 1)} "
-                      "veces entre el percentil 25 y el 75 (mediana de los códigos).")
 
     # Topic 4: prices by region (top codes), disclosure rule applied.
     reg_rows = []
@@ -608,60 +568,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         sf.topic_fields(tab, None, kpis=[])
     tabs.append(tab)
 
-    # Topic 5: concentration by region.
-    regs = [r for r in k["regions"] if r not in (NATIONAL, "0") and r in so.REGIONS][:12]
-    charts = [{"id": "f12-concentracion", "form": "bars", "unit": "HHI", "digits": 0,
-               "headline": "Concentración del facturado entre prestadores",
-               "subtitle": f"Índice HHI (0 a 10.000) por región del prestador, {ql}",
-               "rows": [{"label": so.REGIONS[r], "value": V(f"conc.{r}.hhi"), "ref": f"conc.{r}.hhi"} for r in regs],
-               "table": {"columns": ["Región", "HHI", "Mayor prestador", "5 mayores", "Prestadores"],
-                         "rows": [[so.REGIONS.get(r, "Nacional") if r != NATIONAL else "Nacional", fmt(V(f"conc.{r}.hhi"), 0),
-                                   pc(f"conc.{r}.top1"), pc(f"conc.{r}.top5"), fmt(V(f"conc.{r}.n"), 0)]
-                                  for r in k["regions"] if r in so.REGIONS or r == NATIONAL]},
-               "source": "SIS, datos abiertos; prestadores seudónimos agrupados por región del prestador. HHI sobre el facturado."}]
-    tab = {"id": "concentracion", "label": "Concentración", "charts": charts, "text": [], "dek": None}
-    if regs:
-        r0 = regs[0]
-        sf.topic_fields(tab, f"{so.REGIONS[r0]}: HHI {fmt(V(f'conc.{r0}.hhi'), 0)}; nacional {fmt(V(f'conc.{NATIONAL}.hhi'), 0)}",
-                        index_refs=[f"conc.{r0}.hhi", f"conc.{NATIONAL}.hhi"], kpis=[])
-    tabs.append(tab)
-
-    # Headline: the first candidate of the configured priority that the verified data supports.
-    # Headline: prices, never coverage (Dirección 5-nov-2026 21:25). Candidates in order of the volume behind them:
-    # the most frequent code with a national p25–p75 (all providers), then its gap against Metropolitana (only cells
-    # under the disclosure rule), then the dispersion across the top codes. The prestación is named by its literal
-    # Arancel Isapre description.
-    lead = None
-    named = [c for c in codes if short_desc(c["desc"]) and f"precio.{c['code']}.{NATIONAL}.ratio" in v
-             and V(f"precio.{c['code']}.{NATIONAL}.n") >= IQR_MIN_PROVIDERS]
-    for cand in cfg.get("headline_priority") or []:
-        if cand == "precio_codigo_dispersion" and named:
-            c = named[0]
-            b = f"precio.{c['code']}.{NATIONAL}"
-            lead = (f"{short_desc(c['desc'])} cuesta entre {money(V(f'{b}.p25'))} y {money(V(f'{b}.p75'))} según el prestador "
-                    f"(p25–p75, {ql})")
-        elif cand == "precio_codigo_region" and named:
-            c = named[0]
-            gaps = [r for r in so.REGIONS if r not in ("13", "0") and f"precio.{c['code']}.{r}.vs_rm" in v]
-            if gaps:
-                r = max(gaps, key=lambda r: (abs(V(f"precio.{c['code']}.{r}.vs_rm")), V(f"precio.{c['code']}.{r}.frec")))
-                g = V(f"precio.{c['code']}.{r}.vs_rm")
-                lead = (f"{short_desc(c['desc'])} cuesta {fmt(abs(g), 1)}% {'más' if g > 0 else 'menos'} en {so.REGIONS[r]} que en la "
-                        f"Metropolitana (mediana entre prestadores, {ql})")
-        elif cand == "dispersion_precios":
-            lead = (f"El precio de las prestaciones Fonasa más frecuentes varía {fmt(V('dispersion.mediana'), 1)} veces "
-                    f"entre prestadores en {ql}")
-        if lead and len(lead) <= 140:
-            break
-        lead = None
-    headline = lead or f"Precios de prestaciones bonificadas por las Isapres en {ql}"
-    dek_parts = []
-    if named:
-        b = f"precio.{named[0]['code']}.{NATIONAL}"
-        dek_parts.append(f"Mediana nacional {money(V(f'{b}.mediana'))} entre {fmt(V(f'{b}.n'), 0)} prestadores.")
-    dek_parts.append(f"En los {len(codes)} códigos Fonasa más frecuentes, el p75 equivale a {fmt(V('dispersion.mediana'), 1)} veces el p25 "
-                     f"(mediana). Las Isapres bonificaron el {pc(f'sistema.{q}.pct_bonif')} de lo facturado.")
-    dek = " ".join(dek_parts)
+    # Report title (headline_type "report_title", F12 only) and dek from the strongest findings.
+    headline = tpl["report_title"].format(quarter_short=so.quarter_short(q))
+    dek = report["dek"]
+    notes += report["notes"]
 
     if k["small"]:
         notes.append({"id": "n0b", "text": f"Base pequeña en la comparación mismo prestador: {', '.join(nm(c) for c in k['small'])} "
@@ -669,7 +579,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                            "igual; leer su índice con cautela."})
     if k["closed"]:
         notes.append({"id": "n0", "text": f"{closed_names}: Isapre cerrada (afiliación restringida). Aparecen en los temas, marcadas, "
-                                          "pero no en el titular ni en los rangos entre Isapres abiertas."})
+                                          "pero no en los rangos entre Isapres abiertas."})
     notes += [
         {"id": "n1", "text": f"Base trimestral: cada cifra es un flujo de {ql}, no un stock; los trimestres no se suman. "
                              + (f"La comparación con el {so.quarter_tag(pq)} no está ajustada por estacionalidad." if pq else "")},
@@ -687,8 +597,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              "son entre prestadores, no ponderados por atenciones."},
         {"id": "n6", "text": f"Mismo prestador: para cada prestador seudónimo y código Fonasa con ≥ 2 Isapres, el bonificado por unidad "
                              "de cada Isapre (con ≥ 10 atenciones en la celda) se compara con la media simple de las Isapres de esa celda. Se "
-                             "muestran la mediana de ese índice entre celdas y su media ponderada por atenciones; el titular usa esta "
-                             f"comparación solo si ambas medidas tienen el mismo signo y al menos {fmt(HEADLINE_MIN_INDEX, 0)}%. No ajusta por plan ni por "
+                             "muestran la mediana de ese índice entre celdas y su media ponderada por atenciones; la brecha entre Isapres "
+                             f"abiertas se informa solo si ambas medidas tienen el mismo signo y al menos {fmt(HEADLINE_MIN_INDEX, 0)}%. No ajusta por plan ni por "
                              "bonificación restringida."},
         {"id": "n7", "text": f"Archivo: ZIP trimestral de datos abiertos de la SIS ({fmt(V('filas'), 0)} filas). Su huella SHA-256 está "
                              "en Fuentes; cada agregado nombra esa misma huella y, si no calza, la ficha queda retenida."},
@@ -714,7 +624,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "release_key": package["release_key"], "evidence_sha256": package["evidence_sha256"],
         "kicker": tpl["kicker"].format(label=cfg["label"], quarter_label=ql),
         "kicker_meta": tpl["kicker_meta"].format(quarter_label=ql, published_label=sf.day_label(package["published_at"])),
-        "date_basis": "first_detected", "headline": headline, "headline_type": "default", "dek": dek, "dek_emphasis": None,
+        "date_basis": "first_detected", "headline": headline, "headline_type": "report_title", "dek": dek, "dek_emphasis": None,
         "kpis": kpis[:5], "tabs": sorted(tabs, key=lambda t: TAB_ORDER.index(t["id"])),
         "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs, "rendered_in_tabs": True},
         "watch": watch[:2], "notes": notes, "sources": sources, "machine_note": machine,

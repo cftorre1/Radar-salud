@@ -32,11 +32,11 @@ SPEC.loader.exec_module(agg)
 HOST = "https://datos.superdesalud.gob.cl/archivos/{ds}/{y}/{f}"
 
 
-def prest(q, isapre, prov, codigo, region, freq, fact, bonif, atencion="Atención Ambulatoria"):
+def prest(q, isapre, prov, codigo, region, freq, fact, bonif, atencion="Atención Ambulatoria", tipo="Privado"):
     f = [""] * 30
     f[0], f[1], f[2], f[3], f[7], f[8], f[14], f[15] = isapre, q, "1", "SECRETBEN", prov, region, codigo, "FONASA"
     f[10] = f[11] = f[12] = f[13] = "SECRETFOLIO"
-    f[18], f[19], f[20], f[21], f[22], f[23] = "Privado", atencion, str(freq), str(fact), str(bonif), str(fact - bonif)
+    f[18], f[19], f[20], f[21], f[22], f[23] = tipo, atencion, str(freq), str(fact), str(bonif), str(fact - bonif)
     return f
 
 
@@ -52,8 +52,32 @@ CODES = ("0101001", "0301045", "0305001", "0401001")
 COVER = {"67": 0.8, "78": 0.6, "99": 0.7}
 
 
+# Stratified-basket fixture (F12 report, Dirección 6-nov-2026): 10 ambulatory MLE codes priced in RM + 13 regions and
+# 10 hospital MLE codes priced in RM + 8 regions; 4 providers per cell at base × (1; 1,2; 1,4; 1,6) × the region factor
+# (providers 0-1 public, 2-3 private); the previous quarter is 1% cheaper for the same providers.
+AMB_CODES = ["0302001", "0302002", "0302004", "0302005", "0302008", "0302009", "0302010", "0302011", "0302012", "0302013"]
+HOSP_CODES = ["0201001", "0201002", "0201101", "0201102", "0201201", "0201202", "0201203", "0201301", "0201302", "0201303"]
+AMB_REG = ["13", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "14"]
+HOSP_REG = ["13", "1", "2", "3", "4", "5", "6", "7", "8"]
+RF = {r: 1 + 0.01 * (int(r) - 9) for r in AMB_REG}  # region factor: RM (13) is 4% over the base
+
+
+def strata_rows(q):
+    rows, qf = [], (1.0 if q in ("2026t2",) else 1 / 1.01)
+    for codes, regs, att, base in ((AMB_CODES, AMB_REG, "Atención Ambulatoria", 100000),
+                                   (HOSP_CODES, HOSP_REG, "Atención Hospitalaria", 1000000)):
+        for ci, code in enumerate(codes):
+            for r in regs:
+                for i in range(4):
+                    unit = round(base * (ci + 1) * (1 + 0.2 * i) * RF[r] * qf)
+                    for isapre in COVER:
+                        rows.append(prest(q, isapre, f"S{r}_{i}", code, r, 10, unit * 10, int(unit * 10 * COVER[isapre]), att,
+                                          "Público" if i < 2 else "Privado"))
+    return rows
+
+
 def prest_rows(q):
-    rows = []
+    rows = strata_rows(q)
     for ci, code in enumerate(CODES):
         for pi, prov in enumerate(("P1", "P2", "P3", "P4")):
             unit = 10000 * (ci + 1) + 2000 * pi
@@ -90,6 +114,8 @@ def make_root(tmp_path: Path, *, quarters=("2026t1", "2026t2")) -> Path:
     root = tmp_path / "root"
     (root / "data/entities").mkdir(parents=True)
     shutil.copy(REPO / "data/entities/isapres.json", root / "data/entities/isapres.json")
+    (root / "data/reference").mkdir(parents=True)
+    shutil.copy(REPO / "data/reference/fonasa_mle_2026.json", root / "data/reference/fonasa_mle_2026.json")
     src = tmp_path / "zips"
     src.mkdir()
     local = {}
@@ -117,7 +143,7 @@ def reg_open(**over):
     for fam in ("F12", "F13"):
         reg["families"][fam]["first_pass_requires_review"] = False
     reg["families"]["F12"]["cross_min_cells"] = over.get("cross_min_cells", 1)
-    reg["families"]["F12"]["top_codes"] = 15
+    reg["families"]["F12"]["top_codes"] = 30  # the fixture's 20 stratum codes outrank the 4 disclosure-rule codes
     return reg
 
 
@@ -153,21 +179,36 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     fact = sum(int(r[21]) for r in rows)
     bonif = sum(int(r[22]) for r in rows)
     k = {x["id"]: x for x in fi["kpis"]}
-    assert k["bonificado_sistema"]["value"] == f12.fmt(bonif / fact * 100, 1) + "%"
+    cob = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-bonif-isapre")
+    assert cob["table"]["rows"][-1][2] == f12.fmt(bonif / fact * 100, 1) + "%"  # system row: Σ bonificado / Σ facturado
     # same provider and code: 67 covers 0.8, 78 0.6, 99 0.7 → index vs. the mean 0.7: +14,3% and −14,3%
-    assert k["brecha_mismo_prestador"]["value"] == f12.fmt(0.8 / 0.7 * 100 - 0.6 / 0.7 * 100, 1) + " pp"
-    # Dirección 5-nov 21:25: the headline leads with prices — the most frequent code, named by its Arancel description,
-    # national p25–p75 over all providers (unit prices 10, 10, 10, 11, 12, 14, 15, 15, 16 thousand → 10.000 and 15.000)
-    units = sorted([10000, 12000, 14000, 16000, 10000, 15000, 11000, 10000, 15000])
-    assert (agg.quantile(units, .25), agg.quantile(units, .75)) == (10000, 15000)
-    assert fi["headline"] == "Consulta medica electiva cuesta entre $10.000 y $15.000 según el prestador (p25–p75, abril–junio 2026)"
-    assert not any(n in fi["headline"] for n in ("Colmena", "Cruz Blanca", "Banmédica", "bonific"))
-    # open Isapres whose median and weighted mean agree in sign and are ≥ 3 %: the coverage gap card, named as medians
-    assert "medianas" in k["brecha_mismo_prestador"]["lines"][1] and "promedio" not in json.dumps(k["brecha_mismo_prestador"])
-    assert [x["id"] for x in fi["kpis"]][:2] == ["dispersion_precios", "bonificado_sistema"]
+    mp = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-mismo-prestador")
+    assert {r["label"]: round(r["value"], 1) for r in mp["rows"]}["Colmena"] == round((0.8 / 0.7 - 1) * 100, 1)
+    # Report (Dirección 6-nov-2026 21:54): the title names the report and the quarter; sections state findings.
+    assert fi["headline"] == "Mismo código, distinto precio: el mapa de prestaciones Isapre, abr–jun 2026"
+    assert fi["headline_type"] == "report_title"
+    # Within-region dispersion, recomputed: p75/p25 of base × (1; 1,2; 1,4; 1,6) = 1,45 / 1,15 in every cell.
+    assert k["dispersion_amb"]["value"] == k["dispersion_hosp"]["value"] == f12.fmt(1.45 / 1.15, 2) + " veces"
+    disp = next(t for t in fi["tabs"] if t["id"] == "dispersion")
+    assert disp["dek"] == ("Mismo código, misma región: el cuartil caro factura 1,26 veces el barato en ambulatorio y 1,26 en "
+                           "hospitalario")
+    # Regional index vs RM: every code's median scales with the region factor → (RF[r] / RF[RM] − 1), simple average.
+    amb_idx = sum(RF[r] / RF["13"] - 1 for r in AMB_REG[1:]) / 13 * 100
+    hosp_idx = sum(RF[r] / RF["13"] - 1 for r in HOSP_REG[1:]) / 8 * 100
+    vs = next(t for t in fi["tabs"] if t["id"] == "vs-rm")
+    assert vs["dek"].startswith(f"Ambulatorio: regiones {f12.fmt(abs(amb_idx), 1)}% más baratas que RM en promedio; "
+                                f"hospitalario: regiones {f12.fmt(abs(hosp_idx), 1)}% más baratas")
+    # Public (providers 0-1) vs private (2-3) in the same code and region: (1 + 1,2) / (1,4 + 1,6) − 1.
+    pp = next(t for t in fi["tabs"] if t["id"] == "publico-privado")
+    assert f"ambulatorio {f12.fmt((2.2 / 3.0 - 1) * 100, 1, True)}% ponderado" in pp["dek"]
+    # Same providers, previous quarter 1% cheaper.
+    ch = next(t for t in fi["tabs"] if t["id"] == "cambio")
+    assert ch["dek"] == ("El prestador mediano cambió +1,0% y +1,0%; el promedio ponderado subió 1,0% (ambulatorio) y "
+                         "1,0% (hospitalario)")
     assert fi["kicker"] == "Prestaciones bonificadas · abril–junio 2026" and fi["date_basis"] == "first_detected"
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t2.zip")
-    assert [t["id"] for t in fi["tabs"]] == ["precios", "regiones", "cobertura", "mismo-prestador", "concentracion"]
+    assert [t["id"] for t in fi["tabs"]] == ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio",
+                                             "cobertura", "mismo-prestador", "regiones"]
     blob = json.dumps(fi, ensure_ascii=False)
     assert "SECRET" not in blob and '"P1"' not in blob and "P9" not in blob
 
@@ -273,12 +314,6 @@ def test_f12_small_isapre_is_included_with_a_note_and_regional_fallback(root):
     fi = f12.run(root, today=TODAY, registry=reg, llm=False)["ficha"]
     assert "mismo-prestador" in [t["id"] for t in fi["tabs"]] and fi["verification"]["verdict"] == "PASS"
     assert any(n["text"].startswith("Base pequeña") for n in fi["notes"])
-    reg["families"]["F12"]["headline_priority"] = ["precio_codigo_region"]
-    fi = f12.run(root, today=TODAY, registry=reg, llm=False)["ficha"]
-    # region 5 (2 providers, median 12.500) vs. Metropolitana (median 13.000): only disclosure-rule cells
-    assert fi["headline"] == ("Consulta medica electiva cuesta 3,8% menos en Valparaíso que en la Metropolitana "
-                              "(mediana entre prestadores, abril–junio 2026)")
-    assert fi["verification"]["verdict"] == "PASS"
 
 
 def test_f12_cross_topic_needs_valid_ids(root):
@@ -422,7 +457,7 @@ def test_disclosure_rule_registered_as_decided():
     assert sf.load_registry()["families"]["F13"]["min_cell"] == f13.MIN_CELL == agg.LIC_MIN_CELL == 10
 
 
-NEW_FILES = ["src/radar_salud/sis_open_data.py", "src/radar_salud/stats_ficha_f12.py", "src/radar_salud/stats_ficha_f13.py",
+NEW_FILES = ["src/radar_salud/f12_report.py", "scripts/fonasa_mle.py", "src/radar_salud/sis_open_data.py", "src/radar_salud/stats_ficha_f12.py", "src/radar_salud/stats_ficha_f13.py",
              "src/radar_salud/datos_index.py", "scripts/aggregate_sis_open_data.py", "scripts/run_stats_fichas.py"]
 
 
@@ -465,3 +500,27 @@ def test_committed_price_rows_obey_the_disclosure_rule():
         d = so.load_json(REPO / so.AGG_ROOT / q / f"prestaciones_{q}_precios_fonasa_region.json")
         if d:
             assert f12.disclosure_failures(d["columns"], d["rows"]) == []
+
+
+def test_report_title_is_narrow_and_carries_the_quarter(root):
+    reg = reg_open()
+    p = f12.build_package(root, reg)
+    fi = f12.compose(p, reg, today=TODAY, decision={"triggers": ["new_period"]})
+    assert sf.verify_ficha(fi, p)["verdict"] == "PASS"
+    assert "report_title_not_allowed" in sf.verify_ficha({**fi, "family": "F13"}, p)["errors"]
+    assert "report_title_without_period" in sf.verify_ficha({**fi, "headline": fi["headline"].replace("abr–jun", "jul–sep")}, p)["errors"]
+    assert "report_title_with_figures" in sf.verify_ficha({**fi, "headline": fi["headline"] + " con 42,9%"}, p)["errors"]
+    # ordinary fichas keep the 2–6 topic rule
+    assert "ui:tabs_out_of_range" in sf.verify_ficha({**fi, "headline_type": "default"}, p)["errors"]
+
+
+def test_f12_report_holds_without_the_mle_reference_or_with_a_short_stratum(root):
+    (root / "data/reference/fonasa_mle_2026.json").unlink()
+    out = f12.run(root, today=TODAY, registry=reg_open(), llm=False)
+    assert out["status"] == "hold" and any("mle_reference_missing" in e for e in out["errors"])
+
+
+def test_f12_funnel_must_use_the_same_mle_list(root):
+    edit(root, "2026t2", "prestaciones_2026t2_embudo_arancel_mle.json", lambda d: d.update(codigos_mle=5))
+    out = f12.run(root, today=TODAY, registry=reg_open(), llm=False)
+    assert out["status"] == "hold" and any("funnel_mle_list_mismatch" in e for e in out["errors"])

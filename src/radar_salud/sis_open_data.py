@@ -28,7 +28,7 @@ from urllib.parse import urlsplit
 from . import stats_fichas as sf
 
 AGG_ROOT = Path("data/sis_open_data_aggregates")
-SCRIPT_VERSION = "sis_open_data_agg_v8"  # mirrors scripts/aggregate_sis_open_data.py SCRIPT_VERSION
+SCRIPT_VERSION = "sis_open_data_agg_v9"  # mirrors scripts/aggregate_sis_open_data.py SCRIPT_VERSION
 FILE_HOST = "datos.superdesalud.gob.cl"
 MAX_FILE_BYTES = 1 << 30
 MAX_MALFORMED_SHARE = 0.001
@@ -43,7 +43,9 @@ REGIONS = {"1": "Tarapacá", "2": "Antofagasta", "3": "Atacama", "4": "Coquimbo"
 
 DATASET_FILES = {
     "Prestaciones Bonificadas": ("prestaciones_{q}_resumen.json", "prestaciones_{q}_precios_fonasa_region.json",
-                                 "prestaciones_{q}_indice_isapre_mismo_prestador.json", "prestaciones_{q}_top_codigos.json"),
+                                 "prestaciones_{q}_indice_isapre_mismo_prestador.json", "prestaciones_{q}_top_codigos.json",
+                                 "prestaciones_{q}_atencion_codigo.json", "prestaciones_{q}_precios_tipo_prestador.json",
+                                 "prestaciones_{q}_embudo_arancel_mle.json"),
     "Licencias Medicas": ("licencias_{q}.json",),
 }
 

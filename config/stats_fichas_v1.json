@@ -1533,8 +1533,8 @@
       "source_short": "SIS",
       "source_name": "Superintendencia de Salud",
       "datos_kpis": [
-        "dispersion_precios",
-        "bonificado_sistema"
+        "dispersion_amb",
+        "top10_nacional"
       ],
       "cadence": "trimestral (datos abiertos SIS)",
       "cadence_phrase": "trimestral",
@@ -1575,6 +1575,11 @@
         "two_providers": "revisión PR #152: mediana sí; facturado, % bonificado y % copago nulos; % del mayor en tramos 50–60 / 60–80 / más de 80",
         "codes": "solo códigos del arancel Fonasa (pertenencia FONASA)"
       },
+      "strata": {
+        "decided": "Dirección, 6-nov-2026 21:54: canasta estratificada; mundos combinados por su peso en lo facturado con código MLE (embudo)",
+        "amb": {"size": 100, "min_other_regions": 13},
+        "hosp": {"size": 100, "min_other_regions": 8}
+      },
       "cross_min_cells": 1000,
       "cross_min_cells_rule": "Dirección, 5-nov-2026 21:25: ningún mínimo por Isapre excluye (Cruz del Norte se incluye); bajo este número de celdas la ficha agrega una nota de base pequeña. Se mantiene el piso de 10 atenciones por par.",
       "cross_min_frecuencia_par": 10,
@@ -1589,16 +1594,33 @@
       "templates": {
         "kicker": "{label} · {quarter_label}",
         "kicker_meta": "datos de {quarter_label} (trimestre) · detectado por Alicanto el {published_label}",
-        "headline_rule": "Titular desde el primer candidato de headline_priority que sostienen los datos verificados; sin causas; nombres de Isapres desde data/entities/isapres.json; nunca nombres de prestadores."
+        "report_title": "Mismo código, distinto precio: el mapa de prestaciones Isapre, {quarter_short}",
+        "headline_rule": "Dirección, 6-nov-2026 21:54: título de informe (headline_type report_title, solo F12, con el trimestre); cada sección lleva un título que enuncia su hallazgo, con cifras exactas trazadas, sin causas y «en promedio» donde aplique. Nombres de Isapres desde data/entities/isapres.json; nunca nombres de prestadores."
       },
       "tabs": [
         {
-          "id": "precios",
-          "label": "Precios"
+          "id": "dispersion",
+          "label": "Dispersión en la región"
         },
         {
-          "id": "regiones",
-          "label": "Precios por región"
+          "id": "concentracion",
+          "label": "Concentración regional"
+        },
+        {
+          "id": "nacional",
+          "label": "Concentración nacional"
+        },
+        {
+          "id": "vs-rm",
+          "label": "Regiones vs. RM"
+        },
+        {
+          "id": "publico-privado",
+          "label": "Público y privado"
+        },
+        {
+          "id": "cambio",
+          "label": "Cambio trimestral"
         },
         {
           "id": "cobertura",
@@ -1609,11 +1631,11 @@
           "label": "Mismo prestador"
         },
         {
-          "id": "concentracion",
-          "label": "Concentración"
+          "id": "regiones",
+          "label": "Precios por región"
         }
       ],
-      "builder_version": "f12_prestaciones_v4",
+      "builder_version": "f12_informe_v5",
       "kpis": {
         "bonificado_sistema": {
           "label": "Bonificado por las Isapres",
