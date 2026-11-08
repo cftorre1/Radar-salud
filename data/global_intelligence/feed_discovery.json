@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-07",
-  "generated_at": "2026-11-07T23:31:39.276151+00:00",
-  "run_id": "42419331725",
-  "network_requests": 18,
+  "as_of": "2026-11-08",
+  "generated_at": "2026-11-08T18:26:39.754087+00:00",
+  "run_id": "42501440703",
+  "network_requests": 17,
   "paid_ai_calls": 0,
   "publication_count": 0,
   "content_use": "metadata_and_link_only",
@@ -13,7 +13,7 @@
     "kff_health_news": {
       "name": "KFF Health News",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-07T23:31:20.584885+00:00",
+      "checked_at": "2026-11-08T18:26:21.322680+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -88,7 +88,7 @@
     "ema": {
       "name": "EMA (European Medicines Agency)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-07T23:31:24.308531+00:00",
+      "checked_at": "2026-11-08T18:26:25.494910+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -99,17 +99,17 @@
       "recurrent_operation_proven": false,
       "cadence_validation_pending": true,
       "counts": {
-        "30": 13,
-        "90": 14
+        "30": 12,
+        "90": 13
       },
-      "recent_items": 13,
-      "unique_items": 14,
-      "material_items": 2,
-      "relevant_items": 2,
+      "recent_items": 12,
+      "unique_items": 13,
+      "material_items": 1,
+      "relevant_items": 1,
       "excluded_items": 12,
       "rejected": 12,
-      "deferred": 2,
-      "discovered": 14,
+      "deferred": 1,
+      "discovered": 13,
       "new": 0,
       "published": 0,
       "pages_checked": 2,
@@ -159,7 +159,7 @@
     "fda": {
       "name": "US FDA (press releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-07T23:31:26.396712+00:00",
+      "checked_at": "2026-11-08T18:26:27.770775+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -227,7 +227,7 @@
     "cdc": {
       "name": "US CDC (newsroom + MMWR)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-07T23:31:29.811301+00:00",
+      "checked_at": "2026-11-08T18:26:31.486047+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -296,14 +296,14 @@
     "nih": {
       "name": "US NIH (news releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-07T23:31:32.246607+00:00",
-      "status": "warning",
-      "technical_status": "ok",
+      "checked_at": null,
+      "status": "error",
+      "technical_status": "error",
       "operation_mode": "licensed_feed_metadata_only",
       "coverage_status": "feed_window_only",
       "coverage_completeness": "feed_window_only_not_archive",
       "coverage_window_days": 90,
-      "outcome": "FEED_METADATA_CAPTURED",
+      "outcome": "FEED_TECHNICAL_HOLD",
       "recurrent_operation_proven": false,
       "cadence_validation_pending": true,
       "counts": {
@@ -316,15 +316,23 @@
       "relevant_items": 0,
       "excluded_items": 0,
       "rejected": 0,
-      "deferred": 10,
-      "discovered": 10,
+      "deferred": 0,
+      "discovered": 0,
       "new": 0,
       "published": 0,
       "pages_checked": 1,
       "parser_routes": [
         "news_releases"
       ],
-      "technical_failures": [],
+      "technical_failures": [
+        {
+          "source": "nih",
+          "section": "news_releases",
+          "url": "https://www.nih.gov/news-releases/feed.xml",
+          "stage": "robots",
+          "error": "ValueError: http_403"
+        }
+      ],
       "rights": {
         "basis": "us_federal_government_work_17_usc_105",
         "license": "US government work, not subject to copyright (17 U.S.C. §105): works of NIH employees may be used for any purpose; third-party images excluded",
@@ -362,7 +370,7 @@
     "ecdc": {
       "name": "ECDC",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-07T23:31:36.003478+00:00",
+      "checked_at": "2026-11-08T18:26:36.488740+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -433,7 +441,7 @@
     "ec_health": {
       "name": "European Commission (Public Health)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-07T23:31:38.997808+00:00",
+      "checked_at": "2026-11-08T18:26:39.486389+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -514,7 +522,7 @@
       "capture": {
         "feed_url": "https://kffhealthnews.org/feed/",
         "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-        "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+        "fetched_at": "2026-11-08T18:26:16.762162+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -530,7 +538,7 @@
       "capture": {
         "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
         "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-        "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+        "fetched_at": "2026-11-08T18:26:21.322680+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -540,13 +548,13 @@
       "section": "news",
       "url": "https://www.ema.europa.eu/en/news.xml",
       "status": "ok",
-      "entries": 8,
-      "oldest_entry": "2026-10-08",
+      "entries": 7,
+      "oldest_entry": "2026-10-09",
       "newest_entry": "2026-11-06",
       "capture": {
         "feed_url": "https://www.ema.europa.eu/en/news.xml",
-        "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-        "fetched_at": "2026-11-07T23:31:23.147955+00:00",
+        "body_sha256": "e69c06c12eeb842ae1c69cd5d7ed995adce8f01c251b39fc97eed77d4929816f",
+        "fetched_at": "2026-11-08T18:26:24.341002+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -561,8 +569,8 @@
       "newest_entry": "2026-10-16",
       "capture": {
         "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-        "body_sha256": "77c21149c9fc9034e333cb82fef751035eac3adc332e77eb5545dda7a435906d",
-        "fetched_at": "2026-11-07T23:31:24.308531+00:00",
+        "body_sha256": "096ebf59a5139ad32c26a87707358cceb0727dd65254135d1301966fe03b21ce",
+        "fetched_at": "2026-11-08T18:26:25.494910+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -578,7 +586,7 @@
       "capture": {
         "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
         "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-        "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+        "fetched_at": "2026-11-08T18:26:27.770775+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -594,7 +602,7 @@
       "capture": {
         "feed_url": "https://tools.cdc.gov/api/v2/resources/media/132608.rss",
         "body_sha256": "25637191064c0f340bd004ea76fe3cee62d20244beed2a9f921c3a1c8c525b8c",
-        "fetched_at": "2026-11-07T23:31:28.599769+00:00",
+        "fetched_at": "2026-11-08T18:26:30.176460+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -610,7 +618,7 @@
       "capture": {
         "feed_url": "https://tools.cdc.gov/api/v2/resources/media/342778.rss",
         "body_sha256": "0bb4c4659e4de75ad366cef51c570798e9de8c6d024c9a9d1797f9071f5fc0ad",
-        "fetched_at": "2026-11-07T23:31:29.811301+00:00",
+        "fetched_at": "2026-11-08T18:26:31.486047+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -619,17 +627,8 @@
       "source": "nih",
       "section": "news_releases",
       "url": "https://www.nih.gov/news-releases/feed.xml",
-      "status": "ok",
-      "entries": 10,
-      "oldest_entry": null,
-      "newest_entry": null,
-      "capture": {
-        "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-        "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-        "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-        "http_status": 200,
-        "tls_verified": true
-      }
+      "status": "error",
+      "entries": 0
     },
     "ecdc/news": {
       "source": "ecdc",
@@ -642,7 +641,7 @@
       "capture": {
         "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
         "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-        "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+        "fetched_at": "2026-11-08T18:26:35.318762+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -658,7 +657,7 @@
       "capture": {
         "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
         "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-        "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+        "fetched_at": "2026-11-08T18:26:36.488740+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -674,7 +673,7 @@
       "capture": {
         "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
         "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-        "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+        "fetched_at": "2026-11-08T18:26:39.486389+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -38426,625 +38425,16 @@
       "rejected_entry": true,
       "raw_link_scheme": "https",
       "raw_link_host": "tools.cdc.gov"
+    },
+    {
+      "source": "nih",
+      "section": "news_releases",
+      "url": "https://www.nih.gov/news-releases/feed.xml",
+      "stage": "robots",
+      "error": "ValueError: http_403"
     }
   ],
   "items": [
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "Two ‘forever chemicals’ associated with higher risk of aggressive breast cancer in NIH analysis",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/two-forever-chemicals-associated-higher-risk-aggressive-breast-cancer-nih-analysis",
-      "raw_publication_dates": [
-        "Thu, 11/05/2026 - 16:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/two-forever-chemicals-associated-higher-risk-aggressive-breast-cancer-nih-analysis",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "Evidence continues to grow on how environmental factors affect women’s health.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "international_study_or_trend",
-        "signals": [
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "741f35a84079a1a3eb68"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "A precision T-cell therapy stalls treatment-resistant cancers in clinical trial",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/precision-t-cell-therapy-stalls-treatment-resistant-cancers-clinical-trial",
-      "raw_publication_dates": [
-        "Fri, 10/23/2026 - 10:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/precision-t-cell-therapy-stalls-treatment-resistant-cancers-clinical-trial",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "Experimental drug invika halts progression of refractory tumors by selectively stimulating tumor-fighting T cells.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "pharma"
-        ],
-        "priority": 68,
-        "category": "pharma",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "new_technology",
-        "signals": [
-          "new_technology"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "ba047be921ce8a7def45"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "Patients engage with epilepsy monitor in real time, improving seizure detection",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/patients-engage-epilepsy-monitor-real-time-improving-seizure-detection",
-      "raw_publication_dates": [
-        "Tue, 10/13/2026 - 10:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/patients-engage-epilepsy-monitor-real-time-improving-seizure-detection",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "NIH-funded clinical study shows that conversational SI can facilitate two-way communication.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "68d12756c857f62596e7"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "NIH joins effort to build SI-ready data for predictive models of human biology",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/nih-joins-effort-build-si-ready-data-predictive-models-human-biology",
-      "raw_publication_dates": [
-        "Wed, 10/07/2026 - 09:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/nih-joins-effort-build-si-ready-data-predictive-models-human-biology",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "NIH-led Bio Genesis Mission will leverage existing biomedical data resources to accelerate SI-enabled discovery and improve human health.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "b99bfb85acf6a2c4a25a"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "NIH announces record number of grants to support early career investigators, launches new recruitment initiative for intramural research",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/nih-announces-record-number-grants-support-early-career-investigators-launches-new-recruitment-initiative-intramural-research",
-      "raw_publication_dates": [
-        "Thu, 10/08/2026 - 12:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/nih-announces-record-number-grants-support-early-career-investigators-launches-new-recruitment-initiative-intramural-research",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "NIH highlights actions to strengthen American biomedical science at White House Science: A New Golden Age Summit.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "institutional_routine",
-        "reason": "irrelevant_for_chilean_health_executives:institutional_routine",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "workforce_trend",
-        "signals": [
-          "workforce_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "5359405f7823093b5481"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "Integrated health service delivery through medical mobile units helped to reduce deaths among individuals at risk for HIV who also inject drugs",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/integrated-health-service-delivery-through-medical-mobile-units-helped-reduce-deaths-among-individuals-risk-hiv-who-also-inject-drugs",
-      "raw_publication_dates": [
-        "Wed, 11/04/2026 - 11:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/integrated-health-service-delivery-through-medical-mobile-units-helped-reduce-deaths-among-individuals-risk-hiv-who-also-inject-drugs",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "NIH-funded clinical trial shows mobile units may help overcome significant barriers to accessing HIV and addiction treatment, but replication is needed.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "pharma"
-        ],
-        "priority": 68,
-        "category": "pharma",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "international_study_or_trend",
-        "signals": [
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "3125701428a3ff7476d6"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "Human lung organoids with a built-in immune system could transform respiratory disease research",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/human-lung-organoids-built-immune-system-could-transform-respiratory-disease-research",
-      "raw_publication_dates": [
-        "Wed, 10/07/2026 - 11:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/human-lung-organoids-built-immune-system-could-transform-respiratory-disease-research",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "In NIH-funded study, the models orchestrated adaptive immune responses to viral infection.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "3d1dab45039698afa4c3"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "An extra year of secondary school lowered dementia diagnoses later in life",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/extra-year-secondary-school-lowered-dementia-diagnoses-later-life",
-      "raw_publication_dates": [
-        "Fri, 10/23/2026 - 13:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/extra-year-secondary-school-lowered-dementia-diagnoses-later-life",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "NIH-funded study showed the effect was profound, especially among those at elevated genetic risk.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "c2248d53042e1fefa89f"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "Deep learning model using ECGs during sleep studies can predict cardiovascular outcomes",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/deep-learning-model-using-ecgs-during-sleep-studies-can-predict-cardiovascular-outcomes",
-      "raw_publication_dates": [
-        "Fri, 10/09/2026 - 09:30\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/deep-learning-model-using-ecgs-during-sleep-studies-can-predict-cardiovascular-outcomes",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "Integrating ECGs into sleep disorder screening could enhance detection and guide clinical decision-making.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_segment_match",
-        "reason": "irrelevant_for_chilean_health_executives:no_segment_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "international_study_or_trend",
-        "signals": [
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "63b73a8c608a0faa316a"
-    },
-    {
-      "source": "nih",
-      "section": "news_releases",
-      "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-      "title": "A blood-pressure drug may activate health-promoting brown fat",
-      "attribution": "U.S. National Institutes of Health (NIH)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.nih.gov/news-events/news-releases/blood-pressure-drug-may-activate-health-promoting-brown-fat",
-      "raw_publication_dates": [
-        "Wed, 10/14/2026 - 11:00\n"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.nih.gov/news-events/news-releases/blood-pressure-drug-may-activate-health-promoting-brown-fat",
-      "published_at": null,
-      "publication_date_error": "invalid_feed_publication_date",
-      "description": "Large retrospective study suggests the tissue deters more than cardiovascular disease.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.nih.gov/news-releases/feed.xml",
-          "body_sha256": "710f0ed1fc1d447dde1c1251a6330d6aa6f05686e64b5d9ce4a8b8b941857e2c",
-          "fetched_at": "2026-11-07T23:31:32.246607+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "nih"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "invalid_feed_publication_date",
-      "item_id": "9d8710279b96f8175e2a"
-    },
     {
       "source": "kff_health_news",
       "section": "all",
@@ -39086,7 +38476,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39167,14 +38557,14 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39254,7 +38644,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39328,7 +38718,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39399,14 +38789,14 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39467,7 +38857,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39538,7 +38928,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39607,7 +38997,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39685,14 +39075,14 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39771,7 +39161,7 @@
         {
           "feed_url": "https://kffhealthnews.org/feed/",
           "body_sha256": "527ee26bdd11d01956cc6d8173db2bba9d55ad6c2b773f2e8093df8428488fb6",
-          "fetched_at": "2026-11-07T23:31:15.849579+00:00",
+          "fetched_at": "2026-11-08T18:26:16.762162+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39852,7 +39242,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39925,7 +39315,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39998,7 +39388,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40072,7 +39462,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40148,7 +39538,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40218,7 +39608,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40289,7 +39679,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "d392251ea5c2bfe86307be869740b8fb86dfa4727c23142a4fe0aaac1bd25c89",
-          "fetched_at": "2026-11-07T23:31:20.584885+00:00",
+          "fetched_at": "2026-11-08T18:26:21.322680+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40357,7 +39747,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40419,7 +39809,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40487,7 +39877,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40549,7 +39939,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40611,7 +40001,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40680,7 +40070,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40742,7 +40132,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40809,7 +40199,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40871,7 +40261,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40933,7 +40323,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41000,7 +40390,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41062,7 +40452,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41124,7 +40514,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41186,7 +40576,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41248,7 +40638,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41310,7 +40700,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41377,7 +40767,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41439,7 +40829,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41503,7 +40893,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41571,7 +40961,7 @@
         {
           "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
           "body_sha256": "f8e383971b6edec4d60a87747c7ad9cf82df51a8ca2373a8767214c68e527a5c",
-          "fetched_at": "2026-11-07T23:31:26.396712+00:00",
+          "fetched_at": "2026-11-08T18:26:27.770775+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41630,8 +41020,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-          "fetched_at": "2026-11-07T23:31:23.147955+00:00",
+          "body_sha256": "e69c06c12eeb842ae1c69cd5d7ed995adce8f01c251b39fc97eed77d4929816f",
+          "fetched_at": "2026-11-08T18:26:24.341002+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41691,8 +41081,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-          "fetched_at": "2026-11-07T23:31:23.147955+00:00",
+          "body_sha256": "e69c06c12eeb842ae1c69cd5d7ed995adce8f01c251b39fc97eed77d4929816f",
+          "fetched_at": "2026-11-08T18:26:24.341002+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41752,8 +41142,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-          "fetched_at": "2026-11-07T23:31:23.147955+00:00",
+          "body_sha256": "e69c06c12eeb842ae1c69cd5d7ed995adce8f01c251b39fc97eed77d4929816f",
+          "fetched_at": "2026-11-08T18:26:24.341002+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41812,8 +41202,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-          "fetched_at": "2026-11-07T23:31:23.147955+00:00",
+          "body_sha256": "e69c06c12eeb842ae1c69cd5d7ed995adce8f01c251b39fc97eed77d4929816f",
+          "fetched_at": "2026-11-08T18:26:24.341002+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41878,8 +41268,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-          "fetched_at": "2026-11-07T23:31:23.147955+00:00",
+          "body_sha256": "e69c06c12eeb842ae1c69cd5d7ed995adce8f01c251b39fc97eed77d4929816f",
+          "fetched_at": "2026-11-08T18:26:24.341002+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41939,8 +41329,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "77c21149c9fc9034e333cb82fef751035eac3adc332e77eb5545dda7a435906d",
-          "fetched_at": "2026-11-07T23:31:24.308531+00:00",
+          "body_sha256": "096ebf59a5139ad32c26a87707358cceb0727dd65254135d1301966fe03b21ce",
+          "fetched_at": "2026-11-08T18:26:25.494910+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42000,8 +41390,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "77c21149c9fc9034e333cb82fef751035eac3adc332e77eb5545dda7a435906d",
-          "fetched_at": "2026-11-07T23:31:24.308531+00:00",
+          "body_sha256": "096ebf59a5139ad32c26a87707358cceb0727dd65254135d1301966fe03b21ce",
+          "fetched_at": "2026-11-08T18:26:25.494910+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42061,8 +41451,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "77c21149c9fc9034e333cb82fef751035eac3adc332e77eb5545dda7a435906d",
-          "fetched_at": "2026-11-07T23:31:24.308531+00:00",
+          "body_sha256": "096ebf59a5139ad32c26a87707358cceb0727dd65254135d1301966fe03b21ce",
+          "fetched_at": "2026-11-08T18:26:25.494910+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42122,8 +41512,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "77c21149c9fc9034e333cb82fef751035eac3adc332e77eb5545dda7a435906d",
-          "fetched_at": "2026-11-07T23:31:24.308531+00:00",
+          "body_sha256": "096ebf59a5139ad32c26a87707358cceb0727dd65254135d1301966fe03b21ce",
+          "fetched_at": "2026-11-08T18:26:25.494910+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42183,8 +41573,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "77c21149c9fc9034e333cb82fef751035eac3adc332e77eb5545dda7a435906d",
-          "fetched_at": "2026-11-07T23:31:24.308531+00:00",
+          "body_sha256": "096ebf59a5139ad32c26a87707358cceb0727dd65254135d1301966fe03b21ce",
+          "fetched_at": "2026-11-08T18:26:25.494910+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42244,8 +41634,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-          "fetched_at": "2026-11-07T23:31:23.147955+00:00",
+          "body_sha256": "e69c06c12eeb842ae1c69cd5d7ed995adce8f01c251b39fc97eed77d4929816f",
+          "fetched_at": "2026-11-08T18:26:24.341002+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42304,8 +41694,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "77c21149c9fc9034e333cb82fef751035eac3adc332e77eb5545dda7a435906d",
-          "fetched_at": "2026-11-07T23:31:24.308531+00:00",
+          "body_sha256": "096ebf59a5139ad32c26a87707358cceb0727dd65254135d1301966fe03b21ce",
+          "fetched_at": "2026-11-08T18:26:25.494910+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42365,8 +41755,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-          "fetched_at": "2026-11-07T23:31:23.147955+00:00",
+          "body_sha256": "e69c06c12eeb842ae1c69cd5d7ed995adce8f01c251b39fc97eed77d4929816f",
+          "fetched_at": "2026-11-08T18:26:24.341002+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42400,71 +41790,6 @@
       "item_id": "e758e3ef04a5dfecc14a"
     },
     {
-      "source": "ema",
-      "section": "news",
-      "feed_url": "https://www.ema.europa.eu/en/news.xml",
-      "title": "Clinical trial applications advice pilot becomes permanent",
-      "attribution": "European Medicines Agency (EMA)",
-      "bylines": [],
-      "categories": [],
-      "guid": "https://www.ema.europa.eu/en/news/clinical-trial-applications-advice-pilot-becomes-permanent",
-      "raw_publication_dates": [
-        "Thu, 08 Oct 2026 17:09:00 +0200"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.ema.europa.eu/en/news/clinical-trial-applications-advice-pilot-becomes-permanent",
-      "published_at": "2026-10-08",
-      "publication_date_error": null,
-      "description": "The Accelerating Clinical Trials in the EU (ACT EU) advice pilot, which helps sponsors prepare clinical trial applications, will become a permanent initiative from January 2027.…",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "news"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "9eb5bbaafbcbf4a2e1c32741a7161b1960da3a0c718cc557b7eea666ee7d8e2e",
-          "fetched_at": "2026-11-07T23:31:23.147955+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "pharma"
-        ],
-        "priority": 68,
-        "category": "pharma",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "policy_or_system_reform",
-        "signals": [
-          "policy_or_system_reform"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "ema"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "4380c2b4d22a1571b97c"
-    },
-    {
       "source": "ecdc",
       "section": "publications",
       "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
@@ -42494,7 +41819,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42556,7 +41881,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42618,7 +41943,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42680,7 +42005,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42744,7 +42069,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42806,7 +42131,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42873,7 +42198,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42935,7 +42260,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43002,7 +42327,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43064,7 +42389,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43126,7 +42451,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43188,7 +42513,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43250,7 +42575,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43312,7 +42637,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43374,7 +42699,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43437,7 +42762,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43500,7 +42825,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43562,7 +42887,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43624,7 +42949,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "59a547658b6098795cf7e2998ed5f913980ac522da8489a1ca5d477c12114710",
-          "fetched_at": "2026-11-07T23:31:36.003478+00:00",
+          "fetched_at": "2026-11-08T18:26:36.488740+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43687,7 +43012,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "45f5cc43fac7291f1eae7ee944773bf794ca8cf9b2d0bb92f73531f21c3d3387",
-          "fetched_at": "2026-11-07T23:31:34.793841+00:00",
+          "fetched_at": "2026-11-08T18:26:35.318762+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43753,7 +43078,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43822,7 +43147,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43895,7 +43220,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43963,7 +43288,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44029,7 +43354,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44094,7 +43419,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44167,7 +43492,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44240,7 +43565,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44305,7 +43630,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44370,7 +43695,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44435,7 +43760,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44500,7 +43825,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44565,7 +43890,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44630,7 +43955,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44696,7 +44021,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44763,7 +44088,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44828,7 +44153,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44894,7 +44219,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44960,7 +44285,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45027,7 +44352,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45092,7 +44417,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45158,7 +44483,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45233,7 +44558,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45305,7 +44630,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45371,7 +44696,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45439,7 +44764,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45506,7 +44831,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45574,7 +44899,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45645,7 +44970,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45711,7 +45036,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "1e45f9c02ed87fff2e3e88f7b094ae3f0b55270df3bf29d1605b308a6df65259",
-          "fetched_at": "2026-11-07T23:31:38.997808+00:00",
+          "fetched_at": "2026-11-08T18:26:39.486389+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -46363,28 +45688,6 @@
       "published_at": "2026-10-23",
       "segments": [
         "payers"
-      ],
-      "priority": 68,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "4380c2b4d22a1571b97c",
-      "source": "ema",
-      "attribution": "European Medicines Agency (EMA)",
-      "bylines": [],
-      "url": "https://www.ema.europa.eu/en/news/clinical-trial-applications-advice-pilot-becomes-permanent",
-      "title": "Clinical trial applications advice pilot becomes permanent",
-      "published_at": "2026-10-08",
-      "segments": [
-        "pharma"
       ],
       "priority": 68,
       "status": "pending_editorial",
