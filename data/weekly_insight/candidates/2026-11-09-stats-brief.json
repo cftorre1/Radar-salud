@@ -1,0 +1,801 @@
+{
+  "schema_version": "weekly_insight_stats_brief_v1",
+  "rule": "stats_anchor_v1",
+  "anchor_date": "2026-11-09",
+  "brief_id": "stats-brief:2026-11-09:stats-ficha:F4:2026-06:2fb8ad246dea7dab",
+  "authorization": {
+    "by": "Dirección",
+    "date": "2026-11-02",
+    "note": "Cuando una ficha de familia estadística (F1 Cartera, F2 FEFI, F4 GES, F6 Boletín IP) publica un período NUEVO durante la semana y pasa verificación, es la candidata principal del Insight del lunes siguiente. Ficha e Insight son productos distintos: el Insight no repite la ficha; cruza el dato ancla con otro material relevante (otras fichas, licencias, circulares y sanciones SIS, Congreso, FNE, temas Global) y ofrece una tesis y qué mirar. Si no cumple el contrato, se vuelve a la selección normal de tema.",
+    "scope": "Solo cambia la selección del tema y agrega un contrato verificable. Mismo modelo redactor, mismo revisor, mismo tope por corrida (MAX_RUN_USD) y mismo presupuesto mensual pautado; no activa gasto nuevo."
+  },
+  "anchor": {
+    "ficha_id": "stats-ficha:F4:2026-06",
+    "family": "F4",
+    "period": "2026-06",
+    "published_at": "2026-10-14",
+    "first_verified_at": "2026-11-05T19:01:44.664839+00:00",
+    "first_verified_basis": "ficha.first_verified_at",
+    "materiality": "umbral cruzado",
+    "selection_reason": "F4 tiene un período nuevo (2026-06): la SIS lo publicó el 2026-10-14 (26 días antes del lunes, tope 30) y Alicanto lo verificó por primera vez el 2026-11-05 (registro: ficha.first_verified_at), dentro de los 7 días previos al lunes 2026-11-09, con verificación y conciliación PASS; materialidad 2: umbral cruzado.",
+    "headline": "Cáncer Cérvicouterino reúne el 22,1% de los 1.987.954 casos GES entre enero y junio de 2026",
+    "dek": "Fonasa informó 1.910.382 casos y las Isapres 77.572 entre enero y junio de 2026. El T2 2025 de las Isapres es atípico en los datos SIS; Fonasa: −2,9% a/a. Cada caso es una solicitud de acceso a la GES.",
+    "sources": [
+      {
+        "label": "SIS · Casos GES de Fonasa e Isapres a junio 2026 (xlsx)",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-junio-2026.xlsx",
+        "source_name": "Superintendencia de Salud",
+        "source_type": "official_statistics",
+        "event_date": "2026-10-14",
+        "role": "ancla"
+      },
+      {
+        "label": "SIS · Cartera mensual de beneficiarios Isapre (xlsx), ficha F1",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
+        "source_name": "Superintendencia de Salud",
+        "source_type": "official_statistics",
+        "event_date": "2026-10-02",
+        "role": "ancla"
+      }
+    ]
+  },
+  "selection": {
+    "reason": "F4 tiene un período nuevo (2026-06): la SIS lo publicó el 2026-10-14 (26 días antes del lunes, tope 30) y Alicanto lo verificó por primera vez el 2026-11-05 (registro: ficha.first_verified_at), dentro de los 7 días previos al lunes 2026-11-09, con verificación y conciliación PASS; materialidad 2: umbral cruzado.",
+    "considered": [
+      {
+        "family": "F4",
+        "ficha_id": "stats-ficha:F4:2026-06",
+        "period": "2026-06",
+        "published_at": "2026-10-14",
+        "first_verified_at": "2026-11-05T19:01:44.664839+00:00",
+        "first_verified_basis": "ficha.first_verified_at",
+        "sis_age_days": 26,
+        "eligible": true,
+        "reason": "F4 tiene un período nuevo (2026-06): la SIS lo publicó el 2026-10-14 (26 días antes del lunes, tope 30) y Alicanto lo verificó por primera vez el 2026-11-05 (registro: ficha.first_verified_at), dentro de los 7 días previos al lunes 2026-11-09, con verificación y conciliación PASS; materialidad 2: umbral cruzado.",
+        "materiality_level": 2
+      },
+      {
+        "family": "F6",
+        "ficha_id": "stats-ficha:F6:2026-09",
+        "period": "2026-09",
+        "published_at": "2026-10-29",
+        "first_verified_at": "2026-11-03T20:19:30.271733+00:00",
+        "first_verified_basis": "ficha.first_verified_at",
+        "sis_age_days": 11,
+        "eligible": true,
+        "reason": "F6 tiene un período nuevo (2026-09): la SIS lo publicó el 2026-10-29 (11 días antes del lunes, tope 30) y Alicanto lo verificó por primera vez el 2026-11-03 (registro: ficha.first_verified_at), dentro de los 7 días previos al lunes 2026-11-09, con verificación y conciliación PASS; materialidad 1: período nuevo sin umbral cruzado.",
+        "materiality_level": 1
+      },
+      {
+        "family": "F1",
+        "ficha_id": "stats-ficha:F1:2026-08",
+        "period": "2026-08",
+        "published_at": "2026-10-02",
+        "first_verified_at": "2026-10-28T08:10:11.059707+00:00",
+        "first_verified_basis": "git_history:d4ea7260470a:shallow",
+        "sis_age_days": 38,
+        "eligible": false,
+        "reason": "first_verified_outside_week:2026-10-28,sis_publication_older_than_30d:2026-10-02(38d)",
+        "materiality_level": 2
+      },
+      {
+        "family": "F2",
+        "ficha_id": "stats-ficha:F2:2026-03",
+        "period": "2026-03",
+        "published_at": "2026-07-07",
+        "first_verified_at": "2026-11-02T13:34:12.048907+00:00",
+        "first_verified_basis": "git_history:761e22edf0fe:shallow",
+        "sis_age_days": 125,
+        "eligible": false,
+        "reason": "sis_publication_older_than_30d:2026-07-07(125d)",
+        "materiality_level": 1
+      }
+    ],
+    "tried": []
+  },
+  "cross_references": [
+    {
+      "kind": "ficha",
+      "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-acreditacion-enero-septiembre-2026-1.pdf",
+      "label": "Ficha F6 · Prestadores: Boletín IP (2026-09)",
+      "source_name": "Superintendencia de Salud",
+      "event_date": "2026-10-29",
+      "why_relevant": [
+        "familia relacionada con F4 (config related_families)"
+      ],
+      "brief": {
+        "headline": "Prestadores acreditados llegan a 1.009 a septiembre, 38 más que en junio; 124 con observaciones",
+        "dek": "Los reclamos promediaron 1.880 al mes entre enero y septiembre, 22,9% más que el promedio mensual de todo 2025. La SIS registra 179 mediadores inscritos."
+      }
+    },
+    {
+      "kind": "prensa",
+      "url": "https://www.latercera.com/nacional/noticia/mas-de-62-millones-de-casos-ges-desde-2005-salud-llama-a-informarse-y-hacer-uso-de-las-garantias-explicitas-de-salud/",
+      "label": "Más de 62 millones de casos GES desde 2005: Salud llama a informarse y hacer uso de las Garantías Explícitas de Salud",
+      "source_name": "Pulso / La Tercera",
+      "event_date": "2026-10-14",
+      "why_relevant": [
+        "términos: garantias explicitas, ges, problemas de salud"
+      ],
+      "brief": {
+        "title": "Más de 62 millones de casos GES desde 2005: Salud llama a informarse y hacer uso de las Garantías Explícitas de Salud",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "url": "https://www.latercera.com/nacional/noticia/mas-de-62-millones-de-casos-ges-desde-2005-salud-llama-a-informarse-y-hacer-uso-de-las-garantias-explicitas-de-salud/",
+        "event_date": "2026-10-14",
+        "what": "A junio de 2026, el 27,5% se encontraban activos. De estos, los problemas de salud con más casos son la hipertensión arterial, la diabetes mellitus tipo 2 y la salud oral.",
+        "why": ""
+      }
+    },
+    {
+      "kind": "sancion",
+      "url": "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-ingreso-de-antecedentes-a-la-plataforma-lrs",
+      "label": "Informe análisis resultados de Fiscalización \"Ingreso de antecedentes a la plataforma LRS\"",
+      "source_name": "Superintendencia de Salud",
+      "event_date": "2026-10-28",
+      "why_relevant": [
+        "términos: problema de salud, problemas de salud"
+      ],
+      "brief": {
+        "title": "Informe análisis resultados de Fiscalización \"Ingreso de antecedentes a la plataforma LRS\"",
+        "source_name": "Superintendencia de Salud",
+        "source_type": "official",
+        "url": "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-ingreso-de-antecedentes-a-la-plataforma-lrs",
+        "event_date": "2026-10-28",
+        "what": "La fiscalización sobre el ingreso de antecedentes en la plataforma de la Ley Ricarte Soto (LRS) se efectuó sobre una muestra de 30 solicitudes en estado de seguimiento, correspondientes a 10 Problemas de Salud de alto costo y a 16 prestadores públicos y privados de la Red LRS. El propósito fue verificar el grado de completitud de los antecedentes clínicos y administrativos registrados en la plataforma para la postulación de las personas beneficiarias, considerando lo dispuesto en los protocolos específicos de cada problema de salud y en la normativa vigente en materia de protección financiera.",
+        "why": "Muestra qué materias, procesos o actores está revisando la Superintendencia y qué hallazgos está observando, una señal útil para anticipar focos de cumplimiento."
+      }
+    },
+    {
+      "kind": "noticia",
+      "url": "https://www.superdesalud.gob.cl/noticias/2026/10/mas-de-62-millones-de-casos-ges-desde-2005-salud-presenta-cifras-actualizadas-y-llama-a-ejercer-las-garantias/",
+      "label": "Más de 62 millones de casos GES desde 2005: Salud presenta cifras actualizadas y llama a ejercer las garantías",
+      "source_name": "Superintendencia de Salud",
+      "event_date": "2026-10-14",
+      "why_relevant": [
+        "términos: ges, problemas de salud"
+      ],
+      "brief": {
+        "title": "Más de 62 millones de casos GES desde 2005: Salud presenta cifras actualizadas y llama a ejercer las garantías",
+        "source_name": "Superintendencia de Salud",
+        "source_type": "official",
+        "url": "https://www.superdesalud.gob.cl/noticias/2026/10/mas-de-62-millones-de-casos-ges-desde-2005-salud-presenta-cifras-actualizadas-y-llama-a-ejercer-las-garantias/",
+        "event_date": "2026-10-14",
+        "what": "La Superintendencia de Salud y el Ministerio de Salud actualizaron las cifras del GES entre julio de 2005 y junio de 2026: se registraron 62.554.296 casos, de los cuales 59.325.399 corresponden a FONASA y 3.228.897 a ISAPREs. A junio de 2026 había 17.177.933 casos activos, concentrados principalmente en hipertensión arterial, diabetes tipo 2 y salud oral. Los datos son provisionales y la autoridad llamó a las personas a ejercer las garantías de acceso, oportunidad, calidad y protección financiera.",
+        "why": "FONASA, las ISAPREs y los prestadores enfrentan una demanda GES acumulada y activa de gran escala, mientras la autoridad advierte que parte de la población no utiliza estas garantías, lo que puede traducirse en mayor gasto de bolsillo, especialmente en medicamentos. Las cifras permiten dimensionar el uso del GES y los problemas de salud que concentran la atención, por lo que merecen seguimiento ahora, aunque el anuncio no modifica la regulación ni el financiamiento."
+      }
+    },
+    {
+      "kind": "sancion",
+      "url": "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-monitoreo-garantia-de-oportunidad-sector-publico-con-enfoque-de-genero-reporte-al-30-de-junio-de-2026",
+      "label": "Informe análisis resultados de Fiscalización \"Monitoreo Garantía de Oportunidad Sector Público Con Enfoque de Género. Reporte al 30 de junio de 2026\"",
+      "source_name": "Superintendencia de Salud",
+      "event_date": "2026-10-28",
+      "why_relevant": [
+        "términos: garantia de oportunidad, garantias retrasadas"
+      ],
+      "brief": {
+        "title": "Informe análisis resultados de Fiscalización \"Monitoreo Garantía de Oportunidad Sector Público Con Enfoque de Género. Reporte al 30 de junio de 2026\"",
+        "source_name": "Superintendencia de Salud",
+        "source_type": "official",
+        "url": "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-monitoreo-garantia-de-oportunidad-sector-publico-con-enfoque-de-genero-reporte-al-30-de-junio-de-2026",
+        "event_date": "2026-10-28",
+        "what": "El Subdepartamento de Fiscalización de Beneficios de la Intendencia de Fondos y Seguros Previsionales de Salud realiza un monitoreo mensual de la Garantía de Oportunidad (GO) en el Sector Público, considerando las garantías vigentes, las garantías retrasadas (sin prestación otorgada), así como aquellas garantías de oportunidad que se encuentran exceptuadas, incluyendo además el seguimiento de los cierres de caso registrados en el sistema.",
+        "why": "Muestra qué materias, procesos o actores está revisando la Superintendencia y qué hallazgos está observando, una señal útil para anticipar focos de cumplimiento."
+      }
+    },
+    {
+      "kind": "prensa",
+      "url": "https://www.latercera.com/nacional/noticia/estudio-revela-que-el-costo-real-por-prestacion-oncologica-ges-aumento-37-entre-2018-y-2024/",
+      "label": "Estudio revela que el costo real por prestación oncológica GES aumentó 37% entre 2018 y 2024",
+      "source_name": "Pulso / La Tercera",
+      "event_date": "2026-10-21",
+      "why_relevant": [
+        "términos: garantias explicitas, ges"
+      ],
+      "brief": {
+        "title": "Estudio revela que el costo real por prestación oncológica GES aumentó 37% entre 2018 y 2024",
+        "source_name": "Pulso / La Tercera",
+        "source_type": "press_high_trust",
+        "url": "https://www.latercera.com/nacional/noticia/estudio-revela-que-el-costo-real-por-prestacion-oncologica-ges-aumento-37-entre-2018-y-2024/",
+        "event_date": "2026-10-21",
+        "what": "Pese a que el financiamiento de las Garantías Explícitas de Salud subió 89% en ese mismo tiempo, el informe realizado por CIPS-UDD demuestra que no necesariamente se ha traducido en más atenciones. Entre las explicaciones está que las prestaciones están más caras.",
+        "why": ""
+      }
+    }
+  ],
+  "allowed_anchor_figures": [
+    {
+      "kpi": "casos",
+      "label": "Casos GES ene–jun 2026",
+      "text": "1.987.954",
+      "refs": [
+        "ges.ytd.2026-06.total",
+        "ges.yoy.total_pct"
+      ],
+      "numbers": [
+        1987954.0
+      ]
+    },
+    {
+      "kpi": "casos",
+      "label": "Casos GES ene–jun 2026",
+      "text": "−7,0% vs. ene–jun 2025",
+      "refs": [
+        "ges.ytd.2026-06.total",
+        "ges.yoy.total_pct"
+      ],
+      "numbers": [
+        7.0
+      ]
+    },
+    {
+      "kpi": "casos",
+      "label": "Casos GES ene–jun 2026",
+      "text": "−7,4% solo problemas comparables",
+      "refs": [
+        "ges.ytd.2026-06.total",
+        "ges.yoy.total_pct"
+      ],
+      "numbers": [
+        7.4
+      ]
+    },
+    {
+      "kpi": "fonasa",
+      "label": "Fonasa ene–jun 2026",
+      "text": "1.910.382",
+      "refs": [
+        "ges.ytd.2026-06.fonasa"
+      ],
+      "numbers": [
+        1910382.0
+      ]
+    },
+    {
+      "kpi": "fonasa",
+      "label": "Fonasa ene–jun 2026",
+      "text": "−2,9% vs. ene–jun 2025",
+      "refs": [
+        "ges.ytd.2026-06.fonasa"
+      ],
+      "numbers": [
+        2.9
+      ]
+    },
+    {
+      "kpi": "isapre",
+      "label": "Isapres ene–jun 2026",
+      "text": "77.572",
+      "refs": [
+        "ges.ytd.2026-06.isapre",
+        "ges.ytd.2026-06.isapre_share"
+      ],
+      "numbers": [
+        77572.0
+      ]
+    },
+    {
+      "kpi": "isapre",
+      "label": "Isapres ene–jun 2026",
+      "text": "−54,1% vs. ene–jun 2025",
+      "refs": [
+        "ges.ytd.2026-06.isapre",
+        "ges.ytd.2026-06.isapre_share"
+      ],
+      "numbers": [
+        54.1
+      ]
+    },
+    {
+      "kpi": "isapre",
+      "label": "Isapres ene–jun 2026",
+      "text": "3,9% de los casos de ambos seguros",
+      "refs": [
+        "ges.ytd.2026-06.isapre",
+        "ges.ytd.2026-06.isapre_share"
+      ],
+      "numbers": [
+        3.9
+      ]
+    },
+    {
+      "kpi": "tasa",
+      "label": "Tasa bruta Isapre",
+      "text": "31,0",
+      "refs": [
+        "ges.ytd.2026-06.isapre_rate"
+      ],
+      "numbers": [
+        31.0
+      ]
+    },
+    {
+      "kpi": "tasa",
+      "label": "Tasa bruta Isapre",
+      "text": "casos ene–jun 2026 por 1.000 beneficiarios Isapre",
+      "refs": [
+        "ges.ytd.2026-06.isapre_rate"
+      ],
+      "numbers": [
+        1000.0
+      ]
+    }
+  ],
+  "ficha_text_do_not_repeat": [
+    "Cáncer Cérvicouterino reúne el 22,1% de los 1.987.954 casos GES entre enero y junio de 2026",
+    "Fonasa informó 1.910.382 casos y las Isapres 77.572 entre enero y junio de 2026. El T2 2025 de las Isapres es atípico en los datos SIS; Fonasa: −2,9% a/a. Cada caso es una solicitud de acceso a la GES.",
+    "Entre enero y junio de 2026 Fonasa e Isapres informaron 1.987.954 casos GES, 148.850 menos que entre enero y junio de 2025 (−7,0%). El período enero–junio de 2025 incluye el segundo trimestre de 2025 de las Isapres, atípico en los datos SIS: 126.128 casos, 3,1 veces la mediana de los demás trimestres (41.246). La SIS no informa el motivo.",
+    "Las Isapres informaron el 3,9% de los casos entre enero y junio de 2026; es una parte de los casos, no de la población.",
+    "Se ordenan los problemas que crecen, con al menos 500 casos entre enero y junio de 2025; cruzan el umbral los que crecen 15% o más."
+  ],
+  "contract": {
+    "min_cross_sources": 2,
+    "max_anchor_figures": 2,
+    "sentence_jaccard_max": 0.5,
+    "restatement_coverage": 0.7,
+    "text": "CONTRATO FICHA ≠ INSIGHT (Dirección 2-nov-2026; se verifica de forma determinista):\n- La ficha ya publicó la noticia y el análisis de sus propios datos (FICHA_NO_REPETIR). El Insight NO la repite:\n  cruza el dato ancla con al menos 2 fuentes de CRUCES distintas, las asocia y propone una tesis.\n- Cita esas fuentes en sources (url de CRUCES, label y role que diga qué aporta).\n- Usa como máximo 2 cifras de la ficha, elegidas de CIFRAS_ANCLA_PERMITIDAS.\n- figure_sources: [{\"figure\":\"cifra tal como aparece\",\"source_url\":\"url de la fuente que la contiene\"}] para CADA\n  cifra mostrada (titular, bajada, ensayo, qué mirar, gráficos, notas). Una cifra sin fuente falla.\n- essay.reading.heading = \"Tesis\": qué está pasando y por qué importa, asociando ancla y cruces.\n- watch (≥2 ítems) con watch_heading \"Qué mirar\": señales concretas a seguir.\n- Ningún párrafo puede solo reescribir cifras de la ficha; ninguna frase puede parecerse a una frase, titular o bajada de\n  la ficha (similitud de raíces ≥ 0.5).",
+    "check": "python scripts/check_weekly_insight_contract.py --brief <este archivo> --write"
+  },
+  "insight_must_declare": {
+    "weekly_insight.stats_anchor": {
+      "ficha_id": "stats-ficha:F4:2026-06",
+      "brief_id": "stats-brief:2026-11-09:stats-ficha:F4:2026-06:2fb8ad246dea7dab"
+    }
+  },
+  "contract_inputs": {
+    "anchor_urls": [
+      "https://www.superdesalud.gob.cl/app/uploads/2026/10/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-junio-2026.xlsx",
+      "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx"
+    ],
+    "cross_refs": [
+      {
+        "kind": "ficha",
+        "url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-acreditacion-enero-septiembre-2026-1.pdf",
+        "label": "Ficha F6 · Prestadores: Boletín IP (2026-09)",
+        "source_name": "Superintendencia de Salud",
+        "event_date": "2026-10-29",
+        "why_relevant": [
+          "familia relacionada con F4 (config related_families)"
+        ],
+        "brief": {
+          "headline": "Prestadores acreditados llegan a 1.009 a septiembre, 38 más que en junio; 124 con observaciones",
+          "dek": "Los reclamos promediaron 1.880 al mes entre enero y septiembre, 22,9% más que el promedio mensual de todo 2025. La SIS registra 179 mediadores inscritos."
+        }
+      },
+      {
+        "kind": "prensa",
+        "url": "https://www.latercera.com/nacional/noticia/mas-de-62-millones-de-casos-ges-desde-2005-salud-llama-a-informarse-y-hacer-uso-de-las-garantias-explicitas-de-salud/",
+        "label": "Más de 62 millones de casos GES desde 2005: Salud llama a informarse y hacer uso de las Garantías Explícitas de Salud",
+        "source_name": "Pulso / La Tercera",
+        "event_date": "2026-10-14",
+        "why_relevant": [
+          "términos: garantias explicitas, ges, problemas de salud"
+        ],
+        "brief": {
+          "title": "Más de 62 millones de casos GES desde 2005: Salud llama a informarse y hacer uso de las Garantías Explícitas de Salud",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "url": "https://www.latercera.com/nacional/noticia/mas-de-62-millones-de-casos-ges-desde-2005-salud-llama-a-informarse-y-hacer-uso-de-las-garantias-explicitas-de-salud/",
+          "event_date": "2026-10-14",
+          "what": "A junio de 2026, el 27,5% se encontraban activos. De estos, los problemas de salud con más casos son la hipertensión arterial, la diabetes mellitus tipo 2 y la salud oral.",
+          "why": ""
+        }
+      },
+      {
+        "kind": "sancion",
+        "url": "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-ingreso-de-antecedentes-a-la-plataforma-lrs",
+        "label": "Informe análisis resultados de Fiscalización \"Ingreso de antecedentes a la plataforma LRS\"",
+        "source_name": "Superintendencia de Salud",
+        "event_date": "2026-10-28",
+        "why_relevant": [
+          "términos: problema de salud, problemas de salud"
+        ],
+        "brief": {
+          "title": "Informe análisis resultados de Fiscalización \"Ingreso de antecedentes a la plataforma LRS\"",
+          "source_name": "Superintendencia de Salud",
+          "source_type": "official",
+          "url": "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-ingreso-de-antecedentes-a-la-plataforma-lrs",
+          "event_date": "2026-10-28",
+          "what": "La fiscalización sobre el ingreso de antecedentes en la plataforma de la Ley Ricarte Soto (LRS) se efectuó sobre una muestra de 30 solicitudes en estado de seguimiento, correspondientes a 10 Problemas de Salud de alto costo y a 16 prestadores públicos y privados de la Red LRS. El propósito fue verificar el grado de completitud de los antecedentes clínicos y administrativos registrados en la plataforma para la postulación de las personas beneficiarias, considerando lo dispuesto en los protocolos específicos de cada problema de salud y en la normativa vigente en materia de protección financiera.",
+          "why": "Muestra qué materias, procesos o actores está revisando la Superintendencia y qué hallazgos está observando, una señal útil para anticipar focos de cumplimiento."
+        }
+      },
+      {
+        "kind": "noticia",
+        "url": "https://www.superdesalud.gob.cl/noticias/2026/10/mas-de-62-millones-de-casos-ges-desde-2005-salud-presenta-cifras-actualizadas-y-llama-a-ejercer-las-garantias/",
+        "label": "Más de 62 millones de casos GES desde 2005: Salud presenta cifras actualizadas y llama a ejercer las garantías",
+        "source_name": "Superintendencia de Salud",
+        "event_date": "2026-10-14",
+        "why_relevant": [
+          "términos: ges, problemas de salud"
+        ],
+        "brief": {
+          "title": "Más de 62 millones de casos GES desde 2005: Salud presenta cifras actualizadas y llama a ejercer las garantías",
+          "source_name": "Superintendencia de Salud",
+          "source_type": "official",
+          "url": "https://www.superdesalud.gob.cl/noticias/2026/10/mas-de-62-millones-de-casos-ges-desde-2005-salud-presenta-cifras-actualizadas-y-llama-a-ejercer-las-garantias/",
+          "event_date": "2026-10-14",
+          "what": "La Superintendencia de Salud y el Ministerio de Salud actualizaron las cifras del GES entre julio de 2005 y junio de 2026: se registraron 62.554.296 casos, de los cuales 59.325.399 corresponden a FONASA y 3.228.897 a ISAPREs. A junio de 2026 había 17.177.933 casos activos, concentrados principalmente en hipertensión arterial, diabetes tipo 2 y salud oral. Los datos son provisionales y la autoridad llamó a las personas a ejercer las garantías de acceso, oportunidad, calidad y protección financiera.",
+          "why": "FONASA, las ISAPREs y los prestadores enfrentan una demanda GES acumulada y activa de gran escala, mientras la autoridad advierte que parte de la población no utiliza estas garantías, lo que puede traducirse en mayor gasto de bolsillo, especialmente en medicamentos. Las cifras permiten dimensionar el uso del GES y los problemas de salud que concentran la atención, por lo que merecen seguimiento ahora, aunque el anuncio no modifica la regulación ni el financiamiento."
+        }
+      },
+      {
+        "kind": "sancion",
+        "url": "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-monitoreo-garantia-de-oportunidad-sector-publico-con-enfoque-de-genero-reporte-al-30-de-junio-de-2026",
+        "label": "Informe análisis resultados de Fiscalización \"Monitoreo Garantía de Oportunidad Sector Público Con Enfoque de Género. Reporte al 30 de junio de 2026\"",
+        "source_name": "Superintendencia de Salud",
+        "event_date": "2026-10-28",
+        "why_relevant": [
+          "términos: garantia de oportunidad, garantias retrasadas"
+        ],
+        "brief": {
+          "title": "Informe análisis resultados de Fiscalización \"Monitoreo Garantía de Oportunidad Sector Público Con Enfoque de Género. Reporte al 30 de junio de 2026\"",
+          "source_name": "Superintendencia de Salud",
+          "source_type": "official",
+          "url": "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-monitoreo-garantia-de-oportunidad-sector-publico-con-enfoque-de-genero-reporte-al-30-de-junio-de-2026",
+          "event_date": "2026-10-28",
+          "what": "El Subdepartamento de Fiscalización de Beneficios de la Intendencia de Fondos y Seguros Previsionales de Salud realiza un monitoreo mensual de la Garantía de Oportunidad (GO) en el Sector Público, considerando las garantías vigentes, las garantías retrasadas (sin prestación otorgada), así como aquellas garantías de oportunidad que se encuentran exceptuadas, incluyendo además el seguimiento de los cierres de caso registrados en el sistema.",
+          "why": "Muestra qué materias, procesos o actores está revisando la Superintendencia y qué hallazgos está observando, una señal útil para anticipar focos de cumplimiento."
+        }
+      },
+      {
+        "kind": "prensa",
+        "url": "https://www.latercera.com/nacional/noticia/estudio-revela-que-el-costo-real-por-prestacion-oncologica-ges-aumento-37-entre-2018-y-2024/",
+        "label": "Estudio revela que el costo real por prestación oncológica GES aumentó 37% entre 2018 y 2024",
+        "source_name": "Pulso / La Tercera",
+        "event_date": "2026-10-21",
+        "why_relevant": [
+          "términos: garantias explicitas, ges"
+        ],
+        "brief": {
+          "title": "Estudio revela que el costo real por prestación oncológica GES aumentó 37% entre 2018 y 2024",
+          "source_name": "Pulso / La Tercera",
+          "source_type": "press_high_trust",
+          "url": "https://www.latercera.com/nacional/noticia/estudio-revela-que-el-costo-real-por-prestacion-oncologica-ges-aumento-37-entre-2018-y-2024/",
+          "event_date": "2026-10-21",
+          "what": "Pese a que el financiamiento de las Garantías Explícitas de Salud subió 89% en ese mismo tiempo, el informe realizado por CIPS-UDD demuestra que no necesariamente se ha traducido en más atenciones. Entre las explicaciones está que las prestaciones están más caras.",
+          "why": ""
+        }
+      }
+    ],
+    "source_pools": {
+      "https://www.superdesalud.gob.cl/app/uploads/2026/10/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-junio-2026.xlsx": [
+        2.9,
+        3.9,
+        7.0,
+        7.4,
+        31.0,
+        54.1,
+        1000.0,
+        77572.0,
+        1910382.0,
+        1987954.0
+      ],
+      "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx": [
+        2.9,
+        3.9,
+        7.0,
+        7.4,
+        31.0,
+        54.1,
+        1000.0,
+        77572.0,
+        1910382.0,
+        1987954.0
+      ],
+      "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-acreditacion-enero-septiembre-2026-1.pdf": [
+        0.0,
+        0.12289395441030723,
+        1.2287581699346406,
+        1.6451612903225807,
+        2.0,
+        10.0,
+        10.4,
+        10.401647785787848,
+        12.289395441030724,
+        12.3,
+        22.875816993464053,
+        22.9,
+        23.0,
+        30.0,
+        37.8,
+        37.80487804878049,
+        38.0,
+        62.19512195121951,
+        62.2,
+        87.7,
+        87.71060455896928,
+        100.0,
+        101.0,
+        124.0,
+        175.0,
+        179.0,
+        217.0,
+        350.0,
+        357.0,
+        367.0,
+        574.0,
+        584.0,
+        885.0,
+        971.0,
+        1009.0,
+        1530.0,
+        1880.0,
+        1996.0,
+        12067.0,
+        12697.0
+      ],
+      "https://www.latercera.com/nacional/noticia/mas-de-62-millones-de-casos-ges-desde-2005-salud-llama-a-informarse-y-hacer-uso-de-las-garantias-explicitas-de-salud/": [
+        2.0,
+        10.0,
+        14.0,
+        27.5,
+        62.0
+      ],
+      "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-ingreso-de-antecedentes-a-la-plataforma-lrs": [
+        10.0,
+        16.0,
+        28.0,
+        30.0
+      ],
+      "https://www.superdesalud.gob.cl/noticias/2026/10/mas-de-62-millones-de-casos-ges-desde-2005-salud-presenta-cifras-actualizadas-y-llama-a-ejercer-las-garantias/": [
+        2.0,
+        10.0,
+        14.0,
+        62.0,
+        3228897.0,
+        17177933.0,
+        59325399.0,
+        62554296.0
+      ],
+      "https://www.superdesalud.gob.cl/fiscalizacion/informe-analisis-resultados-de-fiscalizacion-monitoreo-garantia-de-oportunidad-sector-publico-con-enfoque-de-genero-reporte-al-30-de-junio-de-2026": [
+        10.0,
+        28.0,
+        30.0
+      ],
+      "https://www.latercera.com/nacional/noticia/estudio-revela-que-el-costo-real-por-prestacion-oncologica-ges-aumento-37-entre-2018-y-2024/": [
+        10.0,
+        21.0,
+        37.0,
+        89.0
+      ]
+    },
+    "allowed_figures": [
+      {
+        "kpi": "casos",
+        "label": "Casos GES ene–jun 2026",
+        "text": "1.987.954",
+        "refs": [
+          "ges.ytd.2026-06.total",
+          "ges.yoy.total_pct"
+        ],
+        "numbers": [
+          1987954.0
+        ]
+      },
+      {
+        "kpi": "casos",
+        "label": "Casos GES ene–jun 2026",
+        "text": "−7,0% vs. ene–jun 2025",
+        "refs": [
+          "ges.ytd.2026-06.total",
+          "ges.yoy.total_pct"
+        ],
+        "numbers": [
+          7.0
+        ]
+      },
+      {
+        "kpi": "casos",
+        "label": "Casos GES ene–jun 2026",
+        "text": "−7,4% solo problemas comparables",
+        "refs": [
+          "ges.ytd.2026-06.total",
+          "ges.yoy.total_pct"
+        ],
+        "numbers": [
+          7.4
+        ]
+      },
+      {
+        "kpi": "fonasa",
+        "label": "Fonasa ene–jun 2026",
+        "text": "1.910.382",
+        "refs": [
+          "ges.ytd.2026-06.fonasa"
+        ],
+        "numbers": [
+          1910382.0
+        ]
+      },
+      {
+        "kpi": "fonasa",
+        "label": "Fonasa ene–jun 2026",
+        "text": "−2,9% vs. ene–jun 2025",
+        "refs": [
+          "ges.ytd.2026-06.fonasa"
+        ],
+        "numbers": [
+          2.9
+        ]
+      },
+      {
+        "kpi": "isapre",
+        "label": "Isapres ene–jun 2026",
+        "text": "77.572",
+        "refs": [
+          "ges.ytd.2026-06.isapre",
+          "ges.ytd.2026-06.isapre_share"
+        ],
+        "numbers": [
+          77572.0
+        ]
+      },
+      {
+        "kpi": "isapre",
+        "label": "Isapres ene–jun 2026",
+        "text": "−54,1% vs. ene–jun 2025",
+        "refs": [
+          "ges.ytd.2026-06.isapre",
+          "ges.ytd.2026-06.isapre_share"
+        ],
+        "numbers": [
+          54.1
+        ]
+      },
+      {
+        "kpi": "isapre",
+        "label": "Isapres ene–jun 2026",
+        "text": "3,9% de los casos de ambos seguros",
+        "refs": [
+          "ges.ytd.2026-06.isapre",
+          "ges.ytd.2026-06.isapre_share"
+        ],
+        "numbers": [
+          3.9
+        ]
+      },
+      {
+        "kpi": "tasa",
+        "label": "Tasa bruta Isapre",
+        "text": "31,0",
+        "refs": [
+          "ges.ytd.2026-06.isapre_rate"
+        ],
+        "numbers": [
+          31.0
+        ]
+      },
+      {
+        "kpi": "tasa",
+        "label": "Tasa bruta Isapre",
+        "text": "casos ene–jun 2026 por 1.000 beneficiarios Isapre",
+        "refs": [
+          "ges.ytd.2026-06.isapre_rate"
+        ],
+        "numbers": [
+          1000.0
+        ]
+      }
+    ],
+    "redundancy_corpus": [
+      "Cáncer Cérvicouterino reúne el 22,1% de los 1.987.954 casos GES entre enero y junio de 2026",
+      "Fonasa informó 1.910.382 casos y las Isapres 77.572 entre enero y junio de 2026.",
+      "El T2 2025 de las Isapres es atípico en los datos SIS;",
+      "Cada caso es una solicitud de acceso a la GES.",
+      "Comparación con un trimestre atípico",
+      "tasa no disponible (sin beneficiarios capturados)",
+      "3,9% de los casos de ambos seguros",
+      "Comparación con un trimestre atípico",
+      "casos ene–jun 2026 por 1.000 beneficiarios Isapre",
+      "Entre enero y junio de 2026 Fonasa e Isapres informaron 1.987.954 casos GES, 148.850 menos que entre enero y junio de 2025 (−7,0%).",
+      "El período enero–junio de 2025 incluye el segundo trimestre de 2025 de las Isapres, atípico en los datos SIS: 126.128 casos, 3,1 veces la mediana de los demás trimestres (41.246).",
+      "La SIS no informa el motivo.",
+      "Las Isapres informaron el 3,9% de los casos entre enero y junio de 2026;",
+      "es una parte de los casos, no de la población.",
+      "Se ordenan los problemas que crecen, con al menos 500 casos entre enero y junio de 2025;",
+      "cruzan el umbral los que crecen 15% o más.",
+      "Casos GES a septiembre 2026 (la SIS la publicaría hacia el 14 ene).",
+      "Una variación de 5% o más frente a los mismos meses del año anterior marca la ficha como destacada.",
+      "Cáncer Colorectal en personas de 15 años y más: +17,4% a/a.",
+      "La base incluye un trimestre atípico de los datos SIS: la variación puede estar distorsionada.",
+      "Entre enero y junio de 2026 Fonasa e Isapres informaron 1.987.954 casos GES, 148.850 menos que entre enero y junio de 2025 (−7,0%).",
+      "Con solo los problemas presentes en ambos períodos la variación es −7,4%: la lista de problemas cambió entre ambos años (posible cambio de decreto GES).",
+      "El período enero–junio de 2025 incluye el segundo trimestre de 2025 de las Isapres, atípico en los datos SIS: 126.128 casos, 3,1 veces la mediana de los demás trimestres (41.246).",
+      "La SIS no informa el motivo.",
+      "Solo Fonasa: −2,9% frente a enero–junio de 2025.",
+      "Casos de ene–jun 2026 frente a ene–jun 2025",
+      "Se ordenan los problemas que crecen, con al menos 500 casos entre enero y junio de 2025;",
+      "cruzan el umbral los que crecen 15% o más.",
+      "62 problemas comparables bajaron frente a ene–jun 2025;",
+      "no se grafican en este ranking de crecimiento.",
+      "La lista de problemas cambió entre ene–jun 2025 y ene–jun 2026 (posible cambio de decreto GES).",
+      "Problemas sin base comparable: 3;",
+      "que ya no aparecen: 0.",
+      "La base por problema incluye el segundo trimestre de 2025 de las Isapres, atípico en los datos SIS: las variaciones por problema pueden estar distorsionadas.",
+      "Un problema supera 15% a/a",
+      "Las Isapres informaron el 3,9% de los casos entre enero y junio de 2026;",
+      "es una parte de los casos, no de la población.",
+      "Tasa bruta Isapre entre enero y junio de 2026: 31,0 casos por 1.000 beneficiarios Isapre.",
+      "Fonasa: tasa no disponible, porque Alicanto no tiene capturados sus beneficiarios.",
+      "El T2 2025 de las Isapres es atípico en los datos SIS (ver Totales).",
+      "Parte Isapre de los casos GES por trimestre",
+      "La serie tiene 6 trimestres, calculados por diferencia entre cortes acumulados de la planilla.",
+      "Casos de ene–jun 2026 frente a ene–jun 2025",
+      "Casos GES ingresados por seguro · punto = ene–jun 2026, aro = ene–jun 2025",
+      "SIS, casos GES ingresados entre enero y junio de 2026 (columna de ingresos del año);",
+      "enero–junio de 2025, por diferencia entre cortes acumulados de la misma planilla.",
+      "Un problema supera 15% a/a",
+      "Problemas que crecen: variación de ene–jun 2026 frente a ene–jun 2025 · base ≥ 500 casos en ene–jun 2025",
+      "SIS, casos GES por problema (Fonasa + Isapre).",
+      "Solo problemas presentes en ambos períodos.",
+      "Cáncer Colorectal en personas de 15 años y más",
+      "Epilepsia no refractaria en personas de 15 años y más",
+      "Prevención secundaria insuficiencia renal crónica terminal",
+      "Escoliosis, tratamiento quirúrgico en menores de 25 años",
+      "Artrosis de Cadera Severa que requiere Prótesis",
+      "Enfermedad pulmonar obstructiva crónica de tratamiento ambulatorio",
+      "Enfermedad de alzheimer y otras demencias",
+      "Parte Isapre de los casos GES por trimestre",
+      "% de los casos informados por Fonasa e Isapres en cada trimestre",
+      "Denominador: casos de ambos seguros del mismo trimestre.",
+      "No es participación de beneficiarios.",
+      "Casos Isapre por 1.000 beneficiarios Isapre (promedio de los cierres de mes del período)",
+      "Beneficiarios: cartera mensual Isapre (ficha F1).",
+      "Tasa bruta: sin ajuste por edad ni sexo;",
+      "Fonasa + Isapre, casos de cada trimestre",
+      "Cada trimestre es la diferencia entre dos cortes acumulados;",
+      "el primero, contra diciembre del año anterior.",
+      "mar 2025 − dic 2024",
+      "jun 2025 − mar 2025",
+      "sep 2025 − jun 2025",
+      "dic 2025 − sep 2025",
+      "mar 2026 − dic 2025",
+      "jun 2026 − mar 2026",
+      "Medida (definida por Dirección): casos GES ingresados entre enero y el mes del corte, frente a los mismos meses del año anterior.",
+      "Es un flujo, no un stock: los cortes no se suman.",
+      "La planilla SIS también informa casos acumulados desde julio de 2005;",
+      "esa cifra no se muestra, solo se resta: los mismos meses del año anterior y cada trimestre son la diferencia entre dos cortes acumulados (el primer trimestre, contra diciembre del año anterior).",
+      "Tasa bruta: casos del seguro entre enero y el corte / beneficiarios promedio del mismo seguro en esos meses × 1.000.",
+      "Cuenta casos, no personas: una persona puede tener más de un caso GES.",
+      "El denominador Isapre viene de la cartera mensual (F1);",
+      "Fonasa no tiene denominador capturado y su tasa no está disponible.",
+      "Sin ajuste por edad: no compara riesgo entre seguros.",
+      "Top problemas: variación frente a los mismos meses del año anterior;",
+      "entran los problemas con al menos 500 casos en la base y cruzan el umbral los que crecen 15% o más.",
+      "Los problemas se comparan por su número GES.",
+      "Ningún dato de esta ficha establece por qué cambian los casos (demanda, decreto, registro o acceso).",
+      "Según las notas de la SIS: desde julio de 2012 la fuente es el archivo de solicitudes de acceso a las GES;",
+      "Fonasa no informa casos de VIH anteriores a 2014;",
+      "desde 2021, las diferencias en el problema 57 se deben a que una Isapre eliminó casos del archivo;",
+      "las del problema 11 en diciembre de 2022 también se deben a que una Isapre eliminó casos del archivo.",
+      "Trimestre atípico (regla del registro): un trimestre de un seguro con 2 veces o más, o la mitad o menos, la mediana de sus demás trimestres.",
+      "Se muestran los datos tal como los publica la SIS, que no informa el motivo: Isapres T2 2025: 126.128 casos, mediana de los demás 41.246.",
+      "Por eso el titular no usa la comparación con enero–junio de 2025.",
+      "Planillas anteriores no usadas por no pasar el parser vigente: junio 2025 (HOLD_GES_INVALID_COUNT);",
+      "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
+      "El sistema terminó agosto con 2.486.683 beneficiarios, 27.355 menos que en enero y 50.905 menos que en agosto 2025.",
+      "Los cotizantes subieron por segundo mes consecutivo, y Banmédica concentra el 77% de la baja neta.",
+      "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
+      "La cotización legal aporta el 67,8% de los ingresos.",
+      "Por Isapre, la siniestralidad va de 75,7% (Nueva Masvida) a 100,4% (Isalud).",
+      "Cáncer Cérvicouterino reúne el 22,1% de los 1.987.954 casos GES entre enero y junio de 2026",
+      "Fonasa informó 1.910.382 casos y las Isapres 77.572 entre enero y junio de 2026.",
+      "El T2 2025 de las Isapres es atípico en los datos SIS;",
+      "Cada caso es una solicitud de acceso a la GES.",
+      "Prestadores acreditados llegan a 1.009 a septiembre, 38 más que en junio;",
+      "Los reclamos promediaron 1.880 al mes entre enero y septiembre, 22,9% más que el promedio mensual de todo 2025.",
+      "La SIS registra 179 mediadores inscritos.",
+      "Salud ejecutó el 80,8% de su presupuesto vigente a septiembre 2026",
+      "El presupuesto vigente de la Partida 16 suma 1.195.697 MM$ más que la ley inicial (+6,9%).",
+      "sin comparación con 2025 por falta del mismo corte."
+    ],
+    "contract": {
+      "min_cross_sources": 2,
+      "max_anchor_figures": 2,
+      "sentence_jaccard_max": 0.5,
+      "restatement_coverage": 0.7
+    }
+  }
+}
