@@ -1,0 +1,118 @@
+{
+  "mode": "editorial_session",
+  "numbers": [
+    1.0,
+    15.0,
+    15.3,
+    16.0,
+    19.8,
+    23.0,
+    52.0,
+    54.0,
+    60.0,
+    80.0,
+    102.0,
+    148.0,
+    250.0,
+    500.0,
+    505.0,
+    900.0,
+    993.0,
+    996.0,
+    1000.0,
+    1056.0,
+    1318.0,
+    593010.0,
+    1500000.0,
+    3665028.0,
+    3918415.0
+  ],
+  "allowed_urls": [
+    "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/",
+    "https://www.cnnchile.com/negocios/fne-salfacorp-grupo-angelini-residencias-adultos-mayores-fondo-uf1500000/",
+    "https://www.emol.com/noticias/Nacional/2026/09/14/1211395/residencias-adultos-mayores-zoom-cifras.html",
+    "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
+    "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/09/29/en-el-pa%C3%ADs-residen-3.665.028-personas-de-60-a%C3%B1os-o-m%C3%A1s-equivalentes-al-19-8-de-la-poblaci%C3%B3n-residente",
+    "https://www.latercera.com/nacional/noticia/incendio-en-hogar-de-ancianos-deja-al-descubierto-un-catastro-desactualizado-de-residencias-y-debilidades-del-sistema/",
+    "https://www.latercera.com/nacional/noticia/pacientes-sociosanitarios-las-1056-personas-dadas-de-alta-que-siguen-ocupando-camas-hospitalarias-por-falta-de-redes/",
+    "https://www.minsal.cl/?p=158411",
+    "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf"
+  ],
+  "sources": [
+    {
+      "label": "FNE · Aprobó asociación entre SalfaCorp, el grupo Angelini y otros para residencias para adultos mayores · 2 nov",
+      "url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
+      "role": "Fuente primaria de la noticia: aprobación pura y simple, partes y mercados analizados.",
+      "short_label": "FNE · residencias para adultos mayores (2 nov)",
+      "short_role": "noticia gatillante"
+    },
+    {
+      "label": "CNN Chile · FNE aprueba fondo de residencias para adultos mayores de SalfaCorp y Angelini · 2 nov",
+      "url": "https://www.cnnchile.com/negocios/fne-salfacorp-grupo-angelini-residencias-adultos-mayores-fondo-uf1500000/",
+      "role": "Prensa: tamaño del fondo, habitaciones de los dos primeros proyectos y meta de habitaciones.",
+      "short_label": "CNN Chile · fondo de residencias (2 nov)",
+      "short_role": "fondo y habitaciones"
+    },
+    {
+      "label": "Emol · Residencias de adultos mayores: las cifras · 14 sep",
+      "url": "https://www.emol.com/noticias/Nacional/2026/09/14/1211395/residencias-adultos-mayores-zoom-cifras.html",
+      "role": "Prensa con datos de Senama: Eleam públicos y sus cupos, hogares privados autorizados e incendio de Pitrufquén.",
+      "short_label": "Emol · Eleam en cifras (14 sep)",
+      "short_role": "red pública"
+    },
+    {
+      "label": "La Tercera · Incendio en hogar de ancianos deja al descubierto un catastro desactualizado de residencias · sep",
+      "url": "https://www.latercera.com/nacional/noticia/incendio-en-hogar-de-ancianos-deja-al-descubierto-un-catastro-desactualizado-de-residencias-y-debilidades-del-sistema/",
+      "role": "Prensa: resultados del catastro oficial de 2021 (hogares autorizados y sin resolución sanitaria).",
+      "short_label": "La Tercera · catastro de residencias (sep)",
+      "short_role": "catastro 2021"
+    },
+    {
+      "label": "Minsal · Gobierno anuncia plan para reforzar la seguridad y ampliar la oferta de cuidados para personas mayores · 15 sep",
+      "url": "https://www.minsal.cl/?p=158411",
+      "role": "Fuente primaria: establecimientos sin autorización, fiscalización y registro de oferta autorizada.",
+      "short_label": "Minsal · plan para residencias (15 sep)",
+      "short_role": "fiscalización"
+    },
+    {
+      "label": "INE · En el país residen 3.665.028 personas de 60 años o más · 29 sep",
+      "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/09/29/en-el-pa%C3%ADs-residen-3.665.028-personas-de-60-a%C3%B1os-o-m%C3%A1s-equivalentes-al-19-8-de-la-poblaci%C3%B3n-residente",
+      "role": "Fuente primaria (Censo 2024): personas de 80 años o más y discapacidad.",
+      "short_label": "INE · Censo 2024, personas mayores (29 sep)",
+      "short_role": "demanda"
+    },
+    {
+      "label": "La Tercera · Pacientes sociosanitarios: las 1.056 personas dadas de alta que siguen ocupando camas hospitalarias · jun",
+      "url": "https://www.latercera.com/nacional/noticia/pacientes-sociosanitarios-las-1056-personas-dadas-de-alta-que-siguen-ocupando-camas-hospitalarias-por-falta-de-redes/",
+      "role": "Prensa: cifra del subsecretario de Redes Asistenciales sobre pacientes con alta que siguen hospitalizados.",
+      "short_label": "La Tercera · pacientes sociosanitarios (jun)",
+      "short_role": "camas ocupadas"
+    },
+    {
+      "label": "Superintendencia de Salud · Hospitalización social en adultos mayores en el sistema de salud de Chile (2020)",
+      "url": "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf",
+      "role": "Fuente primaria: peso de la hospitalización social en egresos y días-cama de personas de 60 años o más.",
+      "short_label": "Superintendencia de Salud · hospitalización social (2020)",
+      "short_role": "días-cama"
+    },
+    {
+      "label": "Diario Oficial · Ley Integral de las Personas Mayores (Ley 21.822) · 1 jun",
+      "url": "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/",
+      "role": "Fuente primaria: plazo para dictar la Política Nacional de Envejecimiento.",
+      "short_label": "Diario Oficial · Ley 21.822 (1 jun)",
+      "short_role": "política pública"
+    }
+  ],
+  "key_figures": [
+    "FNE (comunicado del 2 nov; aprobación del 29 oct): aprobó de manera pura y simple la asociación entre SalfaCorp, el grupo Angelini y sociedades ligadas a Villa Soleares y a Vivendi (esta administrará las residencias); analizó la gestión de residencias para adultos mayores y el desarrollo inmobiliario, y concluyó que la operación no reduce sustancialmente la competencia.",
+    "CNN Chile (nov): fondo de inversión con tamaño objetivo de UF 1.500.000; La Reina, 148 habitaciones (apertura prevista abril de 2027); Ñuñoa, ampliación de 52 a 102 habitaciones; 250 habitaciones en los dos primeros proyectos; meta de hasta 1.000 habitaciones en hasta 15 años.",
+    "Emol (14 sep), con datos de Senama: 23 Eleam públicos con cupo para 1.318 personas (informe del primer trimestre de 2026); 900 hogares privados autorizados por resolución sanitaria, algunos con subvenciones.",
+    "Emol (14 sep): el incendio del Eleam de Pitrufquén dejó 16 víctimas fatales; el recinto no contaba con resolución sanitaria del Ministerio de Salud.",
+    "La Tercera (sep): el catastro oficial de 2021 dio con 993 hogares autorizados y otros 505 sin resolución sanitaria.",
+    "Minsal (15 sep): cerca de 500 establecimientos catastrados sin autorización sanitaria; publicará un registro de la oferta de Eleam con resolución sanitaria.",
+    "INE (29 sep, Censo 2024): 3.665.028 personas de 60 años o más (19,8% de la población); 593.010 de 80 años o más; 54,0% de las personas de 80 o más en situación de discapacidad.",
+    "La Tercera (jun): el subsecretario de Redes Asistenciales informó 996 pacientes con alta médica hospitalizados por falta de redes en marzo y 1.056 en junio.",
+    "Superintendencia de Salud (estudio publicado en 2020, datos de 2017): hospitalización social es una estadía de 60 o más días con baja necesidad de atención médica; fue el 1% de los egresos de las personas de 60 años o más y el 15% de sus días-cama (15,3% de 3.918.415 días-cama).",
+    "Ley 21.822 (Diario Oficial, 1 jun 2026): la Política Nacional de Envejecimiento deberá dictarse dentro de seis meses desde la entrada en vigencia de la ley."
+  ]
+}
