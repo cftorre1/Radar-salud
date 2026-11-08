@@ -703899,7 +703899,7 @@
     },
     "global_who": {
       "name": "WHO",
-      "checked_at": "2026-11-08T18:02:43.264345+00:00",
+      "checked_at": "2026-11-08T21:56:55.754854+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -703955,7 +703955,7 @@
       "pending_date_items": 0,
       "technical_failures": [],
       "discovered": 258,
-      "new": 1,
+      "new": 0,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -703979,7 +703979,7 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/42501440703/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/42521991913/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -703990,15 +703990,15 @@
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
         "activated": true,
         "evidence_run_ids": [
-          "42381528433",
-          "42501440703"
+          "42419331725",
+          "42521991913"
         ],
         "reason": "two_consecutive_successful_daily_live_runs",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 95433,
+        "gap_seconds": 81484,
         "earned_at": "2026-11-08T18:02:43.264345+00:00",
         "earned_evidence_run_ids": [
           "42381528433",
@@ -704008,7 +704008,7 @@
     },
     "global_paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-08T18:26:07.826947+00:00",
+      "checked_at": "2026-11-08T22:10:24.373896+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -704106,7 +704106,7 @@
           "pages": 2
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/42501440703/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/42521991913/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -704117,15 +704117,15 @@
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
         "activated": true,
         "evidence_run_ids": [
-          "42381528433",
-          "42501440703"
+          "42419331725",
+          "42521991913"
         ],
         "reason": "two_consecutive_successful_daily_live_runs",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 95384,
+        "gap_seconds": 81554,
         "earned_at": "2026-11-04T01:00:32.943483+00:00",
         "earned_evidence_run_ids": [
           "41539638382",
@@ -704177,7 +704177,7 @@
     "global_kff_health_news": {
       "name": "KFF Health News",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-08T18:26:21.322680+00:00",
+      "checked_at": "2026-11-08T22:10:33.912353+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704252,7 +704252,7 @@
     "global_ema": {
       "name": "EMA (European Medicines Agency)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-08T18:26:25.494910+00:00",
+      "checked_at": "2026-11-08T22:10:38.587871+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704323,7 +704323,7 @@
     "global_fda": {
       "name": "US FDA (press releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-08T18:26:27.770775+00:00",
+      "checked_at": "2026-11-08T22:10:40.939809+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704391,7 +704391,7 @@
     "global_cdc": {
       "name": "US CDC (newsroom + MMWR)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-08T18:26:31.486047+00:00",
+      "checked_at": "2026-11-08T22:10:44.632564+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704460,14 +704460,14 @@
     "global_nih": {
       "name": "US NIH (news releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": null,
-      "status": "error",
-      "technical_status": "error",
+      "checked_at": "2026-11-08T22:10:47.178971+00:00",
+      "status": "warning",
+      "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
       "coverage_status": "feed_window_only",
       "coverage_completeness": "feed_window_only_not_archive",
       "coverage_window_days": 90,
-      "outcome": "FEED_TECHNICAL_HOLD",
+      "outcome": "FEED_METADATA_CAPTURED",
       "recurrent_operation_proven": false,
       "cadence_validation_pending": true,
       "counts": {
@@ -704480,23 +704480,15 @@
       "relevant_items": 0,
       "excluded_items": 0,
       "rejected": 0,
-      "deferred": 0,
-      "discovered": 0,
+      "deferred": 10,
+      "discovered": 10,
       "new": 0,
       "published": 0,
       "pages_checked": 1,
       "parser_routes": [
         "news_releases"
       ],
-      "technical_failures": [
-        {
-          "source": "nih",
-          "section": "news_releases",
-          "url": "https://www.nih.gov/news-releases/feed.xml",
-          "stage": "robots",
-          "error": "ValueError: http_403"
-        }
-      ],
+      "technical_failures": [],
       "rights": {
         "basis": "us_federal_government_work_17_usc_105",
         "license": "US government work, not subject to copyright (17 U.S.C. §105): works of NIH employees may be used for any purpose; third-party images excluded",
@@ -704534,7 +704526,7 @@
     "global_ecdc": {
       "name": "ECDC",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-08T18:26:36.488740+00:00",
+      "checked_at": "2026-11-08T22:10:51.270641+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704605,7 +704597,7 @@
     "global_ec_health": {
       "name": "European Commission (Public Health)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-08T18:26:39.486389+00:00",
+      "checked_at": "2026-11-08T22:10:54.429270+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
