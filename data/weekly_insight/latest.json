@@ -1,115 +1,107 @@
 {
   "status": "pass",
-  "generated_at": "2026-11-01T23:30:00+00:00",
+  "generated_at": "2026-11-08T23:00:00+00:00",
   "source_head": null,
   "top3": [
     {
-      "url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
-      "title": "Minsal · Minsal buscó y vacunó a más de 44 mil niños contra el sarampión · 28 oct"
+      "url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
+      "title": "FNE · Aprobó asociación entre SalfaCorp, el grupo Angelini y otros para residencias para adultos mayores · 2 nov"
     },
     {
-      "url": "https://www.paho.org/es/noticias/1-7-2026-chile-sale-busqueda-mas-143-mil-ninas-ninos-con-vacunacion-incompleta-contra",
-      "title": "OPS · Chile sale a la búsqueda de niños con vacunación incompleta · 1 jul"
+      "url": "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf",
+      "title": "Superintendencia de Salud · Hospitalización social en adultos mayores en el sistema de salud de Chile (2020)"
     },
     {
-      "url": "https://www.paho.org/sites/default/files/2026/10/ops-sarampion-sitrep14-es.pdf",
-      "title": "OPS · Informe de situación de sarampión en las Américas · 22 oct"
+      "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/09/29/en-el-pa%C3%ADs-residen-3.665.028-personas-de-60-a%C3%B1os-o-m%C3%A1s-equivalentes-al-19-8-de-la-poblaci%C3%B3n-residente",
+      "title": "INE · En el país residen 3.665.028 personas de 60 años o más · 29 sep"
     }
   ],
   "weekly_insight": {
-    "id": "weekly-insight:2026-11-02:sarampion-rezago",
-    "title": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
-    "insight_title": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
-    "event_date": "2026-10-28",
-    "freshness_anchor_date": "2026-11-02",
-    "anchor_kind": "monday",
-    "expires_on": "2026-11-09",
-    "editorial_review_pass": true,
-    "source_name": "Minsal · OPS · prensa (Presupuesto 2027)",
-    "source_url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
+    "id": "weekly-insight:2026-11-09:residencias-mayores-camas",
     "schema_version": "weekly_insight_a_v1",
-    "headline": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
-    "dek": "Desde julio, el Minsal vacunó a 44.386 niños con el esquema contra el sarampión incompleto. Aun así, quedan más de 140 mil, frente a más de 143 mil en julio.",
-    "dek_emphasis": "44.386 niños",
+    "title": "Residencias para mayores: entra el capital privado, pero la falta de cuidados ya se paga en camas de hospital",
+    "insight_title": "Residencias para mayores: entra el capital privado, pero la falta de cuidados ya se paga en camas de hospital",
+    "headline": "Residencias para mayores: entra el capital privado, pero la falta de cuidados ya se paga en camas de hospital",
+    "event_date": "2026-11-02",
+    "freshness_anchor_date": "2026-11-09",
+    "anchor_kind": "monday",
+    "expires_on": "2026-11-16",
+    "editorial_review_pass": true,
+    "source_name": "FNE · Superintendencia de Salud · INE · Minsal · prensa",
+    "source_url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
+    "dek": "La FNE aprobó sin condiciones la asociación de SalfaCorp y el grupo Angelini para operar residencias para personas mayores. En junio, 1.056 personas con alta médica seguían ocupando camas de hospital por falta de redes.",
+    "dek_emphasis": "1.056 personas",
     "estimates": [
       {
-        "id": "crecimiento_casos",
-        "label": "veces que crecieron los casos confirmados en las Américas",
-        "value": 2.54,
-        "unit": "veces",
-        "display": "≈ 2,5 veces",
-        "formula": "56753 / 22324",
+        "id": "sin_autorizacion",
+        "label": "hogares catastrados sin resolución sanitaria, % del total",
+        "value": 33.71,
+        "unit": "%",
+        "display": "≈ uno de cada tres",
+        "formula": "505 / (993 + 505) * 100",
         "inputs": [
-          "22.324 casos al 18 de junio",
-          "56.753 casos al 17 de octubre"
+          "993 hogares autorizados",
+          "505 sin resolución sanitaria"
+        ],
+        "note_ref": "n5"
+      },
+      {
+        "id": "altas_vs_cupos",
+        "label": "pacientes con alta hospitalizados frente a cupos públicos de Senama, %",
+        "value": 80.12,
+        "unit": "%",
+        "display": "≈ 80%",
+        "formula": "1056 / 1318 * 100",
+        "inputs": [
+          "1.056 pacientes con alta (junio)",
+          "1.318 cupos Senama"
         ],
         "note_ref": "n4"
-      },
-      {
-        "id": "sin_dosis_pct",
-        "label": "porcentaje de rezagados sin ninguna dosis",
-        "value": 33,
-        "unit": "%",
-        "formula": "27 + 6"
-      },
-      {
-        "id": "sin_dosis",
-        "label": "niños rezagados sin ninguna dosis, octubre",
-        "value": 46.2,
-        "unit": "miles",
-        "display": "≈ 46 mil",
-        "formula": "140 * (27 + 6) / 100",
-        "inputs": [
-          "más de 140 mil",
-          "27% + 6%"
-        ],
-        "note_ref": "n2"
       }
     ],
     "charts": [
       {
-        "id": "rezago",
+        "id": "catastro",
         "form": "columns",
-        "headline": "El rezago casi no se mueve",
-        "subtitle": "Niños con el esquema contra el sarampión incompleto, en miles (cifra mínima informada)",
-        "unit": "miles",
+        "headline": "Uno de cada tres hogares catastrados no tenía autorización sanitaria",
+        "subtitle": "Hogares para personas mayores en el último catastro oficial (2021)",
+        "unit": "hogares",
         "rows": [
           {
-            "label": "1 jul",
-            "value": 143
+            "label": "Con resolución sanitaria",
+            "value": 993
           },
           {
-            "label": "28 oct",
-            "value": 140,
+            "label": "Sin resolución sanitaria",
+            "value": 505,
             "strong": true
           }
         ],
-        "footnote": "Entre ambas fechas se vacunó a 44.386 niños rezagados.",
-        "source": "OPS (1 jul) y Minsal (28 oct).",
+        "source": "Catastro oficial de 2021, informado por La Tercera (sep).",
         "note_refs": [
-          "n1"
+          "n5"
         ]
       },
       {
-        "id": "casos_americas",
+        "id": "hospitalizacion_social",
         "form": "columns",
-        "headline": "Los casos de la región se multiplicaron por 2,5",
-        "subtitle": "Casos confirmados de sarampión en las Américas, acumulados desde enero",
-        "unit": "casos",
+        "headline": "Pocas altas, muchos días: el peso de la hospitalización social",
+        "subtitle": "Hospitalizaciones sociales como % de los egresos y de los días-cama de personas de 60 años o más (datos de 2017)",
+        "unit": "%",
         "rows": [
           {
-            "label": "al 18 jun",
-            "value": 22324
+            "label": "Egresos",
+            "value": 1
           },
           {
-            "label": "al 17 oct",
-            "value": 56753,
+            "label": "Días-cama",
+            "value": 15.3,
             "strong": true
           }
         ],
-        "source": "OPS: nota del 1 jul e informe de situación del 22 oct.",
+        "source": "Superintendencia de Salud, estudio sobre hospitalización social (2020).",
         "note_refs": [
-          "n4"
+          "n3"
         ]
       }
     ],
@@ -117,123 +109,148 @@
       "facts": {
         "heading": "Qué pasó",
         "paragraphs": [
-          "El Minsal informó que, desde julio, vacunó a 44.386 niños de hasta 6 años que tenían una dosis o ninguna. De los que siguen pendientes, 27% necesita ambas dosis y casi 62 mil viven en la Región Metropolitana. Chile no tiene transmisión comunitaria desde 1993 y este año confirmó tres casos importados.",
-          "En la región, la OPS registra 81 muertes en 2026 y Perú suma 2.698 casos. Según el Minsal, la OPS califica de \"muy alto\" el riesgo en los eventos masivos de la visita del Papa León XIV a Argentina, Perú y Uruguay, entre el 6 y el 17 de noviembre. El proyecto de Presupuesto 2027 recorta 5,3% real el Programa Nacional de Inmunizaciones, unos $9 mil millones según la Subsecretaría. La subsecretaria Pizarro aseguró que \"no le va a faltar vacuna a nadie\".[^n3]"
+          "La FNE aprobó de manera pura y simple la asociación entre SalfaCorp, el grupo Angelini y sociedades ligadas a Villa Soleares y a Vivendi, que administrará las residencias para personas mayores. Concluyó que no es apta para reducir sustancialmente la competencia y que suma un actor enfocado en proyectos más grandes. Según prensa, el fondo parte con 250 habitaciones en La Reina y Ñuñoa.[^n1]",
+          "La red pública es acotada: Senama tiene 23 residencias con 1.318 cupos.[^n2] En septiembre, el incendio de un hogar sin resolución sanitaria en Pitrufquén dejó 16 muertos. Según el Censo 2024, hay 593.010 personas de 80 años o más; 54% está en situación de discapacidad."
         ]
       },
       "reading": {
         "heading": "Lectura Alicanto",
         "paragraphs": [
-          "Lo que importa es cuánto bajó el rezago: muy poco. Y los niños sin ninguna dosis no muestran una baja. Eran alrededor de 43 mil en julio; estimamos unos 46 mil en octubre.[^n2] Una explicación compatible con los datos: el rezago se repone con niños que llegan a la edad de cada dosis sin recibirla.[^n5]",
-          "Si es así, el cuello de botella no está en la compra de dosis, sino en encontrar y citar a cada niño: trabajo de atención primaria, municipios y colegios que el debate sobre la línea de vacunas no mide. Para clínicas y aseguradoras, un caso importado tras los viajes de noviembre podría significar aislamientos, rastreo y presión sobre urgencias pediátricas."
+          "El fondo no cerrará la brecha: apunta a residencias grandes y, según prensa, a hasta 1.000 habitaciones en hasta 15 años. Sin oferta formal suficiente, parte del cuidado queda en hogares no autorizados y otra parte, por falta de redes, en camas de hospital. Quienes siguen hospitalizados con alta, de todas las edades, equivalen a ocho de cada diez cupos públicos de Senama.[^n4]",
+          "Ese costo rara vez se discute. Un estudio de la Superintendencia de Salud mostró que, con datos de 2017, las hospitalizaciones sociales de personas mayores eran 1% de sus egresos, pero 15% de sus días-cama.[^n3] Para hospitales, Fonasa e isapres, lo relevante no es la residencia nueva, sino el cupo sociosanitario que libera una cama. La Ley 21.822 obliga a dictar una Política Nacional de Envejecimiento: es la ocasión de definir quién paga ese día de cuidado."
         ]
       }
     },
     "watch_heading": "Qué mirar en las próximas semanas",
     "watch": [
       {
-        "headline": "Viajes por la gira del Papa León XIV.",
-        "explanation": "La OPS califica de muy alto el riesgo de propagación ante eventos religiosos masivos en Sudamérica; un caso importado al regreso pondría a prueba la vigilancia y la red pediátrica."
+        "headline": "El informe público de la FNE sobre la operación, cuando se publique.",
+        "explanation": "Mostrará cómo definió la FNE el mercado de residencias para mayores y quiénes compiten en él, algo que su comunicado no detalla."
       },
       {
-        "headline": "La próxima cifra de rezago del Minsal.",
-        "explanation": "Si sigue sobre 140 mil pese a la búsqueda activa, entran niños al rezago casi tan rápido como salen y la estrategia necesitaría otro diseño."
+        "headline": "La Política Nacional de Envejecimiento.",
+        "explanation": "La Ley 21.822 obliga a dictarla dentro de seis meses desde que entra en vigencia; mostrará si incluye cuidados de larga duración y cómo se financian."
       },
       {
-        "headline": "La votación de la partida de Salud en el Congreso.",
-        "explanation": "El recorte de 5,3% real al Programa Nacional de Inmunizaciones todavía puede cambiar antes de que el presupuesto se convierta en ley."
+        "headline": "El registro de residencias autorizadas que anunció el Minsal, cuando se publique.",
+        "explanation": "Sería la primera foto oficial de la oferta desde el catastro de 2021 y permitirá ver cuántos hogares tienen hoy autorización tras el incendio de Pitrufquén."
       }
     ],
     "notes": [
       {
         "id": "n1",
-        "kind": "coverage",
-        "text": "Ambas cifras son mínimas (\"más de\") y describen niños con esquema incompleto; ninguna fuente precisa la fecha de corte ni el rango de edad de cada una, así que la comparación es aproximada. La de julio la publicó la OPS; la de octubre, el Minsal. Ninguna informa cuántos niños entraron al rezago en el período."
+        "kind": "press",
+        "text": "El tamaño del fondo (UF 1.500.000) y las habitaciones provienen de prensa (CNN Chile); el comunicado de la FNE no informa cifras y su informe aún no es público. Una habitación no equivale necesariamente a un cupo."
       },
       {
         "id": "n2",
-        "kind": "estimate",
-        "text": "Estimación Alicanto: 27% que necesita ambas dosis más 6% de menores de 3 años sin la primera, aplicado a 140 mil (≈ 46 mil). Los porcentajes vienen redondeados y 140 mil es un mínimo; es un orden de magnitud, no una cifra oficial."
+        "kind": "coverage",
+        "text": "Cupos de las residencias públicas según el informe de Senama del primer trimestre de 2026, citado por Emol. Hay además unos 900 hogares privados autorizados, algunos con subsidio, que no están en esa cifra."
       },
       {
         "id": "n3",
-        "kind": "press",
-        "text": "El recorte proviene de prensa: Radio Universidad de Chile informa una reducción de $9.696 millones y Diario Estrategia, citando a la Subsecretaría de Salud Pública, un recorte de 5,3% real (unos $9 mil millones). Ninguna fuente aclara si los $9.696 millones son reales o nominales. Es un proyecto en discusión en el Congreso; todavía no es ley."
+        "kind": "coverage",
+        "text": "Estudio de la Superintendencia de Salud con egresos de 2017. Define hospitalización social como una estadía de 60 o más días con baja necesidad de atención médica. Es la medición oficial más reciente que encontramos; no hay una serie actualizada."
       },
       {
         "id": "n4",
-        "kind": "coverage",
-        "text": "Casos confirmados acumulados desde el 4 de enero. La OPS advierte que la falta de notificación y los retrasos pueden subestimar el total de casos."
+        "kind": "causality",
+        "text": "La cifra de 1.056 la dio el subsecretario de Redes Asistenciales en un conversatorio (La Tercera, junio); no es un informe publicado e incluye personas de todas las edades. La fuente atribuye la permanencia a la falta de redes familiares o sociales, no solo a la falta de residencias. La comparación con los cupos de Senama es una estimación Alicanto (1.056 ÷ 1.318 ≈ 80%) y no implica que todas esas personas necesiten una residencia, ni prueba que la falta de cupos sea la causa."
       },
       {
         "id": "n5",
-        "kind": "causality",
-        "text": "Es una inferencia de Alicanto: el Minsal no publica cuántos niños se suman al rezago cada mes, así que no se puede separar el avance de la campaña de la reposición."
+        "kind": "coverage",
+        "text": "Catastro oficial de 2021, el último disponible, informado por La Tercera. En septiembre el Minsal habló de cerca de 500 establecimientos sin autorización y advirtió que podría haber otros no identificados."
       }
     ],
-    "reading_time_min": 2,
-    "summary": "Desde julio, el Minsal vacunó a 44.386 niños rezagados contra el sarampión, pero el rezago pasó de más de 143 mil (julio) a más de 140 mil (octubre), y los niños sin ninguna dosis no muestran una baja (≈ 46 mil en octubre frente a unos 43 mil en julio, estimación Alicanto). Ocurre mientras los casos confirmados en las Américas crecieron ≈ 2,5 veces entre junio y octubre, la OPS califica de muy alto el riesgo en la gira del Papa León XIV (6 al 17 de noviembre) y el proyecto de Presupuesto 2027 recorta 5,3% real el Programa Nacional de Inmunizaciones.",
-    "insight_teaser": "Chile vacunó a 44.386 niños rezagados contra el sarampión, pero el rezago sigue sobre 140 mil: el desafío parece ser encontrarlos, no comprar dosis.",
+    "summary": "La FNE aprobó sin condiciones la asociación de SalfaCorp y el grupo Angelini para operar residencias para personas mayores. En junio, 1.056 personas con alta médica seguían ocupando camas de hospital por falta de redes.",
+    "insight_teaser": "Entra capital privado a las residencias para mayores, pero la falta de cuidados ya se paga en camas de hospital: 1.056 personas con alta siguen hospitalizadas.",
     "key_figures": [
-      "Minsal (28 oct): más de 44 mil niños vacunados; 44.386 niños de hasta 6 años con una dosis o ninguna, inmunizados desde julio.",
-      "Minsal (28 oct): más de 140 mil niños con esquema incompleto; casi 62 mil en la Región Metropolitana; cerca de 7 de cada 10 son mayores de 3 años a quienes solo les falta la segunda dosis; 27% requiere ambas dosis; 6% son menores de 3 años sin primera dosis.",
-      "OPS (1 jul): más de 143 mil niños con vacunación incompleta; alrededor de 43 mil sin primera dosis y cerca de 100 mil con la segunda pendiente.",
-      "Minsal (28 oct): sin transmisión comunitaria desde 1993; 460 casos sospechosos y tres casos importados confirmados en 2026; según el Minsal, citando a la OPS, los contagios en las Américas son los más altos en 22 años.",
-      "OPS (1 jul): 22.324 casos confirmados y 38 fallecimientos en las Américas al 18 de junio.",
-      "OPS, informe de situación (22 oct): 56.753 casos confirmados y 81 muertes en 2026, al 17 de octubre; Perú 2.698 casos; Bolivia 120; aumento de 4,8 veces frente a 2025.",
-      "OPS (9 oct): riesgo de propagación muy alto ante eventos religiosos masivos; Minsal (28 oct): gira del Papa León XIV por Argentina, Perú y Uruguay entre el 6 y el 17 de noviembre.",
-      "Proyecto de Presupuesto 2027: Programa Nacional de Inmunizaciones con un recorte de 5,3% real, unos 9 mil millones de pesos (Subsecretaría de Salud Pública, vía Diario Estrategia, 20 oct); Radio Universidad de Chile (19 oct) informa una reducción de 9.696 millones de pesos, sin precisar si es real o nominal."
+      "FNE (comunicado del 2 nov; aprobación del 29 oct): aprobó de manera pura y simple la asociación entre SalfaCorp, el grupo Angelini y sociedades ligadas a Villa Soleares y a Vivendi (esta administrará las residencias); analizó la gestión de residencias para adultos mayores y el desarrollo inmobiliario, y concluyó que la operación no reduce sustancialmente la competencia.",
+      "CNN Chile (nov): fondo de inversión con tamaño objetivo de UF 1.500.000; La Reina, 148 habitaciones (apertura prevista abril de 2027); Ñuñoa, ampliación de 52 a 102 habitaciones; 250 habitaciones en los dos primeros proyectos; meta de hasta 1.000 habitaciones en hasta 15 años.",
+      "Emol (14 sep), con datos de Senama: 23 Eleam públicos con cupo para 1.318 personas (informe del primer trimestre de 2026); 900 hogares privados autorizados por resolución sanitaria, algunos con subvenciones.",
+      "Emol (14 sep): el incendio del Eleam de Pitrufquén dejó 16 víctimas fatales; el recinto no contaba con resolución sanitaria del Ministerio de Salud.",
+      "La Tercera (sep): el catastro oficial de 2021 dio con 993 hogares autorizados y otros 505 sin resolución sanitaria.",
+      "Minsal (15 sep): cerca de 500 establecimientos catastrados sin autorización sanitaria; publicará un registro de la oferta de Eleam con resolución sanitaria.",
+      "INE (29 sep, Censo 2024): 3.665.028 personas de 60 años o más (19,8% de la población); 593.010 de 80 años o más; 54,0% de las personas de 80 o más en situación de discapacidad.",
+      "La Tercera (jun): el subsecretario de Redes Asistenciales informó 996 pacientes con alta médica hospitalizados por falta de redes en marzo y 1.056 en junio.",
+      "Superintendencia de Salud (estudio publicado en 2020, datos de 2017): hospitalización social es una estadía de 60 o más días con baja necesidad de atención médica; fue el 1% de los egresos de las personas de 60 años o más y el 15% de sus días-cama (15,3% de 3.918.415 días-cama).",
+      "Ley 21.822 (Diario Oficial, 1 jun 2026): la Política Nacional de Envejecimiento deberá dictarse dentro de seis meses desde la entrada en vigencia de la ley."
     ],
     "source_refs": [
-      "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
-      "https://www.paho.org/es/noticias/1-7-2026-chile-sale-busqueda-mas-143-mil-ninas-ninos-con-vacunacion-incompleta-contra",
-      "https://www.paho.org/sites/default/files/2026/10/ops-sarampion-sitrep14-es.pdf",
-      "https://www.paho.org/es/noticias/9-10-2026-ops-evalua-como-muy-alto-riesgo-propagacion-sarampion-ante-proximos-eventos",
-      "https://radio.uchile.cl/2026/10/19/presupuesto-de-salud-2027-recortes-a-la-ley-ricarte-soto-y-al-plan-de-vacunas-abren-debate-en-el-congreso/",
-      "https://www.diarioestrategia.cl/texto-diario/mostrar/6058803/recortes-asignaciones-salud-concitan-debate-tercera-subcomision-mixta-presupuestos"
+      "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
+      "https://www.cnnchile.com/negocios/fne-salfacorp-grupo-angelini-residencias-adultos-mayores-fondo-uf1500000/",
+      "https://www.emol.com/noticias/Nacional/2026/09/14/1211395/residencias-adultos-mayores-zoom-cifras.html",
+      "https://www.latercera.com/nacional/noticia/incendio-en-hogar-de-ancianos-deja-al-descubierto-un-catastro-desactualizado-de-residencias-y-debilidades-del-sistema/",
+      "https://www.minsal.cl/?p=158411",
+      "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/09/29/en-el-pa%C3%ADs-residen-3.665.028-personas-de-60-a%C3%B1os-o-m%C3%A1s-equivalentes-al-19-8-de-la-poblaci%C3%B3n-residente",
+      "https://www.latercera.com/nacional/noticia/pacientes-sociosanitarios-las-1056-personas-dadas-de-alta-que-siguen-ocupando-camas-hospitalarias-por-falta-de-redes/",
+      "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf",
+      "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/"
     ],
     "sources": [
       {
-        "label": "Minsal · Minsal buscó y vacunó a más de 44 mil niños contra el sarampión · 28 oct",
-        "url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
-        "role": "Fuente primaria de la noticia: vacunados, rezago de octubre, casos en Chile y gira del Papa.",
-        "short_label": "Minsal · vacunación contra el sarampión (28 oct)",
+        "label": "FNE · Aprobó asociación entre SalfaCorp, el grupo Angelini y otros para residencias para adultos mayores · 2 nov",
+        "url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
+        "role": "Fuente primaria de la noticia: aprobación pura y simple, partes y mercados analizados.",
+        "short_label": "FNE · residencias para adultos mayores (2 nov)",
         "short_role": "noticia gatillante"
       },
       {
-        "label": "OPS · Chile sale a la búsqueda de niños con vacunación incompleta · 1 jul",
-        "url": "https://www.paho.org/es/noticias/1-7-2026-chile-sale-busqueda-mas-143-mil-ninas-ninos-con-vacunacion-incompleta-contra",
-        "role": "Fuente primaria del rezago de julio y de los casos regionales al 18 de junio.",
-        "short_label": "OPS · búsqueda de niños rezagados (1 jul)",
-        "short_role": "rezago de julio"
+        "label": "CNN Chile · FNE aprueba fondo de residencias para adultos mayores de SalfaCorp y Angelini · 2 nov",
+        "url": "https://www.cnnchile.com/negocios/fne-salfacorp-grupo-angelini-residencias-adultos-mayores-fondo-uf1500000/",
+        "role": "Prensa: tamaño del fondo, habitaciones de los dos primeros proyectos y meta de habitaciones.",
+        "short_label": "CNN Chile · fondo de residencias (2 nov)",
+        "short_role": "fondo y habitaciones"
       },
       {
-        "label": "OPS · Informe de situación de sarampión en las Américas · 22 oct",
-        "url": "https://www.paho.org/sites/default/files/2026/10/ops-sarampion-sitrep14-es.pdf",
-        "role": "Fuente primaria de casos y muertes por país al 17 de octubre.",
-        "short_label": "OPS · informe de situación (22 oct)",
-        "short_role": "casos por país"
+        "label": "Emol · Residencias de adultos mayores: las cifras · 14 sep",
+        "url": "https://www.emol.com/noticias/Nacional/2026/09/14/1211395/residencias-adultos-mayores-zoom-cifras.html",
+        "role": "Prensa con datos de Senama: Eleam públicos y sus cupos, hogares privados autorizados e incendio de Pitrufquén.",
+        "short_label": "Emol · Eleam en cifras (14 sep)",
+        "short_role": "red pública"
       },
       {
-        "label": "OPS · Riesgo muy alto de propagación ante eventos masivos · 9 oct",
-        "url": "https://www.paho.org/es/noticias/9-10-2026-ops-evalua-como-muy-alto-riesgo-propagacion-sarampion-ante-proximos-eventos",
-        "role": "Fuente primaria de la evaluación de riesgo.",
-        "short_label": "OPS · evaluación de riesgo (9 oct)",
-        "short_role": "riesgo en eventos masivos"
+        "label": "La Tercera · Incendio en hogar de ancianos deja al descubierto un catastro desactualizado de residencias · sep",
+        "url": "https://www.latercera.com/nacional/noticia/incendio-en-hogar-de-ancianos-deja-al-descubierto-un-catastro-desactualizado-de-residencias-y-debilidades-del-sistema/",
+        "role": "Prensa: resultados del catastro oficial de 2021 (hogares autorizados y sin resolución sanitaria).",
+        "short_label": "La Tercera · catastro de residencias (sep)",
+        "short_role": "catastro 2021"
       },
       {
-        "label": "Radio Universidad de Chile · Recortes a la Ley Ricarte Soto y al plan de vacunas · 19 oct",
-        "url": "https://radio.uchile.cl/2026/10/19/presupuesto-de-salud-2027-recortes-a-la-ley-ricarte-soto-y-al-plan-de-vacunas-abren-debate-en-el-congreso/",
-        "role": "Prensa: monto del recorte al Programa Nacional de Inmunizaciones y respuesta de la subsecretaria.",
-        "short_label": "Radio U. de Chile · recorte al plan de vacunas (19 oct)",
-        "short_role": "prensa"
+        "label": "Minsal · Gobierno anuncia plan para reforzar la seguridad y ampliar la oferta de cuidados para personas mayores · 15 sep",
+        "url": "https://www.minsal.cl/?p=158411",
+        "role": "Fuente primaria: establecimientos sin autorización, fiscalización y registro de oferta autorizada.",
+        "short_label": "Minsal · plan para residencias (15 sep)",
+        "short_role": "fiscalización"
       },
       {
-        "label": "Diario Estrategia · Recortes y asignaciones en Salud (Subcomisión Mixta de Presupuestos) · 20 oct",
-        "url": "https://www.diarioestrategia.cl/texto-diario/mostrar/6058803/recortes-asignaciones-salud-concitan-debate-tercera-subcomision-mixta-presupuestos",
-        "role": "Prensa: recorte en términos reales al Programa Nacional de Inmunizaciones.",
-        "short_label": "Diario Estrategia · debate de la partida de Salud (20 oct)",
-        "short_role": "prensa"
+        "label": "INE · En el país residen 3.665.028 personas de 60 años o más · 29 sep",
+        "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/09/29/en-el-pa%C3%ADs-residen-3.665.028-personas-de-60-a%C3%B1os-o-m%C3%A1s-equivalentes-al-19-8-de-la-poblaci%C3%B3n-residente",
+        "role": "Fuente primaria (Censo 2024): personas de 80 años o más y discapacidad.",
+        "short_label": "INE · Censo 2024, personas mayores (29 sep)",
+        "short_role": "demanda"
+      },
+      {
+        "label": "La Tercera · Pacientes sociosanitarios: las 1.056 personas dadas de alta que siguen ocupando camas hospitalarias · jun",
+        "url": "https://www.latercera.com/nacional/noticia/pacientes-sociosanitarios-las-1056-personas-dadas-de-alta-que-siguen-ocupando-camas-hospitalarias-por-falta-de-redes/",
+        "role": "Prensa: cifra del subsecretario de Redes Asistenciales sobre pacientes con alta que siguen hospitalizados.",
+        "short_label": "La Tercera · pacientes sociosanitarios (jun)",
+        "short_role": "camas ocupadas"
+      },
+      {
+        "label": "Superintendencia de Salud · Hospitalización social en adultos mayores en el sistema de salud de Chile (2020)",
+        "url": "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf",
+        "role": "Fuente primaria: peso de la hospitalización social en egresos y días-cama de personas de 60 años o más.",
+        "short_label": "Superintendencia de Salud · hospitalización social (2020)",
+        "short_role": "días-cama"
+      },
+      {
+        "label": "Diario Oficial · Ley Integral de las Personas Mayores (Ley 21.822) · 1 jun",
+        "url": "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/",
+        "role": "Fuente primaria: plazo para dictar la Política Nacional de Envejecimiento.",
+        "short_label": "Diario Oficial · Ley 21.822 (1 jun)",
+        "short_role": "política pública"
       }
     ],
     "weekly_mode": "reviewed_cross_source_deep_dive",
@@ -241,33 +258,41 @@
       "mode": "senior_editorial_work_session",
       "api_call": false,
       "model": "claude-opus-5-5 (sesión editorial programada)",
-      "note": "Redactado desde fuentes primarias Minsal y OPS, con prensa declarada; revisión independiente aparte."
-    }
+      "note": "Redactado desde fuentes primarias FNE, Superintendencia de Salud, INE, Minsal y Diario Oficial, con prensa declarada; revisión independiente aparte."
+    },
+    "reading_time_min": 1
   },
   "freshness_gate": {
-    "anchor": "2026-11-02",
+    "anchor": "2026-11-09",
     "anchor_kind": "monday",
-    "expires_on": "2026-11-09"
+    "expires_on": "2026-11-16"
   },
   "audit": {
     "verdict": "PASS",
     "editorial_business_review_pass": true,
-    "reviewer": "Claude (sesión editorial programada, autorrevisión escéptica) + subagente revisor independiente (PASS_WITH_CORRECTIONS; 6 correcciones incorporadas)",
+    "reviewer": "Claude (sesión editorial programada, autorrevisión escéptica) + subagente revisor independiente (PASS_WITH_CORRECTIONS; 8 correcciones incorporadas)",
     "independent_second_reviewer": true,
     "deterministic_verification": {
       "verify_candidate": "PASS",
       "presentation_a_errors": [],
-      "evidence_numbers": 34,
-      "allowed_urls": 6
+      "evidence_numbers": 25,
+      "allowed_urls": 9
     },
     "corrections_incorporated": [
-      "n3 sin 'aprobado en subcomisión' ni 'nota del Senado'",
-      "5,3% real separado de $9.696 millones (real/nominal no informado)",
-      "n1: comparación jul/oct aproximada",
-      "titular y teaser con 'parece ser'",
-      "'no muestran una baja' en vez de 'no disminuyeron'",
-      "riesgo por la gira del Papa atribuido al Minsal citando a la OPS"
+      "subtítulo del gráfico 2: % de los egresos y de los días-cama (no de personas)",
+      "comparación 1.056 vs cupos Senama: 'de todas las edades' y 'cupos públicos' en el ensayo",
+      "causalidad: 'por falta de redes' en vez de atribuir las camas ocupadas a la falta de cupos",
+      "partes: sociedades ligadas a Villa Soleares y a Vivendi (esta administrará las residencias)",
+      "fechas: comunicado FNE 2 nov, aprobación 29 oct; CNN sin día",
+      "'Ese costo queda fuera del debate' suavizado",
+      "Qué mirar: informe FNE y registro Minsal 'cuando se publique' (sin fecha comprometida)",
+      "n4: la fuente atribuye la permanencia a la falta de redes familiares o sociales"
     ],
+    "topic_selection": {
+      "rule": "normal_topic",
+      "stats_anchor_brief": "data/weekly_insight/candidates/2026-11-09-stats-brief.json",
+      "stats_anchor_not_used": "F4 GES (SIS 14-oct) queda fuera de la regla de Dirección 28-oct: la noticia gatillante debe ser de los 7 días previos al lunes y verify_candidate exige event_date ≥ 2026-11-02; además, el cáncer GES fue candidato el 2-nov. Se aplica la decisión 2 de POLICY.md (tema normal)."
+    },
     "presentation": {
       "format": "weekly_insight_a_v1",
       "approved_by": "Dirección",
@@ -278,7 +303,7 @@
     "mode": "senior_editorial_work_session",
     "api_call": false,
     "model": "claude-opus-5-5 (sesión editorial programada)",
-    "note": "Redactado desde fuentes primarias Minsal y OPS, con prensa declarada; revisión independiente aparte."
+    "note": "Redactado desde fuentes primarias FNE, Superintendencia de Salud, INE, Minsal y Diario Oficial, con prensa declarada; revisión independiente aparte."
   },
   "generation_status": "skipped_already_published",
   "generation_attempt": {
