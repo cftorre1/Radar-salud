@@ -559969,11 +559969,11 @@
     "lane": "LIVE",
     "status": "deferred",
     "detected_at": "2026-11-07T06:26:59.975034+00:00",
-    "attempts": 6,
+    "attempts": 7,
     "reason": "retry_exhausted:df_analysis_deferred",
     "classification_watermark": "2026-11-05T18:40:43.908838+00:00",
     "deferred_detail": "DF pendiente de evaluación IA",
-    "updated_at": "2026-11-08T21:46:00.382251+00:00",
+    "updated_at": "2026-11-09T00:26:42.464123+00:00",
     "retry_at": null,
     "recovery_observations": [
       {
@@ -560149,6 +560149,98 @@
           "classification_watermark": "2026-11-05T18:40:43.908838+00:00",
           "deferred_detail": "DF pendiente de evaluación IA",
           "updated_at": "2026-11-08T17:48:24.615343+00:00",
+          "retry_at": null,
+          "classification_basis": "stored_watermark",
+          "df_resolution": {
+            "state": "RESUMED_VERIFIED_TEXT"
+          }
+        }
+      },
+      {
+        "at": "2026-11-09T00:10:47.223183+00:00",
+        "action": "verified_publisher_evidence_rehydration",
+        "before": {
+          "raw": {
+            "source_slug": "diario_financiero",
+            "title": "La última operación de Linzor Capital en Uno Salud: pone en venta la mayor red de clínicas odontológicas del país",
+            "url": "https://www.df.cl/mercados/bolsa-monedas/la-ultima-operacion-de-linzor-capital-en-uno-salud-pone-en-venta-la-mayor",
+            "source_name": "Diario Financiero",
+            "source_type": "press_high_trust",
+            "event_date": "2026-11-06",
+            "raw_text": "Tras casi seis años en la red de salud dental, el fondo de private equity prepara su salida en una operación a cargo de Santander que rondaría los US$ 80 millones.",
+            "metadata": {
+              "discovered_from": "https://www.df.cl/noticias/site/tag/port/all/tagport_161_1.html",
+              "listing_extraction": "primary_cards",
+              "page_text": "Tras casi seis años en la red de salud dental, el fondo de private equity prepara su salida en una operación a cargo de Santander que rondaría los US$ 80 millones.",
+              "public_teaser": "Tras casi seis años en la red de salud dental, el fondo de private equity prepara su salida en una operación a cargo de Santander que rondaría los US$ 80 millones.",
+              "public_teaser_source": "og:description",
+              "article_title": "La última operación de Linzor Capital en Uno Salud: pone en venta la mayor red de clínicas odontológicas del país",
+              "article_section": "Mercados",
+              "publisher_canonical_url": "https://www.df.cl/mercados/bolsa-monedas/la-ultima-operacion-de-linzor-capital-en-uno-salud-pone-en-venta-la-mayor",
+              "publisher_jsonld_identity": "https://www.df.cl/mercados/bolsa-monedas/la-ultima-operacion-de-linzor-capital-en-uno-salud-pone-en-venta-la-mayor",
+              "primary_header_title": "La última operación de Linzor Capital en Uno Salud: pone en venta la mayor red de clínicas odontológicas del país",
+              "article_author": "Sofía Fuentes",
+              "primary_image_urls": [
+                "https://www.df.cl/mercados/bolsa-monedas/{{fotofija_comun600}}",
+                "https://www.df.cl/noticias/imag/v1/default/600x400.png",
+                "https://www.df.cl/mercados/bolsa-monedas/{{fotofija_comun600}}",
+                "https://www.df.cl/noticias/imag/v1/default/600x400.png"
+              ],
+              "primary_media_urls": [],
+              "publication_date_source": "visible:published_label",
+              "publication_timestamp": null,
+              "publication_label": "Viernes 6 de noviembre de 2026 a las 04:00 hrs.",
+              "publication_date_candidates": [
+                {
+                  "source": "cxenseparse:recs:publishtime",
+                  "value": "2026-11-05T21:58:45Z",
+                  "day": "2026-11-05"
+                },
+                {
+                  "source": "jsonld:datePublished",
+                  "value": "2026-11-05T21:58:45Z",
+                  "day": "2026-11-05"
+                },
+                {
+                  "source": "visible:published_label",
+                  "value": "Viernes 6 de noviembre de 2026 a las 04:00 hrs.",
+                  "day": "2026-11-06"
+                }
+              ],
+              "publication_date_conflict": true,
+              "publication_date_conflict_resolution": {
+                "rule": "primary_header_explicit_publication_label",
+                "selected_visible_day": "2026-11-06",
+                "basis": "DF enc-main header / author__date explicitly labels publication; matching NewsArticle URL and primary body or embedded media container verified. Metadata timestamps retained; discrepancy cause unknown."
+              },
+              "article_content_source": "df_primary_body",
+              "date_semantics": "publisher_publication_day_America/Santiago; incident date is separate",
+              "article_body_characters": 4789,
+              "article_body_sha256": "6343144435878e33e912acbb43d0a755b8775552d3ce938d485b4b338f6b9560",
+              "body_redacted": true,
+              "paywalled": true,
+              "access_policy": "public_teaser_only",
+              "paywall_source": "diario_financiero",
+              "rights_redactions": [
+                {
+                  "field": "page_text",
+                  "sha256": "6343144435878e33e912acbb43d0a755b8775552d3ce938d485b4b338f6b9560",
+                  "characters": 4789,
+                  "reason": "paywalled_press_public_teaser_only",
+                  "redacted_at": "2026-10-28"
+                }
+              ]
+            }
+          },
+          "source": "diario_financiero",
+          "lane": "LIVE",
+          "status": "deferred",
+          "detected_at": "2026-11-07T06:26:59.975034+00:00",
+          "attempts": 6,
+          "reason": "retry_exhausted:df_analysis_deferred",
+          "classification_watermark": "2026-11-05T18:40:43.908838+00:00",
+          "deferred_detail": "DF pendiente de evaluación IA",
+          "updated_at": "2026-11-08T21:46:00.382251+00:00",
           "retry_at": null,
           "classification_basis": "stored_watermark",
           "df_resolution": {
@@ -561362,7 +561454,14 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "3cb7b651ceb84f5aaae42c2c67d367e0bf5d1214c2b5375545ad9a7112b9dfda",
             "analysis_request_input_characters": 538
-          }
+          },
+          "revived_at": "2026-11-09T00:26:30.945000+00:00",
+          "revivals": [
+            {
+              "at": "2026-11-09T00:26:30.945000+00:00",
+              "reason": "engine_run_bounded_revival"
+            }
+          ]
         },
         "editorial_assessment": {
           "decision": "pending",
@@ -561855,7 +561954,14 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "2407e07d3cf52d725420a85995f5a3fda74dd94b42e89c64c0c382600842bcff",
             "analysis_request_input_characters": 306
-          }
+          },
+          "revived_at": "2026-11-09T00:26:30.945017+00:00",
+          "revivals": [
+            {
+              "at": "2026-11-09T00:26:30.945017+00:00",
+              "reason": "engine_run_bounded_revival"
+            }
+          ]
         },
         "editorial_assessment": {
           "decision": "pending",
@@ -563251,7 +563357,14 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "d417a5298100f7bebb849c19a648e365b526d855902949e87ebb299a22676549",
             "analysis_request_input_characters": 524
-          }
+          },
+          "revived_at": "2026-11-09T00:26:30.945027+00:00",
+          "revivals": [
+            {
+              "at": "2026-11-09T00:26:30.945027+00:00",
+              "reason": "engine_run_bounded_revival"
+            }
+          ]
         },
         "editorial_assessment": {
           "decision": "pending",
@@ -563465,7 +563578,14 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "3d45bc817a2aa4939574e7befcb713137854a8376fc3c0de7bf6eb6055a5cfda",
             "analysis_request_input_characters": 450
-          }
+          },
+          "revived_at": "2026-11-09T00:26:30.945036+00:00",
+          "revivals": [
+            {
+              "at": "2026-11-09T00:26:30.945036+00:00",
+              "reason": "engine_run_bounded_revival"
+            }
+          ]
         },
         "editorial_assessment": {
           "decision": "pending",
@@ -566998,7 +567118,14 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "061db18794707e438e3eb23d129de5fe1ec5a1703edf13a666a831f660cdc313",
             "analysis_request_input_characters": 479
-          }
+          },
+          "revived_at": "2026-11-09T00:26:30.945059+00:00",
+          "revivals": [
+            {
+              "at": "2026-11-09T00:26:30.945059+00:00",
+              "reason": "engine_run_bounded_revival"
+            }
+          ]
         },
         "editorial_assessment": {
           "decision": "pending",
@@ -575535,6 +575662,302 @@
     "deferred_detail": "publisher_conflicting_publication_dates",
     "updated_at": "2026-11-08T20:48:50.648391+00:00",
     "retry_at": "2026-11-09T00:48:50.648400+00:00"
+  },
+  "5b30f96141f0274d532ef7cb58820e757c6e48fc11a390afa6131ef813232f75": {
+    "raw": {
+      "source_slug": "pulso_latercera",
+      "title": "Formalizan a Leandro Hernández por provocar choque en Providencia: queda con arraigo, sin licencia y firma mensual",
+      "url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+      "source_name": "Pulso / La Tercera",
+      "source_type": "press_high_trust",
+      "event_date": "2026-11-08",
+      "raw_text": "El futbolista de Colo Colo fue formalizado por conducción en estado de ebriedad con resultado de daños y lesiones graves. La Fiscalía estableció, mediante cámaras de seguridad, que habría cruzado con luz roja e impactado a otro vehículo. El tribunal fijó 120 días de investigación.",
+      "metadata": {
+        "section": "Nacional",
+        "keywords": [
+          "Leandro Hernández",
+          "Colo Colo",
+          "Providencia",
+          "Fiscalía Oriente",
+          "Formalización"
+        ],
+        "description": "El futbolista de Colo Colo fue formalizado por conducción en estado de ebriedad con resultado de daños y lesiones graves. La Fiscalía estableció, mediante cámaras de seguridad, que habría cruzado con luz roja e impactado a otro vehículo. El tribunal fijó 120 días de investigación.\n",
+        "body_source": "url_bound_json_ld_articleBody",
+        "publication_date": "2026-11-08",
+        "publication_timestamp": "2026-11-08T20:38:04.69Z",
+        "publication_date_source": "visible_article_byline",
+        "visible_publication_date": "2026-11-08",
+        "publisher_date_convention": "calendar_agreement",
+        "publication_evidence": [
+          {
+            "source": "json_ld_datePublished",
+            "timestamp": "2026-11-08T20:38:04.69Z",
+            "publisher_day": "2026-11-08",
+            "timestamp_calendar_day": "2026-11-08",
+            "america_santiago_day": "2026-11-08"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-11-08T20:38:04.69Z",
+            "publisher_day": "2026-11-08",
+            "timestamp_calendar_day": "2026-11-08",
+            "america_santiago_day": "2026-11-08"
+          }
+        ],
+        "canonical_url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+        "primary_identity_verified": true,
+        "publication_date_verified": true,
+        "article_verified": true,
+        "publisher_access": {
+          "jsonld_isAccessibleForFree": null,
+          "jsonld_haspart_locked": false,
+          "meta_content_tier": null,
+          "premium_marker": false,
+          "lock_element": false,
+          "lock_element_classes": [],
+          "paywall_slot_present": true,
+          "schema": 1
+        },
+        "access_verified": false,
+        "publisher_taxonomy": {
+          "source": "url_bound_json_ld",
+          "canonical_url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+          "article_type": "NewsArticle",
+          "section": "Nacional",
+          "labels": [
+            "Leandro Hernández",
+            "Colo Colo",
+            "Providencia",
+            "Fiscalía Oriente",
+            "Formalización"
+          ],
+          "matched_opinion_labels": [],
+          "classification": "factual"
+        },
+        "publisher_content_classification": "factual",
+        "page_text": "El futbolista de Colo Colo fue formalizado por conducción en estado de ebriedad con resultado de daños y lesiones graves. La Fiscalía estableció, mediante cámaras de seguridad, que habría cruzado con luz roja e impactado a otro vehículo. El tribunal fijó 120 días de investigación.",
+        "article_body_characters": 2411,
+        "article_body_sha256": "b86d95eba7ff0625c2a113b1022742c8d0ab305ccbc63aac7af6e3d79947f939",
+        "discovered_from": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1303",
+        "market_role": "media",
+        "source_quality_gate": "passed",
+        "captured_at": "2026-11-08T21:30:09.528645+00:00",
+        "html_sha256": "bf3cb4799f555ad1d86dca858b260dcbcccfb8dcef69b4955359c1d3242890ea",
+        "publisher_lastmod": "2026-11-08T20:38:04.793Z",
+        "topics": [
+          "providers"
+        ],
+        "body_redacted": true,
+        "public_teaser": "El futbolista de Colo Colo fue formalizado por conducción en estado de ebriedad con resultado de daños y lesiones graves. La Fiscalía estableció, mediante cámaras de seguridad, que habría cruzado con luz roja e impactado a otro vehículo. El tribunal fijó 120 días de investigación.",
+        "public_teaser_source": "jsonld:description",
+        "paywalled": true,
+        "access_policy": "public_teaser_only",
+        "paywall_source": "la_tercera_premium",
+        "rights_redactions": [
+          {
+            "field": "page_text",
+            "sha256": "b86d95eba7ff0625c2a113b1022742c8d0ab305ccbc63aac7af6e3d79947f939",
+            "characters": 2411,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "raw_text",
+            "sha256": "014d0ebad488f79ff1185489eb73885296c2cbe8b73cf03cb7443502aa480218",
+            "characters": 1800,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "metadata.editorial_assessment.reason",
+            "sha256": "5f2fd1a6c0c243f0d1a7cc58ec478ed5d39b26ff7d5d2abcf2c5be71ff3fe5da",
+            "characters": 27,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          }
+        ],
+        "article_body_complete": true,
+        "primary_item_binding": {
+          "verified": true,
+          "reason": "pulso_primary_item_identity_and_date_verified",
+          "raw_url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+          "primary_canonical_url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+          "raw_event_date": "2026-11-08",
+          "primary_publication_date": "2026-11-08",
+          "primary_verification_flags": {
+            "primary_identity_verified": true,
+            "publication_date_verified": true
+          },
+          "model_calls_permitted": true,
+          "other_editorial_and_budget_gates_still_apply": true,
+          "publication_approved": false
+        },
+        "rejection_reason": "media_materiality_prefilter",
+        "editorial_assessment": {
+          "decision": "rejected"
+        }
+      }
+    },
+    "source": "pulso_latercera",
+    "lane": "LIVE",
+    "status": "rejected",
+    "detected_at": "2026-11-08T21:33:03.535577+00:00",
+    "attempts": 1,
+    "reason": "media_materiality_prefilter",
+    "classification_watermark": "2026-11-08T17:34:50.064300+00:00",
+    "updated_at": "2026-11-08T21:45:41.377291+00:00",
+    "retry_at": null
+  },
+  "ac9529e1e0a1662a64ef232fbe480262fc3fd26e50e7d4d689e59a3c33a1c194": {
+    "raw": {
+      "source_slug": "pulso_latercera",
+      "title": "Accidente en la Ruta de la Fruta: Fiscalía apunta a que camión cruzó el eje de la calzada antes de fatal choque",
+      "url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
+      "source_name": "Pulso / La Tercera",
+      "source_type": "press_high_trust",
+      "event_date": "2026-11-08",
+      "raw_text": "La fiscal Claudia Cancino explicó que aún se desconocen las razones por las que el conductor del vehículo de carga habría perdido el control. Las 11 víctimas fatales ya fueron identificadas, mientras otras 15 personas resultaron lesionadas.",
+      "metadata": {
+        "section": "Nacional",
+        "keywords": [
+          "Santo Domingo",
+          "Ruta de la Furta",
+          "Accidente",
+          "Nacional",
+          "Claudia Cancino",
+          "Fiscalía",
+          "SML",
+          "SIAT"
+        ],
+        "description": "La fiscal Claudia Cancino explicó que aún se desconocen las razones por las que el conductor del vehículo de carga habría perdido el control. Las 11 víctimas fatales ya fueron identificadas, mientras otras 15 personas resultaron lesionadas.\n",
+        "body_source": "url_bound_json_ld_articleBody",
+        "publication_date": "2026-11-08",
+        "publication_timestamp": "2026-11-08T19:25:00.692Z",
+        "publication_date_source": "visible_article_byline",
+        "visible_publication_date": "2026-11-08",
+        "publisher_date_convention": "calendar_agreement",
+        "publication_evidence": [
+          {
+            "source": "json_ld_datePublished",
+            "timestamp": "2026-11-08T19:25:00.692Z",
+            "publisher_day": "2026-11-08",
+            "timestamp_calendar_day": "2026-11-08",
+            "america_santiago_day": "2026-11-08"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-11-08T19:25:00.692Z",
+            "publisher_day": "2026-11-08",
+            "timestamp_calendar_day": "2026-11-08",
+            "america_santiago_day": "2026-11-08"
+          }
+        ],
+        "canonical_url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
+        "primary_identity_verified": true,
+        "publication_date_verified": true,
+        "article_verified": true,
+        "publisher_access": {
+          "jsonld_isAccessibleForFree": null,
+          "jsonld_haspart_locked": false,
+          "meta_content_tier": null,
+          "premium_marker": false,
+          "lock_element": false,
+          "lock_element_classes": [],
+          "paywall_slot_present": true,
+          "schema": 1
+        },
+        "access_verified": false,
+        "publisher_taxonomy": {
+          "source": "url_bound_json_ld",
+          "canonical_url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
+          "article_type": "NewsArticle",
+          "section": "Nacional",
+          "labels": [
+            "Santo Domingo",
+            "Ruta de la Furta",
+            "Accidente",
+            "Nacional",
+            "Claudia Cancino",
+            "Fiscalía",
+            "SML",
+            "SIAT"
+          ],
+          "matched_opinion_labels": [],
+          "classification": "factual"
+        },
+        "publisher_content_classification": "factual",
+        "page_text": "La fiscal Claudia Cancino explicó que aún se desconocen las razones por las que el conductor del vehículo de carga habría perdido el control. Las 11 víctimas fatales ya fueron identificadas, mientras otras 15 personas resultaron lesionadas.",
+        "article_body_characters": 1646,
+        "article_body_sha256": "4e50387a2705afb6c6752044d325b27750c12a8ec54afbbcb1af2628947a3ce9",
+        "discovered_from": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1303",
+        "market_role": "media",
+        "source_quality_gate": "passed",
+        "captured_at": "2026-11-08T21:30:09.757154+00:00",
+        "html_sha256": "95e89e381427a963d8eb008130de765406e6b4cac55950ce24416926ad92ad61",
+        "publisher_lastmod": "2026-11-08T19:25:00.842Z",
+        "topics": [
+          "health_general"
+        ],
+        "body_redacted": true,
+        "public_teaser": "La fiscal Claudia Cancino explicó que aún se desconocen las razones por las que el conductor del vehículo de carga habría perdido el control. Las 11 víctimas fatales ya fueron identificadas, mientras otras 15 personas resultaron lesionadas.",
+        "public_teaser_source": "jsonld:description",
+        "paywalled": true,
+        "access_policy": "public_teaser_only",
+        "paywall_source": "la_tercera_premium",
+        "rights_redactions": [
+          {
+            "field": "page_text",
+            "sha256": "4e50387a2705afb6c6752044d325b27750c12a8ec54afbbcb1af2628947a3ce9",
+            "characters": 1646,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "raw_text",
+            "sha256": "4e50387a2705afb6c6752044d325b27750c12a8ec54afbbcb1af2628947a3ce9",
+            "characters": 1646,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          },
+          {
+            "field": "metadata.editorial_assessment.reason",
+            "sha256": "5f2fd1a6c0c243f0d1a7cc58ec478ed5d39b26ff7d5d2abcf2c5be71ff3fe5da",
+            "characters": 27,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          }
+        ],
+        "article_body_complete": true,
+        "primary_item_binding": {
+          "verified": true,
+          "reason": "pulso_primary_item_identity_and_date_verified",
+          "raw_url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
+          "primary_canonical_url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
+          "raw_event_date": "2026-11-08",
+          "primary_publication_date": "2026-11-08",
+          "primary_verification_flags": {
+            "primary_identity_verified": true,
+            "publication_date_verified": true
+          },
+          "model_calls_permitted": true,
+          "other_editorial_and_budget_gates_still_apply": true,
+          "publication_approved": false
+        },
+        "rejection_reason": "media_materiality_prefilter",
+        "editorial_assessment": {
+          "decision": "rejected"
+        }
+      }
+    },
+    "source": "pulso_latercera",
+    "lane": "LIVE",
+    "status": "rejected",
+    "detected_at": "2026-11-08T21:33:03.535577+00:00",
+    "attempts": 1,
+    "reason": "media_materiality_prefilter",
+    "classification_watermark": "2026-11-08T17:34:50.064300+00:00",
+    "updated_at": "2026-11-08T21:45:49.812106+00:00",
+    "retry_at": null
   },
   "15d7e98b3e499fac01f6a841d3eb6141a882d5a0ab3420d7dcc57d9da6be8690": {
     "raw": {
@@ -902015,48 +902438,181 @@
     "retry_at": null,
     "deferred_detail": "official_medical_report_missing_daily_publication_and_emission_date; execution_period_is_not_publication"
   },
-  "5b30f96141f0274d532ef7cb58820e757c6e48fc11a390afa6131ef813232f75": {
+  "28f4be3c3ab875428c0dbd548a12e47795403b519b59ac9d55c26f2c6dcb0553": {
     "raw": {
       "source_slug": "pulso_latercera",
-      "title": "Formalizan a Leandro Hernández por provocar choque en Providencia: queda con arraigo, sin licencia y firma mensual",
-      "url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+      "title": "Pablo Cruz: “Se ven brotes verdes en algunos sectores de la economía”",
+      "url": "https://www.latercera.com/videos/noticia/pablo-cruz-se-ven-brotes-verdes-en-algunos-sectores-de-la-economia/",
       "source_name": "Pulso / La Tercera",
       "source_type": "press_high_trust",
       "event_date": "2026-11-08",
-      "raw_text": "El futbolista de Colo Colo fue formalizado por conducción en estado de ebriedad con resultado de daños y lesiones graves. La Fiscalía estableció, mediante cámaras de seguridad, que habría cruzado con luz roja e impactado a otro vehículo. El tribunal fijó 120 días de investigación.",
+      "raw_text": "Conversamos con Pablo Cruz, economista jefe de BTG Pactual Chile, respecto a cómo la economía está creciendo a dos velocidades. En el sector minero decrece a un ritmo de dos dígitos, y en el comercio, industria y otros, crecen cerca de un 2% lo que demuestra una economía sana en la que ya se sienten brotes verdes.",
       "metadata": {
-        "section": "Nacional",
+        "section": "Videos",
         "keywords": [
-          "Leandro Hernández",
-          "Colo Colo",
-          "Providencia",
-          "Fiscalía Oriente",
-          "Formalización"
+          "Videopodcast",
+          "Money Talks",
+          "Economía",
+          "Minería"
         ],
-        "description": "El futbolista de Colo Colo fue formalizado por conducción en estado de ebriedad con resultado de daños y lesiones graves. La Fiscalía estableció, mediante cámaras de seguridad, que habría cruzado con luz roja e impactado a otro vehículo. El tribunal fijó 120 días de investigación.\n",
-        "body_source": "url_bound_json_ld_articleBody",
+        "description": "Conversamos con Pablo Cruz, economista jefe de BTG Pactual Chile, respecto a cómo la economía está creciendo a dos velocidades. En el sector minero decrece a un ritmo de dos dígitos, y en el comercio, industria y otros, crecen cerca de un 2% lo que demuestra una economía sana en la que ya se sienten brotes verdes. ",
+        "body_source": "publisher_video_no_textual_article_body",
         "publication_date": "2026-11-08",
-        "publication_timestamp": "2026-11-08T20:38:04.69Z",
+        "publication_timestamp": "2026-11-08T23:30:00Z",
         "publication_date_source": "visible_article_byline",
         "visible_publication_date": "2026-11-08",
         "publisher_date_convention": "calendar_agreement",
         "publication_evidence": [
           {
             "source": "json_ld_datePublished",
-            "timestamp": "2026-11-08T20:38:04.69Z",
+            "timestamp": "2026-11-08T23:30:00Z",
             "publisher_day": "2026-11-08",
             "timestamp_calendar_day": "2026-11-08",
             "america_santiago_day": "2026-11-08"
           },
           {
             "source": "article_published_time",
-            "timestamp": "2026-11-08T20:38:04.69Z",
+            "timestamp": "2026-11-08T23:30:00Z",
             "publisher_day": "2026-11-08",
             "timestamp_calendar_day": "2026-11-08",
             "america_santiago_day": "2026-11-08"
           }
         ],
-        "canonical_url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+        "canonical_url": "https://www.latercera.com/videos/noticia/pablo-cruz-se-ven-brotes-verdes-en-algunos-sectores-de-la-economia/",
+        "primary_identity_verified": true,
+        "publication_date_verified": true,
+        "article_verified": false,
+        "publisher_access": {
+          "jsonld_isAccessibleForFree": null,
+          "jsonld_haspart_locked": false,
+          "meta_content_tier": null,
+          "premium_marker": false,
+          "lock_element": false,
+          "lock_element_classes": [],
+          "paywall_slot_present": false,
+          "schema": 1
+        },
+        "access_verified": false,
+        "publisher_taxonomy": {
+          "source": "url_bound_json_ld",
+          "canonical_url": "https://www.latercera.com/videos/noticia/pablo-cruz-se-ven-brotes-verdes-en-algunos-sectores-de-la-economia/",
+          "article_type": "NewsArticle",
+          "section": "Videos",
+          "labels": [
+            "Videopodcast",
+            "Money Talks",
+            "Economía",
+            "Minería"
+          ],
+          "matched_opinion_labels": [],
+          "classification": "factual"
+        },
+        "publisher_content_classification": "factual",
+        "publisher_document_type": "video",
+        "video_identity_verified": true,
+        "video_evidence": {
+          "type": "VideoObject",
+          "url": "https://www.latercera.com/videos/noticia/pablo-cruz-se-ven-brotes-verdes-en-algunos-sectores-de-la-economia/",
+          "id": "https://www.latercera.com/videos/noticia/pablo-cruz-se-ven-brotes-verdes-en-algunos-sectores-de-la-economia/#video",
+          "embed_url": "https://mdstrm.com/embed/6aece8035900bed26caeecaf",
+          "upload_date": "2026-11-08T23:30:00.000Z"
+        },
+        "article_body_complete": false,
+        "source_content_unavailable_reason": "publisher_video_text_unavailable",
+        "editorial_assessment": {
+          "decision": "pending"
+        },
+        "page_text": "Conversamos con Pablo Cruz, economista jefe de BTG Pactual Chile, respecto a cómo la economía está creciendo a dos velocidades. En el sector minero decrece a un ritmo de dos dígitos, y en el comercio, industria y otros, crecen cerca de un 2% lo que demuestra una economía sana en la que ya se sienten brotes verdes.",
+        "article_body_characters": 0,
+        "article_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "discovered_from": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml",
+        "market_role": "media",
+        "source_quality_gate": "deferred_video_text",
+        "captured_at": "2026-11-09T00:13:28.483903+00:00",
+        "html_sha256": "5cb544c6484c9028935fc3fdb73e19ce7a1366ef2e1d74b7b368216231ab1929",
+        "publisher_lastmod": "2026-11-08T23:30:00.405Z",
+        "health_anchor_observed": false,
+        "topics": [
+          "health_general"
+        ],
+        "public_teaser": "Conversamos con Pablo Cruz, economista jefe de BTG Pactual Chile, respecto a cómo la economía está creciendo a dos velocidades. En el sector minero decrece a un ritmo de dos dígitos, y en el comercio, industria y otros, crecen cerca de un 2% lo que demuestra una economía sana en la que ya se sienten brotes verdes.",
+        "public_teaser_source": "jsonld:description",
+        "paywalled": true,
+        "access_policy": "public_teaser_only",
+        "paywall_source": "la_tercera_premium",
+        "rights_redactions": [
+          {
+            "field": "metadata.editorial_assessment.reason",
+            "sha256": "31718c437d2571569f6756e94f8ae23ed2edb0e3777851156d3569e90030d43d",
+            "characters": 32,
+            "reason": "paywalled_press_public_teaser_only",
+            "redacted_at": "2026-10-28"
+          }
+        ]
+      }
+    },
+    "source": "pulso_latercera",
+    "lane": "BACKFILL",
+    "status": "retry",
+    "detected_at": "2026-11-09T00:13:50.987476+00:00",
+    "attempts": 1,
+    "reason": "publisher_video_text_unavailable",
+    "classification_watermark": "2026-11-08T21:33:03.534819+00:00",
+    "deferred_detail": "publisher_video_text_unavailable",
+    "updated_at": "2026-11-09T00:26:48.003638+00:00",
+    "retry_at": "2026-11-09T02:26:48.003645+00:00"
+  },
+  "a92456b69b5017d572079ae45b5d7280286185837377d9ce676396e040dbb4d4": {
+    "raw": {
+      "source_slug": "pulso_latercera",
+      "title": "El Papa llega a Argentina en un clima de tensión por medidas de austeridad de Milei",
+      "url": "https://www.latercera.com/mundo/noticia/el-papa-llega-a-argentina-en-un-clima-de-tension-por-el-medidas-de-austeridad-de-milei/",
+      "source_name": "Pulso / La Tercera",
+      "source_type": "press_high_trust",
+      "event_date": "2026-11-08",
+      "raw_text": "León XIV inició este domingo una visita de cuatro días que comenzará con un discurso dirigido al presidente, cuyo programa de austeridad ha sido criticado por la Iglesia. La pobreza subió a 32,3% en el primer semestre y el gobierno optó por evitar confrontaciones mientras dure la estadía papal.",
+      "metadata": {
+        "section": "Mundo",
+        "keywords": [
+          "Papa León XIV",
+          "León XIV",
+          "Javier Milei",
+          "Argentina",
+          "Iglesia católica",
+          "Pobreza",
+          "Austeridad",
+          "Karina Milei",
+          "Patricia Bullrich",
+          "Riesgo país",
+          "Gira apostólica",
+          "Perú",
+          "Uruguay",
+          "Mundo"
+        ],
+        "description": "León XIV inició este domingo una visita de cuatro días que comenzará con un discurso dirigido al presidente, cuyo programa de austeridad ha sido criticado por la Iglesia. La pobreza subió a 32,3% en el primer semestre y el gobierno optó por evitar confrontaciones mientras dure la estadía papal.",
+        "body_source": "url_bound_json_ld_articleBody",
+        "publication_date": "2026-11-08",
+        "publication_timestamp": "2026-11-08T22:30:00Z",
+        "publication_date_source": "visible_article_byline",
+        "visible_publication_date": "2026-11-08",
+        "publisher_date_convention": "calendar_agreement",
+        "publication_evidence": [
+          {
+            "source": "json_ld_datePublished",
+            "timestamp": "2026-11-08T22:30:00Z",
+            "publisher_day": "2026-11-08",
+            "timestamp_calendar_day": "2026-11-08",
+            "america_santiago_day": "2026-11-08"
+          },
+          {
+            "source": "article_published_time",
+            "timestamp": "2026-11-08T22:30:00Z",
+            "publisher_day": "2026-11-08",
+            "timestamp_calendar_day": "2026-11-08",
+            "america_santiago_day": "2026-11-08"
+          }
+        ],
+        "canonical_url": "https://www.latercera.com/mundo/noticia/el-papa-llega-a-argentina-en-un-clima-de-tension-por-el-medidas-de-austeridad-de-milei/",
         "primary_identity_verified": true,
         "publication_date_verified": true,
         "article_verified": true,
@@ -902073,34 +902629,46 @@
         "access_verified": false,
         "publisher_taxonomy": {
           "source": "url_bound_json_ld",
-          "canonical_url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+          "canonical_url": "https://www.latercera.com/mundo/noticia/el-papa-llega-a-argentina-en-un-clima-de-tension-por-el-medidas-de-austeridad-de-milei/",
           "article_type": "NewsArticle",
-          "section": "Nacional",
+          "section": "Mundo",
           "labels": [
-            "Leandro Hernández",
-            "Colo Colo",
-            "Providencia",
-            "Fiscalía Oriente",
-            "Formalización"
+            "Papa León XIV",
+            "León XIV",
+            "Javier Milei",
+            "Argentina",
+            "Iglesia católica",
+            "Pobreza",
+            "Austeridad",
+            "Karina Milei",
+            "Patricia Bullrich",
+            "Riesgo país",
+            "Gira apostólica",
+            "Perú",
+            "Uruguay",
+            "Mundo"
           ],
           "matched_opinion_labels": [],
           "classification": "factual"
         },
         "publisher_content_classification": "factual",
-        "page_text": "El futbolista de Colo Colo fue formalizado por conducción en estado de ebriedad con resultado de daños y lesiones graves. La Fiscalía estableció, mediante cámaras de seguridad, que habría cruzado con luz roja e impactado a otro vehículo. El tribunal fijó 120 días de investigación.",
-        "article_body_characters": 2411,
-        "article_body_sha256": "b86d95eba7ff0625c2a113b1022742c8d0ab305ccbc63aac7af6e3d79947f939",
-        "discovered_from": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1303",
+        "page_text": "León XIV inició este domingo una visita de cuatro días que comenzará con un discurso dirigido al presidente, cuyo programa de austeridad ha sido criticado por la Iglesia. La pobreza subió a 32,3% en el primer semestre y el gobierno optó por evitar confrontaciones mientras dure la estadía papal.",
+        "article_body_characters": 7983,
+        "article_body_sha256": "749eaf23a39f70bd26b9dce050dffdb65f0f53f7136809ce68d297797cc68c22",
+        "discovered_from": "https://www.latercera.com/arc/outboundfeeds/sitemap/?outputType=xml",
         "market_role": "media",
         "source_quality_gate": "passed",
-        "captured_at": "2026-11-08T21:30:09.528645+00:00",
-        "html_sha256": "bf3cb4799f555ad1d86dca858b260dcbcccfb8dcef69b4955359c1d3242890ea",
-        "publisher_lastmod": "2026-11-08T20:38:04.793Z",
+        "captured_at": "2026-11-09T00:13:28.483986+00:00",
+        "html_sha256": "d1a2c51d206c2c5d2a6daf91b007cf789580f67f32603820881a77d01b1cb6ff",
+        "publisher_lastmod": "2026-11-08T23:22:07.753Z",
         "topics": [
-          "providers"
+          "investment_ma",
+          "financing",
+          "competition",
+          "public_health"
         ],
         "body_redacted": true,
-        "public_teaser": "El futbolista de Colo Colo fue formalizado por conducción en estado de ebriedad con resultado de daños y lesiones graves. La Fiscalía estableció, mediante cámaras de seguridad, que habría cruzado con luz roja e impactado a otro vehículo. El tribunal fijó 120 días de investigación.",
+        "public_teaser": "León XIV inició este domingo una visita de cuatro días que comenzará con un discurso dirigido al presidente, cuyo programa de austeridad ha sido criticado por la Iglesia. La pobreza subió a 32,3% en el primer semestre y el gobierno optó por evitar confrontaciones mientras dure la estadía papal.",
         "public_teaser_source": "jsonld:description",
         "paywalled": true,
         "access_policy": "public_teaser_only",
@@ -902108,14 +902676,14 @@
         "rights_redactions": [
           {
             "field": "page_text",
-            "sha256": "b86d95eba7ff0625c2a113b1022742c8d0ab305ccbc63aac7af6e3d79947f939",
-            "characters": 2411,
+            "sha256": "749eaf23a39f70bd26b9dce050dffdb65f0f53f7136809ce68d297797cc68c22",
+            "characters": 7983,
             "reason": "paywalled_press_public_teaser_only",
             "redacted_at": "2026-10-28"
           },
           {
             "field": "raw_text",
-            "sha256": "014d0ebad488f79ff1185489eb73885296c2cbe8b73cf03cb7443502aa480218",
+            "sha256": "2ea92d256403941177c59a9944d15cb1293f00617bca2e341a4cd3566c8c2281",
             "characters": 1800,
             "reason": "paywalled_press_public_teaser_only",
             "redacted_at": "2026-10-28"
@@ -902132,8 +902700,8 @@
         "primary_item_binding": {
           "verified": true,
           "reason": "pulso_primary_item_identity_and_date_verified",
-          "raw_url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
-          "primary_canonical_url": "https://www.latercera.com/nacional/noticia/formalizan-a-leandro-hernandez-por-provocar-choque-en-providencia-queda-con-arraigo-sin-licencia-y-firma-mensual/",
+          "raw_url": "https://www.latercera.com/mundo/noticia/el-papa-llega-a-argentina-en-un-clima-de-tension-por-el-medidas-de-austeridad-de-milei/",
+          "primary_canonical_url": "https://www.latercera.com/mundo/noticia/el-papa-llega-a-argentina-en-un-clima-de-tension-por-el-medidas-de-austeridad-de-milei/",
           "raw_event_date": "2026-11-08",
           "primary_publication_date": "2026-11-08",
           "primary_verification_flags": {
@@ -902153,162 +902721,11 @@
     "source": "pulso_latercera",
     "lane": "LIVE",
     "status": "rejected",
-    "detected_at": "2026-11-08T21:33:03.535577+00:00",
+    "detected_at": "2026-11-09T00:13:50.987476+00:00",
     "attempts": 1,
     "reason": "media_materiality_prefilter",
-    "classification_watermark": "2026-11-08T17:34:50.064300+00:00",
-    "updated_at": "2026-11-08T21:45:41.377291+00:00",
-    "retry_at": null
-  },
-  "ac9529e1e0a1662a64ef232fbe480262fc3fd26e50e7d4d689e59a3c33a1c194": {
-    "raw": {
-      "source_slug": "pulso_latercera",
-      "title": "Accidente en la Ruta de la Fruta: Fiscalía apunta a que camión cruzó el eje de la calzada antes de fatal choque",
-      "url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
-      "source_name": "Pulso / La Tercera",
-      "source_type": "press_high_trust",
-      "event_date": "2026-11-08",
-      "raw_text": "La fiscal Claudia Cancino explicó que aún se desconocen las razones por las que el conductor del vehículo de carga habría perdido el control. Las 11 víctimas fatales ya fueron identificadas, mientras otras 15 personas resultaron lesionadas.",
-      "metadata": {
-        "section": "Nacional",
-        "keywords": [
-          "Santo Domingo",
-          "Ruta de la Furta",
-          "Accidente",
-          "Nacional",
-          "Claudia Cancino",
-          "Fiscalía",
-          "SML",
-          "SIAT"
-        ],
-        "description": "La fiscal Claudia Cancino explicó que aún se desconocen las razones por las que el conductor del vehículo de carga habría perdido el control. Las 11 víctimas fatales ya fueron identificadas, mientras otras 15 personas resultaron lesionadas.\n",
-        "body_source": "url_bound_json_ld_articleBody",
-        "publication_date": "2026-11-08",
-        "publication_timestamp": "2026-11-08T19:25:00.692Z",
-        "publication_date_source": "visible_article_byline",
-        "visible_publication_date": "2026-11-08",
-        "publisher_date_convention": "calendar_agreement",
-        "publication_evidence": [
-          {
-            "source": "json_ld_datePublished",
-            "timestamp": "2026-11-08T19:25:00.692Z",
-            "publisher_day": "2026-11-08",
-            "timestamp_calendar_day": "2026-11-08",
-            "america_santiago_day": "2026-11-08"
-          },
-          {
-            "source": "article_published_time",
-            "timestamp": "2026-11-08T19:25:00.692Z",
-            "publisher_day": "2026-11-08",
-            "timestamp_calendar_day": "2026-11-08",
-            "america_santiago_day": "2026-11-08"
-          }
-        ],
-        "canonical_url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
-        "primary_identity_verified": true,
-        "publication_date_verified": true,
-        "article_verified": true,
-        "publisher_access": {
-          "jsonld_isAccessibleForFree": null,
-          "jsonld_haspart_locked": false,
-          "meta_content_tier": null,
-          "premium_marker": false,
-          "lock_element": false,
-          "lock_element_classes": [],
-          "paywall_slot_present": true,
-          "schema": 1
-        },
-        "access_verified": false,
-        "publisher_taxonomy": {
-          "source": "url_bound_json_ld",
-          "canonical_url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
-          "article_type": "NewsArticle",
-          "section": "Nacional",
-          "labels": [
-            "Santo Domingo",
-            "Ruta de la Furta",
-            "Accidente",
-            "Nacional",
-            "Claudia Cancino",
-            "Fiscalía",
-            "SML",
-            "SIAT"
-          ],
-          "matched_opinion_labels": [],
-          "classification": "factual"
-        },
-        "publisher_content_classification": "factual",
-        "page_text": "La fiscal Claudia Cancino explicó que aún se desconocen las razones por las que el conductor del vehículo de carga habría perdido el control. Las 11 víctimas fatales ya fueron identificadas, mientras otras 15 personas resultaron lesionadas.",
-        "article_body_characters": 1646,
-        "article_body_sha256": "4e50387a2705afb6c6752044d325b27750c12a8ec54afbbcb1af2628947a3ce9",
-        "discovered_from": "https://www.latercera.com/pf/api/v3/content/fetch/story-feed-sections-fetch?query=%7B%22feedOffset%22%3A0%2C%22feedSize%22%3A24%2C%22fromComponent%22%3A%22result-list%22%2C%22includeSections%22%3A%22%2Fnacional%22%7D&_website=la-tercera&d=1303",
-        "market_role": "media",
-        "source_quality_gate": "passed",
-        "captured_at": "2026-11-08T21:30:09.757154+00:00",
-        "html_sha256": "95e89e381427a963d8eb008130de765406e6b4cac55950ce24416926ad92ad61",
-        "publisher_lastmod": "2026-11-08T19:25:00.842Z",
-        "topics": [
-          "health_general"
-        ],
-        "body_redacted": true,
-        "public_teaser": "La fiscal Claudia Cancino explicó que aún se desconocen las razones por las que el conductor del vehículo de carga habría perdido el control. Las 11 víctimas fatales ya fueron identificadas, mientras otras 15 personas resultaron lesionadas.",
-        "public_teaser_source": "jsonld:description",
-        "paywalled": true,
-        "access_policy": "public_teaser_only",
-        "paywall_source": "la_tercera_premium",
-        "rights_redactions": [
-          {
-            "field": "page_text",
-            "sha256": "4e50387a2705afb6c6752044d325b27750c12a8ec54afbbcb1af2628947a3ce9",
-            "characters": 1646,
-            "reason": "paywalled_press_public_teaser_only",
-            "redacted_at": "2026-10-28"
-          },
-          {
-            "field": "raw_text",
-            "sha256": "4e50387a2705afb6c6752044d325b27750c12a8ec54afbbcb1af2628947a3ce9",
-            "characters": 1646,
-            "reason": "paywalled_press_public_teaser_only",
-            "redacted_at": "2026-10-28"
-          },
-          {
-            "field": "metadata.editorial_assessment.reason",
-            "sha256": "5f2fd1a6c0c243f0d1a7cc58ec478ed5d39b26ff7d5d2abcf2c5be71ff3fe5da",
-            "characters": 27,
-            "reason": "paywalled_press_public_teaser_only",
-            "redacted_at": "2026-10-28"
-          }
-        ],
-        "article_body_complete": true,
-        "primary_item_binding": {
-          "verified": true,
-          "reason": "pulso_primary_item_identity_and_date_verified",
-          "raw_url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
-          "primary_canonical_url": "https://www.latercera.com/nacional/noticia/accidente-en-la-ruta-de-la-fruta-fiscalia-apunta-a-que-camion-cruzo-el-eje-de-la-calzada-antes-de-fatal-choque/",
-          "raw_event_date": "2026-11-08",
-          "primary_publication_date": "2026-11-08",
-          "primary_verification_flags": {
-            "primary_identity_verified": true,
-            "publication_date_verified": true
-          },
-          "model_calls_permitted": true,
-          "other_editorial_and_budget_gates_still_apply": true,
-          "publication_approved": false
-        },
-        "rejection_reason": "media_materiality_prefilter",
-        "editorial_assessment": {
-          "decision": "rejected"
-        }
-      }
-    },
-    "source": "pulso_latercera",
-    "lane": "LIVE",
-    "status": "rejected",
-    "detected_at": "2026-11-08T21:33:03.535577+00:00",
-    "attempts": 1,
-    "reason": "media_materiality_prefilter",
-    "classification_watermark": "2026-11-08T17:34:50.064300+00:00",
-    "updated_at": "2026-11-08T21:45:49.812106+00:00",
+    "classification_watermark": "2026-11-08T21:33:03.534819+00:00",
+    "updated_at": "2026-11-09T00:26:34.796875+00:00",
     "retry_at": null
   }
 }
