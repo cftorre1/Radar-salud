@@ -24,7 +24,7 @@ from urllib.robotparser import RobotFileParser
 BASE = "https://www.superdesalud.gob.cl"
 UA = "RadarSaludBot/0.1 (+public-source-monitor)"
 PAUSE = 1.5
-MAX_PAGES = 5
+MAX_PAGES = 2
 
 TYPES = [
     ("Oficio Circular", r"^oficio\s+circular\b"),
@@ -202,6 +202,52 @@ def main(argv=None):
             break
         html_items += [dict(x, via="html_archive", archive_page=page) for x in links]
     receipt["sources"]["html_archive_count"] = len(html_items)
+
+    # 2b. Landing page /normativa/ is a hub (probe 42710009565): record every link and follow the
+    # listing pages it points to (one level), reading their tables like the daily scout does.
+    hub = pr.get(BASE + "/normativa/") or ""
+    hub_parser = Links()
+    hub_parser.feed(hub)
+    hub_links = []
+    for href, text in hub_parser.links:
+        url = urljoin(BASE + "/normativa/", href or "")
+        if urlsplit(url).netloc.endswith("superdesalud.gob.cl") and url not in [x["url"] for x in hub_links]:
+            hub_links.append({"url": url, "text": text})
+    receipt["sources"]["normativa_hub_links"] = hub_links
+    listings = {}
+    candidates = [x for x in hub_links if re.search(r"tax-|normativ|circular|resoluci|oficio|dictamen|instrucci|norma",
+                                                    x["url"] + " " + x["text"], re.I)
+                  and not x["url"].lower().endswith(".pdf")][:40]
+    for link in candidates:
+        url = link["url"]
+        body = pr.get(url)
+        if not body:
+            continue
+        _, rows = normative_links(body, url)
+        p2 = Links()
+        p2.feed(body)
+        table_rows = [r for r in rows[1:] if len(r) >= 2]
+        typed = []
+        for r in table_rows:
+            title = next((c for c in r if doc_type(c) != "Otro"), "")
+            date = next((c for c in r if re.fullmatch(r"\d{1,2}/\d{1,2}/20\d{2}", c)), None)
+            if title:
+                typed.append({"publication_date": date, "title": title[:200], "doc_type": doc_type(title),
+                              "emission_in_title": emission(title), "subject": (r[-1] if r[-1] != title else "")[:200]})
+        def key(x):
+            d = x["publication_date"] or ""
+            m = re.fullmatch(r"(\d{1,2})/(\d{1,2})/(20\d{2})", d)
+            return (m.group(3), m.group(2).zfill(2), m.group(1).zfill(2)) if m else ("", "", "")
+        typed.sort(key=key, reverse=True)
+        by = defaultdict(list)
+        for x in typed:
+            by[x["doc_type"]].append(x)
+        listings[url] = {"hub_text": link["text"], "header": rows[0] if rows else None, "rows": len(table_rows),
+                         "counts_per_type": {k: len(v) for k, v in by.items()},
+                         "latest_10_per_type": {k: v[:10] for k, v in by.items()},
+                         "sublinks": [{"url": urljoin(url, h), "text": t} for h, t in p2.links
+                                      if "tax-" in (h or "") and t][:60]}
+    receipt["sources"]["listings"] = listings
 
     # 3. WordPress sitemaps that list /normativa/ documents.
     sitemaps = {}
