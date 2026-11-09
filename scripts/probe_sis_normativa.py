@@ -215,7 +215,7 @@ def main(argv=None):
             hub_links.append({"url": url, "text": text})
     receipt["sources"]["normativa_hub_links"] = hub_links
     listings = {}
-    candidates = [x for x in hub_links if re.search(r"tax-|normativ|circular|resoluci|oficio|dictamen|instrucci|norma",
+    candidates = [x for x in hub_links if re.search(r"circular|resoluci|oficio|dictamen",
                                                     x["url"] + " " + x["text"], re.I)
                   and not x["url"].lower().endswith(".pdf")][:40]
     for link in candidates:
@@ -248,6 +248,47 @@ def main(argv=None):
                          "sublinks": [{"url": urljoin(url, h), "text": t} for h, t in p2.links
                                       if "tax-" in (h or "") and t][:60]}
     receipt["sources"]["listings"] = listings
+
+    # 2c. Normative hubs are term trees (probe 42710380828: 0 table rows on the hub itself).
+    # Follow each hub's child terms (URLs under the hub path) and read their tables.
+    children = {}
+    for hub_path in ("/tax-otros-actos-de-la-superintendencia/", "/tax-marco-normativo/",
+                     "/tax-instrucciones-dictadas-por-la-superintendencia/"):
+        hub_body = pr.get(BASE + hub_path) or ""
+        hp = Links()
+        hp.feed(hub_body)
+        kids = []
+        for href, text in hp.links:
+            url = urljoin(BASE + hub_path, href or "")
+            path = urlsplit(url).path
+            if path.startswith(hub_path) and path != hub_path and url not in [k["url"] for k in kids]:
+                kids.append({"url": url, "text": text})
+        for kid in kids[:25]:
+            body = pr.get(kid["url"])
+            if not body:
+                kid["status"] = "unreadable"
+                continue
+            _, rows = normative_links(body, kid["url"])
+            table_rows = [r for r in rows[1:] if len(r) >= 2]
+            typed = []
+            for r in table_rows:
+                title = next((c for c in r if doc_type(c) != "Otro"), "")
+                date = next((c for c in r if re.fullmatch(r"\d{1,2}/\d{1,2}/20\d{2}", c)), None)
+                typed.append({"publication_date": date, "title": (title or (r[1] if len(r) > 1 else r[0]))[:200],
+                              "doc_type": doc_type(title) if title else "Otro",
+                              "emission_in_title": emission(title), "subject": r[-1][:200]})
+            def key(x):
+                m = re.fullmatch(r"(\d{1,2})/(\d{1,2})/(20\d{2})", x["publication_date"] or "")
+                return (m.group(3), m.group(2).zfill(2), m.group(1).zfill(2)) if m else ("", "", "")
+            typed.sort(key=key, reverse=True)
+            by = defaultdict(list)
+            for x in typed:
+                by[x["doc_type"]].append(x)
+            kid.update(header=rows[0] if rows else None, rows=len(table_rows),
+                       counts_per_type={k: len(v) for k, v in by.items()},
+                       latest_10_per_type={k: v[:10] for k, v in by.items()})
+        children[hub_path] = kids
+    receipt["sources"]["normative_term_children"] = children
 
     # 3. WordPress sitemaps that list /normativa/ documents.
     sitemaps = {}
