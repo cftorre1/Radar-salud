@@ -561415,7 +561415,7 @@
           "requested_at": "2026-11-07T06:54:10.380464+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "4536394b41d2c2144e91c4e1ce08aef5dc27ae6bb98e1f9ee372a413a3284ae1",
-          "attempts": 3,
+          "attempts": 4,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
@@ -561443,8 +561443,17 @@
               "response_id": null,
               "input_tokens": null,
               "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-09T08:01:11.074157+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
             }
           ],
+          "revived_at": "2026-11-09T00:26:30.945000+00:00",
           "request_binding": {
             "analysis_base_article_body_sha256": "4536394b41d2c2144e91c4e1ce08aef5dc27ae6bb98e1f9ee372a413a3284ae1",
             "analysis_base_article_body_characters": 385,
@@ -561454,32 +561463,24 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "3cb7b651ceb84f5aaae42c2c67d367e0bf5d1214c2b5375545ad9a7112b9dfda",
             "analysis_request_input_characters": 538
-          },
-          "revived_at": "2026-11-09T00:26:30.945000+00:00",
-          "revivals": [
-            {
-              "at": "2026-11-09T00:26:30.945000+00:00",
-              "reason": "engine_run_bounded_revival"
-            }
-          ]
+          }
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72,
-          "unbilled_failures": 3
+          "threshold": 72
         }
       }
     },
     "source": "pulso_latercera",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 3,
-    "reason": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
+    "attempts": 4,
+    "reason": "retry_exhausted:pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
-    "updated_at": "2026-11-08T17:47:56.943802+00:00",
-    "retry_at": "2026-11-09T01:47:56.943810+00:00",
+    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "updated_at": "2026-11-09T08:01:12.984967+00:00",
+    "retry_at": null,
     "uncounted_deferrals": 3
   },
   "fb2992065b8cda697e2c4f096f6b7f85d241e2f123d9f1ebe437e207b54af077": {
@@ -561915,7 +561916,7 @@
           "requested_at": "2026-11-07T06:52:43.784594+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "903665c97d29aa82428a0f731fa41af2a4d91ec40cc06c160bcc52351eb0d9bd",
-          "attempts": 3,
+          "attempts": 4,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
@@ -561943,8 +561944,17 @@
               "response_id": null,
               "input_tokens": null,
               "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-09T08:00:37.948335+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
             }
           ],
+          "revived_at": "2026-11-09T00:26:30.945017+00:00",
           "request_binding": {
             "analysis_base_article_body_sha256": "903665c97d29aa82428a0f731fa41af2a4d91ec40cc06c160bcc52351eb0d9bd",
             "analysis_base_article_body_characters": 165,
@@ -561954,32 +561964,24 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "2407e07d3cf52d725420a85995f5a3fda74dd94b42e89c64c0c382600842bcff",
             "analysis_request_input_characters": 306
-          },
-          "revived_at": "2026-11-09T00:26:30.945017+00:00",
-          "revivals": [
-            {
-              "at": "2026-11-09T00:26:30.945017+00:00",
-              "reason": "engine_run_bounded_revival"
-            }
-          ]
+          }
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72,
-          "unbilled_failures": 3
+          "threshold": 72
         }
       }
     },
     "source": "pulso_latercera",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 3,
-    "reason": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
+    "attempts": 4,
+    "reason": "retry_exhausted:pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
-    "updated_at": "2026-11-08T17:47:22.856200+00:00",
-    "retry_at": "2026-11-09T01:47:22.856211+00:00",
+    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "updated_at": "2026-11-09T08:00:39.723290+00:00",
+    "retry_at": null,
     "uncounted_deferrals": 3
   },
   "aa16fd4d52b3274d87a83dd6cc78cb3d8f8f43e319199abeb85cfd388616fad8": {
@@ -563318,7 +563320,7 @@
           "requested_at": "2026-11-07T06:55:45.513499+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "aa9c7cb5176d5aa71cc1ca273ec459f220820dc90fa8e7ff95ea691bddd1b475",
-          "attempts": 3,
+          "attempts": 4,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
@@ -563346,8 +563348,17 @@
               "response_id": null,
               "input_tokens": null,
               "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-09T08:01:20.225471+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
             }
           ],
+          "revived_at": "2026-11-09T00:26:30.945027+00:00",
           "request_binding": {
             "analysis_base_article_body_sha256": "aa9c7cb5176d5aa71cc1ca273ec459f220820dc90fa8e7ff95ea691bddd1b475",
             "analysis_base_article_body_characters": 344,
@@ -563357,32 +563368,24 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "d417a5298100f7bebb849c19a648e365b526d855902949e87ebb299a22676549",
             "analysis_request_input_characters": 524
-          },
-          "revived_at": "2026-11-09T00:26:30.945027+00:00",
-          "revivals": [
-            {
-              "at": "2026-11-09T00:26:30.945027+00:00",
-              "reason": "engine_run_bounded_revival"
-            }
-          ]
+          }
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72,
-          "unbilled_failures": 3
+          "threshold": 72
         }
       }
     },
     "source": "pulso_latercera",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 3,
-    "reason": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
+    "attempts": 4,
+    "reason": "retry_exhausted:pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
-    "updated_at": "2026-11-08T17:48:05.415890+00:00",
-    "retry_at": "2026-11-09T01:48:05.415897+00:00",
+    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "updated_at": "2026-11-09T08:01:20.895077+00:00",
+    "retry_at": null,
     "uncounted_deferrals": 3
   },
   "df1501f7ca72992ce78bf910e5a19011f27a3baa31b0685252007acbb9f99e2d": {
@@ -563539,7 +563542,7 @@
           "requested_at": "2026-11-07T06:55:54.578854+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "ee115a1dfa0cdb7d292969dfa639d8f498f71cb0507d46d9dbab722b4f4b60f6",
-          "attempts": 3,
+          "attempts": 4,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
@@ -563567,8 +563570,17 @@
               "response_id": null,
               "input_tokens": null,
               "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-09T08:01:28.109590+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
             }
           ],
+          "revived_at": "2026-11-09T00:26:30.945036+00:00",
           "request_binding": {
             "analysis_base_article_body_sha256": "ee115a1dfa0cdb7d292969dfa639d8f498f71cb0507d46d9dbab722b4f4b60f6",
             "analysis_base_article_body_characters": 293,
@@ -563578,32 +563590,24 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "3d45bc817a2aa4939574e7befcb713137854a8376fc3c0de7bf6eb6055a5cfda",
             "analysis_request_input_characters": 450
-          },
-          "revived_at": "2026-11-09T00:26:30.945036+00:00",
-          "revivals": [
-            {
-              "at": "2026-11-09T00:26:30.945036+00:00",
-              "reason": "engine_run_bounded_revival"
-            }
-          ]
+          }
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72,
-          "unbilled_failures": 3
+          "threshold": 72
         }
       }
     },
     "source": "pulso_latercera",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 3,
-    "reason": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
+    "attempts": 4,
+    "reason": "retry_exhausted:pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
-    "updated_at": "2026-11-08T17:48:13.954376+00:00",
-    "retry_at": "2026-11-09T01:48:13.954385+00:00",
+    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "updated_at": "2026-11-09T08:01:28.971807+00:00",
+    "retry_at": null,
     "uncounted_deferrals": 3
   },
   "7dea36ff6b52c4b3aa489235cd90285963d7c006fa7629653f70afe7e3721369": {
@@ -567079,7 +567083,7 @@
           "requested_at": "2026-11-07T06:53:01.503641+00:00",
           "reason": "no_paid_output",
           "teaser_sha256": "10560867941e39f99c3fd9d84359b0f000524f244052be64a5b5c816ef707538",
-          "attempts": 3,
+          "attempts": 4,
           "max_attempts": 1,
           "max_unbilled_retries": 2,
           "max_unbilled_attempts": 3,
@@ -567107,8 +567111,17 @@
               "response_id": null,
               "input_tokens": null,
               "output_tokens": null
+            },
+            {
+              "requested_at": "2026-11-09T08:00:47.133258+00:00",
+              "outcome": "failed_unbilled",
+              "error_type": "RateLimitError",
+              "response_id": null,
+              "input_tokens": null,
+              "output_tokens": null
             }
           ],
+          "revived_at": "2026-11-09T00:26:30.945059+00:00",
           "request_binding": {
             "analysis_base_article_body_sha256": "10560867941e39f99c3fd9d84359b0f000524f244052be64a5b5c816ef707538",
             "analysis_base_article_body_characters": 304,
@@ -567118,32 +567131,24 @@
             "analysis_input_complete": true,
             "analysis_request_input_sha256": "061db18794707e438e3eb23d129de5fe1ec5a1703edf13a666a831f660cdc313",
             "analysis_request_input_characters": 479
-          },
-          "revived_at": "2026-11-09T00:26:30.945059+00:00",
-          "revivals": [
-            {
-              "at": "2026-11-09T00:26:30.945059+00:00",
-              "reason": "engine_run_bounded_revival"
-            }
-          ]
+          }
         },
         "editorial_assessment": {
           "decision": "pending",
-          "threshold": 72,
-          "unbilled_failures": 3
+          "threshold": 72
         }
       }
     },
     "source": "pulso_latercera",
     "lane": "LIVE",
-    "status": "retry",
+    "status": "deferred",
     "detected_at": "2026-11-07T06:29:46.791559+00:00",
-    "attempts": 3,
-    "reason": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
+    "attempts": 4,
+    "reason": "retry_exhausted:pulso_paywalled_reanalysis_call_failed_unbilled",
     "classification_watermark": "2026-11-05T18:43:53.858323+00:00",
-    "deferred_detail": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
-    "updated_at": "2026-11-08T17:47:31.401859+00:00",
-    "retry_at": "2026-11-09T01:47:31.401867+00:00",
+    "deferred_detail": "pulso_paywalled_reanalysis_call_failed_unbilled",
+    "updated_at": "2026-11-09T08:00:48.705596+00:00",
+    "retry_at": null,
     "uncounted_deferrals": 3
   },
   "24b3d67230ed5f9dd04a51e51e88fd939320642ee422187e39c29c5a8ecce0ce": {
@@ -569073,9 +569078,9 @@
     "reason": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
     "classification_watermark": "2026-11-07T06:29:46.791170+00:00",
     "deferred_detail": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
-    "updated_at": "2026-11-08T17:47:39.846477+00:00",
-    "retry_at": "2026-11-09T01:47:39.846484+00:00",
-    "uncounted_deferrals": 2
+    "updated_at": "2026-11-09T08:00:56.460715+00:00",
+    "retry_at": "2026-11-09T16:00:56.460726+00:00",
+    "uncounted_deferrals": 3
   },
   "820f062243f8cda290b0fc9a9dc02ec60c268cdc4471bf01e4b9d30932c147a7": {
     "raw": {
@@ -571904,9 +571909,9 @@
     "reason": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
     "classification_watermark": "2026-11-07T15:03:49.958388+00:00",
     "deferred_detail": "pulso_paywalled_reanalysis_unbilled_attempts_deferred",
-    "updated_at": "2026-11-08T17:47:48.367470+00:00",
-    "retry_at": "2026-11-09T01:47:48.367478+00:00",
-    "uncounted_deferrals": 1
+    "updated_at": "2026-11-09T08:01:03.774854+00:00",
+    "retry_at": "2026-11-09T16:01:03.774863+00:00",
+    "uncounted_deferrals": 2
   },
   "d39b84fd47ec65cbf41f0154388c59a64f7df3d4ca777a984bc85fab85c0639d": {
     "raw": {
@@ -902555,12 +902560,12 @@
     "lane": "BACKFILL",
     "status": "retry",
     "detected_at": "2026-11-09T00:13:50.987476+00:00",
-    "attempts": 1,
+    "attempts": 2,
     "reason": "publisher_video_text_unavailable",
     "classification_watermark": "2026-11-08T21:33:03.534819+00:00",
     "deferred_detail": "publisher_video_text_unavailable",
-    "updated_at": "2026-11-09T00:26:48.003638+00:00",
-    "retry_at": "2026-11-09T02:26:48.003645+00:00"
+    "updated_at": "2026-11-09T08:01:36.157288+00:00",
+    "retry_at": "2026-11-09T12:01:36.157295+00:00"
   },
   "a92456b69b5017d572079ae45b5d7280286185837377d9ce676396e040dbb4d4": {
     "raw": {
