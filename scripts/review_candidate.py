@@ -88,15 +88,16 @@ def review(web, sha):
             context=str(signal.get("normative_context") or "")
             if signal.get("normative_minimal"):
                 # Opción A (Dirección 26-oct-2026): verifiable listing facts only + badge + fixed disclaimer.
-                from radar_salud.normative_minimal import BADGE, DISCLAIMER, INTERPRETIVE_FIELDS, ISSUERS, _official
+                from radar_salud.normative_minimal import BADGE, DISCLAIMER, INTERPRETIVE_FIELDS, ISSUERS, _official, minimal_title
                 issuer=str(signal.get("source_name") or "")
-                short="SUSESO" if "SUSESO" in issuer else "Superintendencia de Salud"
                 expected_context=f"Emitida por {issuer} con fecha {signal.get('event_date')}. Asunto oficial: "
                 problems=[]
                 if record:problems.append("has an approved V2.1 record; must use it")
                 if signal.get("editorial_badge")!=BADGE or signal.get("normative_act_scope")!="general":problems.append("badge/scope")
                 if issuer not in ISSUERS or not _official(signal.get("source_url"),issuer):problems.append("issuer/official link")
-                if not identity or not title.startswith(f"{identity} · {short}: "):problems.append("title template")
+                # The title is the identity plus the official subject shortened deterministically (no new words).
+                official=context.split("Asunto oficial: ",1)[1].rstrip(".") if "Asunto oficial: " in context else ""
+                if not identity or not official or title!=minimal_title(identity,official):problems.append("title template")
                 if not context.startswith(expected_context):problems.append("context template")
                 if not (signal.get("card_what")==context==signal.get("what_happened")):problems.append("card copy")
                 if not (signal.get("why_it_matters")==DISCLAIMER==signal.get("card_why")):problems.append("disclaimer")
