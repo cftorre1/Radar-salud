@@ -1,0 +1,86 @@
+{
+  "probe": "sis_normativa_inventory",
+  "user_agent": "RadarSaludBot/0.1 (+public-source-monitor)",
+  "base": "https://www.superdesalud.gob.cl",
+  "started_at": "2026-11-09T22:15:13.427481+00:00",
+  "robots_txt": "User-agent: *\nDisallow: /portal/w3-issues.html\nDisallow: /difusion/665/w3-printer-*.html\nDisallow: /portal/w3-printer-*.html\n#observatorio\nDisallow: /observatorio/671/*.html\nDisallow: /observatorio/575/*.html\n\n",
+  "sources": {
+    "wp_types": {},
+    "wp_taxonomies": {},
+    "html_archive_count": 0,
+    "sitemaps": {},
+    "instrucciones_dictadas_baseline": {
+      "aseguradoras": {
+        "links": 1385,
+        "rows": 1381,
+        "header": [
+          "Fecha de publicación",
+          "Título",
+          "Resumen y modificaciones"
+        ]
+      },
+      "otros": {
+        "links": 18,
+        "rows": 14,
+        "header": [
+          "Fecha de publicación",
+          "Título",
+          "Resumen y modificaciones"
+        ]
+      }
+    }
+  },
+  "counts_per_type": {},
+  "latest_10_per_type": {},
+  "requests": [
+    {
+      "url": "https://www.superdesalud.gob.cl/wp-json/wp/v2/types",
+      "robots_allowed": true,
+      "status": 404,
+      "bytes": 0
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/wp-json/wp/v2/taxonomies",
+      "robots_allowed": true,
+      "status": 404,
+      "bytes": 0
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/normativa/",
+      "robots_allowed": true,
+      "status": 200,
+      "bytes": 55548
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/wp-sitemap.xml",
+      "robots_allowed": true,
+      "status": 404,
+      "bytes": 0
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/sitemap_index.xml",
+      "robots_allowed": true,
+      "status": 404,
+      "bytes": 0
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/sitemap.xml",
+      "robots_allowed": true,
+      "status": 404,
+      "bytes": 0
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-aseguradoras-4097/",
+      "robots_allowed": true,
+      "status": 200,
+      "bytes": 1090215
+    },
+    {
+      "url": "https://www.superdesalud.gob.cl/tax-instrucciones-dictadas-por-la-superintendencia/para-otros-destinatarios-7926/",
+      "robots_allowed": true,
+      "status": 200,
+      "bytes": 110206
+    }
+  ],
+  "finished_at": "2026-11-09T22:15:42.039218+00:00"
+}
