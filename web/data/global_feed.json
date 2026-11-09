@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "as_of": "2026-11-09",
-  "generated_at": "2026-11-09T19:13:36.142080+00:00",
+  "generated_at": "2026-11-09T23:31:54.953233+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -15,10 +15,10 @@
   "window_days": 90,
   "retention_days": 90,
   "freshness": {
-    "newest_published_at": "2026-11-02",
-    "items_last_2_days": 0,
-    "items_last_7_days": 0,
-    "status": "stale",
+    "newest_published_at": "2026-11-09",
+    "items_last_2_days": 1,
+    "items_last_7_days": 2,
+    "status": "fresh",
     "stale_after_days": 2
   },
   "sources": [
@@ -48,17 +48,149 @@
     "not_global_interest:facility_opening": 1,
     "not_global_interest:no_global_interest_signal": 30,
     "not_global_interest:source_rule_exclusion": 5,
-    "not_material_or_unverified": 315,
+    "not_material_or_unverified": 317,
     "not_relevant_or_undated": 76,
-    "official_title_without_executive_keyword": 181,
+    "official_title_without_executive_keyword": 182,
     "publication_activation_pending_who": 265
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
   "duplicates": [],
   "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
-  "weekly_signal": [],
+  "weekly_signal": [
+    {
+      "segment": "healthtech",
+      "label_es": "Salud digital y dispositivos",
+      "count": 2,
+      "item_ids": [
+        "a6882e45cce8334ef3e7",
+        "0506b158cfb2c41aab5a"
+      ]
+    },
+    {
+      "segment": "pharma",
+      "label_es": "Medicamentos y farma",
+      "count": 1,
+      "item_ids": [
+        "a6882e45cce8334ef3e7"
+      ]
+    }
+  ],
   "items": [
+    {
+      "id": "0506b158cfb2c41aab5a",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "European Public Health Conference 2026: the European Health Union Priority Programme",
+      "url": "https://ec.europa.eu/newsroom/sante/newsletter-archives/81276",
+      "published_at": "2026-11-09",
+      "segments": [
+        "healthtech"
+      ],
+      "description": "European Public Health Conference 2026: the European Health Union Priority Programme",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-11-09",
+      "title_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
+      "description_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "921e95cbbb4685e3a600ff1bf0e38927"
+      }
+    },
+    {
+      "id": "a6882e45cce8334ef3e7",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "Commission publishes joint clinical assessment report on new breast cancer medicine",
+      "url": "https://ec.europa.eu/newsroom/sante/newsletter-archives/81226",
+      "published_at": "2026-11-06",
+      "segments": [
+        "pharma",
+        "healthtech"
+      ],
+      "description": "Commission publishes joint clinical assessment report on new breast cancer medicine",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 76,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-11-07",
+      "title_es": "La Comisión publica un informe conjunto de evaluación clínica sobre un nuevo medicamento para el cáncer de mama",
+      "description_es": "La Comisión publica un informe conjunto de evaluación clínica sobre un nuevo medicamento para el cáncer de mama",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "84eae9b5cddc5f4eb9d284448f3a4634"
+      }
+    },
     {
       "id": "6041c398b60aaa07606b",
       "source": "fda",
@@ -1167,24 +1299,23 @@
     }
   ],
   "translation": {
-    "translated": 11,
+    "translated": 13,
     "summarized": 5,
     "from_cache": 16,
     "verification_failed": 7,
     "review_failed": 0,
     "not_allowed": 21,
-    "pending": 2,
+    "pending": 0,
     "source_in_spanish": 6
   },
-  "ai_text_items": 16,
+  "ai_text_items": 18,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget",
   "display": {
     "spanish_only": true,
-    "shown": 22,
-    "hidden": 30,
+    "shown": 24,
+    "hidden": 28,
     "hidden_by_reason": {
       "not_allowed_without_verified_summary": 21,
-      "translation_pending": 2,
       "translation_verification_failed": 7
     },
     "authorized_by": "Dirección (cftorre1)",

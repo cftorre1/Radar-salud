@@ -233,6 +233,8 @@ def _normative_contract(s):
         r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{raw_number}","normative_document_label":label,"legal_identity":label})
         record=cfg.get("source_records",{}).get(str(r.get("source_url") or "")) or cfg.get("records",{}).get(number,{})
     plain=str(record.get("plain_language_title") or "").strip();context=str(record.get("normative_context") or "").strip()
+    # Auto records drafted before 9-nov-2026 used the listing title ("Circular IF/N°540 - Emisión: 4/11/2026 · …").
+    plain=re.sub(r"\s*[-–]\s*Emisi[oó]n\s*:\s*\d{1,2}/\d{1,2}/\d{4}(?=\s*·)","",plain)
     subtitle=str(record.get("legal_subtitle") or label).strip()
     norm=lambda x:re.sub(r"[^a-z0-9]+"," ",str(x or "").lower().translate(str.maketrans("áéíóúüñ","aeiouun"))).strip()
     title_norm=norm(plain);identity_norm=norm(label)
