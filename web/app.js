@@ -128,7 +128,8 @@ function publicationContractOk(s){if(String(s.editorial_schema_version)==='3')re
 function individualCardAllowed(s){const verdict=String(s.editorial_committee?.verdict||'PASS').toUpperCase();return s.feed_visibility!==false&&publicationContractOk(s)&&!['HOLD','REJECT'].includes(verdict)}
 function typeTags(s){return arr(s.signal_types)}
 // Dirección 9-nov-2026: a normative ficha states its nature up front: «Norma · <tipo> · <emisor> · Emitida <fecha>».
-function normKicker(s){if(!typeTags(s).includes('Normativa')&&s.event_type!=='REGULATION')return'';const kind=String(s.normative_document_type||'').trim();if(!kind)return'';const src=String(s.source_name||'');const issuer=/SUSESO/.test(src)?'SUSESO':src;const when=s.issued_on||s.emission_date||s.event_date;return `<p class="wi-kicker norm-kicker">${['Norma',kind,issuer,when?`Emitida ${fmtDate(when)}`:''].filter(Boolean).map(esc).join(' · ')}</p>`} function scopeTags(s){return arr(s.scopes)}
+// When the ficha's source line already shows issuer and date (reviewed fichas), the kicker keeps only «Norma · <tipo>».
+function normKicker(s,sourceLineShown=false){if(!typeTags(s).includes('Normativa')&&s.event_type!=='REGULATION')return'';const kind=String(s.normative_document_type||'').trim();if(!kind)return'';const src=String(s.source_name||'');const issuer=/SUSESO/.test(src)?'SUSESO':src;const when=s.issued_on||s.emission_date||s.event_date;return `<p class="wi-kicker norm-kicker">${(sourceLineShown?['Norma',kind]:['Norma',kind,issuer,when?`Emitida ${fmtDate(when)}`:'']).filter(Boolean).map(esc).join(' · ')}</p>`} function scopeTags(s){return arr(s.scopes)}
 function rel(score){const n=Number(score||0);if(n>=85)return{label:'Esencial',cls:'essential'};if(n>=65)return{label:'Relevante',cls:'relevant'};return{label:'Contexto',cls:'context'}}
 function canonicalSource(name){const n=String(name||'').toLowerCase();if(n.includes('suseso')||n.includes('superintendencia de seguridad social'))return'SUSESO';if(n.includes('superintendencia'))return'Superintendencia de Salud';if(n==='minsal'||n.includes('ministerio'))return'Ministerio de Salud';if(/^(?:pulso(?:\s*\/\s*la tercera|\s+latercera)?|la tercera)$/.test(n))return'Pulso / La Tercera';return name}
 function sourceCaptureLabel(x){
@@ -218,7 +219,7 @@ function detailHtml(s){
  const lean=!v3&&!s.statistical_view;
  // Rights policy (#92): the paywall note stays next to the source line.
  const head=lean?String(originLine(s,false)).replace("<p class='source'>","<p class='source ficha-origin'>")+(dates?`<p class='source ficha-dates'>${dates}</p>`:'')+paywallNote(s):'';
- return `${normKicker(s)}<h2 id='detailTitle'>${esc(title)}</h2>${head}${body}${s.validity_text?`<p><strong>Vigencia:</strong> ${esc(s.validity_text)}</p>`:''}${!lean&&dates?`<p class='source'>${dates}</p>`:''}${sourcesHtml}`
+ return `${normKicker(s,/ficha-origin/.test(head))}<h2 id='detailTitle'>${esc(title)}</h2>${head}${body}${s.validity_text?`<p><strong>Vigencia:</strong> ${esc(s.validity_text)}</p>`:''}${!lean&&dates?`<p class='source'>${dates}</p>`:''}${sourcesHtml}`
 }
 // The ficha's origin line (Dirección 1-nov-2026): compact, "SIS · Intendencia de Prestadores · 29 oct 2026 (detección) ·
 // Fuente original ↗". Institutions are shortened only from this curated map; any other name stays in full.

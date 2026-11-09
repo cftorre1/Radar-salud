@@ -40,7 +40,7 @@ _PARTICULAR = re.compile(
     r"\brectifica\b|\bnombra\b|\bdesigna(?:ción)?\b|delega facultades", re.I)
 # Regulator listings open individual acts with an imperative on one party.
 _PARTICULAR_VERB = re.compile(r"^\s*(Inscr[íi]base|Mant[ée]ngase|Rectif[íi]quese|Autor[íi]zase|Autoriza|Des[íi]gnase|N[óo]mbrase|Ap[rR]u[ée]base el plan|Acr[ée]ditase|Canc[ée]lese)\b", re.I)
-_GENERAL_KIND = re.compile(r"^(Circular|Decreto|Norma Técnica)\b", re.I)
+_GENERAL_KIND = re.compile(r"^(Circular|Oficio Circular|Ordinario Circular|Decreto|Norma Técnica)\b", re.I)
 _MODIFIES = re.compile(r"modific|deroga|sustituy|complementa|acto modificado", re.I)
 
 

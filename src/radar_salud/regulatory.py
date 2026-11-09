@@ -29,19 +29,23 @@ def _emission_date(*texts:str)->Optional[str]:
     return None
 
 def listing_event_date(title:str,summary:str,row_text:str)->Optional[str]:
-    """Official emission date (title, then subject) wins over the first date found in the row."""
-    return _emission_date(title,summary) or _date(row_text)
+    """Official emission date (title, then subject) wins over the first date found in the row.
+    An act cannot be emitted after it was posted: a later emission is clamped to the listing date."""
+    listed=_date(row_text);emitted=_emission_date(title,summary)
+    if emitted and listed and emitted>listed:return listed
+    return emitted or listed
 
 _IDENTITY_RE=re.compile(r"(oficio\s+circular|ordinario\s+circular|circular|oficio|resoluci[oó]n(?:\s+exenta)?|decreto(?:\s+exento)?)"
     r"\s*(?:(IF|IP|SS|RA)\s*/?)?\s*(?:N\s*[°º.]?\s*)?(\d{1,3}(?:\.\d{3})+|\d+)",re.I)
 
-def act_identity(title:str)->Optional[str]:
-    """'Resolución Exenta IF/N°12392 - Emisión: 23/10/2026' -> 'resolucion exenta|if|12392' (dedupe key)."""
+def act_identity(title:str,year:Optional[str]=None)->Optional[str]:
+    """Dedupe key: type | Intendencia | number | year of emission (listing year as fallback).
+    SIS numbers restart every year: 2026's Resolución Exenta IF/N°12502 is not 2019's."""
     m=_IDENTITY_RE.search(" ".join(str(title or "").split()))
     if not m:return None
     kind=" ".join(m.group(1).lower().replace("ó","o").split())
     number=re.sub(r"\D","",m.group(3))
-    return f"{kind}|{(m.group(2) or '').lower()}|{number}"
+    return f"{kind}|{(m.group(2) or '').lower()}|{number}|{str(year or '')[:4]}"
 
 class _TableParser(HTMLParser):
     def __init__(self):
@@ -121,14 +125,18 @@ class SuperintendenciaNormativaScout:
       ("Marco normativo: decretos","https://www.superdesalud.gob.cl/tax-marco-normativo/decretos-3016/","Sistema de salud"),
     ]
     LIVE_ONLY_DAYS=14
-    # Internal administration published next to normative acts (personnel, purchasing, lobby registry...).
-    EXTRA_NOISE=("subrogancia","sujetos pasivos","lobby","delega facultad","encomendación de funciones",
-                 "encomendacion de funciones","administradores de sistemas","comité de integridad","comite de integridad",
-                 "costo directo de reproducción","costo directo de reproduccion","dotación","dotacion","nombra en calidad",
-                 "llamado a concurso","encasillamiento","convenio de colaboración","convenio de colaboracion",
-                 "reserva o secreto","declaración de patrimonio","declaracion de patrimonio","horas extraordinarias",
-                 "cometido","feriado","teletrabajo","compra","adquisición","adquisicion","contratación","contratacion",
-                 "trato directo","adjudica","bases de licitación","bases de licitacion")
+    EXTRA_PAGE_CAP=20  # rows per new listing per run (newest first); the overflow is logged
+    # Internal administration published next to normative acts. Whole administrative phrases only, read
+    # in the act's own title and subject (never the rest of the row): «contratación de planes de salud» or
+    # «compra de bonos» are regulation, not purchasing.
+    EXTRA_NOISE=re.compile(r"\b(?:" + "|".join((
+        r"comisi[oó]n evaluadora", r"licitaci[oó]n p[uú]blica", r"bases de (?:la )?licitaci[oó]n", r"adjudica la licitaci[oó]n",
+        r"trato directo", r"aprueba (?:el )?contrato de (?:suministro|servicios?|arriendo)", r"orden de subrogancia",
+        r"sujetos pasivos", r"delega(?:r)? (?:la )?facultad", r"encomendaci[oó]n de funciones",
+        r"administradores de sistemas inform[aá]ticos", r"comit[eé] de integridad", r"costo directo de reproducci[oó]n",
+        r"llamados? a concurso", r"concurso de personal", r"convenio de colaboraci[oó]n", r"reserva o secreto",
+        r"declaraci[oó]n de patrimonio", r"dotaci[oó]n anual", r"nombra en calidad de titular", r"horas extraordinarias",
+        r"designa miembros")) + r")\b", re.I)
     TITLE_RE=re.compile(r"(Circular|Oficio(?:\s+Circular)?|Ordinario(?:\s+Circular)?|Resoluci[oó]n(?:\s+Exenta)?|Decreto(?:\s+Exento)?)",re.I)
     ADMIN_NOISE=("licitación","licitacion","comisión evaluadora","comision evaluadora","aseo","fumigación","fumigacion",
                  "mantenciones","mantenimiento","licencias hcl","tableau","data center","monitoreo de medios",
@@ -139,19 +147,22 @@ class SuperintendenciaNormativaScout:
         from zoneinfo import ZoneInfo
         today=getattr(self,"today",None) or datetime.now(ZoneInfo("America/Santiago")).date()
         pages=[(n,u,s,False) for n,u,s in self.PAGES]+[(n,u,s,True) for n,u,s in self.EXTRA_PAGES]
-        known_urls=set();known_ids=set()
+        known_urls=set();known_ids=set();page_counts={};overflow={}
         def skip(reason):self.extra_skipped[reason]=self.extra_skipped.get(reason,0)+1
+        allowed=self._robots()
         for page_name,page_url,scope,live_only in pages:
+            if not allowed(page_url):
+                self.discovery_errors.append(f"{page_name}: robots_disallowed");continue
             try:html=fetch_html(page_url)
             except Exception as e:
                 print("SuperSalud regulatory fetch:",page_name,e);self.discovery_errors.append(f"{page_name}: {type(e).__name__}");continue
             p=_TableParser();p.feed(html)
-            for row in p.rows:
+            rows=p.rows
+            if live_only:  # newest first, so the per-run cap keeps the most recent acts
+                rows=sorted(rows,key=lambda r:_date(" ".join(c["text"] for c in r if c.get("text")) or "") or "",reverse=True)
+            for row in rows:
                 row_text=" ".join(c["text"] for c in row if c.get("text"))
-                if (page_name=="Para otros destinatarios" or live_only) and any(x in row_text.lower() for x in self.ADMIN_NOISE):
-                    if live_only:skip("admin_noise")
-                    continue
-                if live_only and any(x in row_text.lower() for x in self.EXTRA_NOISE):skip("admin_noise");continue
+                if page_name=="Para otros destinatarios" and any(x in row_text.lower() for x in self.ADMIN_NOISE):continue
                 if not self.TITLE_RE.search(row_text):continue
                 event_date=_date(row_text);title=None;detail=None;pdf=None
                 for c in row:
@@ -170,12 +181,17 @@ class SuperintendenciaNormativaScout:
                 summary=row[-1]["text"] if row else row_text
                 listing_date=event_date
                 event_date=listing_event_date(title,summary,row_text)
-                identity=act_identity(title)
+                identity=act_identity(title,(event_date or listing_date or "")[:4])
                 if live_only:
+                    heading=f"{title} {summary}"  # the act's own title and subject, not the whole row
+                    if self.EXTRA_NOISE.search(heading):skip("admin_noise");continue
                     if url.rstrip("/") in known_urls or (identity and identity in known_ids):skip("already_listed");continue
-                    try:issued=date.fromisoformat(str(event_date))
+                    # Live = posted in the last 14 days (an act emitted 20-oct and posted 8-nov is still new).
+                    try:posted=date.fromisoformat(str(listing_date or event_date))
                     except ValueError:skip("undated");continue
-                    if not (today-timedelta(days=self.LIVE_ONLY_DAYS)<=issued<=today):skip("outside_live_window");continue
+                    if not (today-timedelta(days=self.LIVE_ONLY_DAYS)<=posted<=today):skip("outside_live_window");continue
+                    if page_counts.get(page_url,0)>=self.EXTRA_PAGE_CAP:skip("cap_overflow");overflow[page_name]=overflow.get(page_name,0)+1;continue
+                    page_counts[page_url]=page_counts.get(page_url,0)+1
                 known_urls.add(url.rstrip("/"))
                 if identity:known_ids.add(identity)
                 record_listing_identity(self.listing_index,title,url,event_date,summary,page_url)
@@ -187,5 +203,23 @@ class SuperintendenciaNormativaScout:
                               "listing_date":listing_date,
                               "event_date_basis":"official_emission" if event_date!=listing_date or _emission_date(title,summary) else "listing",
                               "attachments":[{"url":pdf,"label":"PDF"}] if pdf else []}))
+        for name,count in overflow.items():
+            print(f"SuperSalud regulatory: {name}: {count} live rows over the cap of {self.EXTRA_PAGE_CAP}; next run")
         out.sort(key=lambda x:x.event_date or "",reverse=True)
         return out
+
+    def _robots(self):
+        """robots.txt read once per run with the SIS news helper's policy: 404/410 allows, any other
+        failure fails closed (reported as a discovery error, never as zero novelties)."""
+        from urllib.error import HTTPError
+        from urllib.robotparser import RobotFileParser
+        from .sis_news import ROBOTS, USER_AGENT
+        try:
+            body=fetch_html(ROBOTS)
+        except HTTPError as exc:
+            if exc.code in (404,410):return lambda url:True
+            self.discovery_errors.append(f"robots_policy_unavailable: HTTP {exc.code}");return lambda url:False
+        except Exception as exc:
+            self.discovery_errors.append(f"robots_policy_unavailable: {type(exc).__name__}");return lambda url:False
+        parser=RobotFileParser();parser.parse(str(body).splitlines())
+        return lambda url:parser.can_fetch(USER_AGENT,url)
