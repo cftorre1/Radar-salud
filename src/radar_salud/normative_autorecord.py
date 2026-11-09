@@ -187,7 +187,9 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
             if len(written) >= max_new or attempts >= max_new:
                 break  # attempts (not only successes) are capped: every attempt costs model calls
             url = str(s.get("source_url") or "")
-            label = str(s.get("normative_document_label") or s.get("title") or "")
+            # The listing title carries "- Emisión: dd/mm/yyyy"; the identity is the act alone.
+            label = re.sub(r"\s*[-–]\s*Emisi[oó]n\s*:\s*\d{1,2}/\d{1,2}/\d{4}\s*$", "",
+                           str(s.get("normative_document_label") or s.get("title") or "").strip())
             if not url or url in existing or _digits(label) in numbered:
                 continue  # human records (by URL or by number) always win
             if "Normativa" not in (s.get("signal_types") or []):

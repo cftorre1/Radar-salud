@@ -153,3 +153,12 @@ def test_ai_failure_alert_reports_outage_without_blocking(tmp_path, monkeypatch)
     assert health["sources"] == {"x": {"status": "ok"}} and health["ai_provider"]["status"] == "alert"
     monkeypatch.setattr(ai_health, "report", lambda root: 1 / 0)
     assert ai_health.main([str(tmp_path)]) == 0
+
+
+def test_verified_record_title_drops_listing_emission_suffix():
+    import scripts.export_web_snapshot as exporter
+    row = exporter._normative_contract({
+        "title": "Circular IF/N°540 - Emisión: 4/11/2026", "event_type": "REGULATION", "signal_types": ["Normativa"],
+        "source_name": SIS, "source_url": f"{BASE}circular-if-n540-emision-4-11-2026/", "event_date": "2026-11-04",
+        "official_subject": ROWS[2][2]})
+    assert row["display_title"].startswith("Circular IF/N°540 · ") and "Emisión" not in row["display_title"]
