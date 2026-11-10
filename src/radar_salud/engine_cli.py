@@ -554,14 +554,15 @@ def main():
         # Verifiable official text for recent normative acts (no AI, bounded, never fails the run).
         # Enabled only in the daily workflow (RADAR_CAPTURE_EVIDENCE=1): tests never download.
         if os.getenv("RADAR_CAPTURE_EVIDENCE")!="1":raise LookupError("disabled")
-        from .normative_evidence import capture_missing
         history=json.loads((root/"data/history/superintendencia_signals.json").read_text(encoding="utf-8")).get("signals",[])
-        captured=capture_missing(root,history)
-        print(f"normative_evidence captured={len(captured)}")
-        # Immediate editorial control: verified automatic records (budget-capped).
-        from .normative_autorecord import build_auto_records
-        recorded=build_auto_records(root,history)
-        print(f"normative_autorecord written={len(recorded)}")
+        # Same run as detection: capture official text, then verified automatic records with the repair loop
+        # (newest first, budget-capped; Dirección 9-nov-2026).
+        # The hourly job runs it as its own step instead (RADAR_NORMATIVE_AUTORECORD_IN_ENGINE=0): one path per run.
+        if os.getenv("RADAR_NORMATIVE_AUTORECORD_IN_ENGINE","1")=="0":raise LookupError("dedicated_step")
+        from .normative_autorecord import run_step
+        summary=run_step(root,history)
+        print(f"normative_evidence captured={summary['evidence_captured']}")
+        print(f"normative_autorecord written={summary['records_written']}")
     except Exception as exc:
         print("normative_evidence skipped:",type(exc).__name__)
     print({"queue":queue.counts(),"budget":ai_budget_status()})
