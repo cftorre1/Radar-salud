@@ -1,0 +1,27 @@
+name: BCN law alias probe
+# Dirección 10-nov-2026: verify the curated law alias map against BCN LeyChile. Metadata only;
+# robots.txt honoured. Runs only on its own branch and commits only the receipt there.
+on:
+  push:
+    branches: [claude/bcn-alias-probe]
+    paths: [.github/workflows/bcn-alias-probe.yml, scripts/probe_bcn_law_aliases.py]
+permissions:
+  contents: write
+jobs:
+  probe:
+    if: github.ref == 'refs/heads/claude/bcn-alias-probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: claude/bcn-alias-probe}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python scripts/probe_bcn_law_aliases.py --output "data/audits/bcn_alias_probe/${GITHUB_RUN_ID}.json"
+      - name: Commit the receipt to this branch only
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/audits/bcn_alias_probe
+          git commit -m "chore: BCN alias probe receipt ${GITHUB_RUN_ID}" || exit 0
+          git push origin HEAD:claude/bcn-alias-probe
