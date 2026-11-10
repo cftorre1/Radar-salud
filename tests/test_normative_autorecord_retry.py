@@ -283,3 +283,13 @@ def test_python_311_parse():
     for path in ("src/radar_salud/normative_autorecord.py", "scripts/run_normative_autorecord.py",
                  "src/radar_salud/engine_cli.py", "tests/test_normative_autorecord_retry.py"):
         ast.parse(Path(path).read_text(encoding="utf-8"), feature_version=(3, 11))
+
+
+def test_daily_commit_step_persists_paid_data_and_fails_loudly():
+    """10-nov-2026 (same defect as queue-hourly #168): a rejected snapshot must not block the push of paid data, and an
+    unpushed commit must fail the step instead of passing silently."""
+    text = open(".github/workflows/daily-radar.yml", encoding="utf-8").read()
+    assert "pull --rebase --autostash origin staging" in text
+    assert "git clean -fdq -- web/data" in text
+    assert "Daily commit was NOT pushed" in text
+    assert "git push --dry-run" not in text
