@@ -201,7 +201,7 @@ def merge_persisted_weekly_insight(root, free_value, as_of=None):
     policy["freshness_gate"]=freshness_gate(weekly, as_of)
     candidate=(payload or {}).get("weekly_insight")
     # Presentation A rules (panel.md §4) are reported even when they hide the insight.
-    policy["weekly_presentation"]={"format":"weekly_insight_a_v1" if presentation_a(candidate) else "legacy_lists",
+    policy["weekly_presentation"]={"format":(candidate.get("schema_version") or "weekly_insight_a_v1") if presentation_a(candidate) else "legacy_lists",
                                    "errors":presentation_a_errors(candidate) if presentation_a(candidate) else []}
     merged["selection_policy"]=policy
     merged["status"]="available" if weekly and merged.get("global_teaser") else "partial"

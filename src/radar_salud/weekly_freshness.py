@@ -125,7 +125,10 @@ def trace_corpus(weekly):
 
     estimates[].inputs and .display are NOT origins (any number written there would otherwise
     trace itself); they are checked against the estimate value and, in ``verify_candidate``,
-    against the evidence package."""
+    against the evidence package. v2 essays declare their origins in ``evidence_figures``."""
+    if _v2(weekly):
+        from .weekly_insight_essay import trace_corpus as v2_corpus
+        return v2_corpus(weekly)
     corpus = []
     for fig in weekly.get("key_figures") or []:
         corpus += [n for _, n, _ in numbers_in(fig)]
@@ -155,7 +158,10 @@ def strict_display_scan(weekly):
 
 def displayed_texts(weekly, strict=True):
     """(where, text) for every text a reader sees. Non-strict keeps the legacy scope
-    (headline, dek, essay, watch) used by the human-reviewed Friday insights."""
+    (headline, dek, essay, watch) used by the human-reviewed Friday insights. v2 essays have their own list."""
+    if _v2(weekly):
+        from .weekly_insight_essay import displayed_texts as v2_texts
+        return v2_texts(weekly)
     essay = weekly.get("essay") or {}
     texts = [("headline", weekly.get("headline")), ("dek", weekly.get("dek"))]
     texts += [("essay.facts", x) for x in _paragraphs(essay.get("facts"))]
@@ -190,6 +196,9 @@ def displayed_texts(weekly, strict=True):
 
 def untraced_numbers(weekly, corpus=None, strict=None):
     """Rule 3: numbers shown without a declared origin (key_figures, estimate value or formula)."""
+    if _v2(weekly):
+        from .weekly_insight_essay import untraced_numbers as v2_untraced
+        return v2_untraced(weekly, corpus)
     corpus = trace_corpus(weekly) if corpus is None else corpus
     strict = strict_display_scan(weekly) if strict is None else strict
     texts = displayed_texts(weekly, strict)
@@ -223,6 +232,9 @@ def _explains_rule(text):
 def unexplained_normative_ids(weekly):
     """Rule 5: a normative ID (Circular, Ley, DS, art., Resolución…) is accepted only when the
     same watch item, or the same sentence elsewhere, says in plain words what the rule does."""
+    if _v2(weekly):
+        from .weekly_insight_essay import unexplained_normative_ids as v2_ids
+        return v2_ids(weekly)
     errors = []
     for i, item in enumerate(weekly.get("watch") or []):
         if not isinstance(item, dict):
@@ -240,8 +252,13 @@ def unexplained_normative_ids(weekly):
                 errors += [f"{where}:{x.strip()}" for x in ids]
     return errors
 
+def _v2(weekly):
+    from .weekly_insight_essay import is_v2
+    return is_v2(weekly)
+
 def presentation_a(weekly):
-    return isinstance(weekly, dict) and isinstance(weekly.get("essay"), dict)
+    """Format A: v1 (essay with fixed sections) or v2 (news-style essay, Dirección 10-nov-2026)."""
+    return isinstance(weekly, dict) and (isinstance(weekly.get("essay"), dict) or _v2(weekly))
 
 def _words(text):
     return len(FOOTNOTE.sub("", str(text or "")).split())
@@ -252,7 +269,10 @@ def _paragraphs(section):
 
 def presentation_a_errors(weekly):
     """Return the list of broken presentation-A rules (empty list means PASS)."""
-    errors = []
+    from .weekly_insight_essay import presentation_errors, v1_retired
+    if _v2(weekly):
+        return presentation_errors(weekly)
+    errors = ["schema_v1_retired_use_weekly_insight_a_v2"] if v1_retired(weekly) else []
     essay = weekly.get("essay") or {}
     facts, reading = _paragraphs(essay.get("facts")), _paragraphs(essay.get("reading"))
     if not facts or not reading:
@@ -318,7 +338,8 @@ def reviewed_weekly(payload, as_of=None):
     if presentation_a(weekly):
         if presentation_a_errors(weekly):
             return None
-        required = ("headline", "dek", "essay", "notes", "source_refs")
+        required = (("headline", "dek", "body", "closing", "sources", "source_refs") if _v2(weekly)
+                    else ("headline", "dek", "essay", "notes", "source_refs"))
     else:
         required = ("summary", "insight_reading", "decision_use", "what_to_watch", "uncertainties", "source_refs")
     if not all(weekly.get(k) for k in required):

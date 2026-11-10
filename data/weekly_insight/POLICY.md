@@ -17,9 +17,10 @@
 
 ## Conditions to auto-publish (all are required)
 
-1. **Deterministic verification PASS** (`verify_candidate`): presentation-A rules 1–6. Every number
-   in every displayed field must trace to the evidence package (rule 3), and normative IDs must be
-   explained in plain words (rule 5). Sources must come from the evidence only.
+1. **Deterministic verification PASS** (`verify_candidate`): the presentation rules of the insight's format
+   (v2 essay from 16-nov-2026, see below; v1 rules 1–6 for the archive). Every number in every displayed field
+   must trace to the evidence package, every quote must be literal in it, and normative IDs must be explained in
+   plain words. Sources must come from the evidence only.
 2. **Independent second-model review PASS**: the reviewer is a different model from the writer,
    returns `verdict: PASS` and reports no `blocker` issues.
 3. **Freshness gate**: the insight is anchored on a Monday and expires the next Monday.
@@ -78,3 +79,60 @@ An Insight counts as anchored when it declares `stats_anchor`, when its `topic_s
 or when its primary `source_url` is a stats ficha's source file. Insights on a normal topic are not blocked, even
 when they cite a stats file as a secondary source. The automated pipeline writes the same brief and record when it
 publishes an anchored Insight.
+
+## Format v2: news-style essay (Dirección, 10-nov-2026)
+
+The ~250-word block with fixed sections («Qué pasó», «Lectura Alicanto», «Qué mirar») becomes a ~750-word essay
+that reads like a news story. Schema `weekly_insight_a_v2`; the code and the field-by-field schema live in
+[`src/radar_salud/weekly_insight_essay.py`](../../src/radar_salud/weekly_insight_essay.py). The reference
+example is the 9-nov residencias insight in `editorial_approved.json`, migrated from the approved mockup.
+
+- **Cutover.** Every Monday insight anchored on or after **16-nov-2026** must be v2. A v1 Monday insight from that
+  date fails `presentation_a_errors` (`schema_v1_retired_use_weekly_insight_a_v2`) and is never served. Archived
+  v1 insights keep rendering and verifying with the v1 rules.
+- **Structure.** `body` blocks run lead → context → development; `closing` ends the story and folds «Qué mirar»
+  into prose (2–3 signals that would confirm or refute the thesis). Narrative h2 subheads are fine; the old section
+  labels are rejected. The first block is the lead paragraph.
+- **Length.** Essay (paragraphs + quotes + closing) of 600–900 words (warning outside); FAIL under 500 or over 1.000.
+  Headline ≤ 140 characters, dek ≤ 40 words, kicker ≤ 60 characters.
+- **Charts.** 1–3, each placed once with a `chart` block right after the paragraph that explains it. `kind` is
+  `oficial`, `prensa` or `estimacion`; an estimate chart names its `estimate_ref` and renders with a dashed frame
+  and the formula in its caption. `source` links its sources with `[nombre](fN)`.
+- **Quotes.** Only `quote` blocks, with `source_ref` and an `attribution` that names the source's issuer or outlet,
+  the part of its label before « · » (the same name, or its initials: «Fiscalía Nacional Económica» for «FNE · …»). Each quote, and each phrase of 3 or more words
+  between quotation marks in any displayed text, must be literal in the `evidence_excerpts` of a source cited by that
+  same text (headline, dek, kicker and subheads cite none, so they carry no quotes). `verify_candidate` checks each
+  excerpt against the quote pool of its source URL: `evidence.excerpts`, and each signal's `raw_title` and
+  `public_lead`. Labels, roles and summaries never count. `[…]` may skip words. Prefer official sources.
+- **Sources.** `sources[]` have `id` (`f1`…), `type` (`oficial` or `prensa`), `label`, `url`, `role`. In the text,
+  `[Fiscalía Nacional Económica](f1)` renders a direct link to the document plus a numbered superscript to the list.
+  Every source must be cited at least once, and the source URLs must equal `source_refs`. The web numbers sources
+  by first citation in reading order.
+- **Estimates.** Each derived figure is an `estimates[]` entry with a deterministic formula. It is marked in the
+  text with `[texto](est:id)` (dashed underline) or used by an estimate chart or key-figure card, and listed in
+  `method.estimates`. Numbers written as words are read as one value per phrase («dos mil» = 2.000, «treinta y dos»
+  = 32, «1,5 millones» = 1.500.000) and checked like digits; a number word left outside a parsed phrase («miles»,
+  «decenas») fails as `number_word_unparsed`. A ratio («8 de cada 10», «la mitad», «dos tercios», «tres cuartos»)
+  must sit inside an estimate marker or be the `display` of an estimate, and must be within ±5 points of that one
+  estimate. Multiples («el doble», «el triple», «se duplicó», «dobló», «quintuplicó», «un par de») and «mitad», with or
+  without article, pass only inside an `est:` marker whose estimate backs them (≈ k or ≈ 100·k %, ±10%); elsewhere
+  they fail as `number_word_unparsed`. In `evidence_figures`, numbers written as words must all appear together in
+  one evidence item.
+- **Key figures** («Lo que debes saber en N cifras»): optional, only when it makes the story clearer. 3–5 cards, each
+  with `value`, `text`, `universe` (literal in the card, e.g. «505 de los 1.498 hogares del catastro 2021»), `kind`
+  and `source_ref`; `estimate_ref` when the kind is `estimacion`. One idea per card, never mixed universes; one
+  `wide` card at most. Placed once with a `key_figures` block.
+- **Method** («Cómo hicimos este análisis», collapsed): the estimates with their formulas (rendered from
+  `estimates`), `discarded` (what was not used and why) and `limits`. The numbered source list follows, visible.
+  The method says the text «pasó una revisión independiente» only when `independent_review` has `status: final`
+  and a `verdict` of PASS (or PASS_WITH_CORRECTIONS with `corrections_applied`). The pipeline writes it on a second-model
+  PASS; an editorial session records each review round and sets the verdict after the last one (`status:
+  pending_final` until then). Otherwise it says «Cada número del texto se verificó contra el paquete de evidencia».
+- **Traceability.** `evidence_figures` holds the evidence figures copied verbatim (each must trace to the evidence
+  numbers); every displayed number traces to it or to an estimate.
+
+**Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
+`verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text
+of every excerpt, under the URL of its source), then `python -m pytest -q tests/test_weekly_insight_essay.py
+tests/test_weekly_insight_a.py tests/test_weekly_freshness.py` and `node --test tests/web.test.cjs`. The
+independent second review and the auto-publish conditions above are unchanged.

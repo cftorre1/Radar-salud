@@ -8,13 +8,15 @@ Pipeline (one run per Monday, fail-closed):
 1. ``select_topic``      deterministic ranking of the feed in the 7 days before the anchor Monday (Dirección 28-oct).
 2. ``build_evidence``    candidate + related signals + deterministic statistical series from the
                           repo; every number available to the writer is collected in ``numbers``.
-3. drafting model       writes format A as JSON (headline, dek, charts, essay.facts/reading,
-                          watch, notes, estimates, key_figures, sources) from that evidence only.
+3. drafting model       writes format A v2 as JSON (Dirección 10-nov-2026: a ~750-word news-style essay with
+                          body blocks, closing, optional key-figures box, charts, method, typed sources,
+                          evidence_figures/evidence_excerpts) from that evidence only. See
+                          ``weekly_insight_essay`` for the schema; v1 (fixed sections) is kept for the archive.
 4. ``normalize_draft``   recomputes estimates from their formulas, fills chart rows that point to a
                           deterministic series, keeps only evidence URLs, stamps Monday dates.
-5. ``verify_candidate``  deterministic gate: presentation-A rules 1–6 (rule 3 traceability and
-                          rule 5 normative IDs included) plus key_figures/estimate inputs traced to
-                          the evidence numbers, sources restricted to the evidence package.
+5. ``verify_candidate``  deterministic gate: presentation rules (v2: ``weekly_insight_essay.presentation_errors``;
+                          v1: rules 1–6) plus evidence figures/estimate inputs traced to the evidence numbers,
+                          quotes literal in the evidence, sources restricted to the evidence package.
 6. review model         an independent second model (different from the writer) returns PASS/FAIL.
 7. ``publish``           PASS → archive the previous approved file and write the new one;
                           FAIL → the approved file is untouched (it expires by the Monday rule) and
@@ -39,13 +41,16 @@ from .weekly_freshness import (
     MONDAY_EVIDENCE_DAYS, SAFE_FORMULA, WINDOW_DAYS, chile_today, iso_day, monday_anchor,
     number_traces, numbers_in, presentation_a_errors, chart_repetition_warnings,
 )
+from . import weekly_insight_essay as essay_v2
 
 ROOT = Path(__file__).resolve().parents[2]
-SCHEMA = "weekly_insight_a_v1"
+SCHEMA_V1 = "weekly_insight_a_v1"
+SCHEMA = essay_v2.SCHEMA_V2   # Dirección 10-nov-2026: new Monday insights are written in v2
 ROUTING = ROOT / "config/model_routing_v1.json"
 # Best available writer in the routing table, and a different family member as reviewer.
 DRAFT_ROUTE, REVIEW_ROUTE = "astra", "terra"
-DRAFT_MAX_OUTPUT, REVIEW_MAX_OUTPUT = 6000, 3000
+# v2 essays are ~3x longer than v1; the $1 run cap (MAX_RUN_USD) is unchanged.
+DRAFT_MAX_OUTPUT, REVIEW_MAX_OUTPUT = 8000, 3000
 MAX_RUN_USD = 1.0          # per weekly run, worst case (prompt + full max_output on every call)
 CHARS_PER_TOKEN = 3.2      # conservative for Spanish JSON
 
@@ -218,6 +223,8 @@ def _brief(s: dict) -> dict:
             "source_type": s.get("source_type"), "url": s.get("source_url"), "event_date": s.get("event_date"),
             "what": s.get("card_what") or s.get("what_happened"), "why": s.get("card_why") or s.get("why_it_matters"),
             "evidence_maturity": s.get("evidence_maturity"),
+            # Literal texts a v2 quote may come from (raw source title and public lead; Dirección 10-nov-2026).
+            **{k: v for k, v in (("raw_title", s.get("title")), ("public_lead", s.get("public_teaser"))) if v},
             **{k: s[k] for k in ("key_numbers", "data_insights", "summary_table") if s.get(k)}}
 
 
@@ -239,7 +246,7 @@ def build_evidence(choice: dict, root: Path = ROOT) -> dict:
 # ---------------------------------------------------------------------------------------------
 # 3. Prompts
 
-FORMAT_A = """Formato A (aprobado por Dirección; JSON puro, sin texto fuera del JSON):
+FORMAT_A_V1 = """Formato A (aprobado por Dirección; JSON puro, sin texto fuera del JSON):
 {"headline": "≤140 caracteres; toma posición, sin causalidad no demostrada",
  "dek": "≤40 palabras; SOLO hechos",
  "key_figures": ["cifra textual de la evidencia, con su fuente y fecha", ...],
@@ -254,7 +261,7 @@ FORMAT_A = """Formato A (aprobado por Dirección; JSON puro, sin texto fuera del
  "sources": [{"label","url","role","short_label","short_role"}],
  "insight_teaser": "≤30 palabras para la tarjeta"}"""
 
-RULES = """Reglas (se verifican de forma determinista; si fallas, no se publica):
+RULES_V1 = """Reglas (se verifican de forma determinista; si fallas, no se publica):
 1. Usa EXCLUSIVAMENTE la EVIDENCIA. Cada número de headline, dek, ensayo, qué mirar y gráficos debe estar
    literalmente en key_figures (copiado de la evidencia) o ser una estimación declarada con fórmula.
 2. essay.facts: solo hechos; prohibido "sugiere", "podría", "estimamos", "Alicanto". essay.reading: la
@@ -267,21 +274,31 @@ RULES = """Reglas (se verifican de forma determinista; si fallas, no se publica)
 7. No inventes causalidad; sources solo con URLs de la EVIDENCIA. Español de Chile, formato 12,3% y 5.155.495."""
 
 
+# The writer always gets v2 (also through ``weekly_insight_stats_anchor.draft_prompt``).
+FORMAT_A, RULES = essay_v2.FORMAT_V2, essay_v2.RULES_V2
+
+
 def draft_prompt(evidence: dict, anchor: date) -> str:
     payload = {k: evidence[k] for k in ("candidate", "related", "series", "sources")}
     return ("Eres el editor senior de Alicanto Salud (inteligencia de mercado de salud en Chile, lectores "
             "ejecutivos de Isapres, Fonasa, prestadores, mutualidades y laboratorios). Escribe el Insight "
-            f"semanal del lunes {anchor.isoformat()}. Prioriza claridad ejecutiva e información incremental, "
-            "no extensión.\n" + FORMAT_A + "\n" + RULES + "\nEVIDENCIA:\n" + json.dumps(payload, ensure_ascii=False))
+            f"semanal del lunes {anchor.isoformat()} como un ensayo tipo noticia de unas 750 palabras: entrada, "
+            "contexto, desarrollo y cierre. Prioriza claridad ejecutiva e información incremental sobre la extensión.\n"
+            + FORMAT_A + "\n" + RULES + "\nEVIDENCIA:\n" + json.dumps(payload, ensure_ascii=False))
 
 
 def review_prompt(weekly: dict, evidence: dict, verification: dict) -> str:
-    shown = {k: weekly.get(k) for k in ("headline", "dek", "key_figures", "estimates", "charts", "essay", "watch", "notes", "sources")}
+    keys = (("kicker", "headline", "dek", "body", "closing", "key_figures", "charts", "estimates", "method", "sources",
+             "evidence_excerpts", "notes") if essay_v2.is_v2(weekly) else
+            ("headline", "dek", "key_figures", "estimates", "charts", "essay", "watch", "notes", "sources"))
+    shown = {k: weekly.get(k) for k in keys}
     return ("Eres un revisor editorial independiente de Alicanto Salud (no escribiste este texto). Revisa el "
             "Insight semanal contra la EVIDENCIA con cinco lentes: editorial, negocio de salud, datos, evidencia y "
             "decisión. Falla (FAIL) si hay una cifra que no está en la evidencia, una causalidad no demostrada, "
             "una inferencia presentada como hecho, una norma sin explicar, prensa o encuesta no declarada como tal, "
-            "o si la lectura no aporta información incremental a un ejecutivo del sector. "
+            "o si la lectura no aporta información incremental a un ejecutivo del sector. En el ensayo v2 revisa además "
+            "que cada cita sea fiel a su fuente y no saque frases de contexto, que la estructura sea de noticia (entrada, "
+            "contexto, desarrollo, cierre) y que cada tarjeta de cifras tenga un solo universo. "
             'Devuelve JSON puro: {"verdict":"PASS|FAIL","issues":[{"severity":"blocker|major|minor","where","text"}],'
             '"lenses":{"editorial","health_business","data","evidence","decision_intelligence"}}.\n'
             "VERIFICACIÓN DETERMINISTA: " + json.dumps(verification, ensure_ascii=False) +
@@ -325,12 +342,25 @@ def normalize_draft(raw: dict, evidence: dict, anchor: date) -> dict:
     w["sources"] = [s for s in w.get("sources") or [] if isinstance(s, dict) and s.get("url") in allowed]
     w["source_refs"] = [s["url"] for s in w["sources"]]
     cand = evidence.get("candidate") or {}
+    if essay_v2.is_v2_draft(w):
+        w.update({
+            "id": f"weekly-insight:{anchor.isoformat()}:{_slug(w.get('headline'))[:32]}",
+            "schema_version": essay_v2.SCHEMA_V2,
+            "title": w.get("headline"), "insight_title": w.get("headline"),
+            "event_date": cand.get("event_date"), "freshness_anchor_date": anchor.isoformat(),
+            "anchor_kind": "monday", "expires_on": (anchor + timedelta(days=WINDOW_DAYS)).isoformat(),
+            "source_name": cand.get("source_name"), "source_url": cand.get("url"),
+            "summary": w.get("dek"), "weekly_mode": "monday_format_a_v2",
+            "verified_on": w.get("verified_on") or anchor.isoformat(),
+            "reading_time_min": max(1, round(essay_v2.essay_words(w) / 200)),
+        })
+        return w
     words = sum(len(str(x).split()) for x in [w.get("headline"), w.get("dek")]
                 + list(((w.get("essay") or {}).get("facts") or {}).get("paragraphs") or [])
                 + list(((w.get("essay") or {}).get("reading") or {}).get("paragraphs") or []))
     w.update({
         "id": f"weekly-insight:{anchor.isoformat()}:{_slug(w.get('headline'))[:32]}",
-        "schema_version": SCHEMA,
+        "schema_version": SCHEMA_V1,
         "title": w.get("headline"), "insight_title": w.get("headline"),
         "event_date": cand.get("event_date"), "freshness_anchor_date": anchor.isoformat(),
         "anchor_kind": "monday", "expires_on": (anchor + timedelta(days=WINDOW_DAYS)).isoformat(),
@@ -347,16 +377,21 @@ def normalize_draft(raw: dict, evidence: dict, anchor: date) -> dict:
 
 
 def verify_candidate(weekly: dict, evidence: dict, anchor: date) -> dict:
+    v2 = essay_v2.is_v2(weekly)
     errors = list(presentation_a_errors(weekly))
-    for key in ("headline", "dek", "essay", "notes", "sources", "key_figures"):
-        if not weekly.get(key):
-            errors.append(f"missing:{key}")
     pool = [float(n) for n in evidence.get("numbers") or []]
-    # key_figures and estimate inputs must come from the evidence package (not from the model).
-    for fig in weekly.get("key_figures") or []:
-        for token, value, decimals in numbers_in(fig):
-            if not number_traces(value, decimals, pool):
-                errors.append(f"key_figure_not_in_evidence:{token}")
+    if v2:
+        # evidence_figures and excerpts come from the evidence package (not from the model).
+        errors += essay_v2.evidence_errors(weekly, evidence)
+    else:
+        for key in ("headline", "dek", "essay", "notes", "sources", "key_figures"):
+            if not weekly.get(key):
+                errors.append(f"missing:{key}")
+        # key_figures and estimate inputs must come from the evidence package (not from the model).
+        for fig in weekly.get("key_figures") or []:
+            for token, value, decimals in numbers_in(fig):
+                if not number_traces(value, decimals, pool):
+                    errors.append(f"key_figure_not_in_evidence:{token}")
     # Estimates: formula operands and inputs trace to the evidence, or to an EARLIER estimate's
     # recomputed value — never to the estimate's own value (that would let '3717' prove '3717').
     earlier: list[float] = []
@@ -389,22 +424,24 @@ def verify_candidate(weekly: dict, evidence: dict, anchor: date) -> dict:
     allowed = set(evidence.get("allowed_urls") or [])
     if not weekly.get("source_refs") or any(u not in allowed for u in weekly["source_refs"]):
         errors.append("sources_outside_evidence")
-    if len(weekly.get("watch") or []) > 3:
-        errors.append("watch_over_3")
-    if not 1 <= len(weekly.get("charts") or []) <= 2:
-        errors.append("charts_count_out_of_range")
-    for chart in weekly.get("charts") or []:
-        if not isinstance(chart, dict) or chart.get("form") not in ("paired_bars", "columns"):
-            errors.append("chart_form_invalid")
-        elif chart.get("form") == "paired_bars" and len(chart.get("series") or []) < 2:
-            errors.append(f"paired_bars_without_two_series:{chart.get('id')}")
+    if not v2:  # v2 charts and forms are checked in presentation_errors
+        if len(weekly.get("watch") or []) > 3:
+            errors.append("watch_over_3")
+        if not 1 <= len(weekly.get("charts") or []) <= 2:
+            errors.append("charts_count_out_of_range")
+        for chart in weekly.get("charts") or []:
+            if not isinstance(chart, dict) or chart.get("form") not in ("paired_bars", "columns"):
+                errors.append("chart_form_invalid")
+            elif chart.get("form") == "paired_bars" and len(chart.get("series") or []) < 2:
+                errors.append(f"paired_bars_without_two_series:{chart.get('id')}")
     if weekly.get("freshness_anchor_date") != anchor.isoformat() or anchor.weekday() != 0:
         errors.append("anchor_not_monday")
     event = iso_day(weekly.get("event_date"))
     if not event or not 0 <= (anchor - event).days <= MONDAY_EVIDENCE_DAYS:
         errors.append("event_outside_14_day_window")
     return {"verdict": "PASS" if not errors else "FAIL", "errors": errors,
-            "warnings": chart_repetition_warnings(weekly)}
+            "warnings": essay_v2.warnings(weekly) if v2 else chart_repetition_warnings(weekly),
+            "schema_version": weekly.get("schema_version") or SCHEMA_V1}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -422,14 +459,14 @@ def worst_case_cost(model: str, prompt: str, max_output_tokens: int) -> float:
     return price_estimate(model, math.ceil(len(prompt) / CHARS_PER_TOKEN), max_output_tokens)
 
 
-def estimate_run_cost(evidence: dict, routes: dict[str, str] | None = None, *, draft_output_tokens: int = 3500,
+def estimate_run_cost(evidence: dict, routes: dict[str, str] | None = None, *, draft_output_tokens: int = 6000,
                       review_output_tokens: int = 1200, anchor: date | None = None, prompt: str | None = None) -> dict:
     """Expected (typical output) and worst case (full max_output on every call) for one Monday run."""
     routes = routes or _routes()
     anchor = anchor or date(2026, 11, 2)
     dp = prompt or draft_prompt(evidence, anchor)
     din = math.ceil(len(dp) / CHARS_PER_TOKEN)
-    rin = din + 3500  # review prompt carries the evidence plus the draft
+    rin = din + draft_output_tokens  # review prompt carries the evidence plus the draft
     draft, review = routes[DRAFT_ROUTE], routes[REVIEW_ROUTE]
     typical = price_estimate(draft, din, draft_output_tokens) + price_estimate(review, rin, review_output_tokens)
     worst = price_estimate(draft, din, DRAFT_MAX_OUTPUT) + price_estimate(review, rin, REVIEW_MAX_OUTPUT)
@@ -599,12 +636,15 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
     weekly["model_trace"] = {"api_call": True, "draft_model": draft_model, "review_model": review_model,
                              "response_ids": [c["response_id"] for c in calls], "estimated_cost_usd": round(spent, 6)}
     weekly["editorial_review_pass"] = True
+    # What the reader is told about review comes from this record (web: «Cómo hicimos este análisis»).
+    weekly["independent_review"] = {"status": "final", "verdict": "PASS", "reviewer": review_model,
+                                    "writer": draft_model, "kind": "second_model", "on": anchor.isoformat()}
     out.update(status="pass", weekly_insight=weekly, audit={
         "verdict": "PASS", "editorial_business_review_pass": True, "independent_second_reviewer": True,
         "reviewer": f"{review_model} (revisor independiente del redactor {draft_model})",
         "deterministic_verification": verification, "lenses": review.get("lenses") or {},
         "minor_issues": [i for i in review.get("issues") or [] if isinstance(i, dict) and i.get("severity") != "blocker"],
-        "presentation": {"format": SCHEMA, "approved_by": "pipeline (verificación determinista + revisor independiente)"}})
+        "presentation": {"format": weekly.get("schema_version") or SCHEMA, "approved_by": "pipeline (verificación determinista + revisor independiente)"}})
     return out
 
 

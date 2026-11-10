@@ -1,5 +1,7 @@
 # Panel de diseño: presentación del Insight semanal
 
+> **Actualización (Dirección, 10-nov-2026):** desde el lunes 16-nov el Insight usa el formato v2, un ensayo tipo noticia (`weekly_insight_a_v2`). El formato y sus reglas están en `data/weekly_insight/POLICY.md` («Format v2») y en `src/radar_salud/weekly_insight_essay.py`. Este panel documenta el formato A v1, que queda solo para el archivo.
+
 Insight evaluado: `weekly-insight:2026-10-23:licencias-control-y-costo` (`data/weekly_insight/editorial_approved.json`).
 Versión actual: `web/app.js` → `renderWeeklyDetail` + `insightChart`; estilos en `web/home-inbox.css`.
 Capturas de la versión actual: `current-390.png`, `current-1280.png` (solo la parte visible del diálogo).

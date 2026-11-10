@@ -420,9 +420,64 @@ function renderWeeklyA(w){
  const sources=arr(w.sources).filter(x=>/^https:\/\//.test(x.url||''));
  return`<article class="wi"><p class="wi-kicker">Insight semanal <span>· ${fmtDate(w.anchor_kind==='monday'&&w.freshness_anchor_date?w.freshness_anchor_date:w.event_date)} · lectura de ${minutes} min</span></p><h2 id="weeklyInsightTitle" class="wi-headline">${esc(w.headline)}</h2>${dek?`<p class="wi-dek">${dek}</p>`:''}${arr(w.charts).length?`<section class="wi-charts" aria-label="Gráficos">${arr(w.charts).map(c=>insightChart(c,idx)).join('')}</section>`:''}<div class="wi-essay">${section('wi-facts',w.essay?.facts)}${section('wi-reading',w.essay?.reading)}</div>${watch.length>=2?`<aside class="wi-watch"><h3>${esc(w.watch_heading||'Qué mirar')}</h3><ol>${watch.map(x=>`<li><strong>${esc(x.headline)}</strong> ${esc(x.explanation)}</li>`).join('')}</ol></aside>`:''}<footer class="wi-notes">${idx.size?`<h3>Notas sobre la evidencia</h3><ol>${arr(w.notes).map(n=>`<li id="wi-note-${esc(n.id)}" tabindex="-1">${esc(n.text)}</li>`).join('')}</ol>`:''}<h3>Fuentes</h3><ul>${sources.map(x=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.short_label||x.label)}</a> <span class="wi-role">· ${esc(x.short_role||x.role||'')}</span></li>`).join('')}</ul>${w.expires_on?`<p class="wi-valid">Vigente hasta el ${fmtDate(w.expires_on)}.</p>`:''}</footer></article>`;
 }
+// Weekly insight v2 (Dirección 10-nov-2026): a news-style essay, lead → context → development → closing.
+// Charts sit after the paragraph that explains them; quotes carry a linked source; every source named in the text
+// links to the original document and to the numbered list (Oficial/Prensa badge); Alicanto estimates carry a dashed
+// underline or frame and their formula; the method is collapsed. Mirrors src/radar_salud/weekly_insight_essay.py.
+function weIsEssay(w){return Boolean(w&&w.schema_version==='weekly_insight_a_v2'&&Array.isArray(w.body)&&w.headline)}
+const WE_KIND={oficial:'Oficial',prensa:'Prensa',estimacion:'Estimación Alicanto'};
+const WE_LINK=/\[([^\]\[^][^\]\[]*)\]\((f\d{1,2}|est:[A-Za-z0-9_-]+)\)/g;
+function weNum(v,max=1){return Number(v).toLocaleString('es-CL',{maximumFractionDigits:max}).replace(/^-/,'−')}
+// "505 / (993 + 505) * 100" → "505 ÷ (993 + 505)"; the result goes after "=" with its unit.
+function weFormula(f){return String(f||'').replace(/\s*\*\s*100\s*$/,'').replace(/\s*\/\s*/g,' ÷ ').replace(/\s*\*\s*/g,' × ').replace(/\d+(?:\.\d+)?/g,m=>weNum(Number(m),4))}
+function weCap(t){t=String(t||'');return t.charAt(0).toUpperCase()+t.slice(1)}
+function weUnit(e){return e.unit==='%'?'%':e.unit?` ${e.unit}`:''}
+function weSup(s){return`<sup class="we-c"><a href="#we-src-${esc(s.id)}" data-src="${esc(s.id)}" title="Ver fuente ${s.n} en la lista" aria-label="Fuente ${s.n}">${s.n}</a></sup>`}
+function weSourceLink(s,label){return`<a class="we-sl" href="${esc(s.url)}" target="_blank" rel="noopener">${label}</a>${weSup(s)}`}
+function weInline(text,ctx){return esc(text||'').replace(WE_LINK,(m,label,ref)=>{if(ref.startsWith('est:')){const e=ctx.est.get(ref.slice(4));return e?`<span class="we-est" title="Estimación Alicanto: ${esc(weFormula(e.formula))} = ${esc(weNum(e.value)+weUnit(e))}">${label}</span>`:label}const s=ctx.src.get(ref);return s?weSourceLink(s,label):label}).replace(/\[\^(n\d+)\]/g,(m,id)=>wiRefs([id],ctx.notes))}
+function weTicks(max){const raw=max*1.2/4,p=10**Math.floor(Math.log10(raw)),step=[1,2,2.5,5,10].map(k=>k*p).find(x=>x>=raw-1e-9),top=Math.ceil(max*1.2/step-1e-9)*step,ticks=[];for(let v=0;v<top-1e-9;v+=step)ticks.push(v);return{top,ticks}}
+function weBars(c){
+ const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';
+ const max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,{top,ticks}=weTicks(max),pct=c.unit==='%'?'%':'';
+ const bars=rows.map(r=>{const v=Number(r.value),w=(Math.abs(v)/top*100).toFixed(2),cls=r.style==='estimate'||r.style==='partial'?' estim':r.strong?' strong':'';return`<div class="we-bar"><span class="we-lab">${esc(r.label)}${r.style==='partial'&&r.partial_label?` <small>${esc(r.partial_label)}</small>`:''}</span><div class="we-track"><div class="we-fill${cls}" style="width:${w}%"></div><span class="we-val" style="left:${w}%">${weNum(v)}${pct}</span></div></div>`}).join('');
+ const axis=`<div class="we-axis" aria-hidden="true"><span></span><div class="we-ticks">${ticks.map(t=>`<span style="left:${(t/top*100).toFixed(2)}%">${weNum(t)}${pct}</span>`).join('')}</div></div>`;
+ return`<div class="we-bars" role="img" aria-label="${esc(`${c.subtitle||c.headline}. ${rows.map(r=>`${r.label}: ${weNum(r.value)}${pct}`).join('; ')}.`)}">${bars}</div>${axis}`;
+}
+function weChart(c,ctx){
+ const viz=c.form==='bars'?weBars(c):c.form==='paired_bars'?wiPairedBars(c):wiColumns(c);if(!viz)return'';
+ const e=c.kind==='estimacion'?ctx.est.get(c.estimate_ref):null;
+ const tag=e?`<span class="we-tag es"><i></i>Estimación Alicanto: ${esc(weFormula(e.formula))} ≈ ${weNum(e.value,0)}${e.unit==='%'?'%':''}</span>`:`<span class="we-tag ${c.kind==='oficial'?'of':'pr'}"><i></i>${esc(c.kind_label||(c.kind==='oficial'?'Dato oficial':'Prensa'))}</span>`;
+ return`<figure class="we-fig${e?' est':''}" id="we-chart-${esc(c.id)}" aria-labelledby="we-chart-${esc(c.id)}-h"><p class="we-fig-h" id="we-chart-${esc(c.id)}-h">${esc(c.headline||'')}</p>${c.subtitle?`<p class="we-fig-s">${esc(c.subtitle)}</p>`:''}${viz}<figcaption>${tag}${c.source?`<span>${weInline(c.source,ctx)}</span>`:''}</figcaption></figure>`;
+}
+function weFigures(w,ctx){
+ const items=arr(w.key_figures?.items).filter(x=>x&&x.value);if(!items.length)return'';
+ return`<section class="we-kf" aria-labelledby="we-kf-h"><h3 id="we-kf-h">${esc(w.key_figures.heading||`Lo que debes saber en ${items.length} cifras`)}</h3><ol>${items.map(x=>{const s=ctx.src.get(x.source_ref);return`<li class="${[x.kind==='estimacion'?'es':'',x.wide?'wide':''].filter(Boolean).join(' ')}"><span class="k">${esc(x.label||'')}</span><b>${esc(x.value)}</b>${weInline(x.text,ctx)}<span class="src">${esc(WE_KIND[x.kind]||'')} · ${s?weSourceLink(s,esc(x.source_label||s.label)):esc(x.source_label||'')}</span></li>`}).join('')}</ol></section>`;
+}
+function weQuote(b,ctx){const s=ctx.src.get(b.source_ref);return`<blockquote class="we-q"><p>«${esc(b.text)}»</p><footer><b>${esc(b.attribution||'')}</b>${s?`, ${weSourceLink(s,esc(b.context||s.label))}`:''}</footer></blockquote>`}
+// «Revisión independiente» only when one is recorded on the insight (pipeline second model or an editorial reviewer).
+function weReviewed(w){const r=w?.independent_review||{};return w?.editorial_review_pass===true&&r.status==='final'&&(r.verdict==='PASS'||(r.verdict==='PASS_WITH_CORRECTIONS'&&r.corrections_applied===true))}
+function weWords(w){return [...arr(w.body).filter(b=>b&&(b.type==='paragraph'||b.type==='quote')).map(b=>b.text),w.closing?.text].join(' ').replace(WE_LINK,'$1').replace(/\[\^n\d+\]/g,'').split(/\s+/).filter(Boolean).length}
+function renderWeeklyEssay(w){
+ const charts=new Map(arr(w.charts).filter(c=>c&&c.id).map(c=>[c.id,c]));
+ // Sources are numbered by first citation in reading order, so the superscripts read 1, 2, 3…
+ const seen=[],cite=id=>{if(id&&!seen.includes(id))seen.push(id)},scan=t=>{for(const m of String(t||'').matchAll(/\]\((f\d{1,2})\)/g))cite(m[1])};
+ for(const b of arr(w.body)){if(!b)continue;if(b.type==='paragraph')scan(b.text);else if(b.type==='quote')cite(b.source_ref);else if(b.type==='chart')scan(charts.get(b.chart_ref)?.source);else if(b.type==='key_figures')for(const x of arr(w.key_figures?.items)){scan(x?.text);cite(x?.source_ref)}}
+ scan(w.closing?.text);
+ const valid=arr(w.sources).filter(s=>s&&s.id&&/^https:\/\//.test(s.url||'')),rank=id=>{const i=seen.indexOf(id);return i<0?seen.length:i};
+ const sources=valid.map((s,i)=>[s,i]).sort((a,b)=>rank(a[0].id)-rank(b[0].id)||a[1]-b[1]).map(x=>x[0]),src=new Map(sources.map((s,i)=>[s.id,{...s,n:i+1}]));
+ const ctx={src,est:new Map(arr(w.estimates).filter(e=>e&&e.id).map(e=>[e.id,e])),notes:wiNoteIndex(w)};
+ const minutes=Number(w.reading_time_min)||Math.max(1,Math.round(weWords(w)/200)),official=sources.filter(s=>s.type==='oficial').length;
+ let lead=true;
+ const body=arr(w.body).map(b=>{if(!b)return'';if(b.type==='paragraph'){const cls=lead?' class="we-lead"':'';lead=false;return`<p${cls}>${weInline(b.text,ctx)}</p>`}if(b.type==='subhead')return`<h3 class="we-h">${esc(b.text)}</h3>`;if(b.type==='quote')return weQuote(b,ctx);if(b.type==='chart'){const c=charts.get(b.chart_ref);return c?weChart(c,ctx):''}if(b.type==='key_figures')return weFigures(w,ctx);return''}).join('');
+ const m=w.method||{},ests=arr(m.estimates).map(id=>ctx.est.get(id)).filter(Boolean),para=(label,xs)=>arr(xs).length?`<div><b>${label}</b> ${arr(xs).map(esc).join(' ')}</div>`:'';
+ const method=`${ests.length?`<div><b>Estimaciones Alicanto.</b> ${ests.map(e=>`“${esc(weCap(e.display||e.label))}”: <code>${esc(weFormula(e.formula))} = ${esc(weNum(e.value)+weUnit(e))}</code>.`).join(' ')}${m.estimates_note?` ${esc(m.estimates_note)}`:''}</div>`:''}${para('Lo que no usamos.',m.discarded)}${para('Límites.',m.limits)}${ctx.notes.size?`<div><b>Notas sobre la evidencia.</b><ol>${arr(w.notes).map(n=>`<li id="wi-note-${esc(n.id)}" tabindex="-1">${esc(n.text)}</li>`).join('')}</ol></div>`:''}<div><b>Verificación.</b> ${weReviewed(w)?'Cada número del texto se contrastó contra su fuente y pasó una revisión independiente antes de publicarse.':'Cada número del texto se verificó contra el paquete de evidencia.'}</div>`;
+ const closing=w.closing?.text?`<div class="we-closing"><p class="k">Cierre</p><p>${weInline(w.closing.text,ctx)}<span class="we-end" aria-hidden="true"></span></p></div>`:'';
+ const list=sources.map((s,i)=>`<li id="we-src-${esc(s.id)}" tabindex="-1"><span class="n">${i+1}</span><div><span class="we-badge ${s.type==='oficial'?'of':'pr'}">${s.type==='oficial'?'Oficial':'Prensa'}</span><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>${s.role?`<span class="role">${esc(s.role)}</span>`:''}</div></li>`).join('');
+ return`<article class="we"><header class="we-head"><p class="we-kicker"><span>Insight de la semana</span>${w.kicker?`<span>${esc(w.kicker)}</span>`:''}<span>${fmtDate(w.freshness_anchor_date||w.event_date)}</span></p><h2 id="weeklyInsightTitle" class="we-headline">${esc(w.headline)}</h2>${w.dek?`<p class="we-dek">${esc(w.dek)}</p>`:''}<div class="we-byline"><span><b>Alicanto</b> · equipo editorial</span><span>Lectura de ${minutes} min</span><span>${sources.length} fuentes, ${official} oficiales</span>${w.verified_on?`<span>Cifras verificadas el ${fmtDate(w.verified_on)}</span>`:''}</div><div class="we-legend" aria-label="Tipos de evidencia"><span class="we-tag of"><i></i>Dato oficial</span><span class="we-tag pr"><i></i>Prensa</span><span class="we-tag es"><i></i>Estimación Alicanto (cálculo propio, con fórmula al final)</span></div></header><div class="we-body">${body}${closing}</div><section class="we-back"><details class="we-howto"><summary>Cómo hicimos este análisis</summary><div class="we-method">${method}</div></details><div class="we-sources"><h3>Fuentes</h3><ol>${list}</ol>${w.expires_on?`<p class="we-valid">Vigente hasta el ${fmtDate(w.expires_on)}.</p>`:''}</div></section></article>`;
+}
 // Older reviewed insights (list schema) keep their original layout.
 function renderWeeklyLegacy(w){return `<h2 id="weeklyInsightTitle">${esc(w.insight_title||w.title)}</h2><p class="meta-line">${esc(w.source_name)} · ${w.date_basis?sourceTiming(w):fmtDate(w.event_date)}</p><p>${esc(w.summary)}</p>${insightList('Cifras y alcance',w.key_figures)}${arr(w.charts).map(c=>insightChart(c)).join('')}${insightList('Actores',w.actors)}${insightList('Lectura Alicanto:',w.insight_reading)}${insightList('Decisiones que cambia',w.decision_use)}${insightList('Qué observar',w.what_to_watch)}${insightList('Límites de la evidencia',w.uncertainties)}<h3>Fuentes</h3><ul>${arr(w.sources).filter(x=>/^https:\/\//.test(x.url||'')).map((x,i)=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${i===0?'Revisar fuente original · ':''}${esc(x.label)}</a> · ${esc(x.role)}</li>`).join('')}</ul>`}
-function renderWeeklyDetail(w){const host=document.getElementById('weeklyInsightBody');host.innerHTML=w&&w.essay&&w.headline?renderWeeklyA(w):renderWeeklyLegacy(w);if(host.closest)host.closest('dialog')?.classList.toggle('wi-dialog',Boolean(w&&w.essay&&w.headline))}
+function renderWeeklyDetail(w){const host=document.getElementById('weeklyInsightBody'),essay=weIsEssay(w);host.innerHTML=essay?renderWeeklyEssay(w):w&&w.essay&&w.headline?renderWeeklyA(w):renderWeeklyLegacy(w);if(host.closest)host.closest('dialog')?.classList.toggle('wi-dialog',Boolean(essay||(w&&w.essay&&w.headline)))}
 async function renderFreeValue(d){await AlicantoRead.ready;freeValue=d||{};const weekly=currentWeekly();document.getElementById('valueHighlights').hidden=true;document.getElementById('weeklyInsightBody').innerHTML='';if(weekly){renderWeeklyDetail(weekly);}if(allSignals.length)draw()}
 if(typeof document!=='undefined'){document.getElementById('period').disabled=true;document.getElementById('sort').disabled=true;}
 if(typeof window!=='undefined')window.setInterval(()=>{if(freeValue.weekly_insight&&!currentWeekly()){const dialog=document.getElementById('weeklyInsightDialog');if(dialog?.open)dialog.close();if(allSignals.length)draw()}},60000);
@@ -438,8 +493,8 @@ document.querySelectorAll('[data-open-filters]').forEach(b=>b.onclick=openFilter
 wireLanes();
 filtersDropdown=AlicantoBar.dropdown(document.getElementById('filterDetails'));
 document.getElementById('filterDone').onclick=()=>closeFilters(true);
-// Footnote links stay inside the insight dialog and never rewrite the shared-link hash.
-document.getElementById('weeklyInsightBody').addEventListener('click',e=>{const a=e.target.closest?.('[data-note]');if(!a)return;e.preventDefault();const note=document.getElementById(`wi-note-${a.dataset.note}`);if(note){note.scrollIntoView({block:'center',behavior:motionBehavior()});note.focus({preventScroll:true})}});
+// Footnote and source superscripts stay inside the insight dialog and never rewrite the shared-link hash.
+document.getElementById('weeklyInsightBody').addEventListener('click',e=>{const a=e.target.closest?.('[data-note],[data-src]');if(!a)return;e.preventDefault();const note=document.getElementById(a.dataset.note?`wi-note-${a.dataset.note}`:`we-src-${a.dataset.src}`);if(note){note.closest('details')?.setAttribute('open','');note.scrollIntoView({block:'center',behavior:motionBehavior()});note.focus({preventScroll:true})}});
 document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>document.getElementById(button.dataset.close).close());
 document.querySelectorAll('.home-dialog').forEach(dialog=>dialog.onclick=event=>{if(event.target===dialog)dialog.close()});
 const healthLoad=fetch('data/source_health.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject());

@@ -21,7 +21,8 @@ Decision (``config/weekly_insight_stats_anchor_v1.json``):
   2. at most 2 anchor figures, each among the brief's allowed figures (traced to ficha refs);
   3. every displayed figure traced to a named source (``figure_sources``) or to a recomputed estimate;
   4. no paragraph that only restates ficha figures and vocabulary;
-  5. a "Tesis" section (``essay.reading``) and a "Qué mirar" section (≥ 2 items);
+  5. v1: a "Tesis" section (``essay.reading``) and a "Qué mirar" section (≥ 2 items); v2 essay (Dirección
+     10-nov-2026): a closing of ≥ 40 words that states the thesis and what to watch, in prose;
   6. no sentence with stem Jaccard ≥ threshold against a ficha sentence, headline or dek.
   If the plan cannot meet item 1 before drafting, or the draft fails the contract, the pipeline
   falls back to the normal topic selection instead of publishing a weak Insight (decision 2, kept:
@@ -49,6 +50,7 @@ from zoneinfo import ZoneInfo
 from . import lectura_verifier as lv
 from . import stats_fichas as sf
 from .weekly_freshness import MONDAY_EVIDENCE_DAYS, displayed_texts, iso_day, number_traces, numbers_in, chart_values
+from . import weekly_insight_essay as essay_v2
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = Path("config/weekly_insight_stats_anchor_v1.json")
@@ -517,9 +519,9 @@ CONTRACT_TEXT = """CONTRATO FICHA ≠ INSIGHT (Dirección 2-nov-2026; se verific
 - Cita esas fuentes en sources (url de CRUCES, label y role que diga qué aporta).
 - Usa como máximo {max_anchor} cifras de la ficha, elegidas de CIFRAS_ANCLA_PERMITIDAS.
 - figure_sources: [{{"figure":"cifra tal como aparece","source_url":"url de la fuente que la contiene"}}] para CADA
-  cifra mostrada (titular, bajada, ensayo, qué mirar, gráficos, notas). Una cifra sin fuente falla.
-- essay.reading.heading = "Tesis": qué está pasando y por qué importa, asociando ancla y cruces.
-- watch (≥2 ítems) con watch_heading "Qué mirar": señales concretas a seguir.
+  cifra mostrada (titular, bajada, cuerpo, cierre, recuadro de cifras, gráficos, método, fuentes). Una cifra sin fuente falla.
+- Tesis: el ensayo dice qué está pasando y por qué importa, asociando ancla y cruces; el cierre (closing, ≥40 palabras)
+  remata esa tesis e integra en prosa las señales concretas que hay que mirar.
 - Ningún párrafo puede solo reescribir cifras de la ficha; ninguna frase puede parecerse a una frase, titular o bajada de
   la ficha (similitud de raíces ≥ {jaccard})."""
 
@@ -608,6 +610,10 @@ def build_brief(selected: dict, evidence: dict, anchor: date) -> dict:
 
 
 def _paragraph_fields(weekly: dict) -> list[tuple[str, str]]:
+    if essay_v2.is_v2(weekly):
+        out = [(f"body[{i}]", essay_v2.plain(b.get("text"))) for i, b in enumerate(weekly.get("body") or [])
+               if isinstance(b, dict) and b.get("type") == "paragraph"]
+        return out + [("closing", essay_v2.plain(essay_v2.closing_text(weekly)))]
     essay = weekly.get("essay") or {}
     out = []
     for key in ("facts", "reading"):
@@ -699,12 +705,16 @@ def contract_check(weekly: dict, evidence: dict) -> dict:
         if coverage >= float(c.get("restatement_coverage") or 0.7):
             errors.append(f"paragraph_restates_ficha:{where}:{coverage:.2f}")
 
-    # 5. Tesis and Qué mirar.
-    reading = (weekly.get("essay") or {}).get("reading") or {}
-    if not (isinstance(reading, dict) and fold(reading.get("heading")).startswith("tesis") and reading.get("paragraphs")):
-        errors.append("tesis_missing")
-    if len(weekly.get("watch") or []) < 2 or not fold(weekly.get("watch_heading")).startswith("que mirar"):
-        errors.append("que_mirar_missing")
+    # 5. Tesis and Qué mirar (v2: both live in the closing, as prose).
+    if essay_v2.is_v2(weekly):
+        if essay_v2.words(essay_v2.closing_text(weekly)) < 40:
+            errors.append("closing_missing")
+    else:
+        reading = (weekly.get("essay") or {}).get("reading") or {}
+        if not (isinstance(reading, dict) and fold(reading.get("heading")).startswith("tesis") and reading.get("paragraphs")):
+            errors.append("tesis_missing")
+        if len(weekly.get("watch") or []) < 2 or not fold(weekly.get("watch_heading")).startswith("que mirar"):
+            errors.append("que_mirar_missing")
 
     # 6. Non-redundancy against the ficha's sentences, headlines and deks.
     limit = float(c.get("sentence_jaccard_max") or 0.5)
