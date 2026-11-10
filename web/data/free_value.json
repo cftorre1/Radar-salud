@@ -431,8 +431,8 @@
     "independent_review": {
       "kind": "independent_review",
       "reviewer": "revisión independiente del PR #174 (coordinación)",
-      "status": "final",
-      "verdict": "PASS",
+      "status": "pending_final",
+      "verdict": null,
       "rounds": [
         {
           "round": 1,
@@ -458,12 +458,12 @@
         },
         {
           "round": "3-fix",
-          "on": "2026-11-10",
-          "reviewed_commit": "this commit",
-          "verdict": "PASS"
+          "reviewed_commit": "8b9487f7",
+          "verdict": "FAIL",
+          "blocker": "verbo doblar; registro prematuro"
         }
       ],
-      "note": "Veredicto final PASS registrado por indicación de coordinación; el revisor verifica el commit de la ronda 3-fix y, si falla, este registro se revierte."
+      "note": "Veredicto final pendiente: lo registra coordinación con el SHA real cuando el revisor apruebe el commit de corrección. Hasta entonces la web no dice «revisión independiente»."
     },
     "weekly_mode": "reviewed_cross_source_deep_dive",
     "model_trace": {

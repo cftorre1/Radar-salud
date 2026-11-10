@@ -114,7 +114,7 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
   = 32, «1,5 millones» = 1.500.000) and checked like digits; a number word left outside a parsed phrase («miles»,
   «decenas») fails as `number_word_unparsed`. A ratio («8 de cada 10», «la mitad», «dos tercios», «tres cuartos»)
   must sit inside an estimate marker or be the `display` of an estimate, and must be within ±5 points of that one
-  estimate. Multiples («el doble», «el triple», «se duplicó», «quintuplicó», «un par de») and «mitad», with or
+  estimate. Multiples («el doble», «el triple», «se duplicó», «dobló», «quintuplicó», «un par de») and «mitad», with or
   without article, pass only inside an `est:` marker whose estimate backs them (≈ k or ≈ 100·k %, ±10%); elsewhere
   they fail as `number_word_unparsed`. In `evidence_figures`, numbers written as words must all appear together in
   one evidence item.

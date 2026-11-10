@@ -94,10 +94,10 @@ _UNPARSED = set(_VALUES) | set(_SCALES) | {"miles", "cientos", "centenar", "cent
                                            "docenas", "millar", "millares", "billon", "billones", "tercio", "tercios",
                                            "cuartos", "quintos", "sextos", "septimos", "octavos", "novenos", "decimos",
                                            "mitad", "mitades"}
-# Multiples claim a size too: «el doble», «el triple», «se duplicó», «quintuplicó», «un par de». Like «mitad»
+# Multiples claim a size too: «el doble», «el triple», «se duplicó», «dobló», «quintuplicó», «un par de». Like «mitad»
 # (with or without article), they pass only inside an est: marker whose estimate backs them; elsewhere they fail.
 MULTIPLIER = re.compile(r"\b(?:un\s+par\s+de|(?:doble|triple|cu[aá]druple|qu[ií]ntuple)s?|"
-                        r"(?:duplic|triplic|cuadruplic|quintuplic)[a-záéíóúñ]*)\b", re.I)
+                        r"(?:duplic|triplic|cuadruplic|quintuplic)[a-záéíóúñ]*|(?:re)?dobl[aeoó][a-záéíóúñ]*)\b", re.I)
 _FACTORS = (("par", 2), ("dobl", 2), ("duplic", 2), ("tripl", 3), ("cuadru", 4), ("quint", 5))
 MULTIPLIER_TOLERANCE = 0.10   # relative: «el doble» needs an estimate of ≈2 (veces) or ≈200 (%)
 _TOKEN = re.compile(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+|\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:,\d+)?")
@@ -897,7 +897,7 @@ RULES_V2 = """Reglas (se verifican de forma determinista; si fallas, no se publi
    cifras, gráficos, método, fuentes) debe estar en evidence_figures (copiado de la evidencia) o ser una estimación
    declarada con fórmula. Los números escritos en palabras se leen como un solo valor («dos mil» = 2.000, «treinta y
    dos» = 32) y se verifican igual; evita cantidades vagas («miles», «decenas»), que fallan. Los múltiplos («el
-   doble», «se triplicó», «un par de») y «mitad» solo valen dentro de [texto](est:id) con una estimación que los
+   doble», «se triplicó», «dobló», «un par de») y «mitad» solo valen dentro de [texto](est:id) con una estimación que los
    respalde (≈2 o ≈200% para «el doble», ±10%). Una proporción («8 de cada
    10», «la mitad», «dos tercios», «tres cuartos») va dentro de [texto](est:id) o es el display de una estimación, y
    debe quedar a ±5 puntos de ESA estimación.

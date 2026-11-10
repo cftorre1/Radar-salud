@@ -407,8 +407,8 @@
     "independent_review": {
       "kind": "independent_review",
       "reviewer": "revisión independiente del PR #174 (coordinación)",
-      "status": "final",
-      "verdict": "PASS",
+      "status": "pending_final",
+      "verdict": null,
       "rounds": [
         {
           "round": 1,
@@ -434,12 +434,12 @@
         },
         {
           "round": "3-fix",
-          "on": "2026-11-10",
-          "reviewed_commit": "this commit",
-          "verdict": "PASS"
+          "reviewed_commit": "8b9487f7",
+          "verdict": "FAIL",
+          "blocker": "verbo doblar; registro prematuro"
         }
       ],
-      "note": "Veredicto final PASS registrado por indicación de coordinación; el revisor verifica el commit de la ronda 3-fix y, si falla, este registro se revierte."
+      "note": "Veredicto final pendiente: lo registra coordinación con el SHA real cuando el revisor apruebe el commit de corrección. Hasta entonces la web no dice «revisión independiente»."
     },
     "weekly_mode": "reviewed_cross_source_deep_dive",
     "model_trace": {
@@ -507,7 +507,7 @@
         "Límite: el Minsal advirtió que podría haber otros establecimientos no identificados (nota n5 del v1).",
         "Límite: los cupos de Senama no incluyen hogares privados autorizados (nota n2 del v1)."
       ],
-      "independent_review": "PR #174: ronda 1 PASS_WITH_CORRECTIONS (correcciones en b61fe961); ronda 2 FAIL por números en palabras (corregido en 9c960e9b); ronda 3 FAIL por múltiplos (corregido en el commit 3-fix); veredicto final PASS sobre el commit 3-fix, sujeto a la verificación del revisor (si falla, se revierte)."
+      "independent_review": "PR #174: ronda 1 PASS_WITH_CORRECTIONS (correcciones en b61fe961); ronda 2 FAIL por números en palabras (corregido en 9c960e9b); ronda 3 FAIL por múltiplos (corregido en 8b9487f7); ronda 3-fix FAIL sobre 8b9487f7 por el verbo doblar y el registro prematuro (corregido después); veredicto final pendiente, lo registra coordinación con el SHA real."
     }
   },
   "model": {

@@ -183,7 +183,8 @@ def test_spanish_number_phrases_are_one_value_and_checked(phrase, expected):
 
 @pytest.mark.parametrize("phrase", ["el doble de camas", "el triple de casos", "las camas se duplicó", "el gasto quintuplicó",
                                     "mitad de los hogares", "la mitad de los hogares", "un par de hospitales",
-                                    "el cuádruple", "se triplicaron", "se cuadruplicó"])
+                                    "el cuádruple", "se triplicaron", "se cuadruplicó", "el gasto dobló",
+                                    "las camas doblaron", "la oferta redobló"])
 def test_multiples_and_mitad_outside_an_estimate_marker_fail(phrase):
     w = weekly()
     w["body"][5]["text"] += f" Hubo {phrase}."
@@ -198,11 +199,14 @@ def test_marked_multiple_passes_only_with_an_estimate_of_its_size():
     w["estimates"].append({"id": "doble_x", "label": "razón, %", "value": 200.0, "unit": "%", "display": "200%",
                            "formula": "1056 / 528 * 100"})
     w["method"]["estimates"] += ["dias_vs_egresos", "doble_x"]
-    w["body"][12]["text"] += " Es [el doble](est:doble_x) y [15,3 veces](est:dias_vs_egresos)."
+    w["body"][12]["text"] += (" Es [el doble](est:doble_x), el gasto [se dobló](est:doble_x) y [15,3 veces]"
+                              "(est:dias_vs_egresos).")
     errors = presentation_a_errors(w)
     assert not any("doble" in e or "multiplier" in e for e in errors), errors
     ests = essay._estimates(w)
     assert essay.resolve_ratios("[el triple](est:doble_x)", ests)[1] == ["multiplier_off_its_estimate:triple:doble_x"]
+    assert essay.resolve_ratios("[redobló](est:doble_x)", ests)[1] == []
+    assert essay.resolve_ratios("[dobló](est:sin_autorizacion)", ests)[1] == ["multiplier_off_its_estimate:dobló:sin_autorizacion"]
     assert essay.resolve_ratios("[se duplicó](est:sin_autorizacion)", ests)[1] == [
         "multiplier_off_its_estimate:duplicó:sin_autorizacion"]
 
@@ -290,9 +294,12 @@ def test_migrated_text_carries_the_review_corrections():
     assert 600 <= essay.essay_words(w) <= 900
     assert "para otro segmento" not in w["closing"]["text"]
     review = w["independent_review"]
-    assert review["status"] == "final" and review["verdict"] == "PASS"
+    # The final PASS is recorded by coordination after the reviewer passes the fix commit, never before.
+    assert review["status"] == "pending_final" and review["verdict"] is None
     assert [(r["round"], r["verdict"]) for r in review["rounds"]] == [
-        (1, "PASS_WITH_CORRECTIONS"), (2, "FAIL"), (3, "FAIL"), ("3-fix", "PASS")]
+        (1, "PASS_WITH_CORRECTIONS"), (2, "FAIL"), (3, "FAIL"), ("3-fix", "FAIL")]
+    assert review["rounds"][3] == {"round": "3-fix", "reviewed_commit": "8b9487f7", "verdict": "FAIL",
+                                   "blocker": "verbo doblar; registro prematuro"}
     assert review["rounds"][2] == {"round": 3, "on": "2026-11-10", "reviewed_commit": "9c960e9b", "verdict": "FAIL",
                                    "blocker": "multiplier words"}
 

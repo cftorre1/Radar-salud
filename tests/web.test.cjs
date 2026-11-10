@@ -219,9 +219,12 @@ test('current approved insight renders the v2 essay faithfully to the approved m
  const firsts=[];for(const m of html.split('<section class="we-back">')[0].matchAll(/aria-label="Fuente (\d+)"/g)){const n=Number(m[1]);if(!firsts.includes(n))firsts.push(n)}
  assert.deepEqual(firsts,[1,2,3,4,5,6,7,8,9]);
  assert.ok(html.indexOf('id="we-src-f1"')<html.indexOf('id="we-src-f2"')&&html.indexOf('id="we-src-f2"')<html.indexOf('id="we-src-f6"'));
- // The review line is drawn from the recorded independent review, and only from a FINAL PASS.
- assert.equal(w.independent_review.status,'final');assert.equal(w.independent_review.verdict,'PASS');
- assert.match(html,/pasó una revisión independiente antes de publicarse/);
+ // The review line is drawn from the recorded independent review, and only from a FINAL PASS. The current insight
+ // is pending_final (coordination records the final verdict), so it does not claim one yet.
+ assert.equal(w.independent_review.status,'pending_final');assert.equal(w.independent_review.verdict,null);
+ assert.doesNotMatch(html,/revisión independiente/);
+ c.renderWeeklyDetail({...w,independent_review:{status:'final',verdict:'PASS'}});
+ assert.match(body.innerHTML,/pasó una revisión independiente antes de publicarse/);
  for(const r of [{verdict:'PASS',status:'pending_final'},{verdict:'PASS'},{status:'final',verdict:'FAIL'},undefined]){
   c.renderWeeklyDetail({...w,independent_review:r});
   assert.doesNotMatch(body.innerHTML,/revisión independiente/,JSON.stringify(r));assert.match(body.innerHTML,/Cada número del texto se verificó contra el paquete de evidencia\./);
