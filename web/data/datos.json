@@ -1,6 +1,6 @@
 {
   "schema_version": "datos_index_v1",
-  "generated_at": "2026-11-10T10:00:04.703567+00:00",
+  "generated_at": "2026-11-10T18:16:49.330842+00:00",
   "groups": [
     {
       "key": "aseguradores",
@@ -238,7 +238,29 @@
       "group": "empleadores_licencias",
       "order": 10,
       "cadence": "trimestral (datos abiertos SIS)",
-      "state": "pending"
+      "state": "live",
+      "piece_id": "stats-ficha:F13:2026-09",
+      "headline": "Las Isapres rechazan el 46,4% de las licencias de salud mental y el 5,3% de las respiratorias en julio–septiembre 2026",
+      "kpis": [
+        {
+          "id": "rechazo",
+          "label": "Licencias rechazadas",
+          "value": "17,3%"
+        },
+        {
+          "id": "dias",
+          "label": "Días autorizados / solicitados",
+          "value": "71,6%"
+        }
+      ],
+      "period": "2026-09",
+      "period_label": "jul–sep 2026",
+      "source": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "published_at": "2026-11-10",
+      "updated_on": "2026-11-10",
+      "status": "current",
+      "share_url": "data/fichas/f13_licencias.html"
     },
     {
       "family": "F14",
@@ -246,7 +268,29 @@
       "group": "aseguradores",
       "order": 11,
       "cadence": "trimestral (datos abiertos SIS)",
-      "state": "pending"
+      "state": "live",
+      "piece_id": "stats-ficha:F14:2026-09",
+      "headline": "GES en Isapres: facturado +10,6%, casos +0,7%; por caso sube en 59 de 77",
+      "kpis": [
+        {
+          "id": "facturado_ges",
+          "label": "Facturado GES",
+          "value": "99.182 MM$"
+        },
+        {
+          "id": "por_caso",
+          "label": "Facturado por caso",
+          "value": "$259.844"
+        }
+      ],
+      "period": "2026-09",
+      "period_label": "jul–sep 2026",
+      "source": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "published_at": "2026-11-07",
+      "updated_on": "2026-11-10",
+      "status": "current",
+      "share_url": "data/fichas/f14_ges_patologia.html"
     }
   ]
 }
