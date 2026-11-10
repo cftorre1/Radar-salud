@@ -197,7 +197,7 @@
    `<p class="sf-kicker"><span class="sf-kick">${esc(f.kicker)}</span>${f.featured?'<span class="sf-featured">Destacada</span>':''}</p>`+
    `<h2 id="detailTitle" class="sf-headline">${esc(f.headline)}</h2>`+
    (mt.lines.length?`<ul class="sf-meta" aria-label="Datos de la publicación">${mt.lines.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'')+
-   `<p class="sf-dek">${dek(f)}</p>`+(arr(f.intro).length?`<section class="sf-intro" aria-label="Qué se compara">${arr(f.intro).map(x=>`<p>${esc(x)}</p>`).join('')}</section>`:'')+body+
+   `<p class="sf-dek">${dek(f)}</p>`+(arr(f.intro).length?`<section class="sf-intro" aria-label="Qué se compara">${arr(f.intro).map(x=>`<p${/^Nota:/.test(x)?' class="sf-intro-note"':''}>${esc(x)}</p>`).join('')}</section>`:'')+body+
    (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+
    // Coverage footnote (F2 Esencial, Dirección 2-nov): one short line, always visible, right above 'Notas y fuentes'.
    (f.scope_note?`<p class="sf-scope">${esc(f.scope_note)}</p>`:'')+

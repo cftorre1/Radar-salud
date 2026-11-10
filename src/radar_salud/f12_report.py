@@ -543,14 +543,14 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
            f"{fmt(V(f'disp.{q}.amb.mediana'), 2)} veces lo que el cuarto más barato en atención ambulatoria, y "
            f"{fmt(V(f'disp.{q}.hosp.mediana'), 2)} veces en hospitalaria.")
     intro = [
-        (f"Qué se compara: lo que los prestadores facturan a las Isapres con un código del arancel MLE de Fonasa, la lista "
-         f"oficial que permite comparar la misma prestación entre prestadores. Es el {pc(f'embudo.{q}.facturado.pct_mle')} de "
-         "todo lo facturado en el trimestre; el resto usa códigos propios de cada Isapre, de la Superintendencia o solo GES."),
-        (f"De ese {pc(f'embudo.{q}.facturado.pct_mle')}, el {pc(f'embudo.{q}.facturado.pct_amb')} es atención ambulatoria y el "
-         f"{pc(f'embudo.{q}.facturado.pct_hosp')} hospitalaria. Como sus precios no se comparan entre sí, cada mundo tiene su "
-         f"canasta: los {fmt(V('canasta.amb.n'), 0)} códigos ambulatorios y los {fmt(V('canasta.hosp.n'), 0)} hospitalarios "
-         f"que más facturan y tienen precio en la Metropolitana y en la mayoría de las demás regiones. Cubren el {pc('canasta.amb.cobertura')} y el "
-         f"{pc('canasta.hosp.cobertura')} de lo facturado en cada mundo, y cada código pesa según lo que factura."),
+        (f"El análisis toma lo que se factura a las Isapres con código del arancel MLE de Fonasa: el "
+         f"{pc(f'embudo.{q}.facturado.pct_mle')} de todo lo facturado. El resto son códigos propios, no comparables."),
+        (f"De ese {pc(f'embudo.{q}.facturado.pct_mle')} se armaron dos canastas: {fmt(V('canasta.amb.n'), 0)} códigos ambulatorios, "
+         f"que representan el {pc('canasta.amb.cobertura')} de lo ambulatorio, y {fmt(V('canasta.hosp.n'), 0)} hospitalarios, que "
+         f"cubren el {pc('canasta.hosp.cobertura')} de lo hospitalario."),
+        (f"Nota: la canasta hospitalaria representa menos porque lo que resuelve cada hospital o clínica varía mucho entre "
+         f"regiones; para comparar la mayor cantidad de centros se acota a los códigos con precio en la Metropolitana y en al "
+         f"menos {k['strata']['hosp']['min_other_regions']} regiones más."),
     ]
     paragraphs.append(f"El {pc(f'embudo.{q}.facturado.pct_mle')} de lo facturado tiene código MLE; la canasta cubre "
                       f"{pc('canasta.amb.cobertura')} del mundo ambulatorio y {pc('canasta.hosp.cobertura')} del hospitalario.")
