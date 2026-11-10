@@ -124,7 +124,7 @@
       }
     ],
     "closing": {
-      "text": "El fondo de SalfaCorp y Angelini apunta a sumar, según [la prensa](f2), hasta 1.000 habitaciones en un plazo de hasta 15 años. Es oferta nueva, pero de otra escala y para otro segmento. Mientras la política de envejecimiento no defina cómo se financia el cuidado de larga duración, la brecha seguirá apareciendo en los días-cama de los hospitales. Lo que viene dirá si eso cambia. El informe público de la FNE, cuando se publique, mostrará cómo definió el mercado de residencias. La Política Nacional de Envejecimiento dirá si incluye cuidados de larga duración. Y el registro de residencias autorizadas que anunció el Minsal, cuando se publique, será la primera foto oficial de la oferta desde 2021."
+      "text": "El fondo de SalfaCorp y Angelini apunta a sumar, según [la prensa](f2), hasta 1.000 habitaciones en un plazo de hasta 15 años. Es oferta nueva, pero de otra escala. Mientras la política de envejecimiento no defina cómo se financia el cuidado de larga duración, la brecha seguirá apareciendo en los días-cama de los hospitales. Lo que viene dirá si eso cambia. El informe público de la FNE, cuando se publique, mostrará cómo definió el mercado de residencias. La Política Nacional de Envejecimiento dirá si incluye cuidados de larga duración. Y el registro de residencias autorizadas que anunció el Minsal, cuando se publique, será la primera foto oficial de la oferta desde 2021."
     },
     "key_figures": {
       "items": [
@@ -429,12 +429,28 @@
     "insight_teaser": "Entra capital privado a las residencias para mayores, pero la falta de cuidados ya se paga en camas de hospital: 1.056 personas con alta siguen hospitalizadas.",
     "verified_on": "2026-11-08",
     "independent_review": {
-      "verdict": "PASS_WITH_CORRECTIONS",
-      "corrections_applied": true,
       "kind": "independent_review",
       "reviewer": "revisión independiente del PR #174 (coordinación)",
-      "on": "2026-11-10",
-      "note": "Revisó el texto v2; sus correcciones se aplicaron el 10-nov."
+      "status": "pending_final",
+      "verdict": null,
+      "rounds": [
+        {
+          "round": 1,
+          "on": "2026-11-10",
+          "reviewed_commit": "f5fdc90e",
+          "verdict": "PASS_WITH_CORRECTIONS",
+          "corrections_applied_in": "b61fe961"
+        },
+        {
+          "round": 2,
+          "on": "2026-11-10",
+          "reviewed_commit": "b61fe961",
+          "verdict": "FAIL",
+          "blocker": "números escritos en palabras (compuestos, decenas, fracciones) sin verificar",
+          "corrections_applied_in": "siguiente commit de la rama claude/insight-ensayo-v2"
+        }
+      ],
+      "note": "El veredicto final queda para la tercera ronda; hasta entonces la web no dice «revisión independiente»."
     },
     "weekly_mode": "reviewed_cross_source_deep_dive",
     "model_trace": {

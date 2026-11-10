@@ -69,14 +69,31 @@ NOTE = re.compile(r"\[\^(n\d+)\]")
 INLINE_QUOTE = re.compile(r"[“«\"]([^”»\"]+)[”»\"]")
 RATIO = re.compile(r"\b(\d{1,4}) de cada (\d{1,5})\b")
 RATIO_TOLERANCE = 5.0   # points: «8 de cada 10» needs an estimate within 75–85%
-# Numbers written as words are scanned like digits ("una"/"un" are articles and are not mapped).
-NUMBER_WORDS = {"uno": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, "seis": 6, "siete": 7, "ocho": 8,
-                "nueve": 9, "diez": 10, "once": 11, "doce": 12, "trece": 13, "catorce": 14, "quince": 15,
-                "dieciséis": 16, "dieciseis": 16, "diecisiete": 17, "dieciocho": 18, "diecinueve": 19,
-                "veinte": 20, "cien": 100, "mil": 1000}
-FRACTIONS = {"la mitad": 2, "un tercio": 3, "un cuarto": 4}   # read as «1 de cada N»
-NUMBER_WORD = re.compile(r"\b(" + "|".join(sorted(NUMBER_WORDS, key=len, reverse=True)) + r")\b", re.I)
-FRACTION = re.compile(r"\b(la mitad|un tercio|un cuarto)\b", re.I)
+# Numbers written as words are read as ONE value per phrase («dos mil» = 2.000, «treinta y dos» = 32,
+# «un millón trescientos mil» = 1.300.000) and then checked like digits. «un»/«una» are articles unless they
+# multiply («un millón») or start a fraction («un tercio»). Fractions («dos tercios», «tres cuartos», «la mitad»)
+# are ratios that an estimate must back. A number word left outside a parsed phrase fails (number_word_unparsed).
+_UNITS = {"cero": 0, "uno": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, "seis": 6, "siete": 7, "ocho": 8, "nueve": 9}
+_TEENS = {"diez": 10, "once": 11, "doce": 12, "trece": 13, "catorce": 14, "quince": 15, "dieciseis": 16,
+          "diecisiete": 17, "dieciocho": 18, "diecinueve": 19, "veinte": 20, "veintiuno": 21, "veintiun": 21,
+          "veintiuna": 21, "veintidos": 22, "veintitres": 23, "veinticuatro": 24, "veinticinco": 25,
+          "veintiseis": 26, "veintisiete": 27, "veintiocho": 28, "veintinueve": 29}
+_TENS = {"treinta": 30, "cuarenta": 40, "cincuenta": 50, "sesenta": 60, "setenta": 70, "ochenta": 80, "noventa": 90}
+_HUNDREDS = {"cien": 100, "ciento": 100, "doscientos": 200, "doscientas": 200, "trescientos": 300, "trescientas": 300,
+             "cuatrocientos": 400, "cuatrocientas": 400, "quinientos": 500, "quinientas": 500, "seiscientos": 600,
+             "seiscientas": 600, "setecientos": 700, "setecientas": 700, "ochocientos": 800, "ochocientas": 800,
+             "novecientos": 900, "novecientas": 900}
+_SCALES = {"mil": 1000, "millon": 1_000_000, "millones": 1_000_000}
+_VALUES = {**_UNITS, **_TEENS, **_TENS, **_HUNDREDS}
+_DENOMINATORS = {"medio": 2, "medios": 2, "tercio": 3, "tercios": 3, "cuarto": 4, "cuartos": 4, "quinto": 5,
+                 "quintos": 5, "sexto": 6, "sextos": 6, "septimo": 7, "septimos": 7, "octavo": 8, "octavos": 8,
+                 "noveno": 9, "novenos": 9, "decimo": 10, "decimos": 10}
+# Left over after parsing, these always fail (vague or unparsed quantities). Lone ordinals («cuarto trimestre»,
+# «quinto año») are not quantities and pass.
+_UNPARSED = set(_VALUES) | set(_SCALES) | {"miles", "cientos", "centenar", "centenares", "decena", "decenas", "docena",
+                                           "docenas", "millar", "millares", "billon", "billones", "tercio", "tercios",
+                                           "cuartos", "quintos", "sextos", "septimos", "octavos", "novenos", "decimos"}
+_TOKEN = re.compile(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+|\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:,\d+)?")
 # Quote pools: literal evidence only (excerpts, raw titles, public leads), never Alicanto's labels or summaries.
 QUOTE_FIELDS = ("raw_title", "public_lead")
 ELLIPSIS = re.compile(r"\s*(?:\[…\]|\[\.\.\.\]|\(…\)|\(\.\.\.\))\s*")
@@ -122,10 +139,113 @@ def literal_key(text: Any) -> str:
     return re.sub(r"\s+", " ", s).strip().casefold()
 
 
+def _fold_word(w: str) -> str:
+    return unicodedata.normalize("NFKD", w).encode("ascii", "ignore").decode().casefold()
+
+
+def _fmt(value: float) -> str:
+    """Chilean format, so the result is scanned by ``numbers_in``: 2.000 · 1.300.000 · 2,5."""
+    if float(value).is_integer():
+        return f"{int(value):,}".replace(",", ".")
+    return f"{value:,.6f}".rstrip("0").replace(",", "§").replace(".", ",").replace("§", ".")
+
+
+def _combine(values: list[float]) -> float:
+    total, cur = 0.0, 0.0
+    for v in values:
+        if v == 1000:
+            cur = (cur or 1) * 1000
+            total, cur = total + cur, 0.0
+        elif v == 1_000_000:
+            total, cur = (total + cur or 1) * 1_000_000, 0.0
+        else:
+            cur += v
+    return total + cur
+
+
+def number_phrases(text: Any) -> list[tuple[int, int, str]]:
+    """(start, end, replacement) for every number phrase written (partly) in words, in Spanish:
+    cardinals as one value («dos mil» → 2.000, «treinta y dos» → 32), digits followed by «mil»/«millones»
+    («1,5 millones» → 1.500.000), fractions as «N de cada D» («dos tercios» → «2 de cada 3»)."""
+    raw = str(text or "")
+    toks = [(m.start(), m.end(), m.group(0), _fold_word(m.group(0))) for m in _TOKEN.finditer(raw)]
+    out, i = [], 0
+
+    def gap_ok(a, b):  # only spaces between two tokens of one phrase
+        return raw[toks[a][1]:toks[b][0]].strip() == ""
+
+    while i < len(toks):
+        start, _, word, f = toks[i]
+        values, j, has_word = [], i, False
+        if f[0].isdigit():
+            if j + 1 < len(toks) and toks[j + 1][3] in _SCALES and gap_ok(j, j + 1):
+                values, j = [float(word.replace(".", "").replace(",", "."))], j + 1
+            else:
+                i += 1
+                continue
+        while j < len(toks):
+            g = toks[j][3]
+            if j > i and not gap_ok(j - 1, j):
+                break
+            if g in _VALUES or g in _SCALES:
+                values.append(float(_VALUES.get(g, _SCALES.get(g))))
+                has_word = True
+            elif g in ("un", "una") and not values and j + 1 < len(toks) and toks[j + 1][3] in _SCALES \
+                    and gap_ok(j, j + 1):
+                values.append(1.0)
+            elif g == "medio" and not values and j + 1 < len(toks) and toks[j + 1][3] == "millon" and gap_ok(j, j + 1):
+                values.append(0.5)
+            elif g == "y" and values and values[-1] in _TENS.values() and j + 1 < len(toks) \
+                    and toks[j + 1][3] in _UNITS and gap_ok(j, j + 1):
+                pass
+            else:
+                break
+            j += 1
+        if not values or not has_word:
+            i += 1
+            continue
+        nxt = toks[j][3] if j < len(toks) and gap_ok(j - 1, j) else None
+        if nxt in _DENOMINATORS and _DENOMINATORS[nxt] > 2:
+            out.append((start, toks[j][1], f"{_fmt(_combine(values))} de cada {_DENOMINATORS[nxt]}"))
+            i = j + 1
+            continue
+        out.append((start, toks[j - 1][1], _fmt(_combine(values))))
+        i = j
+    return out
+
+
+_FRACTION_UN = re.compile(r"\b(?:un|una)\s+(tercio|cuarto|quinto|sexto|s[eé]ptimo|octavo|noveno|d[eé]cimo)\b", re.I)
+_MITAD = re.compile(r"\bla mitad\b", re.I)
+_PERCENT = re.compile(r"\s+por\s+ciento\b", re.I)
+
+
+def _pre(text: Any) -> str:
+    s = _PERCENT.sub("%", str(text or ""))
+    s = _MITAD.sub("1 de cada 2", s)
+    return _FRACTION_UN.sub(lambda m: f"1 de cada {_DENOMINATORS[_fold_word(m.group(1))]}", s)
+
+
 def digits(text: Any) -> str:
-    """«ocho de cada diez» → «8 de cada 10»; «la mitad» → «1 de cada 2»; «seis meses» → «6 meses»."""
-    s = FRACTION.sub(lambda m: f"1 de cada {FRACTIONS[m.group(1).casefold()]}", str(text or ""))
-    return NUMBER_WORD.sub(lambda m: str(NUMBER_WORDS[m.group(1).casefold()]), s)
+    """Number words as digits: «ocho de cada diez» → «8 de cada 10», «dos mil» → «2.000», «dos tercios» →
+    «2 de cada 3», «un tercio» → «1 de cada 3», «la mitad» → «1 de cada 2», «cincuenta por ciento» → «50%»."""
+    s = _pre(text)
+    for start, end, new in reversed(number_phrases(s)):
+        s = s[:start] + new + s[end:]
+    return s
+
+
+def split_word_numbers(text: Any) -> tuple[str, list[str]]:
+    """(text with every word phrase removed, the digit form of each word phrase)."""
+    s, phrases = _pre(text), []
+    for start, end, new in reversed(number_phrases(s)):
+        s = s[:start] + " " + s[end:]
+        phrases.append(new)
+    return s, phrases
+
+
+def unparsed_number_words(converted: str) -> list[str]:
+    """Number words still present after ``digits``: they would pass the digit scan silently, so they fail."""
+    return [m.group(0) for m in _TOKEN.finditer(converted) if _fold_word(m.group(0)) in _UNPARSED]
 
 
 def quote_segments(text: Any) -> list[str]:
@@ -319,6 +439,7 @@ def resolve_ratios(raw: str, estimates: dict[str, dict], own: dict | None = None
         return label
 
     text = digits(NOTE.sub("", LINK.sub(link, str(raw or ""))))
+    problems += [f"number_word_unparsed:{w}" for w in unparsed_number_words(text)]
     text = RATIO.sub(lambda r: check(r, own), text)
     return text, problems
 
@@ -383,18 +504,26 @@ STOP_WORDS = set("""del las los una por con para que sus como sobre según entre
 estos estas más fue han hay""".split())
 
 
-def _significant(text: str) -> set[str]:
-    words = re.findall(r"[a-z0-9]+", fold(text))
-    out = {w for w in words if len(w) >= 3 and w not in STOP_WORDS}
-    initials = "".join(w[0] for w in re.findall(r"[A-Za-zÁÉÍÓÚÑáéíóúñ]+", str(text)) if len(w) >= 3)
-    if len(initials) >= 2:
-        out.add(fold(initials))
-    return out
+def _initials(text: str) -> str:
+    return fold("".join(w[0] for w in re.findall(r"[A-Za-zÁÉÍÓÚÑáéíóúñ]+", str(text)) if len(w) >= 3 and fold(w) not in STOP_WORDS))
 
 
-def _shares_word(attribution: str, label: str) -> bool:
-    """«Fiscalía Nacional Económica» matches a label naming «FNE» (its initials) or any significant word."""
-    return bool(_significant(attribution) & _significant(label))
+def issuer(label: Any) -> str:
+    """The issuer or outlet of a source label: the part before « · » («FNE · Aprobó…» → «FNE»)."""
+    return str(label or "").split(" · ", 1)[0].strip()
+
+
+def attribution_names_source(attribution: str, source: dict) -> bool:
+    """The attribution must name the issuer or outlet: the same name, one inside the other («Ministerio de Salud
+    (Minsal)»), or its initials («Fiscalía Nacional Económica» for FNE). Sharing any other word is not enough."""
+    a = fold(attribution)
+    for name in {issuer(source.get("label")), issuer(source.get("short_label"))} - {""}:
+        n = fold(name)
+        if len(n) >= 3 and (re.search(r"\b" + re.escape(n) + r"\b", a) or (len(a) >= 3 and re.search(r"\b" + re.escape(a) + r"\b", n))):
+            return True
+        if len(n) >= 2 and _initials(attribution) == n.replace(" ", ""):
+            return True
+    return False
 
 
 def presentation_errors(weekly: dict) -> list[str]:
@@ -475,10 +604,10 @@ def presentation_errors(weekly: dict) -> list[str]:
             errors.append(f"quote_without_attribution:body[{i}]")
         if not _literal_in(str(b.get("text") or ""), excerpts.get(str(ref), [])):
             errors.append(f"quote_not_literal_in_evidence:body[{i}]")
-    labels = {s.get("id"): f"{s.get('label') or ''} {s.get('short_label') or ''}" for s in sources}
+    by_id = {s.get("id"): s for s in sources}
     for i, b in enumerate(blocks):
-        if b.get("type") == "quote" and b.get("source_ref") in labels and b.get("attribution") \
-                and not _shares_word(str(b["attribution"]), labels[b["source_ref"]]):
+        if b.get("type") == "quote" and b.get("source_ref") in by_id and b.get("attribution") \
+                and not attribution_names_source(str(b["attribution"]), by_id[b["source_ref"]]):
             errors.append(f"quote_attribution_not_its_source:body[{i}]")
     # Inline quotes, in ANY displayed text, must be literal in the excerpts of a source cited by that text.
     for where, raw, cites in displayed_raw(weekly):
@@ -641,12 +770,29 @@ def quote_pool_by_url(evidence: dict) -> dict[str, list[str]]:
     return out
 
 
-def evidence_number_pool(evidence: dict) -> list[float]:
-    """Evidence numbers plus small counts written as words in the evidence text («los dos primeros proyectos»)."""
-    texts: list[str] = []
-    _strings({k: v for k, v in evidence.items() if k not in ("sources", "allowed_urls", "numbers")}, texts)
-    words = {float(NUMBER_WORDS[w.casefold()]) for t in texts for w in NUMBER_WORD.findall(t)}
-    return [float(n) for n in evidence.get("numbers") or []] + sorted(words)
+def evidence_items(evidence: dict) -> list[str]:
+    """The texts of each evidence item on its own: every object with a source URL (signals, excerpts, series)
+    and every figure string of the package. A number written as words counts only inside its own item."""
+    items: list[str] = []
+
+    def walk(node: Any) -> None:
+        if isinstance(node, dict):
+            if isinstance(node.get("url") or node.get("source_url"), str):
+                texts: list[str] = []
+                _strings({k: v for k, v in node.items() if k not in ("url", "source_url")}, texts)
+                items.append(" · ".join(texts))
+            for k, v in node.items():
+                if k not in ("sources", "allowed_urls", "numbers"):
+                    walk(v)
+        elif isinstance(node, list):
+            for v in node:
+                if isinstance(v, str):
+                    items.append(v)
+                else:
+                    walk(v)
+
+    walk({k: v for k, v in evidence.items() if k not in ("sources", "allowed_urls", "numbers")})
+    return items
 
 
 def evidence_errors(weekly: dict, evidence: dict) -> list[str]:
@@ -661,11 +807,18 @@ def evidence_errors(weekly: dict, evidence: dict) -> list[str]:
         pool = by_url.get(str(urls.get(x.get("source_ref"))), [])
         if not _literal_in(str(x.get("text") or ""), pool):
             errors.append(f"excerpt_not_in_evidence:{i}:{x.get('source_ref')}")
-    pool = evidence_number_pool(evidence)
+    pool = [float(n) for n in evidence.get("numbers") or []]
+    item_pools = [[v for _, v, _ in numbers_in(digits(t))] for t in evidence_items(evidence)]
     for fig in weekly.get("evidence_figures") or []:
-        for tok, value, dec in numbers_in(digits(fig)):
+        rest, phrases = split_word_numbers(fig)
+        for tok, value, dec in numbers_in(rest):
             if not number_traces(value, dec, pool):
                 errors.append(f"evidence_figure_not_in_evidence:{tok}")
+        words = [(tok, v, d) for ph in phrases for tok, v, d in numbers_in(ph)]
+        # Every number written as words in a figure must be found together in ONE evidence item.
+        if words and not any(all(number_traces(v, d, ip) for _, v, d in words) for ip in item_pools):
+            errors += [f"evidence_figure_word_not_in_one_item:{tok}" for tok, _, _ in words]
+        errors += [f"number_word_unparsed:evidence_figures:{w}" for w in unparsed_number_words(digits(fig))]
     return errors
 
 
@@ -709,15 +862,16 @@ Marcado dentro de paragraph, closing, charts[].source y key_figures[].text:
 RULES_V2 = """Reglas (se verifican de forma determinista; si fallas, no se publica):
 1. Usa EXCLUSIVAMENTE la EVIDENCIA. Cada número de cualquier campo visible (titular, bajada, cuerpo, cierre, recuadro de
    cifras, gráficos, método, fuentes) debe estar en evidence_figures (copiado de la evidencia) o ser una estimación
-   declarada con fórmula. Los números escritos en palabras («seis», «diez», «mil») también se verifican. Una proporción
-   («8 de cada 10», «la mitad», «un tercio») va dentro de [texto](est:id) o es el display de una estimación, y debe
-   quedar a ±5 puntos de ESA estimación.
+   declarada con fórmula. Los números escritos en palabras se leen como un solo valor («dos mil» = 2.000, «treinta y
+   dos» = 32) y se verifican igual; evita cantidades vagas («miles», «decenas»), que fallan. Una proporción («8 de cada
+   10», «la mitad», «dos tercios», «tres cuartos») va dentro de [texto](est:id) o es el display de una estimación, y
+   debe quedar a ±5 puntos de ESA estimación.
 2. Ensayo (párrafos + citas + cierre) de 600 a 900 palabras; mínimo 500 y tope duro de 1.000. Estructura de noticia:
    entrada, contexto, desarrollo y cierre. Prohibidos los subtítulos «Qué pasó», «Lectura Alicanto» y «Qué mirar».
 3. Cada fuente que nombres en el texto va con enlace [nombre](fN); toda fuente de sources se cita al menos una vez.
    type: "oficial" (organismo público, ley, estudio oficial) o "prensa" (medio de comunicación).
-4. Citas: solo en bloques "quote", con una atribución que nombre a la fuente (p. ej. «Fiscalía Nacional Económica» para
-   FNE). Cada cita, y cada frase entre comillas de 3 o más palabras, debe estar LITERALMENTE en evidence_excerpts de una
+4. Citas: solo en bloques "quote", con una atribución que nombre al emisor o medio de la fuente, es decir, lo que va
+   antes de « · » en su label (p. ej. «Fiscalía Nacional Económica» o «FNE» para «FNE · …»). Cada cita, y cada frase entre comillas de 3 o más palabras, debe estar LITERALMENTE en evidence_excerpts de una
    fuente citada en ese mismo texto; evidence_excerpts se copia literal de los extractos, del título original (raw_title)
    o de la bajada pública (public_lead) de la EVIDENCIA, nunca de rótulos, roles ni resúmenes. Puedes omitir palabras
    con […]. Sin comillas en titular, bajada ni subtítulos. Prefiere citas de fuentes oficiales.

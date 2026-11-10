@@ -98,8 +98,8 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
 - **Charts.** 1–3, each placed once with a `chart` block right after the paragraph that explains it. `kind` is
   `oficial`, `prensa` or `estimacion`; an estimate chart names its `estimate_ref` and renders with a dashed frame
   and the formula in its caption. `source` links its sources with `[nombre](fN)`.
-- **Quotes.** Only `quote` blocks, with `source_ref` and an `attribution` that names the source (a significant word
-  or its initials, e.g. «Fiscalía Nacional Económica» for FNE). Each quote, and each phrase of 3 or more words
+- **Quotes.** Only `quote` blocks, with `source_ref` and an `attribution` that names the source's issuer or outlet,
+  the part of its label before « · » (the same name, or its initials: «Fiscalía Nacional Económica» for «FNE · …»). Each quote, and each phrase of 3 or more words
   between quotation marks in any displayed text, must be literal in the `evidence_excerpts` of a source cited by that
   same text (headline, dek, kicker and subheads cite none, so they carry no quotes). `verify_candidate` checks each
   excerpt against the quote pool of its source URL: `evidence.excerpts`, and each signal's `raw_title` and
@@ -110,18 +110,21 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
   by first citation in reading order.
 - **Estimates.** Each derived figure is an `estimates[]` entry with a deterministic formula. It is marked in the
   text with `[texto](est:id)` (dashed underline) or used by an estimate chart or key-figure card, and listed in
-  `method.estimates`. Numbers written as words («seis», «diez», «mil») are checked like digits. A ratio («8 de cada
-  10», «la mitad», «un tercio») must sit inside an estimate marker or be the `display` of an estimate, and must be
-  within ±5 points of that one estimate.
+  `method.estimates`. Numbers written as words are read as one value per phrase («dos mil» = 2.000, «treinta y dos»
+  = 32, «1,5 millones» = 1.500.000) and checked like digits; a number word left outside a parsed phrase («miles»,
+  «decenas») fails as `number_word_unparsed`. A ratio («8 de cada 10», «la mitad», «dos tercios», «tres cuartos»)
+  must sit inside an estimate marker or be the `display` of an estimate, and must be within ±5 points of that one
+  estimate. In `evidence_figures`, numbers written as words must all appear together in one evidence item.
 - **Key figures** («Lo que debes saber en N cifras»): optional, only when it makes the story clearer. 3–5 cards, each
   with `value`, `text`, `universe` (literal in the card, e.g. «505 de los 1.498 hogares del catastro 2021»), `kind`
   and `source_ref`; `estimate_ref` when the kind is `estimacion`. One idea per card, never mixed universes; one
   `wide` card at most. Placed once with a `key_figures` block.
 - **Method** («Cómo hicimos este análisis», collapsed): the estimates with their formulas (rendered from
   `estimates`), `discarded` (what was not used and why) and `limits`. The numbered source list follows, visible.
-  The method says the text «pasó una revisión independiente» only when `independent_review` records one (the
-  pipeline writes it on a second-model PASS; an editorial session writes the reviewer and verdict); otherwise it
-  says «Cada número del texto se verificó contra el paquete de evidencia».
+  The method says the text «pasó una revisión independiente» only when `independent_review` records a final
+  `verdict` of PASS (or PASS_WITH_CORRECTIONS with `corrections_applied`). The pipeline writes it on a second-model
+  PASS; an editorial session records each review round and sets the verdict after the last one (`status:
+  pending_final` until then). Otherwise it says «Cada número del texto se verificó contra el paquete de evidencia».
 - **Traceability.** `evidence_figures` holds the evidence figures copied verbatim (each must trace to the evidence
   numbers); every displayed number traces to it or to an estimate.
 

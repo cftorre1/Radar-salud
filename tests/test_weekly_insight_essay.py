@@ -94,7 +94,7 @@ def _mut_words(w, n):
 CASES = {
     "number_untraced:key_figures[0].value:251": lambda w: w["key_figures"]["items"][0].update(value="251"),
     "number_untraced:body[0].paragraph:7.777": lambda w: w["body"][0].update(text=w["body"][0]["text"] + " Hubo 7.777 casos."),
-    "number_untraced:method.discarded:94,5": lambda w: w["method"]["discarded"].append("El gasto de $94,5 mil millones."),
+    "number_untraced:method.discarded:94.500.000.000": lambda w: w["method"]["discarded"].append("El gasto de $94,5 mil millones."),
     "number_untraced:closing:9": lambda w: w["closing"].update(text=w["closing"]["text"] + " Son 9 de cada 10 camas."),
     "quote_not_literal_in_evidence:body[1]": lambda w: w["body"][1].update(text="No reduce la competencia en ningún segmento"),
     "quote_source_unresolved:body[1]": lambda w: w["body"][1].update(source_ref="f42"),
@@ -164,6 +164,35 @@ def test_unbacked_ratio_fails(phrase):
                for e in presentation_a_errors(w)), presentation_a_errors(w)
 
 
+@pytest.mark.parametrize("phrase, expected", [
+    ("Hay dos mil camas.", "number_untraced:body[5].paragraph:2.000"),      # one value, not 2 and 1.000
+    ("Hay treinta camas.", "number_untraced:body[5].paragraph:30"),
+    ("Hay veinticinco camas.", "number_untraced:body[5].paragraph:25"),
+    ("Hay ciento cuarenta y dos camas.", "number_untraced:body[5].paragraph:142"),
+    ("Son dos tercios de los hogares.", "ratio_not_backed_by_estimate:2 de cada 3:body[5].paragraph"),
+    ("Son tres cuartos de los hogares.", "ratio_not_backed_by_estimate:3 de cada 4:body[5].paragraph"),
+    ("Hay miles de camas.", "number_word_unparsed:miles:body[5].paragraph"),
+    ("Hay 2 millones de camas.", "number_untraced:body[5].paragraph:2.000.000"),
+])
+def test_spanish_number_phrases_are_one_value_and_checked(phrase, expected):
+    w = weekly()
+    w["body"][5]["text"] += " " + phrase
+    assert expected in presentation_a_errors(w), presentation_a_errors(w)
+
+
+def test_spanish_number_phrases_parse_compounds_and_keep_articles():
+    cases = {"dos mil camas": "2.000 camas", "treinta y dos": "32", "veintitrés": "23", "un millón trescientos mil":
+             "1.300.000", "doscientas cincuenta habitaciones": "250 habitaciones", "1,5 millones": "1.500.000",
+             "dos tercios": "2 de cada 3", "un quinto": "1 de cada 5", "cincuenta por ciento": "50%",
+             "una cama y un fondo": "una cama y un fondo", "el cuarto trimestre": "el cuarto trimestre"}
+    for text, expected in cases.items():
+        assert essay.digits(text) == expected, text
+    # A compound that traces passes: «doscientas cincuenta habitaciones» is the 250 of the evidence.
+    w = weekly()
+    w["body"][0]["text"] += " Son doscientas cincuenta habitaciones."
+    assert presentation_a_errors(w) == []
+
+
 def test_ratio_inside_an_estimate_marker_is_checked_against_that_estimate_only():
     w = weekly()
     ests = essay._estimates(w)
@@ -211,9 +240,15 @@ def test_sources_must_match_source_refs_and_quotes_their_attribution():
     w["source_refs"] = w["source_refs"][:-1]
     assert "source_refs_do_not_match_sources" in presentation_a_errors(w)
     w = weekly()
-    assert essay._shares_word("Fiscalía Nacional Económica", w["sources"][0]["label"])  # FNE initials
-    w["body"][1]["attribution"] = "Ministerio de Salud"
-    assert "quote_attribution_not_its_source:body[1]" in presentation_a_errors(w)
+    fne = w["sources"][0]
+    assert essay.issuer(fne["label"]) == "FNE"
+    assert essay.attribution_names_source("Fiscalía Nacional Económica", fne)          # its initials
+    assert essay.attribution_names_source("la FNE", fne)
+    # Sharing a word of the title is not enough: «residencias» is in the FNE label, but not its issuer.
+    assert not essay.attribution_names_source("Asociación de residencias", fne)
+    for bad in ("Ministerio de Salud", "Asociación de residencias"):
+        w["body"][1]["attribution"] = bad
+        assert "quote_attribution_not_its_source:body[1]" in presentation_a_errors(w), bad
 
 
 def test_migrated_text_carries_the_review_corrections():
@@ -226,7 +261,20 @@ def test_migrated_text_carries_the_review_corrections():
     assert "donde nadie la presupuesta" not in text and "Parte del cuidado que no encuentra" not in text
     assert any("no identificados" in x for x in w["method"]["limits"])
     assert 600 <= essay.essay_words(w) <= 900
-    assert w["independent_review"]["verdict"] == "PASS_WITH_CORRECTIONS" and w["independent_review"]["corrections_applied"]
+    assert "para otro segmento" not in w["closing"]["text"]
+    review = w["independent_review"]
+    assert review["status"] == "pending_final" and review["verdict"] is None
+    assert [(r["round"], r["verdict"]) for r in review["rounds"]] == [(1, "PASS_WITH_CORRECTIONS"), (2, "FAIL")]
+
+
+def test_a_number_word_in_a_figure_counts_only_within_one_evidence_item():
+    w, ev = weekly(), evidence()
+    w["evidence_figures"].append("Ley 21.822 y CNN Chile: seis meses para los dos primeros proyectos.")  # 6 and 2: two items
+    errors = gen.verify_candidate(w, ev, ANCHOR)["errors"]
+    assert "evidence_figure_word_not_in_one_item:6" in errors and "evidence_figure_word_not_in_one_item:2" in errors
+    w = weekly()
+    w["evidence_figures"].append("Ley 21.822: deberá dictarse dentro de seis meses.")
+    assert gen.verify_candidate(w, ev, ANCHOR)["verdict"] == "PASS"
 
 
 def test_evidence_checks_excerpts_and_figures_against_the_package():
