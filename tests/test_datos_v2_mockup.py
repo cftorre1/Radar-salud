@@ -44,8 +44,8 @@ def test_mockup_is_unlisted_and_noindex():
 def test_mockup_reads_only_existing_static_data():
     page = (WEB / "datos-v2.html").read_text(encoding="utf-8")
     urls = set(re.findall(r"load\('([^']+)'\)", page))
-    assert urls == {"data/datos.json", "data/radar_today.json",
-                    "data/preview/f13_licencias.json", "data/series_isapre.json"}
+    # Fichas are read from the live snapshot only: preview files disappear once a family is published.
+    assert urls == {"data/datos.json", "data/radar_today.json", "data/series_isapre.json"}
     for u in urls:
         assert (WEB / u).is_file(), u
     assert "http://" not in page and not re.search(r"""(src|href)=["']https?://""", page)
