@@ -92,7 +92,14 @@ _DENOMINATORS = {"medio": 2, "medios": 2, "tercio": 3, "tercios": 3, "cuarto": 4
 # «quinto año») are not quantities and pass.
 _UNPARSED = set(_VALUES) | set(_SCALES) | {"miles", "cientos", "centenar", "centenares", "decena", "decenas", "docena",
                                            "docenas", "millar", "millares", "billon", "billones", "tercio", "tercios",
-                                           "cuartos", "quintos", "sextos", "septimos", "octavos", "novenos", "decimos"}
+                                           "cuartos", "quintos", "sextos", "septimos", "octavos", "novenos", "decimos",
+                                           "mitad", "mitades"}
+# Multiples claim a size too: «el doble», «el triple», «se duplicó», «quintuplicó», «un par de». Like «mitad»
+# (with or without article), they pass only inside an est: marker whose estimate backs them; elsewhere they fail.
+MULTIPLIER = re.compile(r"\b(?:un\s+par\s+de|(?:doble|triple|cu[aá]druple|qu[ií]ntuple)s?|"
+                        r"(?:duplic|triplic|cuadruplic|quintuplic)[a-záéíóúñ]*)\b", re.I)
+_FACTORS = (("par", 2), ("dobl", 2), ("duplic", 2), ("tripl", 3), ("cuadru", 4), ("quint", 5))
+MULTIPLIER_TOLERANCE = 0.10   # relative: «el doble» needs an estimate of ≈2 (veces) or ≈200 (%)
 _TOKEN = re.compile(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+|\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:,\d+)?")
 # Quote pools: literal evidence only (excerpts, raw titles, public leads), never Alicanto's labels or summaries.
 QUOTE_FIELDS = ("raw_title", "public_lead")
@@ -215,13 +222,12 @@ def number_phrases(text: Any) -> list[tuple[int, int, str]]:
 
 
 _FRACTION_UN = re.compile(r"\b(?:un|una)\s+(tercio|cuarto|quinto|sexto|s[eé]ptimo|octavo|noveno|d[eé]cimo)\b", re.I)
-_MITAD = re.compile(r"\bla mitad\b", re.I)
+_MITAD = re.compile(r"\b(?:la\s+)?mitad\b", re.I)
 _PERCENT = re.compile(r"\s+por\s+ciento\b", re.I)
 
 
 def _pre(text: Any) -> str:
     s = _PERCENT.sub("%", str(text or ""))
-    s = _MITAD.sub("1 de cada 2", s)
     return _FRACTION_UN.sub(lambda m: f"1 de cada {_DENOMINATORS[_fold_word(m.group(1))]}", s)
 
 
@@ -244,8 +250,20 @@ def split_word_numbers(text: Any) -> tuple[str, list[str]]:
 
 
 def unparsed_number_words(converted: str) -> list[str]:
-    """Number words still present after ``digits``: they would pass the digit scan silently, so they fail."""
-    return [m.group(0) for m in _TOKEN.finditer(converted) if _fold_word(m.group(0)) in _UNPARSED]
+    """Number words still present after ``digits`` (and multiples or «mitad» outside an estimate marker):
+    they would pass the digit scan silently, so they fail."""
+    words = [m.group(0) for m in _TOKEN.finditer(MULTIPLIER.sub(" ", converted)) if _fold_word(m.group(0)) in _UNPARSED]
+    return [m.group(0) for m in MULTIPLIER.finditer(converted)] + words
+
+
+def multiplier_factor(word: str) -> int:
+    f = _fold_word(word)
+    return next(k for stem, k in _FACTORS if stem in f)
+
+
+def _multiplier_fits(k: int, est: dict) -> bool:
+    v = float(est["value"])
+    return any(abs(v - t) <= MULTIPLIER_TOLERANCE * t for t in (k, 100 * k))
 
 
 def quote_segments(text: Any) -> list[str]:
@@ -431,14 +449,29 @@ def resolve_ratios(raw: str, estimates: dict[str, dict], own: dict | None = None
             return f"{x} de_cada {n}"
         return " "
 
+    def backed(label, est):
+        """Text inside an estimate marker (or the estimate's own display): «mitad» is 1 of 2 and multiples
+        («el doble», «se triplicó», «un par de») are checked against that one estimate."""
+        def mult(m):
+            k = multiplier_factor(m.group(0))
+            if est is None:
+                problems.append(f"number_word_unparsed:{m.group(0)}")
+            elif not _multiplier_fits(k, est):
+                problems.append(f"multiplier_off_its_estimate:{m.group(0)}:{est.get('id')}")
+            return " "
+        text = MULTIPLIER.sub(mult, _MITAD.sub("1 de cada 2", label))
+        return RATIO.sub(lambda r: check(r, est), digits(text))
+
     def link(m):
         label, ref = m.group(1), m.group(2)
         if ref.startswith("est:"):
-            est = estimates.get(ref[4:])
-            return RATIO.sub(lambda r: check(r, est) if est else check(r, None), digits(label))
+            return backed(label, estimates.get(ref[4:]))
         return label
 
-    text = digits(NOTE.sub("", LINK.sub(link, str(raw or ""))))
+    text = NOTE.sub("", LINK.sub(link, str(raw or "")))
+    if own is not None:
+        text = backed(text, own)
+    text = digits(text)
     problems += [f"number_word_unparsed:{w}" for w in unparsed_number_words(text)]
     text = RATIO.sub(lambda r: check(r, own), text)
     return text, problems
@@ -863,7 +896,9 @@ RULES_V2 = """Reglas (se verifican de forma determinista; si fallas, no se publi
 1. Usa EXCLUSIVAMENTE la EVIDENCIA. Cada número de cualquier campo visible (titular, bajada, cuerpo, cierre, recuadro de
    cifras, gráficos, método, fuentes) debe estar en evidence_figures (copiado de la evidencia) o ser una estimación
    declarada con fórmula. Los números escritos en palabras se leen como un solo valor («dos mil» = 2.000, «treinta y
-   dos» = 32) y se verifican igual; evita cantidades vagas («miles», «decenas»), que fallan. Una proporción («8 de cada
+   dos» = 32) y se verifican igual; evita cantidades vagas («miles», «decenas»), que fallan. Los múltiplos («el
+   doble», «se triplicó», «un par de») y «mitad» solo valen dentro de [texto](est:id) con una estimación que los
+   respalde (≈2 o ≈200% para «el doble», ±10%). Una proporción («8 de cada
    10», «la mitad», «dos tercios», «tres cuartos») va dentro de [texto](est:id) o es el display de una estimación, y
    debe quedar a ±5 puntos de ESA estimación.
 2. Ensayo (párrafos + citas + cierre) de 600 a 900 palabras; mínimo 500 y tope duro de 1.000. Estructura de noticia:

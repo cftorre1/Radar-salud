@@ -149,14 +149,15 @@ def test_key_figures_box_is_optional():
 # --- numbers written as words and ratios (review of PR #174, item 1) ---------------------------
 
 def test_number_words_are_scanned_like_digits():
-    assert essay.digits("ocho de cada diez y seis meses; la mitad, un tercio") == "8 de cada 10 y 6 meses; 1 de cada 2, 1 de cada 3"
+    assert essay.digits("ocho de cada diez y seis meses; un tercio") == "8 de cada 10 y 6 meses; 1 de cada 3"
+    assert essay.digits("la mitad") == "la mitad"  # «mitad» is read only inside an estimate marker
     assert essay.digits("una cama y un fondo") == "una cama y un fondo"  # articles are not numbers
     w = weekly()
     w["body"][2]["text"] += " Hubo diecisiete cierres."
     assert "number_untraced:body[2].paragraph:17" in presentation_a_errors(w)
 
 
-@pytest.mark.parametrize("phrase", ["nueve de cada diez", "2 de cada 3", "la mitad"])
+@pytest.mark.parametrize("phrase", ["nueve de cada diez", "2 de cada 3", "dos tercios"])
 def test_unbacked_ratio_fails(phrase):
     w = weekly()
     w["body"][5]["text"] += f" Son {phrase} hogares."
@@ -178,6 +179,32 @@ def test_spanish_number_phrases_are_one_value_and_checked(phrase, expected):
     w = weekly()
     w["body"][5]["text"] += " " + phrase
     assert expected in presentation_a_errors(w), presentation_a_errors(w)
+
+
+@pytest.mark.parametrize("phrase", ["el doble de camas", "el triple de casos", "las camas se duplicó", "el gasto quintuplicó",
+                                    "mitad de los hogares", "la mitad de los hogares", "un par de hospitales",
+                                    "el cuádruple", "se triplicaron", "se cuadruplicó"])
+def test_multiples_and_mitad_outside_an_estimate_marker_fail(phrase):
+    w = weekly()
+    w["body"][5]["text"] += f" Hubo {phrase}."
+    assert any(e.startswith("number_word_unparsed:") and e.endswith(":body[5].paragraph") for e in presentation_a_errors(w)), \
+        presentation_a_errors(w)
+
+
+def test_marked_multiple_passes_only_with_an_estimate_of_its_size():
+    w = weekly()
+    w["estimates"].append({"id": "dias_vs_egresos", "label": "días-cama frente a egresos, veces", "value": 15.3,
+                           "unit": "veces", "display": "15,3 veces", "formula": "15.3 / 1"})
+    w["estimates"].append({"id": "doble_x", "label": "razón, %", "value": 200.0, "unit": "%", "display": "200%",
+                           "formula": "1056 / 528 * 100"})
+    w["method"]["estimates"] += ["dias_vs_egresos", "doble_x"]
+    w["body"][12]["text"] += " Es [el doble](est:doble_x) y [15,3 veces](est:dias_vs_egresos)."
+    errors = presentation_a_errors(w)
+    assert not any("doble" in e or "multiplier" in e for e in errors), errors
+    ests = essay._estimates(w)
+    assert essay.resolve_ratios("[el triple](est:doble_x)", ests)[1] == ["multiplier_off_its_estimate:triple:doble_x"]
+    assert essay.resolve_ratios("[se duplicó](est:sin_autorizacion)", ests)[1] == [
+        "multiplier_off_its_estimate:duplicó:sin_autorizacion"]
 
 
 def test_spanish_number_phrases_parse_compounds_and_keep_articles():
@@ -263,8 +290,11 @@ def test_migrated_text_carries_the_review_corrections():
     assert 600 <= essay.essay_words(w) <= 900
     assert "para otro segmento" not in w["closing"]["text"]
     review = w["independent_review"]
-    assert review["status"] == "pending_final" and review["verdict"] is None
-    assert [(r["round"], r["verdict"]) for r in review["rounds"]] == [(1, "PASS_WITH_CORRECTIONS"), (2, "FAIL")]
+    assert review["status"] == "final" and review["verdict"] == "PASS"
+    assert [(r["round"], r["verdict"]) for r in review["rounds"]] == [
+        (1, "PASS_WITH_CORRECTIONS"), (2, "FAIL"), (3, "FAIL"), ("3-fix", "PASS")]
+    assert review["rounds"][2] == {"round": 3, "on": "2026-11-10", "reviewed_commit": "9c960e9b", "verdict": "FAIL",
+                                   "blocker": "multiplier words"}
 
 
 def test_a_number_word_in_a_figure_counts_only_within_one_evidence_item():

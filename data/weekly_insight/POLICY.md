@@ -114,15 +114,18 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
   = 32, «1,5 millones» = 1.500.000) and checked like digits; a number word left outside a parsed phrase («miles»,
   «decenas») fails as `number_word_unparsed`. A ratio («8 de cada 10», «la mitad», «dos tercios», «tres cuartos»)
   must sit inside an estimate marker or be the `display` of an estimate, and must be within ±5 points of that one
-  estimate. In `evidence_figures`, numbers written as words must all appear together in one evidence item.
+  estimate. Multiples («el doble», «el triple», «se duplicó», «quintuplicó», «un par de») and «mitad», with or
+  without article, pass only inside an `est:` marker whose estimate backs them (≈ k or ≈ 100·k %, ±10%); elsewhere
+  they fail as `number_word_unparsed`. In `evidence_figures`, numbers written as words must all appear together in
+  one evidence item.
 - **Key figures** («Lo que debes saber en N cifras»): optional, only when it makes the story clearer. 3–5 cards, each
   with `value`, `text`, `universe` (literal in the card, e.g. «505 de los 1.498 hogares del catastro 2021»), `kind`
   and `source_ref`; `estimate_ref` when the kind is `estimacion`. One idea per card, never mixed universes; one
   `wide` card at most. Placed once with a `key_figures` block.
 - **Method** («Cómo hicimos este análisis», collapsed): the estimates with their formulas (rendered from
   `estimates`), `discarded` (what was not used and why) and `limits`. The numbered source list follows, visible.
-  The method says the text «pasó una revisión independiente» only when `independent_review` records a final
-  `verdict` of PASS (or PASS_WITH_CORRECTIONS with `corrections_applied`). The pipeline writes it on a second-model
+  The method says the text «pasó una revisión independiente» only when `independent_review` has `status: final`
+  and a `verdict` of PASS (or PASS_WITH_CORRECTIONS with `corrections_applied`). The pipeline writes it on a second-model
   PASS; an editorial session records each review round and sets the verdict after the last one (`status:
   pending_final` until then). Otherwise it says «Cada número del texto se verificó contra el paquete de evidencia».
 - **Traceability.** `evidence_figures` holds the evidence figures copied verbatim (each must trace to the evidence

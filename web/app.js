@@ -455,7 +455,7 @@ function weFigures(w,ctx){
 }
 function weQuote(b,ctx){const s=ctx.src.get(b.source_ref);return`<blockquote class="we-q"><p>«${esc(b.text)}»</p><footer><b>${esc(b.attribution||'')}</b>${s?`, ${weSourceLink(s,esc(b.context||s.label))}`:''}</footer></blockquote>`}
 // «Revisión independiente» only when one is recorded on the insight (pipeline second model or an editorial reviewer).
-function weReviewed(w){const r=w?.independent_review||{};return w?.editorial_review_pass===true&&(r.verdict==='PASS'||(r.verdict==='PASS_WITH_CORRECTIONS'&&r.corrections_applied===true))}
+function weReviewed(w){const r=w?.independent_review||{};return w?.editorial_review_pass===true&&r.status==='final'&&(r.verdict==='PASS'||(r.verdict==='PASS_WITH_CORRECTIONS'&&r.corrections_applied===true))}
 function weWords(w){return [...arr(w.body).filter(b=>b&&(b.type==='paragraph'||b.type==='quote')).map(b=>b.text),w.closing?.text].join(' ').replace(WE_LINK,'$1').replace(/\[\^n\d+\]/g,'').split(/\s+/).filter(Boolean).length}
 function renderWeeklyEssay(w){
  const charts=new Map(arr(w.charts).filter(c=>c&&c.id).map(c=>[c.id,c]));

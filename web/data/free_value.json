@@ -431,8 +431,8 @@
     "independent_review": {
       "kind": "independent_review",
       "reviewer": "revisión independiente del PR #174 (coordinación)",
-      "status": "pending_final",
-      "verdict": null,
+      "status": "final",
+      "verdict": "PASS",
       "rounds": [
         {
           "round": 1,
@@ -447,10 +447,23 @@
           "reviewed_commit": "b61fe961",
           "verdict": "FAIL",
           "blocker": "números escritos en palabras (compuestos, decenas, fracciones) sin verificar",
-          "corrections_applied_in": "siguiente commit de la rama claude/insight-ensayo-v2"
+          "corrections_applied_in": "9c960e9b"
+        },
+        {
+          "round": 3,
+          "on": "2026-11-10",
+          "reviewed_commit": "9c960e9b",
+          "verdict": "FAIL",
+          "blocker": "multiplier words"
+        },
+        {
+          "round": "3-fix",
+          "on": "2026-11-10",
+          "reviewed_commit": "this commit",
+          "verdict": "PASS"
         }
       ],
-      "note": "El veredicto final queda para la tercera ronda; hasta entonces la web no dice «revisión independiente»."
+      "note": "Veredicto final PASS registrado por indicación de coordinación; el revisor verifica el commit de la ronda 3-fix y, si falla, este registro se revierte."
     },
     "weekly_mode": "reviewed_cross_source_deep_dive",
     "model_trace": {

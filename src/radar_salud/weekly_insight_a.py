@@ -637,8 +637,8 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
                              "response_ids": [c["response_id"] for c in calls], "estimated_cost_usd": round(spent, 6)}
     weekly["editorial_review_pass"] = True
     # What the reader is told about review comes from this record (web: «Cómo hicimos este análisis»).
-    weekly["independent_review"] = {"verdict": "PASS", "reviewer": review_model, "writer": draft_model,
-                                    "kind": "second_model", "on": anchor.isoformat()}
+    weekly["independent_review"] = {"status": "final", "verdict": "PASS", "reviewer": review_model,
+                                    "writer": draft_model, "kind": "second_model", "on": anchor.isoformat()}
     out.update(status="pass", weekly_insight=weekly, audit={
         "verdict": "PASS", "editorial_business_review_pass": True, "independent_second_reviewer": True,
         "reviewer": f"{review_model} (revisor independiente del redactor {draft_model})",
