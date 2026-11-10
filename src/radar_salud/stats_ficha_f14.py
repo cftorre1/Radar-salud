@@ -50,7 +50,9 @@ SCRIPT_VERSION = "sis_historico_v3"  # GES part of scripts/sis_historico_ges.py 
 ROOT_DIR = Path("data/sis_open_data_history")
 REF = Path("data/reference/ges_problemas_ds29_2025.json")
 HEADLINE_MIN_GAP_PP = 3.0
-TAB_ORDER = ["familias", "problemas", "costo-caso", "isapres", "regiones", "serie"]
+TAB_ORDER = ["familias", "por-caso", "problemas", "serie", "isapres", "regiones"]
+CPC_SMALL_BASE = 300  # cases: under this in either quarter, the per-case change carries a small-base caution
+NUMBER_WORD = {10: "Diez"}
 FAMILY_LABEL = {"cancer": "Cáncer", "cardiometabolico": "Cardiometabólico", "salud_mental": "Salud mental",
                 "respiratorio": "Respiratorio", "musculoesqueletico": "Musculoesquelético",
                 "materno_perinatal": "Materno-perinatal", "otros": "Otros"}
@@ -298,7 +300,7 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     top = sorted(prob_rows[q], key=lambda p: -prob_rows[q][p]["facturado"])[: int(cfg.get("top_problems") or 10)]
     derived("prob.top.n", len(top), "problemas", "problemas con más facturado mostrados", [f"prob.{p}.{q}.facturado_mm" for p in top])
     derived("prob.top.share", sum(prob_rows[q][p]["facturado"] for p in top) / data[q]["doc"]["totales"]["facturado"] * 100, "%",
-            "facturado de los problemas con más gasto / facturado GES × 100", [f"prob.{p}.{q}.facturado_mm" for p in top])
+            "facturado de los problemas con más facturado / facturado GES × 100", [f"prob.{p}.{q}.facturado_mm" for p in top])
     min_cases = int(cfg.get("cpc_min_cases") or 100)
     based = [p for p in comparable["yoy"] if min(prob_rows[q][p]["casos"], prob_rows[py][p]["casos"]) >= min_cases]
     risers = sorted(based, key=lambda p: -values[f"prob.{p}.yoy.por_caso"]["value"])
@@ -425,12 +427,13 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     # Headline and dek.
     systemic = k["checks"]["actual"] and k["checks"]["anio_anterior"]
     if systemic:
-        headline = (f"GES en Isapres: lo facturado {change_word('tot.yoy.facturado_mm')} en un año y los casos "
-                    f"{change_word('tot.yoy.casos', 'suben', 'bajan')} ({qs_})")
-        dek = (f"El facturado por caso {change_word('tot.yoy.por_caso')} en el total y "
-               f"{fmt(abs(V('prob.yoy.mediana_por_caso')), 1)}% en la mediana de los problemas; aumenta en "
-               f"{fmt(V('prob.yoy.n_suben'), 0)} de {fmt(V('prob.yoy.n_comparables'), 0)} problemas. Un año antes: facturado "
-               f"{sg('tot.yoy_prev.facturado_mm')}, casos {sg('tot.yoy_prev.casos')}.")
+        headline = (f"GES en Isapres: facturado {sg('tot.yoy.facturado_mm')}, casos {sg('tot.yoy.casos')}; por caso sube en "
+                    f"{fmt(V('prob.yoy.n_suben'), 0)} de {fmt(V('prob.yoy.n_comparables'), 0)}")
+        smaller = V("tot.yoy_prev.brecha_pp") < V("tot.yoy.brecha_pp")
+        dek = (f"El facturado (lo cobrado por prestadores, no lo pagado) por caso {change_word('tot.yoy.por_caso')} en el total y "
+               f"{fmt(abs(V('prob.yoy.mediana_por_caso')), 1)}% en la mediana de los problemas. "
+               + ("Un año antes la brecha era menor" if smaller else "Un año antes")
+               + f": facturado {sg('tot.yoy_prev.facturado_mm')}, casos {sg('tot.yoy_prev.casos')}.")
         htype = "gap_spend_cases"
     else:
         headline = f"GES en Isapres: {mm(f'tot.{q}.facturado_mm')} facturados en {qs_}, {change_word('tot.yoy.facturado_mm')} en un año"
@@ -476,9 +479,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                   for f in fams]},
                "source": src}]
     tab = {"id": "familias", "label": "Familias", "charts": charts, "text": [],
-           "dek": (f"El facturado crece más que los casos en {fmt(V('conteo.familias_brecha'), 0)} de {fmt(V('conteo.familias'), 0)} familias; "
-                   f"en {fl(lead).lower()}, la de más gasto: facturado {sg(f'fam.{lead}.yoy.facturado_mm')}, casos {sg(f'fam.{lead}.yoy.casos')}"),
-           "dek_refs": ["conteo.familias_brecha", "conteo.familias", f"fam.{lead}.yoy.facturado_mm", f"fam.{lead}.yoy.casos"]}
+           "dek": (f"En {fmt(V('conteo.familias_brecha'), 0)} de {fmt(V('conteo.familias'), 0)} familias, el facturado crece más que los casos"),
+           "dek_refs": ["conteo.familias_brecha", "conteo.familias"]}
     sf.topic_fields(tab, f"{fl(fams[0])}: {mm(f'fam.{fams[0]}.{q}.facturado_mm')}, {sg(f'fam.{fams[0]}.yoy.facturado_mm')} a/a",
                     index_refs=[f"fam.{fams[0]}.{q}.facturado_mm", f"fam.{fams[0]}.yoy.facturado_mm"], kpis=[])
     tabs.append(tab)
@@ -505,9 +507,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                          "rows": [[f"{p}. {package_name(package, p, q)}", money(V(f"prob.{p}.{q}.por_caso")),
                                    money(V(f"prob.{p}.{py}.por_caso")) if f"prob.{p}.{py}.por_caso" in v else "sin dato"] for p in top]},
                "source": src}]
-    tab = {"id": "problemas", "label": "Problemas con más gasto", "charts": charts, "text": [],
-           "dek": (f"Los {fmt(len(top), 0)} problemas con más facturado suman el {pc('prob.top.share')} del GES; "
-                   f"encabeza {plain(package, p0, q).lower()} con {mm(f'prob.{p0}.{q}.facturado_mm')}"),
+    n_top = NUMBER_WORD.get(len(top)) or f"Los {fmt(len(top), 0)}"
+    tab = {"id": "problemas", "label": "Problemas principales", "charts": charts, "text": [],
+           "dek": (f"{n_top} problemas concentran {pc('prob.top.share')} del facturado GES; "
+                   f"{plain(package, p0, q).lower()} lidera con {mm(f'prob.{p0}.{q}.facturado_mm')}"),
            "dek_refs": ["prob.top.n", "prob.top.share", f"prob.{p0}.{q}.facturado_mm", *label_refs(package, plain(package, p0, q))]}
     sf.topic_fields(tab, f"{plain(package, p0, q)}: {mm(f'prob.{p0}.{q}.facturado_mm')}",
                     index_refs=[f"prob.{p0}.{q}.facturado_mm", *label_refs(package, plain(package, p0, q))], kpis=[])
@@ -520,8 +523,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                "headline": "Facturado por caso: los que más suben",
                "subtitle": f"% {qs_} vs. {pys}; problemas con ≥ {fmt(cfg.get('cpc_min_cases') or 100, 0)} casos en ambos trimestres",
                "rows": [{"label": short(p), "value": V(f"prob.{p}.yoy.por_caso"), "ref": f"prob.{p}.yoy.por_caso"} for p in rs[:10]],
-               "table": {"columns": ["Problema", f"Por caso {pys}", f"Por caso {qs_}", "Por caso a/a", "Casos a/a", "Facturado a/a"],
-                         "rows": [[f"{p}. {package_name(package, p, q)}", money(V(f"prob.{p}.{py}.por_caso")), money(V(f"prob.{p}.{q}.por_caso")),
+               "table": {"columns": ["Problema", f"Casos {pys}", f"Casos {qs_}", f"Por caso {pys}", f"Por caso {qs_}", "Por caso a/a",
+                                     "Casos a/a", "Facturado a/a"],
+                         "rows": [[f"{p}. {package_name(package, p, q)}", fmt(V(f"prob.{p}.{py}.casos"), 0), fmt(V(f"prob.{p}.{q}.casos"), 0),
+                                   money(V(f"prob.{p}.{py}.por_caso")), money(V(f"prob.{p}.{q}.por_caso")),
                                    sg(f"prob.{p}.yoy.por_caso"), sg(f"prob.{p}.yoy.casos"), sg(f"prob.{p}.yoy.facturado_mm")] for p in rs]},
                "source": src},
               {"id": "f14-por-caso-medidas", "form": "diverging", "unit": "%", "digits": 1,
@@ -540,10 +545,17 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              [f"Mediana entre problemas {pys}", sg("prob.yoy_prev.mediana_por_caso"),
                               f"{fmt(V('prob.yoy_prev.n_suben'), 0)} de {fmt(V('prob.yoy_prev.n_comparables'), 0)}"]] if ppy else [])},
                "source": src + " Mediana entre problemas con fila publicada en ambos trimestres."}]
-    tab = {"id": "costo-caso", "label": "Costo por caso", "charts": charts, "text": [],
-           "dek": (f"{plain(package, r0, q)}: el facturado por caso {change_word(f'prob.{r0}.yoy.por_caso')}, "
-                   f"de {money(V(f'prob.{r0}.{py}.por_caso'))} a {money(V(f'prob.{r0}.{q}.por_caso'))}"),
-           "dek_refs": [f"prob.{r0}.yoy.por_caso", f"prob.{r0}.{py}.por_caso", f"prob.{r0}.{q}.por_caso", *label_refs(package, plain(package, r0, q))]}
+    r0name = plain(package, r0, q)
+    n_py, n_q = V(f"prob.{r0}.{py}.casos"), V(f"prob.{r0}.{q}.casos")
+    r0_text = (f"{r0name}: de {money(V(f'prob.{r0}.{py}.por_caso'))} a {money(V(f'prob.{r0}.{q}.por_caso'))} por caso, con "
+               f"{fmt(n_py, 0)} casos en {pys} y {fmt(n_q, 0)} en {qs_}.")
+    if min(n_py, n_q) < CPC_SMALL_BASE:
+        r0_text += (f" Base chica (menos de {fmt(CPC_SMALL_BASE, 0)} casos): unos pocos casos de facturado alto mueven el "
+                    "facturado por caso; léase como señal, no como tendencia.")
+    tab = {"id": "por-caso", "label": "Facturado por caso", "charts": charts, "text": [r0_text],
+           "dek": (f"Facturado por caso: {sg('tot.yoy.por_caso')} en el total; {r0name.lower()} lidera con "
+                   f"{sg(f'prob.{r0}.yoy.por_caso')}"),
+           "dek_refs": ["tot.yoy.por_caso", f"prob.{r0}.yoy.por_caso", *label_refs(package, r0name)]}
     sf.topic_fields(tab, f"Total {sg('tot.yoy.por_caso')} · mediana {sg('prob.yoy.mediana_por_caso')} por caso",
                     index_refs=["tot.yoy.por_caso", "prob.yoy.mediana_por_caso"], kpis=[])
     tabs.append(tab)
@@ -572,8 +584,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                            sg(f"fi.{lead}.{i}.yoy.facturado_mm")] for i in yo]},
                        "source": src})
     tab = {"id": "isapres", "label": "Por Isapre", "charts": charts, "text": [],
-           "dek": (f"{fl(lead)}: el facturado por caso sube en {fmt(V('fi.abiertas_suben'), 0)} de {fmt(V('fi.abiertas_n'), 0)} "
-                   "Isapres abiertas con datos en ambos años"),
+           "dek": (f"{fl(lead)} por Isapre: el facturado por caso sube en {fmt(V('fi.abiertas_suben'), 0)} de "
+                   f"{fmt(V('fi.abiertas_n'), 0)} abiertas"),
            "dek_refs": ["fi.abiertas_suben", "fi.abiertas_n"]}
     opens = [i for i in isas if i not in closed]
     if len(opens) >= 2:
@@ -603,9 +615,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                        money(V(f"reg.{rp}.{r}.{q}.por_caso"))] for r in sorted(regs, key=lambda r: -V(f"reg.{rp}.{r}.{q}.casos"))]},
                    "source": src + " Región del prestador; un caso con prestadores en dos regiones cuenta en ambas."}]
         tab = {"id": "regiones", "label": "Por región", "charts": charts, "text": [],
-               "dek": (f"{rname}: fuera de la Metropolitana, el facturado por caso va de {money(V('reg.min'))} a {money(V('reg.max'))}"
-                       + (f"; en la Metropolitana, {money(V(f'reg.{rp}.13.{q}.por_caso'))}" if f"reg.{rp}.13.{q}.por_caso" in v else "")),
-               "dek_refs": ["reg.min", "reg.max", *label_refs(package, rname)] + ([f"reg.{rp}.13.{q}.por_caso"] if f"reg.{rp}.13.{q}.por_caso" in v else [])}
+               "dek": f"{rname}: el facturado por caso va de {money(V('reg.min'))} a {money(V('reg.max'))} fuera de la RM",
+               "dek_refs": ["reg.min", "reg.max", *label_refs(package, rname)]}
         sf.topic_fields(tab, f"{rname}: {fmt(V('reg.n'), 0)} regiones con datos publicables", index_refs=["reg.n", *label_refs(package, rname)], kpis=[])
         tabs.append(tab)
 
@@ -632,11 +643,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                   + [money(V(f"fam.{f}.{qq}.por_caso")) if f"fam.{f}.{qq}.por_caso" in v else "sin dato" for f in fams]
                                   for qq in k["qs"]]},
                "source": src}]
-    tab = {"id": "serie", "label": "Serie desde 2021", "charts": charts, "text": [],
-           "dek": (f"Desde {so.quarter_short(first)}, el facturado GES {change_word('tot.serie.facturado', 'creció', 'cayó')} y los casos "
-                   f"{change_word('tot.serie.casos', 'crecieron', 'cayeron')}; el GES pesa entre {pc('tot.pct_ges.min')} y {pc('tot.pct_ges.max')} "
-                   "de lo facturado a las Isapres"),
-           "dek_refs": ["tot.serie.facturado", "tot.serie.casos", "tot.pct_ges.min", "tot.pct_ges.max"]}
+    tab = {"id": "serie", "label": "Serie desde 2021", "charts": charts,
+           "text": [f"Compara el mismo trimestre: {so.quarter_short(first)} con {qs_} (montos nominales). El peso del GES en lo "
+                    f"facturado a las Isapres va de {pc('tot.pct_ges.min')} a {pc('tot.pct_ges.max')} entre trimestres."],
+           "dek": (f"Desde {yl(first)}: facturado GES {sg('tot.serie.facturado')}, casos {sg('tot.serie.casos')}; peso en Isapres, "
+                   f"{pc(f'tot.{q}.pct_ges')}"),
+           "dek_refs": ["tot.serie.facturado", "tot.serie.casos", f"tot.{q}.pct_ges"]}
     sf.topic_fields(tab, f"GES: {pc(f'tot.{q}.pct_ges')} de lo facturado en {qs_}", index_refs=[f"tot.{q}.pct_ges"], kpis=[])
     tabs.append(tab)
 
@@ -675,9 +687,13 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         {"id": "n8", "text": ("Archivos: la huella SHA-256 de cada ZIP trimestral de la SIS está en Fuentes, junto con la del archivo "
                               "agregado que usa la ficha y la del agregado de origen; si una no calza, la ficha queda retenida.")},
     ]
+    notes.append({"id": "n10", "text": ("Isapre abierta: acepta como afiliado a cualquier persona. Isapre cerrada: solo afilia a "
+                                         "trabajadores de una empresa o sector (afiliación restringida). «Abiertas» en el tema por "
+                                         "Isapre cuenta las abiertas con fila publicada en ambos años.")})
     if k["closed"]:
         notes.append({"id": "n9", "text": f"{', '.join(nm(i) for i in k['closed'])}: Isapre cerrada (afiliación restringida); aparece marcada."})
-    package["constants"] += [sup.get("suprimidas_por_prestadores", 0), sup.get("suprimidas_complementarias", 0), 88, 90, 29, 34, 2018]
+    package["constants"] += [sup.get("suprimidas_por_prestadores", 0), sup.get("suprimidas_complementarias", 0), 88, 90, 29, 34, 2018,
+                             CPC_SMALL_BASE]
     watch = [{"headline": f"Datos de {so.quarter_label(nq)}.",
               "explanation": "La SIS publica un archivo por trimestre; Alicanto agrega los códigos GES cuando aparece."}]
     late = (decision or {}).get("late_release")

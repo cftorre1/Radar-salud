@@ -157,8 +157,7 @@ def test_f14_pass_and_headline_recomputed_from_raw_rows(root):
     fact = (tot["2026t3"][0] / tot["2025t3"][0] - 1) * 100
     cases = (tot["2026t3"][1] / tot["2025t3"][1] - 1) * 100
     assert fi["headline_type"] == "gap_spend_cases"
-    assert fi["headline"] == (f"GES en Isapres: lo facturado sube {f14.fmt(fact, 1)}% en un año y los casos suben "
-                              f"{f14.fmt(cases, 1)}% (jul–sep 2026)")
+    assert fi["headline"].startswith(f"GES en Isapres: facturado +{f14.fmt(fact, 1)}%, casos +{f14.fmt(cases, 1)}%; por caso sube en ")
     assert fi["kpis"][0]["value"] == f"{f14.fmt(tot['2026t3'][0] / 1e6, 0)} MM$"
     assert [t["id"] for t in fi["tabs"]] == f14.TAB_ORDER
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t3.zip")
@@ -249,6 +248,57 @@ def test_check_flags_a_hidden_region_that_is_the_only_candidate():
     f = gp.check(doc, REF)
     # problem 18 hides 200 in a single candidate region (8); problem 7 shows a region while its national row is hidden
     assert "single_candidate:problema<-region:18" in f and "region_row_of_hidden_problem:7:8" in f
+
+
+def _regions_case():
+    """Replica of the PR #165 review finding: the sanitizer hides one two-provider region of problem 75; the
+    pseudo-region "0" shows a single row elsewhere and must not count as a place for the remainder."""
+    probs = [R(problema=p, familia="salud_mental", casos=200, facturado=2000) for p in (15, 34, 75)]
+    regs = []
+    for p in (15, 34, 75):
+        regs += [R(problema=p, region="13", casos=100, facturado=1000), R(problema=p, region="5", casos=40, facturado=400),
+                 R(problema=p, region="8", casos=30, facturado=300),
+                 R(problema=p, region="9", casos=30, facturado=300, n_prestadores=2 if p == 75 else 5)]
+    regs.append(R(problema=15, region="0", casos=10, facturado=1))
+    probs[0]["facturado"] += 1
+    fam = [R(familia="salud_mental", casos=600, facturado=sum(r["facturado"] for r in probs))]
+    return _src(fam, probs, pr_rows=regs)
+
+
+def test_check_does_not_count_a_near_empty_pseudo_region_as_cover():
+    doc = copy.deepcopy(_regions_case())
+    doc["por_problema_region"]["filas"] = [r for r in doc["por_problema_region"]["filas"] if r["n_prestadores"] >= 3]
+    doc["version_publicable"] = gp.PUBLIC_VERSION
+    # the old check saw two candidates ("9" and "0"); "0" has one shown row, so the remainder is attributable to "9"
+    assert "single_candidate:problema<-region:75" in gp.check(doc, REF)
+
+
+def test_sanitize_hides_a_second_cell_wherever_it_hides_one_itself():
+    src = _regions_case()
+    doc, rep = gp.sanitize(src, REF)
+    assert rep["suprimidas_por_prestadores"] == 1 and rep["suprimidas_complementarias"] >= 1 and gp.check(doc, REF) == []
+    shown75 = {r["region"] for r in doc["por_problema_region"]["filas"] if r["problema"] == 75}
+    assert len({"13", "5", "8", "9"} - shown75) >= 2
+
+
+def test_sanitize_keeps_every_hidden_part_under_the_margin():
+    # problem 3 (two providers) is 95% of what the sanitizer must hide: the next hidden cell must bring it under 90%
+    probs = [R(problema=3, familia="cancer", casos=500, facturado=95_000, n_prestadores=2),
+             R(problema=4, familia="cancer", casos=20, facturado=2_000), R(problema=8, familia="cancer", casos=300, facturado=30_000),
+             R(problema=14, familia="cancer", casos=400, facturado=40_000)]
+    src = _src([R(familia="cancer", casos=1220, facturado=167_000)], probs)
+    doc, _ = gp.sanitize(src, REF)
+    shown = {r["problema"] for r in doc["por_problema_nacional"]["filas"]}
+    hidden = [r["facturado"] for r in probs if r["problema"] not in shown]
+    assert len(hidden) >= 2 and max(hidden) / sum(hidden) < gp.MAX_SHARE and gp.check(doc, REF) == []
+
+
+def test_published_totals_keep_only_the_allowed_keys():
+    src = _src([R(familia="cancer", casos=100, facturado=1000)], [])
+    src["totales"].update(filas_gpp_sin_id_ges=3, ges_sin_gpp={"filas": 2, "facturado": 50})
+    doc, _ = gp.sanitize(src, REF)
+    assert set(doc["totales"]) <= set(gp.TOTAL_KEYS) and gp.check(doc, REF) == []
+    assert "total_key_not_allowed:ges_sin_gpp" in gp.check({**doc, "totales": src["totales"]}, REF)
 
 
 def test_builder_holds_when_a_committed_file_leaks(root):
@@ -353,6 +403,25 @@ def test_committed_ges_files_pass_the_leak_check_and_name_their_sources():
         assert d["sha256_zip"] == rec["archivo"]["sha256"] and d["filas_zip"] == rec["archivo"]["parse"]["rows_ok"]
         assert sf.HEX64.fullmatch(d["fuente_agregada"]["sha256"])
         assert not (folder / f"ges_gpp_{q}.json").exists()  # the unsanitized backfill file is never committed here
+
+
+@pytest.mark.skipif(not _real(), reason="no committed GES aggregates")
+@pytest.mark.parametrize("q,p", [("2021t1", 75), ("2021t1", 76), ("2021t4", 21), ("2021t4", 76), ("2022t2", 76), ("2022t3", 76)])
+def test_review_cells_are_no_longer_recoverable_from_the_regions(q, p):
+    # PR #165 review: these two-provider regional cells equalled problem total − published regions
+    d = json.loads((REPO / f14.ROOT_DIR / q / f"ges_gpp_publicable_{q}.json").read_text(encoding="utf-8"))
+    nat = {r["problema"]: r for r in d["por_problema_nacional"]["filas"]}
+    regs = [r for r in d["por_problema_region"]["filas"] if r["problema"] == p]
+    assert set(d["totales"]) <= set(gp.TOTAL_KEYS)
+    if p not in nat:
+        assert regs == []
+        return
+    rest = nat[p]["facturado"] - sum(r["facturado"] for r in regs)
+    count = {}
+    for r in d["por_problema_region"]["filas"]:
+        count[r["region"]] = count.get(r["region"], 0) + 1
+    cover = {x for x, n in count.items() if n >= gp.COVER_MIN_ROWS} - {r["region"] for r in regs}
+    assert rest <= len(regs) + 1 or len(cover) >= 2, (q, p, rest, cover)
 
 
 @pytest.mark.skipif(not _real(), reason="no committed GES aggregates")

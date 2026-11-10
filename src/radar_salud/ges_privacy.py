@@ -18,7 +18,13 @@ data is never available here):
 3. where the source did not apply complementary suppression inside the group (problems within a family, families
    within the GES total), a hidden remainder always gets at least one more hidden child, so it can never be a single
    cell;
-4. a hidden problem hides all its regional rows.
+4. a hidden problem hides all its regional rows;
+5. wherever the sanitizer itself hides a cell (minimum providers or complementary), that group's hidden remainder
+   always holds at least two hidden parts, whether or not the source complemented the group (review of PR #165:
+   six two-provider regional cells were recoverable as problem total − published regions);
+6. no hidden part is ≥ ``MAX_SHARE`` of its group's remainder (the source's own hidden lump counts as one part);
+7. only regions with ≥ ``COVER_MIN_ROWS`` shown rows count as a place where a regional remainder could sit (a near-empty pseudo-region such as "0" with one row is not cover);
+8. the published totals keep only ``TOTAL_KEYS`` (no small residual counts such as GES rows without a GPP code).
 
 ``check`` is the attacker's view, run by the builder on every read (any finding → HOLD) and by the tests on the
 committed files. Encrypted identifiers never exist in these files: cases were counted in memory as opaque keys.
@@ -32,6 +38,10 @@ MIN_PROVIDERS = 3
 PUBLIC_VERSION = "ges_publicable_v1"
 TABLES = ("por_familia_nacional", "por_problema_nacional", "por_familia_isapre", "por_problema_region")
 MONEY = ("facturado", "bonificado", "frecuencia")
+MAX_SHARE = 0.9
+COVER_MIN_ROWS = 3
+TOTAL_KEYS = ("filas_con_gpp", "facturado", "bonificado", "frecuencia", "pct_facturado_del_trimestre")
+KEY_TABLE = {"problema": "por_problema_nacional", "isapre": "por_familia_isapre", "region": "por_problema_region"}
 
 
 def family_of(ref: dict) -> dict[int, str]:
@@ -48,10 +58,15 @@ def groups(doc: dict, ref: dict) -> list[dict]:
     children (seen in shown rows), whether cases add up across children, and whether the source applied complementary suppression."""
     fam = family_of(ref)
     T = {t: (doc.get(t) or {}).get("filas") or [] for t in TABLES}
-    # Candidates are the Isapres / regions that appear in some shown row of the same table: an Isapre or region never
-    # shown is not a credible place for a remainder, so it never counts as cover (stricter than the declared universe).
-    isapres = {r["isapre"] for r in T["por_familia_isapre"]}
-    regions = {r["region"] for r in T["por_problema_region"]}
+    # Candidates are the Isapres shown in some row and the regions with >= COVER_MIN_ROWS shown rows: a region never (or
+    # barely) shown, such as the pseudo-region "0" with one row, is not a credible place for a remainder.
+    def cover(rows: list[dict], k: str) -> set:
+        n: dict = defaultdict(int)
+        for r in rows:
+            n[r[k]] += 1
+        return {x for x, c in n.items() if c >= COVER_MIN_ROWS}
+    isapres = {r["isapre"] for r in T["por_familia_isapre"]}  # every Isapre shown somewhere (closed ones are few-row)
+    regions = cover(T["por_problema_region"], "region")
     families = set((ref.get("familias") or {})) | {r["familia"] for r in T["por_familia_nacional"]}
     out = []
     tot = doc.get("totales") or {}
@@ -89,7 +104,9 @@ def group_findings(g: dict) -> list[str]:
     if any(v < -_tol(kids) for v in rest.values()):
         out.append(f"children_exceed_parent:{g['tag']}")
     hidden = rest["facturado"] > _tol(kids)
-    if hidden and len(cand) == 1:  # no candidate at all: nothing new can be attributed to any child
+    # one credible place, or none while some children are shown (the remainder then sits in a non-credible place,
+    # e.g. the pseudo-region "0"): attributable. With no child shown at all, the remainder is the published parent.
+    if hidden and (len(cand) == 1 or (not cand and kids)):
         out.append(f"single_candidate:{g['tag']}")
     if hidden and g["additive"] and par.get("casos") is not None:
         rc = par["casos"] - sum(k["casos"] for k in kids)
@@ -111,6 +128,8 @@ def check(doc: dict, ref: dict) -> list[str]:
                 out.append(f"cell_under_{MIN_CASES}_cases:{tag}")
             if not isinstance(r.get("n_prestadores"), int) or r["n_prestadores"] < MIN_PROVIDERS:
                 out.append(f"cell_under_{MIN_PROVIDERS}_providers:{tag}")
+    for k in set(doc.get("totales") or {}) - set(TOTAL_KEYS):
+        out.append(f"total_key_not_allowed:{k}")
     for t in set(doc) - set(TABLES):
         if isinstance(doc[t], dict) and "filas" in doc[t]:
             out.append(f"table_not_allowed:{t}")
@@ -121,6 +140,33 @@ def check(doc: dict, ref: dict) -> list[str]:
     for g in groups(doc, ref):
         out += group_findings(g)
     return out
+
+
+def _hidden_parts(g: dict, sg: dict | None) -> tuple[list[float], dict | None]:
+    """Facturado of each part of a published group's hidden remainder, known only with the source: every source child
+    the publication hides, plus the source's own hidden lump (parent − Σ source children) as one part."""
+    par = g["parent"]
+    if par.get("facturado") is None or sg is None:
+        return [], sg
+    shown = {k[g["key"]] for k in g["kids"]}
+    parts = [float(k["facturado"]) for k in sg["kids"] if k[g["key"]] not in shown]
+    lump = (sg["parent"].get("facturado") or 0) - sum(k["facturado"] for k in sg["kids"])
+    if lump > _tol(sg["kids"]):
+        parts.append(float(lump))
+    return [p for p in parts if p > 0], sg
+
+
+def _n_own(g: dict, sg: dict | None) -> int:
+    """Source children this publication hides in the group (minimum providers or complementary suppression)."""
+    if sg is None:
+        return 0
+    shown = {k[g["key"]] for k in g["kids"]}
+    return sum(1 for k in sg["kids"] if k[g["key"]] not in shown)
+
+
+def _max_share(parts: list[float]) -> float:
+    tot = sum(parts)
+    return max(parts) / tot if tot > 0 else 0.0
 
 
 def sanitize(src: dict, ref: dict) -> tuple[dict, dict]:
@@ -148,13 +194,14 @@ def sanitize(src: dict, ref: dict) -> tuple[dict, dict]:
             else:
                 keep.append(dict(r))
         doc[t] = {"filas": keep}
-    doc["totales"] = dict(src["totales"])
+    doc["totales"] = {k: src["totales"][k] for k in TOTAL_KEYS if k in src["totales"]}
     doc["version_publicable"] = PUBLIC_VERSION
     shown_fams = {r["familia"] for r in doc["por_familia_nacional"]["filas"]}
     if shown_fams != {r["familia"] for r in src["por_familia_nacional"]["filas"]}:
         raise ValueError("family_row_would_be_hidden")
+    src_groups = {g["tag"]: g for g in groups(src, ref)}
     own: dict[str, int] = defaultdict(int)
-    for _ in range(500):
+    for _ in range(2000):
         changed = False
         shown_p = {r["problema"] for r in doc["por_problema_nacional"]["filas"]}
         before = len(doc["por_problema_region"]["filas"])
@@ -163,13 +210,27 @@ def sanitize(src: dict, ref: dict) -> tuple[dict, dict]:
         for g in groups(doc, ref):
             par, kids = g["parent"], g["kids"]
             hidden = (par.get("facturado") or 0) - sum(k["facturado"] for k in kids) > _tol(kids)
-            need = bool(group_findings(g)) or (hidden and not g["complemented"] and own[g["tag"]] == 0)
+            parts, sg = _hidden_parts(g, src_groups.get(g["tag"]))
+            fix_share = None
+            mine = _n_own(g, sg)
+            if bool(group_findings(g)):
+                need = True
+            elif hidden and (mine or not g["complemented"]) and len(parts) < 2:
+                need = True
+            elif hidden and len(parts) >= 2 and _max_share(parts) >= MAX_SHARE:
+                need, fix_share = True, parts
+            else:
+                need = False
             if not need or not kids:
                 continue
             if g["tag"] == "total<-familia":
                 raise ValueError("family_row_would_be_hidden")
-            victim = min(kids, key=lambda k: (k["casos"], k["facturado"], str(k[g["key"]])))
-            table = {"problema": "por_problema_nacional", "isapre": "por_familia_isapre", "region": "por_problema_region"}[g["key"]]
+            order = lambda k: (k["casos"], k["facturado"], str(k[g["key"]]))  # noqa: E731
+            victim = min(kids, key=order)
+            if fix_share is not None:  # the smallest cell that brings every hidden part under MAX_SHARE, else the largest
+                ok = [k for k in kids if _max_share(fix_share + [k["facturado"]]) < MAX_SHARE]
+                victim = min(ok, key=order) if ok else max(kids, key=lambda k: (k["facturado"], str(k[g["key"]])))
+            table = KEY_TABLE[g["key"]]
             doc[table]["filas"] = [r for r in doc[table]["filas"] if r is not victim]
             own[g["tag"]] += 1
             rep["suprimidas_complementarias"] += 1
@@ -181,6 +242,14 @@ def sanitize(src: dict, ref: dict) -> tuple[dict, dict]:
         raise ValueError("suppression_did_not_converge")
     for t in TABLES:
         doc[t]["celdas_ocultas"] = rep["filas_fuente"].get(t, 0) - len(doc[t]["filas"])
+    src_groups = {g["tag"]: g for g in groups(src, ref)}
+    for g in groups(doc, ref):  # needs the source: re-assert rules 5 and 6 on the final file
+        parts, sg = _hidden_parts(g, src_groups.get(g["tag"]))
+        if not g["kids"]:  # nothing shown: the remainder is the published parent itself
+            continue
+        thin = (_n_own(g, sg) or not g["complemented"]) and len(parts) == 1
+        if thin or (len(parts) >= 2 and _max_share(parts) >= MAX_SHARE):
+            raise ValueError(f"thin_remainder_after_sanitize:{g['tag']}")
     left = check(doc, ref)
     if left:
         raise ValueError("leak_after_sanitize:" + ";".join(left[:5]))
