@@ -295,9 +295,10 @@ def test_migrated_text_carries_the_review_corrections():
     assert "para otro segmento" not in w["closing"]["text"]
     review = w["independent_review"]
     # The final PASS is recorded by coordination after the reviewer passes the fix commit, never before.
-    assert review["status"] == "pending_final" and review["verdict"] is None
+    assert review["status"] == "final" and review["verdict"] == "PASS"
     assert [(r["round"], r["verdict"]) for r in review["rounds"]] == [
-        (1, "PASS_WITH_CORRECTIONS"), (2, "FAIL"), (3, "FAIL"), ("3-fix", "FAIL")]
+        (1, "PASS_WITH_CORRECTIONS"), (2, "FAIL"), (3, "FAIL"), ("3-fix", "FAIL"), (4, "PASS")]
+    assert review["rounds"][4] == {"round": 4, "on": "2026-11-10", "reviewed_commit": "c8ee171f", "verdict": "PASS"}
     assert review["rounds"][3] == {"round": "3-fix", "reviewed_commit": "8b9487f7", "verdict": "FAIL",
                                    "blocker": "verbo doblar; registro prematuro"}
     assert review["rounds"][2] == {"round": 3, "on": "2026-11-10", "reviewed_commit": "9c960e9b", "verdict": "FAIL",
