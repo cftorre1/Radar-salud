@@ -28,10 +28,8 @@ jobs:
         # Failing test names surface as check-run annotations (Actions logs are not readable from the agent environment).
         # The two CI-only network tests that write ::notice annotations to the real stdout (capsys.disabled) run in the
         # next step without xdist: worker stdout never reaches the job log, so their annotations would be lost.
-        # PYTHONHASHSEED is pinned so every xdist worker collects the same parametrized ids (some are built from set
-        # iteration order; with a per-process random seed workers disagreed: "Different tests were collected").
-        env:
-          PYTHONHASHSEED: '0'
+        # Parametrize ids must be identical in every worker (no datetime.now() in ids): see
+        # tests/test_occupational_capture_cache.py, which made xdist abort with "Different tests were collected".
         run: |
           set -o pipefail
           python -m pytest -q -rfE -n auto --durations=15 \
