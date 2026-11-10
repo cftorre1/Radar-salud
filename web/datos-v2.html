@@ -173,9 +173,8 @@ const COMP={isapre:[['f1-isapres','Δ beneficiarios ene–ago'],['f1-share','Par
 const state={isapre:'',region:'',periodo:'todo',view:'isapre'};
 let D=null,series=null;
 function load(u){return fetch(u,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)}
-Promise.all([load('data/datos.json'),load('data/radar_today.json'),load('data/preview/f13_licencias.json'),load('data/series_isapre.json')]).then(([datos,today,f13,ser])=>{
+Promise.all([load('data/datos.json'),load('data/radar_today.json'),load('data/series_isapre.json')]).then(([datos,today,ser])=>{
  const fichas={};((today&&today.signals)||[]).forEach(s=>{if(s.stats_ficha)fichas[s.stats_ficha.family]={f:s.stats_ficha,share:s.share_url,live:true}});
- [f13].forEach(p=>{if(p&&p.ficha&&!fichas[p.ficha.family])fichas[p.ficha.family]={f:p.ficha,live:false}});
  const charts={};Object.values(fichas).forEach(({f})=>f.tabs.forEach(t=>(t.charts||[]).forEach(c=>{charts[c.id]={...c,family:f.family,period:f.period,kicker:f.kicker}})));
  D={datos:datos||{families:[]},fichas,charts,ser};
  const isapres=ser?ser.isapres.beneficiarios.filter(b=>b.short).map(b=>b.short):[];const regiones=ser?ser.regiones.map(r=>r.short):[];

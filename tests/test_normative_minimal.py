@@ -64,13 +64,13 @@ def test_unofficial_domain_or_diario_oficial_stay_held():
 
 def test_real_history_minimal_rows_carry_no_interpretation():
     rows = _curated_by_url()
-    if537 = rows["https://www.superdesalud.gob.cl/normativa/circular-if-n537/"]
-    assert if537["normative_minimal"] and if537["editorial_badge"] == BADGE
-    assert "procedimiento interno de notificación" in if537["display_title"]
+    # Hermetic against live data: once the hourly autorecord verifies an act (e.g. IF/537 on 10-nov) it leaves the
+    # minimal lane, so check whichever acts are still minimal instead of pinning one.
     minimal = [r for r in rows.values() if r.get("normative_minimal")]
-    assert minimal and all(not r.get(f) for r in minimal for f in INTERPRETIVE_FIELDS)
-    c3921 = next(r for r in minimal if r.get("normative_document_label", "").endswith("3921"))
-    assert "Vigencia" not in json.dumps(c3921, ensure_ascii=False)
+    assert all(r["editorial_badge"] == BADGE for r in minimal)
+    assert all(not r.get(f) for r in minimal for f in INTERPRETIVE_FIELDS)
+    c3921 = next((r for r in minimal if r.get("normative_document_label", "").endswith("3921")), None)
+    assert c3921 is None or "Vigencia" not in json.dumps(c3921, ensure_ascii=False)
     # IF/11168 is an exceptional authorization to one Isapre (official subject): never a card,
     # and its automated analysis (bound to IF/11156's PDF) must not surface.
     assert "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n11168/" not in rows
@@ -79,7 +79,7 @@ def test_real_history_minimal_rows_carry_no_interpretation():
 def test_reviewer_accepts_real_minimal_card_and_rejects_leaks(tmp_path):
     spec = importlib.util.spec_from_file_location("reviewer", Path("scripts/review_candidate.py"))
     reviewer = importlib.util.module_from_spec(spec); spec.loader.exec_module(reviewer)
-    base = _curated_by_url()["https://www.superdesalud.gob.cl/normativa/circular-if-n537/"]
+    base = next(r for r in _curated_by_url().values() if r.get("normative_minimal"))
     (tmp_path / "data").mkdir()
 
     def codes(sig):
@@ -90,7 +90,7 @@ def test_reviewer_accepts_real_minimal_card_and_rejects_leaks(tmp_path):
     assert "normative_minimal_contract" not in codes(base)
     for bad in ({"why_it_matters": "Las isapres deberán cambiar procesos."}, {"editorial_badge": None},
                 {"key_points": ["interpretación"]}, {"validity_text": "desde marzo"}, {"card_why": None},
-                {"display_title": "Circular IF/N°537 · Nuevo deber de notificar en 24 horas"}):
+                {"display_title": f"{base['normative_document_label']} · Nuevo deber de notificar en 24 horas"}):
         assert "normative_minimal_contract" in codes({**base, **bad}), bad
 
 
