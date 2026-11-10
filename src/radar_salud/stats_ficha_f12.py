@@ -43,7 +43,7 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_informe_v8"  # v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
+BUILDER_VERSION = "f12_informe_v9"  # v9 (Dirección 10-nov): plain titles, paired charts, intro and topic body; v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
 DATASET = "Prestaciones Bonificadas"
 PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
 NATIONAL = "NACIONAL"
@@ -474,21 +474,26 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
              + [["Sistema", "", pc(f"sistema.{q}.pct_bonif"), pc(f"sistema.{q}.pct_copago"), "", "", fmt(V(f"sistema.{q}.facturado_mm"), 0)]
                 + ([pc(f"sistema.{pq}.pct_bonif")] if pq else [])]}
     charts = [{"id": "f12-bonif-isapre", "form": "bars", "unit": "%", "digits": 1,
-               "headline": "Bonificado sobre lo facturado, por Isapre",
-               "subtitle": f"% de lo facturado por los prestadores que pagó la Isapre, {ql}",
+               "headline": "Qué parte de la cuenta paga cada Isapre",
+               "subtitle": f"% de lo facturado por los prestadores que bonificó la Isapre, {ql}; el resto es copago",
                "rows": [{"label": nm(c), "value": V(f"isapre.{c}.{q}.total.pct_bonif"), "ref": f"isapre.{c}.{q}.total.pct_bonif",
                          "emphasis": c in (k["hi_b"], k["lo_b"]), **tag(c)} for c in iss[:12]],
                "table": table,
                "source": "SIS, datos abiertos de prestaciones bonificadas (ZIP trimestral); agregados por Isapre."},
-              {"id": "f12-bonif-amb", "form": "bars", "unit": "%", "digits": 1,
-               "headline": "Bonificado en atención ambulatoria",
-               "subtitle": f"% de lo facturado en atención ambulatoria, {ql}",
-               "rows": [{"label": nm(c), "value": V(f"isapre.{c}.{q}.amb.pct_bonif"), "ref": f"isapre.{c}.{q}.amb.pct_bonif", **tag(c)}
-                        for c in sorted(iss, key=lambda c: -V(f"isapre.{c}.{q}.amb.pct_bonif"))[:12]],
+              {"id": "f12-bonif-amb", "form": "pair", "unit": "%", "digits": 1, "series": ["Ambulatoria", "Hospitalaria"],
+               "headline": "Bonificación en atención ambulatoria y hospitalaria",
+               "subtitle": f"% de lo facturado que bonificó cada Isapre, por tipo de atención, {ql}",
+               "rows": [{"label": nm(c), **tag(c), "value": V(f"isapre.{c}.{q}.amb.pct_bonif"),
+                         "ref": f"isapre.{c}.{q}.amb.pct_bonif", "base": V(f"isapre.{c}.{q}.hosp.pct_bonif"),
+                         "base_ref": f"isapre.{c}.{q}.hosp.pct_bonif"}
+                        for c in iss[:12] if f"isapre.{c}.{q}.hosp.pct_bonif" in v],
                "table": {"columns": ["Isapre", "Ambulatoria", "Hospitalaria"],
                          "rows": [[nm(c), pc(f"isapre.{c}.{q}.amb.pct_bonif"), pc(f"isapre.{c}.{q}.hosp.pct_bonif")] for c in iss]},
                "source": "SIS, datos abiertos de prestaciones bonificadas; tipo de atención declarado en cada fila."}]
-    tab = {"id": "cobertura", "label": "Cobertura por Isapre", "charts": charts, "text": [], "dek": None}
+    tab = {"id": "cobertura", "label": "Cobertura por Isapre", "charts": charts, "text": [], "dek": None,
+           "body": [(f"En el sistema, las Isapres bonificaron el {pc(f'sistema.{q}.pct_bonif')} de lo facturado. Lo que no bonifica "
+                     "la Isapre es copago de la persona; parte puede cubrirlo después un seguro complementario, que estos datos "
+                     "no registran. Las Isapres cerradas atienden a trabajadores de una empresa o sector y se marcan aparte.")]}
     hi_b, lo_b = k["hi_b"], k["lo_b"]
     sf.topic_fields(tab, f"De {pc(f'isapre.{lo_b}.{q}.total.pct_bonif')} ({nm(lo_b)}) a {pc(f'isapre.{hi_b}.{q}.total.pct_bonif')} ({nm(hi_b)})",
                     index_refs=[f"isapre.{lo_b}.{q}.total.pct_bonif", f"isapre.{hi_b}.{q}.total.pct_bonif"], kpis=[])
@@ -508,21 +513,17 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                          fmt(V(f"cruce.{c}.fact_mediana"), 1, True) + "%" if f"cruce.{c}.fact_mediana" in v else "",
                          fmt(V(f"cruce.{c}.celdas"), 0)] for c in qual]}
         base = f"SIS, datos abiertos; prestadores seudónimos con ≥ 2 Isapres (≥ 10 atenciones cada una) en el mismo código Fonasa."
-        charts = [{"id": "f12-mismo-prestador", "form": "diverging", "unit": "%", "digits": 1,
-                   "headline": "Mismo prestador y código: mediana",
-                   "subtitle": "Bonificado por unidad de la Isapre vs. la media de las Isapres de la celda; mediana entre celdas, %",
-                   "rows": [{"label": nm(c), "value": V(f"cruce.{c}.mediana"), "ref": f"cruce.{c}.mediana", **tag(c)} for c in qual[:12]],
-                   "table": tbl, "source": base + src_cl},
-                  {"id": "f12-mismo-prestador-ponderada", "form": "diverging", "unit": "%", "digits": 1,
-                   "headline": "Mismo prestador y código: media ponderada",
-                   "subtitle": "El mismo índice, promediado con el peso de las atenciones de cada celda, %",
-                   "rows": [{"label": nm(c), "value": V(f"cruce.{c}.ponderada"), "ref": f"cruce.{c}.ponderada", **tag(c)}
-                            for c in sorted(qual, key=lambda c: -V(f"cruce.{c}.ponderada"))[:12]],
-                   "table": {"columns": ["Isapre", "Tipo", "Media ponderada", "Mediana"],
-                             "rows": [[nm(c), kind(c), fmt(V(f"cruce.{c}.ponderada"), 1, True) + "%",
-                                       fmt(V(f"cruce.{c}.mediana"), 1, True) + "%"] for c in qual]},
-                   "source": base + src_cl + " Cuando las dos medidas difieren en signo, la diferencia no es robusta."}]
-        tab = {"id": "mismo-prestador", "label": "Mismo prestador", "charts": charts, "text": [], "dek": None}
+        charts = [{"id": "f12-mismo-prestador", "form": "pair", "unit": "%", "digits": 1, "series": ["Mediana", "Media ponderada"],
+                   "headline": "Cuánto paga cada Isapre al mismo prestador por el mismo código",
+                   "subtitle": f"% sobre (+) o bajo (−) el promedio de las Isapres en el mismo prestador y código, {ql}",
+                   "rows": [{"label": nm(c), **tag(c), "value": V(f"cruce.{c}.mediana"),
+                             "ref": f"cruce.{c}.mediana", "base": V(f"cruce.{c}.ponderada"), "base_ref": f"cruce.{c}.ponderada"}
+                            for c in qual[:12]],
+                   "table": tbl, "source": base + src_cl + " Cuando las dos medidas difieren en signo, la diferencia no es robusta."}]
+        tab = {"id": "mismo-prestador", "label": "Mismo prestador", "charts": charts, "text": [], "dek": None,
+               "body": [("Se compara a cada Isapre con las demás en el mismo prestador y el mismo código, así la diferencia no "
+                         "viene de la red ni del tipo de prestación. «Mediana» toma la celda típica; «media ponderada» pesa cada "
+                         "celda por sus atenciones. No ajusta por plan: un plan con mejor cobertura sube el índice.")]}
         hi, lo = k["hi_c"], k["lo_c"]
         sf.topic_fields(tab, f"Medianas, abiertas: {nm(hi)} {fmt(V(f'cruce.{hi}.mediana'), 1, True)}% · {nm(lo)} {fmt(V(f'cruce.{lo}.mediana'), 1, True)}%",
                         index_refs=[f"cruce.{hi}.mediana", f"cruce.{lo}.mediana"], kpis=[])
@@ -557,7 +558,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     pub = [r for r in so.REGIONS if f"precio.{c1}.{r}.mediana" in v and r != "0"]
     pub = sorted(pub, key=lambda r: -V(f"precio.{c1}.{r}.frec"))[:12]
     charts = [{"id": "f12-precio-region", "form": "bars", "unit": "$", "digits": 0,
-               "headline": f"Precio mediano del código {c1} por región",
+               "headline": (f"Precio de la {codes[0]['desc'].lower()} (código {c1}), por región" if codes[0].get('desc') else f"Precio del código {c1}, por región"),
                "subtitle": f"$ por unidad, mediana entre prestadores, {ql}; regiones con precio publicable",
                "rows": [{"label": so.REGIONS[r], "value": V(f"precio.{c1}.{r}.mediana"), "ref": f"precio.{c1}.{r}.mediana"} for r in pub],
                "table": {"columns": ["Código", "Región", "Prestadores", "Atenciones", "Precio (p25–p75)", "Mayor prestador"],
@@ -575,7 +576,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                        "source": "Regla de divulgación de Alicanto aplicada a los agregados SIS."})
     for e, n in st.items():
         package["derived_ratios"].append({"id": f"conteo.celdas.{e}", "value": n, "unit": "count"})
-    tab = {"id": "regiones", "label": "Precios por región", "charts": charts, "text": [], "dek": None}
+    tab = {"id": "regiones", "label": "Precios por región", "charts": charts, "text": [], "dek": None,
+           "body": [("Es el código con más atenciones del archivo. El precio es la mediana entre prestadores de la región; se publica "
+                     "solo con 2 prestadores o más y 30 atenciones o más, y con 1 prestador la región queda sin precio.")]}
     rr = pub[0] if pub else None
     if rr:
         sf.topic_fields(tab, f"Código más frecuente en {so.REGIONS[rr]}: {money(V(f'precio.{c1}.{rr}.mediana'))}",
@@ -642,6 +645,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "kicker": tpl["kicker"].format(label=cfg["label"], quarter_label=ql),
         "kicker_meta": tpl["kicker_meta"].format(quarter_label=ql, published_label=sf.day_label(package["published_at"])),
         "date_basis": "first_detected", "headline": headline, "headline_type": "report_title", "dek": dek, "dek_emphasis": None,
+        "intro": report.get("intro") or [],
         "kpis": kpis[:5], "tabs": sorted(tabs, key=lambda t: TAB_ORDER.index(t["id"])),
         "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs, "rendered_in_tabs": True},
         "watch": watch[:2], "notes": notes, "sources": sources, "machine_note": machine,

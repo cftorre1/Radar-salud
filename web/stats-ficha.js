@@ -84,7 +84,23 @@
   const s=rows.map((r,i)=>{const v=Number(r.value),w=Math.max(Math.abs(v)/max*L,2),y=4+i*row,tag=r.tag?`<text class="sf-tag" x="1.5" y="${y+28}" font-size="10.5" fill="${C.ink50}">${esc(r.tag)}</text>`:'';return`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text>${tag}<g class="sf-mark"><title>${esc(r.label)}${r.tag?` (${esc(r.tag)})`:''}: ${fv(v)}</title><rect x="${x0}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="3" fill="${r.emphasis?C.accent:r.muted?'#E6E1D6':'#CFC9BC'}"${r.muted?` stroke="${C.ink50}" stroke-dasharray="3 2"`:''}/></g><text x="${(x0+w+6).toFixed(1)}" y="${y+15}" font-size="12.5" font-weight="${r.emphasis?700:500}" fill="${C.ink}">${fv(v)}</text>`}).join('');
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label}${r.tag?` (${r.tag})`:''} ${fv(r.value)}`).join(', ')}.`)}">${s}</svg>`;
  }
- const FORMS={diverging,line,dots,bars,columns_signed:columns};
+ // Paired bars (F12, Dirección 10-nov): two series per row, e.g. ambulatorio (value, ink) and hospitalario (base,
+ // accent), one scale for both, a legend from c.series. Signed values hang from a zero line.
+ function pair(c){
+  const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value))&&Number.isFinite(Number(r.base)));if(!rows.length)return'';
+  const d=Number.isInteger(c.digits)?c.digits:1,u=c.unit==='%'?'%':'',signed=rows.some(r=>Number(r.value)<0||Number(r.base)<0);
+  const fv=v=>(signed?sgd(v,d):dec(v,d))+u,ser=arr(c.series).length===2?c.series:['',''],col=c.series_style==='period'?['#CFC9BC',C.accent]:[C.ink,C.accent];
+  const all=rows.flatMap(r=>[Number(r.value),Number(r.base)]),hi=Math.max(0,...all),lo=Math.min(0,...all);
+  const W=360,x0=112,lab=Math.max(...all.map(v=>fv(v).length))*7.4+8,L=W-x0-(signed?2*lab:lab),k=L/((hi-lo)||1),z=x0+(signed?lab:0)+(-lo)*k,row=34,top=22,H=top+rows.length*row+4;
+  let s=ser.map((n,i)=>n?`<rect x="${1.5+i*130}" y="4" width="10" height="10" rx="2" fill="${col[i]}"/><text x="${16+i*130}" y="13" font-size="11.5" fill="${C.ink70}">${esc(n)}</text>`:'').join('');
+  s+=(signed||lo<0?`<line x1="${z.toFixed(1)}" y1="${top-2}" x2="${z.toFixed(1)}" y2="${H-2}" stroke="${C.axis}"/>`:'');
+  rows.forEach((r,i)=>{const y=top+i*row;s+=`<text x="1.5" y="${y+(r.tag?14:19)}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text>`+(r.tag?`<text class="sf-tag" x="1.5" y="${y+28}" font-size="10.5" fill="${C.ink50}">${esc(r.tag)}</text>`:'');
+   [Number(r.value),Number(r.base)].forEach((v,j)=>{const w=Math.max(Math.abs(v)*k,2),x=v<0?z-w:z,yy=y+3+j*13;
+    s+=`<g class="sf-mark"><title>${esc(r.label)} · ${esc(ser[j])}: ${fv(v)}</title><rect x="${x.toFixed(1)}" y="${yy}" width="${w.toFixed(1)}" height="11" rx="2" fill="${col[j]}"/></g>`+
+     `<text x="${(v<0?x-4:x+w+4).toFixed(1)}" y="${yy+9.5}" font-size="11.5" text-anchor="${v<0?'end':'start'}" font-weight="${j?600:500}" fill="${C.ink}">${fv(v)}</text>`})});
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${ser[0]} ${fv(r.value)}, ${ser[1]} ${fv(r.base)}`).join('; ')}.`)}">${s}</svg>`;
+ }
+ const FORMS={diverging,line,dots,bars,pair,columns_signed:columns};
  function chart(c,i){const svg=(FORMS[c.form]||columns)(c);if(!svg)return'';return`<figure class="sf-chart" data-chart="${esc(c.id||i)}"><h3>${esc(c.headline)}</h3>${c.subtitle?`<p class="sf-sub">${esc(c.subtitle)}</p>`:''}${svg}<details class="sf-data"><summary>Ver datos del gráfico</summary>${table(c.table)}</details>${c.source?`<p class="sf-src">${esc(c.source)}</p>`:''}</figure>`}
  const PROV={C:'Capturada por Alicanto: archivo y hash en el repositorio'};
  function kpi(k){return`<div class="sf-kpi"><p class="sf-lab">${esc(k.label)}</p><p class="sf-val">${esc(k.value)}${k.prov?`<span class="sf-prov" title="${esc(PROV[k.prov]||k.prov)}" aria-label="${esc(PROV[k.prov]||k.prov)}">${esc(k.prov)}</span>`:''}</p>${arr(k.lines).map(x=>`<p class="sf-delta">${esc(x)}</p>`).join('')}${k.badge?`<span class="sf-badge ${k.badge_kind==='crossed'?'':'muted'}">${esc(k.badge)}</span>`:''}</div>`}
@@ -107,7 +123,7 @@
   share:ico('<path d="M12 3.5v11"/><path d="M7.8 7.6 12 3.5l4.2 4.1"/><path d="M5.5 11.5v7a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-7"/>',20),
   grid:ico('<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',16)};
  const SPARK={line:'line',columns:'columns',diverging:'diverging',bars:'bars'};
- const HERO_SPARK={line:'line',columns_signed:'columns',diverging:'diverging',bars:'bars',dots:'bars'};
+ const HERO_SPARK={line:'line',columns_signed:'columns',diverging:'diverging',bars:'bars',dots:'bars',pair:'bars'};
  // The builder names the sparkline (chart + form); a builder that does not falls back to the topic's first chart.
  function sparkOf(t){
   if(t.spark===null)return null;const charts=arr(t.charts);
@@ -134,7 +150,7 @@
  function topicBody(t,i,ts){
   const ch=arr(t.charts).map(chart).filter(Boolean),kp=arr(t.kpis),txt=topicText(t);
   const nx=i<ts.length-1?`<button type="button" class="sf-next" data-sf-go="${i+1}"><span>Siguiente tema</span><b>${esc(ts[i+1].label)}</b>${I.right}</button>`:'';
-  return(ch.length?`<div class="sf-hero">${ch[0]}</div>`:'')+txt.map(x=>`<p class="sf-tdek">${esc(x)}</p>`).join('')+
+  return(ch.length?`<div class="sf-hero">${ch[0]}</div>`:'')+txt.map(x=>`<p class="sf-tdek">${esc(x)}</p>`).join('')+arr(t.body).map(x=>`<p class="sf-tbody">${esc(x)}</p>`).join('')+
    (kp.length?`<section class="sf-kpis sf-tkpis" aria-label="Indicadores · ${esc(t.label)}">${kp.map(kpi).join('')}</section>`:'')+
    (ch.length>1?`<div class="sf-charts">${ch.slice(1).join('')}</div>`:'')+links(t)+
    nx+`<button type="button" class="sf-all" data-sf-index>${I.grid}<span>Todos los temas</span></button>`;
@@ -181,7 +197,7 @@
    `<p class="sf-kicker"><span class="sf-kick">${esc(f.kicker)}</span>${f.featured?'<span class="sf-featured">Destacada</span>':''}</p>`+
    `<h2 id="detailTitle" class="sf-headline">${esc(f.headline)}</h2>`+
    (mt.lines.length?`<ul class="sf-meta" aria-label="Datos de la publicación">${mt.lines.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'')+
-   `<p class="sf-dek">${dek(f)}</p>`+body+
+   `<p class="sf-dek">${dek(f)}</p>`+(arr(f.intro).length?`<section class="sf-intro" aria-label="Qué se compara">${arr(f.intro).map(x=>`<p>${esc(x)}</p>`).join('')}</section>`:'')+body+
    (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+
    // Coverage footnote (F2 Esencial, Dirección 2-nov): one short line, always visible, right above 'Notas y fuentes'.
    (f.scope_note?`<p class="sf-scope">${esc(f.scope_note)}</p>`:'')+

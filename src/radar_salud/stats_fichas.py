@@ -343,8 +343,9 @@ def shown_blocks(ficha: dict | None) -> list[str]:
     out = [fi.get("headline"), fi.get("dek")]
     for k in fi.get("kpis") or []:
         out += [k.get("value"), *(k.get("lines") or [])]
+    out += list(fi.get("intro") or [])
     for tab in fi.get("tabs") or []:
-        out += list(tab.get("text") or []) + topic_texts(tab)
+        out += list(tab.get("text") or []) + list(tab.get("body") or []) + topic_texts(tab)
     out += list((fi.get("facts") or {}).get("paragraphs") or [])
     return [str(x) for x in out if x]
 
@@ -352,7 +353,7 @@ def shown_blocks(ficha: dict | None) -> list[str]:
 # Index → topic layout (Dirección 29-oct, option C→B): every topic carries an index line and a sparkline; a topic dek
 # and topic KPI cards only when they add something its charts do not show. ``dek: None`` means "no text"; a builder
 # that does not set ``dek`` falls back to the tab text in the renderer.
-SPARK_FORMS = {"line": "line", "columns_signed": "columns", "diverging": "diverging", "bars": "bars", "dots": "bars"}
+SPARK_FORMS = {"line": "line", "columns_signed": "columns", "diverging": "diverging", "bars": "bars", "dots": "bars", "pair": "bars"}
 INDEX_LINE_MAX = 64
 
 
@@ -809,16 +810,16 @@ def all_charts(ficha: dict) -> list[dict]:
 
 
 def displayed_texts(ficha: dict, include_lectura: bool = True) -> list[str]:
-    out = [ficha.get("headline"), ficha.get("dek"), ficha.get("scope_note")]
+    out = [ficha.get("headline"), ficha.get("dek"), ficha.get("scope_note"), *(ficha.get("intro") or [])]
     for k in ficha.get("kpis") or []:
         out += [k.get("value"), *(k.get("lines") or []), k.get("badge")]
     out += list((ficha.get("facts") or {}).get("paragraphs") or [])
     for w in ficha.get("watch") or []:
         out += [w.get("headline"), w.get("explanation")]
     for tab in ficha.get("tabs") or []:
-        out += [tab.get("label"), *(tab.get("text") or []), *topic_texts(tab)]
+        out += [tab.get("label"), *(tab.get("text") or []), *(tab.get("body") or []), *topic_texts(tab)]
     for c in all_charts(ficha):
-        out += [c.get("headline"), c.get("subtitle"), c.get("legend"), c.get("source")]
+        out += [c.get("headline"), c.get("subtitle"), c.get("legend"), c.get("source"), *(c.get("series") or [])]
         for row in (c.get("table") or {}).get("rows") or []:
             out += [str(cell) for cell in row]
     out += [n.get("text") for n in ficha.get("notes") or []]
@@ -885,8 +886,8 @@ def lens_checks(ficha: dict, package: dict) -> dict:
     if len(str(ficha.get("dek") or "").split()) > 40:
         out["editorial"].append("dek_over_40_words")
     facts = (ficha.get("facts") or {})
-    blocks = [ficha.get("dek"), *([] if facts.get("rendered_in_tabs") else (facts.get("paragraphs") or [])),
-              *[x for tab in ficha.get("tabs") or [] for x in [*(tab.get("text") or []), tab.get("dek")] if x],
+    blocks = [ficha.get("dek"), *(ficha.get("intro") or []), *([] if facts.get("rendered_in_tabs") else (facts.get("paragraphs") or [])),
+              *[x for tab in ficha.get("tabs") or [] for x in [*(tab.get("text") or []), *(tab.get("body") or []), tab.get("dek")] if x],
               *[n.get("text") for n in ficha.get("notes") or []]]
     lect = ficha.get("lectura") or {}
     if lect.get("status") == "pass":
@@ -1155,7 +1156,7 @@ def publish_release_holds(result: dict, root: Path) -> list[str]:
 # Web snapshot
 
 
-PUBLIC_KEYS = ("schema_version", "id", "family", "family_label", "period", "published_at", "generated_at",
+PUBLIC_KEYS = ("intro", "schema_version", "id", "family", "family_label", "period", "published_at", "generated_at",
                "release_key", "featured", "triggers", "kicker", "kicker_meta", "headline", "headline_type", "dek", "scope_note",
                "dek_emphasis", "kpis", "tabs", "charts", "facts", "lectura", "watch", "notes", "sources", "machine_note",
                "status", "late_release", "revisions", "date_basis")
