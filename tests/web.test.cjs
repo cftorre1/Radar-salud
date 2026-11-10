@@ -473,3 +473,5 @@ const reviewed={...suseso,normative_minimal:false};const rh=c.detailHtml(reviewe
 assert.match(rh,/<p class="wi-kicker norm-kicker">Norma · Circular<\/p><h2 id='detailTitle'>/);assert.match(rh,/ficha-origin/);
 assert.match(c.detailHtml({...sis,normative_document_type:'Dictamen',display_title:'Dictamen N°1234 · Interpreta'}),/norm-kicker">Norma · Dictamen · Superintendencia de Salud · Emitida/);
 assert.doesNotMatch(c.detailHtml({title:'Noticia',event_date:'2026-11-05',signal_types:['Noticias']}),/norm-kicker/)});
+
+test('a rolling sanctions register shows Actualizado with its newest act (Dirección 10-nov-2026)',()=>{const c=context();const s={event_type:'SANCTION_REGISTER',signal_types:['Fiscalización'],event_date:'2026-11-06',emission_date:'2026-11-06',publication_date:null,detected_at:'2026-11-09T22:34:33Z',event_date_basis:'emission',source_name:'Superintendencia de Seguridad Social (SUSESO)'};assert.match(c.cardMetadata(s),/^Actualizado 0?6 nov\.? 2026 · SUSESO$/);assert.doesNotMatch(c.cardMetadata(s),/Detectado|Publicado/)});

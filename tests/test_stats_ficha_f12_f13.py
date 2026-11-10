@@ -9,6 +9,7 @@ import ast
 import copy
 import importlib.util
 import json
+import re
 import shutil
 import subprocess
 import zipfile
@@ -223,7 +224,7 @@ def test_f12_disclosure_rule_one_provider_no_price_two_providers_price_national_
     b = "precio.0101001"
     # region 6: exactly 1 provider → no price, only n, frecuencia and top share (100 %)
     assert v[f"{b}.6.n"]["value"] == 1 and f"{b}.6.mediana" not in v and f"{b}.6.p25" not in v
-    assert v[f"{b}.6.share_top"]["value"] == 100.0
+    assert p["kpis"]["bands"][f"{b}.6"] == "95-100" and f"{b}.6.share_top" not in v
     # region 5: 2 providers and ≥ 30 frecuencia → median (unit prices 10.000 and 15.000), no p25–p75
     assert v[f"{b}.5.mediana"]["value"] == 12500 and f"{b}.5.p25" not in v
     assert f"{b}.5.share_top" not in v and p["kpis"]["bands"][f"{b}.5"] == "50-60"  # n = 2: share only as a band
@@ -235,7 +236,7 @@ def test_f12_disclosure_rule_one_provider_no_price_two_providers_price_national_
     fi = f12.compose(p, reg_open(), today=TODAY)
     table = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-precio-region")["table"]["rows"]
     r6 = next(r for r in table if r[0] == "0101001" and r[1] == "O'Higgins")
-    assert r6[4] == "1 prestador: sin precio" and r6[5] == "100,0%"
+    assert r6[4] == "1 prestador: sin precio" and r6[5] == "95–100%"
     r5 = next(r for r in table if r[0] == "0101001" and r[1] == "Valparaíso")
     assert r5[4] == "$12.500" and r5[5] == "50–60%"
     assert any("≥ 2 prestadores distintos y ≥ 30 atenciones" in n["text"] for n in fi["notes"])
@@ -439,7 +440,9 @@ def test_registry_runner_and_datos_rows(root):
     for mod, fam, group in ((f12, "F12", "prestadores"), (f13, "F13", "empleadores_licencias")):
         cfg = reg["families"][fam]
         assert cfg["status"] == "active" and cfg["group"] == group and cfg["builder_version"] == mod.BUILDER_VERSION
-        assert cfg["first_pass_requires_review"] is True and cfg["first_review"] is None and cfg["lectura_enabled"] is False
+        assert cfg["first_pass_requires_review"] is True and cfg["lectura_enabled"] is False
+        # Dirección 10-nov-2026 00:54 authorised publication without a personal visto bueno; the first review is recorded.
+        assert cfg["first_review"]["reviewed_sha256"] and cfg["first_review"]["reviewed_by"].startswith("Dirección")
         assert cfg["cadence"].startswith("trimestral") and cfg["period_kind"] == "quarter"
         assert runner.BUILDERS[fam] is mod.run and fam not in runner.CAPTURED | runner.FEFI_CAPTURED | runner.DIPRES_CAPTURED
         fi = mod.run(root, today=TODAY, registry=reg_open(), llm=False)["ficha"]
@@ -560,3 +563,40 @@ def test_committed_tables_have_no_recoverable_money_cell():
         pr = so.load_json(base / f"prestaciones_{q}_precios_fonasa_region.json")
         at = so.load_json(base / f"prestaciones_{q}_atencion_codigo.json")
         assert so.recoverable_money(pr["columns"], pr["rows"], at["columns"], at["rows"]) == []
+
+
+
+def _exact_top1(obj, path=""):
+    """Every place a single provider's share could appear as a number (keys of the aggregates and the ficha)."""
+    out = []
+    if isinstance(obj, dict):
+        for k, x in obj.items():
+            if k in ("share_top1_pct", "share_prestador_mayor_pct", "pct_filas_del_codigo_mas_frecuente") and isinstance(x, (int, float)):
+                out.append(f"{path}.{k}")
+            out += _exact_top1(x, f"{path}.{k}")
+    elif isinstance(obj, list):
+        for i, x in enumerate(obj):
+            out += _exact_top1(x, f"{path}[{i}]")
+    return out
+
+
+@pytest.mark.skipif(not _real(), reason="no committed aggregates of the current version yet")
+def test_no_exact_top1_share_in_committed_aggregates_or_f12():
+    for q in _real():
+        for p in sorted((REPO / so.AGG_ROOT / q).glob("*.json")):
+            d = so.load_json(p)
+            assert _exact_top1(d) == [], p.name
+            if "columns" in d and "share_prestador_mayor_pct" in d["columns"]:
+                i = d["columns"].index("share_prestador_mayor_pct")
+                assert not any(isinstance(r[i], (int, float)) for r in d["rows"]), p.name
+    for p in [REPO / "data/stats_fichas/live/f12_prestaciones.json", *sorted((REPO / "data/stats_fichas/hold").glob("f12_*.json"))]:
+        fi = so.load_json(p) or {}
+        assert not any(k.endswith(".top1") or ".share_top" in k for k in ((fi.get("evidence") or fi.get("candidate", {}).get("evidence") or {}).get("values") or {})), p.name
+
+
+def test_f12_shows_the_top1_share_only_as_a_band(root):
+    fi = f12.run(root, today=TODAY, registry=reg_open(), llm=False)["ficha"]
+    conc = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-conc-regional")
+    i = conc["table"]["columns"].index("Mayor (tramo)")
+    assert all(re.fullmatch(r"\d{1,2}–\d{1,3}%|sin dato", r[i]) for r in conc["table"]["rows"])
+    assert not any(k.endswith(".top1") or ".share_top" in k for k in fi["evidence"]["values"])

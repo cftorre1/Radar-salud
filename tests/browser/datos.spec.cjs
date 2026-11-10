@@ -25,7 +25,8 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
   await expect(row.locator('.dx-kick')).toContainText(f.label);
   for(const k of f.kpis)await expect(row.locator('.dx-kpis')).toContainText(k.value);
   await expect(row.locator('.dx-meta')).toContainText(`Datos a ${f.period_label} · ${f.source}`);
-  expect(f.period_label).toMatch(/^(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic) 20\d\d$/);
+  // Monthly families read 'ago 2026'; quarterly ones (F12/F13, period_kind quarter) read 'jul–sep 2026'.
+  expect(f.period_label).toMatch(/^((ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)–)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic) 20\d\d$/);
   await expect(row.locator('.dx-st')).toHaveText(f.status==='updating'?'Actualizándose':'Vigente');
   expect(await row.getAttribute('href')).toBe(`index.html?abrir=1&desde=datos#sig-${f.piece_id}`);
  }

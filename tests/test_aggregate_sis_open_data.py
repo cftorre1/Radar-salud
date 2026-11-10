@@ -81,7 +81,7 @@ def test_price_disclosure_rule():
     p13 = rows[("0101001", "13")]
     # 3 providers: median only (p25, median and p75 would give away all three unit prices)
     assert p13["estado"] == "publicable" and p13["precio_mediana"] == 200 and p13["precio_p25"] is None
-    assert p13["precio_p75"] is None and p13["share_prestador_mayor_pct"] == pytest.approx(33.33)
+    assert p13["precio_p75"] is None and p13["share_prestador_mayor_pct"] == "30-35"
     assert p13["facturado"] == 6000
     p5 = rows[("0101001", "5")]
     assert p5["estado"] == "publicable" and p5["precio_mediana"] == 300  # (100 + 500) / 2
@@ -90,7 +90,7 @@ def test_price_disclosure_rule():
     p6 = rows[("0101001", "6")]
     assert p6["estado"] == "concentracion_un_prestador" and p6["n_prestadores"] == 1
     assert all(p6[k] is None for k in ("precio_mediana", "precio_p25", "precio_p75", "facturado", "pct_bonificado"))
-    assert p6["frecuencia"] == 500 and p6["share_prestador_mayor_pct"] == 100.0
+    assert p6["frecuencia"] == 500 and p6["share_prestador_mayor_pct"] == "95-100"
     assert rows[("0101001", "8")]["estado"] == "suprimido_frecuencia_menor_30"
     assert rows[("0101001", "8")]["precio_mediana"] is None
     assert ("X1", "13") not in rows
@@ -151,7 +151,7 @@ def test_isapre_table_concentration_and_ids():
     rows = {(x["isapre"], x["tipo_atencion"]): x for x in a.isapre_table()}
     assert rows[("78", "TOTAL")]["pct_bonificado"] == 75.0
     reg = {x["region"]: x for x in a.concentration()["regiones"]}["13"]
-    assert reg["hhi"] == 6800 and reg["share_top1_pct"] == 80.0
+    assert reg["hhi"] == 6800 and reg["share_top1_pct"] == "80-85"
     assert reg["split_tipo_prestador"]["Público"]["share_facturado_pct"] == 20.0
     prev = agg.PrestacionesAgg(ids_only=True)
     prev.add(prest_row(isapre="67", prov="A"))
@@ -361,7 +361,7 @@ def test_concentration_top3_top10_top50_and_fonasa_totals():
     for i, f in enumerate([50, 20, 10, 5, 5, 5, 5]):
         a.add(prest_row(prov=f"P{i}", fact=f, bonif=0, copago=f))
     reg = {x["region"]: x for x in a.concentration()["regiones"]}["13"]
-    assert (reg["share_top1_pct"], reg["share_top3_pct"], reg["share_top5_pct"]) == (50.0, 80.0, 90.0)
+    assert (reg["share_top1_pct"], reg["share_top3_pct"], reg["share_top5_pct"]) == ("50-55", 80.0, 90.0)
     assert reg["share_top10_pct"] == reg["share_top50_pct"] == 100.0
     assert a.fonasa_totals() == {"facturado_fonasa": 100, "frecuencia_fonasa": 7}
 
@@ -532,3 +532,16 @@ def test_funnel_folds_small_cells_into_otros_keeping_totals():
     assert sum(c["frecuencia"] for c in cells) == 40 + 1 + 2 + 60
     assert sum(c["facturado"] for c in cells if c["en_arancel_mle"]) == 4777  # MLE share intact
     assert 777 not in [c["facturado"] for c in cells] and 555 not in [c["facturado"] for c in cells]
+
+
+def test_top1_share_is_always_a_band():
+    """Coordination 10-nov-2026: a single provider's share is published only as a 5-point band; sums of 3+ stay exact."""
+    assert [agg.band5(x) for x in (0, 4.99, 40, 44.9, 45, 99.9, 100)] == ["0-5", "0-5", "40-45", "40-45", "45-50", "95-100", "95-100"]
+    a = agg.PrestacionesAgg()
+    for i, f in enumerate([50, 20, 10, 7, 13]):
+        a.add(prest_row(prov=f"P{i}", freq=f, fact=f * 100))
+    t = a.price_table()
+    assert all(isinstance(dict(zip(t["columns"], r))["share_prestador_mayor_pct"], str) for r in t["rows"])
+    for reg in a.concentration()["regiones"]:
+        assert isinstance(reg["share_top1_pct"], str) and isinstance(reg["share_top3_pct"], float)
+    assert isinstance(a.id_summary()["pct_filas_del_codigo_mas_frecuente"], str)

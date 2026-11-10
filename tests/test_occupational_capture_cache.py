@@ -62,7 +62,7 @@ def test_public_robots_denial_prevents_article_request(tmp_path,monkeypatch):
     (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(),
     "2026-10-11T00:00:00",
     "not-a-timestamp",
-])
+], ids=["stale_7h", "future_1h", "naive", "not_a_timestamp"])  # stable ids: pytest-xdist workers must collect equal names
 def test_live_cache_rejects_stale_future_and_unverifiable_timestamps(tmp_path, stamp):
     prior=tmp_path/"prior"
     url="https://ist.cl/noticias/"

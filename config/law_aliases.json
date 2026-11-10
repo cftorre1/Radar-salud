@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "decided_at": "2026-11-10",
+  "decision": "Dirección 10-nov-2026 00:49: los títulos visibles nombran por su nombre común las leyes de salud ampliamente conocidas, manteniendo el número: «Ley Ricarte Soto (Ley 20.850)». Mapa curado, determinístico, sin IA y sin alias fuera de esta lista. Solo cambia display_title/short_title; el título oficial y la identidad del acto no se alteran.",
+  "verification": "Cada entrada se verificó contra BCN LeyChile (servicio obtxml?opt=7&idLey=<n>, solo metadatos, robots.txt respetado) en las sondas de Actions 42752078361 y 42752308902 (reintento de 21.331 tras HTTP 429) (recibos en la rama claude/bcn-alias-probe, data/audits/bcn_alias_probe/). Se incluye una entrada solo si BCN confirma el número y el nombre usado: como «nombre de uso común» o con las palabras de su título oficial.",
+  "dropped": [],
+  "laws": [
+    {
+      "number": "20.850",
+      "alias": "Ley Ricarte Soto",
+      "source": "BCN LeyChile idNorma 1078148 (publicada 2015-06-06): «Crea un sistema de protección financiera para diagnósticos y tratamientos de alto costo y rinde homenaje póstumo a don Luis Ricarte Soto Gallegos»; nombre de uso común «Ley Ricarte Soto». https://www.bcn.cl/leychile/navegar?idNorma=1078148",
+      "redundant_before_citation": [
+        {
+          "pattern": "\\s+(?:de salud\\s+)?(?:del|al)\\s+Sistema de Protecci[oó]n Financiera\\s+(?:de la|del que trata la)\\s*",
+          "replacement": " de la "
+        },
+        {
+          "pattern": "\\s+(?:del|al)\\s+Sistema de Protecci[oó]n Financiera\\s+para Diagn[oó]sticos y Tratamientos de Alto Costo\\s+(?:de la|del que trata la)\\s*",
+          "replacement": " de la "
+        }
+      ],
+      "basis": "bcn_verified"
+    },
+    {
+      "number": "16.744",
+      "alias": "Ley de Accidentes del Trabajo",
+      "source": "BCN LeyChile idNorma 28650 (publicada 1968-02-01): «Establece normas sobre accidentes del trabajo y enfermedades profesionales». https://www.bcn.cl/leychile/navegar?idNorma=28650",
+      "redundant_before_citation": [],
+      "basis": "bcn_verified"
+    },
+    {
+      "number": "20.584",
+      "alias": "Ley de Derechos y Deberes de los Pacientes",
+      "source": "BCN LeyChile idNorma 1039348 (publicada 2012-04-24): «Regula los derechos y deberes que tienen las personas en relación con acciones vinculadas a su atención en salud». https://www.bcn.cl/leychile/navegar?idNorma=1039348",
+      "redundant_before_citation": [],
+      "basis": "bcn_verified"
+    },
+    {
+      "number": "21.331",
+      "alias": "Ley de Salud Mental",
+      "source": "BCN LeyChile idNorma 1159383 (publicada 2021-05-11): «Del reconocimiento y protección de los derechos de las personas en la atención de salud mental». https://www.bcn.cl/leychile/navegar?idNorma=1159383",
+      "redundant_before_citation": [],
+      "basis": "bcn_verified"
+    },
+    {
+      "number": "19.966",
+      "alias": "Ley GES",
+      "source": "decisión de Dirección 10-nov-2026 (BCN no registra nombre común; 19.966 figura como Plan AUGE)",
+      "basis": "direccion_decision",
+      "bcn_id_norma": "229834",
+      "redundant_before_citation": []
+    },
+    {
+      "number": "21.674",
+      "alias": "Ley Corta de Isapres",
+      "source": "decisión de Dirección 10-nov-2026 (BCN no registra nombre común; 19.966 figura como Plan AUGE)",
+      "basis": "direccion_decision",
+      "bcn_id_norma": "1203779",
+      "redundant_before_citation": []
+    },
+    {
+      "number": "21.643",
+      "alias": "Ley Karin",
+      "source": "decisión de Dirección 10-nov-2026 (BCN no registra nombre común; 19.966 figura como Plan AUGE)",
+      "basis": "direccion_decision",
+      "bcn_id_norma": "1200096",
+      "redundant_before_citation": []
+    }
+  ],
+  "decision_2026_11_10_0103": "Dirección 10-nov-2026 01:03: se agregan 19.966 «Ley GES», 21.674 «Ley Corta de Isapres» y 21.643 «Ley Karin» aunque BCN no registre esos nombres comunes (la ley sí está confirmada en BCN; ver bcn_id_norma)."
+}
