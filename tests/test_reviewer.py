@@ -12,7 +12,9 @@ def test_missing_snapshot_is_critical(tmp_path):
 
 def test_current_snapshot_passes_existing_editorial_gate():
     r=reviewer.review(Path("web"),"abc")
-    assert r["checks"]["editorial"]
+    # Print the failing findings (code, path, detail): a bare False hid the 10-nov hourly failure.
+    assert r["checks"]["editorial"], [(f["code"],f["path"],f["detail"]) for f in r["findings"]
+                                      if f["category"]=="editorial" and f["severity"]=="critical"]
     # Freshness findings depend on the wall clock and are enforced by the CI
     # reviewer job and test_new_export_timestamp_cannot_mask_stale_source_poll;
     # this test guards the committed snapshot's structural and editorial gate.
