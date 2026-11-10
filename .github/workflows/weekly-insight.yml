@@ -44,7 +44,7 @@ jobs:
           HAS_KEY: ${{ secrets.OPENAI_API_KEY != '' }}
         run: test "$HAS_KEY" = "true"
       - name: Deterministic guards before any paid call
-        run: python -m pytest -q tests/test_weekly_insight_a.py tests/test_weekly_insight_stats_anchor.py tests/test_weekly_freshness.py tests/test_free_value.py
+        run: python -m pytest -q tests/test_weekly_insight_a.py tests/test_weekly_insight_essay.py tests/test_weekly_insight_stats_anchor.py tests/test_weekly_freshness.py tests/test_free_value.py
       - name: Generate, verify and review the Monday insight (PASS publishes, FAIL writes a candidate)
         # The API key is scoped to this step only.
         env:

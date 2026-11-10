@@ -17,9 +17,10 @@
 
 ## Conditions to auto-publish (all are required)
 
-1. **Deterministic verification PASS** (`verify_candidate`): presentation-A rules 1–6. Every number
-   in every displayed field must trace to the evidence package (rule 3), and normative IDs must be
-   explained in plain words (rule 5). Sources must come from the evidence only.
+1. **Deterministic verification PASS** (`verify_candidate`): the presentation rules of the insight's format
+   (v2 essay from 16-nov-2026, see below; v1 rules 1–6 for the archive). Every number in every displayed field
+   must trace to the evidence package, every quote must be literal in it, and normative IDs must be explained in
+   plain words. Sources must come from the evidence only.
 2. **Independent second-model review PASS**: the reviewer is a different model from the writer,
    returns `verdict: PASS` and reports no `blocker` issues.
 3. **Freshness gate**: the insight is anchored on a Monday and expires the next Monday.
@@ -78,3 +79,46 @@ An Insight counts as anchored when it declares `stats_anchor`, when its `topic_s
 or when its primary `source_url` is a stats ficha's source file. Insights on a normal topic are not blocked, even
 when they cite a stats file as a secondary source. The automated pipeline writes the same brief and record when it
 publishes an anchored Insight.
+
+## Format v2: news-style essay (Dirección, 10-nov-2026)
+
+The ~250-word block with fixed sections («Qué pasó», «Lectura Alicanto», «Qué mirar») becomes a ~750-word essay
+that reads like a news story. Schema `weekly_insight_a_v2`; the code and the field-by-field schema live in
+[`src/radar_salud/weekly_insight_essay.py`](../../src/radar_salud/weekly_insight_essay.py). The reference
+example is the 9-nov residencias insight in `editorial_approved.json`, migrated from the approved mockup.
+
+- **Cutover.** Every Monday insight anchored on or after **16-nov-2026** must be v2. A v1 Monday insight from that
+  date fails `presentation_a_errors` (`schema_v1_retired_use_weekly_insight_a_v2`) and is never served. Archived
+  v1 insights keep rendering and verifying with the v1 rules.
+- **Structure.** `body` blocks run lead → context → development; `closing` ends the story and folds «Qué mirar»
+  into prose (2–3 signals that would confirm or refute the thesis). Narrative h2 subheads are fine; the old section
+  labels are rejected. The first block is the lead paragraph.
+- **Length.** Essay (paragraphs + quotes + closing) of 600–900 words (warning outside); FAIL under 500 or over 1.000.
+  Headline ≤ 140 characters, dek ≤ 40 words, kicker ≤ 60 characters.
+- **Charts.** 1–3, each placed once with a `chart` block right after the paragraph that explains it. `kind` is
+  `oficial`, `prensa` or `estimacion`; an estimate chart names its `estimate_ref` and renders with a dashed frame
+  and the formula in its caption. `source` links its sources with `[nombre](fN)`.
+- **Quotes.** Only `quote` blocks, with `attribution` and `source_ref`. Each quote, and each phrase of 3 or more
+  words between quotation marks in a paragraph, must be literal in `evidence_excerpts`; `verify_candidate` checks
+  each excerpt literally against the evidence item of the same source URL. `[…]` may skip words. Prefer official
+  sources; from paywalled press use only the public title and lead.
+- **Sources.** `sources[]` have `id` (`f1`…), `type` (`oficial` or `prensa`), `label`, `url`, `role`. In the text,
+  `[Fiscalía Nacional Económica](f1)` renders a direct link to the document plus a numbered superscript to the list.
+  Every source must be cited at least once.
+- **Estimates.** Each derived figure is an `estimates[]` entry with a deterministic formula. It is marked in the
+  text with `[texto](est:id)` (dashed underline) or used by an estimate chart or key-figure card, and listed in
+  `method.estimates`. «8 de cada 10» traces only when an estimate rounds to that fraction.
+- **Key figures** («Lo que debes saber en N cifras»): optional, only when it makes the story clearer. 3–5 cards, each
+  with `value`, `text`, `universe` (literal in the card, e.g. «505 de los 1.498 hogares del catastro 2021»), `kind`
+  and `source_ref`; `estimate_ref` when the kind is `estimacion`. One idea per card, never mixed universes; one
+  `wide` card at most. Placed once with a `key_figures` block.
+- **Method** («Cómo hicimos este análisis», collapsed): the estimates with their formulas (rendered from
+  `estimates`), `discarded` (what was not used and why) and `limits`. The numbered source list follows, visible.
+- **Traceability.** `evidence_figures` holds the evidence figures copied verbatim (each must trace to the evidence
+  numbers); every displayed number traces to it or to an estimate.
+
+**Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
+`verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text
+of every excerpt, under the URL of its source), then `python -m pytest -q tests/test_weekly_insight_essay.py
+tests/test_weekly_insight_a.py tests/test_weekly_freshness.py` and `node --test tests/web.test.cjs`. The
+independent second review and the auto-publish conditions above are unchanged.

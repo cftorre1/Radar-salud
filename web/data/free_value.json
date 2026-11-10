@@ -42,10 +42,11 @@
   },
   "weekly_insight": {
     "id": "weekly-insight:2026-11-09:residencias-mayores-camas",
-    "schema_version": "weekly_insight_a_v1",
+    "schema_version": "weekly_insight_a_v2",
     "title": "Residencias para mayores: entra el capital privado, pero la falta de cuidados ya se paga en camas de hospital",
     "insight_title": "Residencias para mayores: entra el capital privado, pero la falta de cuidados ya se paga en camas de hospital",
     "headline": "Residencias para mayores: entra el capital privado, pero la falta de cuidados ya se paga en camas de hospital",
+    "kicker": "Personas mayores y cuidados",
     "event_date": "2026-11-02",
     "freshness_anchor_date": "2026-11-09",
     "anchor_kind": "monday",
@@ -53,42 +54,138 @@
     "editorial_review_pass": true,
     "source_name": "FNE · Superintendencia de Salud · INE · Minsal · prensa",
     "source_url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
-    "dek": "La FNE aprobó sin condiciones la asociación de SalfaCorp y el grupo Angelini para operar residencias para personas mayores. En junio, 1.056 personas con alta médica seguían ocupando camas de hospital por falta de redes.",
-    "dek_emphasis": "1.056 personas",
-    "estimates": [
+    "dek": "La FNE aprobó sin condiciones el fondo de SalfaCorp y el grupo Angelini para operar residencias. Las cifras oficiales muestran que la brecha que deja la oferta formal termina en hogares sin autorización y en camas de hospital.",
+    "body": [
       {
-        "id": "sin_autorizacion",
-        "label": "hogares catastrados sin resolución sanitaria, % del total",
-        "value": 33.71,
-        "unit": "%",
-        "display": "≈ uno de cada tres",
-        "formula": "505 / (993 + 505) * 100",
-        "inputs": [
-          "993 hogares autorizados",
-          "505 sin resolución sanitaria"
-        ],
-        "note_ref": "n5"
+        "type": "paragraph",
+        "text": "El 2 de noviembre la [Fiscalía Nacional Económica](f1) aprobó de manera pura y simple la asociación entre SalfaCorp, el grupo Angelini y sociedades ligadas a Villa Soleares y a Vivendi para desarrollar y operar residencias para personas mayores. Vivendi administrará las residencias. Según [CNN Chile](f2), el fondo apunta a un tamaño de UF 1.500.000 y parte con 250 habitaciones en La Reina y Ñuñoa."
       },
       {
-        "id": "altas_vs_cupos",
-        "label": "pacientes con alta hospitalizados frente a cupos públicos de Senama, %",
-        "value": 80.12,
-        "unit": "%",
-        "display": "≈ 80%",
-        "formula": "1056 / 1318 * 100",
-        "inputs": [
-          "1.056 pacientes con alta (junio)",
-          "1.318 cupos Senama"
-        ],
-        "note_ref": "n4"
+        "type": "quote",
+        "text": "No resulta apta para reducir sustancialmente la competencia en ninguno de los segmentos analizados",
+        "source_ref": "f1",
+        "attribution": "Fiscalía Nacional Económica",
+        "context": "comunicado del 2 de noviembre"
+      },
+      {
+        "type": "paragraph",
+        "text": "La FNE describe al nuevo actor con “foco en proyectos de mayor tamaño”. Es una señal de que el capital institucional ve negocio en el cuidado de largo plazo. Para el sistema de salud la pregunta es otra: cuánta demanda queda fuera de esa oferta y dónde termina."
+      },
+      {
+        "type": "key_figures"
+      },
+      {
+        "type": "subhead",
+        "text": "Una oferta formal chica frente a una demanda que crece"
+      },
+      {
+        "type": "paragraph",
+        "text": "El [Censo 2024 del INE](f6) contó 593.010 personas de 80 años o más, y el 54,0% vive en situación de discapacidad. La red pública es acotada: Senama mantiene 23 residencias (Eleam) con cupo para 1.318 personas, según su informe del primer trimestre de 2026 citado por [Emol](f3). A eso se suman unos 900 hogares privados autorizados."
+      },
+      {
+        "type": "paragraph",
+        "text": "El último catastro oficial, de 2021, encontró 993 hogares autorizados y 505 sin resolución sanitaria, según [La Tercera](f4): [uno de cada tres](est:sin_autorizacion). En septiembre, el incendio de un hogar sin resolución sanitaria en Pitrufquén dejó 16 muertos. El [Ministerio de Salud](f5) reconoció después “cerca de 500 establecimientos sin autorización sanitaria” y anunció que publicará la oferta autorizada."
+      },
+      {
+        "type": "chart",
+        "chart_ref": "catastro"
+      },
+      {
+        "type": "subhead",
+        "text": "Donde termina la brecha: una cama de hospital"
+      },
+      {
+        "type": "paragraph",
+        "text": "Parte del cuidado que no encuentra un lugar formal se queda en el hospital. En junio, el subsecretario de Redes Asistenciales informó que 1.056 personas con alta médica seguían ocupando camas por falta de redes familiares o sociales; en marzo eran 996, según [La Tercera](f7). La cifra incluye todas las edades y no proviene de un informe publicado."
+      },
+      {
+        "type": "paragraph",
+        "text": "Para dimensionarlo, esas personas equivalen a [ocho de cada diez cupos públicos de Senama](est:altas_vs_cupos). Es una comparación de escala: no supone que todas necesiten una residencia ni prueba que la falta de cupos sea la causa."
+      },
+      {
+        "type": "chart",
+        "chart_ref": "altas_vs_cupos"
+      },
+      {
+        "type": "paragraph",
+        "text": "El costo es mayor de lo que sugiere el número de casos. Un [estudio de la Superintendencia de Salud](f8), con egresos de 2017, definió la hospitalización social como una “estadía prolongada (60 o más días) con una baja necesidad de atención médica hospitalaria”. Esos casos eran apenas el 1% de los egresos de personas de 60 años o más, pero el 15,3% de sus días-cama."
+      },
+      {
+        "type": "chart",
+        "chart_ref": "hospitalizacion_social"
+      },
+      {
+        "type": "subhead",
+        "text": "Lo que se decide en los próximos meses"
+      },
+      {
+        "type": "paragraph",
+        "text": "Para hospitales, Fonasa e isapres, lo relevante no es la residencia nueva, sino el cupo sociosanitario que libera una cama. La [Ley 21.822](f9) obliga a dictar una Política Nacional de Envejecimiento dentro de seis meses desde que entra en vigencia. Es la ocasión de definir quién paga ese día de cuidado."
       }
     ],
+    "closing": {
+      "text": "El fondo de SalfaCorp y Angelini sumará, según [la prensa](f2), hasta 1.000 habitaciones en un plazo de hasta 15 años. Es oferta nueva, pero de otra escala y para otro segmento. Mientras la política de envejecimiento no defina cómo se financia el cuidado de larga duración, la brecha seguirá apareciendo donde nadie la presupuesta: en los días-cama de los hospitales. Tres documentos dirán si eso cambia. El informe público de la FNE mostrará cómo definió el mercado de residencias. La Política Nacional de Envejecimiento dirá si incluye cuidados de larga duración. Y el registro de residencias autorizadas que anunció el Minsal será la primera foto oficial de la oferta desde 2021."
+    },
+    "key_figures": {
+      "items": [
+        {
+          "label": "Oferta nueva",
+          "value": "250",
+          "text": "habitaciones suman los dos primeros proyectos del fondo, en La Reina y Ñuñoa. La meta es hasta 1.000 en 15 años.",
+          "universe": "los dos primeros proyectos del fondo",
+          "kind": "prensa",
+          "source_ref": "f2",
+          "source_label": "CNN Chile"
+        },
+        {
+          "label": "Demanda",
+          "value": "593.010",
+          "text": "personas tienen 80 años o más en Chile, y el 54% de ellas vive con alguna discapacidad.",
+          "universe": "80 años o más en Chile",
+          "kind": "oficial",
+          "source_ref": "f6",
+          "source_label": "INE, Censo 2024"
+        },
+        {
+          "label": "Hogares sin permiso",
+          "value": "1 de cada 3",
+          "text": "hogares para mayores no tenía resolución sanitaria: 505 de los [1.498](est:catastro_total) que encontró el último catastro, de 2021.",
+          "universe": "505 de los 1.498 que encontró el último catastro",
+          "kind": "estimacion",
+          "estimate_ref": "sin_autorizacion",
+          "source_ref": "f4",
+          "source_label": "catastro 2021"
+        },
+        {
+          "label": "Altas que no salen",
+          "value": "1.056",
+          "text": "personas con alta médica seguían hospitalizadas en junio por falta de redes. Equivalen a 8 de cada 10 cupos públicos de Senama.",
+          "universe": "personas con alta médica seguían hospitalizadas en junio",
+          "kind": "estimacion",
+          "estimate_ref": "altas_vs_cupos",
+          "source_ref": "f7",
+          "source_label": "Minsal vía La Tercera"
+        },
+        {
+          "label": "El costo que no se ve",
+          "value": "1% → 15,3%",
+          "text": "Las hospitalizaciones sociales de personas de 60 años o más son solo el 1% de sus egresos, pero ocupan el 15,3% de sus días-cama (datos de 2017).",
+          "universe": "personas de 60 años o más",
+          "kind": "oficial",
+          "source_ref": "f8",
+          "source_label": "Superintendencia de Salud",
+          "wide": true
+        }
+      ]
+    },
     "charts": [
       {
         "id": "catastro",
-        "form": "columns",
+        "form": "bars",
+        "kind": "prensa",
+        "kind_label": "Prensa con dato oficial",
         "headline": "Uno de cada tres hogares catastrados no tenía autorización sanitaria",
-        "subtitle": "Hogares para personas mayores en el último catastro oficial (2021)",
+        "subtitle": "Hogares para personas mayores en el último catastro oficial (2021), número de hogares",
         "unit": "hogares",
         "rows": [
           {
@@ -101,16 +198,35 @@
             "strong": true
           }
         ],
-        "source": "Catastro oficial de 2021, informado por La Tercera (sep).",
-        "note_refs": [
-          "n5"
-        ]
+        "source": "Fuente: catastro oficial 2021, informado por [La Tercera](f4)."
+      },
+      {
+        "id": "altas_vs_cupos",
+        "form": "bars",
+        "kind": "estimacion",
+        "estimate_ref": "altas_vs_cupos",
+        "headline": "Las altas que siguen en cama equivalen a 80% de los cupos públicos",
+        "subtitle": "Personas con alta hospitalizadas (junio 2026, todas las edades) y cupos en residencias de Senama (I trim. 2026)",
+        "unit": "personas",
+        "rows": [
+          {
+            "label": "Altas en cama",
+            "value": 1056,
+            "style": "estimate"
+          },
+          {
+            "label": "Cupos Senama",
+            "value": 1318
+          }
+        ],
+        "source": "Fuentes: [La Tercera](f7) y [Emol con datos de Senama](f3)."
       },
       {
         "id": "hospitalizacion_social",
-        "form": "columns",
+        "form": "bars",
+        "kind": "oficial",
         "headline": "Pocas altas, muchos días: el peso de la hospitalización social",
-        "subtitle": "Hospitalizaciones sociales como % de los egresos y de los días-cama de personas de 60 años o más (datos de 2017)",
+        "subtitle": "Hospitalización social como % de los egresos y de los días-cama de personas de 60 años o más (datos de 2017)",
         "unit": "%",
         "rows": [
           {
@@ -123,83 +239,147 @@
             "strong": true
           }
         ],
-        "source": "Superintendencia de Salud, estudio sobre hospitalización social (2020).",
-        "note_refs": [
-          "n3"
-        ]
+        "source": "Fuente: [Superintendencia de Salud, estudio sobre hospitalización social (2020)](f8)."
       }
     ],
-    "essay": {
-      "facts": {
-        "heading": "Qué pasó",
-        "paragraphs": [
-          "La FNE aprobó de manera pura y simple la asociación entre SalfaCorp, el grupo Angelini y sociedades ligadas a Villa Soleares y a Vivendi, que administrará las residencias para personas mayores. Concluyó que no es apta para reducir sustancialmente la competencia y que suma un actor enfocado en proyectos más grandes. Según prensa, el fondo parte con 250 habitaciones en La Reina y Ñuñoa.[^n1]",
-          "La red pública es acotada: Senama tiene 23 residencias con 1.318 cupos.[^n2] En septiembre, el incendio de un hogar sin resolución sanitaria en Pitrufquén dejó 16 muertos. Según el Censo 2024, hay 593.010 personas de 80 años o más; 54% está en situación de discapacidad."
+    "estimates": [
+      {
+        "id": "catastro_total",
+        "label": "hogares en el catastro oficial de 2021",
+        "value": 1498.0,
+        "unit": "hogares",
+        "display": "1.498 hogares catastrados",
+        "formula": "993 + 505",
+        "inputs": [
+          "993 hogares autorizados",
+          "505 sin resolución sanitaria"
         ]
       },
-      "reading": {
-        "heading": "Lectura Alicanto",
-        "paragraphs": [
-          "El fondo no cerrará la brecha: apunta a residencias grandes y, según prensa, a hasta 1.000 habitaciones en hasta 15 años. Sin oferta formal suficiente, parte del cuidado queda en hogares no autorizados y otra parte, por falta de redes, en camas de hospital. Quienes siguen hospitalizados con alta, de todas las edades, equivalen a ocho de cada diez cupos públicos de Senama.[^n4]",
-          "Ese costo rara vez se discute. Un estudio de la Superintendencia de Salud mostró que, con datos de 2017, las hospitalizaciones sociales de personas mayores eran 1% de sus egresos, pero 15% de sus días-cama.[^n3] Para hospitales, Fonasa e isapres, lo relevante no es la residencia nueva, sino el cupo sociosanitario que libera una cama. La Ley 21.822 obliga a dictar una Política Nacional de Envejecimiento: es la ocasión de definir quién paga ese día de cuidado."
-        ]
+      {
+        "id": "sin_autorizacion",
+        "label": "hogares catastrados sin resolución sanitaria, % del total",
+        "value": 33.71,
+        "unit": "%",
+        "formula": "505 / (993 + 505) * 100",
+        "inputs": [
+          "993 hogares autorizados",
+          "505 sin resolución sanitaria"
+        ],
+        "display": "uno de cada tres"
+      },
+      {
+        "id": "altas_vs_cupos",
+        "label": "pacientes con alta hospitalizados frente a cupos públicos de Senama, %",
+        "value": 80.12,
+        "unit": "%",
+        "formula": "1056 / 1318 * 100",
+        "inputs": [
+          "1.056 pacientes con alta (junio)",
+          "1.318 cupos Senama"
+        ],
+        "display": "ocho de cada diez"
       }
+    ],
+    "method": {
+      "estimates": [
+        "sin_autorizacion",
+        "altas_vs_cupos",
+        "catastro_total"
+      ],
+      "estimates_note": "Ninguna cifra es monetaria, así que no se mezclan pesos de distintos años.",
+      "discarded": [
+        "El gasto anual que cita el mismo artículo de La Tercera sobre pacientes con alta, porque no informa autor ni método.",
+        "Los montos del estudio de la Superintendencia (en pesos de 2019), para no compararlos con cifras de 2026."
+      ],
+      "limits": [
+        "El dato de hospitalización social es de 2017 y no hay una serie más reciente.",
+        "Las 1.056 personas son de todas las edades y la cifra no viene de un informe publicado.",
+        "Las habitaciones del fondo vienen de prensa; una habitación no equivale necesariamente a un cupo.",
+        "La fecha de vigencia de la Ley 21.822, que obliga a dictar la Política Nacional de Envejecimiento, no está verificada; por eso no damos el vencimiento del plazo."
+      ]
     },
-    "watch_heading": "Qué mirar en las próximas semanas",
-    "watch": [
+    "sources": [
       {
-        "headline": "El informe público de la FNE sobre la operación, cuando se publique.",
-        "explanation": "Mostrará cómo definió la FNE el mercado de residencias para mayores y quiénes compiten en él, algo que su comunicado no detalla."
+        "id": "f1",
+        "type": "oficial",
+        "label": "FNE · Aprobó asociación entre SalfaCorp, el grupo Angelini y otros para residencias para adultos mayores (2 nov)",
+        "url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
+        "role": "Noticia gatillante: aprobación, partes y mercados analizados.",
+        "short_label": "FNE · residencias para adultos mayores (2 nov)",
+        "short_role": "noticia gatillante"
       },
       {
-        "headline": "La Política Nacional de Envejecimiento.",
-        "explanation": "La Ley 21.822 obliga a dictarla dentro de seis meses desde que entra en vigencia; mostrará si incluye cuidados de larga duración y cómo se financian."
+        "id": "f2",
+        "type": "prensa",
+        "label": "CNN Chile · FNE aprueba fondo de residencias para adultos mayores de SalfaCorp y Angelini (2 nov)",
+        "url": "https://www.cnnchile.com/negocios/fne-salfacorp-grupo-angelini-residencias-adultos-mayores-fondo-uf1500000/",
+        "role": "Tamaño del fondo, habitaciones iniciales y meta a 15 años.",
+        "short_label": "CNN Chile · fondo de residencias (2 nov)",
+        "short_role": "fondo y habitaciones"
       },
       {
-        "headline": "El registro de residencias autorizadas que anunció el Minsal, cuando se publique.",
-        "explanation": "Sería la primera foto oficial de la oferta desde el catastro de 2021 y permitirá ver cuántos hogares tienen hoy autorización tras el incendio de Pitrufquén."
+        "id": "f3",
+        "type": "prensa",
+        "label": "Emol · Residencias de adultos mayores: las cifras (14 sep)",
+        "url": "https://www.emol.com/noticias/Nacional/2026/09/14/1211395/residencias-adultos-mayores-zoom-cifras.html",
+        "role": "Datos de Senama: Eleam públicos y cupos, hogares privados autorizados, incendio de Pitrufquén.",
+        "short_label": "Emol · Eleam en cifras (14 sep)",
+        "short_role": "red pública"
+      },
+      {
+        "id": "f4",
+        "type": "prensa",
+        "label": "La Tercera · Incendio en hogar de ancianos deja al descubierto un catastro desactualizado (sep)",
+        "url": "https://www.latercera.com/nacional/noticia/incendio-en-hogar-de-ancianos-deja-al-descubierto-un-catastro-desactualizado-de-residencias-y-debilidades-del-sistema/",
+        "role": "Resultados del catastro oficial de 2021.",
+        "short_label": "La Tercera · catastro de residencias (sep)",
+        "short_role": "catastro 2021"
+      },
+      {
+        "id": "f5",
+        "type": "oficial",
+        "label": "Minsal · Plan para reforzar la seguridad y ampliar la oferta de cuidados para personas mayores (15 sep)",
+        "url": "https://www.minsal.cl/?p=158411",
+        "role": "Establecimientos sin autorización y registro de oferta autorizada.",
+        "short_label": "Minsal · plan para residencias (15 sep)",
+        "short_role": "fiscalización"
+      },
+      {
+        "id": "f6",
+        "type": "oficial",
+        "label": "INE · En el país residen 3.665.028 personas de 60 años o más (29 sep)",
+        "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/09/29/en-el-pa%C3%ADs-residen-3.665.028-personas-de-60-a%C3%B1os-o-m%C3%A1s-equivalentes-al-19-8-de-la-poblaci%C3%B3n-residente",
+        "role": "Censo 2024: personas de 80 años o más y discapacidad.",
+        "short_label": "INE · Censo 2024, personas mayores (29 sep)",
+        "short_role": "demanda"
+      },
+      {
+        "id": "f7",
+        "type": "prensa",
+        "label": "La Tercera · Las 1.056 personas dadas de alta que siguen ocupando camas hospitalarias (jun)",
+        "url": "https://www.latercera.com/nacional/noticia/pacientes-sociosanitarios-las-1056-personas-dadas-de-alta-que-siguen-ocupando-camas-hospitalarias-por-falta-de-redes/",
+        "role": "Cifra del subsecretario de Redes Asistenciales.",
+        "short_label": "La Tercera · pacientes sociosanitarios (jun)",
+        "short_role": "camas ocupadas"
+      },
+      {
+        "id": "f8",
+        "type": "oficial",
+        "label": "Superintendencia de Salud · Hospitalización social en adultos mayores en el sistema de salud de Chile (2020)",
+        "url": "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf",
+        "role": "Peso de la hospitalización social en egresos y días-cama.",
+        "short_label": "Superintendencia de Salud · hospitalización social (2020)",
+        "short_role": "días-cama"
+      },
+      {
+        "id": "f9",
+        "type": "oficial",
+        "label": "Diario Oficial · Ley Integral de las Personas Mayores, Ley 21.822 (1 jun)",
+        "url": "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/",
+        "role": "Plazo para dictar la Política Nacional de Envejecimiento.",
+        "short_label": "Diario Oficial · Ley 21.822 (1 jun)",
+        "short_role": "política pública"
       }
-    ],
-    "notes": [
-      {
-        "id": "n1",
-        "kind": "press",
-        "text": "El tamaño del fondo (UF 1.500.000) y las habitaciones provienen de prensa (CNN Chile); el comunicado de la FNE no informa cifras y su informe aún no es público. Una habitación no equivale necesariamente a un cupo."
-      },
-      {
-        "id": "n2",
-        "kind": "coverage",
-        "text": "Cupos de las residencias públicas según el informe de Senama del primer trimestre de 2026, citado por Emol. Hay además unos 900 hogares privados autorizados, algunos con subsidio, que no están en esa cifra."
-      },
-      {
-        "id": "n3",
-        "kind": "coverage",
-        "text": "Estudio de la Superintendencia de Salud con egresos de 2017. Define hospitalización social como una estadía de 60 o más días con baja necesidad de atención médica. Es la medición oficial más reciente que encontramos; no hay una serie actualizada."
-      },
-      {
-        "id": "n4",
-        "kind": "causality",
-        "text": "La cifra de 1.056 la dio el subsecretario de Redes Asistenciales en un conversatorio (La Tercera, junio); no es un informe publicado e incluye personas de todas las edades. La fuente atribuye la permanencia a la falta de redes familiares o sociales, no solo a la falta de residencias. La comparación con los cupos de Senama es una estimación Alicanto (1.056 ÷ 1.318 ≈ 80%) y no implica que todas esas personas necesiten una residencia, ni prueba que la falta de cupos sea la causa."
-      },
-      {
-        "id": "n5",
-        "kind": "coverage",
-        "text": "Catastro oficial de 2021, el último disponible, informado por La Tercera. En septiembre el Minsal habló de cerca de 500 establecimientos sin autorización y advirtió que podría haber otros no identificados."
-      }
-    ],
-    "summary": "La FNE aprobó sin condiciones la asociación de SalfaCorp y el grupo Angelini para operar residencias para personas mayores. En junio, 1.056 personas con alta médica seguían ocupando camas de hospital por falta de redes.",
-    "insight_teaser": "Entra capital privado a las residencias para mayores, pero la falta de cuidados ya se paga en camas de hospital: 1.056 personas con alta siguen hospitalizadas.",
-    "key_figures": [
-      "FNE (comunicado del 2 nov; aprobación del 29 oct): aprobó de manera pura y simple la asociación entre SalfaCorp, el grupo Angelini y sociedades ligadas a Villa Soleares y a Vivendi (esta administrará las residencias); analizó la gestión de residencias para adultos mayores y el desarrollo inmobiliario, y concluyó que la operación no reduce sustancialmente la competencia.",
-      "CNN Chile (nov): fondo de inversión con tamaño objetivo de UF 1.500.000; La Reina, 148 habitaciones (apertura prevista abril de 2027); Ñuñoa, ampliación de 52 a 102 habitaciones; 250 habitaciones en los dos primeros proyectos; meta de hasta 1.000 habitaciones en hasta 15 años.",
-      "Emol (14 sep), con datos de Senama: 23 Eleam públicos con cupo para 1.318 personas (informe del primer trimestre de 2026); 900 hogares privados autorizados por resolución sanitaria, algunos con subvenciones.",
-      "Emol (14 sep): el incendio del Eleam de Pitrufquén dejó 16 víctimas fatales; el recinto no contaba con resolución sanitaria del Ministerio de Salud.",
-      "La Tercera (sep): el catastro oficial de 2021 dio con 993 hogares autorizados y otros 505 sin resolución sanitaria.",
-      "Minsal (15 sep): cerca de 500 establecimientos catastrados sin autorización sanitaria; publicará un registro de la oferta de Eleam con resolución sanitaria.",
-      "INE (29 sep, Censo 2024): 3.665.028 personas de 60 años o más (19,8% de la población); 593.010 de 80 años o más; 54,0% de las personas de 80 o más en situación de discapacidad.",
-      "La Tercera (jun): el subsecretario de Redes Asistenciales informó 996 pacientes con alta médica hospitalizados por falta de redes en marzo y 1.056 en junio.",
-      "Superintendencia de Salud (estudio publicado en 2020, datos de 2017): hospitalización social es una estadía de 60 o más días con baja necesidad de atención médica; fue el 1% de los egresos de las personas de 60 años o más y el 15% de sus días-cama (15,3% de 3.918.415 días-cama).",
-      "Ley 21.822 (Diario Oficial, 1 jun 2026): la Política Nacional de Envejecimiento deberá dictarse dentro de seis meses desde la entrada en vigencia de la ley."
     ],
     "source_refs": [
       "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
@@ -212,71 +392,40 @@
       "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf",
       "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/"
     ],
-    "sources": [
+    "evidence_figures": [
+      "FNE (comunicado del 2 nov; aprobación del 29 oct): aprobó de manera pura y simple la asociación entre SalfaCorp, el grupo Angelini y sociedades ligadas a Villa Soleares y a Vivendi (esta administrará las residencias); analizó la gestión de residencias para adultos mayores y el desarrollo inmobiliario, y concluyó que la operación no reduce sustancialmente la competencia.",
+      "CNN Chile (nov): fondo de inversión con tamaño objetivo de UF 1.500.000; La Reina, 148 habitaciones (apertura prevista abril de 2027); Ñuñoa, ampliación de 52 a 102 habitaciones; 250 habitaciones en los dos primeros proyectos; meta de hasta 1.000 habitaciones en hasta 15 años.",
+      "Emol (14 sep), con datos de Senama: 23 Eleam públicos con cupo para 1.318 personas (informe del primer trimestre de 2026); 900 hogares privados autorizados por resolución sanitaria, algunos con subvenciones.",
+      "Emol (14 sep): el incendio del Eleam de Pitrufquén dejó 16 víctimas fatales; el recinto no contaba con resolución sanitaria del Ministerio de Salud.",
+      "La Tercera (sep): el catastro oficial de 2021 dio con 993 hogares autorizados y otros 505 sin resolución sanitaria.",
+      "Minsal (15 sep): cerca de 500 establecimientos catastrados sin autorización sanitaria; publicará un registro de la oferta de Eleam con resolución sanitaria.",
+      "INE (29 sep, Censo 2024): 3.665.028 personas de 60 años o más (19,8% de la población); 593.010 de 80 años o más; 54,0% de las personas de 80 o más en situación de discapacidad.",
+      "La Tercera (jun): el subsecretario de Redes Asistenciales informó 996 pacientes con alta médica hospitalizados por falta de redes en marzo y 1.056 en junio.",
+      "Superintendencia de Salud (estudio publicado en 2020, datos de 2017): hospitalización social es una estadía de 60 o más días con baja necesidad de atención médica; fue el 1% de los egresos de las personas de 60 años o más y el 15% de sus días-cama (15,3% de 3.918.415 días-cama).",
+      "Ley 21.822 (Diario Oficial, 1 jun 2026): la Política Nacional de Envejecimiento deberá dictarse dentro de seis meses desde la entrada en vigencia de la ley."
+    ],
+    "evidence_excerpts": [
       {
-        "label": "FNE · Aprobó asociación entre SalfaCorp, el grupo Angelini y otros para residencias para adultos mayores · 2 nov",
-        "url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
-        "role": "Fuente primaria de la noticia: aprobación pura y simple, partes y mercados analizados.",
-        "short_label": "FNE · residencias para adultos mayores (2 nov)",
-        "short_role": "noticia gatillante"
+        "source_ref": "f1",
+        "text": "no resulta apta para reducir sustancialmente la competencia en ninguno de los segmentos analizados"
       },
       {
-        "label": "CNN Chile · FNE aprueba fondo de residencias para adultos mayores de SalfaCorp y Angelini · 2 nov",
-        "url": "https://www.cnnchile.com/negocios/fne-salfacorp-grupo-angelini-residencias-adultos-mayores-fondo-uf1500000/",
-        "role": "Prensa: tamaño del fondo, habitaciones de los dos primeros proyectos y meta de habitaciones.",
-        "short_label": "CNN Chile · fondo de residencias (2 nov)",
-        "short_role": "fondo y habitaciones"
+        "source_ref": "f1",
+        "text": "foco en proyectos de mayor tamaño"
       },
       {
-        "label": "Emol · Residencias de adultos mayores: las cifras · 14 sep",
-        "url": "https://www.emol.com/noticias/Nacional/2026/09/14/1211395/residencias-adultos-mayores-zoom-cifras.html",
-        "role": "Prensa con datos de Senama: Eleam públicos y sus cupos, hogares privados autorizados e incendio de Pitrufquén.",
-        "short_label": "Emol · Eleam en cifras (14 sep)",
-        "short_role": "red pública"
+        "source_ref": "f5",
+        "text": "cerca de 500 establecimientos sin autorización sanitaria"
       },
       {
-        "label": "La Tercera · Incendio en hogar de ancianos deja al descubierto un catastro desactualizado de residencias · sep",
-        "url": "https://www.latercera.com/nacional/noticia/incendio-en-hogar-de-ancianos-deja-al-descubierto-un-catastro-desactualizado-de-residencias-y-debilidades-del-sistema/",
-        "role": "Prensa: resultados del catastro oficial de 2021 (hogares autorizados y sin resolución sanitaria).",
-        "short_label": "La Tercera · catastro de residencias (sep)",
-        "short_role": "catastro 2021"
-      },
-      {
-        "label": "Minsal · Gobierno anuncia plan para reforzar la seguridad y ampliar la oferta de cuidados para personas mayores · 15 sep",
-        "url": "https://www.minsal.cl/?p=158411",
-        "role": "Fuente primaria: establecimientos sin autorización, fiscalización y registro de oferta autorizada.",
-        "short_label": "Minsal · plan para residencias (15 sep)",
-        "short_role": "fiscalización"
-      },
-      {
-        "label": "INE · En el país residen 3.665.028 personas de 60 años o más · 29 sep",
-        "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/09/29/en-el-pa%C3%ADs-residen-3.665.028-personas-de-60-a%C3%B1os-o-m%C3%A1s-equivalentes-al-19-8-de-la-poblaci%C3%B3n-residente",
-        "role": "Fuente primaria (Censo 2024): personas de 80 años o más y discapacidad.",
-        "short_label": "INE · Censo 2024, personas mayores (29 sep)",
-        "short_role": "demanda"
-      },
-      {
-        "label": "La Tercera · Pacientes sociosanitarios: las 1.056 personas dadas de alta que siguen ocupando camas hospitalarias · jun",
-        "url": "https://www.latercera.com/nacional/noticia/pacientes-sociosanitarios-las-1056-personas-dadas-de-alta-que-siguen-ocupando-camas-hospitalarias-por-falta-de-redes/",
-        "role": "Prensa: cifra del subsecretario de Redes Asistenciales sobre pacientes con alta que siguen hospitalizados.",
-        "short_label": "La Tercera · pacientes sociosanitarios (jun)",
-        "short_role": "camas ocupadas"
-      },
-      {
-        "label": "Superintendencia de Salud · Hospitalización social en adultos mayores en el sistema de salud de Chile (2020)",
-        "url": "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf",
-        "role": "Fuente primaria: peso de la hospitalización social en egresos y días-cama de personas de 60 años o más.",
-        "short_label": "Superintendencia de Salud · hospitalización social (2020)",
-        "short_role": "días-cama"
-      },
-      {
-        "label": "Diario Oficial · Ley Integral de las Personas Mayores (Ley 21.822) · 1 jun",
-        "url": "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/",
-        "role": "Fuente primaria: plazo para dictar la Política Nacional de Envejecimiento.",
-        "short_label": "Diario Oficial · Ley 21.822 (1 jun)",
-        "short_role": "política pública"
+        "source_ref": "f8",
+        "text": "estadía prolongada (60 o más días) con una baja necesidad de atención médica hospitalaria"
       }
     ],
+    "notes": [],
+    "summary": "La FNE aprobó sin condiciones el fondo de SalfaCorp y el grupo Angelini para operar residencias. Las cifras oficiales muestran que la brecha que deja la oferta formal termina en hogares sin autorización y en camas de hospital.",
+    "insight_teaser": "Entra capital privado a las residencias para mayores, pero la falta de cuidados ya se paga en camas de hospital: 1.056 personas con alta siguen hospitalizadas.",
+    "verified_on": "2026-11-08",
     "weekly_mode": "reviewed_cross_source_deep_dive",
     "model_trace": {
       "mode": "senior_editorial_work_session",
@@ -284,7 +433,12 @@
       "model": "claude-opus-5-5 (sesión editorial programada)",
       "note": "Redactado desde fuentes primarias FNE, Superintendencia de Salud, INE, Minsal y Diario Oficial, con prensa declarada; revisión independiente aparte."
     },
-    "reading_time_min": 1
+    "migrated_from": {
+      "schema_version": "weekly_insight_a_v1",
+      "on": "2026-11-10",
+      "note": "Texto y cifras de la maqueta aprobada por Dirección el 10-nov-2026; solo evidencia ya revisada del 8-nov."
+    },
+    "reading_time_min": 3
   },
   "selection_policy": {
     "window_weeks": 6,
@@ -342,7 +496,7 @@
       "expires_on": "2026-11-16"
     },
     "weekly_presentation": {
-      "format": "weekly_insight_a_v1",
+      "format": "weekly_insight_a_v2",
       "errors": []
     },
     "weekly_schedule": {

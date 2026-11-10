@@ -182,15 +182,46 @@ test('approved insight renders presentation A with charts, footnoted limits and 
  assert.match(html,/parcial · al día 16/);assert.match(html,/stroke-dasharray="4 3"/);
  assert.match(html,/lectura de 2 min/);
 });
-test('current approved insight renders presentation A: two zero-based charts, resolved notes, every source',()=>{
+// Dirección 10-nov-2026: the weekly insight is a news-style essay (weekly_insight_a_v2). No «Qué pasó / Lectura Alicanto /
+// Qué mirar» labels; charts inside the text after their paragraph; quotes with a linked source; every named source links
+// to the original and to the numbered list (Oficial/Prensa badge); estimates dashed with their formula; method collapsed.
+test('current approved insight renders the v2 essay faithfully to the approved mockup',()=>{
  const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight,body={innerHTML:''};
+ assert.equal(w.schema_version,'weekly_insight_a_v2');
  c.document={getElementById:id=>body};c.renderWeeklyDetail(w);
  const html=body.innerHTML;
- assert.ok(html.includes(w.headline.slice(0,40)));
- assert.equal((html.match(/<svg /g)||[]).length,w.charts.length);
- assert.doesNotMatch(html,/\[\^n\d+\]/);
- for(const n of w.notes)assert.ok(html.includes(`id="wi-note-${n.id}"`));
- for(const url of w.source_refs)assert.ok(html.includes(url));
+ assert.match(html,/^<article class="we">/);assert.ok(html.includes(w.headline.slice(0,40)));
+ for(const label of ['Qué pasó','Lectura Alicanto','Qué mirar','wi-facts','wi-watch'])assert.ok(!html.includes(label),label);
+ for(const label of ['Insight de la semana','Personas mayores y cuidados','9 fuentes, 5 oficiales','Lo que debes saber en 5 cifras','Cierre','Cómo hicimos este análisis','Lo que no usamos.','Límites.','Fuentes'])assert.ok(html.includes(label),label);
+ // No raw markup leaks; every source is linked, numbered and badged; superscripts point to the list.
+ assert.doesNotMatch(html,/\]\((f\d+|est:)/);assert.doesNotMatch(html,/\[\^n\d+\]/);
+ for(const s of w.sources){assert.ok(html.includes(`href="${s.url}"`),s.id);assert.ok(html.includes(`id="we-src-${s.id}"`),s.id)}
+ assert.equal((html.match(/class="we-badge of"/g)||[]).length,5);assert.equal((html.match(/class="we-badge pr"/g)||[]).length,4);
+ assert.match(html,/<a class="we-sl" href="https:\/\/www\.fne\.gob\.cl[^"]*" target="_blank" rel="noopener">Fiscalía Nacional Económica<\/a><sup class="we-c"><a href="#we-src-f1" data-src="f1"/);
+ // Quote: blockquote with attribution and a linked, numbered source.
+ assert.match(html,/<blockquote class="we-q"><p>«No resulta apta para reducir sustancialmente la competencia en ninguno de los segmentos analizados»<\/p><footer><b>Fiscalía Nacional Económica<\/b>, <a class="we-sl"/);
+ // Charts sit right after a paragraph, in body order; the estimate chart is dashed and carries its formula.
+ assert.equal((html.match(/<figure class="we-fig/g)||[]).length,3);
+ for(const id of ['catastro','altas_vs_cupos','hospitalizacion_social'])assert.match(html,new RegExp(`</p><figure class="we-fig[^"]*" id="we-chart-${id}"`));
+ assert.match(html,/<figure class="we-fig est" id="we-chart-altas_vs_cupos"/);assert.match(html,/Estimación Alicanto: 1\.056 ÷ 1\.318 ≈ 80%/);
+ assert.match(html,/we-fill estim/);
+ // Estimates: dashed underline in the text, formulas in the collapsed method.
+ assert.equal((html.match(/class="we-est"/g)||[]).length,3);
+ assert.match(html,/<details class="we-howto"><summary>/);assert.doesNotMatch(html,/<details class="we-howto" open/);
+ assert.match(html,/“Uno de cada tres”: <code>505 ÷ \(993 \+ 505\) = 33,7%<\/code>/);assert.match(html,/<code>1\.056 ÷ 1\.318 = 80,1%<\/code>/);
+ // Key figures: one wide card, estimate cards dashed, each with kind and linked source.
+ assert.equal((html.match(/<li class="es">/g)||[]).length,2);assert.equal((html.match(/<li class="wide">/g)||[]).length,1);
+ assert.match(html,/<b>1% → 15,3%<\/b>/);assert.match(html,/Estimación Alicanto · <a class="we-sl"/);
+ // The sources list comes after the method accordion and stays visible.
+ assert.ok(html.indexOf('we-howto')<html.indexOf('class="we-sources"'));
+ assert.match(html,/<span class="we-end" aria-hidden="true"><\/span><\/p><\/div><\/div><section class="we-back">/);
+});
+test('v2 essay renderer falls back cleanly on unknown refs and keeps v1 archives on presentation A',()=>{
+ const c=context(),body={innerHTML:''};c.document={getElementById:id=>body};
+ c.renderWeeklyDetail({schema_version:'weekly_insight_a_v2',headline:'T',body:[{type:'paragraph',text:'Según [nadie](f7) y [algo](est:x).'}],sources:[],closing:{text:'Fin.'}});
+ assert.match(body.innerHTML,/Según nadie y algo\./);
+ const v1=JSON.parse(fs.readFileSync('data/weekly_insight/archive/2026-11-02.json')).weekly_insight;c.renderWeeklyDetail(v1);
+ assert.match(body.innerHTML,/^<article class="wi">/);assert.ok(body.innerHTML.includes('Lectura Alicanto'));
 });
 test('older list-schema insights keep their original sections',()=>{
  const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/archive/2026-10-23.json')).weekly_insight,body={innerHTML:''};
