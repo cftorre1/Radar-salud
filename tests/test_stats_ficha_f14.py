@@ -345,7 +345,7 @@ def test_f14_holds_without_the_same_quarter_one_year_earlier(tmp_path):
 
 def test_first_publication_waits_for_review_and_shows_in_preview(root):
     reg = copy.deepcopy(sf.load_registry())
-    assert reg["families"]["F14"]["first_pass_requires_review"] is True and reg["families"]["F14"]["first_review"] is None
+    assert reg["families"]["F14"]["first_pass_requires_review"] is True and reg["families"]["F14"]["first_review"]["reviewed_sha256"]  # recorded 10-nov-2026 under Dirección authorisation
     out = f14.run(root, today=TODAY, registry=reg, llm=False)
     assert out["status"] == "hold" and out["errors"] == [so.FIRST_REVIEW_HOLD]
     cand = out["candidate"]

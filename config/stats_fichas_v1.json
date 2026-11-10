@@ -1851,7 +1851,11 @@
       },
       "lectura_enabled": false,
       "first_pass_requires_review": true,
-      "first_review": null,
+      "first_review": {
+        "reviewed_by": "Integrador (Claude) bajo autorización de Dirección del 10-nov-2026 00:54 («No son necesarios mis VB para nuevas fichas, publícalas nomás»), tras PASS determinista, reconciliación y revisión independiente PASS (2.ª ronda, #165).",
+        "reviewed_at": "2026-11-10T06:30:00Z",
+        "reviewed_sha256": "7b324139fad586f83cbe5d720257a477e845a7ef4f5a6e2544d101ec67edd8e5"
+      },
       "first_review_rule": "Dirección, 10-nov-2026: las fichas nuevas se publican sin su visto bueno personal una vez que tienen PASS determinista, reconciliación y una revisión independiente. Hasta que el responsable de integración registre families.F14.first_review (reviewed_by, reviewed_at, reviewed_sha256 = evidence_sha256 de la ficha revisada), un PASS queda en hold/<slug>-<período>.json como awaiting_first_review y se ve en web/preview.html.",
       "decided": "Dirección, 10-nov-2026: publicación de fichas nuevas con PASS determinista + reconciliación + revisión independiente.",
       "disclosure_rule": {
