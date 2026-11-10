@@ -152,6 +152,13 @@ jobs:
           echo "### Live beta validation" >> "$GITHUB_STEP_SUMMARY"
           echo "Outcome: ${{ steps.beta_validation.outcome }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Beta source failures remain repair-required but do not suppress independent core collection." >> "$GITHUB_STEP_SUMMARY"
+      # 9-nov-2026: external model failures (e.g. RateLimitError) silently held verified normative
+      # records. Deterministic ledger read, no model call; warns in the run summary, never blocks.
+      - name: External AI failure alert (warning only)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python -m radar_salud.ai_health
       - name: Snapshot reviewer after collection
         timeout-minutes: 15
         run: python -m pytest -q tests/test_reviewer.py

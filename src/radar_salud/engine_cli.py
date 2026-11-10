@@ -556,7 +556,9 @@ def main():
         if os.getenv("RADAR_CAPTURE_EVIDENCE")!="1":raise LookupError("disabled")
         history=json.loads((root/"data/history/superintendencia_signals.json").read_text(encoding="utf-8")).get("signals",[])
         # Same run as detection: capture official text, then verified automatic records with the repair loop
-        # (newest first, budget-capped; Dirección 9-nov-2026). Idempotent per GITHUB_RUN_ID with the hourly step.
+        # (newest first, budget-capped; Dirección 9-nov-2026).
+        # The hourly job runs it as its own step instead (RADAR_NORMATIVE_AUTORECORD_IN_ENGINE=0): one path per run.
+        if os.getenv("RADAR_NORMATIVE_AUTORECORD_IN_ENGINE","1")=="0":raise LookupError("dedicated_step")
         from .normative_autorecord import run_step
         summary=run_step(root,history)
         print(f"normative_evidence captured={summary['evidence_captured']}")

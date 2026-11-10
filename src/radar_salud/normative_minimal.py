@@ -119,6 +119,73 @@ def _sentence_case(text: str) -> str:
     return out
 
 
+# Feed title (Dirección 9-nov-2026): "<identidad> · <asunto oficial acortado>". Only words of the
+# official subject are kept; nothing is paraphrased. 'title' keeps the regulator's listing text.
+TITLE_MAX = 110
+_SUBJECT_MIN = 40
+_EMISSION_TAIL = re.compile(r"[\s.,;]*(?:Fecha\s+(?:de\s+)?)?emisi[oó]n\s*:.*$", re.I | re.S)
+_TRAILING_CLAUSES = (
+    re.compile(r"\s+en\s+(?:la|el)\s+(?:aplicaci[oó]n|sistema|plataforma|portal|m[oó]dulo)\s+inform[aá]tic[oa]\b.*$", re.I),
+)
+_CLAUSE_CUT = re.compile(r"\s*[;:,]\s+|\s+(?=(?:y|e|o|u|en|para|por|con|seg[uú]n|mediante|desde|respecto)\s)", re.I)
+_DANGLING = {"de", "del", "la", "el", "los", "las", "y", "e", "o", "u", "en", "a", "al", "por", "para", "con",
+             "sobre", "que", "su", "sus", "un", "una"}
+
+
+def _acronyms(text: str) -> str:
+    """'Cobertura Adicional para Enfermedades Catastróficas (CAEC)' -> 'CAEC' when the
+    acronym is spelled in the text and its letters are the initials of the words before it."""
+    def repl(m: re.Match) -> str:
+        acr = m.group(2)
+        words = m.group(1).split()
+        caps = [w for w in words if w[:1].isupper()]
+        for start in range(len(words)):
+            span = words[start:]
+            initials = "".join(w[0] for w in span if w[:1].isupper())
+            if span and span[0][:1].isupper() and initials.upper() == acr.upper() and len(caps) >= len(acr):
+                return " ".join(words[:start] + [acr])
+        return m.group(0)
+    return re.sub(r"((?:[\wÁÉÍÓÚÑáéíóúñ]+\s+){1,10}?[\wÁÉÍÓÚÑáéíóúñ]+)\s*\(([A-ZÁÉÍÓÚÑ]{2,8})\)", repl, text)
+
+
+def _inside_enumeration(text: str, m: re.Match) -> bool:
+    """A cut before 'y/e/o/u' that closes 'A, B y C' would leave 'A, B': not a clause boundary."""
+    if not re.match(r"\s+[yeou]\s", text[m.start():], re.I):
+        return False
+    return "," in re.split(r"[.;:]\s", text[:m.start()])[-1]
+
+
+def short_subject(subject: str, budget: int) -> str:
+    """Deterministic shortening of an official subject: drop the emission-date sentence and
+    technical tails, abbreviate spelled-out acronyms, then cut at a clause boundary. Never adds words."""
+    text = re.sub(r"\s+", " ", str(subject or "")).strip()
+    text = _EMISSION_TAIL.sub("", text).strip().rstrip(".").strip()
+    for pattern in _TRAILING_CLAUSES:
+        text = pattern.sub("", text).strip()
+    text = _acronyms(text)
+    if text:
+        text = text[0].upper() + text[1:]
+    if len(text) <= budget:
+        return text
+    cuts = [m.start() for m in _CLAUSE_CUT.finditer(text) if _SUBJECT_MIN <= m.start() <= budget
+            and not _inside_enumeration(text, m)]
+    if cuts:
+        return text[:max(cuts)].rstrip(" ,;:")
+    head = text[:budget - 1]
+    words = head.split() if text[budget - 1] == " " else head.rsplit(" ", 1)[0].split()
+    while words and words[-1].lower() in _DANGLING:
+        words.pop()
+    return " ".join(words).rstrip(" ,;:") + "…"
+
+
+def minimal_title(label: str, subject: str) -> str:
+    """'Circular IF/N°541 · Aclara la determinación de la base de cálculo del deducible de la CAEC'."""
+    label = " ".join(str(label or "").split())
+    head = f"{label} · "
+    short = short_subject(subject, TITLE_MAX - len(head))
+    return head + short if short else label
+
+
 def minimal_card(r: dict[str, Any], label: str) -> dict[str, Any] | None:
     issuer = str(r.get("source_name") or "")
     if issuer not in ISSUERS or not label or not _official(r.get("source_url"), issuer):
@@ -126,11 +193,10 @@ def minimal_card(r: dict[str, Any], label: str) -> dict[str, Any] | None:
     if act_scope(r, label) != "general" or not r.get("event_date"):
         return None
     subject = _official_subject(r, label)
-    short = "SUSESO" if "SUSESO" in issuer else "Superintendencia de Salud"
     if not subject:
         return None  # nothing verifiable to say beyond the number: keep held
-    title = f"{label} · {short}: {subject}"
     full = _official_subject(r, label, limit=None)
+    title = minimal_title(label, full)
     if issuer.endswith("(SUSESO)"):
         scopes = ["Seguridad social"]
     else:

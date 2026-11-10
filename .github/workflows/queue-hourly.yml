@@ -72,6 +72,8 @@ jobs:
       RADAR_FAST_PER_MONTH: 20000
       RADAR_DAILY_WINDOW_DAYS: 30
       RADAR_PROCESSING_SECONDS: 1800
+      # Normative records run once per job, in the dedicated step below (not again inside engine_cli).
+      RADAR_NORMATIVE_AUTORECORD_IN_ENGINE: '0'
     steps:
       - uses: actions/checkout@v4
         with:

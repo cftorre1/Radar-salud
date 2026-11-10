@@ -47,7 +47,8 @@ def test_repair_loop_fake_model_fails_first_and_passes_second(tmp_path):
     assert "menos puntos, más cortos y literales" in repair_prompt and "TEXTO OFICIAL:\nCIRCULAR IF/N°537" in repair_prompt
     store = _store(tmp_path)
     act = store["acts"][URL]
-    assert act["attempts"] == 2 and act["runs"] == ["r1"] and act["status"] == "published"
+    assert act["attempts"] == 1 and act["runs"] == ["r1"] and act["status"] == "published"  # failed attempts
+    assert store["source_records"][URL]["attempts"] == 2
     assert [e["kind"] for e in act["attempt_log"]] == [auto.DRAFT_FEATURE, auto.REPAIR_FEATURE, auto.REVIEW_FEATURE]
     assert act["attempt_log"][0]["cost_usd"] == 0.01 and act["attempt_log"][0]["problems"]
     assert store["source_records"][URL]["origin"] == "auto_verified" and URL not in store["rejected"]
@@ -197,6 +198,11 @@ def test_hourly_workflow_runs_step_non_blocking_with_daily_env():
     assert names.index("autorecord") < names.index("Export public snapshot") < names.index("commit")
     for key in ("OPENAI_API_KEY", "RADAR_DEEP_MODEL", "RADAR_CAPTURE_EVIDENCE", "RADAR_MONTHLY_USD"):
         assert job["env"][key] == daily["jobs"]["build"]["env"][key]
+    # one path per job: engine_cli does not run the step again (no 2 x MAX_PER_RUN acts per hour)
+    assert job["env"]["RADAR_NORMATIVE_AUTORECORD_IN_ENGINE"] == "0"
+    assert "RADAR_NORMATIVE_AUTORECORD_IN_ENGINE" not in daily["jobs"]["build"]["env"]
+    engine = Path("src/radar_salud/engine_cli.py").read_text(encoding="utf-8")
+    assert 'os.getenv("RADAR_NORMATIVE_AUTORECORD_IN_ENGINE","1")=="0"' in engine
     commit = next(s for s in steps if s.get("id") == "commit")
     assert "steps.autorecord.outcome" in commit["if"]  # counters and billed calls persist
 
@@ -216,6 +222,61 @@ def test_step_script_never_fails_the_run(monkeypatch, tmp_path):
     monkeypatch.setattr(rt, "run_step", lambda root, sigs: {"evidence_captured": 0, "records_written": 2,
                                                             "cost_estimate": {}})
     assert mod.main() == 0 and "written=2" in out.read_text() and "Latencia" in (tmp_path / "sum").read_text()
+
+
+def test_emision_suffix_is_stripped_from_the_act_identity(tmp_path):
+    signals = _repo(tmp_path)
+    pdf540 = "https://www.superdesalud.gob.cl/app/uploads/2026/11/circular-if-n-540-2026.pdf"
+    (tmp_path / EVIDENCE_DIR / f"{_key(pdf540)}.json").write_text(json.dumps({"text": EVIDENCE.replace("537", "540")}))
+    signals[0].update(title="Circular IF/N°540 - Emisión: 4/11/2026", source_documents=[{"url": pdf540}],
+                      normative_document_label="Circular IF/N°540 - Emisión: 4/11/2026")
+    good540 = {**GOOD, "plain_language_title": GOOD["plain_language_title"].replace("537", "540")}
+    out = auto.build_auto_records(tmp_path, signals, call=_fake([good540]), today=TODAY, run_id="r1")
+    assert out == [URL]
+    rec = _store(tmp_path)["source_records"][URL]
+    assert rec["legal_identity"] == "Circular IF/N°540" and rec["plain_language_title"].startswith("Circular IF/N°540 · ")
+
+
+def test_review_skipped_for_budget_keeps_verified_draft_pending_review(tmp_path):
+    signals = _repo(tmp_path)
+    log = []
+    budget = iter([1.0, 1.0])  # start + draft allowed; the review is not
+    auto.build_auto_records(tmp_path, signals, call=_fake([GOOD], log=log), today=TODAY, run_id="r1",
+                            headroom=lambda: next(budget, 0.0))
+    store = _store(tmp_path)
+    act = store["acts"][URL]
+    assert [f for f, _ in log] == [auto.DRAFT_FEATURE]
+    assert act["attempts"] == 0 and act["runs"] == [] and act["status"] == "pending_review"  # not a failure
+    assert act["pending_review"]["record"] == GOOD and URL not in store["rejected"] and not store["source_records"]
+    # next run: only the review, no redraft
+    log2 = []
+    assert auto.build_auto_records(tmp_path, signals, call=_fake([], log=log2), today=TODAY, run_id="r2") == [URL]
+    assert [f for f, _ in log2] == [auto.REVIEW_FEATURE]
+    act = _store(tmp_path)["acts"][URL]
+    assert "pending_review" not in act and act["status"] == "published"
+    # a runtime budget error on the review is also a deferral, not a failure
+    (tmp_path / "b").mkdir()
+    signals_b = _repo(tmp_path / "b")
+    def broke_review(prompt, *, feature, preferred_model, allow_luna_fallback=True):
+        if feature == auto.REVIEW_FEATURE:
+            raise RuntimeError("weekly_api_budget_exhausted")
+        return SimpleNamespace(output=GOOD, estimated_cost_usd=0.01)
+    auto.build_auto_records(tmp_path / "b", signals_b, call=broke_review, today=TODAY, run_id="r1")
+    act_b = _store(tmp_path / "b")["acts"][URL]
+    assert act_b["status"] == "pending_review" and act_b["attempts"] == 0
+
+
+def test_pending_review_failure_counts_and_repairs_in_same_run(tmp_path):
+    signals = _repo(tmp_path)
+    budget = iter([1.0, 1.0])
+    auto.build_auto_records(tmp_path, signals, call=_fake([GOOD]), today=TODAY, run_id="r1",
+                            headroom=lambda: next(budget, 0.0))
+    log = []
+    out = auto.build_auto_records(tmp_path, signals, call=_fake([GOOD], [{"verdict": "FAIL", "reason": "x"}], log=log),
+                                  today=TODAY, run_id="r2")
+    assert out == [URL]
+    assert [f for f, _ in log] == [auto.REVIEW_FEATURE, auto.REPAIR_FEATURE, auto.REVIEW_FEATURE]
+    assert _store(tmp_path)["acts"][URL]["attempts"] == 1
 
 
 def test_python_311_parse():

@@ -317,6 +317,7 @@ def latency_summary(store: dict[str, Any]) -> dict[str, Any]:
             "latency_hours_median": round(median, 2) if median is not None else None,
             "latency_hours_max": round(max(hours), 2) if hours else None,
             "pending_retry": sum(a.get("status") == "rejected" for a in acts),
+            "pending_review": sum(a.get("status") == "pending_review" for a in acts),
             "final_rejected": sum(a.get("status") == "final_rejected" for a in acts)}
 
 
@@ -397,7 +398,9 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
     candidates = []
     for s in signals:
         url = str(s.get("source_url") or "")
-        label = str(s.get("normative_document_label") or s.get("title") or "")
+        # The listing title carries "- Emisión: dd/mm/yyyy"; the identity is the act alone (#155).
+        label = re.sub(r"\s*[-–]\s*Emisi[oó]n\s*:\s*\d{1,2}/\d{1,2}/\d{4}\s*$", "",
+                       str(s.get("normative_document_label") or s.get("title") or "").strip())
         if not url or _digits(label) in numbered:
             continue  # human records (by number) always win
         if "Normativa" not in (s.get("signal_types") or []):
@@ -453,26 +456,70 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
                     continue  # final: re-opened only when the official text changes
                 act.update(status="rejected", runs=[], attempts=0)  # new official text: fresh counters
                 rejected = {}
-            if run_id in act["runs"]:
-                continue  # already worked in this run (e.g. engine step then dedicated step)
-            remaining = min(MAX_ATTEMPTS_PER_RUN, MAX_ATTEMPTS_PER_ACT - int(act.get("attempts") or 0))
-            if len(act["runs"]) >= MAX_RUNS_PER_ACT or remaining <= 0:
+            if act.get("last_run_id") == run_id:
+                continue  # already worked in this run
+            pending = act.get("pending_review")
+            if pending and (pending.get("evidence_sha256") != evidence_hash or
+                            verify(pending.get("record") or {}, label, evidence, str(s.get("official_subject") or ""))):
+                act.pop("pending_review", None)  # stale: the official text or the verifier changed
+                pending = None
+            if not pending and (len(act["runs"]) >= MAX_RUNS_PER_ACT or
+                                int(act.get("attempts") or 0) >= MAX_ATTEMPTS_PER_ACT):
                 _finalize(store, act, url, rejected, evidence_hash)
                 continue
             if started >= max_new:
                 break
-            if headroom() < est["act_worst_run_usd"]:
+            if headroom() < (est["review_usd"] if pending else est["act_worst_run_usd"]):
                 print("normative_autorecord deferred: budget headroom below one act run")
                 break
             started += 1
+            act["last_run_id"] = run_id
             subject = str(s.get("official_subject") or "")
             issuer = str(s.get("source_name"))
             previous, problems = rejected.get("last_draft"), list(rejected.get("problems") or [])
             if rejected.get("evidence_sha256") not in (None, evidence_hash):
                 previous, problems = None, []  # official text changed: start from a fresh draft
-            stop = False
-            published = False
-            for _ in range(remaining):
+            stop = published = failed_this_run = False
+            record: dict[str, Any] = {}
+            run_attempts = 0
+
+            def count_failure() -> None:
+                act["attempts"] = int(act.get("attempts") or 0) + 1
+                if run_id not in act["runs"]:
+                    act["runs"].append(run_id)
+
+            def review(rec: dict[str, Any]) -> list[str] | None:
+                """Independent review. None = deferred for budget/provider (the verified draft stays pending)."""
+                if headroom() < est["review_usd"]:
+                    print("normative_autorecord deferred: budget headroom before review")
+                    return None
+                rat = _now().isoformat()
+                try:
+                    out, rcost, rparse = _model_call(call, _review_prompt(rec, evidence), REVIEW_FEATURE)
+                except _StopRun:
+                    return None
+                verdict = str(out.get("verdict") if isinstance(out, dict) else "").upper()
+                probs = ([rparse] if rparse else [] if verdict == "PASS" else
+                         ["independent_review:" + str(out.get("reason") if isinstance(out, dict) else None)[:200]])
+                act["attempt_log"].append({"at": rat, "run_id": run_id, "attempt": act.get("attempts"),
+                                           "kind": REVIEW_FEATURE, "cost_usd": rcost, "problems": probs})
+                return probs
+
+            if pending:  # verified draft whose review was deferred: only the review runs again
+                record = dict(pending["record"])
+                probs = review(record)
+                if probs is None:
+                    stop = True
+                elif not probs:
+                    act.pop("pending_review", None)
+                    published = True
+                else:
+                    act.pop("pending_review", None)
+                    count_failure()
+                    failed_this_run = True
+                    previous, problems = record, probs
+            while not (stop or published) and run_attempts < MAX_ATTEMPTS_PER_RUN and \
+                    int(act.get("attempts") or 0) < MAX_ATTEMPTS_PER_ACT:
                 repair = bool(problems)
                 feature = REPAIR_FEATURE if repair else DRAFT_FEATURE
                 if headroom() < est["repair_usd" if repair else "draft_usd"] + est["review_usd"]:
@@ -487,11 +534,9 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
                 except _StopRun:
                     stop = True
                     break
-                act["attempts"] = int(act.get("attempts") or 0) + 1
-                if run_id not in act["runs"]:
-                    act["runs"].append(run_id)
+                run_attempts += 1
                 act["first_attempt_at"] = act.get("first_attempt_at") or at
-                record: dict[str, Any] = {}
+                record = {}
                 if parse_problem:
                     new_problems = [parse_problem]
                 else:
@@ -500,34 +545,24 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
                         new_problems = verify(record, label, evidence, subject)
                     except (TypeError, ValueError, AttributeError) as exc:
                         record, new_problems = {}, [f"unparseable_draft:{type(exc).__name__}"]
-                act["attempt_log"].append({"at": at, "run_id": run_id, "attempt": act["attempts"], "kind": feature,
-                                           "cost_usd": cost, "problems": new_problems})
+                log = {"at": at, "run_id": run_id, "attempt": int(act.get("attempts") or 0) + 1, "kind": feature,
+                       "cost_usd": cost, "problems": new_problems}
+                act["attempt_log"].append(log)
                 if not new_problems:
-                    if headroom() < est["review_usd"]:
-                        print("normative_autorecord deferred: budget headroom before review")
+                    probs = review(record)
+                    if probs is None:
+                        # Verified draft, review deferred: not a failed attempt; next run re-runs only the review.
+                        act["pending_review"] = {"record": record, "evidence_sha256": evidence_hash, "at": at}
+                        log["pending_review"] = True
                         stop = True
-                        new_problems = ["independent_review_deferred:budget"]
-                    else:
-                        rat = _now().isoformat()
-                        try:
-                            review, rcost, rparse = _model_call(call, _review_prompt(record, evidence), REVIEW_FEATURE)
-                        except _StopRun:
-                            review, rcost, rparse, stop = None, None, "independent_review_deferred", True
-                        verdict = str((review or {}).get("verdict") if isinstance(review, dict) else "").upper()
-                        if rparse:
-                            new_problems = [rparse]
-                        elif verdict != "PASS":
-                            reason = review.get("reason") if isinstance(review, dict) else None
-                            new_problems = ["independent_review:" + str(reason)[:200]]
-                        act["attempt_log"].append({"at": rat, "run_id": run_id, "attempt": act["attempts"],
-                                                   "kind": REVIEW_FEATURE, "cost_usd": rcost,
-                                                   "problems": new_problems})
+                        break
+                    new_problems = probs
                 if not new_problems:
                     published = True
                     break
+                count_failure()
+                failed_this_run = True
                 previous, problems = (record or previous), new_problems
-                if stop:
-                    break
             if published:
                 now = _now().isoformat()
                 store["rejected"].pop(url, None)  # history stays in acts[url]["rejection_history"]
@@ -539,11 +574,13 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
                     "evidence_quotes": record["evidence_quotes"],
                     "evidence_sha256": evidence_hash,
                     "origin": "auto_verified", "verified_at": now,
-                    "attempts": act["attempts"], "runs": len(act["runs"]),
+                    "attempts": int(act.get("attempts") or 0) + 1, "runs": len(set(act["runs"]) | {run_id}),
                 }
                 act.update(status="published", published_at=now)
                 written.append(url)
-            elif run_id in act["runs"]:
+            elif act.get("pending_review"):
+                act["status"] = "pending_review"
+            elif failed_this_run:
                 entry = {"problems": problems, "evidence_sha256": evidence_hash, "at": _now().isoformat(),
                          "run_id": run_id, "attempts": act["attempts"], "runs": len(act["runs"]),
                          "last_draft": previous}
