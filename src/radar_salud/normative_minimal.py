@@ -182,7 +182,9 @@ def minimal_title(label: str, subject: str) -> str:
     """'Circular IF/N°541 · Aclara la determinación de la base de cálculo del deducible de la CAEC'."""
     label = " ".join(str(label or "").split())
     head = f"{label} · "
-    short = short_subject(subject, TITLE_MAX - len(head))
+    from .law_aliases import apply_alias
+    # Widely known laws by their common name (config/law_aliases.json), before shortening.
+    short = short_subject(apply_alias(subject), TITLE_MAX - len(head))
     return head + short if short else label
 
 
