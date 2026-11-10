@@ -55,7 +55,22 @@ def test_only_curated_entries_each_with_a_bcn_source():
     assert len(numbers) == len(set(numbers))
     for e in data["laws"]:
         assert re.fullmatch(r"\d{1,2}\.\d{3}", e["number"]) and e["alias"].startswith("Ley ")
-        assert "bcn.cl/leychile" in e["source"] and "idNorma" in e["source"]
+        if e["basis"] == "bcn_verified":
+            assert "bcn.cl/leychile" in e["source"] and "idNorma" in e["source"]
+        else:  # Dirección 10-nov-2026 01:03: names BCN does not record, added by decision
+            assert e["basis"] == "direccion_decision" and e["bcn_id_norma"].isdigit()
+            assert e["source"] == ("decisión de Dirección 10-nov-2026 (BCN no registra nombre común; "
+                                   "19.966 figura como Plan AUGE)")
+
+
+@pytest.mark.parametrize("cited,expected", [
+    ("ley N° 19.966", "Ley GES (Ley 19.966)"),
+    ("Ley Nº 21.674", "Ley Corta de Isapres (Ley 21.674)"),
+    ("ley N° 21.643", "Ley Karin (Ley 21.643)"),
+])
+def test_direccion_decision_aliases(cited, expected):
+    assert law_aliases.apply_alias(f"Circular IF/N°700 · Instruye sobre la {cited}") == \
+        f"Circular IF/N°700 · Instruye sobre la {expected}"
 
 
 def test_act_identity_is_never_altered():
