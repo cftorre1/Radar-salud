@@ -106,9 +106,16 @@ def test_shortening_only_removes_words():
         "Modifica instrucciones sobre hospitalización domiciliaria CAEC"
 
 
-def test_reviewer_rejects_title_not_derived_from_official_subject(tmp_path):
+def test_reviewer_rejects_title_not_derived_from_official_subject(tmp_path, monkeypatch):
     spec = importlib.util.spec_from_file_location("reviewer", Path("scripts/review_candidate.py"))
     reviewer = importlib.util.module_from_spec(spec); spec.loader.exec_module(reviewer)
+    # Hermetic: the hourly run may since have verified 541 (an approved record then rightly overrides the minimal card).
+    import radar_salud.normative_autorecord as na
+    real = na.merged_config
+    def no_541(*a, **k):
+        cfg = real(*a, **k)
+        return {**cfg, "source_records": {}, "records": {n: r for n, r in (cfg.get("records") or {}).items() if n != "541"}}
+    monkeypatch.setattr(na, "merged_config", no_541)
     slug, title, subject, emitted = ROWS[3]
     row = {"title": title, "source_name": SIS, "source_url": f"{BASE}{slug}/", "event_date": emitted,
            "official_subject": subject, "event_type": "REGULATION", "signal_types": ["Normativa"],
