@@ -13,11 +13,11 @@
   "date_basis": "first_detected",
   "headline": "Mismo código, distinto precio: el mapa de prestaciones Isapre, jul–sep 2026",
   "headline_type": "report_title",
-  "dek": "Por una misma prestación y en la misma región, el cuarto más caro de los prestadores cobra a las Isapres 1,49 veces o más lo que el cuarto más barato en atención ambulatoria, y 1,63 veces o más en hospitalaria.",
+  "dek": "En la región típica, por una misma prestación, el cuarto más caro de los prestadores cobra a las Isapres al menos 1,49 veces lo que el cuarto más barato en atención ambulatoria, y 1,63 veces en hospitalaria.",
   "dek_emphasis": null,
   "intro": [
-    "Qué se compara: lo que los prestadores facturan a las Isapres con un código del arancel MLE de Fonasa, la lista oficial que permite comparar la misma prestación entre prestadores. Es el 72,9% de todo lo facturado en el trimestre; el resto usa códigos propios de cada Isapre o de la Superintendencia.",
-    "De ese 72,9%, el 56,5% es atención ambulatoria y el 43,5% hospitalaria. Como sus precios no se comparan entre sí, cada mundo tiene su canasta: los 100 códigos ambulatorios y los 57 hospitalarios que más facturan y tienen precio en casi todas las regiones. Cubren el 80,9% y el 58,3% de lo facturado en cada mundo, y cada código pesa según lo que factura."
+    "Qué se compara: lo que los prestadores facturan a las Isapres con un código del arancel MLE de Fonasa, la lista oficial que permite comparar la misma prestación entre prestadores. Es el 72,9% de todo lo facturado en el trimestre; el resto usa códigos propios de cada Isapre, de la Superintendencia o solo GES.",
+    "De ese 72,9%, el 56,5% es atención ambulatoria y el 43,5% hospitalaria. Como sus precios no se comparan entre sí, cada mundo tiene su canasta: los 100 códigos ambulatorios y los 57 hospitalarios que más facturan y tienen precio en la Metropolitana y en la mayoría de las demás regiones. Cubren el 80,9% y el 58,3% de lo facturado en cada mundo, y cada código pesa según lo que factura."
   ],
   "kpis": [
     {
@@ -359,7 +359,7 @@
         "disp.2026t3.amb.13"
       ],
       "body": [
-        "Cómo se mide: en cada código y región se ordenan los prestadores por su precio a las Isapres. Se divide el precio que abre el cuarto más caro (p75) por el que cierra el cuarto más barato (p25); un valor más alto significa más distancia entre prestadores por la misma prestación. Cada región resume sus códigos con el peso de lo que facturan.",
+        "Cómo se mide: en cada código y región se ordenan los prestadores por su precio a las Isapres. Se divide el precio que abre el cuarto más caro (p75) por el que cierra el cuarto más barato (p25); un valor más alto significa más distancia entre prestadores por la misma prestación. Cada región promedia sus códigos con el peso de lo que factura cada código en todo el país.",
         "La mediana entre regiones es 1,49 en ambulatorio y 1,63 en hospitalario. No es una medida de calidad: el precio puede variar por complejidad, equipamiento o ubicación."
       ],
       "spark": {
@@ -557,8 +557,7 @@
       ],
       "text": [],
       "body": [
-        "Una cifra alta indica que, en esa región, la red de las Isapres depende de pocos prestadores. Se mide con prestadores seudónimos: la SIS no publica sus nombres, y Alicanto tampoco.",
-        "En promedio, los tres mayores de cada región facturan el 52,7% de lo que se cobra a las Isapres allí."
+        "Una cifra alta indica que, en esa región, la red de las Isapres depende de pocos prestadores. Se mide con prestadores seudónimos: la SIS no publica sus nombres, y Alicanto tampoco."
       ],
       "dek": "En 10 de 16 regiones, tres prestadores superan la mitad de lo facturado",
       "dek_refs": [
@@ -585,8 +584,8 @@
           "unit": "%",
           "digits": 1,
           "series": [
-            "abr–jun",
-            "jul–sep"
+            "abr–jun 2026",
+            "jul–sep 2026"
           ],
           "series_style": "period",
           "rows": [
@@ -930,8 +929,8 @@
         "idx.2026t3.hosp.media_unw"
       ],
       "body": [
-        "Cómo se mide: para cada código de la canasta se compara el precio mediano de la región con el de la Cómo se mide: para cada código de la canasta se compara el precio mediano de la región con el de la Metropolitana, y luego se promedia con el peso de lo que factura cada código. Un valor negativo significa que la misma canasta cuesta menos que en la Metropolitana.",
-        "En hospitalario el signo cambia según se pondere o no cada región, por eso el resultado se lee como mixto: pesan pocas prestaciones de alto valor en regiones con pocos prestadores."
+        "Cómo se mide: para cada código de la canasta se compara el precio mediano de la región con el de la Metropolitana, y luego se promedia con el peso de lo que factura cada código. Un valor negativo significa que la misma canasta cuesta menos que en la Metropolitana.",
+        "En hospitalario el signo cambia según se pese o no cada código por lo que factura: con ese peso, las regiones quedan, en promedio, bajo la Metropolitana; con el promedio simple de los códigos, sobre ella. Por eso se lee como mixto."
       ],
       "spark": {
         "chart": "f12-vs-rm",
@@ -987,7 +986,7 @@
             "Ambulatorio",
             "Hospitalario"
           ],
-          "headline": "Cuánto más facturan los prestadores públicos que los privados",
+          "headline": "Precio de los prestadores públicos frente a los privados",
           "subtitle": "% de diferencia del precio público sobre el privado en el mismo código y región, julio–septiembre 2026",
           "rows": [
             {
@@ -1166,7 +1165,7 @@
         "pubpriv.hosp.ponderado"
       ],
       "body": [
-        "Solo se comparan códigos y regiones donde facturan a la vez 3 o más prestadores públicos y 3 o más privados. «Ponderado» pesa cada celda por lo que factura; «mediana» toma la celda típica. Los públicos son una parte chica de esta base: el 2,6% de las atenciones con código Fonasa."
+        "Solo se comparan códigos y regiones donde facturan a la vez 3 o más prestadores públicos y 3 o más privados. «Ponderado» pesa cada celda por lo que factura su código en todo el país; «mediana» toma la celda típica. Los prestadores públicos tienen solo el 2,6% de las atenciones con código Fonasa facturadas a Isapres."
       ],
       "spark": {
         "chart": "f12-pub-priv",
@@ -1269,7 +1268,7 @@
           "unit": "%",
           "digits": 1,
           "headline": "Qué parte de la cuenta paga cada Isapre",
-          "subtitle": "% de lo facturado por los prestadores que bonificó la Isapre, julio–septiembre 2026; el resto es copago",
+          "subtitle": "% de lo facturado por los prestadores que bonificó la Isapre, julio–septiembre 2026; el resto es casi todo copago",
           "rows": [
             {
               "label": "Isalud",
@@ -1612,7 +1611,7 @@
       "text": [],
       "dek": null,
       "body": [
-        "En el sistema, las Isapres bonificaron el 66,7% de lo facturado. Lo que no bonifica la Isapre es copago de la persona; parte puede cubrirlo después un seguro complementario, que estos datos no registran. Las Isapres cerradas atienden a trabajadores de una empresa o sector y se marcan aparte."
+        "En el sistema, las Isapres bonificaron el 66,7% de lo facturado. Casi todo lo que no bonifica la Isapre es copago de la persona; parte puede cubrirlo después un seguro complementario, que estos datos no registran. Las Isapres cerradas atienden a trabajadores de una empresa o sector y se marcan aparte."
       ],
       "spark": {
         "chart": "f12-bonif-isapre",
@@ -1857,7 +1856,7 @@
           "form": "bars",
           "unit": "$",
           "digits": 0,
-          "headline": "Precio de la atención kinesiológica integral ambulatoria (código 0601105), por región",
+          "headline": "Precio por región: Atención kinesiológica integral ambulatoria (código 0601105)",
           "subtitle": "$ por unidad, mediana entre prestadores, julio–septiembre 2026; regiones con precio publicable",
           "rows": [
             {
@@ -3979,7 +3978,7 @@
       "text": [],
       "dek": null,
       "body": [
-        "Es el código con más atenciones del archivo. El precio es la mediana entre prestadores de la región; se publica solo con 2 prestadores o más y 30 atenciones o más, y con 1 prestador la región queda sin precio."
+        "Es el código Fonasa con más atenciones del país en el trimestre. El precio es la mediana entre prestadores de la región; se publica solo con 2 prestadores o más y 30 atenciones o más, y con 1 prestador la región queda sin precio."
       ],
       "spark": {
         "chart": "f12-precio-region",
@@ -4125,7 +4124,7 @@
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-11-10T11:12:51.315954+00:00",
+  "generated_at": "2026-11-10T11:18:40.370797+00:00",
   "builder_version": "f12_informe_v9",
   "verification": {
     "verdict": "PASS",

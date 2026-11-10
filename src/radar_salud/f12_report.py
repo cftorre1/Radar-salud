@@ -344,7 +344,7 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
            "dek_refs": [f"disp.{q}.hosp.{hi_r}", f"disp.{q}.amb.{hi_r}"],
            "body": [("Cómo se mide: en cada código y región se ordenan los prestadores por su precio a las Isapres. Se divide el precio "
                      "que abre el cuarto más caro (p75) por el que cierra el cuarto más barato (p25); un valor más alto significa más "
-                     "distancia entre prestadores por la misma prestación. Cada región resume sus códigos con el peso de lo que facturan."),
+                     "distancia entre prestadores por la misma prestación. Cada región promedia sus códigos con el peso de lo que factura cada código en todo el país."),
                     (f"La mediana entre regiones es {fmt(V(f'disp.{q}.amb.mediana'), 2)} en ambulatorio y {fmt(V(f'disp.{q}.hosp.mediana'), 2)} "
                      "en hospitalario. No es una medida de calidad: el precio puede variar por complejidad, equipamiento o ubicación.")]}
     topic_fields(tab, f"Caro / barato: {fmt(V(f'disp.{q}.amb.mediana'), 2)} amb. · {fmt(V(f'disp.{q}.hosp.mediana'), 2)} hosp.",
@@ -365,8 +365,7 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                "source": "SIS, datos abiertos; prestadores seudónimos por región del prestador; todo lo facturado a Isapres."}]
     tab = {"id": "concentracion", "label": "Concentración regional", "charts": charts, "text": [],
            "body": [("Una cifra alta indica que, en esa región, la red de las Isapres depende de pocos prestadores. Se mide con "
-                     "prestadores seudónimos: la SIS no publica sus nombres, y Alicanto tampoco."),
-                    (f"En promedio, los tres mayores de cada región facturan el {pc(f'conc3.{q}.media_top3')} de lo que se cobra a las Isapres allí.")],
+                     "prestadores seudónimos: la SIS no publica sus nombres, y Alicanto tampoco.")],
            "dek": f"En {fmt(V(f'conc3.{q}.n_sobre_50'), 0)} de {fmt(V(f'conc3.{q}.n_regiones'), 0)} regiones, tres prestadores superan la mitad de lo facturado",
            "dek_refs": [f"conc3.{q}.n_sobre_50", f"conc3.{q}.n_regiones"]}
     topic_fields(tab, f"Tres mayores: {pc(f'conc3.{q}.media_top3')} de cada región, en promedio",
@@ -384,7 +383,7 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
     prow = [{"label": f"Top {size[3:]}", "value": V(f"conc3.{pq}.{N}.{size}"), "ref": f"conc3.{pq}.{N}.{size}",
              "base": V(f"conc3.{q}.{N}.{size}"), "base_ref": f"conc3.{q}.{N}.{size}"}
             for size in ("top10", "top50") if pq and f"conc3.{pq}.{N}.{size}" in v and f"conc3.{q}.{N}.{size}" in v]
-    chart = ({"id": "f12-conc-nacional", "form": "pair", "unit": "%", "digits": 1, "series": [so.quarter_short(pq)[:7], qs[:7]],
+    chart = ({"id": "f12-conc-nacional", "form": "pair", "unit": "%", "digits": 1, "series": [so.quarter_short(pq), qs],
               "series_style": "period", "rows": prow} if len(prow) == 2 else
              {"id": "f12-conc-nacional", "form": "bars", "unit": "%", "digits": 1, "rows": rows})
     charts = [{**chart,
@@ -450,12 +449,12 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
     tab = {"id": "vs-rm", "label": "Regiones vs. RM", "charts": charts, "text": [],
            "dek": "; ".join(phrase), "dek_refs": drefs,
            "body": [("Cómo se mide: para cada código de la canasta se compara el precio mediano de la región con el de la "
-                     "Cómo se mide: para cada código de la canasta se compara el precio mediano de la región con el de la "
                      "Metropolitana, y luego se promedia con el peso de lo que factura cada código. Un valor negativo significa que "
                      "la misma canasta cuesta menos que en la Metropolitana.")]
-                   + (["En hospitalario el signo cambia según se pondere o no cada región, por eso el resultado se lee como mixto: "
-                       "pesan pocas prestaciones de alto valor en regiones con pocos prestadores."] if not all(
-                       (V(f"idx.{q}.{w}.media") < 0) == (V(f"idx.{q}.{w}.media_unw") < 0) for w in WORLDS) else [])}
+                   + [(f"En {WORLD_LABEL[w]} el signo cambia según se pese o no cada código por lo que factura: con ese peso, las "
+                       f"regiones quedan, en promedio, {'bajo' if V(f'idx.{q}.{w}.media') < 0 else 'sobre'} la Metropolitana; con el promedio simple de "
+                       f"los códigos, {'bajo' if V(f'idx.{q}.{w}.media_unw') < 0 else 'sobre'} ella. Por eso se lee como mixto.")
+                      for w in WORLDS if (V(f"idx.{q}.{w}.media") < 0) != (V(f"idx.{q}.{w}.media_unw") < 0)]}
     topic_fields(tab, f"Ambulatorio {sg(f'idx.{q}.amb.media')} · hospitalario {sg(f'idx.{q}.hosp.media')} vs. RM, promedio",
                  index_refs=[f"idx.{q}.amb.media", f"idx.{q}.hosp.media"], kpis=cards)
     tabs.append(tab)
@@ -468,7 +467,7 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                  "base": V(f"pubpriv.hosp.{key}"), "base_ref": f"pubpriv.hosp.{key}"}
                 for m, key in (("Ponderado", "ponderado"), ("Mediana", "mediana"))]
         charts = [{"id": "f12-pub-priv", "form": "pair", "unit": "%", "digits": 1, "series": ["Ambulatorio", "Hospitalario"],
-                   "headline": "Cuánto más facturan los prestadores públicos que los privados",
+                   "headline": "Precio de los prestadores públicos frente a los privados",
                    "subtitle": f"% de diferencia del precio público sobre el privado en el mismo código y región, {ql}",
                    "rows": prow,
                    "table": {"columns": ["Región", "Prestadores públicos", "Prestadores privados", "Celdas amb.", "Celdas hosp."],
@@ -483,8 +482,8 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                "dek": pubpriv_title(V("pubpriv.amb.ponderado"), V("pubpriv.hosp.ponderado"), fmt),
                "dek_refs": ["pubpriv.amb.ponderado", "pubpriv.hosp.ponderado"],
                "body": [("Solo se comparan códigos y regiones donde facturan a la vez 3 o más prestadores públicos y 3 o más "
-                         "privados. «Ponderado» pesa cada celda por lo que factura; «mediana» toma la celda típica.")
-                        + (f" Los públicos son una parte chica de esta base: el {pc('pubpriv.publico.pct_atenciones')} de las atenciones con código Fonasa."
+                         "privados. «Ponderado» pesa cada celda por lo que factura su código en todo el país; «mediana» toma la celda típica.")
+                        + (f" Los prestadores públicos tienen solo el {pc('pubpriv.publico.pct_atenciones')} de las atenciones con código Fonasa facturadas a Isapres."
                            if "pubpriv.publico.pct_atenciones" in v else "")]}
         # The medians go in the topic body (index line); the title carries the weighted figures (review round 3).
         topic_fields(tab, f"Medianas: ambulatorio {sg('pubpriv.amb.mediana')} · hospitalario {sg('pubpriv.hosp.mediana')}",
@@ -540,17 +539,17 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
 
     # Main dek and intro (Dirección 10-nov): the dek states the finding; the intro says what is compared and why
     # ambulatorio / hospitalario are split, so the 72,9% and its two shares read together.
-    dek = (f"Por una misma prestación y en la misma región, el cuarto más caro de los prestadores cobra a las Isapres "
-           f"{fmt(V(f'disp.{q}.amb.mediana'), 2)} veces o más lo que el cuarto más barato en atención ambulatoria, y "
-           f"{fmt(V(f'disp.{q}.hosp.mediana'), 2)} veces o más en hospitalaria.")
+    dek = (f"En la región típica, por una misma prestación, el cuarto más caro de los prestadores cobra a las Isapres al menos "
+           f"{fmt(V(f'disp.{q}.amb.mediana'), 2)} veces lo que el cuarto más barato en atención ambulatoria, y "
+           f"{fmt(V(f'disp.{q}.hosp.mediana'), 2)} veces en hospitalaria.")
     intro = [
         (f"Qué se compara: lo que los prestadores facturan a las Isapres con un código del arancel MLE de Fonasa, la lista "
          f"oficial que permite comparar la misma prestación entre prestadores. Es el {pc(f'embudo.{q}.facturado.pct_mle')} de "
-         "todo lo facturado en el trimestre; el resto usa códigos propios de cada Isapre o de la Superintendencia."),
+         "todo lo facturado en el trimestre; el resto usa códigos propios de cada Isapre, de la Superintendencia o solo GES."),
         (f"De ese {pc(f'embudo.{q}.facturado.pct_mle')}, el {pc(f'embudo.{q}.facturado.pct_amb')} es atención ambulatoria y el "
          f"{pc(f'embudo.{q}.facturado.pct_hosp')} hospitalaria. Como sus precios no se comparan entre sí, cada mundo tiene su "
          f"canasta: los {fmt(V('canasta.amb.n'), 0)} códigos ambulatorios y los {fmt(V('canasta.hosp.n'), 0)} hospitalarios "
-         f"que más facturan y tienen precio en casi todas las regiones. Cubren el {pc('canasta.amb.cobertura')} y el "
+         f"que más facturan y tienen precio en la Metropolitana y en la mayoría de las demás regiones. Cubren el {pc('canasta.amb.cobertura')} y el "
          f"{pc('canasta.hosp.cobertura')} de lo facturado en cada mundo, y cada código pesa según lo que factura."),
     ]
     paragraphs.append(f"El {pc(f'embudo.{q}.facturado.pct_mle')} de lo facturado tiene código MLE; la canasta cubre "

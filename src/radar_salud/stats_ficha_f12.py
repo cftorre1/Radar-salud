@@ -475,7 +475,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                 + ([pc(f"sistema.{pq}.pct_bonif")] if pq else [])]}
     charts = [{"id": "f12-bonif-isapre", "form": "bars", "unit": "%", "digits": 1,
                "headline": "Qué parte de la cuenta paga cada Isapre",
-               "subtitle": f"% de lo facturado por los prestadores que bonificó la Isapre, {ql}; el resto es copago",
+               "subtitle": f"% de lo facturado por los prestadores que bonificó la Isapre, {ql}; el resto es casi todo copago",
                "rows": [{"label": nm(c), "value": V(f"isapre.{c}.{q}.total.pct_bonif"), "ref": f"isapre.{c}.{q}.total.pct_bonif",
                          "emphasis": c in (k["hi_b"], k["lo_b"]), **tag(c)} for c in iss[:12]],
                "table": table,
@@ -491,8 +491,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                          "rows": [[nm(c), pc(f"isapre.{c}.{q}.amb.pct_bonif"), pc(f"isapre.{c}.{q}.hosp.pct_bonif")] for c in iss]},
                "source": "SIS, datos abiertos de prestaciones bonificadas; tipo de atención declarado en cada fila."}]
     tab = {"id": "cobertura", "label": "Cobertura por Isapre", "charts": charts, "text": [], "dek": None,
-           "body": [(f"En el sistema, las Isapres bonificaron el {pc(f'sistema.{q}.pct_bonif')} de lo facturado. Lo que no bonifica "
-                     "la Isapre es copago de la persona; parte puede cubrirlo después un seguro complementario, que estos datos "
+           "body": [(f"En el sistema, las Isapres bonificaron el {pc(f'sistema.{q}.pct_bonif')} de lo facturado. Casi todo lo que no "
+                     "bonifica la Isapre es copago de la persona; parte puede cubrirlo después un seguro complementario, que estos datos "
                      "no registran. Las Isapres cerradas atienden a trabajadores de una empresa o sector y se marcan aparte.")]}
     hi_b, lo_b = k["hi_b"], k["lo_b"]
     sf.topic_fields(tab, f"De {pc(f'isapre.{lo_b}.{q}.total.pct_bonif')} ({nm(lo_b)}) a {pc(f'isapre.{hi_b}.{q}.total.pct_bonif')} ({nm(hi_b)})",
@@ -558,7 +558,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     pub = [r for r in so.REGIONS if f"precio.{c1}.{r}.mediana" in v and r != "0"]
     pub = sorted(pub, key=lambda r: -V(f"precio.{c1}.{r}.frec"))[:12]
     charts = [{"id": "f12-precio-region", "form": "bars", "unit": "$", "digits": 0,
-               "headline": (f"Precio de la {codes[0]['desc'].lower()} (código {c1}), por región" if codes[0].get('desc') else f"Precio del código {c1}, por región"),
+               "headline": (f"Precio por región: {codes[0]['desc'][0]}{codes[0]['desc'][1:].lower()} (código {c1})" if codes[0].get('desc') else f"Precio del código {c1}, por región"),
                "subtitle": f"$ por unidad, mediana entre prestadores, {ql}; regiones con precio publicable",
                "rows": [{"label": so.REGIONS[r], "value": V(f"precio.{c1}.{r}.mediana"), "ref": f"precio.{c1}.{r}.mediana"} for r in pub],
                "table": {"columns": ["Código", "Región", "Prestadores", "Atenciones", "Precio (p25–p75)", "Mayor prestador"],
@@ -577,7 +577,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     for e, n in st.items():
         package["derived_ratios"].append({"id": f"conteo.celdas.{e}", "value": n, "unit": "count"})
     tab = {"id": "regiones", "label": "Precios por región", "charts": charts, "text": [], "dek": None,
-           "body": [("Es el código con más atenciones del archivo. El precio es la mediana entre prestadores de la región; se publica "
+           "body": [("Es el código Fonasa con más atenciones del país en el trimestre. El precio es la mediana entre prestadores de la región; se publica "
                      "solo con 2 prestadores o más y 30 atenciones o más, y con 1 prestador la región queda sin precio.")]}
     rr = pub[0] if pub else None
     if rr:
