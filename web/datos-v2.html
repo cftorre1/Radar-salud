@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#1D3345"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Alicanto Salud · Datos v2 (maqueta)</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="product-ui.css"/><link rel="stylesheet" href="home-inbox.css"/><link rel="stylesheet" href="datos.css"/>
+<!-- Maqueta Datos v2 (sólo staging; scripts/package_pages.py la excluye de producción). Usa sólo los datos ya
+     publicados en web/data (fichas verificadas, vistas previas de staging y series SIS 1990–2025); no hay backend nuevo.
+     La página ordena y formatea: no calcula cifras nuevas. -->
+<style>
+.v2{--card:#fff;--line:var(--ink12);--soft:#F4F1EA}
+.v2-ribbon{background:var(--ink);color:#E9E4D8;font-size:12px;font-weight:600;text-align:center;padding:6px var(--gutter);letter-spacing:.02em}
+.v2-wrap{max-width:1120px;margin:0 auto;padding:18px var(--gutter) 40px}
+.v2-hero .kick{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 6px}
+.v2-hero h1{font-family:var(--serif);font-weight:400;font-size:29px;line-height:1.12;margin:0 0 6px;color:var(--ink)}
+.v2-hero .lead{margin:0 0 6px;font-size:14.5px;line-height:1.45;color:var(--ink68);max-width:640px}
+.v2-hero .meta{margin:0;font-size:12.5px;color:var(--ink68);min-height:2.9em}
+.v2-hero .meta b{color:var(--ink);font-weight:650}
+/* Filter bar: sticky, one row of three controls (wraps to 2+1 at 390 px); active filters as removable chips. */
+.v2-filters{position:sticky;top:var(--hdr);z-index:20;background:rgba(250,249,245,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);margin:14px calc(-1*var(--gutter)) 0;padding:10px var(--gutter)}
+.v2-frow{display:grid;grid-template-columns:1fr 1fr .9fr;gap:6px;max-width:1120px;margin:0 auto}
+.v2-f{display:flex;flex-direction:column;gap:2px;min-width:0}
+.v2-f span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink68)}
+.v2-f select{min-height:40px;width:100%;border:1px solid var(--ink18);border-radius:10px;background:#fff;padding:0 4px 0 8px;font:inherit;font-size:13.5px;font-weight:600;text-overflow:ellipsis;color:var(--ink);min-width:0}
+.v2-chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.v2-scope{margin:8px 0 0;font-size:12px;color:var(--ink68)}
+.v2-chips:empty{display:none}
+.v2-chip{display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--ink18);background:#fff;border-radius:999px;padding:0 6px 0 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer}
+.v2-chip i{font-style:normal;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink09);font-size:13px}
+.v2-sec{margin-top:26px}
+.v2-sh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 10px}
+.v2-sh h2{font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2;margin:0;color:var(--ink)}
+.v2-sh p{margin:0;font-size:12.5px;color:var(--ink68);text-align:right}
+/* KPI tiles */
+.v2-kpis{display:grid;grid-auto-flow:column;grid-auto-columns:46%;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1*var(--gutter));padding:0 var(--gutter) 4px;-webkit-overflow-scrolling:touch}.v2-kpi{scroll-snap-align:start}
+.v2-kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px 10px;min-width:0;display:flex;flex-direction:column}
+.v2-kpi .fam{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 4px}
+.v2-kpi .lab{font-size:12px;color:var(--ink68);margin:0;line-height:1.3}
+.v2-kpi .val{font-size:21px;font-weight:650;line-height:1.15;margin:3px 0 2px;font-variant-numeric:tabular-nums;color:var(--ink);overflow-wrap:anywhere}
+.v2-kpi .v2-kd{font-size:12px;color:var(--ink68);margin:0;line-height:1.35;overflow-wrap:anywhere}
+.v2-kpi .v2-kper{margin-top:auto;padding-top:6px;font-size:12px;color:var(--ink48)}
+/* Comparator / profile cards */
+.v2-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}
+.v2-tabs{display:inline-flex;border:1px solid var(--ink18);border-radius:999px;padding:2px;background:#fff;margin:0 0 10px;max-width:100%}
+.v2-tabs button{min-height:36px;border:0;border-radius:999px;background:transparent;padding:0 14px;font:inherit;font-size:12.5px;font-weight:650;color:var(--ink68);cursor:pointer}
+.v2-tabs button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.v2-scrollbox{position:relative}.v2-scrollbox::after{content:"";position:absolute;top:0;right:-12px;bottom:0;width:28px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);pointer-events:none}
+.v2-scroll{overflow-x:auto;margin:0 -12px;padding:0 12px;-webkit-overflow-scrolling:touch}
+.v2-hint{font-size:12px;color:var(--ink68);margin:0 0 6px}
+.v2-heat{border-collapse:separate;border-spacing:2px;font-size:12.5px;font-variant-numeric:tabular-nums;min-width:100%}
+.v2-heat th,.v2-heat td{padding:7px 8px;text-align:right;white-space:nowrap;border-radius:4px}
+.v2-heat thead th{font-size:12px;font-weight:700;color:var(--ink68);vertical-align:bottom;white-space:normal;min-width:84px;line-height:1.25;text-align:right}
+.v2-heat thead th small{display:block;font-weight:600;color:var(--accent-ink)}
+.v2-heat th[scope=row]{position:sticky;left:0;background:#fff;text-align:left;font-weight:650;color:var(--ink);z-index:1;width:96px;min-width:96px;max-width:96px;white-space:normal;line-height:1.2}
+.v2-heat thead th:first-child{position:sticky;left:0;background:#fff;z-index:2;text-align:left}
+.v2-heat tbody tr{cursor:pointer}
+.v2-heat tbody tr:hover th[scope=row]{color:var(--accent-ink)}
+.v2-heat tbody tr.sel th[scope=row]{box-shadow:inset 3px 0 0 var(--accent)}
+.v2-heat tbody tr.sel td{outline:2px solid var(--accent);outline-offset:-2px}
+.v2-heat td.na{color:var(--ink48)}
+.v2-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink68);margin:8px 0 0;flex-wrap:wrap}
+.v2-legend .ramp{display:inline-flex;gap:2px}.v2-legend .ramp i{width:16px;height:10px;border-radius:2px;display:block}
+/* Profile: metric rows with all entities as a strip, the selected one in accent */
+.v2-prof h3{font-family:var(--serif);font-weight:400;font-size:20px;margin:0 0 2px;color:var(--ink)}
+.v2-prof .sub{margin:0 0 10px;font-size:12.5px;color:var(--ink68)}
+.v2-metrics{display:grid;gap:8px;grid-template-columns:1fr}
+.v2-m{border:1px solid var(--line);border-radius:10px;padding:9px 10px 8px;min-width:0}
+.v2-m .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.v2-m .name{font-size:12.5px;color:var(--ink84);line-height:1.3;min-width:0}
+.v2-m .name small{display:block;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent-ink);text-transform:uppercase}
+.v2-m .v{font-size:17px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+.v2-m .pos{font-size:11.5px;color:var(--ink68);margin:2px 0 4px}
+.v2-strip{display:block;width:100%;height:auto;margin-top:4px}
+.v2-more summary{cursor:pointer;font-size:13px;font-weight:650;color:var(--accent-ink);min-height:40px;display:flex;align-items:center;margin-top:6px}.v2-more .v2-metrics{margin-top:4px}
+.v2-spark{margin-top:8px;border-top:1px solid var(--ink09);padding-top:8px;font-size:12px;color:var(--ink68)}
+/* Fichas grid */
+.v2-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.v2-f-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 12px 10px;display:flex;flex-direction:column;min-width:0;color:var(--ink);text-decoration:none}
+a.v2-f-card:hover{border-color:var(--ink18);box-shadow:0 2px 10px rgba(29,51,69,.06)}
+.v2-f-card .k{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink)}
+.v2-tag{flex:none;font-size:12px;letter-spacing:.02em;text-transform:none;font-weight:700;border-radius:999px;padding:2px 8px;background:var(--accent-soft);color:var(--accent-ink)}
+.v2-tag.ok{background:#E7EFE8;color:#3B6B4A}.v2-tag.new{background:var(--accent-ink);color:#fff}.v2-tag.soon{background:var(--ink09);color:var(--ink68)}
+.v2-f-card h3{font-family:var(--serif);font-weight:400;font-size:16.5px;line-height:1.3;margin:6px 0 8px;overflow-wrap:anywhere}
+.v2-f-card .row{display:flex;gap:10px;align-items:flex-end;justify-content:space-between}
+.v2-f-card .kp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px;flex:1;min-width:0}
+.v2-f-card .kp b{display:block;font-size:15.5px;font-weight:650;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.v2-f-card .kp span{display:block;font-size:12px;color:var(--ink68);line-height:1.25}
+.v2-f-card svg.sp{flex:none;width:92px;height:34px}
+.v2-f-card .ft{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;font-size:12px;color:var(--ink68);border-top:1px solid var(--ink09);margin-top:10px;padding-top:7px}
+.v2-f-card[hidden]{display:none}.v2-go{margin-top:8px;font-size:13px;font-weight:650;color:var(--accent-ink)}.v2-go.muted{color:var(--ink68);font-weight:500}
+.v2-soon{grid-column:1/-1;border:1px dashed var(--ink18);border-radius:14px;padding:10px 12px;background:var(--soft)}.v2-soon-h{margin:0 0 4px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink68)}.v2-soon-r{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--ink84)}.v2-soon-r b{color:var(--ink);font-weight:650}
+/* Premium band */
+.v2-prem{margin-top:28px;border-radius:16px;background:linear-gradient(135deg,#1D3345,#2B4559);color:#F3EFE6;padding:18px 16px}
+.v2-prem h2{font-family:var(--serif);font-weight:400;font-size:21px;margin:0 0 6px;color:#fff}
+.v2-prem ul{margin:0 0 14px;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px}
+.v2-prem li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle}
+.v2-prem button{min-height:44px;border:0;border-radius:999px;background:var(--accent);color:#fff;font:inherit;font-weight:700;padding:0 18px;cursor:pointer}
+.v2 .sl-title{font-size:22px}
+.v2-mini{margin:8px 2px 0;font-size:12.5px;color:var(--ink68)}.v2-mini button{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--accent-ink);text-decoration:underline;cursor:pointer;min-height:32px}
+.v2-foot{font-size:12px;color:var(--ink68);line-height:1.5;margin-top:22px}
+.v2-empty{font-size:13.5px;color:var(--ink68);margin:4px 0}
+@media (min-width:760px){
+ .v2-wrap{padding-top:28px}.v2-hero h1{font-size:38px}
+ .v2-frow{grid-template-columns:repeat(3,minmax(0,240px))}.v2-f span{position:static;width:auto;height:auto;clip:auto}
+ .v2-kpis{grid-auto-flow:row;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;margin:0;padding:0}
+ .v2-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .v2-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .v2-card{padding:16px 18px}.v2-scroll{margin:0 -18px;padding:0 18px}
+ .v2-prem{padding:24px 26px;display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:center}
+}
+@media (min-width:1100px){.v2-cols .sl-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.v2-kpis{grid-template-columns:repeat(6,minmax(0,1fr))}.v2-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.v2-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:18px;align-items:start}.v2-cols>.v2-sec{margin-top:26px}}
+</style>
+</head>
+<body class="datos-page v2">
+<div class="v2-ribbon">Maqueta Datos v2 · sólo staging · datos reales ya publicados en Alicanto</div>
+<main>
+<header class="brandbar">
+<div class="brand-in">
+<a href="index.html" class="logo-link"><img class="logo" src="assets/alicanto-logo-header.png" alt="Alicanto Salud"/></a>
+<p class="hero-purpose">La última cifra oficial de cada serie, verificada.</p>
+<nav class="topnav" aria-label="Navegación principal">
+<a class="header-premium" href="index.html" data-short="Chile">Radar · Chile</a><a data-short="Global" class="header-premium" href="global.html">Global · Internacional</a><a class="header-premium" href="datos.html" aria-current="page" data-short="Datos">Datos del sector</a><a class="header-newsletter" href="subscription.html" data-open-newsletter data-short="Newsletter">Newsletter semanal</a>
+<button type="button" class="header-premium premium-access" id="earlyAccessOpen" data-open-premium><span class="wide-only">Acceso </span>PREMIUM</button>
+</nav>
+</div>
+</header>
+<div class="v2-wrap">
+<section class="v2-hero">
+<p class="kick">Panel del sector salud</p>
+<h1>Datos del sector</h1>
+<p class="lead">Cifras oficiales verificadas contra su fuente: cartera, resultados, GES, prestadores, precios y licencias. Filtra por Isapre, región y período.</p>
+<p class="meta" id="v2Meta">&nbsp;</p>
+</section>
+<div class="v2-filters" id="v2Filters">
+<div class="v2-frow">
+<label class="v2-f"><span>Isapre</span><select id="fIsapre"><option value="">Isapre: todas</option></select></label>
+<label class="v2-f"><span>Región</span><select id="fRegion"><option value="">Región: todas</option></select></label>
+<label class="v2-f"><span>Período de las series</span><select id="fPeriodo"><option value="todo">1990–2025</option><option value="2005">2005–2025</option><option value="10">2016–2025</option></select></label>
+</div>
+</div>
+<div class="v2-chips" id="v2Chips"></div><p class="v2-scope" id="v2Scope">Isapre y región filtran el comparador, las fichas y la serie; el período aplica a la serie 1990–2025.</p>
+<section class="v2-sec" aria-labelledby="v2-k"><div class="v2-sh"><h2 id="v2-k">Lo último</h2><p>cifra vigente de cada ficha</p></div><div class="v2-kpis" id="v2Kpis"></div></section>
+<div class="v2-cols">
+<section class="v2-sec" id="v2SeriesSec" aria-labelledby="sl-title"><div class="sl-section" id="seriesLargas" data-manual="1" style="margin:0;padding:0;border:0"><p class="v2-empty">Cargando series…</p></div></section>
+<section class="v2-sec" aria-labelledby="v2-c"><div class="v2-sh"><h2 id="v2-c">Comparador</h2><p>último período de cada ficha</p></div><div class="v2-card" id="v2Comp"></div><p class="v2-mini">Descarga este comparador en CSV y recibe alertas cuando cambie una cifra de tu Isapre · <button type="button" data-open-premium>Premium</button></p></section>
+</div>
+<section class="v2-sec" aria-labelledby="v2-f"><div class="v2-sh"><h2 id="v2-f">Fichas</h2><p id="v2FichasNote">una ficha viva por familia</p></div><div class="v2-grid" id="v2Fichas"></div></section>
+<section class="v2-prem" aria-labelledby="v2-p"><div><h2 id="v2-p">Datos Premium</h2><p style="margin:0 0 10px;font-size:13.5px;color:#D9D3C6">Para equipos que siguen el mercado cada semana: todo lo de esta página, más profundo y descargable.</p></div><div><ul><li>Descarga CSV de cada serie y ficha</li><li>Alertas cuando cambia una cifra de tu Isapre o región</li><li>Comparador completo con todas las métricas e históricos</li><li>Series 1990–2025 de prestaciones, licencias, egresos y planes</li></ul><button type="button" data-open-premium>Quiero acceso anticipado</button></div></section>
+<p class="v2-foot">Fuentes: Superintendencia de Salud (SIS) y Dirección de Presupuestos (DIPRES). Cada cifra viene de una ficha publicada o de una serie oficial con recibo (URL y SHA-256). F12 y F13 se muestran desde su vista de staging. Las Isapres y regiones se nombran como en las fichas; «—» indica que la ficha no informa ese dato.</p>
+</div>
+<footer class="footer">Alicanto Salud · Información seleccionada desde fuentes oficiales y verificadas para que no te pierdas lo que importa</footer>
+</main>
+<script src="analytics.js"></script><script src="conversion.js"></script><script src="series-largas.js"></script>
+<script>
+(function(){
+'use strict';
+const C={ink:'#1D3345',ink50:'#6B7884',axis:'#B9B3A6',bar:'#CFC9BC',accent:'#C37C37'};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const dec=(v,d)=>Number(v).toLocaleString('es-CL',{minimumFractionDigits:d,maximumFractionDigits:d}).replace(/^-/,'−');
+// Format a published chart value with its unit and the chart's own precision (as stats-ficha.js does).
+function fmt(v,c){if(!Number.isFinite(v))return'—';const u=c.unit,d=Number.isInteger(c.digits)?c.digits:0;
+ if(u==='%')return dec(v,d)+'%';if(u==='MM$')return(v>0&&c.form==='diverging'?'+':'')+dec(v,d)+' MM$';if(u==='$')return'$'+dec(v,0);if(u==='veces')return dec(v,d)+'×';
+ if(c.form==='diverging')return(v>0?'+':'')+dec(v,d);return dec(v,d)}
+const LABEL={F1:'Cartera',F2:'Financieras',F4:'GES',F6:'Prestadores',F7:'Presupuesto',F12:'Precios',F13:'Licencias'};
+// Comparator columns: chart ids from the published fichas, with a short column header.
+const COMP={isapre:[['f1-isapres','Δ beneficiarios ene–ago'],['f1-share','Participación (abiertas)'],['f2-resultado-isapres','Resultado ene–mar'],['f2-siniestralidad-isapres','Siniestralidad'],['f12-bonif-isapre','Bonificado / facturado'],['f13-rechazo-isapre','Licencias rechazadas'],['f13-dias-isapre','Días autorizados']],
+ region:[['f12-precio-region','Precio mediano 0601105'],['f12-vs-rm-amb','Ambulatorio vs. RM'],['f12-disp-amb','Dispersión ambulatoria'],['f12-conc-regional','3 mayores prestadores'],['f13-rechazo-region','Licencias rechazadas']]};
+const state={isapre:'',region:'',periodo:'todo',view:'isapre'};
+let D=null,series=null;
+function load(u){return fetch(u,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)}
+Promise.all([load('data/datos.json'),load('data/radar_today.json'),load('data/preview/f12_prestaciones.json'),load('data/preview/f13_licencias.json'),load('data/series_isapre.json')]).then(([datos,today,f12,f13,ser])=>{
+ const fichas={};((today&&today.signals)||[]).forEach(s=>{if(s.stats_ficha)fichas[s.stats_ficha.family]={f:s.stats_ficha,share:s.share_url,live:true}});
+ [f12,f13].forEach(p=>{if(p&&p.ficha&&!fichas[p.ficha.family])fichas[p.ficha.family]={f:p.ficha,live:false}});
+ const charts={};Object.values(fichas).forEach(({f})=>f.tabs.forEach(t=>(t.charts||[]).forEach(c=>{charts[c.id]={...c,family:f.family,period:f.period,kicker:f.kicker}})));
+ D={datos:datos||{families:[]},fichas,charts,ser};
+ const isapres=ser?ser.isapres.beneficiarios.filter(b=>b.short).map(b=>b.short):[];const regiones=ser?ser.regiones.map(r=>r.short):[];
+ D.isapres=isapres;D.regiones=regiones;
+ $('fIsapre').insertAdjacentHTML('beforeend',isapres.map(n=>`<option>${esc(n)}</option>`).join(''));
+ $('fRegion').insertAdjacentHTML('beforeend',regiones.map(n=>`<option>${esc(n)}</option>`).join(''));
+ const live=D.datos.families.filter(f=>f.state==='live'),last=live.map(f=>f.updated_on).sort().pop();
+ $('v2Meta').innerHTML=`<b>${Object.keys(fichas).length} fichas</b> verificadas · última verificación ${esc(day(last))} · fuentes SIS y DIPRES`;
+ if(ser&&window.AlicantoSeries)series=window.AlicantoSeries.mount($('seriesLargas'),ser);else $('seriesLargas').innerHTML='<p class="v2-empty">Series 1990–2025 no disponibles en este entorno.</p>';
+ drawKpis();drawFichas();drawAll();
+});
+function day(s){const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||'');return m?`${Number(m[3])} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][m[2]-1]} ${m[1]}`:''}
+function drawKpis(){
+ const pick=[['F1','beneficiarios'],['F2','resultado'],['F4','casos'],['F12','dispersion_amb'],['F13','rechazo'],['F7','ejecucion_partida']];
+ $('v2Kpis').innerHTML=pick.map(([fam,id])=>{const x=D.fichas[fam];if(!x)return'';const k=(x.f.kpis||[]).find(k=>k.id===id)||x.f.kpis[0];if(!k)return'';
+  const per=(x.f.kicker||'').split(' · ').slice(1).join(' · ');
+  return`<div class="v2-kpi" data-fam="${fam}"><p class="fam">${esc(LABEL[fam]||'')} · ${esc(fam)}</p><p class="lab">${esc(k.label)}</p><p class="val">${esc(k.value)}</p>${(k.lines||[]).slice(0,1).map(l=>`<p class="v2-kd">${esc(l)}</p>`).join('')}<p class="v2-kper">${esc(per)}</p></div>`}).join('');
+}
+// Heatmap cell tint by the cell's order within its column (lowest to highest), so one outlier does not wash out the
+// rest; single ink hue in a light range, so ink text stays legible. Display only: no figure is derived from it.
+function tint(t){return Number.isFinite(t)?`rgba(29,51,69,${(.03+t*.24).toFixed(3)})`:'transparent'}
+function order(vs,v){const s=[...vs].sort((a,b)=>a-b);return s.length>1?s.indexOf(v)/(s.length-1):.5}
+function drawComp(){
+ const kind=state.view,names=kind==='isapre'?D.isapres:D.regiones,sel=kind==='isapre'?state.isapre:state.region;
+ const cols=COMP[kind].map(([id,h])=>({c:D.charts[id],h})).filter(x=>x.c);
+ if(!cols.length){$('v2Comp').innerHTML='<p class="v2-empty">Sin fichas con este desglose.</p>';return}
+ const val=(c,n)=>{const r=c.rows.find(r=>r.label===n);return r?Number(r.value):NaN};
+ const filled=n=>cols.filter(x=>Number.isFinite(val(x.c,n))).length;
+ const rows=names.filter(n=>filled(n)).sort((a,b)=>(filled(b)>=cols.length-1)-(filled(a)>=cols.length-1));
+ const head=`<tr><th scope="col">${kind==='isapre'?'Isapre':'Región'}</th>${cols.map(x=>`<th scope="col" title="${esc(x.c.headline)}"><small>${esc(LABEL[x.c.family]||x.c.family)} · ${esc(day(x.c.period+'-01').replace(/^1 /,''))}</small>${esc(x.h)}</th>`).join('')}</tr>`;
+ const body=rows.map(n=>`<tr data-pick="${esc(n)}" class="${n===sel?'sel':''}" tabindex="0" role="button" aria-pressed="${n===sel}"><th scope="row">${esc(n)}</th>${cols.map(x=>{const vs=x.c.rows.map(r=>Number(r.value)).filter(Number.isFinite),v=val(x.c,n);return`<td class="${Number.isFinite(v)?'':'na'}" style="background:${tint(Number.isFinite(v)?order(vs,v):NaN)}" title="${esc(`${n} · ${x.c.headline}: ${fmt(v,x.c)}`)}">${fmt(v,x.c)}</td>`}).join('')}</tr>`).join('');
+ const prof=sel?profile(kind,sel):'';
+ $('v2Comp').innerHTML=`<div class="v2-tabs" role="group" aria-label="Comparar por"><button type="button" data-view="isapre" aria-pressed="${kind==='isapre'}">Por Isapre</button><button type="button" data-view="region" aria-pressed="${kind==='region'}">Por región</button></div><p class="v2-hint">${cols.length} indicadores · desliza la tabla → · toca una fila para ver su perfil</p><div class="v2-scrollbox"><div class="v2-scroll"><table class="v2-heat"><thead>${head}</thead><tbody>${body}</tbody></table></div></div><p class="v2-legend"><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap">menor <span class="ramp">${[0,.33,.66,1].map(t=>`<i style="background:${tint(t)};border:1px solid var(--ink09)"></i>`).join('')}</span> mayor</span><span>dentro de cada columna · «—» la ficha no informa ese dato</span></p>${prof}`;
+ $('v2Comp').querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{state.view=b.dataset.view;drawComp()});
+ $('v2Comp').querySelectorAll('tr[data-pick]').forEach(tr=>{const go=()=>{const n=tr.dataset.pick;if(kind==='isapre'){state.isapre=state.isapre===n?'':n;$('fIsapre').value=state.isapre}else{state.region=state.region===n?'':n;$('fRegion').value=state.region}drawAll()};tr.onclick=go;tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
+}
+// Profile: every published chart that breaks down by this kind of entity; the entity's value, its place in the ficha's
+// own order and a strip of all entities (selected in accent).
+function profile(kind,name){
+ const list=kind==='isapre'?D.isapres:D.regiones;
+ const cs=Object.values(D.charts).filter(c=>c.rows.filter(r=>list.includes(r.label)).length>=5&&c.rows.some(r=>r.label===name));
+ if(!cs.length)return`<div class="v2-prof"><h3>${esc(name)}</h3><p class="sub">Las fichas publicadas no desglosan este dato.</p></div>`;
+ const card=c=>{const rows=c.rows.filter(r=>Number.isFinite(Number(r.value))&&list.includes(r.label)),v=Number(rows.find(r=>r.label===name).value);
+  return`<div class="v2-m"><div class="top"><span class="name"><small>${esc(LABEL[c.family]||'')} · ${esc(c.family)}</small>${esc(c.headline)}</span><span class="v">${fmt(v,c)}</span></div>${strip(rows,name,c)}</div>`};
+ // One indicator per chart family first (the most varied view), then the rest behind an expander.
+ const seen=new Set(),first=[],rest=[];cs.forEach(c=>{(first.length<3&&!seen.has(c.family)?first:rest).push(c);seen.add(c.family)});
+ while(first.length<3&&rest.length)first.push(rest.shift());
+ const more=rest.length?`<details class="v2-more"><summary>Ver los ${cs.length} indicadores</summary><div class="v2-metrics">${rest.map(card).join('')}</div></details>`:'';
+ return`<hr style="border:0;border-top:1px solid var(--ink09);margin:14px 0"><div class="v2-prof" id="v2Prof"><h3>${esc(name)}</h3><p class="sub">${cs.length} indicadores publicados · punto cobre = ${esc(name)}; grises = ${kind==='isapre'?'otras Isapres':'otras regiones'}</p><div class="v2-metrics">${first.map(card).join('')}</div>${more}</div>`;
+}
+// Strip of every entity on the chart's own scale: grey dots, the selected one in copper, the lowest and highest
+// published values labelled at the ends (zero marked when the chart has signed values).
+function strip(rows,name,c){const vs=rows.map(r=>Number(r.value)),lo=Math.min(...vs),hi=Math.max(...vs),signed=lo<0,
+ L=signed?lo:lo,H=Math.max(hi,signed?0:hi)>L?Math.max(hi,signed?0:hi):L+1,W=320,x=v=>10+(v-L)/((H-L)||1)*(W-20);
+ const base=signed&&hi>0?`<line x1="${x(0).toFixed(1)}" x2="${x(0).toFixed(1)}" y1="2" y2="22" stroke="${C.axis}"/>`:'';
+ const dots=rows.map(r=>({s:r.label===name,v:Number(r.value)})).sort((p,q)=>p.s-q.s).map(p=>`<circle cx="${x(p.v).toFixed(1)}" cy="12" r="${p.s?6.5:4}" fill="${p.s?C.accent:C.bar}" ${p.s?'stroke="#fff" stroke-width="2"':''}/>`).join('');
+ return`<svg class="v2-strip" viewBox="0 0 ${W} 38" aria-hidden="true"><line x1="10" x2="${W-10}" y1="12" y2="12" stroke="#ECE8DF"/>${base}${dots}<text x="10" y="35" font-size="11.5" fill="${C.ink50}">mín. ${fmt(lo,c)}</text><text x="${W-10}" y="35" font-size="11.5" text-anchor="end" fill="${C.ink50}">máx. ${fmt(hi,c)}</text></svg>`}
+function spark(c){const rows=(c.rows||[]).filter(r=>Number.isFinite(Number(r.value)));if(rows.length<(c.form==='line'?2:4))return'';const v=rows.map(r=>Number(r.value)),W=92,H=34;
+ if(c.form==='line'){const lo=Math.min(...v),hi=Math.max(...v),x=i=>3+i*(W-8)/(v.length-1),y=a=>4+(hi-a)/((hi-lo)||1)*(H-8);return`<svg class="sp" viewBox="0 0 ${W} ${H}" aria-hidden="true"><polyline points="${v.map((a,i)=>`${x(i).toFixed(1)},${y(a).toFixed(1)}`).join(' ')}" fill="none" stroke="${C.ink}" stroke-width="1.6"/><circle cx="${x(v.length-1)}" cy="${y(v[v.length-1]).toFixed(1)}" r="2.8" fill="${C.accent}"/></svg>`}
+ const hi=Math.max(0,...v),lo=Math.min(0,...v),k=(H-4)/((hi-lo)||1),z=2+hi*k,n=Math.min(v.length,10),bw=Math.min(12,(W-4)/n-2),gap=(W-4-n*bw)/Math.max(1,n-1);
+ return`<svg class="sp" viewBox="0 0 ${W} ${H}" aria-hidden="true"><line x1="0" x2="${W}" y1="${z.toFixed(1)}" y2="${z.toFixed(1)}" stroke="${C.axis}"/>${v.slice(0,n).map((a,i)=>{const h=Math.max(Math.abs(a)*k,1.2);return`<rect x="${(2+i*(bw+gap)).toFixed(1)}" y="${(a<0?z:z-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="1" fill="${c.form==='diverging'?(a<0?C.ink:C.accent):(i===0?C.accent:C.ink)}"/>`}).join('')}</svg>`}
+function drawFichas(){
+ const order=['F1','F2','F4','F12','F13','F6','F7'];
+ const cards=order.filter(f=>D.fichas[f]).map(fam=>{const {f,share,live}=D.fichas[fam],fd=D.datos.families.find(x=>x.family===fam)||{},hero=(f.tabs[0].charts||[])[0]||{};
+  const tag=live?'<span class="v2-tag ok" title="Verificada y publicada en el Radar">Vigente</span>':'<span class="v2-tag new" title="Familia nueva, verificada; se publica en el Radar con su primera ficha">Nueva</span>';
+  const per=(f.kicker||'').split(' · ').slice(1).join(' · ');
+  const inner=`<div class="k"><span>${esc(f.family_label)} · ${esc(fam)}</span>${tag}</div><h3>${esc(f.headline)}</h3><div class="row"><div class="kp">${(f.kpis||[]).slice(0,2).map(k=>`<div><b>${esc(k.value)}</b><span>${esc(k.label)}</span></div>`).join('')}</div>${spark(hero)}</div><div class="ft"><span>${esc(per)}</span><span>${esc(fd.cadence||'')}</span></div>`;
+  const by=breakdowns(fam);
+  return live&&share?`<a class="v2-f-card" data-family="${fam}" data-by="${by}" href="${esc(`index.html?abrir=1&desde=datos#sig-${f.id}`)}">${inner}<span class="v2-go">Ver ficha →</span></a>`:`<div class="v2-f-card" data-family="${fam}" data-by="${by}">${inner}<span class="v2-go muted">Se publica con su primera ficha</span></div>`});
+ const soon=[['F14','GES por patología','Casos GES por problema de salud, Fonasa e Isapres, enero al mes vs. mismo período del año anterior.'],['F9','Planes de salud','Planes vigentes y en comercialización por Isapre y su precio base; serie SIS 2006–2026 ya descargada con recibo.']];
+ $('v2Fichas').innerHTML=cards.join('')+`<div class="v2-soon"><p class="v2-soon-h">Próximamente</p>${soon.map(([f,l,d])=>`<p class="v2-soon-r" data-family="${f}"><b>${esc(l)} · ${f}</b> ${esc(d)}</p>`).join('')}</div>`;
+ filterFichas();
+}
+// Which entity breakdowns a family publishes (from its charts), so the Isapre/region filter can narrow the fichas.
+function breakdowns(fam){const cs=Object.values(D.charts).filter(c=>c.family===fam),has=l=>cs.some(c=>c.rows.filter(r=>l.includes(r.label)).length>=5);return[has(D.isapres)?'isapre':'',has(D.regiones)?'region':''].filter(Boolean).join(' ')}
+function filterFichas(){let n=0;document.querySelectorAll('#v2Fichas .v2-f-card').forEach(el=>{const by=el.dataset.by||'',ok=(!state.isapre||by.includes('isapre'))&&(!state.region||by.includes('region'));el.hidden=!ok;n+=ok});
+ const note=$('v2FichasNote');if(note)note.textContent=state.isapre||state.region?`${n} fichas con datos de ${[state.isapre,state.region].filter(Boolean).join(' y ')}`:'una ficha viva por familia'}
+function chips(){const c=[];if(state.isapre)c.push(['isapre',`Isapre: ${state.isapre}`]);if(state.region)c.push(['region',`Región: ${state.region}`]);if(state.periodo!=='todo')c.push(['periodo',$('fPeriodo').selectedOptions[0].text]);
+ $('v2Chips').innerHTML=c.map(([k,t])=>`<button type="button" class="v2-chip" data-clear="${k}" aria-label="Quitar filtro ${esc(t)}">${esc(t)}<i aria-hidden="true">×</i></button>`).join('');
+ $('v2Chips').querySelectorAll('[data-clear]').forEach(b=>b.onclick=()=>{const k=b.dataset.clear;if(k==='periodo'){state.periodo='todo';$('fPeriodo').value='todo'}else{state[k]='';$(k==='isapre'?'fIsapre':'fRegion').value=''}drawAll()})}
+function syncSeries(){if(!series)return;const cat=series.catalogue;let key='ben';
+ if(state.isapre){const s=cat.find(s=>s.isapre===state.isapre);if(s)key=s.key}else if(state.region){const s=cat.find(s=>s.region===state.region);if(s)key=s.key}
+ series.select(key);const b=document.querySelector(`#seriesLargas [data-range="${state.periodo}"]`);if(b&&b.getAttribute('aria-pressed')!=='true')b.click()}
+function drawAll(){if(state.isapre&&!state.region)state.view='isapre';else if(state.region&&!state.isapre)state.view='region';chips();drawComp();syncSeries();filterFichas()}
+$('fIsapre').onchange=e=>{state.isapre=e.target.value;drawAll()};
+$('fRegion').onchange=e=>{state.region=e.target.value;drawAll()};
+$('fPeriodo').onchange=e=>{state.periodo=e.target.value;drawAll()};
+})();
+</script>
+</body>
+</html>

@@ -170,3 +170,7 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
 ## Corrections
 
 - A withdrawn finding keeps its text verbatim in `superseded_meta` (`withdrawn_insight_texts`), with `corrected_at`, `reason` and the superseded and correcting parser versions (CLAUDE.md rule 6). The row tag ("Corregido el 28 oct") and the detail note ("Corregido el 28 oct: …") use the same `correction.label`.
+
+## Primera publicación de familias nuevas (Dirección 10-nov-2026 00:54)
+
+«No son necesarios mis VB para nuevas fichas, publícalas nomás, pero avísame para revisarlo en staging». Desde esta fecha una familia nueva publica en staging sin visto bueno personal de Dirección cuando tiene PASS determinista, conciliación y revisión independiente aprobada; el integrador registra `first_review` con esta autorización y avisa a Dirección con el enlace de staging para revisión posterior. F12 y F13 son las primeras publicadas así.

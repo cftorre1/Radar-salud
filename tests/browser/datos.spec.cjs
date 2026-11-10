@@ -25,7 +25,8 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
   await expect(row.locator('.dx-kick')).toContainText(f.label);
   for(const k of f.kpis)await expect(row.locator('.dx-kpis')).toContainText(k.value);
   await expect(row.locator('.dx-meta')).toContainText(`Datos a ${f.period_label} · ${f.source}`);
-  expect(f.period_label).toMatch(/^(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic) 20\d\d$/);
+  // Monthly families read 'ago 2026'; quarterly ones (F12/F13, period_kind quarter) read 'jul–sep 2026'.
+  expect(f.period_label).toMatch(/^((ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)–)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic) 20\d\d$/);
   await expect(row.locator('.dx-st')).toHaveText(f.status==='updating'?'Actualizándose':'Vigente');
   expect(await row.getAttribute('href')).toBe(`index.html?abrir=1&desde=datos#sig-${f.piece_id}`);
  }
@@ -102,4 +103,27 @@ test('Datos screenshots at 390 px',async({browser},testInfo)=>{
  await page.locator('#datosView [data-view="grupo"]').click();await expect(page.locator('#datosList .dx-sec').first()).toBeVisible();
  await page.screenshot({path:path.join(SHOTS,'datos_grupo.png'),fullPage:true});
  await ctx.close();
+});
+
+// Series largas 1990–2025 (plan comercial): from data/series_isapre.json, built from the SIS workbook with receipts.
+test('Datos: series largas 1990–2025 with selector, period, table and source',async({page})=>{
+ const s=await (await page.request.get('/data/series_isapre.json')).json();
+ await page.goto('/datos.html');
+ const sec=page.locator('#seriesLargas');
+ await expect(sec.locator('.sl-title')).toHaveText(s.title);
+ for(const h of s.highlights){const k=sec.locator(`.sl-kpi[data-kpi="${h.id}"]`);await expect(k.locator('.sl-kv')).toHaveText(h.value);for(const l of h.lines)await expect(k).toContainText(l)}
+ await expect(sec.locator('.sl-chart svg')).toHaveAttribute('aria-label',/^Beneficiarios · total, 1990–2025: de 2\.108\.308 a 2\.517\.305; máximo 3\.882\.572 en 1997\.$/);
+ await sec.locator('.sl-data summary').click();
+ await expect(sec.locator('.sl-table tbody tr')).toHaveCount(36);
+ await expect(sec.locator('.sl-table tbody tr').first()).toContainText('2025');
+ await sec.locator('[data-range="10"]').click();
+ await expect(sec.locator('.sl-table tbody tr')).toHaveCount(10);
+ const ban=s.isapres.beneficiarios.find(b=>b.short==='Banmédica');
+ await sec.locator('[data-sl="serie"]').selectOption(`isapre-${ban.code}-${ban.tipo}`);
+ await expect(sec.locator('.sl-cap')).toContainText('Banmédica');
+ await expect(sec.locator('.sl-table tbody tr').first()).toContainText(new Intl.NumberFormat('es-CL').format(ban.values.at(-1)));
+ await sec.locator('.sl-notes summary').click();
+ await expect(sec.locator('.sl-src a')).toHaveAttribute('href',s.source.page);
+ await expect(sec.locator('.sl-src')).toContainText(s.source.sha256.slice(0,12));
+ expect(await noHScroll(page)).toBeTruthy();
 });

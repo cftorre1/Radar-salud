@@ -1,0 +1,34 @@
+name: SIS series 1990-2025 (referencia oficial)
+
+# Plan comercial: series largas del sistema Isapre (SIS, biblioteca digital) para Datos, con recibos y robots.txt.
+on:
+  push:
+    branches: [claude/datos-series-1990-2025]
+    paths:
+      - .github/workflows/sis-series-1990-2025.yml
+      - scripts/fetch_sis_series_1990_2025.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    if: github.ref_name != 'main' && github.ref_name != 'production-stable' && github.ref_name != 'staging'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ github.ref_name }}'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Descargar (robots.txt honrado)
+        run: python scripts/fetch_sis_series_1990_2025.py
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "alicanto-salud-bot"
+          git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          git add data/reference/sis_series_1990_2025 || exit 0
+          git commit -m "Series SIS 1990-2025: archivos oficiales con recibos, run ${GITHUB_RUN_ID}" || exit 0
+          for i in 1 2 3 4 5 6; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep $((i*10)); done; exit 1
