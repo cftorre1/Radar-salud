@@ -546,16 +546,19 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                               f"{fmt(V('prob.yoy_prev.n_suben'), 0)} de {fmt(V('prob.yoy_prev.n_comparables'), 0)}"]] if ppy else [])},
                "source": src + " Mediana entre problemas con fila publicada en ambos trimestres."}]
     r0name = plain(package, r0, q)
+    if not any(e.get("id") == "umbral.base_chica" for e in package["derived_ratios"]):
+        package["derived_ratios"].append({"id": "umbral.base_chica", "value": CPC_SMALL_BASE, "unit": "count"})
     n_py, n_q = V(f"prob.{r0}.{py}.casos"), V(f"prob.{r0}.{q}.casos")
     r0_text = (f"{r0name}: de {money(V(f'prob.{r0}.{py}.por_caso'))} a {money(V(f'prob.{r0}.{q}.por_caso'))} por caso, con "
                f"{fmt(n_py, 0)} casos en {pys} y {fmt(n_q, 0)} en {qs_}.")
+    r0_n = f"Casos: {fmt(n_py, 0)} ({so.quarter_short(py)[-4:]}) y {fmt(n_q, 0)} ({so.quarter_short(q)[-4:]})."
     if min(n_py, n_q) < CPC_SMALL_BASE:
-        r0_text += (f" Base chica (menos de {fmt(CPC_SMALL_BASE, 0)} casos): unos pocos casos de facturado alto mueven el "
-                    "facturado por caso; léase como señal, no como tendencia.")
+        r0_n += f" Base chica (menos de {fmt(CPC_SMALL_BASE, 0)} casos): léase como señal."
     tab = {"id": "por-caso", "label": "Facturado por caso", "charts": charts, "text": [r0_text],
            "dek": (f"Facturado por caso: {sg('tot.yoy.por_caso')} en el total; {r0name.lower()} lidera con "
-                   f"{sg(f'prob.{r0}.yoy.por_caso')}"),
-           "dek_refs": ["tot.yoy.por_caso", f"prob.{r0}.yoy.por_caso", *label_refs(package, r0name)]}
+                   f"{sg(f'prob.{r0}.yoy.por_caso')}. {r0_n}"),
+           "dek_refs": ["tot.yoy.por_caso", f"prob.{r0}.yoy.por_caso", f"prob.{r0}.{py}.casos", f"prob.{r0}.{q}.casos",
+                        *label_refs(package, r0name)] + (["umbral.base_chica"] if min(n_py, n_q) < CPC_SMALL_BASE else [])}
     sf.topic_fields(tab, f"Total {sg('tot.yoy.por_caso')} · mediana {sg('prob.yoy.mediana_por_caso')} por caso",
                     index_refs=["tot.yoy.por_caso", "prob.yoy.mediana_por_caso"], kpis=[])
     tabs.append(tab)
