@@ -32,7 +32,7 @@ jobs:
         # tests/test_occupational_capture_cache.py, which made xdist abort with "Different tests were collected".
         run: |
           set -o pipefail
-          python -m pytest -q -rfE -n auto --durations=15 \
+          python -m pytest -q -rfE -n auto --dist loadscope --durations=15 \
             --ignore=tests/test_stats_ficha_f2_real_xls.py --ignore=tests/test_stats_fichas_f6_real_pdf.py \
             2>&1 | tee "$RUNNER_TEMP/pytest.log" || {
             grep -E '^(FAILED|ERROR) ' "$RUNNER_TEMP/pytest.log" | head -20 | while IFS= read -r l; do echo "::error title=pytest::${l}"; done
