@@ -247,6 +247,9 @@ function bulletinStatus(s){const b=s.bulletin_status;if(!b||b.status!=='verifyin
 // 'Actualizado' (data that is refreshed). A publication date is never inferred.
 function rowDate(s){if(s.date_basis==='first_detected'){const d=s.first_detected_at||s.event_date;return d?`Detectado ${fmtDate(d)}`:''}
  if(s.date_basis==='data_release'){const d=s.data_release_date||s.event_date;return d?`Actualizado ${fmtDate(d)}`:''}
+ // A rolling sanctions register (Fiscalización · registro de 90 días) is data that updates: its row shows the issuance of
+ // the newest act it counts (Dirección 5-nov rule 'Actualizado' for updated data; 10-nov-2026 on the SUSESO register).
+ if(s.event_type==='SANCTION_REGISTER'){const d=s.emission_date||s.event_date;return d?`Actualizado ${fmtDate(d)}`:''}
  const fiscal=Boolean(s.issued_on||s.emission_date)||arr(s.signal_types).includes('Fiscalización')||s.event_date_basis==='emission'||s.event_date_basis==='verified_primary_emission';
  const pub=s.published_on||s.publication_date||(fiscal?null:s.event_date);if(pub)return `Publicado ${fmtDate(pub)}`;
  const det=s.first_detected_at||s.detected_at;return det?`Detectado ${fmtDate(det)}`:''}
