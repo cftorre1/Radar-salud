@@ -1560,7 +1560,11 @@
       },
       "lectura_enabled": false,
       "first_pass_requires_review": true,
-      "first_review": null,
+      "first_review": {
+        "reviewed_by": "Dirección (cftorre1), autorización en sesión del 10-nov-2026 00:54: «No son necesarios mis VB para nuevas fichas, publícalas nomás, pero avísame para revisarlo en staging». Publicada tras PASS determinista + conciliación + 3 rondas de revisión independiente (#152).",
+        "reviewed_at": "2026-11-10T03:54:00Z",
+        "reviewed_sha256": "dec3705b9d0c6c5a9404cd2b50ae9a2b381f45869b7bcf9e140f6727fc0acfd6"
+      },
       "first_review_rule": "La primera ficha queda en HOLD awaiting_first_review con la ficha completa en hold/<slug>-<período>.json y se ve en staging en web/preview.html. Publica solo cuando Dirección la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = evidence_sha256 de esa ficha (SHA-256 de la lista ordenada URL + SHA-256 de los ZIP que usa). Después rige la política normal.",
       "decided": "Dirección, 5-nov-2026: fichas F12/F13 desde datos abiertos SIS; prioridad máxima.",
       "disclosure_rule": {
@@ -1718,7 +1722,11 @@
       },
       "lectura_enabled": false,
       "first_pass_requires_review": true,
-      "first_review": null,
+      "first_review": {
+        "reviewed_by": "Dirección (cftorre1), autorización en sesión del 10-nov-2026 00:54: «No son necesarios mis VB para nuevas fichas, publícalas nomás, pero avísame para revisarlo en staging». Publicada tras PASS determinista + conciliación + 3 rondas de revisión independiente (#152).",
+        "reviewed_at": "2026-11-10T03:54:00Z",
+        "reviewed_sha256": "93036d4906ef48759175270332475440d0868beff90029695c7fed24ff9dbdcc"
+      },
       "first_review_rule": "La primera ficha queda en HOLD awaiting_first_review con la ficha completa en hold/<slug>-<período>.json y se ve en staging en web/preview.html. Publica solo cuando Dirección la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = evidence_sha256 de esa ficha (SHA-256 de la lista ordenada URL + SHA-256 de los ZIP que usa). Después rige la política normal.",
       "decided": "Dirección, 5-nov-2026: licencias solo agregadas por Isapre, grupo diagnóstico, industria, región y tipo de profesional, celda mínima 10; nunca por médico, trabajador ni empleador.",
       "min_cell": 10,
