@@ -43,7 +43,7 @@ def test_hourly_skips_discovery_hours_and_retries_push():
     wf = open(".github/workflows/queue-hourly.yml", encoding="utf-8").read()
     assert "'15 0-9,11-13,15-17,19-21,23 * * *'" in wf and "discovery_due.py" in wf
     assert "git pull --rebase --autostash origin staging" in open(".github/workflows/queue-hourly.yml", encoding="utf-8").read()
-    assert "git pull --rebase origin staging" in open(".github/workflows/daily-radar.yml", encoding="utf-8").read()
+    assert "git pull --rebase --autostash origin staging" in open(".github/workflows/daily-radar.yml", encoding="utf-8").read()
 
 
 def _commit_script(job_status):
