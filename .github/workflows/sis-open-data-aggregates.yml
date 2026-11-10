@@ -8,7 +8,7 @@ name: SIS open data aggregates
 # remote files keep the Content-Length and Last-Modified of the committed receipts.
 on:
   push:
-    branches: [claude/f12-f13-sis-open-data]
+    branches: [claude/f12-f13-sis-open-data, claude/f12-top1-tramos]
     paths:
       - .github/workflows/sis-open-data-aggregates.yml
       - scripts/aggregate_sis_open_data.py
