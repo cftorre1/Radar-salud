@@ -191,8 +191,8 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     # Within-region dispersion, recomputed: linear p25/p75 of base × (1 + 0,2·i), i = 0..5 → 1,25 and 1,75.
     assert k["dispersion_amb"]["value"] == k["dispersion_hosp"]["value"] == f12.fmt(1.75 / 1.25, 2) + " veces"
     disp = next(t for t in fi["tabs"] if t["id"] == "dispersion")
-    assert disp["dek"] == ("Mismo código, misma región: el cuartil caro factura 1,40 veces el barato en ambulatorio y 1,40 en "
-                           "hospitalario")
+    assert disp["dek"] == ("La mayor diferencia hospitalaria está en la Metropolitana: el prestador caro cobra 1,40 veces lo del "
+                           "barato (1,40 en ambulatorio)")
     # Regional index vs RM: every code's median scales with the region factor → (RF[r] / RF[RM] − 1), simple average.
     amb_idx = sum(RF[r] / RF["13"] - 1 for r in AMB_REG[1:]) / 13 * 100
     hosp_idx = sum(RF[r] / RF["13"] - 1 for r in HOSP_REG[1:]) / 8 * 100
@@ -290,7 +290,7 @@ def test_f12_cross_headline_needs_median_and_weighted_mean_to_agree(root):
     assert fi["verification"]["verdict"] == "PASS"
     assert "brecha_mismo_prestador" not in [x["id"] for x in fi["kpis"]]  # no robust gap: no card, no claim
     tab = next(t for t in fi["tabs"] if t["id"] == "mismo-prestador")
-    assert [c["id"] for c in tab["charts"]] == ["f12-mismo-prestador", "f12-mismo-prestador-ponderada"]
+    assert [c["id"] for c in tab["charts"]] == ["f12-mismo-prestador"]
 
 
 def test_f12_closed_isapres_stay_in_topics_but_never_lead(root):
