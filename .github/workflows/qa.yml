@@ -6,10 +6,13 @@ on:
 permissions:
   contents: read
 jobs:
+  # tests, staging (build + Playwright) and reviewer keep their names: /home/claude/merge_when_ready.sh and the PR
+  # checks wait for exactly these. tests and staging run in parallel; reviewer waits for both (it is the last check).
   tests:
     runs-on: ubuntu-24.04
-    # The integrated suite includes immutable paid-history replays (3800+ cases). It reached ~23 min in Nov-2026 and
-    # PRs #129, #130 and #131 were cancelled at 25 min with tests still passing (3-nov-2026): 45 min of headroom.
+    # The integrated suite includes immutable paid-history replays (3800+ cases): ~24 min serial in Nov-2026.
+    # It now runs with pytest-xdist on the 4 runner vCPUs (nov-2026 audit: no flock, writes under tmp_path,
+    # only read-only git on the shared .git). Headroom kept in case xdist has to be reverted.
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
@@ -18,14 +21,28 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install -e . pytest pyyaml
-      - name: python -m pytest -q
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e . pytest pytest-xdist==3.6.1 pyyaml
+      - name: python -m pytest -q -n auto
         # Failing test names surface as check-run annotations (Actions logs are not readable from the agent environment).
+        # The two CI-only network tests that write ::notice annotations to the real stdout (capsys.disabled) run in the
+        # next step without xdist: worker stdout never reaches the job log, so their annotations would be lost.
         run: |
           set -o pipefail
-          python -m pytest -q -rfE 2>&1 | tee "$RUNNER_TEMP/pytest.log" || {
+          python -m pytest -q -rfE -n auto --durations=15 \
+            --ignore=tests/test_stats_ficha_f2_real_xls.py --ignore=tests/test_stats_fichas_f6_real_pdf.py \
+            2>&1 | tee "$RUNNER_TEMP/pytest.log" || {
             grep -E '^(FAILED|ERROR) ' "$RUNNER_TEMP/pytest.log" | head -20 | while IFS= read -r l; do echo "::error title=pytest::${l}"; done
             grep -E '^E  ' "$RUNNER_TEMP/pytest.log" | head -15 | while IFS= read -r l; do echo "::error title=pytest-detail::${l}"; done
+            exit 1; }
+      - name: python -m pytest -q (annotation tests, serial)
+        run: |
+          set -o pipefail
+          python -m pytest -q -rfE -p no:xdist tests/test_stats_ficha_f2_real_xls.py tests/test_stats_fichas_f6_real_pdf.py \
+            2>&1 | tee "$RUNNER_TEMP/pytest-serial.log" || {
+            grep -E '^(FAILED|ERROR) ' "$RUNNER_TEMP/pytest-serial.log" | head -20 | while IFS= read -r l; do echo "::error title=pytest::${l}"; done
+            grep -E '^E  ' "$RUNNER_TEMP/pytest-serial.log" | head -15 | while IFS= read -r l; do echo "::error title=pytest-detail::${l}"; done
             exit 1; }
       - uses: actions/setup-node@v4
         with:
@@ -33,7 +50,7 @@ jobs:
           cache: npm
       - run: npm ci && npm test
   staging:
-    needs: tests
+    # Independent of tests (no shared outputs): it builds the candidate web/ and runs Playwright in parallel.
     environment: staging
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -44,6 +61,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: pip
+          cache-dependency-path: pyproject.toml
       - run: pip install -e .
       - name: Load durable iteration ledger
         run: |
@@ -67,6 +86,11 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+      - name: Reuse cached Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-24.04-${{ hashFiles('package-lock.json') }}
       - run: npm ci && npx playwright install --with-deps chromium
       - name: Build dated browser fixture (published web/ is not modified)
         run: |
@@ -85,7 +109,7 @@ jobs:
             test-results/
             web/
   reviewer:
-    needs: staging
+    needs: [tests, staging]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
