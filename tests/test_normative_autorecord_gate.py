@@ -118,3 +118,26 @@ def test_canonical_identity_matches_the_exporter():
         r = exporter._normative_contract({"title": t, "signal_types": ["Normativa"], "source_url": "https://x/" + t})
         assert auto.canonical_identity(t) == r["legal_identity"], t
     assert auto.canonical_identity("Dictamen O-01-S-04558-2026") == "Dictamen O-01-S-04558-2026"
+
+
+@pytest.mark.parametrize("label,title", [("Circular 3937", "Circular 39370 · Deducible: aclara la base de cálculo"),
+                                         ("Circular IF/N°54", "Circular IF/N°541 · Deducible: aclara la base de cálculo")])
+def test_identity_prefix_needs_a_boundary_everywhere(label, title, monkeypatch, tmp_path):
+    canonical = auto.canonical_identity(label)
+    # read-time canonicalisation does not rewrite a longer number
+    rec = auto._canonical_record({**_record(label), "legal_identity": label, "plain_language_title": title})
+    assert rec["plain_language_title"] == title
+    # verify(): the identity must head the title as a whole token
+    assert "identity_must_head_title_once" in auto.verify({**_record(label), "plain_language_title": title}, label, TEXT)
+    assert "identity_must_head_title_once" not in auto.verify(_record(label), label, TEXT)
+    # exporter: not marked reviewed when only a longer number is in the title
+    url = "https://www.suseso.gob.cl/612/w3-article-boundary.html"
+    record = {**_record(canonical), "legal_identity": canonical, "plain_language_title": title.replace(label, canonical, 1)
+              if title.startswith(label + " ") else title}
+    monkeypatch.setattr(auto, "load_auto_records", lambda root: {url: record})
+    signal = {"title": label, "signal_types": ["Normativa"], "source_url": url, "event_date": "2026-11-05"}
+    out = exporter._normative_contract(signal)
+    assert out.get("normative_editorial", {}).get("editorial_state") != "reviewed"
+    good = {**record, "plain_language_title": f"{canonical} · Deducible: aclara la base de cálculo"}
+    monkeypatch.setattr(auto, "load_auto_records", lambda root: {url: good})
+    assert exporter._normative_contract(signal)["normative_editorial"]["editorial_state"] == "reviewed"

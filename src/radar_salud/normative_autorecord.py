@@ -110,7 +110,7 @@ def _canonical_record(rec: dict[str, Any]) -> dict[str, Any]:
         return rec
     rec = dict(rec, legal_identity=new, identity_from_listing=old)
     title = str(rec.get("plain_language_title") or "")
-    if title.startswith(old):
+    if title.startswith(old) and not title[len(old):][:1].isalnum():  # «Circular 3937» ≠ «Circular 39370»
         rec["plain_language_title"] = new + title[len(old):]
     return rec
 
@@ -140,7 +140,10 @@ def verify(record: dict[str, Any], label: str, evidence: str, official_subject: 
     title = str(record.get("plain_language_title") or "")
     context = str(record.get("normative_context") or "")
     nt, nc, ne = _norm(title), _norm(context), _norm(evidence)
-    if not nt.startswith(_norm(label)) or nt.count(_norm(label)) != 1:
+    nl = _norm(label)
+    # Whole identity only: «Circular IF/N°54» does not head «Circular IF/N°541 · …».
+    if (not nt.startswith(nl) or nt[len(nl):][:1].isalnum()
+            or len(re.findall(rf"(?<![^\W_]){re.escape(nl)}(?![^\W_])", nt)) != 1):
         problems.append("identity_must_head_title_once")
     subj, act = record.get("subject_terms"), record.get("action_terms")
     if not isinstance(subj, list) or not isinstance(act, list) or not all(

@@ -238,10 +238,12 @@ def _normative_contract(s):
     subtitle=str(record.get("legal_subtitle") or label).strip()
     norm=lambda x:re.sub(r"[^a-z0-9]+"," ",str(x or "").lower().translate(str.maketrans("áéíóúüñ","aeiouun"))).strip()
     title_norm=norm(plain);identity_norm=norm(label)
-    has_identity=bool(identity_norm and identity_norm in title_norm)
+    # Whole identity only: «circular n 3937» must not match inside «circular n 39370».
+    identity_hits=len(re.findall(rf"(?<![a-z0-9]){re.escape(identity_norm)}(?![a-z0-9])",title_norm)) if identity_norm else 0
+    has_identity=identity_hits>0
     has_subject=any(norm(x) in title_norm for x in record.get("subject_terms",[]))
     has_action=any(norm(x) in title_norm for x in record.get("action_terms",[]))
-    reviewed=bool(record and plain and context and has_identity and has_subject and has_action and title_norm.count(identity_norm)==1)
+    reviewed=bool(record and plain and context and has_identity and has_subject and has_action and identity_hits==1)
     if not reviewed:
         from radar_salud.normative_minimal import minimal_card
         if r.get("normative_minimal"):return r  # already reduced to verifiable facts
