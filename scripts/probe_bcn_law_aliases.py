@@ -13,7 +13,7 @@ from urllib.robotparser import RobotFileParser
 
 UA = "RadarSaludBot/0.3 (+public-source-monitor)"
 BASE = "https://www.leychile.cl/Consulta/obtxml"
-LAWS = ["20850", "19966", "21674", "16744", "21643", "20584", "21331"]
+LAWS = ["21331"]  # retry: 429 in run 42752078361
 
 
 def get(url):
@@ -38,7 +38,7 @@ def main():
         url = f"{BASE}?opt=7&idLey={n}"
         rec = {"url": url, "robots_allowed": rp.can_fetch(UA, url)}
         if rec["robots_allowed"]:
-            time.sleep(2)
+            time.sleep(20)
             try:
                 status, body = get(url); rec["http_status"] = status
                 root = ET.fromstring(body)
