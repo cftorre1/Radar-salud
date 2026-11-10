@@ -46,7 +46,7 @@ def test_build_writes_only_records_that_pass_both_checks(tmp_path):
     calls = []
     def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
         calls.append(feature)
-        return SimpleNamespace(output=GOOD if feature == "normative_autorecord" else {"verdict": "PASS"})
+        return SimpleNamespace(output=GOOD if feature != "normative_autorecord_review" else {"verdict": "PASS"})
     assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == [URL]
     assert calls == ["normative_autorecord", "normative_autorecord_review"]
     assert auto.load_auto_records(tmp_path)[URL]["origin"] == "auto_verified"
@@ -57,7 +57,7 @@ def test_build_writes_only_records_that_pass_both_checks(tmp_path):
 def test_failed_review_is_recorded_and_not_published(tmp_path):
     signals = _repo(tmp_path)
     def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
-        return SimpleNamespace(output=GOOD if feature == "normative_autorecord" else {"verdict": "FAIL", "reason": "exagera"})
+        return SimpleNamespace(output=GOOD if feature != "normative_autorecord_review" else {"verdict": "FAIL", "reason": "exagera"})
     assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []
     store = json.loads((tmp_path / auto.AUTO_PATH).read_text())
     assert URL in store["rejected"] and not store["source_records"]
@@ -115,15 +115,16 @@ def test_builder_skips_numbered_human_act_and_survives_bad_evidence(tmp_path):
     assert (tmp_path / auto.AUTO_PATH).exists()
 
 
-def test_rejected_act_is_retried_only_when_official_text_changes(tmp_path):
+def test_review_failure_is_repaired_in_the_same_run(tmp_path):
     signals = _repo(tmp_path)
     verdicts = iter([{"verdict": "FAIL", "reason": "x"}, {"verdict": "PASS"}])
+    features = []
     def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
-        return SimpleNamespace(output=GOOD if feature == "normative_autorecord" else next(verdicts))
-    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []
-    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []  # same text: no retry
-    (tmp_path / EVIDENCE_DIR / f"{_key(PDF)}.json").write_text(json.dumps({"text": EVIDENCE + " Texto corregido."}))
-    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == [URL]
+        features.append(feature)
+        return SimpleNamespace(output=GOOD if feature != "normative_autorecord_review" else next(verdicts))
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27), run_id="r1") == [URL]
+    assert features == ["normative_autorecord", "normative_autorecord_review",
+                        "normative_autorecord_repair", "normative_autorecord_review"]
 
 
 def test_verify_checks_full_dates_actors_and_subjects_as_units():
@@ -146,11 +147,13 @@ def test_unparseable_draft_is_recorded_as_rejection(tmp_path):
     def fake(prompt, *, feature, preferred_model, allow_luna_fallback=True):
         calls.append(feature)
         raise ValueError("model_output_not_object")
-    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27)) == []
+    assert auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27), run_id="r1") == []
     store = json.loads((tmp_path / auto.AUTO_PATH).read_text(encoding="utf-8"))
     assert store["rejected"][URL]["problems"][0].startswith("unparseable_model_output")
-    auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27))
-    assert calls == ["normative_autorecord"]  # not retried while the official text is unchanged
+    # billed but unusable output counts as an attempt: 1 draft + 2 repairs in this run
+    assert calls == ["normative_autorecord", "normative_autorecord_repair", "normative_autorecord_repair"]
+    auto.build_auto_records(tmp_path, signals, call=fake, today=date(2026, 10, 27), run_id="r1")
+    assert len(calls) == 3  # never twice in the same run
 
 
 def test_dates_and_quantities_need_a_boundary_in_the_quote():
