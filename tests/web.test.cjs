@@ -466,6 +466,10 @@ const sis={title:'Circular IF/N°541 - Emisión: 5/11/2026',display_title:'Circu
 const card=c.card(sis);assert.match(card,/>Circular IF\/N°541 · Aclara/);assert.match(card,/<span class="tag">Normativa<\/span>/);
 const ficha=c.detailHtml(sis);const kicker=ficha.match(/<p class="wi-kicker norm-kicker">([^<]*)<\/p><h2 id='detailTitle'>/);assert.ok(kicker,ficha.slice(0,300));
 assert.match(kicker[1],/^Norma · Circular · Superintendencia de Salud · Emitida .*5.*2026$/);
-const suseso={...sis,normative_minimal:false,source_name:'Superintendencia de Seguridad Social (SUSESO)',normative_document_type:'Circular',display_title:'Circular N°3938 · Complementa instrucciones',event_date:'2026-11-06'};
+const suseso={...sis,source_name:'Superintendencia de Seguridad Social (SUSESO)',normative_document_type:'Circular',display_title:'Circular N°3938 · Complementa instrucciones',event_date:'2026-11-06'};
 assert.match(c.detailHtml(suseso),/<p class="wi-kicker norm-kicker">Norma · Circular · SUSESO · Emitida [^<]*6[^<]*2026<\/p><h2 id='detailTitle'>/);
+// Reviewed ficha: the source line already carries issuer and date, so the kicker does not repeat them.
+const reviewed={...suseso,normative_minimal:false};const rh=c.detailHtml(reviewed);
+assert.match(rh,/<p class="wi-kicker norm-kicker">Norma · Circular<\/p><h2 id='detailTitle'>/);assert.match(rh,/ficha-origin/);
+assert.match(c.detailHtml({...sis,normative_document_type:'Dictamen',display_title:'Dictamen N°1234 · Interpreta'}),/norm-kicker">Norma · Dictamen · Superintendencia de Salud · Emitida/);
 assert.doesNotMatch(c.detailHtml({title:'Noticia',event_date:'2026-11-05',signal_types:['Noticias']}),/norm-kicker/)});

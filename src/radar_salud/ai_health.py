@@ -57,7 +57,9 @@ def failure_alert(rows: Iterable[dict[str, Any]], now: datetime | None = None, *
         return None
     errors = Counter(str(r.get("error_type") or "error_desconocido") for r in failed)
     last_ok = max((_at(r) for r in rows if r.get("success") is True), default=None)
-    since = min(_at(r) for r in rows if r.get("success") is not True and (last_ok is None or _at(r) > last_ok))
+    # Failures since the last success; if a success closed the window, the first failure in it.
+    since = min((_at(r) for r in rows if r.get("success") is not True and (last_ok is None or _at(r) > last_ok)),
+                default=min(_at(r) for r in failed))
     main_error = ", ".join(name for name, _ in errors.most_common(2))
     message = (f"IA externa sin respuesta: {len(failed)}/{len(recent)} llamadas fallaron ({main_error}) "
                f"desde {since.date().isoformat()}; registros normativos verificados en espera")

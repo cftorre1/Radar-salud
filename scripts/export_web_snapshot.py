@@ -201,12 +201,26 @@ def _suseso_normative_upgrade(s):
         r["actionability_score"]=max(88,int(r.get("actionability_score") or 0))
     return r
 
+# Exact document type + issuing Intendencia (IF/IP/SS or none) + number (review of #156, 9-nov-2026):
+# compound types first, so «Oficio Circular IF/N°20» is never read as «Circular IF/N°20».
+_NORMATIVE_ID_RE=re.compile(
+    r"\b(Oficio\s+Circular|Ordinario\s+Circular|Circular\s+Interna|Resoluci[oó]n\s+Exenta|Resoluci[oó]n|"
+    r"Decreto\s+Exento|Decreto|Dictamen|Oficio(?:\s+Ord(?:inario)?\.?)?|Circular)"
+    r"\s+(?:SS\s+(?=I[FP]\b))?(?:(IF|IP|SS)\s*[/\-]?\s*)?(?:N\s*[°º]?\s*)?([\d\.]+)",re.I)
+_NORMATIVE_KINDS={"oficio circular":"Oficio Circular","ordinario circular":"Ordinario Circular","circular interna":"Circular Interna",
+    "resolución exenta":"Resolución Exenta","resolucion exenta":"Resolución Exenta","resolución":"Resolución","resolucion":"Resolución",
+    "decreto exento":"Decreto Exento","decreto":"Decreto","dictamen":"Dictamen","circular":"Circular"}
+
+def _normative_kind(matched):
+    text=" ".join(str(matched).split())
+    return _NORMATIVE_KINDS.get(text.lower(),text.rstrip("."))  # 'Oficio Ord' keeps its source spelling
+
 def _normative_contract(s):
     r=dict(s)
     if r.get("event_type")!="REGULATION" and "Normativa" not in (r.get("signal_types") or []):return r
     title=str(r.get("source_title_full") or r.get("title") or "").strip()
-    m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio(?:\s+Ord(?:inario)?)?|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",title,re.I)
-    if not m:m=re.search(r"\b(Resolución(?:\s+Exenta)?|Circular|Oficio(?:\s+Ord(?:inario)?)?|Decreto)\s+(?:(IF|IP)\s*[/\-]?\s*)?N?[°º]?\s*([\d\.]+)",str(r.get("normative_document_label") or ""),re.I)
+    m=_NORMATIVE_ID_RE.search(title)
+    if not m:m=_NORMATIVE_ID_RE.search(str(r.get("normative_document_label") or ""))
     cfg=_normative_v2_config()
     if not m:
         record=cfg.get("source_records",{}).get(str(r.get("source_url") or ""),{})
@@ -214,7 +228,7 @@ def _normative_contract(s):
         if not label:return r
         r.update(normative_document_label=label,legal_identity=label,normative_document_number=label)
     else:
-        kind=" ".join(m.group(1).split());prefix=(m.group(2) or "").upper();raw_number=m.group(3);number=re.sub(r"\D","",raw_number)
+        kind=_normative_kind(m.group(1));prefix=(m.group(2) or "").upper();raw_number=m.group(3);number=re.sub(r"\D","",raw_number)
         label=f"{kind} {prefix+'/' if prefix else ''}N°{raw_number}"
         r.update({"normative_document_type":kind,"normative_document_number":f"{prefix+'/' if prefix else ''}N°{raw_number}","normative_document_label":label,"legal_identity":label})
         record=cfg.get("source_records",{}).get(str(r.get("source_url") or "")) or cfg.get("records",{}).get(number,{})
@@ -254,6 +268,13 @@ def _doc_key(s):
         identity = s.get('source_record_id')
         return "fiscalization:"+canonical_url(s["source_url"])+(f'|record:{identity}' if identity else '')
     title=s.get("title","") or ""
+    # Types/prefixes the legacy keys below cannot tell apart (Oficio Circular vs Circular, SS resolutions,
+    # decrees): exact type + Intendencia + number + year, as the SIS scout dedupes (review of #156).
+    from radar_salud.regulatory import act_identity
+    ident=act_identity(title,str(s.get("event_date") or "")[:4])
+    if ident:
+        kind,prefix=ident.split("|")[:2]
+        if prefix=="ss" or kind not in ("circular","resolucion","resolucion exenta"):return "act:"+ident
     m=re.search(r"resoluci[oó]n(?:\s+exenta)?\s+(?:n[uú]mero\s+)?(?:if|ip)?\s*[/\-]?\s*n?[°º]?\s*([\d\.]+)",title,re.I)
     if m:return "res-"+re.sub(r"\D","",m.group(1))
     m=re.search(r"circular\s+(?:n[uú]mero\s+)?(?:if|ip)?\s*[/\-]?\s*n?[°º]?\s*(\d+)",title,re.I)
