@@ -18,10 +18,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from radar_salud import (dipres_refresh, stats_capture, stats_capture_fefi, stats_ficha_f1, stats_ficha_f2, stats_ficha_f4,  # noqa: E402
-                         stats_ficha_f6, stats_ficha_f7, stats_ficha_f12, stats_ficha_f13, stats_fichas)
+                         stats_ficha_f6, stats_ficha_f7, stats_ficha_f9, stats_ficha_f12, stats_ficha_f13, stats_fichas)
 
 BUILDERS = {"F1": stats_ficha_f1.run, "F2": stats_ficha_f2.run, "F4": stats_ficha_f4.run, "F6": stats_ficha_f6.run,
-            "F7": stats_ficha_f7.run, "F12": stats_ficha_f12.run, "F13": stats_ficha_f13.run}
+            "F7": stats_ficha_f7.run, "F9": stats_ficha_f9.run, "F12": stats_ficha_f12.run, "F13": stats_ficha_f13.run}
+# F9 (Benchmark de planes, 10-nov-2026): reads only data/sis_planes_aggregates/<yyyymm>/ (scripts/aggregate_sis_planes.py in
+# its own workflow); nothing is downloaded here, the Lectura stays off and the first PASS waits in hold/ like F12/F13.
 # F12 (Prestaciones bonificadas) and F13 (Licencias médicas), Dirección 5-nov-2026: the builders read only the committed
 # aggregates in data/sis_open_data_aggregates/<quarter>/ (written by scripts/aggregate_sis_open_data.py in its own
 # GitHub Actions workflow, callable from the daily pipeline); nothing is downloaded here and the Lectura stays off.

@@ -59,7 +59,8 @@ def test_live_planned_and_pending_rows(tmp_path):
                                   {"id": "ingresos", "label": "Ingresos", "value": "1.091.349 MM$"}]
     assert rows["F4"]["state"] == "pending" and "kpis" not in rows["F4"]  # active, no live ficha
     assert rows["F7"]["state"] == "pending" and "headline" not in rows["F7"]  # active since the F7 PR, awaiting review
-    for fam in ("F3", "F5", "F8", "F9"):
+    assert rows["F9"]["state"] == "pending" and "headline" not in rows["F9"]  # active since the F9 PR, awaiting review
+    for fam in ("F3", "F5", "F8"):
         assert rows[fam]["state"] == "planned" and "headline" not in rows[fam]
 
 
