@@ -43,7 +43,7 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_informe_v7"  # v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
+BUILDER_VERSION = "f12_informe_v8"  # v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
 DATASET = "Prestaciones Bonificadas"
 PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
 NATIONAL = "NACIONAL"
@@ -56,6 +56,20 @@ HEADLINE_MIN_INDEX = 3.0
 # Prices first (Dirección 5-nov-2026 21:25); coverage and concentration follow.
 TAB_ORDER = ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio", "cobertura", "mismo-prestador", "regiones"]
 SHARE_BANDS = {"50-60": "50–60%", "60-80": "60–80%", ">80": "más de 80%"}
+BAND5 = re.compile(r"^(\d{1,2}|95)-(\d{1,3})$")
+
+
+def band_label(band: str) -> str:
+    """'40-45' → '40–45%'; the coarse 2-provider bands keep their own labels."""
+    if band in SHARE_BANDS:
+        return SHARE_BANDS[band]
+    lo, hi = band.split("-")
+    return f"{lo}–{hi}%"
+
+
+def is_band5(x) -> bool:
+    m = BAND5.match(str(x)) if isinstance(x, str) else None
+    return bool(m) and int(m.group(2)) - int(m.group(1)) == 5 and int(m.group(1)) % 5 == 0
 
 
 def fmt(x: float, digits: int = 1, signed: bool = False) -> str:
@@ -103,8 +117,8 @@ def disclosure_failures(cols: list[str], rows: list[list]) -> list[str]:
             # median + facturado + frecuencia + an exact share would solve both unit prices (review of PR #152)
             if sh not in SHARE_BANDS or any(r.get(k) is not None for k in ("facturado", "pct_bonificado", "pct_copago")):
                 f.append(f"two_provider_row_reveals_prices:{tag}")
-        elif not isinstance(sh, (int, float)) or isinstance(sh, bool) or not 0 < sh <= 100:
-            f.append(f"price_row_without_top_share:{tag}")
+        elif not is_band5(sh):  # the top provider's share is only published as a 5-point band (10-nov-2026)
+            f.append(f"price_row_without_top_share_band:{tag}")
         if n == 1:
             if est != "concentracion_un_prestador" or any(x is not None for x in price) or r.get("facturado") is not None \
                     or r.get("pct_bonificado") is not None:
@@ -346,10 +360,7 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
             base = f"precio.{code}.{reg}"
             put(f"{base}.n", cell["n_prestadores"], "prestadores", q, cur, loc)
             put(f"{base}.frec", cell["frecuencia"], "atenciones", q, cur, loc)
-            if isinstance(cell["share_prestador_mayor_pct"], (int, float)):
-                put(f"{base}.share_top", cell["share_prestador_mayor_pct"], "%", q, cur, loc)
-            else:
-                bands[f"{base}"] = cell["share_prestador_mayor_pct"]
+            bands[f"{base}"] = cell["share_prestador_mayor_pct"]  # a band, never an exact share
             for k in ("precio_mediana", "precio_p25", "precio_p75"):
                 if cell.get(k) is not None:
                     put(f"{base}.{k.split('_')[1]}", cell[k], "$", q, cur, loc)
@@ -391,7 +402,6 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
     for reg, r in conc.items():
         loc = f"prestaciones_{q}_resumen.json · concentracion · {reg}"
         put(f"conc.{reg}.hhi", r["hhi"], "HHI", q, cur, loc)
-        put(f"conc.{reg}.top1", r["share_top1_pct"], "%", q, cur, loc)
         put(f"conc.{reg}.top5", r["share_top5_pct"], "%", q, cur, loc)
         put(f"conc.{reg}.n", r["n_prestadores"], "prestadores", q, cur, loc)
     put("filas", cur["receipt"]["parse"]["rows_ok"], "filas", q, cur, "recibo del ZIP")
@@ -412,7 +422,8 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         entities=[{"code": int(c), "name": names[c]} for c in isapres if c.isdigit()],
         entity_codes=[int(c) for c in isapres if c.isdigit()],
         revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
-        constants=[0, 1, 2, 3, 4, 5, 8, 12, 13, 16, 30, 10, 50, 60, 80, 100, 256, 10000, FACT_STABLE_MAX, HEADLINE_MIN_INDEX, n_top, min_cells, len(top), *[int(c["code"]) for c in codes if c["code"].isdigit()],
+        constants=[*range(0, 105, 5),  # 5-point band bounds of the top provider's share (never an exact share)
+                   0, 1, 2, 3, 4, 5, 8, 12, 13, 16, 30, 10, 50, 60, 80, 100, 256, 10000, FACT_STABLE_MAX, HEADLINE_MIN_INDEX, n_top, min_cells, len(top), *[int(c["code"]) for c in codes if c["code"].isdigit()],
                    *desc_numbers],
         kpis={"q": q, "pq": pq if prev else None, "isapres": isapres, "hi_b": hi_b, "lo_b": lo_b, "cross_valid": cross_valid,
               "qualified": qualified, "hi_c": hi_c, "lo_c": lo_c, "gap": gap, "opens": opens, "strong": strong,
@@ -523,7 +534,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     def share(b: str) -> str:
         """Top provider's share of atenciones: exact, or a band for a 2-provider cell."""
-        return pc(f"{b}.share_top") if f"{b}.share_top" in v else SHARE_BANDS[k["bands"][b]]
+        return band_label(k["bands"][b])
 
     codes = k["codes"]
 
@@ -595,7 +606,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              f"≥ 2 prestadores distintos y ≥ 30 atenciones (mediana; p25–p75 solo con ≥ 4). Con 2 prestadores no se "
                              "muestra el facturado y el % del mayor va en tramos (50–60%, 60–80%, más de 80%). Con 1 prestador no hay "
                              "precio, solo la marca de concentración. Todos los prestadores cuentan en el total nacional. Siempre se "
-                             "informa el % de atenciones del mayor prestador."},
+                             "informa el % de atenciones del mayor prestador, en tramos de 5 puntos: la participación de un solo prestador nunca "
+                             "se publica exacta (la de los 3, 10 o 50 mayores sí)."},
         {"id": "n4", "text": "Los prestadores llegan con su RUT cifrado por la SIS: aparecen solo como agregados seudónimos. "
                              "Alicanto nunca intenta revertir el cifrado y nunca muestra nombres de prestadores."},
         {"id": "n5", "text": "Precio por unidad = facturado / frecuencia de cada prestador en el código; la mediana y los percentiles "

@@ -72,12 +72,56 @@ def _numbers(text: str) -> set[str]:
     return set(re.findall(r"\d[\d.,/]*\d|\d", _norm(text)))
 
 
+# Same identity rule as scripts/export_web_snapshot.py (_NORMATIVE_ID_RE/_normative_contract); a test guards drift.
+# The exporter, and through it the reviewer's editorial gate, compares the record title with this canonical
+# identity ("Circular N°3937"), not with the listing title ("Circular 3937", "Circular IF/N°541 - Emisión: 5/11/2026").
+_IDENTITY_RE = re.compile(
+    r"\b(Oficio\s+Circular|Ordinario\s+Circular|Circular\s+Interna|Resoluci[oó]n\s+Exenta|Resoluci[oó]n|"
+    r"Decreto\s+Exento|Decreto|Dictamen|Oficio(?:\s+Ord(?:inario)?\.?)?|Circular)"
+    r"\s+(?:SS\s+(?=I[FP]\b))?(?:(IF|IP|SS)\s*[/\-]?\s*)?(?:N\s*[°º]?\s*)?([\d\.]+)", re.I)
+_IDENTITY_KINDS = {"oficio circular": "Oficio Circular", "ordinario circular": "Ordinario Circular",
+                   "circular interna": "Circular Interna", "resolución exenta": "Resolución Exenta",
+                   "resolucion exenta": "Resolución Exenta", "resolución": "Resolución", "resolucion": "Resolución",
+                   "decreto exento": "Decreto Exento", "decreto": "Decreto", "dictamen": "Dictamen",
+                   "circular": "Circular"}
+_EMISION_RE = re.compile(r"\s*[-–]\s*Emisi[oó]n\s*:\s*\d{1,2}/\d{1,2}/\d{4}\s*$")
+
+
+def canonical_identity(*texts: Any) -> str:
+    """Canonical act identity, as the exporter derives it: the first text with a recognised act wins."""
+    for text in texts:
+        m = _IDENTITY_RE.search(str(text or ""))
+        if m:
+            kind = " ".join(m.group(1).split())
+            kind = _IDENTITY_KINDS.get(kind.lower(), kind.rstrip("."))
+            prefix = (m.group(2) or "").upper()
+            return f"{kind} {prefix + '/' if prefix else ''}N°{m.group(3)}"
+    for text in texts:
+        if str(text or "").strip():
+            return _EMISION_RE.sub("", str(text).strip())
+    return ""
+
+
+def _canonical_record(rec: dict[str, Any]) -> dict[str, Any]:
+    """Read-time fix for records written with a listing identity: rewrite only the identity prefix of the title."""
+    old = str(rec.get("legal_identity") or "")
+    new = canonical_identity(old)
+    if not old or new == old:
+        return rec
+    rec = dict(rec, legal_identity=new, identity_from_listing=old)
+    title = str(rec.get("plain_language_title") or "")
+    if title.startswith(old) and not title[len(old):][:1].isalnum():  # «Circular 3937» ≠ «Circular 39370»
+        rec["plain_language_title"] = new + title[len(old):]
+    return rec
+
+
 def load_auto_records(root: Path) -> dict[str, Any]:
     p = Path(root) / AUTO_PATH
     try:
-        return json.loads(p.read_text(encoding="utf-8")).get("source_records", {})
+        records = json.loads(p.read_text(encoding="utf-8")).get("source_records", {})
     except (OSError, ValueError):
         return {}
+    return {url: _canonical_record(rec) if isinstance(rec, dict) else rec for url, rec in records.items()}
 
 
 def merged_config(root: Path, human: dict[str, Any]) -> dict[str, Any]:
@@ -96,7 +140,10 @@ def verify(record: dict[str, Any], label: str, evidence: str, official_subject: 
     title = str(record.get("plain_language_title") or "")
     context = str(record.get("normative_context") or "")
     nt, nc, ne = _norm(title), _norm(context), _norm(evidence)
-    if not nt.startswith(_norm(label)) or nt.count(_norm(label)) != 1:
+    nl = _norm(label)
+    # Whole identity only: «Circular IF/N°54» does not head «Circular IF/N°541 · …».
+    if (not nt.startswith(nl) or nt[len(nl):][:1].isalnum()
+            or len(re.findall(rf"(?<![^\W_]){re.escape(nl)}(?![^\W_])", nt)) != 1):
         problems.append("identity_must_head_title_once")
     subj, act = record.get("subject_terms"), record.get("action_terms")
     if not isinstance(subj, list) or not isinstance(act, list) or not all(
@@ -398,9 +445,9 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
     candidates = []
     for s in signals:
         url = str(s.get("source_url") or "")
-        # The listing title carries "- Emisión: dd/mm/yyyy"; the identity is the act alone (#155).
-        label = re.sub(r"\s*[-–]\s*Emisi[oó]n\s*:\s*\d{1,2}/\d{1,2}/\d{4}\s*$", "",
-                       str(s.get("normative_document_label") or s.get("title") or "").strip())
+        # Canonical identity, exactly as the exporter and the editorial gate derive it: the listing title's
+        # "- Emisión: dd/mm/yyyy" is dropped (#155) and "Circular 3937" becomes "Circular N°3937".
+        label = canonical_identity(s.get("source_title_full") or s.get("title"), s.get("normative_document_label"))
         if not url or _digits(label) in numbered:
             continue  # human records (by number) always win
         if "Normativa" not in (s.get("signal_types") or []):

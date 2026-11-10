@@ -126,17 +126,30 @@ jobs:
         run: |
           git config user.name "alicanto-salud-bot"
           git config user.email "alicanto-salud-bot@users.noreply.github.com"
+          # Paid data (AI ledger, verified records, attempt counters, queue, history) always persists, even when the
+          # snapshot reviewer rejected web/data (hourly run 10-nov-2026 lost 7 paid records that way).
           git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json data/inbox data/outbox
-          if [ "${{ job.status }}" = success ]; then git add web/data; fi
+          if [ "${{ job.status }}" = success ]; then
+            git add web/data
+          else
+            # Rejected snapshot: drop it so it is neither published nor left unstaged to block the rebase.
+            git checkout -- web/data
+            git clean -fdq -- web/data
+          fi
           if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           web_changed=false; git diff --cached --quiet -- web/data || web_changed=true
           git commit -m "chore: hourly queue batch"
+          # Anything else left unstaged must not block the rebase either.
+          pushed=false
           for attempt in 1 2 3; do
-            git pull --rebase origin staging && git push origin HEAD:staging && break
+            if git pull --rebase --autostash origin staging && git push origin HEAD:staging; then pushed=true; break; fi
             git rebase --abort 2>/dev/null || true
             sleep $((attempt * 20))
           done
-          git push --dry-run origin HEAD:staging
+          if [ "$pushed" != true ]; then
+            echo "::error::Hourly batch commit was NOT pushed to staging after 3 attempts; paid data is not persisted."
+            exit 1
+          fi
           echo "changed=$web_changed" >> "$GITHUB_OUTPUT"
       - name: Request checked staging preview
         if: success() && steps.commit.outputs.changed == 'true'

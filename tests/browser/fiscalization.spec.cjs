@@ -78,8 +78,8 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  const extras30=extras.filter(id=>metadata.get(id).emission_date>=start30).length;
  expect(register.counts).toEqual({'30':issued30.length+extras30,'90':recent.length+extras.length});expect(register.publication_date).toBeNull();
  const card=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:register.title,exact:true})});
- // Dirección 4-nov-2026: without a verified publication the feed shows only the detection; issuance stays in the ficha.
- await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText(/^Detectado /);
+ // Dirección 10-nov-2026: a rolling register is updated data, so the feed shows 'Actualizado' with its newest act's issuance.
+ await expect(card).toBeVisible();await expect(card.locator('.card-meta')).toContainText(/^Actualizado /);
  await expect(card.locator('.card-meta')).not.toContainText(/Publicado|Emitido|no verificada/);
  await card.locator('[data-detail]').first().click();
  await expect(page.locator('#detailBody .sourceverify:not(.historical-sanctions) .related-item')).toHaveCount(recent.length+extras.length);

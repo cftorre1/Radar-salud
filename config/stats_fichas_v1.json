@@ -1717,7 +1717,11 @@
       },
       "lectura_enabled": false,
       "first_pass_requires_review": true,
-      "first_review": null,
+      "first_review": {
+        "reviewed_by": "Dirección (cftorre1), autorización en sesión del 10-nov-2026 00:54: «No son necesarios mis VB para nuevas fichas, publícalas nomás, pero avísame para revisarlo en staging». Publicada tras PASS determinista + conciliación + 3 rondas de revisión independiente (#152).; recalculada con participación del mayor prestador en tramos de 5 puntos (10-nov-2026)",
+        "reviewed_at": "2026-11-10T03:54:00Z",
+        "reviewed_sha256": "dec3705b9d0c6c5a9404cd2b50ae9a2b381f45869b7bcf9e140f6727fc0acfd6"
+      },
       "first_review_rule": "La primera ficha queda en HOLD awaiting_first_review con la ficha completa en hold/<slug>-<período>.json y se ve en staging en web/preview.html. Publica solo cuando Dirección la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = evidence_sha256 de esa ficha (SHA-256 de la lista ordenada URL + SHA-256 de los ZIP que usa). Después rige la política normal.",
       "decided": "Dirección, 5-nov-2026: fichas F12/F13 desde datos abiertos SIS; prioridad máxima.",
       "disclosure_rule": {
@@ -1792,7 +1796,7 @@
           "label": "Precios por región"
         }
       ],
-      "builder_version": "f12_informe_v7",
+      "builder_version": "f12_informe_v8",
       "kpis": {
         "bonificado_sistema": {
           "label": "Bonificado por las Isapres",
@@ -1875,7 +1879,11 @@
       },
       "lectura_enabled": false,
       "first_pass_requires_review": true,
-      "first_review": null,
+      "first_review": {
+        "reviewed_by": "Dirección (cftorre1), autorización en sesión del 10-nov-2026 00:54: «No son necesarios mis VB para nuevas fichas, publícalas nomás, pero avísame para revisarlo en staging». Publicada tras PASS determinista + conciliación + 3 rondas de revisión independiente (#152).",
+        "reviewed_at": "2026-11-10T03:54:00Z",
+        "reviewed_sha256": "93036d4906ef48759175270332475440d0868beff90029695c7fed24ff9dbdcc"
+      },
       "first_review_rule": "La primera ficha queda en HOLD awaiting_first_review con la ficha completa en hold/<slug>-<período>.json y se ve en staging en web/preview.html. Publica solo cuando Dirección la revisa y registra reviewed_by, reviewed_at y reviewed_sha256 = evidence_sha256 de esa ficha (SHA-256 de la lista ordenada URL + SHA-256 de los ZIP que usa). Después rige la política normal.",
       "decided": "Dirección, 5-nov-2026: licencias solo agregadas por Isapre, grupo diagnóstico, industria, región y tipo de profesional, celda mínima 10; nunca por médico, trabajador ni empleador.",
       "min_cell": 10,
@@ -1973,6 +1981,90 @@
           ]
         }
       }
+    },
+    "F14": {
+      "slug": "f14_ges_patologia",
+      "label": "GES por patología",
+      "status": "active",
+      "group": "aseguradores",
+      "source_short": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "datos_kpis": [
+        "facturado_ges",
+        "por_caso"
+      ],
+      "cadence": "trimestral (datos abiertos SIS)",
+      "cadence_phrase": "trimestral",
+      "period_kind": "quarter",
+      "series": [
+        "sis_datos_abiertos_prestaciones_bonificadas"
+      ],
+      "primary_series": "sis_datos_abiertos_prestaciones_bonificadas",
+      "input": "data/sis_open_data_history/<trimestre>/ges_gpp_publicable_<trimestre>.json y receipts_<trimestre>.json (scripts/sis_historico_ges.py o scripts/ges_f14_publicable.py, vía radar_salud.ges_privacy); sin descargas en el paso de fichas",
+      "scopes": [
+        "Isapres",
+        "GES"
+      ],
+      "supersedes": {
+        "event_titles_prefix": [],
+        "stat_families": []
+      },
+      "calendar": {
+        "expected_release_interval_days": 92,
+        "late_tolerance_days": 60,
+        "source": "La SIS publica un ZIP por trimestre en datos abiertos (2026t2: Last-Modified 5-ago-2026). Sin calendario oficial verificado: la fecha base es el cálculo de los agregados por Alicanto (detección), nunca una publicación."
+      },
+      "lectura_enabled": false,
+      "first_pass_requires_review": true,
+      "first_review": {
+        "reviewed_by": "Integrador (Claude) bajo autorización de Dirección del 10-nov-2026 00:54 («No son necesarios mis VB para nuevas fichas, publícalas nomás»), tras PASS determinista, reconciliación y revisión independiente PASS (2.ª ronda, #165).",
+        "reviewed_at": "2026-11-10T06:30:00Z",
+        "reviewed_sha256": "7b324139fad586f83cbe5d720257a477e845a7ef4f5a6e2544d101ec67edd8e5"
+      },
+      "first_review_rule": "Dirección, 10-nov-2026: las fichas nuevas se publican sin su visto bueno personal una vez que tienen PASS determinista, reconciliación y una revisión independiente. Hasta que el responsable de integración registre families.F14.first_review (reviewed_by, reviewed_at, reviewed_sha256 = evidence_sha256 de la ficha revisada), un PASS queda en hold/<slug>-<período>.json como awaiting_first_review y se ve en web/preview.html.",
+      "decided": "Dirección, 10-nov-2026: publicación de fichas nuevas con PASS determinista + reconciliación + revisión independiente.",
+      "disclosure_rule": {
+        "min_cases": 10,
+        "min_providers": 3,
+        "complementary": "lo oculto de un grupo publicado (familia ← problemas, familia ← Isapres, problema ← regiones, total ← familias) es nada, o se reparte en ≥ 2 candidatas y, donde los casos suman, ≥ 10 casos; donde la fuente no aplicó complementaria, un remanente oculto lleva siempre al menos una celda oculta más; un problema oculto oculta sus regiones",
+        "tables": "solo familia nacional, problema nacional, familia × Isapre y problema × región; problema × Isapre, problema × Isapre × región e intervención no se publican",
+        "checked_by": "radar_salud.ges_privacy.check, re-ejecutado por el builder en cada lectura (HOLD si encuentra algo)"
+      },
+      "headline_rule": "Titular sistémico solo si, este año y el anterior, la variación del facturado supera a la de los casos en ≥ 3 pp (ponderado), el facturado por caso sube, la mediana entre problemas del cambio del facturado por caso es positiva y sube en más de la mitad de los problemas comparables; si no, nivel y variación anual. Sin causas.",
+      "top_problems": 10,
+      "cpc_min_cases": 100,
+      "region_min_regions": 12,
+      "templates": {
+        "kicker": "{label} · {quarter_label}",
+        "kicker_meta": "datos de {quarter_label} (trimestre) · detectado por Alicanto el {published_label}"
+      },
+      "tabs": [
+        {
+          "id": "familias",
+          "label": "Familias"
+        },
+        {
+          "id": "problemas",
+          "label": "Problemas con más gasto"
+        },
+        {
+          "id": "costo-caso",
+          "label": "Costo por caso"
+        },
+        {
+          "id": "isapres",
+          "label": "Por Isapre"
+        },
+        {
+          "id": "regiones",
+          "label": "Por región"
+        },
+        {
+          "id": "serie",
+          "label": "Serie desde 2021"
+        }
+      ],
+      "builder_version": "f14_ges_patologia_v1"
     }
   },
   "lenses": {

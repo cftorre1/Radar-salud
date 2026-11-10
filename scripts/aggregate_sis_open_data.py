@@ -52,7 +52,7 @@ MAX_FILE_BYTES = 1 << 30
 MAX_BYTES = {"Prestaciones Bonificadas": MAX_FILE_BYTES, "Licencias Medicas": MAX_FILE_BYTES,
              "Arancel Isapre": MAX_FILE_BYTES}
 ROBOTS: dict[str, urllib.robotparser.RobotFileParser | None] = {}
-SCRIPT_VERSION = "sis_open_data_agg_v11"
+SCRIPT_VERSION = "sis_open_data_agg_v12"
 
 PRICE_MIN_PROVIDERS = 2   # a price (median) needs >= 2 distinct providers ...
 PRICE_MIN_FREQ = 30       # ... and >= 30 frecuencia in the cell
@@ -260,6 +260,15 @@ def share_band(share: float | None) -> str | None:
     return "50-60" if share <= 60 else "60-80" if share <= 80 else ">80"
 
 
+def band5(share: float | None) -> str | None:
+    """A single provider's share as a 5-point band ("40-45"; Dirección/coordinación 10-nov-2026): the top-1 share is
+    attributable to one pseudonymous provider, so it is never published exactly. 100 falls in "95-100"."""
+    if share is None:
+        return None
+    lo = min(int(share // 5) * 5, 95)
+    return f"{lo}-{lo + 5}"
+
+
 def complementary_suppression(cells: dict, groups: list[list]) -> set:
     """Cells to suppress so no remainder of fewer than LIC_MIN_CELL licences can be recovered by subtraction.
 
@@ -455,8 +464,8 @@ class PrestacionesAgg:
         n, freq = len(lst), sum(x[1] for x in lst)
         out = {"n_prestadores": n, "frecuencia": round(freq),
                "share_prestador_mayor_pct": pct(max(x[1] for x in lst), freq) if lst else None}
-        if n == 2:
-            out["share_prestador_mayor_pct"] = share_band(out["share_prestador_mayor_pct"])
+        # The top provider's share is never exact: 2 providers keep the coarse bands, any other n a 5-point band.
+        out["share_prestador_mayor_pct"] = (share_band if n == 2 else band5)(out["share_prestador_mayor_pct"])
         if n >= PRICE_MIN_PROVIDERS and freq >= PRICE_MIN_FREQ:
             u = sorted(x[0] for x in lst)
             fact, bonif, cop = (sum(x[k] for x in lst) for k in (2, 3, 4))
@@ -510,7 +519,7 @@ class PrestacionesAgg:
                           "nacional": "NACIONAL suma cada prestador entre regiones: todos cuentan, también los que "
                                       "están solos en su región",
                           "share": "share_prestador_mayor_pct = frecuencia del mayor prestador / frecuencia de la "
-                                   "celda; se informa siempre",
+                                   "celda, en tramos de 5 puntos (2 prestadores: 50-60 / 60-80 / >80); nunca exacta",
                           "filtro": "pertenencia del código = Fonasa; prestadores con frecuencia>0 y facturado>0"},
                 "conteo_estados": [{"estado": k[0], "nacional": k[1], "celdas": v, "frecuencia": status_freq[k]}
                                    for k, v in sorted(status.items())],
@@ -600,13 +609,13 @@ class PrestacionesAgg:
                         tipo[t][k] += v[k]
             tf = sum(v[0] for v in tipo.values())
             out.append({"region": region, "n_prestadores": len(vals), "facturado": round(tot), "hhi": r(hhi, 0),
-                        "share_top5_pct": pct(sum(vals[:5]), tot), "share_top1_pct": pct(vals[0], tot) if vals else None,
+                        "share_top5_pct": pct(sum(vals[:5]), tot), "share_top1_pct": band5(pct(vals[0], tot)) if vals else None,
                         "share_top3_pct": pct(sum(vals[:3]), tot), "share_top10_pct": pct(sum(vals[:10]), tot),
                         "share_top50_pct": pct(sum(vals[:50]), tot),
                         "split_tipo_prestador": {t: {"facturado": round(v[0]), "share_facturado_pct": pct(v[0], tf),
                                                      "frecuencia": round(v[1])} for t, v in sorted(tipo.items())}})
         return {"definicion": "HHI sobre facturado entre prestadores (seudónimos) de la región del prestador, escala "
-                              "0-10000; top1/top3/top5/top10/top50 share de facturado. NACIONAL suma cada prestador entre regiones.",
+                              "0-10000; top1 en tramos de 5 puntos; top3/top5/top10/top50 share exacto de facturado. NACIONAL suma cada prestador entre regiones.",
                 "regiones": out}
 
     def funnel_table(self) -> dict | None:
@@ -715,7 +724,7 @@ class PrestacionesAgg:
                 "pct_facturado_de_codigos_en_2_o_mas_isapres": pct(sum(self.prov_fact[p] for p in multi), tf),
                 "histograma_n_isapres_por_codigo": {("6+" if k == 6 else str(k)): v for k, v in sorted(hist.items())},
                 "filas_sin_codigo_prestador": self.empty_prov,
-                "pct_filas_del_codigo_mas_frecuente": pct(top_rows, self.rows)}
+                "pct_filas_del_codigo_mas_frecuente": band5(pct(top_rows, self.rows))}
 
 
 def price_change(cur: PrestacionesAgg, prev_price: dict) -> dict:
