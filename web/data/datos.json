@@ -1,6 +1,6 @@
 {
   "schema_version": "datos_index_v1",
-  "generated_at": "2026-11-09T22:56:21.921730+00:00",
+  "generated_at": "2026-11-10T07:42:03.961008+00:00",
   "groups": [
     {
       "key": "aseguradores",
@@ -208,13 +208,43 @@
       "group": "prestadores",
       "order": 9,
       "cadence": "trimestral (datos abiertos SIS)",
-      "state": "pending"
+      "state": "live",
+      "piece_id": "stats-ficha:F12:2026-09",
+      "headline": "Mismo código, distinto precio: el mapa de prestaciones Isapre, jul–sep 2026",
+      "kpis": [
+        {
+          "id": "dispersion_amb",
+          "label": "Dispersión ambulatoria (p75/p25)",
+          "value": "1,49 veces"
+        },
+        {
+          "id": "top10_nacional",
+          "label": "Facturación de los 10 mayores",
+          "value": "42,9%"
+        }
+      ],
+      "period": "2026-09",
+      "period_label": "jul–sep 2026",
+      "source": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "published_at": "2026-11-10",
+      "updated_on": "2026-11-10",
+      "status": "current",
+      "share_url": "data/fichas/f12_prestaciones.html"
     },
     {
       "family": "F13",
       "label": "Licencias médicas Isapre",
       "group": "empleadores_licencias",
       "order": 10,
+      "cadence": "trimestral (datos abiertos SIS)",
+      "state": "pending"
+    },
+    {
+      "family": "F14",
+      "label": "GES por patología",
+      "group": "aseguradores",
+      "order": 11,
       "cadence": "trimestral (datos abiertos SIS)",
       "state": "pending"
     }
