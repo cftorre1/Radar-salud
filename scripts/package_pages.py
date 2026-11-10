@@ -14,7 +14,8 @@ def _copy_clean(source: Path, target: Path) -> None:
 
 
 # Review previews (Dirección 4-nov-2026) live only under /staging/: the production root never carries them.
-STAGING_ONLY = ("preview.html", "data/preview")
+# datos-v2.html is the Datos v2 mockup (review only), also staging-only until it is approved.
+STAGING_ONLY = ("preview.html", "data/preview", "datos-v2.html")
 
 
 def _strip_staging_only(directory: Path) -> None:
