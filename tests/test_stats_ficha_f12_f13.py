@@ -439,7 +439,9 @@ def test_registry_runner_and_datos_rows(root):
     for mod, fam, group in ((f12, "F12", "prestadores"), (f13, "F13", "empleadores_licencias")):
         cfg = reg["families"][fam]
         assert cfg["status"] == "active" and cfg["group"] == group and cfg["builder_version"] == mod.BUILDER_VERSION
-        assert cfg["first_pass_requires_review"] is True and cfg["first_review"] is None and cfg["lectura_enabled"] is False
+        assert cfg["first_pass_requires_review"] is True and cfg["lectura_enabled"] is False
+        # Dirección 10-nov-2026 00:54 authorised publication without a personal visto bueno; the first review is recorded.
+        assert cfg["first_review"]["reviewed_sha256"] and cfg["first_review"]["reviewed_by"].startswith("Dirección")
         assert cfg["cadence"].startswith("trimestral") and cfg["period_kind"] == "quarter"
         assert runner.BUILDERS[fam] is mod.run and fam not in runner.CAPTURED | runner.FEFI_CAPTURED | runner.DIPRES_CAPTURED
         fi = mod.run(root, today=TODAY, registry=reg_open(), llm=False)["ficha"]
