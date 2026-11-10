@@ -249,7 +249,7 @@ def test_registry_entry():
     assert f9.SCRIPT_VERSION == agg.SCRIPT_VERSION
 
 
-@pytest.mark.parametrize("rel", ["src/radar_salud/stats_ficha_f9.py", "scripts/aggregate_sis_planes.py",
+@pytest.mark.parametrize("rel", ["src/radar_salud/stats_ficha_f9.py", "src/radar_salud/planes_disclosure.py", "scripts/aggregate_sis_planes.py",
                                  "tests/test_stats_ficha_f9.py", "tests/test_aggregate_sis_planes.py"])
 def test_python_311_parse(rel):
     ast.parse((REPO / rel).read_text(encoding="utf-8"), filename=rel, feature_version=(3, 11))
