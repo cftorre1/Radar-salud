@@ -1512,18 +1512,175 @@
       "kpis": {}
     },
     "F9": {
-      "slug": "f9_benchmark_costos",
-      "label": "Benchmark de costos entre Isapres",
-      "status": "planned",
+      "slug": "f9_planes",
+      "label": "Benchmark de planes de salud Isapre",
+      "status": "active",
       "group": "aseguradores",
-      "cadence": "anual (Series Estadísticas SIS, cap. 3 y 5) + trimestral (FEFI)",
-      "series": [
-        "sis_series_1990_2025",
-        "sis_estadisticas_financieras"
+      "source_short": "SIS",
+      "source_name": "Superintendencia de Salud",
+      "datos_kpis": [
+        "cerrados",
+        "precio"
       ],
-      "kpis": {},
-      "decided": "Dirección, 3-nov-2026: próxima familia estadística (servicio BENCHMARK).",
-      "scope_note": "No publicar 'costo por prestación' como comparación entre Isapres: depende de la mezcla y de qué cuenta como prestación. Candidatas: costo por beneficiario (ajustado por edad y sexo si hay datos), precio de una misma prestación, frecuencia de uso por beneficiario, peso hospitalario, % de bonificación y copago, siniestralidad, alza de costo descompuesta en precio y uso (lógica IRCI). Numerador y denominador de la misma fuente y período; nunca mezclar costo FEFI con conteos estadísticos. Las columnas por Isapre del cap. 3 están sin confirmar: abrir la planilla capturada antes de diseñar."
+      "cadence": "mensual (datos abiertos SIS)",
+      "cadence_phrase": "mensual",
+      "period_kind": "month",
+      "series": [
+        "sis_datos_abiertos_planes_de_salud",
+        "sis_datos_abiertos_cobertura_planes"
+      ],
+      "primary_series": "sis_datos_abiertos_planes_de_salud",
+      "input": "data/sis_planes_aggregates/<aaaamm>/ (scripts/aggregate_sis_planes.py en GitHub Actions, .github/workflows/sis-planes-aggregates.yml); sin descargas en el paso de fichas",
+      "scopes": [
+        "Isapres",
+        "Planes"
+      ],
+      "supersedes": {
+        "event_titles_prefix": [],
+        "stat_families": []
+      },
+      "calendar": {
+        "expected_release_interval_days": 31,
+        "late_tolerance_days": 45,
+        "source": "La SIS publica un ZIP mensual de Planes de Salud y de Cobertura de Planes en datos abiertos (202608: Last-Modified 5-oct-2026). Sin calendario oficial verificado: la fecha base es el cálculo de los agregados por Alicanto (detección), nunca una publicación."
+      },
+      "lectura_enabled": false,
+      "first_pass_requires_review": true,
+      "first_review": null,
+      "first_review_rule": "La primera ficha queda en HOLD awaiting_first_review con la ficha completa en hold/<slug>-<período>.json y se ve en staging en web/preview.html. Dirección, 10-nov-2026: las fichas nuevas publican sin visto bueno personal tras PASS determinista, conciliación y revisión independiente; el integrador registra reviewed_by, reviewed_at y reviewed_sha256 = evidence_sha256 de esa ficha después de la revisión. Después rige la política normal.",
+      "decided": "Dirección, 3-nov-2026: próxima familia estadística (servicio BENCHMARK). 10-nov-2026: F9 v1 sobre datos abiertos SIS de planes (Planes de Salud, Cobertura de Planes); comparaciones del titular solo entre Isapres abiertas.",
+      "isapre_rule": "Comparaciones en titular, bajada y títulos de sección solo entre Isapres abiertas; las cerradas (afiliación restringida) van dentro, marcadas, con nota «Isapre cerrada (afiliación restringida)».",
+      "min_cell": {
+        "planes": 5,
+        "planes_con_peso": 5,
+        "cotizantes_peso": 30
+      },
+      "f1_reconciliation": "cotizantes y cargas por Isapre del archivo de planes (columnas 32/33 de datos abiertos) = planilla mensual de cartera SIS (F1) con tolerancia 0,1 %, en cada mes común; sin mes común, HOLD",
+      "robustness_rule": "Brief Dirección 10-nov-2026: un título (ficha o sección) enuncia un hallazgo solo si coinciden la versión ponderada por cotizantes y la no ponderada (por plan) y si se repite en el mes anterior o el mismo mes un año antes (stats_ficha_f9.robustness).",
+      "headline_priority": [
+        "cerrados_venta",
+        "precio_venta_vs_vigentes",
+        "preferente_venta"
+      ],
+      "canasta": {
+        "amb": [
+          "0101001",
+          "0301045",
+          "0302075",
+          "0404003",
+          "0902001"
+        ],
+        "hosp": [
+          "2004003",
+          "2004006",
+          "1802081"
+        ],
+        "detalle": [
+          "0201001",
+          "0201101"
+        ],
+        "source": "códigos del Arancel MLE 2026 (data/reference/fonasa_mle_2026.json); cobertura de libre elección del archivo Cobertura de Planes"
+      },
+      "templates": {
+        "kicker": "{label} · {month_label}",
+        "kicker_meta": "datos a {month_label} (mensual) · detectado por Alicanto el {published_label}",
+        "headline_rule": "Titular desde el primer candidato robusto de headline_priority; solo Isapres abiertas; sin causas."
+      },
+      "tabs": [
+        {
+          "id": "cerrados",
+          "label": "Planes cerrados a venta"
+        },
+        {
+          "id": "precio",
+          "label": "Precio base"
+        },
+        {
+          "id": "oferta",
+          "label": "Oferta y stock"
+        },
+        {
+          "id": "modalidad",
+          "label": "Modalidad de atención"
+        },
+        {
+          "id": "cobertura",
+          "label": "Cobertura libre elección"
+        }
+      ],
+      "builder_version": "f9_planes_v2",
+      "previous_plan": {
+        "slug": "f9_benchmark_costos",
+        "label": "Benchmark de costos entre Isapres",
+        "cadence": "anual (Series Estadísticas SIS, cap. 3 y 5) + trimestral (FEFI)",
+        "series": [
+          "sis_series_1990_2025",
+          "sis_estadisticas_financieras"
+        ],
+        "scope_note": "No publicar 'costo por prestación' como comparación entre Isapres: depende de la mezcla y de qué cuenta como prestación. Candidatas: costo por beneficiario (ajustado por edad y sexo si hay datos), precio de una misma prestación, frecuencia de uso por beneficiario, peso hospitalario, % de bonificación y copago, siniestralidad, alza de costo descompuesta en precio y uso (lógica IRCI). Numerador y denominador de la misma fuente y período; nunca mezclar costo FEFI con conteos estadísticos. Las columnas por Isapre del cap. 3 están sin confirmar: abrir la planilla capturada antes de diseñar.",
+        "note": "Registro original (3-nov-2026) como benchmark de costos; F9 v1 se construye sobre planes por el brief de Dirección del 10-nov-2026. La nota de alcance se conserva para una v2 de costos."
+      },
+      "kpis": {
+        "cerrados": {
+          "label": "Cotizantes en planes que ya no se venden",
+          "kind": "share",
+          "formula": "Σ cotizantes en planes con comercialización = N / Σ cotizantes × 100, Isapres abiertas",
+          "denominator": "Cotizantes de las Isapres abiertas al cierre del mes",
+          "period_rule": "Mes; stock al último día",
+          "threshold": null,
+          "pitfalls": [
+            "Un plan que ya no se vende sigue vigente para quien lo tiene.",
+            "No mide traspasos ni adecuaciones."
+          ]
+        },
+        "oferta": {
+          "label": "Planes a la venta",
+          "kind": "count",
+          "formula": "planes con comercialización = S, Isapres abiertas",
+          "denominator": null,
+          "period_rule": "Mes; vs. el mismo mes un año antes",
+          "threshold": null,
+          "pitfalls": [
+            "Cuenta planes, no personas.",
+            "Una Isapre puede vender muchas variantes de un mismo producto."
+          ]
+        },
+        "precio": {
+          "label": "Precio base a la venta (mediana)",
+          "kind": "level",
+          "formula": "mediana del precio base (UF) de los planes a la venta con precio en UF o $",
+          "denominator": "Planes a la venta (por plan) o cotizantes (por cotizante)",
+          "period_rule": "Mes",
+          "threshold": null,
+          "pitfalls": [
+            "Precio base ≠ precio final (factor de riesgo, cargas, GES, beneficios adicionales).",
+            "Planes al 7 % excluidos."
+          ]
+        },
+        "preferente": {
+          "label": "Planes a la venta con prestador preferente",
+          "kind": "share",
+          "formula": "planes a la venta con modalidad Prestador Preferente / planes a la venta × 100",
+          "denominator": "Planes a la venta",
+          "period_rule": "Mes",
+          "threshold": null,
+          "pitfalls": [
+            "Plan Cerrado es otra modalidad (red cerrada), no un plan cerrado a la venta."
+          ]
+        },
+        "cobertura": {
+          "label": "Cobertura libre elección (mediana)",
+          "kind": "share",
+          "formula": "mediana entre planes del % de bonificación promedio de la canasta",
+          "denominator": "Planes individuales a la venta con cobertura informada",
+          "period_rule": "Mes",
+          "threshold": null,
+          "pitfalls": [
+            "Solo libre elección; la cobertura preferente no está en el archivo.",
+            "Sin topes."
+          ]
+        }
+      }
     },
     "F12": {
       "slug": "f12_prestaciones",
