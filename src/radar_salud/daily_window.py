@@ -23,12 +23,30 @@ def eligible_daily_item(item, *, today=None, days=None):
 FISCALIZATION_PUBLICATION_LAG_MAX_DAYS = 60
 
 
+NORMATIVE_LISTING_LAG_MAX_DAYS = 60
+
+
+def normative_listing_date(raw):
+    """SIS normative listings post circulars days after their emission (IF/N°538, emitted
+    26-oct-2026, was listed on 5-nov-2026). event_date keeps the official emission date; the
+    act became public on the listing day, so processing windows and lanes use that day."""
+    if str(raw.get('source_slug') or '') != 'superintendencia_normativa':
+        return None
+    meta = raw.get('metadata') or {}
+    try:
+        emitted = date.fromisoformat(str(raw.get('event_date'))[:10])
+        listed = date.fromisoformat(str(meta.get('listing_date'))[:10])
+    except (ValueError, TypeError):
+        return None
+    return listed if 0 < (listed - emitted).days <= NORMATIVE_LISTING_LAG_MAX_DAYS else None
+
+
 def lagged_publication_date(raw):
     """SIS lists sanctions days or weeks after their emission (IP/7463-7464: emitted 23-sep,
     listed 13-oct). The act became public on the listing day, so the processing window uses
     that day; a gap beyond 60 days is a bulk re-dating of old listings, never news."""
     if not str(raw.get('source_slug') or '').endswith('fiscalizacion'):
-        return None
+        return normative_listing_date(raw)
     meta = raw.get('metadata') or {}
     try:
         emitted = date.fromisoformat(str(raw.get('event_date'))[:10])

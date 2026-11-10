@@ -16,6 +16,22 @@ def _date(text:str)->Optional[str]:
     if m and m.group(2).lower() in MONTHS:return f"{m.group(3)}-{MONTHS[m.group(2).lower()]}-{int(m.group(1)):02d}"
     return None
 
+_EMISSION_RE=re.compile(r"(?:Fecha\s+(?:de\s+)?)?emisi[oó]n\s*:\s*([^|]{1,40})",re.I)
+
+def _emission_date(*texts:str)->Optional[str]:
+    """Emission date stated by the regulator itself ("Circular IF/N°538 - Emisión: 26/10/2026",
+    "Fecha de emisión: 26 de octubre de 2026"). The listing's own date column is the date the
+    act was posted (SIS posted IF/N°538-541 together on 5-nov-2026) and must not replace it."""
+    for text in texts:
+        m=_EMISSION_RE.search(str(text or ""))
+        found=_date(m.group(1)) if m else None
+        if found:return found
+    return None
+
+def listing_event_date(title:str,summary:str,row_text:str)->Optional[str]:
+    """Official emission date (title, then subject) wins over the first date found in the row."""
+    return _emission_date(title,summary) or _date(row_text)
+
 class _TableParser(HTMLParser):
     def __init__(self):
         super().__init__();self.rows=[];self._row=None;self._cell=None;self._href=None;self._anchor=[]
@@ -113,11 +129,15 @@ class SuperintendenciaNormativaScout:
                 if key in seen:continue
                 seen.add(key)
                 summary=row[-1]["text"] if row else row_text
+                listing_date=event_date
+                event_date=listing_event_date(title,summary,row_text)
                 record_listing_identity(self.listing_index,title,url,event_date,summary,page_url)
                 if len(summary)<15:summary=row_text
                 out.append(RawItem(self.SOURCE_SLUG,title,url,self.SOURCE_NAME,self.SOURCE_TYPE,
                     event_date=event_date,raw_text=summary,
                     metadata={"listing_url":page_url,"listing_name":page_name,"scope":scope,"pdf_url":pdf,
+                              "listing_date":listing_date,
+                              "event_date_basis":"official_emission" if event_date!=listing_date or _emission_date(title,summary) else "listing",
                               "attachments":[{"url":pdf,"label":"PDF"}] if pdf else []}))
         out.sort(key=lambda x:x.event_date or "",reverse=True)
         return out

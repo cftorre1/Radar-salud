@@ -48,6 +48,10 @@ def lane(raw, now, last_discovered_at=None):
         return "BACKFILL"
     try:
         published = datetime.fromisoformat(raw.event_date[:10]).date()
+        from .daily_window import normative_listing_date
+        # A circular listed days after its emission is still new on the listing day.
+        published = normative_listing_date({"source_slug": raw.source_slug, "event_date": raw.event_date,
+                                            "metadata": raw.metadata}) or published
         stamp = datetime.fromisoformat(last_discovered_at.replace("Z", "+00:00"))
         current_day=now.date()
         if raw.source_slug=="diario_financiero":
