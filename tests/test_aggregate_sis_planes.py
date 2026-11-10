@@ -76,7 +76,7 @@ def test_coverage_basket_joins_plans_and_takes_highest_record():
         a.add(plan_row(pid=f"P{i}", cot=10 * (i + 1)))
         for code in agg.CANASTA["amb"]:
             rows.append(cob_row(pid=f"P{i}", code=code, amb=str(60 + i)))
-        for code in agg.CANASTA["hosp"]:
+        for code in [*agg.CANASTA["hosp"], *agg.DETALLE["hosp"]]:
             rows.append(cob_row(pid=f"P{i}", code=code, amb="0", hosp=str(80 + i)))
     rows.append(cob_row(pid="P0", code="0101001", amb="95"))  # second record for the same plan x code: highest kept
     rows.append(cob_row(pid="GHOST", code="0101001", amb="10"))  # plan absent from Planes: never joined
@@ -88,6 +88,7 @@ def test_coverage_basket_joins_plans_and_takes_highest_record():
     assert o["planes"] == 5 and res["planes_sin_fila_en_planes_de_salud"] == 1
     assert o["codigos"]["0101001"]["mediana"] == 63.0 and res["registros_multiples_por_plan_codigo"] == {"0101001": 1}
     assert o["codigos"]["0201001"]["mediana"] == 82.0 and o["canasta"]["hosp"]["mediana"] == 82.0
+    assert "0201001" not in agg.CANASTA["hosp"] and set(o["codigos"]) == set(agg.CANASTA_CODES)
     assert o["canasta"]["amb"]["n"] == 5
 
 
@@ -121,7 +122,7 @@ def test_run_local_writes_only_aggregates(tmp_path):
     rec = json.loads((out / "202608/receipts_202608.json").read_text(encoding="utf-8"))
     assert rec["script_version"] == agg.SCRIPT_VERSION and len(rec["files"]) == 2
     assert all(len(f["sha256"]) == 64 for f in rec["files"])
-    assert not list((out / "202607").glob("cobertura_*"))
+    assert not list((out / "202607").glob("cobertura_*"))  # no local Cobertura file for that month
 
 
 def test_download_cap_is_one_gib():

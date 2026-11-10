@@ -7,8 +7,8 @@ rows). Plan identifiers, plan names and plan lines are used only in memory (join
 never written; the column profile keeps only their lengths.
 
 Months (all from the links of the SIS open-data page; nothing is guessed): the newest month ``t`` of Planes de Salud,
-the month before (``t-1``) and the same month a year earlier (``t-12``); Cobertura Planes for ``t`` and ``t-12`` (or,
-when the page has no Cobertura for a month, nothing for it). Tabla Factores is not read: the SIS stopped it in
+the month before (``t-1``) and the same month a year earlier (``t-12``); Cobertura Planes for the same three months
+(when the page links them). Tabla Factores is not read: the SIS stopped it in
 Aug-2024 (Ley 21.674, single table of factors).
 
 Layout (SIS Compendio de Archivos Maestros, cap. II, Título III and Título IV; probe receipt 41958591396):
@@ -46,7 +46,7 @@ _SPEC = importlib.util.spec_from_file_location("aggregate_sis_open_data", Path(_
 base = importlib.util.module_from_spec(_SPEC)
 _SPEC.loader.exec_module(base)
 
-SCRIPT_VERSION = "sis_planes_agg_v1"
+SCRIPT_VERSION = "sis_planes_agg_v2"  # v2: canasta hospitalaria quirúrgica (día cama aparte); Cobertura también en t-1
 FILE_HOST = base.FILE_HOST
 MAX_FILE_BYTES = base.MAX_FILE_BYTES
 PLANES = "Planes de Salud"
@@ -83,10 +83,12 @@ COB_SENSITIVE = {C_ID}
 CANASTA = {
     "amb": {"0101001": "Consulta medicina general", "0301045": "Hemograma", "0302075": "Perfil bioquímico",
             "0404003": "Ecografía abdominal", "0902001": "Consulta psicólogo"},
-    "hosp": {"0201001": "Día cama básico", "0201101": "Día cama medio", "2004003": "Parto",
-             "2004006": "Cesárea", "1802081": "Colecistectomía VLP"},
+    "hosp": {"2004003": "Parto", "2004006": "Cesárea", "1802081": "Colecistectomía VLP"},
 }
-CANASTA_CODES = {c: w for w, d in CANASTA.items() for c in d}
+# Codes shown alone, outside the basket: run 42754651131 found no día-cama code 0201001/0201101 in the Cobertura rows
+# of two open Isapres, so a basket that required them would drop those Isapres.
+DETALLE = {"hosp": {"0201001": "Día cama básico", "0201101": "Día cama medio"}}
+CANASTA_CODES = {c: w for src in (CANASTA, DETALLE) for w, d in src.items() for c in d}
 
 
 # ---------------------------------------------------------------- helpers
@@ -337,7 +339,7 @@ class CoberturaAgg:
                 vals = [sum(self.cov[k][c] for c in codes) / len(codes) for k in ks]
                 cell["canasta"][world] = dist(vals, [joined[k]["cot"] for k in ks])
             out[g] = cell
-        return {"grupos": out, "canasta": CANASTA, "filas_canasta": self.rows_canasta, "valores_invalidos": self.bad,
+        return {"grupos": out, "canasta": CANASTA, "detalle": DETALLE, "filas_canasta": self.rows_canasta, "valores_invalidos": self.bad,
                 "registros_multiples_por_plan_codigo": dict(self.multi), "regla_registros_multiples": "se toma el % más alto",
                 "codigos_en_archivo": dict(self.codes_seen), "periodos_en_archivo": dict(self.periods.most_common(5)),
                 "planes_en_archivo": len(self.plans_seen),
@@ -418,7 +420,7 @@ def aggregate_month(month: str, out: Path, fetch, drop, types: dict[str, str], c
 
 def run(t: str, months: list[str], out_root: Path, links: list[str] | None, local: dict[str, Path] | None = None,
         types: dict[str, str] | None = None) -> dict:
-    """``months`` = [t, t-1, t-12] as linked; Cobertura for t and t-12 only."""
+    """``months`` = [t, t-1, t-12] as linked; Cobertura for each month the page links."""
     types = types if types is not None else load_types()
     tmp = Path(tempfile.mkdtemp(prefix="sis_planes_"))
 
@@ -444,7 +446,8 @@ def run(t: str, months: list[str], out_root: Path, links: list[str] | None, loca
     out: dict = {}
     try:
         for m in months:
-            out[m] = aggregate_month(m, out_root / m, fetch, drop, types, cobertura=m in (t, month_add(t, -12)))
+            out[m] = aggregate_month(m, out_root / m, fetch, drop, types, cobertura=(f"{COBERTURA}:{m}" in local) if local is not None
+                                     else m in months_linked(links or [], COBERTURA))
     finally:
         for f in tmp.glob("*"):
             f.unlink()
