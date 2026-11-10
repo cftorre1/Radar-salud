@@ -67,7 +67,18 @@ EST_ID = r"est:[A-Za-z0-9_-]+"
 LINK = re.compile(r"\[([^\]\[^][^\]\[]*)\]\((" + SOURCE_ID + r"|" + EST_ID + r")\)")
 NOTE = re.compile(r"\[\^(n\d+)\]")
 INLINE_QUOTE = re.compile(r"[“«\"]([^”»\"]+)[”»\"]")
-RATIO = re.compile(r"\b(\d{1,2}) de cada (\d{1,2})\b")
+RATIO = re.compile(r"\b(\d{1,4}) de cada (\d{1,5})\b")
+RATIO_TOLERANCE = 5.0   # points: «8 de cada 10» needs an estimate within 75–85%
+# Numbers written as words are scanned like digits ("una"/"un" are articles and are not mapped).
+NUMBER_WORDS = {"uno": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, "seis": 6, "siete": 7, "ocho": 8,
+                "nueve": 9, "diez": 10, "once": 11, "doce": 12, "trece": 13, "catorce": 14, "quince": 15,
+                "dieciséis": 16, "dieciseis": 16, "diecisiete": 17, "dieciocho": 18, "diecinueve": 19,
+                "veinte": 20, "cien": 100, "mil": 1000}
+FRACTIONS = {"la mitad": 2, "un tercio": 3, "un cuarto": 4}   # read as «1 de cada N»
+NUMBER_WORD = re.compile(r"\b(" + "|".join(sorted(NUMBER_WORDS, key=len, reverse=True)) + r")\b", re.I)
+FRACTION = re.compile(r"\b(la mitad|un tercio|un cuarto)\b", re.I)
+# Quote pools: literal evidence only (excerpts, raw titles, public leads), never Alicanto's labels or summaries.
+QUOTE_FIELDS = ("raw_title", "public_lead")
 ELLIPSIS = re.compile(r"\s*(?:\[…\]|\[\.\.\.\]|\(…\)|\(\.\.\.\))\s*")
 
 
@@ -111,6 +122,12 @@ def literal_key(text: Any) -> str:
     return re.sub(r"\s+", " ", s).strip().casefold()
 
 
+def digits(text: Any) -> str:
+    """«ocho de cada diez» → «8 de cada 10»; «la mitad» → «1 de cada 2»; «seis meses» → «6 meses»."""
+    s = FRACTION.sub(lambda m: f"1 de cada {FRACTIONS[m.group(1).casefold()]}", str(text or ""))
+    return NUMBER_WORD.sub(lambda m: str(NUMBER_WORDS[m.group(1).casefold()]), s)
+
+
 def quote_segments(text: Any) -> list[str]:
     """A quote may skip words with […]; each segment must be literal on its own."""
     parts = [p.strip(" .,;:") for p in ELLIPSIS.split(str(text or ""))]
@@ -150,8 +167,42 @@ def _method(weekly: dict) -> dict:
     return weekly.get("method") if isinstance(weekly.get("method"), dict) else {}
 
 
+def _refs(text: Any) -> set[str]:
+    return {ref for _, ref in LINK.findall(str(text or "")) if not ref.startswith("est:")}
+
+
+def displayed_raw(weekly: dict) -> list[tuple[str, str, set[str]]]:
+    """(where, raw text with markup, sources cited for that text) for every text a reader sees in v2.
+    A text cites the sources linked in it; a key-figure card also cites its source_ref and a chart the
+    sources linked in its caption. Headline, dek, kicker and subheads cite nothing."""
+    out: list[tuple[str, str, set[str]]] = []
+    for where, text in _displayed(weekly):
+        out.append((where, str(text), set()))
+    kf_cite = {}
+    for i, x in enumerate(key_figure_items(weekly)):
+        kf_cite[i] = _refs(x.get("text")) | ({x["source_ref"]} if x.get("source_ref") else set())
+    chart_cite = {str(c.get("id")): _refs(c.get("source")) for c in weekly.get("charts") or [] if isinstance(c, dict)}
+    fixed = []
+    for where, text, _ in out:
+        cited = _refs(text)
+        m = re.match(r"key_figures\[(\d+)\]", where)
+        if m:
+            cited |= kf_cite.get(int(m.group(1)), set())
+        m = re.match(r"chart\.([^.]+)\.", where)
+        if m:
+            cited |= chart_cite.get(m.group(1), set())
+        if where.startswith(("headline", "dek", "kicker", "title", "summary", "insight_teaser")) or ".subhead" in where:
+            cited = set()
+        fixed.append((where, text, cited))
+    return fixed
+
+
 def displayed_texts(weekly: dict) -> list[tuple[str, str]]:
     """(where, plain text) for every text a reader sees in v2, markup removed."""
+    return [(w, plain(t)) for w, t, _ in displayed_raw(weekly)]
+
+
+def _displayed(weekly: dict) -> list[tuple[str, str]]:
     t: list[tuple[str, Any]] = [("headline", weekly.get("headline")), ("dek", weekly.get("dek")),
                                 ("kicker", weekly.get("kicker")), ("title", weekly.get("title")),
                                 ("summary", weekly.get("summary")), ("insight_teaser", weekly.get("insight_teaser"))]
@@ -187,7 +238,7 @@ def displayed_texts(weekly: dict) -> list[tuple[str, str]]:
     for est in weekly.get("estimates") or []:
         if isinstance(est, dict):
             t.append(("estimate.label", est.get("label")))
-    return [(w, plain(x)) for w, x in t if x]
+    return [(w, str(x)) for w, x in t if x]
 
 
 def rule_texts(weekly: dict) -> list[tuple[str, str]]:
@@ -215,7 +266,7 @@ def trace_corpus(weekly: dict) -> list[float]:
     from .weekly_freshness import SAFE_FORMULA, numbers_in
     corpus: list[float] = []
     for fig in weekly.get("evidence_figures") or []:
-        corpus += [n for _, n, _ in numbers_in(str(fig))]
+        corpus += [n for _, n, _ in numbers_in(digits(fig))]
     for est in weekly.get("estimates") or []:
         if not isinstance(est, dict):
             continue
@@ -227,39 +278,77 @@ def trace_corpus(weekly: dict) -> list[float]:
     return corpus
 
 
-def _estimate_values(weekly: dict) -> list[float]:
-    return [float(e["value"]) for e in weekly.get("estimates") or []
-            if isinstance(e, dict) and isinstance(e.get("value"), (int, float))]
+def _estimates(weekly: dict) -> dict[str, dict]:
+    return {str(e.get("id")): e for e in weekly.get("estimates") or []
+            if isinstance(e, dict) and isinstance(e.get("value"), (int, float))}
 
 
-def strip_ratios(text: str, estimates: list[float]) -> str:
-    """'8 de cada 10' is a rounded share: it traces when an estimate rounds to that fraction
-    (|8/10·100 − estimate| ≤ half a step of 1/10). Traced ratios are removed before the number scan."""
-    def repl(m):
+def _ratio_fits(x: int, n: int, est: dict) -> bool:
+    return 0 < n and 0 <= x <= n and abs(x / n * 100 - float(est["value"])) <= RATIO_TOLERANCE + 1e-9
+
+
+def resolve_ratios(raw: str, estimates: dict[str, dict], own: dict | None = None) -> tuple[str, list[str]]:
+    """Plain text with number words as digits and every BACKED ratio removed, plus the ratio problems.
+
+    A ratio («8 de cada 10», «ocho de cada diez», «la mitad») is backed when it sits inside an estimate
+    marker [texto](est:id), or when it is the ratio of a declared estimate's display (``own``: the
+    estimate whose display this is). It is then checked against that one estimate only (±5 points)."""
+    problems: list[str] = []
+    by_display: dict[tuple[int, int], dict] = {}
+    for est in estimates.values():
+        for m in RATIO.finditer(digits(est.get("display"))):
+            by_display.setdefault((int(m.group(1)), int(m.group(2))), est)
+
+    def check(m, est):
         x, n = int(m.group(1)), int(m.group(2))
-        if 0 < x <= n <= 10 and any(abs(x / n * 100 - v) <= 50 / n + 1e-9 for v in estimates):
-            return " "
-        return m.group(0)
-    return RATIO.sub(repl, text)
+        if est is None:
+            est = by_display.get((x, n))
+        if est is None:
+            problems.append(f"ratio_not_backed_by_estimate:{m.group(0)}")
+            return f"{x} de_cada {n}"   # reported once; its numbers are still scanned
+        if not _ratio_fits(x, n, est):
+            problems.append(f"ratio_off_its_estimate:{m.group(0)}:{est.get('id')}")
+            return f"{x} de_cada {n}"
+        return " "
+
+    def link(m):
+        label, ref = m.group(1), m.group(2)
+        if ref.startswith("est:"):
+            est = estimates.get(ref[4:])
+            return RATIO.sub(lambda r: check(r, est) if est else check(r, None), digits(label))
+        return label
+
+    text = digits(NOTE.sub("", LINK.sub(link, str(raw or ""))))
+    text = RATIO.sub(lambda r: check(r, own), text)
+    return text, problems
 
 
-def untraced_numbers(weekly: dict, corpus: list[float] | None = None) -> list[str]:
+def number_problems(weekly: dict, corpus: list[float] | None = None) -> tuple[list[str], list[str]]:
+    """(untraced numbers, ratio problems) over every displayed text, estimate displays and chart values."""
     from .weekly_freshness import chart_values, number_traces, numbers_in
     corpus = trace_corpus(weekly) if corpus is None else corpus
-    ests = _estimate_values(weekly)
-    missing = [f"{where}:{tok}" for where, text in displayed_texts(weekly)
-               for tok, value, dec in numbers_in(strip_ratios(text, ests)) if not number_traces(value, dec, corpus)]
+    ests = _estimates(weekly)
+    missing, ratios = [], []
+    for where, raw, _ in displayed_raw(weekly):
+        text, problems = resolve_ratios(raw, ests)
+        ratios += [f"{p}:{where}" for p in problems]
+        missing += [f"{where}:{tok}" for tok, value, dec in numbers_in(text) if not number_traces(value, dec, corpus)]
     for est in weekly.get("estimates") or []:
         if isinstance(est, dict) and est.get("display"):
             own = [float(est["value"])] if isinstance(est.get("value"), (int, float)) else []
-            missing += [f"estimate.{est.get('id')}.display:{tok}"
-                        for tok, value, dec in numbers_in(strip_ratios(str(est["display"]), ests))
+            text, problems = resolve_ratios(est["display"], ests, own=ests.get(str(est.get("id"))))
+            ratios += [f"{p}:estimate.{est.get('id')}.display" for p in problems]
+            missing += [f"estimate.{est.get('id')}.display:{tok}" for tok, value, dec in numbers_in(text)
                         if not number_traces(value, dec, own + corpus)]
     for chart in weekly.get("charts") or []:
         if isinstance(chart, dict):
             missing += [f"chart.{chart.get('id')}:{label}={value}" for label, value in chart_values(chart)
                         if not number_traces(value, 1, corpus) and not number_traces(value, 0, corpus)]
-    return missing
+    return missing, ratios
+
+
+def untraced_numbers(weekly: dict, corpus: list[float] | None = None) -> list[str]:
+    return number_problems(weekly, corpus)[0]
 
 
 def unexplained_normative_ids(weekly: dict) -> list[str]:
@@ -288,6 +377,24 @@ def _excerpts_by_source(weekly: dict) -> dict[str, list[str]]:
 def _literal_in(text: str, pool: list[str]) -> bool:
     segs = quote_segments(text)
     return bool(segs) and all(any(literal_key(s) in p for p in pool) for s in segs)
+
+
+STOP_WORDS = set("""del las los una por con para que sus como sobre según entre desde ante tras son ese esa este esta
+estos estas más fue han hay""".split())
+
+
+def _significant(text: str) -> set[str]:
+    words = re.findall(r"[a-z0-9]+", fold(text))
+    out = {w for w in words if len(w) >= 3 and w not in STOP_WORDS}
+    initials = "".join(w[0] for w in re.findall(r"[A-Za-zÁÉÍÓÚÑáéíóúñ]+", str(text)) if len(w) >= 3)
+    if len(initials) >= 2:
+        out.add(fold(initials))
+    return out
+
+
+def _shares_word(attribution: str, label: str) -> bool:
+    """«Fiscalía Nacional Económica» matches a label naming «FNE» (its initials) or any significant word."""
+    return bool(_significant(attribution) & _significant(label))
 
 
 def presentation_errors(weekly: dict) -> list[str]:
@@ -368,11 +475,19 @@ def presentation_errors(weekly: dict) -> list[str]:
             errors.append(f"quote_without_attribution:body[{i}]")
         if not _literal_in(str(b.get("text") or ""), excerpts.get(str(ref), [])):
             errors.append(f"quote_not_literal_in_evidence:body[{i}]")
-    all_excerpts = [p for pool in excerpts.values() for p in pool]
-    for where, text in [(w, t) for w, t in all_markup_texts(weekly) if not w.startswith("chart.")]:
-        for q in INLINE_QUOTE.findall(plain(text)):
-            if len(q.split()) >= INLINE_QUOTE_MIN_WORDS and not _literal_in(q, all_excerpts):
-                errors.append(f"inline_quote_not_literal_in_evidence:{where}")
+    labels = {s.get("id"): f"{s.get('label') or ''} {s.get('short_label') or ''}" for s in sources}
+    for i, b in enumerate(blocks):
+        if b.get("type") == "quote" and b.get("source_ref") in labels and b.get("attribution") \
+                and not _shares_word(str(b["attribution"]), labels[b["source_ref"]]):
+            errors.append(f"quote_attribution_not_its_source:body[{i}]")
+    # Inline quotes, in ANY displayed text, must be literal in the excerpts of a source cited by that text.
+    for where, raw, cites in displayed_raw(weekly):
+        if ".quote" in where:
+            continue
+        pool = [p for ref in cites for p in excerpts.get(ref, [])]
+        for q in INLINE_QUOTE.findall(plain(raw)):
+            if len(q.split()) >= INLINE_QUOTE_MIN_WORDS and not _literal_in(q, pool):
+                errors.append(f"inline_quote_not_literal_in_cited_source:{where}")
 
     # Charts: 1–3, each anchored right after the paragraph that explains it.
     charts = [c for c in weekly.get("charts") or [] if isinstance(c, dict)]
@@ -442,6 +557,8 @@ def presentation_errors(weekly: dict) -> list[str]:
     for s in sources:
         if s.get("id") not in cited:
             errors.append(f"source_never_cited:{s.get('id')}")
+    if {s.get("url") for s in sources} != set(weekly.get("source_refs") or []):
+        errors.append("source_refs_do_not_match_sources")
 
     # Estimates: deterministic formula, value recomputed, marked in the text or used by a chart/card,
     # and explained in the method accordion.
@@ -480,7 +597,8 @@ def presentation_errors(weekly: dict) -> list[str]:
     if any(x not in note_refs for x in nids):
         errors.append("note_never_referenced")
 
-    errors += [f"number_untraced:{x}" for x in untraced_numbers(weekly)]
+    missing, ratios = number_problems(weekly)
+    errors += [f"number_untraced:{x}" for x in missing] + ratios
     errors += [f"normative_id_unexplained:{x}" for x in unexplained_normative_ids(weekly)]
     return errors
 
@@ -507,32 +625,35 @@ def _strings(node: Any, out: list[str]) -> None:
             _strings(v, out)
 
 
-def evidence_text_by_url(evidence: dict) -> dict[str, list[str]]:
-    """Literal texts of the evidence package grouped by the URL of the item that holds them."""
+def quote_pool_by_url(evidence: dict) -> dict[str, list[str]]:
+    """Literal texts a quote may come from, by source URL: ``evidence["excerpts"]`` and, for each evidence
+    signal, its raw title and public lead. Labels, roles, summaries and Alicanto's own text never count."""
     out: dict[str, list[str]] = {}
-
-    def walk(node: Any) -> None:
-        if isinstance(node, dict):
-            url = node.get("url") or node.get("source_url")
-            if isinstance(url, str) and url.startswith("https://"):
-                texts: list[str] = []
-                _strings({k: v for k, v in node.items() if k not in ("url", "source_url")}, texts)
-                out.setdefault(url, []).extend(literal_key(t) for t in texts)
-            for v in node.values():
-                walk(v)
-        elif isinstance(node, list):
-            for v in node:
-                walk(v)
-
-    walk(evidence)
+    for x in evidence.get("excerpts") or []:
+        if isinstance(x, dict) and isinstance(x.get("url"), str) and x.get("text"):
+            out.setdefault(x["url"], []).append(literal_key(x["text"]))
+    items = [evidence.get("candidate")] + list(evidence.get("related") or [])
+    for item in items:
+        if isinstance(item, dict) and isinstance(item.get("url"), str):
+            for key in QUOTE_FIELDS:
+                if item.get(key):
+                    out.setdefault(item["url"], []).append(literal_key(item[key]))
     return out
 
 
+def evidence_number_pool(evidence: dict) -> list[float]:
+    """Evidence numbers plus small counts written as words in the evidence text («los dos primeros proyectos»)."""
+    texts: list[str] = []
+    _strings({k: v for k, v in evidence.items() if k not in ("sources", "allowed_urls", "numbers")}, texts)
+    words = {float(NUMBER_WORDS[w.casefold()]) for t in texts for w in NUMBER_WORD.findall(t)}
+    return [float(n) for n in evidence.get("numbers") or []] + sorted(words)
+
+
 def evidence_errors(weekly: dict, evidence: dict) -> list[str]:
-    """Excerpts are literal in the evidence item of the same source; figures trace to evidence numbers."""
+    """Excerpts are literal in the quote pool of the same source; figures trace to evidence numbers."""
     from .weekly_freshness import number_traces, numbers_in
     errors = []
-    by_url = evidence_text_by_url(evidence)
+    by_url = quote_pool_by_url(evidence)
     urls = {s.get("id"): s.get("url") for s in weekly.get("sources") or [] if isinstance(s, dict)}
     for i, x in enumerate(weekly.get("evidence_excerpts") or []):
         if not isinstance(x, dict):
@@ -540,9 +661,9 @@ def evidence_errors(weekly: dict, evidence: dict) -> list[str]:
         pool = by_url.get(str(urls.get(x.get("source_ref"))), [])
         if not _literal_in(str(x.get("text") or ""), pool):
             errors.append(f"excerpt_not_in_evidence:{i}:{x.get('source_ref')}")
-    pool = [float(n) for n in evidence.get("numbers") or []]
+    pool = evidence_number_pool(evidence)
     for fig in weekly.get("evidence_figures") or []:
-        for tok, value, dec in numbers_in(str(fig)):
+        for tok, value, dec in numbers_in(digits(fig)):
             if not number_traces(value, dec, pool):
                 errors.append(f"evidence_figure_not_in_evidence:{tok}")
     return errors
@@ -588,14 +709,18 @@ Marcado dentro de paragraph, closing, charts[].source y key_figures[].text:
 RULES_V2 = """Reglas (se verifican de forma determinista; si fallas, no se publica):
 1. Usa EXCLUSIVAMENTE la EVIDENCIA. Cada número de cualquier campo visible (titular, bajada, cuerpo, cierre, recuadro de
    cifras, gráficos, método, fuentes) debe estar en evidence_figures (copiado de la evidencia) o ser una estimación
-   declarada con fórmula. «8 de cada 10» vale solo si una estimación redondea a esa fracción.
+   declarada con fórmula. Los números escritos en palabras («seis», «diez», «mil») también se verifican. Una proporción
+   («8 de cada 10», «la mitad», «un tercio») va dentro de [texto](est:id) o es el display de una estimación, y debe
+   quedar a ±5 puntos de ESA estimación.
 2. Ensayo (párrafos + citas + cierre) de 600 a 900 palabras; mínimo 500 y tope duro de 1.000. Estructura de noticia:
    entrada, contexto, desarrollo y cierre. Prohibidos los subtítulos «Qué pasó», «Lectura Alicanto» y «Qué mirar».
 3. Cada fuente que nombres en el texto va con enlace [nombre](fN); toda fuente de sources se cita al menos una vez.
    type: "oficial" (organismo público, ley, estudio oficial) o "prensa" (medio de comunicación).
-4. Citas: solo en bloques "quote" con atribución, y cada cita (y cada frase entre comillas de 3 o más palabras) debe estar
-   LITERALMENTE en evidence_excerpts de esa fuente, que a su vez se copia literal de la evidencia. Puedes omitir palabras
-   con […]. Prefiere citas de fuentes oficiales; de la prensa de pago usa solo título y bajada públicos.
+4. Citas: solo en bloques "quote", con una atribución que nombre a la fuente (p. ej. «Fiscalía Nacional Económica» para
+   FNE). Cada cita, y cada frase entre comillas de 3 o más palabras, debe estar LITERALMENTE en evidence_excerpts de una
+   fuente citada en ese mismo texto; evidence_excerpts se copia literal de los extractos, del título original (raw_title)
+   o de la bajada pública (public_lead) de la EVIDENCIA, nunca de rótulos, roles ni resúmenes. Puedes omitir palabras
+   con […]. Sin comillas en titular, bajada ni subtítulos. Prefiere citas de fuentes oficiales.
 5. Toda cifra derivada es una estimación: márcala en el texto con [texto](est:id) o úsala en un gráfico o tarjeta de tipo
    estimacion, y lístala en method.estimates. Un gráfico de estimación lleva kind="estimacion" y estimate_ref.
 6. Recuadro de cifras: opcional; 3–5 tarjetas; cada una con universo (literal en su texto), kind y fuente; una idea por tarjeta.

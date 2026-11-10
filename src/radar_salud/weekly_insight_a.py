@@ -223,6 +223,8 @@ def _brief(s: dict) -> dict:
             "source_type": s.get("source_type"), "url": s.get("source_url"), "event_date": s.get("event_date"),
             "what": s.get("card_what") or s.get("what_happened"), "why": s.get("card_why") or s.get("why_it_matters"),
             "evidence_maturity": s.get("evidence_maturity"),
+            # Literal texts a v2 quote may come from (raw source title and public lead; Dirección 10-nov-2026).
+            **{k: v for k, v in (("raw_title", s.get("title")), ("public_lead", s.get("public_teaser"))) if v},
             **{k: s[k] for k in ("key_numbers", "data_insights", "summary_table") if s.get(k)}}
 
 
@@ -457,14 +459,14 @@ def worst_case_cost(model: str, prompt: str, max_output_tokens: int) -> float:
     return price_estimate(model, math.ceil(len(prompt) / CHARS_PER_TOKEN), max_output_tokens)
 
 
-def estimate_run_cost(evidence: dict, routes: dict[str, str] | None = None, *, draft_output_tokens: int = 3500,
+def estimate_run_cost(evidence: dict, routes: dict[str, str] | None = None, *, draft_output_tokens: int = 6000,
                       review_output_tokens: int = 1200, anchor: date | None = None, prompt: str | None = None) -> dict:
     """Expected (typical output) and worst case (full max_output on every call) for one Monday run."""
     routes = routes or _routes()
     anchor = anchor or date(2026, 11, 2)
     dp = prompt or draft_prompt(evidence, anchor)
     din = math.ceil(len(dp) / CHARS_PER_TOKEN)
-    rin = din + 3500  # review prompt carries the evidence plus the draft
+    rin = din + draft_output_tokens  # review prompt carries the evidence plus the draft
     draft, review = routes[DRAFT_ROUTE], routes[REVIEW_ROUTE]
     typical = price_estimate(draft, din, draft_output_tokens) + price_estimate(review, rin, review_output_tokens)
     worst = price_estimate(draft, din, DRAFT_MAX_OUTPUT) + price_estimate(review, rin, REVIEW_MAX_OUTPUT)
@@ -634,6 +636,9 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
     weekly["model_trace"] = {"api_call": True, "draft_model": draft_model, "review_model": review_model,
                              "response_ids": [c["response_id"] for c in calls], "estimated_cost_usd": round(spent, 6)}
     weekly["editorial_review_pass"] = True
+    # What the reader is told about review comes from this record (web: «Cómo hicimos este análisis»).
+    weekly["independent_review"] = {"verdict": "PASS", "reviewer": review_model, "writer": draft_model,
+                                    "kind": "second_model", "on": anchor.isoformat()}
     out.update(status="pass", weekly_insight=weekly, audit={
         "verdict": "PASS", "editorial_business_review_pass": True, "independent_second_reviewer": True,
         "reviewer": f"{review_model} (revisor independiente del redactor {draft_model})",

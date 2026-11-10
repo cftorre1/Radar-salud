@@ -98,7 +98,7 @@ CASES = {
     "number_untraced:closing:9": lambda w: w["closing"].update(text=w["closing"]["text"] + " Son 9 de cada 10 camas."),
     "quote_not_literal_in_evidence:body[1]": lambda w: w["body"][1].update(text="No reduce la competencia en ningún segmento"),
     "quote_source_unresolved:body[1]": lambda w: w["body"][1].update(source_ref="f42"),
-    "inline_quote_not_literal_in_evidence:body[2]": lambda w: w["body"][2].update(
+    "inline_quote_not_literal_in_cited_source:body[2].paragraph": lambda w: w["body"][2].update(
         text=w["body"][2]["text"].replace("“foco en proyectos de mayor tamaño”", "“foco en proyectos muy grandes”")),
     "source_ref_unresolved:body[0]:f12": lambda w: w["body"][0].update(text=w["body"][0]["text"].replace("](f2)", "](f12)")),
     "source_never_cited:f9": lambda w: block(w, "paragraph", 7).update(text=block(w, "paragraph", 7)["text"].replace("[Ley 21.822](f9)", "Ley 21.822")),
@@ -146,12 +146,87 @@ def test_key_figures_box_is_optional():
     assert not any(e.startswith("key_figure") for e in errors), errors
 
 
-def test_ratio_traces_only_to_an_estimate_that_rounds_to_it():
+# --- numbers written as words and ratios (review of PR #174, item 1) ---------------------------
+
+def test_number_words_are_scanned_like_digits():
+    assert essay.digits("ocho de cada diez y seis meses; la mitad, un tercio") == "8 de cada 10 y 6 meses; 1 de cada 2, 1 de cada 3"
+    assert essay.digits("una cama y un fondo") == "una cama y un fondo"  # articles are not numbers
     w = weekly()
-    assert essay.strip_ratios("8 de cada 10 cupos", [80.12]).strip() == "cupos"
-    assert "9 de cada 10" in essay.strip_ratios("9 de cada 10 cupos", [80.12])
-    assert "1 de cada 3" not in essay.strip_ratios("1 de cada 3", [33.71])
+    w["body"][2]["text"] += " Hubo diecisiete cierres."
+    assert "number_untraced:body[2].paragraph:17" in presentation_a_errors(w)
+
+
+@pytest.mark.parametrize("phrase", ["nueve de cada diez", "2 de cada 3", "la mitad"])
+def test_unbacked_ratio_fails(phrase):
+    w = weekly()
+    w["body"][5]["text"] += f" Son {phrase} hogares."
+    assert any(e.startswith(f"ratio_not_backed_by_estimate:") and e.endswith(":body[5].paragraph")
+               for e in presentation_a_errors(w)), presentation_a_errors(w)
+
+
+def test_ratio_inside_an_estimate_marker_is_checked_against_that_estimate_only():
+    w = weekly()
+    ests = essay._estimates(w)
+    assert essay.resolve_ratios("[ocho de cada diez](est:altas_vs_cupos)", ests)[1] == []   # 80 vs 80,12
+    assert essay.resolve_ratios("[nueve de cada diez](est:altas_vs_cupos)", ests)[1] == [
+        "ratio_off_its_estimate:9 de cada 10:altas_vs_cupos"]                               # 90 vs 80,12
+    # Another estimate that would fit does not rescue it: the marker names its estimate.
+    assert essay.resolve_ratios("[uno de cada tres](est:altas_vs_cupos)", ests)[1] == [
+        "ratio_off_its_estimate:1 de cada 3:altas_vs_cupos"]
+    # Outside a marker, a ratio is backed only by the estimate whose display it is («uno de cada tres» → 33,71).
+    assert essay.resolve_ratios("1 de cada 3 hogares", ests)[1] == []
     assert presentation_a_errors(w) == []
+
+
+def test_quotes_come_only_from_evidence_excerpts_never_from_labels_or_roles():
+    w, ev = weekly(), evidence()
+    role = next(s["role"] for s in ev["sources"] if s["url"] == w["sources"][0]["url"])
+    assert role.startswith("Fuente primaria de la noticia")
+    w["evidence_excerpts"].append({"source_ref": "f1", "text": "Fuente primaria de la noticia"})
+    w["body"][1]["text"] = "Fuente primaria de la noticia"
+    errors = gen.verify_candidate(w, ev, ANCHOR)["errors"]
+    assert f"excerpt_not_in_evidence:{len(w['evidence_excerpts']) - 1}:f1" in errors
+    pool = essay.quote_pool_by_url(ev)[w["sources"][0]["url"]]
+    assert all("fuente primaria" not in p for p in pool)
+
+
+def test_inline_quotes_match_the_cited_source_only_in_every_displayed_text():
+    w = weekly()
+    w["body"][2]["text"] = w["body"][2]["text"].replace("La [FNE](f1)", "La FNE")  # quote left without its source
+    assert "inline_quote_not_literal_in_cited_source:body[2].paragraph" in presentation_a_errors(w)
+    w = weekly()
+    w["body"][2]["text"] = w["body"][2]["text"].replace("](f1)", "](f2)")  # FNE words credited to CNN
+    assert "inline_quote_not_literal_in_cited_source:body[2].paragraph" in presentation_a_errors(w)
+    for where, mutate in {"headline": lambda w: w.update(headline=w["headline"] + " con “foco en proyectos de mayor tamaño”"),
+                          "body[4].subhead": lambda w: w["body"][4].update(text="El “foco en proyectos de mayor tamaño”"),
+                          "key_figures[0].label": lambda w: w["key_figures"]["items"][0].update(label="“Una oferta muy grande”"),
+                          "chart.catastro.headline": lambda w: w["charts"][0].update(headline="“Uno de cada tres hogares”")}.items():
+        w = weekly()
+        mutate(w)
+        assert f"inline_quote_not_literal_in_cited_source:{where}" in presentation_a_errors(w), where
+
+
+def test_sources_must_match_source_refs_and_quotes_their_attribution():
+    w = weekly()
+    w["source_refs"] = w["source_refs"][:-1]
+    assert "source_refs_do_not_match_sources" in presentation_a_errors(w)
+    w = weekly()
+    assert essay._shares_word("Fiscalía Nacional Económica", w["sources"][0]["label"])  # FNE initials
+    w["body"][1]["attribution"] = "Ministerio de Salud"
+    assert "quote_attribution_not_its_source:body[1]" in presentation_a_errors(w)
+
+
+def test_migrated_text_carries_the_review_corrections():
+    w = weekly()
+    text = " ".join([w["dek"], w["closing"]["text"]] + [b.get("text", "") for b in w["body"]])
+    assert "Las cifras oficiales muestran" not in w["dek"] and "todas las edades" in w["dek"]
+    card = next(x for x in w["key_figures"]["items"] if x["label"] == "Altas que no salen")
+    assert "todas las edades" in card["universe"] and card["universe"] in card["text"]
+    assert w["closing"]["text"].count("cuando se publique") == 2 and "apunta a sumar" in w["closing"]["text"]
+    assert "donde nadie la presupuesta" not in text and "Parte del cuidado que no encuentra" not in text
+    assert any("no identificados" in x for x in w["method"]["limits"])
+    assert 600 <= essay.essay_words(w) <= 900
+    assert w["independent_review"]["verdict"] == "PASS_WITH_CORRECTIONS" and w["independent_review"]["corrections_applied"]
 
 
 def test_evidence_checks_excerpts_and_figures_against_the_package():
@@ -208,6 +283,33 @@ def test_pipeline_writes_and_publishes_v2(monkeypatch, tmp_path):
     assert "Formato A v2" in prompt and "evidence_excerpts" in prompt and "unas 750 palabras" in prompt
     assert fake.calls[0]["max"] == gen.DRAFT_MAX_OUTPUT
     assert "evidence_excerpts" in fake.calls[1]["prompt"]  # the reviewer sees the v2 fields
+    assert w["independent_review"]["verdict"] == "PASS" and w["independent_review"]["reviewer"] != w["independent_review"]["writer"]
+
+
+def _stats_evidence_from_frozen_brief():
+    b = json.loads((ROOT / "data/weekly_insight/candidates/2026-11-09-stats-brief.json").read_text(encoding="utf-8"))
+    a = b["anchor"]
+    return {"mode": "stats_anchor", "contract": b["contract"], "allowed_figures": b["allowed_anchor_figures"],
+            "ficha_text": b["ficha_text_do_not_repeat"], "stats_anchor": {k: v for k, v in a.items() if k not in ("headline", "dek", "sources")},
+            "candidate": {"title": a["headline"], "what": a["dek"], "url": (a["sources"] or [{}])[0].get("url")},
+            "related": [{**{k: x[k] for k in ("label", "url", "source_name", "event_date")}, **(x.get("brief") or {})}
+                        for x in b["cross_references"]],
+            "sources": a["sources"]}
+
+
+def test_worst_case_stats_anchor_run_fits_the_one_dollar_cap():
+    """Item 8: stats draft (contract FAIL) + normal-topic redraft + review, each at full max_output."""
+    routes = gen._routes()
+    stats_prompt = sa.draft_prompt(_stats_evidence_from_frozen_brief(), ANCHOR)
+    normal = json.loads((ROOT / "data/weekly_insight/candidates/2026-11-09-evidence.json").read_text(encoding="utf-8"))["evidence"]
+    normal_prompt = gen.draft_prompt(normal, ANCHOR)
+    review = gen.review_prompt(weekly(), normal, {"verdict": "PASS", "errors": []}) + sa.REVIEW_SUFFIX
+    worst = (gen.worst_case_cost(routes[gen.DRAFT_ROUTE], stats_prompt, gen.DRAFT_MAX_OUTPUT)
+             + gen.worst_case_cost(routes[gen.DRAFT_ROUTE], normal_prompt, gen.DRAFT_MAX_OUTPUT)
+             + gen.worst_case_cost(routes[gen.REVIEW_ROUTE], review, gen.REVIEW_MAX_OUTPUT))
+    assert worst < gen.MAX_RUN_USD, worst
+    cost = gen.estimate_run_cost(normal, anchor=ANCHOR)
+    assert cost["typical_usd"] < cost["worst_case_usd"] < gen.MAX_RUN_USD
 
 
 def test_writer_prompt_drops_the_fixed_sections():

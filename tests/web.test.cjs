@@ -215,6 +215,14 @@ test('current approved insight renders the v2 essay faithfully to the approved m
  // The sources list comes after the method accordion and stays visible.
  assert.ok(html.indexOf('we-howto')<html.indexOf('class="we-sources"'));
  assert.match(html,/<span class="we-end" aria-hidden="true"><\/span><\/p><\/div><\/div><section class="we-back">/);
+ // Sources are numbered by first citation, so superscripts first appear as 1, 2, 3… and the list follows that order.
+ const firsts=[];for(const m of html.split('<section class="we-back">')[0].matchAll(/aria-label="Fuente (\d+)"/g)){const n=Number(m[1]);if(!firsts.includes(n))firsts.push(n)}
+ assert.deepEqual(firsts,[1,2,3,4,5,6,7,8,9]);
+ assert.ok(html.indexOf('id="we-src-f1"')<html.indexOf('id="we-src-f2"')&&html.indexOf('id="we-src-f2"')<html.indexOf('id="we-src-f6"'));
+ // The review line is drawn from the recorded independent review.
+ assert.match(html,/pasó una revisión independiente antes de publicarse/);
+ const unreviewed={...w,independent_review:undefined};c.renderWeeklyDetail(unreviewed);
+ assert.doesNotMatch(body.innerHTML,/revisión independiente/);assert.match(body.innerHTML,/Cada número del texto se verificó contra el paquete de evidencia\./);
 });
 test('v2 essay renderer falls back cleanly on unknown refs and keeps v1 archives on presentation A',()=>{
  const c=context(),body={innerHTML:''};c.document={getElementById:id=>body};
