@@ -114,8 +114,12 @@ def test_builder_passes_on_fixtures_and_waits_for_first_review(tmp_path):
     rows = month_rows("202609")
     open_rows = [f for f in rows if TYPES[f[1]] == "open"]
     share = 100 * sum(int(f[31]) for f in open_rows if f[8] == "No Comer.") / sum(int(f[31]) for f in open_rows)
-    assert c["headline"].startswith(f"El {f9.fmt(share, 1)}% de los cotizantes de Isapres abiertas")
-    assert "septiembre 2026" in c["headline"] and len(c["headline"]) <= 140
+    assert c["headline"] == f"El {f9.fmt(share, 1)}% de los cotizantes de Isapres abiertas está en planes fuera de venta"
+    for title in [c["headline"], *(t["dek"] for t in c["tabs"])]:
+        assert len(title.split()) <= f9.MAX_TITLE_WORDS, title
+    assert [t["id"] for t in c["tabs"]] == ["cerrados", "modalidad", "precio", "cobertura", "oferta"]
+    text = json.dumps(c, ensure_ascii=False)
+    assert "venden" not in text and "ya no se vende" not in text
     on_sale = sum(1 for f in open_rows if f[8] == "Si Comer.")
     assert c["kpis"][1]["value"] == f9.fmt(on_sale, 0)
     assert 4 <= len(c["tabs"]) <= 6 and all(t.get("dek") for t in c["tabs"])
@@ -143,7 +147,7 @@ def test_title_is_neutral_when_not_robust(tmp_path):
     c = f9.run(root, today=TODAY, registry=registry(), llm=False)["candidate"]
     assert c["headline"] == "Planes de salud Isapre, septiembre 2026"
     assert not any(r["robusto"] for r in c["robustness"].values())
-    assert c["tabs"][0]["dek"] == "Cotizantes en planes que ya no se venden, por Isapre"
+    assert c["tabs"][0]["dek"] == "Cotizantes en planes fuera de venta, por Isapre"
 
 
 def test_price_title_needs_weighted_and_unweighted_to_agree(tmp_path):
@@ -160,11 +164,29 @@ def test_price_title_needs_weighted_and_unweighted_to_agree(tmp_path):
 def test_minimum_cells_suppress_medians(tmp_path):
     root = make_root(tmp_path, **{"202609": {"small_isapre": True}})
     pl = json.loads((root / f9.AGG_ROOT / "202609/planes_202609.json").read_text(encoding="utf-8"))
-    cell = pl["grupos"]["isapre:63"]["no_venta"]["precio_uf"]
-    assert cell["n"] == 2 and cell["mediana"] is None and cell["suprimido"] == "<5 planes"
-    assert pl["grupos"]["isapre:63"]["no_venta"]["cotizantes"] == 201  # counts are always published
+    cell = pl["grupos"]["isapre:63"]["no_venta"]
+    assert cell["planes"] is None and cell["cotizantes"] is None and cell["suprimido"] == "<5 planes"
+    assert cell["precio_uf"]["mediana"] is None and "media" not in cell["precio_uf"]
     pkg = f9.build_package(root, registry())
-    assert "pl.202609.63.nv.med" not in pkg["values"] and "pl.202609.63.nv.cot" in pkg["values"]
+    assert "pl.202609.63.nv.med" not in pkg["values"] and "pl.202609.63.nv.cot" not in pkg["values"]
+    assert pkg["hidden"]["pl.202609.63.nv.cot"] == "<5 planes"
+    c = f9.run(root, today=TODAY, registry=registry(), llm=False)["candidate"]
+    rows = {r[0]: r for t in c["tabs"] for ch in t["charts"] for r in ch["table"]["rows"] if t["id"] == "cerrados"}
+    assert rows["Isalud (cerrada)"][2] == "<5 planes"
+
+
+def test_hold_when_a_hidden_small_cell_can_be_recovered_by_subtraction(tmp_path):
+    root = make_root(tmp_path, **{"202609": {"small_isapre": True}})
+    p = root / f9.AGG_ROOT / "202609/planes_202609.json"
+    d = json.loads(p.read_text(encoding="utf-8"))
+    assert d["grupos"]["isapre:63"]["no_venta"]["planes"] is None
+    # Publish the closed group's "not on sale" cell again: Isalud is its only member, so the cell gives Isalud back.
+    d["grupos"]["cerradas"]["no_venta"].update(planes=2, cotizantes=201)
+    d["grupos"]["cerradas"]["no_venta"].pop("suprimido")
+    p.write_text(json.dumps(d), encoding="utf-8")
+    fails = f9.build_package(root, registry())["reconciliation"]["failures"]
+    assert "small_cell_published:cerradas/no_venta" in fails
+    assert any(x.startswith("small_cell_recoverable:isapre:63/no_venta") for x in fails)
 
 
 def test_hold_when_cotizantes_do_not_match_the_cartera_workbook(tmp_path):

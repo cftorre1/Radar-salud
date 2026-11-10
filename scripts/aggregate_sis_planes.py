@@ -22,9 +22,12 @@ Layout (SIS Compendio de Archivos Maestros, cap. II, Título III and Título IV;
 - Cobertura Planes, 16 fields: 1 isapre, 2 periodo, 3 plan id, 4 % LE ambulatoria, 5 tope amb (Con/Sin Tope),
   6-8 tope amb ($, UF, veces), 9 % LE hospitalaria, 10 tope hosp, 11-13 tope hosp, 14 código Fonasa, 15-16 not used.
 
-Minimum cells: a price or coverage distribution (median, quartiles, mean) is published only with >= 5 plans; a
-cotizante-weighted statistic only with >= 5 plans that have cotizantes and >= 30 cotizantes. Counts are always
-published (a count of plans or of cotizantes per Isapre is not about a person).
+Minimum cells (v3, review of PR #167): a price or coverage distribution (median and quartiles; no mean, which
+could be subtracted) is published only with >= 5 plans; a cotizante-weighted median only with >= 5 plans that have
+cotizantes and >= 30 cotizantes. A count cell (group × set × modality) with 1-4 plans is hidden, and so are the
+complementary cells needed so that no hidden count can be recovered by adding and subtracting published ones
+(``radar_salud.planes_disclosure``; the check is exact). Cobertura publishes medians only, no counts, and no
+distribution for the group of closed Isapres.
 """
 from __future__ import annotations
 
@@ -45,8 +48,12 @@ from urllib.parse import quote, unquote
 _SPEC = importlib.util.spec_from_file_location("aggregate_sis_open_data", Path(__file__).resolve().with_name("aggregate_sis_open_data.py"))
 base = importlib.util.module_from_spec(_SPEC)
 _SPEC.loader.exec_module(base)
+_DSPEC = importlib.util.spec_from_file_location(
+    "planes_disclosure", Path(__file__).resolve().parents[1] / "src" / "radar_salud" / "planes_disclosure.py")
+disclosure = importlib.util.module_from_spec(_DSPEC)
+_DSPEC.loader.exec_module(disclosure)
 
-SCRIPT_VERSION = "sis_planes_agg_v2"  # v2: canasta hospitalaria quirúrgica (día cama aparte); Cobertura también en t-1
+SCRIPT_VERSION = "sis_planes_agg_v3"  # v3: celdas complementarias, sin medias ni conteos en distribuciones; cobertura solo individuales a la venta
 FILE_HOST = base.FILE_HOST
 MAX_FILE_BYTES = base.MAX_FILE_BYTES
 PLANES = "Planes de Salud"
@@ -161,21 +168,17 @@ def wquantile(pairs: list[tuple[float, float]], q: float) -> float | None:
 
 
 def dist(vals: list[float], weights: list[float] | None = None) -> dict:
-    """Distribution of a plan-level value; None where the minimum cell is not met."""
-    out: dict = {"n": len(vals)}
+    """Median and quartiles of a plan-level value; None where the minimum cell is not met. No mean and no counts are
+    published: both add up across groups, so a difference of groups would reveal a hidden small cell."""
+    out: dict = {}
     if len(vals) >= MIN_PLANS:
-        out.update(mediana=r(quantile(vals, 0.5), 4), p25=r(quantile(vals, 0.25), 4), p75=r(quantile(vals, 0.75), 4),
-                   media=r(sum(vals) / len(vals), 4))
+        out.update(mediana=r(quantile(vals, 0.5), 4), p25=r(quantile(vals, 0.25), 4), p75=r(quantile(vals, 0.75), 4))
     else:
-        out.update(mediana=None, p25=None, p75=None, media=None, suprimido=f"<{MIN_PLANS} planes")
+        out.update(mediana=None, p25=None, p75=None, suprimido=f"<{MIN_PLANS} planes")
     if weights is not None:
         pw = [(v, w) for v, w in zip(vals, weights) if w > 0]
         tw = sum(w for _, w in pw)
-        out["n_con_peso"], out["peso"] = len(pw), int(tw)
-        if len(pw) >= MIN_W_PLANS and tw >= MIN_W_COT:
-            out.update(mediana_pond=r(wquantile(pw, 0.5), 4), media_pond=r(sum(v * w for v, w in pw) / tw, 4))
-        else:
-            out.update(mediana_pond=None, media_pond=None)
+        out["mediana_pond"] = r(wquantile(pw, 0.5), 4) if len(pw) >= MIN_W_PLANS and tw >= MIN_W_COT else None
     return out
 
 
@@ -231,43 +234,49 @@ class PlanesAgg:
         return g
 
     @staticmethod
-    def cell(ps: list[dict]) -> dict:
+    def cell(ps: list[dict], mods: list[str]) -> dict:
         priced = [p for p in ps if p["mprecio"] in ("UF", "$") and (p["precio"] or 0) > 0]
-        out = {"planes": len(ps), "cotizantes": sum(p["cot"] for p in ps), "cargas": sum(p["cargas"] for p in ps),
-               "planes_con_cotizantes": sum(1 for p in ps if p["cot"] > 0),
-               "precio_uf": dist([p["precio"] for p in priced], [p["cot"] for p in priced]),
-               "precio_7pct": {"planes": sum(1 for p in ps if p["mprecio"] == "7%"),
-                               "cotizantes": sum(p["cot"] for p in ps if p["mprecio"] == "7%")},
-               "bonif_amb": dist([p["bonif_amb"] for p in ps if p["bonif_amb"] is not None],
-                                 [p["cot"] for p in ps if p["bonif_amb"] is not None]),
-               "bonif_hosp": dist([p["bonif_hosp"] for p in ps if p["bonif_hosp"] is not None],
-                                  [p["cot"] for p in ps if p["bonif_hosp"] is not None])}
-        for dim in ("mod", "tipo"):
-            c: dict = {}
-            for p in ps:
-                d = c.setdefault(p[dim], {"planes": 0, "cotizantes": 0})
-                d["planes"] += 1
-                d["cotizantes"] += p["cot"]
-            out[{"mod": "por_modalidad", "tipo": "por_tipo"}[dim]] = dict(sorted(c.items()))
+        out = {"planes": len(ps), "cotizantes": sum(p["cot"] for p in ps),
+               "precio_uf": dist([p["precio"] for p in priced], [p["cot"] for p in priced])}
+        c: dict = {m: {"planes": 0, "cotizantes": 0} for m in mods}
+        for p in ps:
+            c[p["mod"]]["planes"] += 1
+            c[p["mod"]]["cotizantes"] += p["cot"]
+        out["por_modalidad"] = c
         return out
 
     def result(self) -> dict:
         sets = {"todos": lambda p: True, "venta": lambda p: p["comer"] == "S", "no_venta": lambda p: p["comer"] == "N",
-                "vigentes": lambda p: p["cot"] > 0, "cerrados_con_cotizantes": lambda p: p["comer"] == "N" and p["cot"] > 0,
-                "venta_individual": lambda p: p["comer"] == "S" and p["tipo"] == "I",
-                "vigentes_individual": lambda p: p["cot"] > 0 and p["tipo"] == "I"}
+                "vigentes": lambda p: p["cot"] > 0, "cerrados_con_cotizantes": lambda p: p["comer"] == "N" and p["cot"] > 0}
+        mods = sorted({p["mod"] for p in self.plans.values()})
+        groups = self.groups()
         out: dict = {}
-        for key, ps in sorted(self.groups().items()):
-            out[key] = {name: self.cell([p for p in ps if fn(p)]) for name, fn in sets.items()}
-        return {"grupos": out, "conjuntos": {
+        for key, ps in sorted(groups.items()):
+            out[key] = {name: self.cell([p for p in ps if fn(p)], mods) for name, fn in sets.items()}
+            out[key]["todos"]["cargas"] = sum(p["cargas"] for p in ps)
+        if "cerradas" in out:  # medians of the closed group: never needed, and closest to a difference of small cells
+            for c in out["cerradas"].values():
+                c["precio_uf"] = {"mediana": None, "p25": None, "p75": None, "mediana_pond": None, "suprimido": "no se publica"}
+        members = {g: sorted({p["isapre"] for p in groups.get(g, [])}) for g in ("abiertas", "cerradas")}
+        hidden = disclosure.protect(out, members, self.types)
+        disclosure.apply(out, hidden)
+        sup = {"regla": "celda con 1 a 4 planes oculta; celdas complementarias ocultas hasta que ninguna se deduzca por "
+                        "suma o resta (verificación exacta, radar_salud.planes_disclosure)",
+               "miembros": members, "primarias": sum(1 for x in hidden.values() if x == disclosure.PRIMARY),
+               "complementarias": sum(1 for x in hidden.values() if x == disclosure.COMPLEMENTARY),
+               "celdas": sorted("/".join(x for x in c if x) for c in hidden)}
+        leaks = disclosure.check({"grupos": out, "supresion": sup})
+        if leaks:
+            raise ValueError(f"disclosure check failed: {leaks[:5]}")
+        sup["verificacion"] = "sin celdas recuperables"
+        return {"grupos": out, "supresion": sup, "conjuntos": {
             "todos": "todas las filas del archivo (planes vigentes y/o en comercialización)",
             "venta": "comercialización = S (a la venta en el mes)",
-            "no_venta": "comercialización = N (cerrados a venta)",
+            "no_venta": "comercialización = N (fuera de venta)",
             "vigentes": "planes con al menos un cotizante (campo 32 > 0)",
-            "cerrados_con_cotizantes": "comercialización = N y cotizantes > 0",
-            "venta_individual": "a la venta y tipo Individual", "vigentes_individual": "con cotizantes y tipo Individual"},
+            "cerrados_con_cotizantes": "comercialización = N y cotizantes > 0"},
             "regla_celda_minima": {"planes": MIN_PLANS, "planes_con_peso": MIN_W_PLANS, "cotizantes_peso": MIN_W_COT},
-            "precio": "precio base (campo 16, UF) de planes con modalidad de precio UF o $; los planes al 7 % se cuentan aparte",
+            "precio": "precio base (campo 16, UF) de planes con modalidad de precio UF o $; los planes al 7 % quedan fuera",
             "planes_unicos": len(self.plans), "filas_duplicadas_isapre_plan": self.dup,
             "filas_con_campos_34_38_no_vacios": self.extra_nonblank, "errores_numericos": dict(self.bad_num),
             "periodos_en_archivo": dict(self.periods.most_common(5)),
@@ -317,7 +326,9 @@ class CoberturaAgg:
         self.tope[key][code] = t
 
     def result(self) -> dict:
+        # Individual plans on sale only (what the Título IV master file covers; review of PR #167).
         joined = {k: self.plans.get(k) for k in self.cov}
+        joined = {k: p for k, p in joined.items() if p is not None and p["comer"] == "S" and p["tipo"] == "I"}
         groups: dict[str, list] = defaultdict(list)
         for k, p in joined.items():
             if p is None:
@@ -329,11 +340,12 @@ class CoberturaAgg:
             groups[f"isapre:{k[0]}"].append(k)
         out: dict = {}
         for g, keys in sorted(groups.items()):
-            cell: dict = {"planes": len(keys), "codigos": {}, "canasta": {}}
+            if g == "cerradas":
+                continue  # no distribution for the closed group (it is the sum of a few small cells)
+            cell: dict = {"codigos": {}, "canasta": {}}
             for code, world in CANASTA_CODES.items():
                 ks = [k for k in keys if code in self.cov[k]]
-                cell["codigos"][code] = {**dist([self.cov[k][code] for k in ks], [joined[k]["cot"] for k in ks]),
-                                         "con_tope": sum(1 for k in ks if self.tope[k].get(code)), "mundo": world}
+                cell["codigos"][code] = {**dist([self.cov[k][code] for k in ks], [joined[k]["cot"] for k in ks]), "mundo": world}
             for world, codes in CANASTA.items():
                 ks = [k for k in keys if all(c in self.cov[k] for c in codes)]
                 vals = [sum(self.cov[k][c] for c in codes) / len(codes) for k in ks]
@@ -344,12 +356,11 @@ class CoberturaAgg:
                 "codigos_en_archivo": dict(self.codes_seen), "periodos_en_archivo": dict(self.periods.most_common(5)),
                 "planes_en_archivo": len(self.plans_seen),
                 "planes_sin_fila_en_planes_de_salud": sum(1 for k in self.plans_seen if k not in self.plans),
-                "planes_canasta_unidos": sum(1 for p in joined.values() if p is not None),
-                "planes_canasta_unidos_a_venta": sum(1 for p in joined.values() if p is not None and p["comer"] == "S"),
-                "planes_canasta_unidos_individuales": sum(1 for p in joined.values() if p is not None and p["tipo"] == "I"),
+                "planes_canasta_unidos": len(joined),
+                "universo": "planes individuales a la venta en el mes (comercialización = S, tipo Individual)",
                 "regla_celda_minima": {"planes": MIN_PLANS, "planes_con_peso": MIN_W_PLANS, "cotizantes_peso": MIN_W_COT},
                 "nota": "cobertura de libre elección (archivo maestro Título IV: planes individuales en comercialización); "
-                        "la cobertura preferente no se informa en este archivo"}
+                        "la cobertura preferente no se informa en este archivo; solo medianas, sin conteos ni medias"}
 
 
 # ---------------------------------------------------------------- discovery

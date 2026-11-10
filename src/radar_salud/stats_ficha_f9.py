@@ -5,7 +5,7 @@ Input: ``data/sis_planes_aggregates/<yyyymm>/`` only, written by ``scripts/aggre
 same month a year earlier, plus "Cobertura Planes" for the months the SIS page links. Nothing is downloaded here and no
 plan-level row or plan identifier exists in these files.
 
-What the ficha shows (latest month): the share of cotizantes in plans closed to sale ("planes que ya no se venden"),
+What the ficha shows (latest month): the share of cotizantes in plans closed to sale ("planes fuera de venta"),
 the median base price in UF of plans on sale vs. plans in force, plans on sale vs. stock, the prestador-preferente
 mix, and Libre Elección coverage of a standard basket of prestaciones. Comparisons in the headline, dek and section
 titles use open Isapres only; closed Isapres appear in charts and tables marked «cerrada» with the note «Isapre cerrada
@@ -19,7 +19,8 @@ earlier; otherwise the title only describes the section. The headline takes the 
 Reconciliation (any failure → HOLD): every aggregate file names its month, the script version, the SHA-256 and the
 row count of its receipt; ZIPs from https://datos.superdesalud.gob.cl, ≤ 1 GiB, ≤ 0,1 % malformed rows; the file holds
 only its month; Isapres add up to the system and open + closed = system; on sale + not on sale = all plans; the
-modality split adds up; each Isapre code has a name and a type; and the cotizantes and cargas per Isapre equal the SIS
+modality split adds up; no published cell has 1-4 plans and no hidden one can be recovered by adding and
+subtracting published cells (``planes_disclosure.check``, review of PR #167); each Isapre code has a name and a type; and the cotizantes and cargas per Isapre equal the SIS
 monthly cartera workbook (F1 capture, ``data/market/isapre_portfolio*.json``) within 0,1 % in every month both cover
 (at least one), which also confirms that open-data columns 32/33 are cotizantes/cargas.
 
@@ -35,20 +36,22 @@ from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
+from . import planes_disclosure as pdisc
 from . import sis_open_data as so
 from . import stats_fichas as sf
 from .stats_ficha_f12 import fmt
 from .stats_fichas import value
 
 FAMILY = "F9"
-BUILDER_VERSION = "f9_planes_v1"
+BUILDER_VERSION = "f9_planes_v2"
 AGG_ROOT = Path("data/sis_planes_aggregates")
-SCRIPT_VERSION = "sis_planes_agg_v2"  # mirrors scripts/aggregate_sis_planes.py SCRIPT_VERSION
+SCRIPT_VERSION = "sis_planes_agg_v3"  # mirrors scripts/aggregate_sis_planes.py SCRIPT_VERSION
 FILE_HOST = "datos.superdesalud.gob.cl"
 MAX_FILE_BYTES = 1 << 30
 MAX_MALFORMED_SHARE = 0.001
 F1_TOLERANCE_PCT = 0.1
 MIN_PLANS = 5
+MAX_TITLE_WORDS = 14  # headline and section titles (review of PR #167)
 MONTH = re.compile(r"^(20\d{2})(0[1-9]|1[0-2])$")
 PLANES, COBERTURA = "Planes de Salud", "Cobertura Planes"
 SETS = ("todos", "venta", "no_venta", "vigentes", "cerrados_con_cotizantes")
@@ -121,7 +124,8 @@ def file_failures(d: dict | None, entry: dict | None, name: str, m: str) -> list
 
 
 def sum_failures(pl: dict, m: str, names: dict[str, str], types: dict[str, str]) -> list[str]:
-    """Isapres add up to the system, open + closed = system, on sale + not on sale = all, modality split adds up."""
+    """Isapres add up to the system, open + closed = system, on sale + not on sale = all, modality split adds up.
+    Hidden cells (None, small-cell protection) are skipped: a sum is checked only when all its terms are published."""
     g = pl.get("grupos") or {}
     f: list[str] = []
     if pl.get("filas_duplicadas_isapre_plan") or pl.get("errores_numericos") or pl.get("isapres_sin_tipo"):
@@ -132,24 +136,38 @@ def sum_failures(pl: dict, m: str, names: dict[str, str], types: dict[str, str])
             f.append(f"isapre_without_name:{c}")
         if types.get(c) not in ("open", "closed"):
             f.append(f"isapre_without_type:{c}")
-    for metric in ("planes", "cotizantes", "cargas"):
-        for s in SETS:
-            tot = (g.get("sistema") or {}).get(s, {}).get(metric)
-            if sum(g[f"isapre:{c}"][s][metric] for c in codes) != tot:
+
+    def add(terms, tot) -> bool:
+        return None in terms or tot is None or sum(terms) == tot
+
+    get = lambda k, s, metric: ((g.get(k) or {}).get(s) or {}).get(metric)  # noqa: E731
+    for s in SETS:
+        for metric in ("planes", "cotizantes") + (("cargas",) if s == "todos" else ()):
+            tot = get("sistema", s, metric)
+            if not add([get(f"isapre:{c}", s, metric) for c in codes], tot):
                 f.append(f"isapres_do_not_add:{m}:{s}:{metric}")
-            if (g.get("abiertas") or {}).get(s, {}).get(metric, 0) + (g.get("cerradas") or {}).get(s, {}).get(metric, 0) != tot:
+            if not add([get("abiertas", s, metric), get("cerradas", s, metric)], tot):
                 f.append(f"open_closed_do_not_add:{m}:{s}:{metric}")
-        for k, cell in g.items():
-            if cell["venta"][metric] + cell["no_venta"][metric] != cell["todos"][metric]:
+            if not add([get(f"isapre:{c}", s, metric) for c in codes if types.get(c) == "open"], get("abiertas", s, metric)):
+                f.append(f"open_isapres_do_not_add:{m}:{s}:{metric}")
+    for metric in ("planes", "cotizantes"):
+        for k in g:
+            if not add([get(k, "venta", metric), get(k, "no_venta", metric)], get(k, "todos", metric)):
                 f.append(f"sale_split_does_not_add:{m}:{k}:{metric}")
     for k, cell in g.items():
         for s in SETS:
             c = cell[s]
-            for dim in ("por_modalidad", "por_tipo"):
-                if sum(x["planes"] for x in (c.get(dim) or {}).values()) != c["planes"] or \
-                        sum(x["cotizantes"] for x in (c.get(dim) or {}).values()) != c["cotizantes"]:
-                    f.append(f"split_does_not_add:{m}:{k}:{s}:{dim}")
-    if pl.get("filas") != (g.get("sistema") or {}).get("todos", {}).get("planes"):
+            split = (c.get("por_modalidad") or {}).values()
+            for metric in ("planes", "cotizantes"):
+                if not add([x[metric] for x in split], c[metric]):
+                    f.append(f"split_does_not_add:{m}:{k}:{s}:{metric}")
+    for k in ("sistema", "abiertas", "cerradas", *(f"isapre:{c}" for c in codes)):
+        if get(k, "todos", "planes") is None:
+            f.append(f"total_hidden:{m}:{k}")
+    for s in SETS:
+        if get("abiertas", s, "planes") is None:
+            f.append(f"open_group_hidden:{m}:{s}")
+    if pl.get("filas") != get("sistema", "todos", "planes"):
         f.append(f"plans_not_rows:{m}")
     return f
 
@@ -203,7 +221,8 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         "reconciliation": {"ok": False, "failures": [], "checks": [
             "cada archivo agregado nombra el mes, la versión del script y el SHA-256 y las filas del ZIP de su recibo",
             "ZIP ≤ 1 GiB desde https://datos.superdesalud.gob.cl; ≤ 0,1 % de filas malformadas; el archivo trae solo su mes",
-            "Isapres = sistema; abiertas + cerradas = sistema; a la venta + no a la venta = todos; modalidad y tipo suman",
+            "Isapres = sistema; abiertas + cerradas = sistema; a la venta + fuera de venta = todos; la modalidad suma",
+            "ninguna celda publicada tiene 1 a 4 planes y ninguna oculta se deduce por suma o resta de las publicadas",
             "cotizantes y cargas por Isapre = planilla mensual de cartera SIS (F1) con tolerancia de 0,1 %, en cada mes común",
             "Cobertura: agregados del mismo mes que nombran el SHA-256 de su archivo de Planes",
             "toda Isapre con nombre y tipo (abierta/cerrada) en data/entities/isapres.json"]},
@@ -229,6 +248,7 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         ff += file_failures(pl, entry, f"planes_{m}.json", m)
         if not ff:
             ff += sum_failures(pl, m, names, types)
+            ff += pdisc.check(pl)
             fx, n = f1_failures(pl, m, obs)
             ff += fx
             f1_checked += n
@@ -265,12 +285,19 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                                          detected=str((data[m]["rec"] or {}).get("generated_at") or "")[:10] or None)
         return key
 
-    def put(vid: str, x, unit: str, m: str, kind: str, loc: str) -> None:
+    hidden: dict[str, str] = {}  # value id → why it is not shown («<5 planes» or «oculta»)
+
+    def put(vid: str, x, unit: str, m: str, kind: str, loc: str, why: str | None = None) -> None:
         if x is None:
+            if why:
+                hidden[vid] = "oculta" if why == pdisc.COMPLEMENTARY else "<5 planes"
             return
         values[vid] = value(vid, x, unit=unit, period=period_of(m), source=src(m, kind), locator=loc)
 
     def derive(vid: str, num: str, den: str, m: str, formula: str) -> None:
+        for x in (num, den):
+            if x in hidden:
+                hidden[vid] = hidden[x]
         if num in values and den in values and values[den]["value"]:
             values[vid] = value(vid, round(100 * values[num]["value"] / values[den]["value"], 4), unit="%", period=period_of(m),
                                 source=None, formula=formula, inputs=[num, den], kind="derived")
@@ -285,15 +312,16 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
             for s in SETS:
                 c, b = cell[s], f"pl.{m}.{g}.{SET_ID[s]}"
                 loc = f"planes_{m}.json · {k} · {s}"
-                put(f"{b}.planes", c["planes"], "planes", m, "planes", loc)
-                put(f"{b}.cot", c["cotizantes"], "cotizantes", m, "planes", loc)
-                pr = c["precio_uf"]
-                put(f"{b}.med", pr.get("mediana"), "UF", m, "planes", loc + " · precio_uf.mediana")
-                put(f"{b}.pond", pr.get("mediana_pond"), "UF", m, "planes", loc + " · precio_uf.mediana_pond")
-                put(f"{b}.nprecio", pr.get("n"), "planes", m, "planes", loc + " · precio_uf.n")
+                why = c.get("suprimido")
+                put(f"{b}.planes", c["planes"], "planes", m, "planes", loc, why)
+                put(f"{b}.cot", c["cotizantes"], "cotizantes", m, "planes", loc, why)
+                pr = c.get("precio_uf") or {}
+                put(f"{b}.med", pr.get("mediana"), "UF", m, "planes", loc + " · precio_uf.mediana", pr.get("suprimido") or why or "<5")
+                put(f"{b}.pond", pr.get("mediana_pond"), "UF", m, "planes", loc + " · precio_uf.mediana_pond",
+                    pr.get("suprimido") or why or "<5")
                 pp = (c.get("por_modalidad") or {}).get("PP") or {"planes": 0, "cotizantes": 0}
-                put(f"{b}.pp_planes", pp["planes"], "planes", m, "planes", loc + " · por_modalidad.PP")
-                put(f"{b}.pp_cot", pp["cotizantes"], "cotizantes", m, "planes", loc + " · por_modalidad.PP")
+                put(f"{b}.pp_planes", pp["planes"], "planes", m, "planes", loc + " · por_modalidad.PP", pp.get("suprimido"))
+                put(f"{b}.pp_cot", pp["cotizantes"], "cotizantes", m, "planes", loc + " · por_modalidad.PP", pp.get("suprimido"))
             p = f"pl.{m}.{g}"
             derive(f"sh.{m}.{g}.cot_nv", f"{p}.nv.cot", f"{p}.todos.cot", m, "cotizantes en planes no a la venta / cotizantes × 100")
             derive(f"sh.{m}.{g}.planes_nv", f"{p}.cerr.planes", f"{p}.vig.planes", m,
@@ -310,14 +338,17 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         if cob:
             for k, cell in cob["grupos"].items():
                 g = gid(k)
-                put(f"cov.{m}.{g}.planes", cell["planes"], "planes", m, "cobertura", f"cobertura_{m}.json · {k} · planes")
                 for w in CANASTA:
                     x = cell["canasta"][w]
                     loc = f"cobertura_{m}.json · {k} · canasta.{w}"
-                    put(f"cov.{m}.{g}.{w}.med", x.get("mediana"), "%", m, "cobertura", loc + ".mediana")
-                    put(f"cov.{m}.{g}.{w}.pond", x.get("mediana_pond"), "%", m, "cobertura", loc + ".mediana_pond")
-                    put(f"cov.{m}.{g}.{w}.media", x.get("media"), "%", m, "cobertura", loc + ".media")
-                    put(f"cov.{m}.{g}.{w}.n", x.get("n"), "planes", m, "cobertura", loc + ".n")
+                    put(f"cov.{m}.{g}.{w}.med", x.get("mediana"), "%", m, "cobertura", loc + ".mediana", "<5")
+                    put(f"cov.{m}.{g}.{w}.pond", x.get("mediana_pond"), "%", m, "cobertura", loc + ".mediana_pond", "<5")
+    need = [f"pl.{t}.ab.{x}.{y}" for x in ("todos", "venta", "nv", "vig", "cerr") for y in ("planes", "cot")]
+    need += [f"pl.{t}.ab.{x}" for x in ("venta.med", "vig.med", "vig.pond")]
+    need += [f"pp.{t}.ab.{x}" for x in ("venta_planes", "vig_planes", "venta_cot", "vig_cot")] + [f"sh.{t}.ab.cot_nv"]
+    missing = [x for x in need if x not in values]
+    if missing:  # the open group carries every comparison: if protection hid one of its figures, the ficha waits
+        return _hold(package, [f"required_value_hidden:{x}" for x in missing])
     keys = sorted(set(keys), key=lambda c: (types.get(c) != "open", -values[f"pl.{t}.{c}.todos.cot"]["value"]))
     opened = [c for c in keys if types.get(c) == "open"]
     closed = [c for c in keys if types.get(c) == "closed"]
@@ -336,10 +367,10 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
         period=period_of(t), periods=[period_of(m) for m in sorted(data)], published_at=detected, date_basis="first_detected",
         release_key=sf.release_key(period_of(t), ev), evidence_sha256=ev,
         primary_source={"url": data[t]["entry"]["url"], "sha256": data[t]["entry"]["sha256"]},
-        sources=sources, values=values, findings=[],
+        sources=sources, values=values, hidden=hidden, findings=[],
         entities=[{"code": int(c), "name": names[c]} for c in keys], entity_codes=[int(c) for c in keys],
         revisions=sf.detect_revisions({"values": values}, (previous_live or {}).get("evidence")),
-        constants=[0, 1, 5, 7, 30, 50, 100, 256, F1_TOLERANCE_PCT],  # 7: planes al 7 % de la cotización legal; 256: SHA-256
+        constants=[0, 1, 4, 5, 7, 30, 50, 100, 256, F1_TOLERANCE_PCT],  # 4: «1 a 4 planes»; 7: planes al 7 %; 256: SHA-256
         kpis={"t": t, "t1": month_add(t, -1) if month_add(t, -1) in data else None,
               "t12": month_add(t, -12) if month_add(t, -12) in data else None, "keys": keys, "open": opened, "closed": closed,
               "f1_months": f1_months, "f1_checked": f1_checked},
@@ -434,39 +465,58 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         return {"id": cid, "form": "bars", "unit": unit, "digits": digits, "headline": headline, "subtitle": subtitle,
                 "rows": rows, "table": table, "source": source}
 
-    cell = lambda vid, f: f(vid) if has(vid) else "menos de 5 planes"  # noqa: E731
+    gone = package.get("hidden") or {}
+    cell = lambda vid, f: f(vid) if has(vid) else gone.get(vid, "<5 planes")  # noqa: E731
     lab = lambda c: names[c] + (" (cerrada)" if c in closed else "")  # noqa: E731
     tabs, paragraphs = [], []
 
     # 1. Plans closed to sale.
     fn = lambda c: f"sh.{t}.{c}.cot_nv"  # noqa: E731
-    cols = ["Isapre", "Cotizantes", "En planes que ya no se venden", "Planes con cotizantes que ya no se venden"]
-    cols += [f"Cotizantes en planes que ya no se venden, {tag(m)}" for m in (t1, t12) if m]
-    trows = [[lab(c), n0(f"pl.{t}.{c}.todos.cot"), pc(f"sh.{t}.{c}.cot_nv"), pc(f"sh.{t}.{c}.planes_nv")]
-             + [pc(f"sh.{m}.{c}.cot_nv") if has(f"sh.{m}.{c}.cot_nv") else "sin dato" for m in (t1, t12) if m] for c in keys]
+    cols = ["Isapre", "Cotizantes", "En planes fuera de venta", "Planes con cotizantes fuera de venta"]
+    cols += [f"Cotizantes en planes fuera de venta, {tag(m)}" for m in (t1, t12) if m]
+    trows = [[lab(c), cell(f"pl.{t}.{c}.todos.cot", n0), cell(f"sh.{t}.{c}.cot_nv", pc), cell(f"sh.{t}.{c}.planes_nv", pc)]
+             + [cell(f"sh.{m}.{c}.cot_nv", pc) if has(f"sh.{m}.{c}.cot_nv") or f"sh.{m}.{c}.cot_nv" in gone else "sin dato"
+                for m in (t1, t12) if m] for c in keys]
     trows.append(["Isapres abiertas", n0(f"pl.{t}.ab.todos.cot"), pc(f"sh.{t}.ab.cot_nv"), pc(f"sh.{t}.ab.planes_nv")]
                  + [pc(f"sh.{m}.ab.cot_nv") for m in (t1, t12) if m])
-    charts = [bars("f9-cerrados", "Cotizantes en planes que ya no se venden",
+    charts = [bars("f9-cerrados", "Cotizantes en planes fuera de venta",
                    f"% de los cotizantes de cada Isapre en planes no comercializados en {ml}", fn, {"columns": cols, "rows": trows})]
     o = ordered(fn, "open")
-    if rb["cerrados_venta"]["robusto"] and len(o) >= 2 and V(fn(o[-1])) > 50:  # "en todas": the lowest open Isapre > 50 %
-        dek = (f"En todas las abiertas la mayoría de los cotizantes está en planes que ya no se venden: de {pc(fn(o[-1]))} "
-               f"en {names[o[-1]]} a {pc(fn(o[0]))} en {names[o[0]]}")
-        drefs = [fn(o[-1]), fn(o[0])]
+    if rb["cerrados_venta"]["robusto"] and len(o) >= 2:
+        dek, drefs = f"Ninguna abierta baja de {pc(fn(o[-1]))} de cotizantes en planes fuera de venta", [fn(o[-1])]
     else:
-        dek, drefs = "Cotizantes en planes que ya no se venden, por Isapre", []
-    tab = {"id": "cerrados", "label": "Planes cerrados a venta", "charts": charts, "text": [], "dek": dek, "dek_refs": drefs}
+        dek, drefs = "Cotizantes en planes fuera de venta, por Isapre", []
+    tab = {"id": "cerrados", "label": "Planes fuera de venta", "charts": charts, "text": [], "dek": dek, "dek_refs": drefs}
     sf.topic_fields(tab, f"Abiertas: {pc(f'sh.{t}.ab.cot_nv')} de los cotizantes", index_refs=[f"sh.{t}.ab.cot_nv"], kpis=[])
     tabs.append(tab)
 
-    # 2. Base price: on sale vs in force.
+    # 2. Modality: prestador preferente, plans on sale vs plans in force (same denominator: plans).
+    fp = lambda c: f"pp.{t}.{c}.venta_planes"  # noqa: E731
+    fw = lambda c: f"pp.{t}.{c}.vig_planes"  # noqa: E731
+    fq = lambda c: f"pp.{t}.{c}.vig_cot"  # noqa: E731
+    cols = ["Isapre", "Preferente: % de planes a la venta", "Preferente: % de planes vigentes",
+            "Preferente: % de cotizantes de planes a la venta", "Preferente: % de cotizantes vigentes"]
+    trows = [[lab(c), cell(fp(c), pc), cell(fw(c), pc), cell(f"pp.{t}.{c}.venta_cot", pc), cell(fq(c), pc)] for c in keys]
+    trows.append(["Isapres abiertas", pc(fp("ab")), pc(fw("ab")), pc(f"pp.{t}.ab.venta_cot"), pc(fq("ab"))])
+    charts = [bars("f9-preferente-venta", "Prestador preferente en la venta", f"% de los planes a la venta con prestador preferente, {ml}",
+                   fp, {"columns": cols, "rows": trows}),
+              bars("f9-preferente-stock", "Prestador preferente en la cartera",
+                   f"% de los cotizantes en planes con prestador preferente, {ml}", fq,
+                   {"columns": ["Isapre", "% de cotizantes", "Cotizantes en preferente"],
+                    "rows": [[lab(c), cell(fq(c), pc), cell(f"pl.{t}.{c}.vig.pp_cot", n0)] for c in keys]})]
+    dek = f"Preferente: {pc(fp('ab'))} de planes a la venta frente a {pc(fw('ab'))} de los vigentes"
+    tab = {"id": "modalidad", "label": "Modalidad de atención", "charts": charts, "text": [], "dek": dek,
+           "dek_refs": [fp("ab"), fw("ab")]}
+    sf.topic_fields(tab, f"Preferente: {pc(fp('ab'))} a la venta · {pc(fw('ab'))} vigentes", index_refs=[fp("ab"), fw("ab")], kpis=[])
+    tabs.append(tab)
+
+    # 3. Base price: on sale vs in force (descriptive title).
     fv = lambda c: f"pl.{t}.{c}.venta.med"  # noqa: E731
     cols = ["Isapre", "A la venta: mediana", "A la venta: mediana por cotizante", "Vigentes: mediana",
-            "Vigentes: mediana por cotizante", "Planes a la venta con precio en UF o $"]
+            "Vigentes: mediana por cotizante"]
     trows = [[lab(c), cell(f"pl.{t}.{c}.venta.med", uf), cell(f"pl.{t}.{c}.venta.pond", uf), cell(f"pl.{t}.{c}.vig.med", uf),
-              cell(f"pl.{t}.{c}.vig.pond", uf), n0(f"pl.{t}.{c}.venta.nprecio")] for c in keys]
-    trows.append(["Isapres abiertas"] + [cell(f"pl.{t}.ab.{s}", uf) for s in ("venta.med", "venta.pond", "vig.med", "vig.pond")]
-                 + [n0(f"pl.{t}.ab.venta.nprecio")])
+              cell(f"pl.{t}.{c}.vig.pond", uf)] for c in keys]
+    trows.append(["Isapres abiertas"] + [cell(f"pl.{t}.ab.{s}", uf) for s in ("venta.med", "venta.pond", "vig.med", "vig.pond")])
     charts = [bars("f9-precio-venta", "Precio base de los planes a la venta",
                    f"Mediana del precio base en UF de los planes comercializados en {ml}", fv, {"columns": cols, "rows": trows},
                    unit="UF", digits=2),
@@ -474,101 +524,64 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                    f"Mediana por cotizante del precio base en UF de los planes con cotizantes, {ml}",
                    lambda c: f"pl.{t}.{c}.vig.pond",
                    {"columns": ["Isapre", "Mediana por cotizante", "Mediana por plan", "Planes con cotizantes"],
-                    "rows": [[lab(c), cell(f"pl.{t}.{c}.vig.pond", uf), cell(f"pl.{t}.{c}.vig.med", uf), n0(f"pl.{t}.{c}.vig.planes")]
-                             for c in keys]}, unit="UF", digits=2)]
-    pr = rb["precio_venta_vs_vigentes"]
+                    "rows": [[lab(c), cell(f"pl.{t}.{c}.vig.pond", uf), cell(f"pl.{t}.{c}.vig.med", uf),
+                              cell(f"pl.{t}.{c}.vig.planes", n0)] for c in keys]}, unit="UF", digits=2)]
     a, b = f"pl.{t}.ab.venta.med", f"pl.{t}.ab.vig.med"
-    if pr["robusto"]:
-        word = "mayor" if pr["t"] == "sube" else "menor"
-        dek = f"En las abiertas, los planes a la venta tienen un precio base {word} que los vigentes: mediana de {uf(a)} frente a {uf(b)}"
-    else:
-        dek = f"Mediana del precio base: {uf(a)} a la venta y {uf(b)} en los planes vigentes (abiertas)"
+    dek = f"Precio base mediano: {uf(a)} a la venta y {uf(b)} en vigentes"
     tab = {"id": "precio", "label": "Precio base", "charts": charts, "text": [], "dek": dek, "dek_refs": [a, b]}
     sf.topic_fields(tab, f"A la venta {uf(a)} · vigentes {uf(b)}", index_refs=[a, b], kpis=[])
     tabs.append(tab)
 
-    # 3. Plans on sale vs stock.
-    fo = lambda c: f"pl.{t}.{c}.venta.planes"  # noqa: E731
-    cols = ["Isapre", "Planes a la venta", "Planes con cotizantes", "Planes en el archivo"]
-    if t12:
-        cols.append(f"Planes a la venta, {tag(t12)}")
-    trows = [[lab(c), n0(fo(c)), n0(f"pl.{t}.{c}.vig.planes"), n0(f"pl.{t}.{c}.todos.planes")]
-             + ([n0(f"pl.{t12}.{c}.venta.planes") if has(f"pl.{t12}.{c}.venta.planes") else "sin dato"] if t12 else []) for c in keys]
-    trows.append(["Isapres abiertas", n0(f"pl.{t}.ab.venta.planes"), n0(f"pl.{t}.ab.vig.planes"), n0(f"pl.{t}.ab.todos.planes")]
-                 + ([n0(f"pl.{t12}.ab.venta.planes")] if t12 else []))
-    charts = [bars("f9-oferta", "Planes a la venta", f"Planes comercializados por cada Isapre en {ml}", fo,
-                   {"columns": cols, "rows": trows}, unit="planes", digits=0)]
-    if rb["oferta_crece"]["robusto"]:
-        dek = (f"Las abiertas tienen {n0(f'pl.{t}.ab.venta.planes')} planes a la venta, frente a "
-               f"{n0(f'pl.{t12}.ab.venta.planes')} en {tag(t12)}")
-        drefs = [f"pl.{t}.ab.venta.planes", f"pl.{t12}.ab.venta.planes"]
-    else:
-        dek = (f"Las abiertas tienen {n0(f'pl.{t}.ab.venta.planes')} planes a la venta y "
-               f"{n0(f'pl.{t}.ab.vig.planes')} con cotizantes")
-        drefs = [f"pl.{t}.ab.venta.planes", f"pl.{t}.ab.vig.planes"]
-    tab = {"id": "oferta", "label": "Oferta y stock", "charts": charts, "text": [], "dek": dek, "dek_refs": drefs}
-    sf.topic_fields(tab, f"{n0(f'pl.{t}.ab.venta.planes')} a la venta · {n0(f'pl.{t}.ab.vig.planes')} con cotizantes",
-                    index_refs=[f"pl.{t}.ab.venta.planes", f"pl.{t}.ab.vig.planes"], kpis=[])
-    tabs.append(tab)
-
-    # 4. Modality: prestador preferente vs libre elección.
-    fp = lambda c: f"pp.{t}.{c}.venta_planes"  # noqa: E731
-    fq = lambda c: f"pp.{t}.{c}.vig_cot"  # noqa: E731
-    cols = ["Isapre", "Preferente: % de planes a la venta", "Preferente: % de cotizantes de planes a la venta",
-            "Preferente: % de cotizantes vigentes"]
-    trows = [[lab(c), cell(fp(c), pc), cell(f"pp.{t}.{c}.venta_cot", pc), cell(fq(c), pc)] for c in keys]
-    trows.append(["Isapres abiertas", pc(fp("ab")), pc(f"pp.{t}.ab.venta_cot"), pc(fq("ab"))])
-    charts = [bars("f9-preferente-venta", "Prestador preferente en la venta", f"% de los planes a la venta con prestador preferente, {ml}",
-                   fp, {"columns": cols, "rows": trows}),
-              bars("f9-preferente-stock", "Prestador preferente en la cartera",
-                   f"% de los cotizantes en planes con prestador preferente, {ml}", fq,
-                   {"columns": ["Isapre", "% de cotizantes", "Cotizantes en preferente"],
-                    "rows": [[lab(c), pc(fq(c)), n0(f"pl.{t}.{c}.vig.pp_cot")] for c in keys if has(fq(c))]})]
-    if rb["preferente_venta"]["robusto"]:
-        dek = (f"En las abiertas, el {pc(fp('ab'))} de los planes a la venta es con prestador preferente, frente al "
-               f"{pc(fq('ab'))} de los cotizantes vigentes")
-    else:
-        dek = f"Prestador preferente: {pc(fp('ab'))} de los planes a la venta y {pc(fq('ab'))} de los cotizantes (abiertas)"
-    tab = {"id": "modalidad", "label": "Modalidad de atención", "charts": charts, "text": [], "dek": dek,
-           "dek_refs": [fp("ab"), fq("ab")]}
-    sf.topic_fields(tab, f"Preferente: {pc(fp('ab'))} de la venta · {pc(fq('ab'))} de cotizantes", index_refs=[fp("ab"), fq("ab")], kpis=[])
-    tabs.append(tab)
-
-    # 5. Libre Elección coverage of the standard basket (only when Cobertura of t exists).
+    # 4. Libre Elección coverage of the standard basket, individual plans on sale (only when Cobertura of t exists).
     has_cov = has(f"cov.{t}.ab.amb.med") and has(f"cov.{t}.ab.hosp.med")
     if has_cov:
         fa = lambda c: f"cov.{t}.{c}.amb.med"  # noqa: E731
         fh = lambda c: f"cov.{t}.{c}.hosp.med"  # noqa: E731
         cols = ["Isapre", "Canasta ambulatoria: mediana", "Ambulatoria: mediana por cotizante", "Canasta quirúrgica: mediana",
-                "Quirúrgica: mediana por cotizante", "Planes con cobertura informada"]
+                "Quirúrgica: mediana por cotizante"]
         if t12:
             cols.append(f"Quirúrgica: mediana, {tag(t12)}")
-        ck = [c for c in keys if has(f"cov.{t}.{c}.planes")]
-        trows = [[lab(c), cell(fa(c), pc), cell(f"cov.{t}.{c}.amb.pond", pc), cell(fh(c), pc), cell(f"cov.{t}.{c}.hosp.pond", pc),
-                  n0(f"cov.{t}.{c}.planes")] + ([cell(f"cov.{t12}.{c}.hosp.med", pc)] if t12 else []) for c in ck]
-        trows.append(["Isapres abiertas", pc(fa("ab")), pc(f"cov.{t}.ab.amb.pond"), pc(fh("ab")), pc(f"cov.{t}.ab.hosp.pond"),
-                      n0(f"cov.{t}.ab.planes")] + ([cell(f"cov.{t12}.ab.hosp.med", pc)] if t12 else []))
+        trows = [[lab(c), cell(fa(c), pc), cell(f"cov.{t}.{c}.amb.pond", pc), cell(fh(c), pc), cell(f"cov.{t}.{c}.hosp.pond", pc)]
+                 + ([cell(f"cov.{t12}.{c}.hosp.med", pc)] if t12 else []) for c in keys]
+        trows.append(["Isapres abiertas", pc(fa("ab")), cell(f"cov.{t}.ab.amb.pond", pc), pc(fh("ab")), cell(f"cov.{t}.ab.hosp.pond", pc)]
+                     + ([cell(f"cov.{t12}.ab.hosp.med", pc)] if t12 else []))
         charts = [bars("f9-cob-amb", "Cobertura de libre elección, canasta ambulatoria",
                        f"Mediana entre planes individuales a la venta del % bonificado promedio de la canasta, {ml}", fa,
                        {"columns": cols, "rows": trows}, source=csrc),
                   bars("f9-cob-hosp", "Cobertura de libre elección, canasta quirúrgica",
                        f"Mediana entre planes individuales a la venta del % bonificado promedio de la canasta, {ml}", fh,
-                       {"columns": ["Isapre", "Mediana", "Media", "Planes"],
-                        "rows": [[lab(c), cell(fh(c), pc), cell(f"cov.{t}.{c}.hosp.media", pc), cell(f"cov.{t}.{c}.hosp.n", n0)]
-                                 for c in ck if has(f"cov.{t}.{c}.hosp.n")]}, source=csrc)]
-        if rb["cobertura_canasta"]["robusto"]:
-            dek = (f"Libre elección en las abiertas: mediana de {pc(fa('ab'))} en la canasta ambulatoria y "
-                   f"{pc(fh('ab'))} en la quirúrgica, por plan y por cotizante")
-        else:
-            dek = f"Libre elección en las abiertas: canasta ambulatoria {pc(fa('ab'))}, quirúrgica {pc(fh('ab'))} (mediana por plan)"
-        tab = {"id": "cobertura", "label": "Cobertura libre elección", "charts": charts, "text": [], "dek": dek,
-               "dek_refs": [fa("ab"), fh("ab")]}
+                       {"columns": ["Isapre", "Mediana por plan", "Mediana por cotizante"],
+                        "rows": [[lab(c), cell(fh(c), pc), cell(f"cov.{t}.{c}.hosp.pond", pc)] for c in keys]}, source=csrc)]
+        dek = f"Libre elección: {pc(fa('ab'))} ambulatoria y {pc(fh('ab'))} quirúrgica (mediana por plan)"
+        tab = {"id": "cobertura", "label": "Cobertura libre elección", "charts": charts,
+               "text": ["La cobertura preferente, que rige en la mayoría de los planes a la venta, no está en el archivo de "
+                        "coberturas: estas cifras son solo de libre elección, en planes individuales a la venta."],
+               "dek": dek, "dek_refs": [fa("ab"), fh("ab")]}
         sf.topic_fields(tab, f"Ambulatoria {pc(fa('ab'))} · quirúrgica {pc(fh('ab'))}", index_refs=[fa("ab"), fh("ab")], kpis=[])
         tabs.append(tab)
 
+    # 5. Plans on sale vs stock (descriptive title).
+    fo = lambda c: f"pl.{t}.{c}.venta.planes"  # noqa: E731
+    cols = ["Isapre", "Planes a la venta", "Planes con cotizantes", "Planes en el archivo"]
+    if t12:
+        cols.append(f"Planes a la venta, {tag(t12)}")
+    trows = [[lab(c), cell(fo(c), n0), cell(f"pl.{t}.{c}.vig.planes", n0), cell(f"pl.{t}.{c}.todos.planes", n0)]
+             + ([cell(f"pl.{t12}.{c}.venta.planes", n0) if has(f"pl.{t12}.{c}.venta.planes") or f"pl.{t12}.{c}.venta.planes" in gone
+                 else "sin dato"] if t12 else []) for c in keys]
+    trows.append(["Isapres abiertas", n0(f"pl.{t}.ab.venta.planes"), n0(f"pl.{t}.ab.vig.planes"), n0(f"pl.{t}.ab.todos.planes")]
+                 + ([n0(f"pl.{t12}.ab.venta.planes")] if t12 else []))
+    charts = [bars("f9-oferta", "Planes a la venta", f"Planes comercializados por cada Isapre en {ml}", fo,
+                   {"columns": cols, "rows": trows}, unit="planes", digits=0)]
+    dek = f"{n0(f'pl.{t}.ab.venta.planes')} planes a la venta frente a {n0(f'pl.{t}.ab.vig.planes')} con cotizantes en las abiertas"
+    drefs = [f"pl.{t}.ab.venta.planes", f"pl.{t}.ab.vig.planes"]
+    tab = {"id": "oferta", "label": "Oferta y stock", "charts": charts, "text": [], "dek": dek, "dek_refs": drefs}
+    sf.topic_fields(tab, f"{n0(f'pl.{t}.ab.venta.planes')} a la venta · {n0(f'pl.{t}.ab.vig.planes')} con cotizantes",
+                    index_refs=drefs, kpis=[])
+    tabs.append(tab)
+
     # KPI cards.
     kp = []
-    kp.append({"id": "cerrados", "label": "Cotizantes en planes que ya no se venden", "value": pc(f"sh.{t}.ab.cot_nv"), "prov": "C",
+    kp.append({"id": "cerrados", "label": "Cotizantes en planes fuera de venta", "value": pc(f"sh.{t}.ab.cot_nv"), "prov": "C",
                "lines": [f"{n0(f'pl.{t}.ab.nv.cot')} de {n0(f'pl.{t}.ab.todos.cot')} cotizantes de Isapres abiertas"]
                + ([f"{tag(t12)}: {pc(f'sh.{t12}.ab.cot_nv')}"] if t12 else []),
                "refs": [f"sh.{t}.ab.cot_nv", f"pl.{t}.ab.nv.cot", f"pl.{t}.ab.todos.cot"] + ([f"sh.{t12}.ab.cot_nv"] if t12 else [])})
@@ -580,8 +593,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                "lines": [f"Vigentes: {uf(f'pl.{t}.ab.vig.med')} por plan, {uf(f'pl.{t}.ab.vig.pond')} por cotizante"],
                "refs": [f"pl.{t}.ab.venta.med", f"pl.{t}.ab.vig.med", f"pl.{t}.ab.vig.pond"]})
     kp.append({"id": "preferente", "label": "Planes a la venta con prestador preferente", "value": pc(f"pp.{t}.ab.venta_planes"),
-               "prov": "C", "lines": [f"{pc(f'pp.{t}.ab.vig_cot')} de los cotizantes vigentes"],
-               "refs": [f"pp.{t}.ab.venta_planes", f"pp.{t}.ab.vig_cot"]})
+               "prov": "C", "lines": [f"{pc(f'pp.{t}.ab.vig_planes')} de los planes vigentes"],
+               "refs": [f"pp.{t}.ab.venta_planes", f"pp.{t}.ab.vig_planes"]})
     if has_cov:
         kp.append({"id": "cobertura", "label": "Cobertura libre elección (mediana)", "value": pc(f"cov.{t}.ab.amb.med"), "prov": "C",
                    "lines": [f"Canasta ambulatoria; quirúrgica {pc(f'cov.{t}.ab.hosp.med')}"],
@@ -591,29 +604,28 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     lead = None
     for cand in cfg.get("headline_priority") or []:
         if cand == "cerrados_venta" and rb["cerrados_venta"]["robusto"]:
-            lead = f"El {pc(f'sh.{t}.ab.cot_nv')} de los cotizantes de Isapres abiertas está en planes que ya no se venden, {ml}"
+            lead = f"El {pc(f'sh.{t}.ab.cot_nv')} de los cotizantes de Isapres abiertas está en planes fuera de venta"
         elif cand == "precio_venta_vs_vigentes" and rb["precio_venta_vs_vigentes"]["robusto"]:
-            lead = (f"Los planes a la venta en Isapres abiertas tienen una mediana de {uf(f'pl.{t}.ab.venta.med')}, frente a "
-                    f"{uf(f'pl.{t}.ab.vig.med')} de los vigentes, {ml}")
+            lead = (f"Precio base mediano en Isapres abiertas: {uf(f'pl.{t}.ab.venta.med')} a la venta, "
+                    f"{uf(f'pl.{t}.ab.vig.med')} vigentes")
         elif cand == "preferente_venta" and rb["preferente_venta"]["robusto"]:
-            lead = (f"El {pc(f'pp.{t}.ab.venta_planes')} de los planes a la venta en Isapres abiertas es con prestador preferente, "
-                    f"{ml}")
-        if lead and len(lead) <= 140:
+            lead = f"{pc(f'pp.{t}.ab.venta_planes')} de los planes a la venta en Isapres abiertas tienen prestador preferente"
+        if lead and len(lead.split()) <= MAX_TITLE_WORDS:
             break
         lead = None
     headline = lead or f"Planes de salud Isapre, {ml}"
-    dek = (f"Las Isapres abiertas venden {n0(f'pl.{t}.ab.venta.planes')} planes, con mediana de {uf(f'pl.{t}.ab.venta.med')}; "
-           f"{n0(f'pl.{t}.ab.nv.cot')} cotizantes siguen en planes que ya no se ofrecen.")
-    paragraphs.append(f"En {ml}, {n0(f'pl.{t}.ab.cerr.planes')} planes que ya no se venden aún tienen cotizantes en las Isapres abiertas.")
+    sale = f"Hay {n0(f'pl.{t}.ab.venta.planes')} planes a la venta, con mediana de {uf(f'pl.{t}.ab.venta.med')} de precio base."
+    dek = f"Ninguna abierta baja de {pc(fn(o[-1]))} ({names[o[-1]]}). {sale}" if o else sale
+    paragraphs.append(f"En {ml}, {n0(f'pl.{t}.ab.cerr.planes')} planes fuera de venta aún tienen cotizantes en las Isapres abiertas.")
 
-    rbx = {"cerrados_venta": "planes que ya no se venden", "precio_venta_vs_vigentes": "precio a la venta frente a vigentes",
+    rbx = {"cerrados_venta": "planes fuera de venta", "precio_venta_vs_vigentes": "precio a la venta frente a vigentes",
            "preferente_venta": "prestador preferente en la venta", "oferta_crece": "más planes a la venta que hace un año",
            "cobertura_canasta": "cobertura de la canasta"}
     held = [rbx[x] for x, r in rb.items() if r["robusto"]]
     notes = [
         {"id": "n1", "text": "Base mensual: cada cifra es un stock al último día del mes (planes y cotizantes), no un flujo, y los meses "
                              "no se suman. «Vigente» es un plan con al menos un cotizante; «a la venta» es un plan comercializado en el "
-                             "mes; «que ya no se vende» es un plan no comercializado."},
+                             "mes; «fuera de venta» es un plan no comercializado."},
         {"id": "n2", "text": "Denominador: el % de cotizantes divide por todos los cotizantes de la Isapre; el % de planes divide por los "
                              "planes a la venta o por los planes con cotizantes, según el rótulo. La mediana «por plan» cuenta cada plan una "
                              "vez; la mediana «por cotizante» pondera cada plan por sus cotizantes."},
@@ -624,7 +636,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              "cotizantes y si el hallazgo se repite en el mes anterior o un año antes; si no, el título solo describe. "
                              + ("Hallazgos que pasan: " + "; ".join(held) + "." if held else "Ningún hallazgo pasa en este mes.")},
         {"id": "n5", "text": "Celda mínima: una mediana se publica con al menos 5 planes y una mediana por cotizante con al menos 5 planes "
-                             "con cotizantes y 30 cotizantes; si no, la tabla dice «menos de 5 planes»."},
+                             "con cotizantes y 30 cotizantes; no se publican medias. Una celda de 1 a 4 planes no se muestra "
+                             "(«<5 planes»), y tampoco las celdas que permitirían deducirla por suma o resta («oculta»)."},
         {"id": "n6", "text": "Conciliación: los cotizantes y las cargas por Isapre del archivo de planes calzan con la planilla mensual de "
                              "cartera de la SIS con tolerancia de 0,1 % en cada mes que ambos cubren (se ve en Fuentes)."},
     ]
