@@ -105,7 +105,8 @@ def test_published_index_matches_the_published_snapshot():
         assert r["headline"] == f["headline"] and r["period"] == f["period"]
         shown = {(k["label"], k["value"]) for k in f["kpis"]}
         assert r["kpis"] and all((k["label"], k["value"]) in shown for k in r["kpis"])
-        assert r["period_label"] == di.period_short(f["period"])
+        kind = (sf.load_registry()["families"].get(f["family"]) or {}).get("period_kind")
+        assert r["period_label"] == di.period_short(f["period"], kind)
 
 
 def test_export_writes_datos_next_to_the_snapshot():

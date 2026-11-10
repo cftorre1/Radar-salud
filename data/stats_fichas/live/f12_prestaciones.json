@@ -13,8 +13,13 @@
   "date_basis": "first_detected",
   "headline": "Mismo código, distinto precio: el mapa de prestaciones Isapre, jul–sep 2026",
   "headline_type": "report_title",
-  "dek": "El 72,9% de lo facturado a las Isapres tiene código del arancel MLE de Fonasa (56,5% ambulatorio, 43,5% hospitalario). En un mismo código y región, el cuartil caro factura 1,49 veces el barato en ambulatorio y 1,63 en hospitalario.",
+  "dek": "En la región típica, por una misma prestación, el cuarto más caro de los prestadores cobra a las Isapres al menos 1,49 veces lo que el cuarto más barato en atención ambulatoria, y 1,63 veces en hospitalaria.",
   "dek_emphasis": null,
+  "intro": [
+    "El análisis toma lo que se factura a las Isapres con código del arancel MLE de Fonasa: el 72,9% de todo lo facturado. El resto son códigos propios, no comparables.",
+    "De ese 72,9% se armaron dos canastas: 100 códigos ambulatorios, que representan el 80,9% de lo ambulatorio, y 57 hospitalarios, que cubren el 58,3% de lo hospitalario.",
+    "Nota: la canasta hospitalaria representa menos porque lo que resuelve cada hospital o clínica varía mucho entre regiones; para comparar la mayor cantidad de centros se acota a los códigos con precio en la Metropolitana y en al menos 8 regiones más."
+  ],
   "kpis": [
     {
       "id": "dispersion_amb",
@@ -89,374 +94,280 @@
   "tabs": [
     {
       "id": "dispersion",
-      "label": "Dispersión en la región",
+      "label": "Precios en la región",
       "charts": [
         {
-          "id": "f12-disp-amb",
-          "form": "bars",
+          "id": "f12-disp",
+          "form": "pair",
           "unit": "veces",
           "digits": 2,
-          "headline": "Cuartil caro / cuartil barato, ambulatorio",
-          "subtitle": "p75 / p25 del precio entre prestadores del mismo código, por región, julio–septiembre 2026; 12 regiones con más facturación",
+          "series": [
+            "Ambulatorio",
+            "Hospitalario"
+          ],
+          "headline": "Cuánto más cobra el prestador caro que el barato, por región",
+          "subtitle": "Precio del cuarto más caro de los prestadores dividido por el del cuarto más barato, mismo código Fonasa, julio–septiembre 2026; 12 regiones con más facturación",
           "rows": [
             {
               "label": "Metropolitana",
               "value": 1.6726233419318117,
-              "ref": "disp.2026t3.amb.13"
-            },
-            {
-              "label": "Valparaíso",
-              "value": 1.4611190038434572,
-              "ref": "disp.2026t3.amb.5"
-            },
-            {
-              "label": "Biobío",
-              "value": 1.4701771923615814,
-              "ref": "disp.2026t3.amb.8"
-            },
-            {
-              "label": "Antofagasta",
-              "value": 1.6005833215968217,
-              "ref": "disp.2026t3.amb.2"
-            },
-            {
-              "label": "O'Higgins",
-              "value": 1.4445150699320384,
-              "ref": "disp.2026t3.amb.6"
-            },
-            {
-              "label": "Los Lagos",
-              "value": 1.5305820585708585,
-              "ref": "disp.2026t3.amb.10"
-            },
-            {
-              "label": "La Araucanía",
-              "value": 1.5173782408453966,
-              "ref": "disp.2026t3.amb.9"
-            },
-            {
-              "label": "Coquimbo",
-              "value": 1.5150885364646964,
-              "ref": "disp.2026t3.amb.4"
-            },
-            {
-              "label": "Maule",
-              "value": 1.4535843331516025,
-              "ref": "disp.2026t3.amb.7"
+              "ref": "disp.2026t3.amb.13",
+              "base": 2.0086420025113774,
+              "base_ref": "disp.2026t3.hosp.13"
             },
             {
               "label": "Los Ríos",
               "value": 1.6157816060400576,
-              "ref": "disp.2026t3.amb.14"
+              "ref": "disp.2026t3.amb.14",
+              "base": 1.9372967050585423,
+              "base_ref": "disp.2026t3.hosp.14"
+            },
+            {
+              "label": "Maule",
+              "value": 1.4535843331516025,
+              "ref": "disp.2026t3.amb.7",
+              "base": 1.8674095750105768,
+              "base_ref": "disp.2026t3.hosp.7"
+            },
+            {
+              "label": "Antofagasta",
+              "value": 1.6005833215968217,
+              "ref": "disp.2026t3.amb.2",
+              "base": 1.7548036411876864,
+              "base_ref": "disp.2026t3.hosp.2"
+            },
+            {
+              "label": "Biobío",
+              "value": 1.4701771923615814,
+              "ref": "disp.2026t3.amb.8",
+              "base": 1.7195877836963034,
+              "base_ref": "disp.2026t3.hosp.8"
+            },
+            {
+              "label": "Coquimbo",
+              "value": 1.5150885364646964,
+              "ref": "disp.2026t3.amb.4",
+              "base": 1.645913025565896,
+              "base_ref": "disp.2026t3.hosp.4"
+            },
+            {
+              "label": "La Araucanía",
+              "value": 1.5173782408453966,
+              "ref": "disp.2026t3.amb.9",
+              "base": 1.6181752920175196,
+              "base_ref": "disp.2026t3.hosp.9"
+            },
+            {
+              "label": "Valparaíso",
+              "value": 1.4611190038434572,
+              "ref": "disp.2026t3.amb.5",
+              "base": 1.580908820760845,
+              "base_ref": "disp.2026t3.hosp.5"
+            },
+            {
+              "label": "O'Higgins",
+              "value": 1.4445150699320384,
+              "ref": "disp.2026t3.amb.6",
+              "base": 1.5369018770003566,
+              "base_ref": "disp.2026t3.hosp.6"
+            },
+            {
+              "label": "Los Lagos",
+              "value": 1.5305820585708585,
+              "ref": "disp.2026t3.amb.10",
+              "base": 1.5099369502493425,
+              "base_ref": "disp.2026t3.hosp.10"
             },
             {
               "label": "Magallanes",
               "value": 1.4518723406110914,
-              "ref": "disp.2026t3.amb.12"
+              "ref": "disp.2026t3.amb.12",
+              "base": 1.42645733636495,
+              "base_ref": "disp.2026t3.hosp.12"
             },
             {
               "label": "Tarapacá",
               "value": 1.4595259676020405,
-              "ref": "disp.2026t3.amb.1"
+              "ref": "disp.2026t3.amb.1",
+              "base": 1.341562218747459,
+              "base_ref": "disp.2026t3.hosp.1"
             }
           ],
           "table": {
             "columns": [
               "Región",
-              "p75 / p25",
-              "Códigos",
-              "p75 / p25 abr–jun 2026"
+              "Ambulatorio",
+              "Hospitalario",
+              "Códigos amb.",
+              "Códigos hosp.",
+              "Amb. abr–jun 2026",
+              "Hosp. abr–jun 2026"
             ],
             "rows": [
               [
-                "Tarapacá",
-                "1,46",
-                "100",
-                "1,50"
-              ],
-              [
                 "Antofagasta",
                 "1,60",
+                "1,75",
                 "100",
-                "1,58"
+                "55",
+                "1,58",
+                "1,94"
+              ],
+              [
+                "Arica y Parinacota",
+                "1,54",
+                "1,87",
+                "90",
+                "13",
+                "1,56",
+                "1,59"
               ],
               [
                 "Atacama",
                 "1,52",
+                "1,66",
                 "97",
-                "1,56"
-              ],
-              [
-                "Coquimbo",
-                "1,52",
-                "100",
-                "1,52"
-              ],
-              [
-                "Valparaíso",
-                "1,46",
-                "100",
-                "1,47"
-              ],
-              [
-                "O'Higgins",
-                "1,44",
-                "100",
-                "1,44"
-              ],
-              [
-                "Maule",
-                "1,45",
-                "100",
+                "23",
+                "1,56",
                 "1,42"
-              ],
-              [
-                "Biobío",
-                "1,47",
-                "100",
-                "1,47"
-              ],
-              [
-                "La Araucanía",
-                "1,52",
-                "100",
-                "1,55"
-              ],
-              [
-                "Los Lagos",
-                "1,53",
-                "100",
-                "1,53"
               ],
               [
                 "Aysén",
                 "1,37",
+                "1,27",
                 "48",
-                "1,40"
-              ],
-              [
-                "Magallanes",
-                "1,45",
-                "98",
-                "1,43"
-              ],
-              [
-                "Metropolitana",
-                "1,67",
-                "100",
-                "1,67"
-              ],
-              [
-                "Los Ríos",
-                "1,62",
-                "99",
-                "1,57"
-              ],
-              [
-                "Arica y Parinacota",
-                "1,54",
-                "90",
-                "1,56"
-              ],
-              [
-                "Ñuble",
+                "3",
                 "1,40",
-                "99",
-                "1,38"
-              ]
-            ]
-          },
-          "source": "SIS, datos abiertos de prestaciones bonificadas; canasta estratificada de códigos del Arancel MLE 2026 de FONASA. Celdas con ≥ 4 prestadores."
-        },
-        {
-          "id": "f12-disp-hosp",
-          "form": "bars",
-          "unit": "veces",
-          "digits": 2,
-          "headline": "Cuartil caro / cuartil barato, hospitalario",
-          "subtitle": "p75 / p25 del precio entre prestadores del mismo código, por región, julio–septiembre 2026; 12 regiones con más facturación",
-          "rows": [
-            {
-              "label": "Metropolitana",
-              "value": 2.0086420025113774,
-              "ref": "disp.2026t3.hosp.13"
-            },
-            {
-              "label": "Valparaíso",
-              "value": 1.580908820760845,
-              "ref": "disp.2026t3.hosp.5"
-            },
-            {
-              "label": "Biobío",
-              "value": 1.7195877836963034,
-              "ref": "disp.2026t3.hosp.8"
-            },
-            {
-              "label": "Antofagasta",
-              "value": 1.7548036411876864,
-              "ref": "disp.2026t3.hosp.2"
-            },
-            {
-              "label": "O'Higgins",
-              "value": 1.5369018770003566,
-              "ref": "disp.2026t3.hosp.6"
-            },
-            {
-              "label": "Los Lagos",
-              "value": 1.5099369502493425,
-              "ref": "disp.2026t3.hosp.10"
-            },
-            {
-              "label": "La Araucanía",
-              "value": 1.6181752920175196,
-              "ref": "disp.2026t3.hosp.9"
-            },
-            {
-              "label": "Coquimbo",
-              "value": 1.645913025565896,
-              "ref": "disp.2026t3.hosp.4"
-            },
-            {
-              "label": "Maule",
-              "value": 1.8674095750105768,
-              "ref": "disp.2026t3.hosp.7"
-            },
-            {
-              "label": "Los Ríos",
-              "value": 1.9372967050585423,
-              "ref": "disp.2026t3.hosp.14"
-            },
-            {
-              "label": "Magallanes",
-              "value": 1.42645733636495,
-              "ref": "disp.2026t3.hosp.12"
-            },
-            {
-              "label": "Tarapacá",
-              "value": 1.341562218747459,
-              "ref": "disp.2026t3.hosp.1"
-            }
-          ],
-          "table": {
-            "columns": [
-              "Región",
-              "p75 / p25",
-              "Códigos",
-              "p75 / p25 abr–jun 2026"
-            ],
-            "rows": [
-              [
-                "Tarapacá",
-                "1,34",
-                "34",
-                "1,37"
-              ],
-              [
-                "Antofagasta",
-                "1,75",
-                "55",
-                "1,94"
-              ],
-              [
-                "Atacama",
-                "1,66",
-                "23",
-                "1,42"
-              ],
-              [
-                "Coquimbo",
-                "1,65",
-                "42",
                 "1,73"
               ],
               [
-                "Valparaíso",
-                "1,58",
-                "57",
-                "1,62"
-              ],
-              [
-                "O'Higgins",
-                "1,54",
-                "52",
-                "1,54"
-              ],
-              [
-                "Maule",
-                "1,87",
-                "47",
-                "1,90"
-              ],
-              [
                 "Biobío",
+                "1,47",
                 "1,72",
+                "100",
                 "55",
+                "1,47",
                 "1,53"
               ],
               [
-                "La Araucanía",
-                "1,62",
+                "Coquimbo",
+                "1,52",
+                "1,65",
+                "100",
                 "42",
+                "1,52",
+                "1,73"
+              ],
+              [
+                "La Araucanía",
+                "1,52",
+                "1,62",
+                "100",
+                "42",
+                "1,55",
                 "1,70"
               ],
               [
                 "Los Lagos",
+                "1,53",
                 "1,51",
+                "100",
                 "57",
+                "1,53",
                 "1,47"
               ],
               [
-                "Aysén",
-                "1,27",
-                "3",
-                "1,73"
-              ],
-              [
-                "Magallanes",
-                "1,43",
-                "27",
-                "1,37"
-              ],
-              [
-                "Metropolitana",
-                "2,01",
-                "57",
-                "2,03"
-              ],
-              [
                 "Los Ríos",
+                "1,62",
                 "1,94",
+                "99",
                 "22",
+                "1,57",
                 "1,53"
               ],
               [
-                "Arica y Parinacota",
+                "Magallanes",
+                "1,45",
+                "1,43",
+                "98",
+                "27",
+                "1,43",
+                "1,37"
+              ],
+              [
+                "Maule",
+                "1,45",
                 "1,87",
-                "13",
-                "1,59"
+                "100",
+                "47",
+                "1,42",
+                "1,90"
+              ],
+              [
+                "Metropolitana",
+                "1,67",
+                "2,01",
+                "100",
+                "57",
+                "1,67",
+                "2,03"
+              ],
+              [
+                "O'Higgins",
+                "1,44",
+                "1,54",
+                "100",
+                "52",
+                "1,44",
+                "1,54"
+              ],
+              [
+                "Tarapacá",
+                "1,46",
+                "1,34",
+                "100",
+                "34",
+                "1,50",
+                "1,37"
+              ],
+              [
+                "Valparaíso",
+                "1,46",
+                "1,58",
+                "100",
+                "57",
+                "1,47",
+                "1,62"
               ],
               [
                 "Ñuble",
+                "1,40",
                 "1,34",
+                "99",
                 "25",
+                "1,38",
                 "2,01"
               ]
             ]
           },
-          "source": "SIS, datos abiertos de prestaciones bonificadas; canasta estratificada de códigos del Arancel MLE 2026 de FONASA. Celdas con ≥ 4 prestadores."
+          "source": "SIS, datos abiertos de prestaciones bonificadas; canasta estratificada de códigos del Arancel MLE 2026 de FONASA. p75 / p25 del precio por unidad; celdas con ≥ 4 prestadores."
         }
       ],
       "text": [],
-      "dek": "Mismo código, misma región: el cuartil caro factura 1,49 veces el barato en ambulatorio y 1,63 en hospitalario",
+      "dek": "La diferencia crece en hospitalización: en la Metropolitana el prestador caro cobra 2,01 veces lo del barato, frente a 1,67 en ambulatorio",
       "dek_refs": [
-        "disp.2026t3.amb.mediana",
-        "disp.2026t3.hosp.mediana"
+        "disp.2026t3.hosp.13",
+        "disp.2026t3.amb.13"
+      ],
+      "body": [
+        "Cómo se mide: en cada código y región se ordenan los prestadores por su precio a las Isapres. Se divide el precio que abre el cuarto más caro (p75) por el que cierra el cuarto más barato (p25); un valor más alto significa más distancia entre prestadores por la misma prestación. Cada región promedia sus códigos con el peso de lo que factura cada código en todo el país.",
+        "La mediana entre regiones es 1,49 en ambulatorio y 1,63 en hospitalario. No es una medida de calidad: el precio puede variar por complejidad, equipamiento o ubicación."
       ],
       "spark": {
-        "chart": "f12-disp-amb",
+        "chart": "f12-disp",
         "form": "bars"
       },
-      "index_line": "p75/p25: 1,49 ambulatorio · 1,63 hospitalario",
+      "index_line": "Caro / barato: 1,49 amb. · 1,63 hosp.",
       "index_refs": [
         "disp.2026t3.amb.mediana",
         "disp.2026t3.hosp.mediana"
@@ -472,7 +383,7 @@
           "form": "bars",
           "unit": "%",
           "digits": 1,
-          "headline": "Participación de los tres mayores prestadores",
+          "headline": "Cuánto factura el top 3 de prestadores en cada región",
           "subtitle": "% de lo facturado a Isapres en la región del prestador, julio–septiembre 2026; 12 regiones más concentradas",
           "rows": [
             {
@@ -646,6 +557,9 @@
         }
       ],
       "text": [],
+      "body": [
+        "Una cifra alta indica que, en esa región, la red de las Isapres depende de pocos prestadores. Se mide con prestadores seudónimos: la SIS no publica sus nombres, y Alicanto tampoco."
+      ],
       "dek": "En 10 de 16 regiones, tres prestadores superan la mitad de lo facturado",
       "dek_refs": [
         "conc3.2026t3.n_sobre_50",
@@ -667,37 +581,32 @@
       "charts": [
         {
           "id": "f12-conc-nacional",
-          "form": "bars",
+          "form": "pair",
           "unit": "%",
           "digits": 1,
-          "headline": "Participación de los mayores prestadores, nacional",
-          "subtitle": "% de todo lo facturado a Isapres en prestaciones, por trimestre",
+          "series": [
+            "abr–jun 2026",
+            "jul–sep 2026"
+          ],
+          "series_style": "period",
           "rows": [
             {
-              "label": "10 mayores abr–jun",
+              "label": "Top 10",
               "value": 41.91,
               "ref": "conc3.2026t2.NACIONAL.top10",
-              "emphasis": false
+              "base": 42.88,
+              "base_ref": "conc3.2026t3.NACIONAL.top10"
             },
             {
-              "label": "10 mayores jul–sep",
-              "value": 42.88,
-              "ref": "conc3.2026t3.NACIONAL.top10",
-              "emphasis": true
-            },
-            {
-              "label": "50 mayores abr–jun",
+              "label": "Top 50",
               "value": 74.22,
               "ref": "conc3.2026t2.NACIONAL.top50",
-              "emphasis": false
-            },
-            {
-              "label": "50 mayores jul–sep",
-              "value": 74.64,
-              "ref": "conc3.2026t3.NACIONAL.top50",
-              "emphasis": true
+              "base": 74.64,
+              "base_ref": "conc3.2026t3.NACIONAL.top50"
             }
           ],
+          "headline": "Porcentaje de facturación en grandes prestadores",
+          "subtitle": "Qué parte de todo lo facturado a las Isapres en prestaciones se llevan los 10 y los 50 prestadores que más facturan en el país, por trimestre",
           "table": {
             "columns": [
               "Grupo",
@@ -730,6 +639,10 @@
       "dek_refs": [
         "conc3.2026t3.NACIONAL.top10"
       ],
+      "body": [
+        "Cada prestador es un RUT: un grupo con varias clínicas que facturan con distintos RUT aparece como más de un prestador, así que la concentración real por grupo puede ser mayor.",
+        "Los cincuenta mayores suman el 74,6%."
+      ],
       "spark": {
         "chart": "f12-conc-nacional",
         "form": "bars"
@@ -746,374 +659,263 @@
       "label": "Regiones vs. RM",
       "charts": [
         {
-          "id": "f12-vs-rm-amb",
-          "form": "diverging",
+          "id": "f12-vs-rm",
+          "form": "pair",
           "unit": "%",
           "digits": 1,
-          "headline": "Precio vs. Metropolitana, ambulatorio",
-          "subtitle": "% sobre (+) o bajo (−) la mediana de la Metropolitana, canasta ambulatorio, julio–septiembre 2026; 12 regiones con más facturación",
+          "series": [
+            "Ambulatorio",
+            "Hospitalario"
+          ],
+          "headline": "Precio de cada región comparado con la Metropolitana",
+          "subtitle": "% sobre (+) o bajo (−) el precio mediano de la Metropolitana en los mismos códigos, julio–septiembre 2026; 12 regiones con más facturación",
           "rows": [
             {
               "label": "O'Higgins",
               "value": -11.983093058120753,
-              "ref": "idx.2026t3.amb.6"
+              "ref": "idx.2026t3.amb.6",
+              "base": -18.321194310225643,
+              "base_ref": "idx.2026t3.hosp.6"
             },
             {
               "label": "Maule",
               "value": -10.317442435921198,
-              "ref": "idx.2026t3.amb.7"
+              "ref": "idx.2026t3.amb.7",
+              "base": -13.084048276780202,
+              "base_ref": "idx.2026t3.hosp.7"
             },
             {
               "label": "Biobío",
               "value": -9.551703316439053,
-              "ref": "idx.2026t3.amb.8"
+              "ref": "idx.2026t3.amb.8",
+              "base": -14.25897784334591,
+              "base_ref": "idx.2026t3.hosp.8"
             },
             {
               "label": "Valparaíso",
               "value": -7.2907719307023555,
-              "ref": "idx.2026t3.amb.5"
+              "ref": "idx.2026t3.amb.5",
+              "base": -11.671165523778072,
+              "base_ref": "idx.2026t3.hosp.5"
             },
             {
               "label": "Antofagasta",
               "value": -4.119605435156204,
-              "ref": "idx.2026t3.amb.2"
+              "ref": "idx.2026t3.amb.2",
+              "base": 1.4615986750380339,
+              "base_ref": "idx.2026t3.hosp.2"
             },
             {
               "label": "Tarapacá",
               "value": -2.587382845655073,
-              "ref": "idx.2026t3.amb.1"
+              "ref": "idx.2026t3.amb.1",
+              "base": -5.9477041758340565,
+              "base_ref": "idx.2026t3.hosp.1"
             },
             {
               "label": "La Araucanía",
               "value": -2.5775904896852553,
-              "ref": "idx.2026t3.amb.9"
+              "ref": "idx.2026t3.amb.9",
+              "base": 13.887849193359191,
+              "base_ref": "idx.2026t3.hosp.9"
             },
             {
               "label": "Coquimbo",
               "value": -2.263578562319979,
-              "ref": "idx.2026t3.amb.4"
+              "ref": "idx.2026t3.amb.4",
+              "base": 29.300026077690198,
+              "base_ref": "idx.2026t3.hosp.4"
             },
             {
               "label": "Los Ríos",
               "value": -1.0483153163683756,
-              "ref": "idx.2026t3.amb.14"
+              "ref": "idx.2026t3.amb.14",
+              "base": 20.512255697312053,
+              "base_ref": "idx.2026t3.hosp.14"
             },
             {
               "label": "Los Lagos",
               "value": 0.31497232289130483,
-              "ref": "idx.2026t3.amb.10"
+              "ref": "idx.2026t3.amb.10",
+              "base": -3.2177974990667213,
+              "base_ref": "idx.2026t3.hosp.10"
             },
             {
               "label": "Atacama",
               "value": 1.0820499390137517,
-              "ref": "idx.2026t3.amb.3"
+              "ref": "idx.2026t3.amb.3",
+              "base": 15.651146093306977,
+              "base_ref": "idx.2026t3.hosp.3"
             },
             {
               "label": "Magallanes",
               "value": 8.025256600767051,
-              "ref": "idx.2026t3.amb.12"
+              "ref": "idx.2026t3.amb.12",
+              "base": -5.909932812649554,
+              "base_ref": "idx.2026t3.hosp.12"
             }
           ],
           "table": {
             "columns": [
               "Región",
-              "Ponderado",
-              "Sin ponderar",
-              "Códigos",
-              "Ponderado abr–jun 2026"
+              "Amb. ponderado",
+              "Amb. sin ponderar",
+              "Hosp. ponderado",
+              "Hosp. sin ponderar",
+              "Códigos hosp.",
+              "Amb. abr–jun 2026",
+              "Hosp. abr–jun 2026"
             ],
             "rows": [
               [
                 "O'Higgins",
                 "−12,0%",
                 "−10,7%",
-                "100",
-                "−12,3%"
+                "−18,3%",
+                "+0,1%",
+                "56",
+                "−12,3%",
+                "−14,2%"
               ],
               [
                 "Arica y Parinacota",
                 "−10,7%",
                 "−9,1%",
-                "93",
-                "−10,1%"
+                "−12,5%",
+                "−8,7%",
+                "19",
+                "−10,1%",
+                "+3,4%"
               ],
               [
                 "Maule",
                 "−10,3%",
                 "−10,2%",
-                "100",
-                "−11,1%"
+                "−13,1%",
+                "−17,0%",
+                "49",
+                "−11,1%",
+                "−14,1%"
               ],
               [
                 "Ñuble",
                 "−10,2%",
                 "−9,4%",
-                "100",
-                "−10,7%"
+                "−20,4%",
+                "−13,1%",
+                "34",
+                "−10,7%",
+                "−14,3%"
               ],
               [
                 "Biobío",
                 "−9,6%",
                 "−9,2%",
-                "100",
-                "−9,8%"
+                "−14,3%",
+                "−14,9%",
+                "57",
+                "−9,8%",
+                "−13,1%"
               ],
               [
                 "Valparaíso",
                 "−7,3%",
                 "−6,6%",
-                "100",
-                "−8,0%"
+                "−11,7%",
+                "−10,8%",
+                "57",
+                "−8,0%",
+                "−9,2%"
               ],
               [
                 "Antofagasta",
                 "−4,1%",
                 "−3,1%",
-                "100",
-                "−5,1%"
+                "+1,5%",
+                "−2,8%",
+                "56",
+                "−5,1%",
+                "−2,5%"
               ],
               [
                 "Tarapacá",
                 "−2,6%",
                 "−2,8%",
-                "100",
-                "−3,5%"
+                "−5,9%",
+                "−0,2%",
+                "46",
+                "−3,5%",
+                "−6,2%"
               ],
               [
                 "La Araucanía",
                 "−2,6%",
                 "−0,9%",
-                "100",
-                "−3,5%"
+                "+13,9%",
+                "+12,0%",
+                "55",
+                "−3,5%",
+                "+20,8%"
               ],
               [
                 "Coquimbo",
                 "−2,3%",
                 "−2,0%",
-                "100",
-                "−0,4%"
+                "+29,3%",
+                "+8,2%",
+                "49",
+                "−0,4%",
+                "+20,6%"
               ],
               [
                 "Los Ríos",
                 "−1,0%",
                 "+6,3%",
-                "100",
-                "−1,7%"
+                "+20,5%",
+                "+16,6%",
+                "36",
+                "−1,7%",
+                "+6,3%"
               ],
               [
                 "Los Lagos",
                 "+0,3%",
                 "+0,2%",
-                "100",
-                "−0,8%"
+                "−3,2%",
+                "−2,0%",
+                "57",
+                "−0,8%",
+                "−0,7%"
               ],
               [
                 "Atacama",
                 "+1,1%",
                 "+3,1%",
-                "98",
-                "+0,3%"
+                "+15,7%",
+                "+5,4%",
+                "31",
+                "+0,3%",
+                "+9,9%"
               ],
               [
                 "Aysén",
                 "+6,6%",
                 "+12,1%",
-                "53",
-                "+5,2%"
+                "−8,7%",
+                "+19,0%",
+                "8",
+                "+5,2%",
+                "−6,9%"
               ],
               [
                 "Magallanes",
                 "+8,0%",
                 "+11,6%",
-                "100",
-                "+5,3%"
-              ]
-            ]
-          },
-          "source": "SIS, datos abiertos de prestaciones bonificadas; canasta estratificada de códigos del Arancel MLE 2026 de FONASA. Mediana entre prestadores de cada código; promedio con el facturado nacional del código."
-        },
-        {
-          "id": "f12-vs-rm-hosp",
-          "form": "diverging",
-          "unit": "%",
-          "digits": 1,
-          "headline": "Precio vs. Metropolitana, hospitalario",
-          "subtitle": "% sobre (+) o bajo (−) la mediana de la Metropolitana, canasta hospitalario, julio–septiembre 2026; 12 regiones con más facturación",
-          "rows": [
-            {
-              "label": "O'Higgins",
-              "value": -18.321194310225643,
-              "ref": "idx.2026t3.hosp.6"
-            },
-            {
-              "label": "Biobío",
-              "value": -14.25897784334591,
-              "ref": "idx.2026t3.hosp.8"
-            },
-            {
-              "label": "Maule",
-              "value": -13.084048276780202,
-              "ref": "idx.2026t3.hosp.7"
-            },
-            {
-              "label": "Valparaíso",
-              "value": -11.671165523778072,
-              "ref": "idx.2026t3.hosp.5"
-            },
-            {
-              "label": "Tarapacá",
-              "value": -5.9477041758340565,
-              "ref": "idx.2026t3.hosp.1"
-            },
-            {
-              "label": "Magallanes",
-              "value": -5.909932812649554,
-              "ref": "idx.2026t3.hosp.12"
-            },
-            {
-              "label": "Los Lagos",
-              "value": -3.2177974990667213,
-              "ref": "idx.2026t3.hosp.10"
-            },
-            {
-              "label": "Antofagasta",
-              "value": 1.4615986750380339,
-              "ref": "idx.2026t3.hosp.2"
-            },
-            {
-              "label": "La Araucanía",
-              "value": 13.887849193359191,
-              "ref": "idx.2026t3.hosp.9"
-            },
-            {
-              "label": "Atacama",
-              "value": 15.651146093306977,
-              "ref": "idx.2026t3.hosp.3"
-            },
-            {
-              "label": "Los Ríos",
-              "value": 20.512255697312053,
-              "ref": "idx.2026t3.hosp.14"
-            },
-            {
-              "label": "Coquimbo",
-              "value": 29.300026077690198,
-              "ref": "idx.2026t3.hosp.4"
-            }
-          ],
-          "table": {
-            "columns": [
-              "Región",
-              "Ponderado",
-              "Sin ponderar",
-              "Códigos",
-              "Ponderado abr–jun 2026"
-            ],
-            "rows": [
-              [
-                "Ñuble",
-                "−20,4%",
-                "−13,1%",
-                "34",
-                "−14,3%"
-              ],
-              [
-                "O'Higgins",
-                "−18,3%",
-                "+0,1%",
-                "56",
-                "−14,2%"
-              ],
-              [
-                "Biobío",
-                "−14,3%",
-                "−14,9%",
-                "57",
-                "−13,1%"
-              ],
-              [
-                "Maule",
-                "−13,1%",
-                "−17,0%",
-                "49",
-                "−14,1%"
-              ],
-              [
-                "Arica y Parinacota",
-                "−12,5%",
-                "−8,7%",
-                "19",
-                "+3,4%"
-              ],
-              [
-                "Valparaíso",
-                "−11,7%",
-                "−10,8%",
-                "57",
-                "−9,2%"
-              ],
-              [
-                "Aysén",
-                "−8,7%",
-                "+19,0%",
-                "8",
-                "−6,9%"
-              ],
-              [
-                "Tarapacá",
-                "−5,9%",
-                "−0,2%",
-                "46",
-                "−6,2%"
-              ],
-              [
-                "Magallanes",
                 "−5,9%",
                 "+17,6%",
                 "42",
+                "+5,3%",
                 "−6,2%"
-              ],
-              [
-                "Los Lagos",
-                "−3,2%",
-                "−2,0%",
-                "57",
-                "−0,7%"
-              ],
-              [
-                "Antofagasta",
-                "+1,5%",
-                "−2,8%",
-                "56",
-                "−2,5%"
-              ],
-              [
-                "La Araucanía",
-                "+13,9%",
-                "+12,0%",
-                "55",
-                "+20,8%"
-              ],
-              [
-                "Atacama",
-                "+15,7%",
-                "+5,4%",
-                "31",
-                "+9,9%"
-              ],
-              [
-                "Los Ríos",
-                "+20,5%",
-                "+16,6%",
-                "36",
-                "+6,3%"
-              ],
-              [
-                "Coquimbo",
-                "+29,3%",
-                "+8,2%",
-                "49",
-                "+20,6%"
               ]
             ]
           },
@@ -1127,9 +929,13 @@
         "idx.2026t3.hosp.media",
         "idx.2026t3.hosp.media_unw"
       ],
+      "body": [
+        "Cómo se mide: para cada código de la canasta se compara el precio mediano de la región con el de la Metropolitana, y luego se promedia con el peso de lo que factura cada código. Un valor negativo significa que la misma canasta cuesta menos que en la Metropolitana.",
+        "En hospitalario el signo cambia según se pese o no cada código por lo que factura: con ese peso, las regiones quedan, en promedio, bajo la Metropolitana; con el promedio simple de los códigos, sobre ella. Por eso se lee como mixto."
+      ],
       "spark": {
-        "chart": "f12-vs-rm-amb",
-        "form": "diverging"
+        "chart": "f12-vs-rm",
+        "form": "bars"
       },
       "index_line": "Ambulatorio −3,8% · hospitalario −2,2% vs. RM, promedio",
       "index_refs": [
@@ -1174,31 +980,29 @@
       "charts": [
         {
           "id": "f12-pub-priv",
-          "form": "diverging",
+          "form": "pair",
           "unit": "%",
           "digits": 1,
-          "headline": "Mediana pública frente a la privada",
-          "subtitle": "% de diferencia en el mismo código y región, julio–septiembre 2026; los públicos tienen el 2,6% de las atenciones Fonasa",
+          "series": [
+            "Ambulatorio",
+            "Hospitalario"
+          ],
+          "headline": "Precio de los prestadores públicos frente a los privados",
+          "subtitle": "% de diferencia del precio público sobre el privado en el mismo código y región, julio–septiembre 2026",
           "rows": [
             {
-              "label": "Amb. ponderado",
+              "label": "Ponderado",
               "value": 9.682034047365939,
-              "ref": "pubpriv.amb.ponderado"
+              "ref": "pubpriv.amb.ponderado",
+              "base": 18.275476193320863,
+              "base_ref": "pubpriv.hosp.ponderado"
             },
             {
-              "label": "Amb. mediana",
+              "label": "Mediana",
               "value": 15.233488594291167,
-              "ref": "pubpriv.amb.mediana"
-            },
-            {
-              "label": "Hosp. ponderado",
-              "value": 18.275476193320863,
-              "ref": "pubpriv.hosp.ponderado"
-            },
-            {
-              "label": "Hosp. mediana",
-              "value": 24.775700758771848,
-              "ref": "pubpriv.hosp.mediana"
+              "ref": "pubpriv.amb.mediana",
+              "base": 24.775700758771848,
+              "base_ref": "pubpriv.hosp.mediana"
             }
           ],
           "table": {
@@ -1361,9 +1165,12 @@
         "pubpriv.amb.ponderado",
         "pubpriv.hosp.ponderado"
       ],
+      "body": [
+        "Solo se comparan códigos y regiones donde facturan a la vez 3 o más prestadores públicos y 3 o más privados. «Ponderado» pesa cada celda por lo que factura su código en todo el país; «mediana» toma la celda típica. Los prestadores públicos tienen solo el 2,6% de las atenciones con código Fonasa facturadas a Isapres."
+      ],
       "spark": {
         "chart": "f12-pub-priv",
-        "form": "diverging"
+        "form": "bars"
       },
       "index_line": "Medianas: ambulatorio +15,2% · hospitalario +24,8%",
       "index_refs": [
@@ -1378,31 +1185,29 @@
       "charts": [
         {
           "id": "f12-cambio",
-          "form": "diverging",
+          "form": "pair",
           "unit": "%",
           "digits": 1,
-          "headline": "Cambio de precio, mismos prestadores",
-          "subtitle": "% entre abril–junio 2026 y julio–septiembre 2026; solo prestadores presentes en ambos trimestres",
+          "series": [
+            "Ambulatorio",
+            "Hospitalario"
+          ],
+          "headline": "Cuánto cambiaron los precios de un trimestre a otro",
+          "subtitle": "% de cambio entre abril–junio 2026 y julio–septiembre 2026, mismos prestadores y códigos",
           "rows": [
             {
-              "label": "Amb. ponderado",
+              "label": "Ponderado",
               "value": 0.900807766579737,
-              "ref": "cambio.amb.ponderado"
+              "ref": "cambio.amb.ponderado",
+              "base": 1.124754740303742,
+              "base_ref": "cambio.hosp.ponderado"
             },
             {
-              "label": "Amb. mediano",
+              "label": "Prestador mediano",
               "value": 0.0,
-              "ref": "cambio.amb.mediana_prestador"
-            },
-            {
-              "label": "Hosp. ponderado",
-              "value": 1.124754740303742,
-              "ref": "cambio.hosp.ponderado"
-            },
-            {
-              "label": "Hosp. mediano",
-              "value": 0.39,
-              "ref": "cambio.hosp.mediana_prestador"
+              "ref": "cambio.amb.mediana_prestador",
+              "base": 0.39,
+              "base_ref": "cambio.hosp.mediana_prestador"
             }
           ],
           "table": {
@@ -1434,6 +1239,9 @@
       ],
       "text": [],
       "dek": "El prestador mediano no movió precios en ambulatorio (0,0%) y +0,4% en hospitalario; ponderado +0,9% y +1,1%",
+      "body": [
+        "Solo cuentan los prestadores que facturaron el mismo código en ambos trimestres: así el cambio no se mezcla con la entrada o salida de prestadores. «Ponderado» mantiene fijas las cantidades del trimestre anterior; «prestador mediano» es el cambio del prestador típico. No está ajustado por estacionalidad."
+      ],
       "dek_refs": [
         "cambio.amb.ponderado",
         "cambio.hosp.ponderado",
@@ -1442,7 +1250,7 @@
       ],
       "spark": {
         "chart": "f12-cambio",
-        "form": "diverging"
+        "form": "bars"
       },
       "index_line": "Ponderado: +0,9% amb. · +1,1% hosp.",
       "index_refs": [
@@ -1460,8 +1268,8 @@
           "form": "bars",
           "unit": "%",
           "digits": 1,
-          "headline": "Bonificado sobre lo facturado, por Isapre",
-          "subtitle": "% de lo facturado por los prestadores que pagó la Isapre, julio–septiembre 2026",
+          "headline": "Qué parte de la cuenta paga cada Isapre",
+          "subtitle": "% de lo facturado por los prestadores que bonificó la Isapre, julio–septiembre 2026; el resto es casi todo copago",
           "rows": [
             {
               "label": "Isalud",
@@ -1655,64 +1463,88 @@
         },
         {
           "id": "f12-bonif-amb",
-          "form": "bars",
+          "form": "pair",
           "unit": "%",
           "digits": 1,
-          "headline": "Bonificado en atención ambulatoria",
-          "subtitle": "% de lo facturado en atención ambulatoria, julio–septiembre 2026",
+          "series": [
+            "Ambulatoria",
+            "Hospitalaria"
+          ],
+          "headline": "Bonificación en atención ambulatoria y hospitalaria",
+          "subtitle": "% de lo facturado que bonificó cada Isapre, por tipo de atención, julio–septiembre 2026",
           "rows": [
             {
               "label": "Isalud",
+              "tag": "cerrada",
               "value": 82.85,
               "ref": "isapre.63.2026t3.amb.pct_bonif",
-              "tag": "cerrada"
-            },
-            {
-              "label": "Cruz del Norte",
-              "value": 72.84,
-              "ref": "isapre.94.2026t3.amb.pct_bonif",
-              "tag": "cerrada"
+              "base": 69.88,
+              "base_ref": "isapre.63.2026t3.hosp.pct_bonif"
             },
             {
               "label": "Cruz Blanca",
               "value": 61.69,
-              "ref": "isapre.78.2026t3.amb.pct_bonif"
-            },
-            {
-              "label": "Nueva Masvida",
-              "value": 60.0,
-              "ref": "isapre.81.2026t3.amb.pct_bonif"
-            },
-            {
-              "label": "Consalud",
-              "value": 58.73,
-              "ref": "isapre.107.2026t3.amb.pct_bonif"
-            },
-            {
-              "label": "Banmédica",
-              "value": 58.14,
-              "ref": "isapre.99.2026t3.amb.pct_bonif"
-            },
-            {
-              "label": "Esencial",
-              "value": 57.91,
-              "ref": "isapre.108.2026t3.amb.pct_bonif"
-            },
-            {
-              "label": "Fundación",
-              "value": 57.53,
-              "ref": "isapre.76.2026t3.amb.pct_bonif",
-              "tag": "cerrada"
-            },
-            {
-              "label": "Vida Tres",
-              "value": 57.09,
-              "ref": "isapre.80.2026t3.amb.pct_bonif"
+              "ref": "isapre.78.2026t3.amb.pct_bonif",
+              "base": 73.44,
+              "base_ref": "isapre.78.2026t3.hosp.pct_bonif"
             },
             {
               "label": "Colmena",
               "value": 56.38,
-              "ref": "isapre.67.2026t3.amb.pct_bonif"
+              "ref": "isapre.67.2026t3.amb.pct_bonif",
+              "base": 78.09,
+              "base_ref": "isapre.67.2026t3.hosp.pct_bonif"
+            },
+            {
+              "label": "Banmédica",
+              "value": 58.14,
+              "ref": "isapre.99.2026t3.amb.pct_bonif",
+              "base": 74.8,
+              "base_ref": "isapre.99.2026t3.hosp.pct_bonif"
+            },
+            {
+              "label": "Vida Tres",
+              "value": 57.09,
+              "ref": "isapre.80.2026t3.amb.pct_bonif",
+              "base": 75.21,
+              "base_ref": "isapre.80.2026t3.hosp.pct_bonif"
+            },
+            {
+              "label": "Esencial",
+              "value": 57.91,
+              "ref": "isapre.108.2026t3.amb.pct_bonif",
+              "base": 77.76,
+              "base_ref": "isapre.108.2026t3.hosp.pct_bonif"
+            },
+            {
+              "label": "Cruz del Norte",
+              "tag": "cerrada",
+              "value": 72.84,
+              "ref": "isapre.94.2026t3.amb.pct_bonif",
+              "base": 56.82,
+              "base_ref": "isapre.94.2026t3.hosp.pct_bonif"
+            },
+            {
+              "label": "Nueva Masvida",
+              "value": 60.0,
+              "ref": "isapre.81.2026t3.amb.pct_bonif",
+              "base": 67.28,
+              "base_ref": "isapre.81.2026t3.hosp.pct_bonif"
+            },
+            {
+              "label": "Consalud",
+              "value": 58.73,
+              "ref": "isapre.107.2026t3.amb.pct_bonif",
+              "base": 66.96,
+              "base_ref": "isapre.107.2026t3.hosp.pct_bonif"
+            },
+            {
+              "label": "Fundación",
+              "tag": "cerrada",
+              "value": 57.53,
+              "ref": "isapre.76.2026t3.amb.pct_bonif",
+              "base": 61.09,
+              "base_ref": "isapre.76.2026t3.hosp.pct_bonif"
             }
           ],
           "table": {
@@ -1779,6 +1611,9 @@
       ],
       "text": [],
       "dek": null,
+      "body": [
+        "En el sistema, las Isapres bonificaron el 66,7% de lo facturado. Casi todo lo que no bonifica la Isapre es copago de la persona; parte puede cubrirlo después un seguro complementario, que estos datos no registran. Las Isapres cerradas atienden a trabajadores de una empresa o sector y se marcan aparte."
+      ],
       "spark": {
         "chart": "f12-bonif-isapre",
         "form": "bars"
@@ -1796,64 +1631,88 @@
       "charts": [
         {
           "id": "f12-mismo-prestador",
-          "form": "diverging",
+          "form": "pair",
           "unit": "%",
           "digits": 1,
-          "headline": "Mismo prestador y código: mediana",
-          "subtitle": "Bonificado por unidad de la Isapre vs. la media de las Isapres de la celda; mediana entre celdas, %",
+          "series": [
+            "Mediana",
+            "Media ponderada"
+          ],
+          "headline": "Cuánto paga cada Isapre al mismo prestador por el mismo código",
+          "subtitle": "% sobre (+) o bajo (−) el promedio de las Isapres en el mismo prestador y código, julio–septiembre 2026",
           "rows": [
             {
               "label": "Esencial",
               "value": 11.21,
-              "ref": "cruce.108.mediana"
+              "ref": "cruce.108.mediana",
+              "base": 20.04,
+              "base_ref": "cruce.108.ponderada"
             },
             {
               "label": "Isalud",
+              "tag": "cerrada",
               "value": 6.16,
               "ref": "cruce.63.mediana",
-              "tag": "cerrada"
+              "base": 0.39,
+              "base_ref": "cruce.63.ponderada"
             },
             {
               "label": "Cruz Blanca",
               "value": 4.27,
-              "ref": "cruce.78.mediana"
+              "ref": "cruce.78.mediana",
+              "base": 3.57,
+              "base_ref": "cruce.78.ponderada"
             },
             {
               "label": "Colmena",
               "value": 3.02,
-              "ref": "cruce.67.mediana"
+              "ref": "cruce.67.mediana",
+              "base": 0.5,
+              "base_ref": "cruce.67.ponderada"
             },
             {
               "label": "Cruz del Norte",
+              "tag": "cerrada",
               "value": 2.3,
               "ref": "cruce.94.mediana",
-              "tag": "cerrada"
+              "base": 3.13,
+              "base_ref": "cruce.94.ponderada"
             },
             {
               "label": "Nueva Masvida",
               "value": -0.02,
-              "ref": "cruce.81.mediana"
+              "ref": "cruce.81.mediana",
+              "base": -3.33,
+              "base_ref": "cruce.81.ponderada"
             },
             {
               "label": "Vida Tres",
               "value": -0.58,
-              "ref": "cruce.80.mediana"
+              "ref": "cruce.80.mediana",
+              "base": 1.69,
+              "base_ref": "cruce.80.ponderada"
             },
             {
               "label": "Fundación",
+              "tag": "cerrada",
               "value": -2.58,
               "ref": "cruce.76.mediana",
-              "tag": "cerrada"
+              "base": 3.82,
+              "base_ref": "cruce.76.ponderada"
             },
             {
               "label": "Consalud",
               "value": -4.68,
-              "ref": "cruce.107.mediana"
+              "ref": "cruce.107.mediana",
+              "base": -5.58,
+              "base_ref": "cruce.107.ponderada"
             },
             {
               "label": "Banmédica",
               "value": -5.88,
-              "ref": "cruce.99.mediana"
+              "ref": "cruce.99.mediana",
+              "base": -5.57,
+              "base_ref": "cruce.99.ponderada"
             }
           ],
           "table": {
@@ -1970,148 +1829,17 @@
               ]
             ]
           },
-          "source": "SIS, datos abiertos; prestadores seudónimos con ≥ 2 Isapres (≥ 10 atenciones cada una) en el mismo código Fonasa. Isalud, Cruz del Norte, Fundación: Isapre cerrada (afiliación restringida)."
-        },
-        {
-          "id": "f12-mismo-prestador-ponderada",
-          "form": "diverging",
-          "unit": "%",
-          "digits": 1,
-          "headline": "Mismo prestador y código: media ponderada",
-          "subtitle": "El mismo índice, promediado con el peso de las atenciones de cada celda, %",
-          "rows": [
-            {
-              "label": "Esencial",
-              "value": 20.04,
-              "ref": "cruce.108.ponderada"
-            },
-            {
-              "label": "Fundación",
-              "value": 3.82,
-              "ref": "cruce.76.ponderada",
-              "tag": "cerrada"
-            },
-            {
-              "label": "Cruz Blanca",
-              "value": 3.57,
-              "ref": "cruce.78.ponderada"
-            },
-            {
-              "label": "Cruz del Norte",
-              "value": 3.13,
-              "ref": "cruce.94.ponderada",
-              "tag": "cerrada"
-            },
-            {
-              "label": "Vida Tres",
-              "value": 1.69,
-              "ref": "cruce.80.ponderada"
-            },
-            {
-              "label": "Colmena",
-              "value": 0.5,
-              "ref": "cruce.67.ponderada"
-            },
-            {
-              "label": "Isalud",
-              "value": 0.39,
-              "ref": "cruce.63.ponderada",
-              "tag": "cerrada"
-            },
-            {
-              "label": "Nueva Masvida",
-              "value": -3.33,
-              "ref": "cruce.81.ponderada"
-            },
-            {
-              "label": "Banmédica",
-              "value": -5.57,
-              "ref": "cruce.99.ponderada"
-            },
-            {
-              "label": "Consalud",
-              "value": -5.58,
-              "ref": "cruce.107.ponderada"
-            }
-          ],
-          "table": {
-            "columns": [
-              "Isapre",
-              "Tipo",
-              "Media ponderada",
-              "Mediana"
-            ],
-            "rows": [
-              [
-                "Esencial",
-                "abierta",
-                "+20,0%",
-                "+11,2%"
-              ],
-              [
-                "Isalud",
-                "cerrada",
-                "+0,4%",
-                "+6,2%"
-              ],
-              [
-                "Cruz Blanca",
-                "abierta",
-                "+3,6%",
-                "+4,3%"
-              ],
-              [
-                "Colmena",
-                "abierta",
-                "+0,5%",
-                "+3,0%"
-              ],
-              [
-                "Cruz del Norte",
-                "cerrada",
-                "+3,1%",
-                "+2,3%"
-              ],
-              [
-                "Nueva Masvida",
-                "abierta",
-                "−3,3%",
-                "0,0%"
-              ],
-              [
-                "Vida Tres",
-                "abierta",
-                "+1,7%",
-                "−0,6%"
-              ],
-              [
-                "Fundación",
-                "cerrada",
-                "+3,8%",
-                "−2,6%"
-              ],
-              [
-                "Consalud",
-                "abierta",
-                "−5,6%",
-                "−4,7%"
-              ],
-              [
-                "Banmédica",
-                "abierta",
-                "−5,6%",
-                "−5,9%"
-              ]
-            ]
-          },
           "source": "SIS, datos abiertos; prestadores seudónimos con ≥ 2 Isapres (≥ 10 atenciones cada una) en el mismo código Fonasa. Isalud, Cruz del Norte, Fundación: Isapre cerrada (afiliación restringida). Cuando las dos medidas difieren en signo, la diferencia no es robusta."
         }
       ],
       "text": [],
       "dek": null,
+      "body": [
+        "Se compara a cada Isapre con las demás en el mismo prestador y el mismo código, así la diferencia no viene de la red ni del tipo de prestación. «Mediana» toma la celda típica; «media ponderada» pesa cada celda por sus atenciones. No ajusta por plan: un plan con mejor cobertura sube el índice."
+      ],
       "spark": {
         "chart": "f12-mismo-prestador",
-        "form": "diverging"
+        "form": "bars"
       },
       "index_line": "Medianas, abiertas: Esencial +11,2% · Banmédica −5,9%",
       "index_refs": [
@@ -2129,7 +1857,7 @@
           "form": "bars",
           "unit": "$",
           "digits": 0,
-          "headline": "Precio mediano del código 0601105 por región",
+          "headline": "Precio por región: Atención kinesiológica integral ambulatoria (código 0601105)",
           "subtitle": "$ por unidad, mediana entre prestadores, julio–septiembre 2026; regiones con precio publicable",
           "rows": [
             {
@@ -4250,6 +3978,9 @@
       ],
       "text": [],
       "dek": null,
+      "body": [
+        "Es el código Fonasa con más atenciones del país en el trimestre. El precio es la mediana entre prestadores de la región; se publica solo con 2 prestadores o más y 30 atenciones o más, y con 1 prestador la región queda sin precio."
+      ],
       "spark": {
         "chart": "f12-precio-region",
         "form": "bars"
@@ -4383,7 +4114,8 @@
   "machine_note": "Ficha generada por la regla \"nuevo período\" (agregados calculados por Alicanto el 10 nov). Las cifras vienen del paquete de evidencia, sin descargas en este paso; la Lectura Alicanto está desactivada. Lectura Alicanto omitida (sin modelo en esta corrida).",
   "featured": false,
   "triggers": [
-    "new_period"
+    "new_period",
+    "format_update"
   ],
   "late_release": null,
   "revisions": [],
@@ -4393,8 +4125,8 @@
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-11-10T05:41:21.241609+00:00",
-  "builder_version": "f12_informe_v8",
+  "generated_at": "2026-11-10T11:21:38.527859+00:00",
+  "builder_version": "f12_informe_v9",
   "verification": {
     "verdict": "PASS",
     "errors": [],

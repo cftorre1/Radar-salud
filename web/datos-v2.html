@@ -169,13 +169,13 @@ function fmt(v,c){if(!Number.isFinite(v))return'—';const u=c.unit,d=Number.isI
 const LABEL={F1:'Cartera',F2:'Financieras',F4:'GES',F6:'Prestadores',F7:'Presupuesto',F12:'Precios',F13:'Licencias'};
 // Comparator columns: chart ids from the published fichas, with a short column header.
 const COMP={isapre:[['f1-isapres','Δ beneficiarios ene–ago'],['f1-share','Participación (abiertas)'],['f2-resultado-isapres','Resultado ene–mar'],['f2-siniestralidad-isapres','Siniestralidad'],['f12-bonif-isapre','Bonificado / facturado'],['f13-rechazo-isapre','Licencias rechazadas'],['f13-dias-isapre','Días autorizados']],
- region:[['f12-precio-region','Precio mediano 0601105'],['f12-vs-rm-amb','Ambulatorio vs. RM'],['f12-disp-amb','Dispersión ambulatoria'],['f12-conc-regional','3 mayores prestadores'],['f13-rechazo-region','Licencias rechazadas']]};
+ region:[['f12-precio-region','Precio mediano 0601105'],['f12-vs-rm','Precio vs. RM'],['f12-disp','Caro / barato'],['f12-conc-regional','3 mayores prestadores'],['f13-rechazo-region','Licencias rechazadas']]};
 const state={isapre:'',region:'',periodo:'todo',view:'isapre'};
 let D=null,series=null;
 function load(u){return fetch(u,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)}
-Promise.all([load('data/datos.json'),load('data/radar_today.json'),load('data/preview/f12_prestaciones.json'),load('data/preview/f13_licencias.json'),load('data/series_isapre.json')]).then(([datos,today,f12,f13,ser])=>{
+Promise.all([load('data/datos.json'),load('data/radar_today.json'),load('data/preview/f13_licencias.json'),load('data/series_isapre.json')]).then(([datos,today,f13,ser])=>{
  const fichas={};((today&&today.signals)||[]).forEach(s=>{if(s.stats_ficha)fichas[s.stats_ficha.family]={f:s.stats_ficha,share:s.share_url,live:true}});
- [f12,f13].forEach(p=>{if(p&&p.ficha&&!fichas[p.ficha.family])fichas[p.ficha.family]={f:p.ficha,live:false}});
+ [f13].forEach(p=>{if(p&&p.ficha&&!fichas[p.ficha.family])fichas[p.ficha.family]={f:p.ficha,live:false}});
  const charts={};Object.values(fichas).forEach(({f})=>f.tabs.forEach(t=>(t.charts||[]).forEach(c=>{charts[c.id]={...c,family:f.family,period:f.period,kicker:f.kicker}})));
  D={datos:datos||{families:[]},fichas,charts,ser};
  const isapres=ser?ser.isapres.beneficiarios.filter(b=>b.short).map(b=>b.short):[];const regiones=ser?ser.regiones.map(r=>r.short):[];
