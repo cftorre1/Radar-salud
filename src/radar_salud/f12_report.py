@@ -244,7 +244,10 @@ def analyze(root: Path, cfg: dict, q: str, pq: str | None, cur: dict, prev: dict
         loc = f"prestaciones_{qq}_resumen.json · concentracion"
         for r in ALL16 + ["NACIONAL"]:
             if r in conc:
-                for key in ("share_top1_pct", "share_top3_pct", "share_top10_pct", "share_top50_pct"):
+                # top-1 is a 5-point band (one provider's share is never exact); top-3 and above are exact sums.
+                if conc[r].get("share_top1_pct") is not None:
+                    k.setdefault("top1_band", {}).setdefault(qq, {})[r] = conc[r]["share_top1_pct"]
+                for key in ("share_top3_pct", "share_top10_pct", "share_top50_pct"):
                     if conc[r].get(key) is not None:
                         put(f"conc3.{qq}.{r}.{key.split('_')[1]}", conc[r][key], "%", qq, dd, loc)
                 put(f"conc3.{qq}.{r}.facturado_mm", round(conc[r]["facturado"] / 1e6, 3), "MM$", qq, dd, loc)
@@ -310,6 +313,7 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
     ql, qs = so.quarter_label(q), so.quarter_short(q)
     pqs = so.quarter_short(pq) if pq else None
     tabs, kpis, notes, paragraphs = [], [], [], []
+    band = lambda b: (f"{b.split('-')[0]}–{b.split('-')[1]}%" if b else "sin dato")  # noqa: E731  ('40-45' → '40–45%')
     # "tres mayores" in a chart headline is the top-3 definition, a derived count like any other (lens check).
     package.setdefault("derived_ratios", []).append({"id": "conteo.top3", "value": 3, "unit": "count"})
     src = "SIS, datos abiertos de prestaciones bonificadas; canasta estratificada de códigos del Arancel MLE 2026 de FONASA."
@@ -342,8 +346,8 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                "headline": "Participación de los tres mayores prestadores",
                "subtitle": f"% de lo facturado a Isapres en la región del prestador, {ql}; 12 regiones más concentradas",
                "rows": [{"label": R[r], "value": V(f"conc3.{q}.{r}.top3"), "ref": f"conc3.{q}.{r}.top3"} for r in top[:12]],
-               "table": {"columns": ["Región", "3 mayores", "Mayor"] + ([f"3 mayores {pqs}"] if pq else []),
-                         "rows": [[R[r], pc(f"conc3.{q}.{r}.top3"), pc(f"conc3.{q}.{r}.top1")]
+               "table": {"columns": ["Región", "3 mayores", "Mayor (tramo)"] + ([f"3 mayores {pqs}"] if pq else []),
+                         "rows": [[R[r], pc(f"conc3.{q}.{r}.top3"), band(k["top1_band"][q].get(r))]
                                   + ([pc(f"conc3.{pq}.{r}.top3") if f"conc3.{pq}.{r}.top3" in v else "sin dato"] if pq else [])
                                   for r in top]},
                "source": "SIS, datos abiertos; prestadores seudónimos por región del prestador; todo lo facturado a Isapres."}]
