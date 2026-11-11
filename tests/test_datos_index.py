@@ -130,7 +130,7 @@ def test_card_title_topics_and_feed_row(tmp_path):
     # Same rule as the ficha renderer: tabs with a label, in order; id = tab id, else its position among them.
     assert f1["topics"] == [{"id": "total", "label": "Cartera total"}, {"id": "isapres", "label": "Por Isapre"},
                             {"id": "2", "label": "Sin id"}]
-    assert f1["share_title"] == "Titular F1"
+    assert f1["share_title"] == "Cartera de beneficiarios Isapre · ago 2026"  # generic name + period (Dirección 11-nov)
     # The date-line fields, plus the row's own link so «Fuente original» is the same on both pages (Dirección 10-nov 23:29).
     src = card("F1", "2026-08", feed="2026-10-28")
     assert f1["feed_row"] == {"date_basis": "first_detected", "first_detected_at": "2026-10-02",

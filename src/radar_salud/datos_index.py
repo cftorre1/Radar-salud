@@ -131,7 +131,9 @@ def build(cards: list[dict], *, registry: dict | None = None, root: Path | None 
             "status": "updating" if held else "current",
             **({"updating_period": held, "updating_period_label": period_short(held, cfg.get("period_kind"))} if held else {}),
             "share_url": card.get("share_url"),
-            "share_title": card.get("display_title") or card.get("title") or ficha["headline"],
+            # Dirección 11-nov-2026: share the ficha's generic name and period, not one view's finding.
+            "share_title": " · ".join(x for x in (cfg.get("index_title") or ficha.get("family_label") or ficha["headline"],
+                                                  period_short(ficha.get("period"), cfg.get("period_kind"))) if x),
             "feed_row": _feed_row(card),
         })
         families.append(row)

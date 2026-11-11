@@ -1014,7 +1014,8 @@ def test_share_page_has_og_preview_and_deep_link(root, tmp_path):
     assert card["share_url"] == "data/fichas/f1_cartera.html"
     written = sf.write_share_pages([card], tmp_path / "web/data")
     html = Path(written[0]).read_text(encoding="utf-8")
-    assert '<meta property="og:title" content="La cartera Isapre casi deja de caer' in html
+    # Dirección 11-nov-2026: the shared title is the ficha's generic name, not one view's finding.
+    assert '<meta property="og:title" content="Cartera de beneficiarios Isapre' in html and "casi deja de caer" not in html.split("og:description")[0]
     assert '<meta name="twitter:card" content="summary"/>' in html  # no real preview image
     assert 'og:image" content="https://cftorre1.github.io/Radar-salud/assets/' in html
     assert 'url=../../index.html?abrir=1#sig-stats-ficha:F1:2026-08' in html  # opens the detail

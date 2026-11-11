@@ -22,15 +22,13 @@
  // Por grupo: the registry's groups in order; inside each, live families first (newest first), then the rest.
  function byGroup(data,readSet){
   const all=recientes(data.families||[],readSet);
-  return (data.groups||[]).map(g=>({key:g.key,label:g.label,families:all.filter(f=>f.group===g.key)})).filter(g=>g.families.length);
+  return (data.groups||[]).map(g=>({key:g.key,label:g.label,families:all.filter(f=>f.group===g.key&&isLive(f))})).filter(g=>g.families.length);
  }
  function href(f){return `${BASE}#sig-${f.piece_id}`}
  function card(f,read){return root.AlicantoDataCard.render(root.AlicantoDataCard.model(f),{read,base:BASE})}
  function row(f,read){
-  if(!isLive(f)){
-   const tag=f.state==='pending'?'en verificación':'pronto';
-   return `<div class="dx-soon" data-family="${esc(f.family)}"><span>${esc(f.label)}</span><span class="dx-tag">${tag}</span></div>`;
-  }
+  // Dirección 11-nov-2026: families without a published ficha are not shown («pronto» panels removed).
+  if(!isLive(f))return '';
   return `<article class="dx-item" data-family="${esc(f.family)}" data-piece="${esc(f.piece_id)}">${card(f,read)}</article>`;
  }
  function render(data,view,readSet){
@@ -38,7 +36,7 @@
   const list=fs=>`<div class="dx-list">${fs.map(f=>row(f,read(f))).join('')}</div>`;
   if(!(data.families||[]).length)return '<p class="datos-empty">Aún no hay fichas publicadas.</p>';
   if(view==='grupo')return byGroup(data,readSet).map(g=>`<section class="dx-group" aria-labelledby="dx-g-${esc(g.key)}"><h2 class="dx-sec" id="dx-g-${esc(g.key)}">${esc(g.label)}</h2>${list(g.families)}</section>`).join('');
-  return list(recientes(data.families,readSet));
+  return list(recientes(data.families,readSet).filter(isLive));
  }
  const api={recientes,byGroup,render,row,card,href,loadView,saveView,VIEW_KEY,BASE};
  root.AlicantoDatos=api;

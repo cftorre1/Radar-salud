@@ -17,7 +17,7 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
  const order=await rows.evaluateAll(xs=>xs.map(x=>x.dataset.family));
  const expected=[...live(d)].sort((a,b)=>String(b.updated_on).localeCompare(String(a.updated_on))||a.order-b.order).map(f=>f.family);
  expect(order.slice(0,expected.length)).toEqual(expected);
- for(const f of d.families.filter(f=>f.state!=='live'))await expect(page.locator(`.dx-soon[data-family="${f.family}"] .dx-tag`)).toHaveText(f.state==='planned'?'pronto':'en verificación');
+ await expect(page.locator('.dx-soon')).toHaveCount(0);// Dirección 11-nov: no «pronto» panels
  // Each live card (Dirección 10-nov-2026): «Datos <período> · <cadencia>», descriptive title (not the finding headline),
  // its topics with their published labels, the Chile date line and «Compartir»; no KPI block, no «Vigente».
  for(const f of live(d)){
