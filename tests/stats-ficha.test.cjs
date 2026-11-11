@@ -9,8 +9,11 @@ const figs=html=>[...html.matchAll(/<figure class="sf-chart" data-chart="([^"]+)
 const panel=(html,id)=>{const a=html.indexOf(`data-sf-id="${id}"`);const b=html.indexOf('<section class="sf-tpanel"',a+1);return html.slice(a,b<0?html.indexOf('</section></div></section>',a):b)};
 test('ficha opens as an index of topics and renders each topic with the hero chart first',()=>{
  const html=load().render(pub,{shareId:'sig-stats-ficha:F1:2026-08',shareUrl:'data/fichas/f1_cartera.html'});
- const order=['sf-kicker','sf-headline','sf-meta','sf-dek','sf-index','sf-topic','sf-notes','sf-cadence'];
+ // Dirección 11-nov-2026: generic title (the ficha's name), no dek; from the title straight to the topics.
+ const order=['sf-kicker','sf-headline','sf-meta','sf-index','sf-topic','sf-notes','sf-cadence'];
  const at=order.map(k=>html.indexOf(k));assert.ok(at.every(i=>i>=0),JSON.stringify(at));assert.deepEqual([...at].sort((a,b)=>a-b),at);
+ assert.doesNotMatch(html,/class="sf-dek"/);assert.match(html,new RegExp(`<h2 id="detailTitle" class="sf-headline">${pub.family_label}</h2>`));
+ assert.match(load().render(pub,{title:'Cartera de beneficiarios Isapre'}),/class="sf-headline">Cartera de beneficiarios Isapre<\/h2>/);
  // No KPI strip, 'Qué mirar' or facts section outside the topics; notes and sources behind one collapsed toggle.
  assert.doesNotMatch(html,/aria-label="Indicadores clave"/);assert.doesNotMatch(html,/class="sf-watch"/);assert.doesNotMatch(html,/class="sf-facts"/);
  assert.match(html,/<details class="sf-notes"><summary>Notas y fuentes<\/summary>/);assert.doesNotMatch(html,/Por qué importa/);
@@ -59,11 +62,11 @@ test('ficha opens as an index of topics and renders each topic with the hero cha
  // the cadence clause goes to Notas. 'Compartir informe' is not in the body: shareButton() gives the round icon button
  // for the dialog's top bar. No 'Seguir' chips, no share pill, no '← Todos los temas' inside the sticky picker.
  assert.match(html,/<p class="sf-kicker"><span class="sf-kick">Cartera y movilidad<\/span><span class="sf-featured">Destacada<\/span><\/p><h2 id="detailTitle" class="sf-headline">/);
- assert.match(html,/<ul class="sf-meta" aria-label="Datos de la publicación"><li>Datos a agosto 2026<\/li><li>Publicado por la SIS el 2 oct 2026<\/li><\/ul><p class="sf-dek">/);
+ assert.match(html,/<ul class="sf-meta" aria-label="Datos de la publicación"><li>Datos a agosto 2026<\/li><li>Publicado por la SIS el 2 oct 2026<\/li><\/ul><section class="sf-index"/);
  assert.match(html,/<summary>Notas y fuentes<\/summary><p class="sf-cadence">Se actualiza cada mes\.<\/p>/);
  assert.doesNotMatch(html,/sf-share|Compartir informe|sf-actions|Seguir|SE ACTUALIZA/);
  // The headline and dek are the builder's text, unchanged.
- assert.ok(html.includes(`>${pub.headline}</h2>`));assert.ok(html.includes('El sistema terminó agosto con <strong>2.486.683 beneficiarios</strong>'));
+ assert.ok(html.includes(`>${pub.family_label}</h2>`));assert.ok(!html.includes('class="sf-dek"'));
  const sb=load().shareButton(pub,{shareId:'sig-stats-ficha:F1:2026-08',shareUrl:'data/fichas/f1_cartera.html'});
  assert.match(sb,/<button type="button" class="sf-share" data-ficha-share="sig-stats-ficha:F1:2026-08" data-share-url="data\/fichas\/f1_cartera\.html" data-share-title="[^"]+" aria-label="Compartir informe" title="Compartir informe"><svg/);
  assert.match(sb,/class="sf-share-status" role="status" aria-live="polite"/);assert.equal(load().shareButton(pub),'');
@@ -97,13 +100,13 @@ test('Lectura shows only after a verifier PASS and all text is escaped',()=>{
  const ok=F.render({...pub,lectura:{status:'pass',text:'Para las Isapres <b>importa</b> la base de cotizantes.'}});
  assert.match(ok,/Lectura Alicanto<\/h3><p>Para las Isapres &lt;b&gt;importa&lt;\/b&gt;/);
  assert.doesNotMatch(F.render({...pub,lectura:{status:'verifier_fail',text:'x'}}),/Lectura Alicanto<\/h3>/);
- assert.match(F.render({...pub,headline:'<img src=x onerror=1>'}),/&lt;img src=x onerror=1&gt;/);
+ assert.match(F.render({...pub,family_label:'<img src=x onerror=1>'}),/&lt;img src=x onerror=1&gt;/);assert.match(F.render({...pub,tabs:[]},{}),/class="sf-headline">/);
  assert.match(F.render({...pub,status:'HOLD'}),/Ficha no disponible/);
 });
 
 test('app.js hands statistics fichas to the self-contained renderer and keeps legacy paths',()=>{
  const app=fs.readFileSync('web/app.js','utf8');
- assert.match(app,/if\(s\.stats_ficha&&typeof AlicantoFicha!=='undefined'\)return AlicantoFicha\.render\(s\.stats_ficha,\{shareId:`sig-\$\{idFor\(s\)\}`,shareUrl:s\.share_url\}\);/);
+ assert.match(app,/if\(s\.stats_ficha&&typeof AlicantoFicha!=='undefined'\)return AlicantoFicha\.render\(s\.stats_ficha,\{shareId:`sig-\$\{idFor\(s\)\}`,shareUrl:s\.share_url,title:datosByPiece\.get\(idFor\(s\)\)\?\.index_title\}\);/);
  // The detail mounts the index → topic behaviour after rendering; a shared '#sig-<id>&tema=<tema>' still finds the signal.
  assert.match(app,/AlicantoFicha\.mount\(body\)/);assert.match(app,/replace\(\/&tema=\[\^&\]\*\$\/,''\)/);
  // A copied topic URL (page-load hash with '&tema=') reopens the ficha; the ficha's own pushState URLs never do.
@@ -141,7 +144,7 @@ for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fona
   const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));const f=card.stats_ficha;
   assert.equal(f.evidence,undefined);assert.equal(f.status,'PASS');
   const html=load().render(f,{shareId:`sig-${card.piece_id}`,shareUrl:card.share_url});
-  const order=['sf-kicker','sf-headline','sf-meta','sf-dek','sf-index','sf-topic','sf-notes','sf-cadence'];
+  const order=['sf-kicker','sf-headline','sf-meta','sf-index','sf-topic','sf-notes','sf-cadence'];
   const at=order.map(k=>html.indexOf(k));assert.ok(at.every(i=>i>=0),JSON.stringify(at));assert.deepEqual([...at].sort((a,b)=>a-b),at);
   // The generic index → topic layout: one index row per topic (builder index line), a sparkline when the topic has a
   // chart with 2+ rows, and the topic text (no builder dek) under the hero chart.
@@ -165,7 +168,8 @@ test('F4 shows ene–jun vs ene–jun, tasa bruta, Fonasa rate not available and
  assert.match(html,/aria-label="Problemas que crecen: variación de ene–jun 2026 frente a ene–jun 2025[^"]*Cáncer de mama en… 28,8%/);
  assert.match(html,/Tres problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
  // Year-to-date measure (Dirección 3-nov-2026): the period is explicit in the headline.
- assert.match(html,/entre enero y junio de 2026/);assert.match(html,/frente a enero–junio de 2025/);
+ // The dek is no longer shown (generic title, 11-nov); the year-to-date period stays in the data.
+ assert.match(f.headline,/entre enero y junio de 2026/);assert.match(f.headline,/frente a enero–junio de 2025/);
 });
 test('F6 keeps stocks labelled, shows the claims change and no RNPI (Dirección 2-nov)',()=>{
  const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f6_prestadores.card.json','utf8')).stats_ficha;const html=load().render(f);
@@ -224,6 +228,13 @@ test('a coverage footnote (F2 Esencial) is one visible line right above Notas y 
  const html=F.render({...pub,scope_note:note});
  const at=html.indexOf('<p class="sf-scope">'),notes=html.indexOf('<details class="sf-notes">');
  assert.ok(at>0&&at<notes&&html.indexOf('sf-topic')<at,'footnote after the topics, before the collapsed notes');
- assert.ok(html.indexOf('sf-headline')<at&&!html.slice(0,html.indexOf('sf-dek')).includes('Esencial'));
+ assert.ok(html.indexOf('sf-headline')<at&&!html.slice(0,html.indexOf('sf-index')).includes('Esencial'));
  assert.doesNotMatch(F.render(pub),/sf-scope/);
+});
+// Dirección 11-nov-2026: the method (F12: MLE share and baskets) closes the ficha as «Metodología», after the topics.
+test('intro becomes «Metodología» after the topics, never above them',()=>{
+ const html=load().render({...pub,intro:['El análisis toma lo facturado con código MLE.','Nota: la canasta hospitalaria representa menos.']});
+ const m=html.indexOf('<h3 id="sf-method-h">Metodología</h3>');
+ assert.ok(m>html.lastIndexOf('sf-topic')&&m<html.indexOf('<details class="sf-notes">'),String(m));
+ assert.ok(html.indexOf('sf-index')<m);assert.match(html,/<p class="sf-intro-note">Nota: la canasta/);
 });

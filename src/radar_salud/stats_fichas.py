@@ -1328,6 +1328,7 @@ def share_page(card: dict) -> str:
     return (
         "<!doctype html>\n<html lang=\"es\"><head><meta charset=\"utf-8\"/>"
         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>"
+        "<meta name=\"format-detection\" content=\"telephone=no,date=no,address=no,email=no\"/>"
         f"<title>{title}</title><meta name=\"description\" content=\"{desc}\"/>"
         f"<link rel=\"canonical\" href=\"{escape(page_url, quote=True)}\"/>"
         "<meta property=\"og:type\" content=\"article\"/><meta property=\"og:site_name\" content=\"Alicanto Salud\"/>"

@@ -182,9 +182,9 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     k = {x["id"]: x for x in fi["kpis"]}
     cob = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-bonif-isapre")
     assert cob["table"]["rows"][-1][2] == f12.fmt(bonif / fact * 100, 1) + "%"  # system row: Σ bonificado / Σ facturado
-    # same provider and code: 67 covers 0.8, 78 0.6, 99 0.7 → index vs. the mean 0.7: +14,3% and −14,3%
-    mp = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-mismo-prestador")
-    assert {r["label"]: round(r["value"], 1) for r in mp["rows"]}["Colmena"] == round((0.8 / 0.7 - 1) * 100, 1)
+    # Dirección 11-nov-2026: the prices each Isapre pays at the same provider and code are not published.
+    assert not any(c["id"] == "f12-mismo-prestador" for t in fi["tabs"] for c in t["charts"])
+    assert "mismo prestador" not in " ".join(sf.displayed_texts(fi)).lower()
     # Report (Dirección 6-nov-2026 21:54): the title names the report and the quarter; sections state findings.
     assert fi["headline"] == "Mismo código, distinto precio: el mapa de prestaciones Isapre, abr–jun 2026"
     assert fi["headline_type"] == "report_title"
@@ -212,7 +212,7 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     assert fi["kicker"] == "Prestaciones bonificadas · abril–junio 2026" and fi["date_basis"] == "first_detected"
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t2.zip")
     assert [t["id"] for t in fi["tabs"]] == ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio",
-                                             "cobertura", "mismo-prestador", "regiones"]
+                                             "cobertura", "regiones"]
     blob = json.dumps(fi, ensure_ascii=False)
     assert "SECRET" not in blob and '"P1"' not in blob and "P9" not in blob
 
@@ -278,7 +278,8 @@ def test_f12_holds_on_mismatched_files(root, q, name, fn, reason):
     assert out["status"] == "hold" and any(reason in e for e in out["errors"]), out["errors"]
 
 
-def test_f12_cross_headline_needs_median_and_weighted_mean_to_agree(root):
+def test_f12_cross_headline_needs_median_and_weighted_mean_to_agree(root, monkeypatch):
+    monkeypatch.setattr(f12, "PUBLISH_CROSS_ISAPRE", True)  # the rule stays tested while the topic is unpublished
     """Review of PR #152: if the weighted mean disagrees in sign (or is under 3 %), the comparison is not the headline;
     the fallback is the bonification range among open Isapres. Closed Isapres never lead."""
     def flip(d):
@@ -312,7 +313,8 @@ def test_f12_closed_isapres_stay_in_topics_but_never_lead(root):
     assert p["kpis"]["strong"]
 
 
-def test_f12_small_isapre_is_included_with_a_note_and_regional_fallback(root):
+def test_f12_small_isapre_is_included_with_a_note_and_regional_fallback(root, monkeypatch):
+    monkeypatch.setattr(f12, "PUBLISH_CROSS_ISAPRE", True)  # the rule stays tested while the topic is unpublished
     """Dirección 5-nov 21:25: no Isapre-level minimum excludes an Isapre; below cross_min_cells it gets a note."""
     reg = reg_open(cross_min_cells=10 ** 6)
     fi = f12.run(root, today=TODAY, registry=reg, llm=False)["ficha"]

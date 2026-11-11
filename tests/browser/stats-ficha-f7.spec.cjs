@@ -18,7 +18,7 @@ test('f7 ficha opens with its two topics, nominal labels, detection date and no 
  await page.screenshot({path:path.join(SHOTS,`f7_feed-${name}.png`),fullPage:false});
  await row.locator('[data-detail]').first().click();
  const body=page.locator('#detailBody');
- await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
+ await expect(body.locator('.sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),card.stats_ficha));
  expect(await body.locator('.sf-row-label').evaluateAll(xs=>xs.map(x=>x.firstChild.textContent.trim()))).toEqual(['Salud (Partida 16)','Fonasa']);
  expect(await body.locator('.sf-row-line').evaluateAll(xs=>xs.map(x=>x.textContent))).toEqual(card.stats_ficha.tabs.map(t=>t.index_line));
  // Cut and detection are two different dates; no publication date is claimed.

@@ -51,7 +51,7 @@ test('loose N°3 PDFs read as one card whose ficha says the figures are being ve
  await page.screenshot({path:path.join(SHOTS,`boletin-n3-card-${test.info().project.name}.png`),fullPage:false});
  // The live ficha link opens the F6 ficha (N°2) in place.
  await body.locator('a.bulletin-live').click();
- await expect(body.locator('.sf-headline')).toHaveText(f6.stats_ficha.headline);
+ await expect(body.locator('.sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),f6.stats_ficha));
 });
 
 test('news ficha shows the compact sources line',async({page})=>{

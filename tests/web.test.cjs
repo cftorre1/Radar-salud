@@ -501,6 +501,9 @@ test('Datos orders Recientes by verification day, groups by config and shows rea
  assert.deepEqual([...D.recientes(data.families)].map(f=>f.family),['F2','F6','F1','F3','F4']);
  assert.deepEqual(JSON.parse(JSON.stringify(D.byGroup(data).map(g=>[g.label,g.families.map(f=>f.family)]))),[['Aseguradores',['F2','F1','F3','F4']],['Prestadores',['F6']]]);
  const html=D.render(data,'recientes',new Set(['stats-ficha:F1:2026-08']));
+ // Dirección 11-nov-2026: what was read goes down, unread first (each newest first), in both views.
+ assert.deepEqual([...html.matchAll(/class="dx-item" data-family="(F\d+)"/g)].map(m=>m[1]),['F2','F6','F1']);
+ assert.deepEqual(JSON.parse(JSON.stringify(D.recientes(data.families,new Set(['stats-ficha:F2:2026-08'])).filter(f=>f.state==='live').map(f=>f.family))),['F6','F1','F2']);
  // One read card (F1), two unread; the dot is the read toggle; no «Nuevo» pill, no KPI block, no «Vigente», no headline.
  assert.equal((html.match(/class="dc-card read"/g)||[]).length,1);assert.equal((html.match(/class="dc-card"/g)||[]).length,2);
  assert.equal((html.match(/class="dotbtn done" data-read=/g)||[]).length,1);assert.equal((html.match(/<span class="unread-dot"><\/span>/g)||[]).length,2);
