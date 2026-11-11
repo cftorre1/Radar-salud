@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "as_of": "2026-11-10",
-  "generated_at": "2026-11-10T18:57:54.016162+00:00",
+  "generated_at": "2026-11-11T01:06:39.514527+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -52,9 +52,9 @@
     "not_global_interest:facility_opening": 1,
     "not_global_interest:no_global_interest_signal": 54,
     "not_global_interest:source_rule_exclusion": 8,
-    "not_material_or_unverified": 437,
+    "not_material_or_unverified": 443,
     "not_relevant_or_undated": 76,
-    "official_title_without_executive_keyword": 257
+    "official_title_without_executive_keyword": 258
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 1,
@@ -1818,6 +1818,54 @@
       }
     },
     {
+      "id": "9d23be3b5b15c433c5a1",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "WHO expands global regulatory capacity through new collaborating centre in Republic of Korea",
+      "url": "https://www.who.int/news/item/27-08-2026-who-expands-global-regulatory-capacity-through-new-collaborating-centre-in-republic-of-korea",
+      "published_at": "2026-08-27",
+      "segments": [
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-10",
+      "summary_es": "WHO designó al Global Harmonization Centre (GHC) de la República de Corea como centro colaborador para fortalecer sistemas regulatorios y capacitar en productos de salud. El centro apoyará a países para desarrollar conocimientos que permitan acceder a productos seguros, eficaces y de calidad garantizada.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "bc7f33a8c6b8fc1bac6b52b1d5dfee82"
+      },
+      "summary_input": "publisher_page_meta_description"
+    },
+    {
       "id": "20e0cdd174be04676529",
       "source": "who",
       "source_label": "OMS",
@@ -1905,22 +1953,22 @@
   ],
   "translation": {
     "translated": 13,
-    "summarized": 17,
-    "from_cache": 28,
-    "verification_failed": 12,
-    "review_failed": 1,
-    "not_allowed": 36,
+    "summarized": 18,
+    "from_cache": 30,
+    "verification_failed": 7,
+    "review_failed": 0,
+    "not_allowed": 35,
     "pending": 0,
     "source_in_spanish": 6
   },
-  "ai_text_items": 30,
+  "ai_text_items": 31,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget",
   "display": {
     "spanish_only": true,
-    "shown": 36,
-    "hidden": 43,
+    "shown": 37,
+    "hidden": 42,
     "hidden_by_reason": {
-      "not_allowed_without_verified_summary": 36,
+      "not_allowed_without_verified_summary": 35,
       "translation_verification_failed": 7
     },
     "authorized_by": "Dirección (cftorre1)",
