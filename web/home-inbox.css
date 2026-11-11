@@ -5,7 +5,7 @@
 
 /* 1 · Base */
 :root{color-scheme:light;--ink:#1D3345;--ivory:#FAF9F5;--white:#FFF;--ink84:rgba(29,51,69,.84);--ink68:rgba(29,51,69,.68);--ink48:rgba(29,51,69,.48);--ink18:rgba(29,51,69,.18);--ink12:rgba(29,51,69,.12);--ink09:rgba(29,51,69,.09);--ink05:rgba(29,51,69,.05);--ink04:rgba(29,51,69,.04);
- --accent:#C37C37;--accent-ink:#8A5420;--accent-soft:#F6EBDD;--weekly-soft:#EEF2F5;--weekly-ink:#46637A;--serif:Georgia,"Times New Roman",serif;--gutter:16px;--hdr:52px}
+ --accent:#C37C37;--accent-ink:#8A5420;--accent-soft:#F6EBDD;--weekly-soft:#EEF2F5;--weekly-ink:#46637A;--serif:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;--gutter:16px;--hdr:52px}
 *{box-sizing:border-box}
 body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--ivory);color:var(--ink)}
 a{overflow-wrap:anywhere}
@@ -57,7 +57,7 @@ a{overflow-wrap:anywhere}
 .card-actions a{font-size:13px;font-weight:750;color:var(--ink)}
 #signalDetail{border:1px solid var(--ink18);border-radius:16px;width:min(680px,calc(100vw - 30px));max-height:85vh;padding:24px;color:var(--ink)}
 #signalDetail::backdrop{background:rgba(20,35,47,.6)}
-#signalDetail h2{font-family:Georgia,serif;font-weight:400}
+#signalDetail h2{font-family:var(--serif);font-weight:650}
 #signalDetail p{line-height:1.6}
 .detail-close{float:right;border:0;background:var(--ink05);border-radius:8px;padding:9px;cursor:pointer}
 @media(max-width:760px){.signal .card-actions{margin-top:7px}}
@@ -68,7 +68,7 @@ a{overflow-wrap:anywhere}
 .source-suggestion-cta button:focus-visible,.suggestion-form button:focus-visible{outline:3px solid #C37C37;outline-offset:2px}
 #sourceSuggestionDialog{border:1px solid var(--ink18);border-radius:16px;width:min(560px,calc(100vw - 30px));padding:24px;color:var(--ink)}
 #sourceSuggestionDialog::backdrop{background:rgba(20,35,47,.6)}
-#sourceSuggestionDialog h2{font-family:Georgia,serif;font-weight:400;margin:0 0 5px}
+#sourceSuggestionDialog h2{font-family:var(--serif);font-weight:650;margin:0 0 5px}
 #sourceSuggestionDialog>p{color:var(--ink68);font-size:13px}
 .suggestion-form{display:grid;gap:12px}
 .suggestion-form label{font-size:12px;font-weight:800}
@@ -98,7 +98,7 @@ a{overflow-wrap:anywhere}
 .subscribe-row button{border:0;border-radius:9px;padding:9px 12px;background:var(--ink);color:#fff;font-weight:800}
 .home-dialog{border:1px solid var(--ink18);border-radius:16px;width:min(620px,calc(100vw - 30px));max-height:86vh;padding:22px;color:var(--ink)}
 .home-dialog::backdrop{background:rgba(20,35,47,.6)}
-.home-dialog h2{font:400 27px/1.2 Georgia,serif;margin:0 0 8px}
+.home-dialog h2{font:650 24px/1.2 var(--serif);margin:0 0 8px}
 .home-dialog p{font-size:13px;line-height:1.55;color:var(--ink68)}
 @media(max-width:760px){.home-dialog{padding:18px}}
 .action-icon{width:16px;height:16px;display:block;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -674,3 +674,31 @@ main{max-width:none;margin:0;padding:0 0 70px}
 #local .signal.item.dc-row{padding:7px var(--gutter);max-height:1400px}
 @media (min-width:760px){#local .signal.item.dc-row{padding:8px 8px 8px 0}.dc-card{padding:13px 16px 10px 36px}}
 @media (max-width:340px){.dc-card{padding-right:10px}.dc-title{font-size:17.5px}.dc-toc{gap:0 8px}.dc-t{font-size:12.5px}}
+
+/* ===== Unified rows (Dirección 11-nov-2026): one family, one title size, one unread color, every piece a row with
+   little air, the piece type as an icon + word at the start of the date line (V1), one-line section tagline. ===== */
+.section-tag{text-align:left;margin:10px var(--gutter) 2px;font-size:13px;line-height:1.35;color:var(--ink68)}
+.brandbar .hero-purpose{display:none!important}
+.unread-dot,.acc-row .dotbtn .unread-dot,.big-feature.weekly .acc-row .dotbtn .unread-dot,.big-feature.global .acc-row .dotbtn .unread-dot{background:#E3A24F}
+.ty{display:inline-flex;align-items:center;gap:3px;margin-right:6px;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;vertical-align:1px;white-space:nowrap}
+.ty-ic{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ty-noticia{color:#6E7E88}.ty-datos{color:#2F6F8F}.ty-normativa{color:#6B4E8A}
+.read .ty,.ty-read{opacity:.75}
+/* news rows: less air */
+#local .signal.item{padding:7px var(--gutter) 7px 40px}
+#local .signal.item h2{font-size:15px;line-height:1.3}
+#local .signal.item .card-meta{margin-top:2px}
+/* data and norm pieces: rows, not boxes; same left edge, title size and dot as news */
+#local .signal.item.dc-row,#local .signal.item.nc-row{padding:7px var(--gutter) 7px 0}
+.dc-card,.nm-card{background:transparent!important;border:0!important;border-radius:0!important;padding:0 0 0 40px!important;box-shadow:none}
+.dc-card .dotbtn,#local .signal.item .dc-card .dotbtn,.nm-card .dotbtn,#local .signal.item .nm-card .dotbtn{width:40px;padding-top:9px}
+.dc-title,.nm-title{font:600 15px/1.3 var(--serif)!important;margin:0!important;letter-spacing:-.005em}
+.dc-card.read .dc-title,.read>.dc-card .dc-title,.nm-card.read .nm-title,.read>.nm-card .nm-title{font-weight:500!important}
+.dc-card .card-meta.dc-meta,#local .signal.item .dc-card .card-meta.dc-meta{margin:2px 0 0;padding:0;border-top:0}
+.dc-toc{margin:3px 0 0;padding:0;border-top:0}
+.dc-card .row-acts{margin-top:-4px}
+.dc-open{min-height:0!important;display:inline!important}
+.dc-t{min-height:28px!important;font-size:12.5px}
+.dc-toc{gap:0 10px}
+.dc-more{min-height:28px!important}
+@media (min-width:760px){#local .signal.item.dc-row,#local .signal.item.nc-row{padding:8px 8px 8px 0}}

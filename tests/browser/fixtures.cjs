@@ -7,6 +7,8 @@ const FIXTURE_AS_OF=process.env.ALICANTO_FIXTURE_AS_OF||'2026-10-12';
 const test=base.test.extend({
   page:async({page},use)=>{
     await page.clock.setFixedTime(new Date(`${FIXTURE_AS_OF}T12:00:00-03:00`));
+    // Global left Al día (Dirección 11-nov-2026); the specs that cover its dormant Home card turn it on here.
+    await page.addInitScript(()=>{window.ALICANTO_HOME_GLOBAL=true});
     await use(page);
   },
 });

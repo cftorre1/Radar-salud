@@ -22,12 +22,13 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
  // its topics with their published labels, the Chile date line and «Compartir»; no KPI block, no «Vigente».
  for(const f of live(d)){
   const c=page.locator(`.dx-item[data-family="${f.family}"] .dc-card`);
-  await expect(c.locator('.dc-src')).toHaveText(new RegExp(`^Datos ${f.period_label} · ${f.cadence.replace(/\s*\([^)]*\)/g,'').trim()}(?: · |$)`));  // the source note in parentheses is dropped from the top line
+  // V1 (11-nov-2026): no top line; the type mark «Datos» starts the date line and the period is in it.
+  await expect(c.locator('.dc-meta .ty-datos')).toHaveText('Datos');await expect(c.locator('.dc-src')).toHaveCount(0);
   expect(f.period_label).toMatch(/^((ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)–)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic) 20\d\d$/);
   await expect(c.locator('.dc-title')).toHaveText(f.index_title);
   await expect(c).not.toContainText(f.headline);
   expect(await c.locator('.dc-t .dc-l').allTextContents()).toEqual(f.topics.map(t=>t.label));
-  await expect(c.locator('.dc-meta')).toContainText(new RegExp(`^(Detectado|Publicado|Actualizado) .+ · ${f.source} · ${f.source_dataset.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));// organism + dataset (Dirección 11-nov)
+  await expect(c.locator('.dc-meta .meta-text')).toHaveText(new RegExp(`^(Detectado|Publicado|Actualizado) .+ · ${f.source} · ${f.period_label}( \\(actualizándose\\))? · ${f.source_dataset.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));// organism + dataset (Dirección 11-nov)
   await expect(c.locator('.act-share')).toHaveAttribute('data-share-url',f.share_url);
   await expect(c.locator('.dx-kpis,.dx-st,.dx-badge')).toHaveCount(0);
   expect(await c.locator('.dc-open').getAttribute('href')).toBe(`index.html?abrir=1&desde=datos#sig-${f.piece_id}`);
@@ -59,17 +60,17 @@ test('Data card index: numbered by row, «Ver restantes» toggles with aria and 
  const d=await datos(page);await page.goto('/datos.html');
  for(const f of live(d)){
   const c=page.locator(`.dx-item[data-family="${f.family}"] .dc-card`);await expect(c.locator('.dc-t').first()).toBeVisible();
-  // Row numbering: 1 2 / 3 4 / 5 6 (same top for each pair, number n+1 to the right of n).
+  // Row numbering: 1 2 / 3 4 (same top for each pair, number n+1 to the right of n); two rows before «Ver restantes» (11-nov-2026).
   const boxes=await c.locator('.dc-toc:not([hidden]) .dc-t').evaluateAll(xs=>xs.map(x=>{const r=x.getBoundingClientRect();return {n:x.querySelector('.dc-n').textContent,l:r.left,t:r.top,h:r.height}}));
   expect(boxes.map(b=>b.n)).toEqual(boxes.map((_,i)=>String(i+1)));
   for(let i=0;i+1<boxes.length;i+=2){expect(Math.abs(boxes[i].t-boxes[i+1].t)).toBeLessThan(2);expect(boxes[i+1].l).toBeGreaterThan(boxes[i].l)}
-  for(const b of boxes)expect(b.h).toBeGreaterThanOrEqual(40);
+  for(const b of boxes)expect(b.h).toBeGreaterThanOrEqual(28);  // denser rows (Dirección 11-nov-2026)
   const more=c.locator('.dc-more');
-  if(f.topics.length<=6){expect(boxes.length).toBe(f.topics.length);await expect(more).toHaveCount(0);continue}
-  expect(boxes.length).toBe(6);
-  const rest=f.topics.length-6,list=page.locator(`#${await more.getAttribute('aria-controls')}`);
+  if(f.topics.length<=4){expect(boxes.length).toBe(f.topics.length);await expect(more).toHaveCount(0);continue}
+  expect(boxes.length).toBe(4);
+  const rest=f.topics.length-4,list=page.locator(`#${await more.getAttribute('aria-controls')}`);
   await expect(more).toHaveText(`Ver restantes (${rest}) ↓`);await expect(more).toHaveAttribute('aria-expanded','false');await expect(list).toBeHidden();
-  expect((await more.boundingBox()).height).toBeGreaterThanOrEqual(40);
+  expect((await more.boundingBox()).height).toBeGreaterThanOrEqual(28);
   await more.focus();await page.keyboard.press('Enter');
   await expect(more).toHaveAttribute('aria-expanded','true');await expect(more).toHaveText('Ocultar temas ↑');await expect(list).toBeVisible();
   expect(await list.locator('.dc-n').allTextContents()).toEqual(f.topics.slice(6).map((_,i)=>String(i+7)));
@@ -87,12 +88,12 @@ test('Data card topics open the ficha at that topic (Chile and Datos)',async({pa
  await page.goto('/');
  const row=page.locator('#local article.dc-row').first();await expect(row).toBeVisible();
  const id=await row.getAttribute('data-card'),fam=live(d).find(x=>x.piece_id===id);expect(fam).toBeTruthy();
- // The feed shows 2 topics before «Ver restantes» (Dirección 10-nov 23:29); Datos shows 6.
+ // Both show 4 topics (two rows) before «Ver restantes» (Dirección 11-nov-2026).
  const t=fam.topics[Math.min(1,fam.topics.length-1)];
- await expect(row.locator('.dc-toc:not(.dc-rest) .dc-t')).toHaveCount(Math.min(2,fam.topics.length));
+ await expect(row.locator('.dc-toc:not(.dc-rest) .dc-t')).toHaveCount(Math.min(4,fam.topics.length));
  await expect(row.locator('.dc-title')).toHaveText(fam.index_title);
- await expect(row.locator('.dc-top .tag')).toHaveText('Datos');
- await expect(row.locator('.dc-src')).toHaveText(new RegExp(`^Datos ${fam.period_label}`));
+ await expect(row.locator('.dc-meta .ty-datos')).toHaveText('Datos');
+ await expect(row.locator('.dc-meta .meta-text')).toContainText(fam.period_label);
  await row.locator(`.dc-t[data-dc-tema="${t.id}"]`).click();
  await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(page.locator('#detailBody [data-sf-view="topic"]')).toBeVisible();

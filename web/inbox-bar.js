@@ -86,5 +86,10 @@
  function placeStrip(host,rowSelector,fallback){const strip=document.querySelector('.newsletter-strip');if(!strip||!host)return;const rows=host.querySelectorAll(rowSelector),after=rows[Math.min(STRIP_AFTER,rows.length)-1];if(after)after.after(strip);else(fallback||host).append(strip)}
  // #readStatus is a screen-reader live region; the page shows it only while reads cannot be saved (data-read-volatile on <html>).
  if(root.AlicantoRead&&typeof root.AlicantoRead.subscribe==='function'&&root.document){const syncVolatile=()=>root.document.documentElement.toggleAttribute('data-read-volatile',!root.AlicantoRead.persistent);root.AlicantoRead.subscribe(syncVolatile);syncVolatile()}
- root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS};
+ // Piece type (Dirección 11-nov-2026, V1): a small icon and its word at the start of the date line, so a reader sees at a
+ // glance why rows differ (news, a Datos ficha, a norm). Same marker on every page.
+ const TYPE_ICON={noticia:'<path d="M4 6h16M4 12h16M4 18h10"/>',datos:'<path d="M5 20V10M12 20V4M19 20v-7"/>',normativa:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>'};
+ const TYPE_WORD={noticia:'Noticia',datos:'Datos',normativa:'Normativa'};
+ function typeMark(kind){const k=TYPE_WORD[kind]?kind:'noticia';return `<span class="ty ty-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${TYPE_WORD[k]}</span>`}
+ root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark};
 })(typeof window!=='undefined'?window:globalThis);

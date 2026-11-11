@@ -70,6 +70,7 @@ test('weekly analysis has its own read identity and keeps the base news accessib
  const base={title:'Resolución Exenta IF/N°11156',normative_document_label:'Resolución Exenta IF/N°11156',source_name:'Superintendencia de Salud',source_url:'https://example.org/reg',event_date:'2026-10-11',signal_types:['Normativa'],scopes:['Isapres'],what_happened:'La Superintendencia dictó una resolución con efecto operativo.',why_it_matters:'La isapre debe adecuar cumplimiento y operación.'};
  c.fixture=base;
  vm.runInContext("allSignals=[fixture];freeValue={weekly_insight:{id:'weekly',editorial_review_pass:true,title:fixture.title,insight_title:'Cobertura TEA',source_url:fixture.source_url,event_date:fixture.event_date}};globalWeekly={rule:'global_weekly_pick_v1',week_anchor:'2026-10-05',id:'g1',title:'Research',published_at:'2026-10-05'}",c);
+ vm.runInContext("globalThis.window=globalThis.window||{};window.ALICANTO_HOME_GLOBAL=true",c);// the dormant Home Global card (Dirección 11-nov-2026: off by default)
  assert.equal(c.specials()[0].id,'weekly:weekly');
  assert.equal(c.specials()[1].id,'global-feed:g1');
  assert.equal(c.visible().length,1);
@@ -514,25 +515,25 @@ test('Datos orders Recientes by verification day, groups by config and shows rea
  assert.equal((html.match(/class="dc-card read"/g)||[]).length,1);assert.equal((html.match(/class="dc-card"/g)||[]).length,2);
  assert.equal((html.match(/class="dotbtn done" data-read=/g)||[]).length,1);assert.equal((html.match(/<span class="unread-dot"><\/span>/g)||[]).length,2);
  assert.doesNotMatch(html,/dx-badge|Nuevo|Leída|dx-kpi|Vigente|Hallazgo F1<\/a>/);
- assert.match(html,/<span class="dc-src">Datos jul–sep 2026 · trimestral<\/span>/);assert.match(html,/Datos jul–sep 2026 · trimestral · actualizándose/);
+ assert.match(html,/<span class="ty ty-datos">/);assert.doesNotMatch(html,/dc-src/);assert.match(html,/jul–sep 2026 \(actualizándose\)/);// V1 type mark, no top line; period in the date line (11-nov-2026)
  assert.match(html,/<h3 class="dc-title"><a class="dc-open" href="index\.html\?abrir=1&amp;desde=datos#sig-stats-ficha:F2:2026-08">Título F2<\/a><\/h3>/);
- assert.match(html,/<div class="card-meta dc-meta"><span class="meta-text">Actualizado 10 nov 2026 · SIS<\/span><\/div>/);
+ assert.match(html,/<div class="card-meta dc-meta"><span class="ty ty-datos">[^]*?<\/span><span class="meta-text">Actualizado 10 nov 2026 · SIS · jul–sep 2026<\/span><\/div>/);
  assert.match(html,/class="act act-share" data-share="sig-stats-ficha:F2:2026-08" data-share-url="data\/fichas\/f2\.html" data-share-title="Hallazgo F2"/);
  assert.doesNotMatch(html,/dx-soon|pronto|en verificación/);// Dirección 11-nov: unpublished families are not shown
  assert.match(D.render(data,'grupo',new Set()),/<h2 class="dx-sec"[^>]*>Aseguradores<\/h2>/);
  assert.doesNotMatch(html,/cómo leer/i);
 });
-test('data card: topics numbered by row, first 6 shown, «Ver restantes (N)» with aria, every topic links &tema=<id>',()=>{
+test('data card: topics numbered by row, first 4 shown (Dirección 11-nov-2026), «Ver restantes (N)» with aria, every topic links &tema=<id>',()=>{
  datosContext();const c={};vm.createContext(c);c.globalThis=c;for(const f of ['web/inbox-bar.js','web/data-card.js'])vm.runInContext(fs.readFileSync(f,'utf8'),c);const C=c.AlicantoDataCard;
  const nine=C.render(C.model(liveFam('F12',0,'x','2026-11-10',{topics:TOPICS(9)})),{base:'index.html?abrir=1&desde=datos'});
- const firstList=nine.match(/<ol class="dc-toc" aria-label="Temas de la ficha">([\s\S]*?)<\/ol>/)[1],restList=nine.match(/<ol class="dc-toc dc-rest" id="dcr-stats-ficha-F12-2026-08" start="7" aria-label="Temas restantes" hidden>([\s\S]*?)<\/ol>/)[1];
- // DOM order 1..6 in a two-column grid reads by row: 1 2 / 3 4 / 5 6; the rest continue at 7.
- assert.deepEqual([...firstList.matchAll(/class="dc-n" aria-hidden="true">(\d+)</g)].map(m=>m[1]),['1','2','3','4','5','6']);
- assert.deepEqual([...restList.matchAll(/class="dc-n" aria-hidden="true">(\d+)</g)].map(m=>m[1]),['7','8','9']);
+ const firstList=nine.match(/<ol class="dc-toc" aria-label="Temas de la ficha">([\s\S]*?)<\/ol>/)[1],restList=nine.match(/<ol class="dc-toc dc-rest" id="dcr-stats-ficha-F12-2026-08" start="5" aria-label="Temas restantes" hidden>([\s\S]*?)<\/ol>/)[1];
+ // DOM order 1..4 in a two-column grid reads by row: 1 2 / 3 4; the rest continue at 5.
+ assert.deepEqual([...firstList.matchAll(/class="dc-n" aria-hidden="true">(\d+)</g)].map(m=>m[1]),['1','2','3','4']);
+ assert.deepEqual([...restList.matchAll(/class="dc-n" aria-hidden="true">(\d+)</g)].map(m=>m[1]),['5','6','7','8','9']);
  for(let i=1;i<=9;i++)assert.match(nine,new RegExp(`href="index\\.html\\?abrir=1&amp;desde=datos#sig-stats-ficha:F12:2026-08&amp;tema=t${i}" data-dc-tema="t${i}"><span class="dc-n" aria-hidden="true">${i}</span><span class="dc-l">Tema ${i}</span>`));
- assert.match(nine,/<button type="button" class="dc-more" aria-expanded="false" aria-controls="dcr-stats-ficha-F12-2026-08" data-dc-more="stats-ficha:F12:2026-08" data-n="3">Ver restantes \(3\) ↓<\/button>/);
+ assert.match(nine,/<button type="button" class="dc-more" aria-expanded="false" aria-controls="dcr-stats-ficha-F12-2026-08" data-dc-more="stats-ficha:F12:2026-08" data-n="5">Ver restantes \(5\) ↓<\/button>/);
  const six=C.render(C.model(liveFam('F13',0,'x','2026-11-10',{topics:TOPICS(6)})),{});
- assert.equal((six.match(/class="dc-t"/g)||[]).length,6);assert.doesNotMatch(six,/dc-more|dc-rest/);
+ assert.equal((six.match(/class="dc-t"/g)||[]).length,6);assert.match(six,/Ver restantes \(2\)/);
  // An expanded card stays expanded across redraws and its button reads «Ocultar temas ↑».
  C.expanded.add('stats-ficha:F12:2026-08');const open=C.render(C.model(liveFam('F12',0,'x','2026-11-10',{topics:TOPICS(9)})),{});
  assert.match(open,/aria-label="Temas restantes">/);assert.match(open,/aria-expanded="true"[^>]*>Ocultar temas ↑</);
@@ -547,20 +548,20 @@ test('Al día and Datos draw the same data card for the same ficha (feed shows f
   const s=snap.signals.find(x=>x.piece_id===f.piece_id);assert.ok(s,f.piece_id);
   vm.runInContext(`datosByPiece=new Map([[${JSON.stringify(f.piece_id)},${JSON.stringify(f)}]])`,c);
   const chile=c.card(s),full=D.card(f,false),DC=c.AlicantoDataCard;
-  // Datos shows 6 topics before «Ver restantes»; the feed shows 2 (Dirección 10-nov 23:29). Same structure otherwise.
+  // Both show 4 topics (two rows) before «Ver restantes» (Dirección 11-nov-2026). Same structure otherwise.
   const page=DC.render(DC.model(f),{read:false,base:'index.html?abrir=1&desde=datos',shown:DC.FEED_SHOWN});
-  assert.equal((full.match(/class="dc-toc" [^]*?<\/ol>/)[0].match(/<li>/g)||[]).length,Math.min(6,f.topics.length),f.family);
-  assert.equal((chile.match(/class="dc-toc" [^]*?<\/ol>/)[0].match(/<li>/g)||[]).length,Math.min(2,f.topics.length),f.family);
-  if(f.topics.length>2)assert.match(chile,new RegExp(`Ver restantes \\(${f.topics.length-2}\\)`));
+  assert.equal((full.match(/class="dc-toc" [^]*?<\/ol>/)[0].match(/<li>/g)||[]).length,Math.min(4,f.topics.length),f.family);
+  assert.equal((chile.match(/class="dc-toc" [^]*?<\/ol>/)[0].match(/<li>/g)||[]).length,Math.min(4,f.topics.length),f.family);
+  if(f.topics.length>4)assert.match(chile,new RegExp(`Ver restantes \\(${f.topics.length-4}\\)`));
   assert.match(chile,/class="signal item dc-row /);
   const inner=chile.replace(/^<article[^>]*>/,'').replace(/<\/article>$/,'');
   // Allowed feed extras: its link base, the data-detail hook and its «Datos» tag (and correction tag). «Fuente original» is on both.
   const norm=h=>h.replace(/index\.html\?abrir=1&amp;desde=datos#/g,'#').replace(/\?abrir=1#/g,'#').replace(/ data-detail="[^"]*"/g,'').replace(/<\/span> <span class="tag">[^<]*<\/span>[^]*?<\/div><h3/,'</span></div><h3');
   assert.equal(norm(inner),norm(page),f.family);
-  assert.match(chile,/<span class="tag">Datos<\/span>/);
+  assert.match(chile,/<span class="ty ty-datos">/);// V1 type mark (11-nov-2026)
   assert.match(page,new RegExp(`>${f.index_title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}</a></h3>`));
   // Same date line and the same share target/title as the Chile row of that piece.
-  assert.ok(page.includes(`<span class="meta-text">${[c.rowMeta(s),f.source_dataset?c.AlicantoBar.esc(f.source_dataset):''].filter(Boolean).join(' · ')}</span>`),f.family);
+  assert.ok(page.includes(`<span class="meta-text">${[c.rowMeta(s),f.period_label?c.AlicantoBar.esc(f.period_label):'',f.source_dataset?c.AlicantoBar.esc(f.source_dataset):''].filter(Boolean).join(' · ')}</span>`),f.family);
   // Share title: the generic ficha title + period (committee review 11-nov), the same from Al día and Datos.
   assert.ok(f.share_title&&page.includes(`data-share-title="${c.AlicantoBar.esc(f.share_title)}"`)&&chile.includes(`data-share-title="${c.AlicantoBar.esc(f.share_title)}"`),f.family);
  }
@@ -572,7 +573,7 @@ test('Datos view preference is per viewer and survives a blocked localStorage',(
 test('Datos is in the top nav of every page that shares it',()=>{for(const p of ['index','global','datos']){const html=fs.readFileSync(`web/${p}.html`,'utf8');assert.match(html,/<a class="header-premium" href="datos\.html"( aria-current="page")? data-short="Datos">/,p)}assert.match(fs.readFileSync('web/sources.html','utf8'),/<a class="header-premium" href="datos\.html" data-short="Datos">/);assert.match(fs.readFileSync('web/app.js','utf8'),/get\('desde'\)==='datos'/)});
 test('Dirección 9-nov: normative card and ficha state type, issuer and emission date (SIS and SUSESO)',()=>{const c=context();
 const sis={title:'Circular IF/N°541 - Emisión: 5/11/2026',display_title:'Circular IF/N°541 · Aclara la determinación de la base de cálculo del deducible de la CAEC',source_name:'Superintendencia de Salud',source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n541-emision-5-11-2026/',event_date:'2026-11-05',event_type:'REGULATION',signal_types:['Normativa'],normative_document_type:'Circular',normative_minimal:true,normative_context:'Emitida por Superintendencia de Salud con fecha 2026-11-05. Asunto oficial: Aclara.',radar_score:65};
-const card=c.card(sis);assert.match(card,/>Circular IF\/N°541 · Aclara/);assert.match(card,/<span class="tag">Normativa<\/span>/);
+const card=c.card(sis);assert.match(card,/>Circular IF\/N°541 · Aclara/);assert.match(card,/<span class="ty ty-normativa">/);
 const ficha=c.detailHtml(sis);const kicker=ficha.match(/<p class="wi-kicker norm-kicker">([^<]*)<\/p><h2 id='detailTitle'>/);assert.ok(kicker,ficha.slice(0,300));
 assert.match(kicker[1],/^Norma · Circular · Superintendencia de Salud · Emitida .*5.*2026$/);
 const suseso={...sis,source_name:'Superintendencia de Seguridad Social (SUSESO)',normative_document_type:'Circular',display_title:'Circular N°3938 · Complementa instrucciones',event_date:'2026-11-06'};
@@ -599,6 +600,7 @@ test('Home specials: Global weekly pick and insight footer',()=>{
  const c=context();const mon=new Date();mon.setDate(mon.getDate()-((mon.getDay()+6)%7));const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
  c.pick={rule:'global_weekly_pick_v1',week_anchor:iso(mon),id:'abc',title:'La FDA publica una guía',summary:'La FDA emitió una guía final.',source_label:'FDA',published_at:iso(mon),href:'global.html'};
  vm.runInContext("freeValue={global_teaser:{theme_id:'t1',title:'Tema viejo',published_at:'2026-09-18'}};globalWeekly=pick",c);
+ vm.runInContext("globalThis.window=globalThis.window||{};window.ALICANTO_HOME_GLOBAL=true",c);
  const g=c.specials().find(x=>x.kind==='global');assert.equal(g.id,'global-feed:abc');assert.equal(g.title,'La FDA publica una guía');assert.equal(g.href,'global.html');
  const html=c.specialCard(g);assert.match(html,/Global · noticia de la semana/);assert.match(html,/Entrar a Global →/);assert.match(html,/<p class="big-summary">La FDA emitió una guía final\.<\/p>/);
  assert.doesNotMatch(html,/desde afuera|Premium|te espera|limitad|Tema viejo/i);
@@ -619,11 +621,11 @@ test('norm card: same renderer in both sections, literal dates, groups and imple
  assert.equal(N.grp(base),'p30');assert.equal(N.vstat(base).days,20);
  assert.equal(N.grp({...base,eff:'2027-03-01'}),'p30p');assert.equal(N.grp({...base,eff:'2026-11-01'}),'v30');assert.equal(N.grp({...base,eff:'2026-08-01'}),'vhist');
  assert.equal(N.grp({...base,kind:'none',eff:null}),'sin');assert.equal(N.grp({...base,kind:'on_publication',eff:null,date:'2026-11-06'}),'v30');
- assert.equal(N.grp({...base,kind:'on_publication_do',eff:null}),'sin');assert.match(N.chip({...base,kind:'on_notification',eff:null}),/Vigente desde su notificación \(fecha no informada\)/);
- assert.match(N.chip({...base,eff:'2027-03-01',prec:'month'}),/Entra en vigencia en marzo de 2027/);assert.match(N.chip({...base,partial:true}),/con excepciones o texto incompleto/);
+ assert.equal(N.grp({...base,kind:'on_publication_do',eff:null}),'sin');assert.match(N.chip({...base,kind:'on_notification',eff:null}),/>Vigente desde su notificación<\/span>/);// no «(fecha no informada)» (11-nov-2026)
+ assert.match(N.chip({...base,eff:'2027-03-01',prec:'month'}),/Entra en vigencia en 110 días · marzo de 2027/);assert.match(N.chip({...base,partial:true}),/con excepciones o texto incompleto/);
  assert.equal(N.grp({...base,review:{kind:'susp',by:'Res. Ex. 1',quote:'Se suspende la circular.',on:'2026-11-12'}}),'susp');
  const html=N.render(base,{read:false,readId:'abc',openHref:'index.html?abrir=1#sig-abc',dateLine:N.dateLine(base)});
- for(const re of [/data-read="abc"/,/class="nm-dd p30"[^>]*><b>20<\/b><span>días<\/span>/,/Entra en vigencia el 1 dic 2026/,/Texto oficial de vigencia/,/<q>Las disposiciones entran en vigencia el 1 de diciembre de 2026\.<\/q>/,/Emitida 14 sept?\.? 2026 · SIS|Emitida 14 sep 2026 · SIS/,/act act-open" href="index\.html\?abrir=1#sig-abc"/,/act act-src" href="https:\/\/www\.superdesalud\.gob\.cl\/x\/"/,/act act-share" data-share="n-sis-circular-if-n534"/,/class="nm-ck" data-impl="sis-circular-if-n534" role="checkbox" aria-checked="false"/,/<span class="nm-kind">Norma<\/span>/])assert.match(html,re);
+ for(const re of [/data-read="abc"/,/Entra en vigencia en 20 días · 1 dic 2026/,/Texto oficial de vigencia/,/<q>Las disposiciones entran en vigencia el 1 de diciembre de 2026\.<\/q>/,/Emitida 14 sept?\.? 2026 · SIS|Emitida 14 sep 2026 · SIS/,/act act-open" href="index\.html\?abrir=1#sig-abc"/,/act act-src" href="https:\/\/www\.superdesalud\.gob\.cl\/x\/"/,/act act-share" data-share="n-sis-circular-if-n534"/,/class="nm-ck" data-impl="sis-circular-if-n534" role="checkbox" aria-checked="false"/,/<span class="ty ty-normativa">/])assert.match(html,re);
  assert.match(N.render({...base,kind:'none',eff:null,validity:null}),/Vigencia no informada en la fuente <span class="tag">· en revisión<\/span>/);
  // «Implementada» is a mark: it never moves the norm out of its group or the countdown (review 11-nov).
  assert.equal(N.toggleImpl(base.id),true);assert.equal(N.isImpl(base.id),true);assert.equal(N.grp(base),'p30');assert.match(store[N.IMPL_KEY],/sis-circular-if-n534/);

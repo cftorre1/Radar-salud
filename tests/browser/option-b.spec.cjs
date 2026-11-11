@@ -23,7 +23,7 @@ for(const width of [320,390,1440]){
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
    await page.screenshot({path:`artifacts/${test.info().project.name}-option-b-${path==='/'?'chile':'global'}-${width}.png`});
   }
-  await expect(page.locator('.premium-band')).toHaveText(/^Global/);
+  await expect(page.locator('.section-tag')).toHaveText(/fuera de Chile/);// the band became the one-line tagline (11-nov-2026)
  });
 }
 test('news ficha is lean on Chile and Global and carries the action set',async({page})=>{

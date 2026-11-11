@@ -30,7 +30,7 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   const pub=s.published_on||s.publication_date||(fiscal?null:s.event_date);if(pub)return `Publicado ${fmtDate(pub)}`;
   const det=s.first_detected_at||s.detected_at;return det?`Detectado ${fmtDate(det)}`:''} function cardMeta(s){return [rowDate(s),esc(feedSource(s.source_name))].filter(Boolean).join(' · ')}
 
- const SHOWN=6,FEED_SHOWN=2; // Dirección 10-nov 23:29: shorter in the feed, same structure
+ const SHOWN=4,FEED_SHOWN=4; // Dirección 11-nov-2026: two rows of the index (4 topics) before «Ver restantes», Datos and Al día
  const expanded=new Set();
  // The ficha's topics as its renderer lists them (stats-ficha.js `topics`): tabs with a label; id = tab id, else position.
  function topicsOf(ficha){return arr(ficha&&ficha.tabs).filter(t=>t&&t.label).map((t,i)=>({id:String(t.id||i),label:String(t.label)}))}
@@ -59,13 +59,15 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   const toc=first.length?`<ol class="dc-toc" aria-label="Temas de la ficha">${items(m,base,first,0)}</ol>`:'';
   const more=rest.length?`<ol class="dc-toc dc-rest" id="${rid}" start="${shown+1}" aria-label="Temas restantes"${open?'':' hidden'}>${items(m,base,rest,shown)}</ol><button type="button" class="dc-more" aria-expanded="${open}" aria-controls="${rid}" data-dc-more="${esc(m.id)}" data-n="${rest.length}">${moreLabel(open,rest.length)}</button>`:'';
   // «SIS · Datos abiertos: Prestaciones Bonificadas»: organism and dataset (Dirección 11-nov-2026).
-  const meta=[cardMeta(m.row||{}),m.dataset?esc(m.dataset):''].filter(Boolean).join(' · ');
+  // V1 (Dirección 11-nov-2026): the type marker starts the date line; the period moves here from the old top line.
+  const meta=[cardMeta(m.row||{}),m.period_label?esc(m.period_label)+(m.updating?' (actualizándose)':''):'',m.dataset?esc(m.dataset):''].filter(Boolean).join(' · ');
+  const mark=Bar&&Bar.typeMark?Bar.typeMark('datos'):'';
   return `<div class="dc-card${read?' read':''}" data-dc="${esc(m.id)}">`+
    (Bar?Bar.dotButton('data-read',m.id,read,title):'')+
-   `<div class="dc-top"><span class="dc-src">${esc(topLine(m))}</span>${o.topExtra||''}</div>`+
+
    `<h3 class="dc-title"><a class="dc-open" href="${esc(`${base}#sig-${m.id}`)}"${o.openAttr?` ${o.openAttr}`:''}>${esc(title)}</a></h3>`+
+   (meta||mark?`<div class="card-meta dc-meta">${mark}${o.topExtra||''}<span class="meta-text">${meta}</span></div>`:'')+
    toc+more+
-   (meta?`<div class="card-meta dc-meta"><span class="meta-text">${meta}</span></div>`:'')+
    `<div class="row-acts" role="group" aria-label="Acciones"><a class="act act-open" href="${esc(`${base}#sig-${m.id}`)}"${o.openAttr?` ${o.openAttr}`:''} aria-label="Ver ficha: ${esc(title)}"><span>Ver ficha</span>${Bar&&Bar.icons?Bar.icons.chev:''}</a>${Bar?Bar.sourceAct(srcLink(m.row||{}),title):''}${Bar?Bar.shareAct(`sig-${m.id}`,shareTitle,m.share_url):''}</div>`+
    `</div>`;
  }
