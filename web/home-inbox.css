@@ -633,3 +633,39 @@ main{max-width:none;margin:0;padding:0 0 70px}
 #detailBody .ficha-sources ul{margin:8px 0;padding-left:18px}#detailBody .ficha-sources li{margin:4px 0;line-height:1.4}
 #detailBody .ficha-sources>p.source a{white-space:nowrap}  /* "Fuente original ↗" never splits from its arrow */
 .ficha-note{margin:12px 0 0;font-size:11.5px;line-height:1.45;color:var(--ink48)}
+
+/* Data card (Dirección 10-nov-2026, option J; 22:05: identical in Datos and Chile). One block for both pages,
+   drawn by web/data-card.js. Read state in the Chile language: the dot (a tick when read) and a bold or regular title;
+   a read card also loses its white fill. Topics are numbered by row in two columns (1 2 / 3 4 / 5 6); every topic and
+   the title are links with a 40px target and a visible focus ring. */
+.dc-card{position:relative;min-width:0;background:#fff;border:1px solid var(--ink12);border-radius:12px;padding:11px 12px 9px 36px;color:var(--ink);text-align:left}
+.dc-card.read,.read>.dc-card{background:transparent}
+.dc-card .dotbtn,#local .signal.item .dc-card .dotbtn{width:36px;padding-top:14px}
+.dc-top{display:flex;justify-content:space-between;align-items:center;gap:8px;min-width:0}
+.dc-src{min-width:0;font-size:11.5px;font-weight:600;line-height:1.35;color:var(--ink48);overflow-wrap:anywhere}
+.dc-top .tag{flex:none}
+.dc-title{font-family:var(--serif);font-size:19px;font-weight:700;line-height:1.22;margin:2px 0 0;color:var(--ink);overflow-wrap:anywhere}
+.dc-card.read .dc-title,.read>.dc-card .dc-title{font-weight:400;color:var(--ink68)}
+.dc-open{display:inline-flex;align-items:center;min-height:40px;color:inherit;text-decoration:none;border-radius:4px}
+.dc-open:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.dc-toc{list-style:none;margin:2px 0 0;padding:4px 0 0;border-top:1px solid var(--ink09);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+.dc-toc.dc-rest{border-top:0;margin:0;padding-top:0}
+.dc-toc[hidden]{display:none}
+.dc-toc li{min-width:0}
+.dc-t{display:grid;grid-template-columns:18px minmax(0,1fr);align-items:center;min-height:40px;font-size:13px;line-height:1.3;color:var(--ink84);text-decoration:none;border-radius:4px}
+.dc-t:hover .dc-l{text-decoration:underline;text-underline-offset:3px}
+.dc-n{font-weight:700;font-size:11.5px;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.dc-l{min-width:0;overflow-wrap:anywhere}
+.dc-card.read .dc-t,.read>.dc-card .dc-t{color:var(--ink68)}
+.dc-card.read .dc-n,.read>.dc-card .dc-n{color:var(--ink48)}
+.dc-more{display:inline-flex;align-items:center;min-height:40px;border:0;background:none;padding:0;font:650 12.5px Inter,ui-sans-serif,system-ui,sans-serif;color:var(--accent-ink);cursor:pointer;border-radius:4px}
+.dc-card.read .dc-more,.read>.dc-card .dc-more{color:var(--ink68)}
+.dc-open:focus-visible,.dc-t:focus-visible,.dc-more:focus-visible{outline:2px solid #E3A24F;outline-offset:2px}
+/* The date line is the Chile row's (same values as '#local .signal.item .card-meta', so it reads the same on Datos). */
+.dc-card .card-meta.dc-meta,#local .signal.item .dc-card .card-meta.dc-meta{display:block;margin:4px 0 0;padding:6px 0 0;border:0;border-top:1px solid var(--ink09);font-size:12px;line-height:1.35;color:var(--ink68);position:relative;z-index:1;pointer-events:none}
+.dc-card.read .card-meta.dc-meta,#local .signal.item.read .dc-card .card-meta.dc-meta{color:var(--ink48)}
+.dc-card .row-acts{margin-top:-6px}
+/* Chile host: the feed row only frames the card (the dot lives inside it). */
+#local .signal.item.dc-row{padding:7px var(--gutter);max-height:1400px}
+@media (min-width:760px){#local .signal.item.dc-row{padding:8px 8px 8px 0}.dc-card{padding:13px 16px 10px 36px}}
+@media (max-width:340px){.dc-card{padding-right:10px}.dc-title{font-size:17.5px}.dc-toc{gap:0 8px}.dc-t{font-size:12.5px}}

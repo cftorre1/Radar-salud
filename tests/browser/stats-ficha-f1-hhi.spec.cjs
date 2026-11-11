@@ -18,7 +18,7 @@ test('F1 ficha has a Concentración topic with the HHI series and each Isapre pa
  const c=card(),f=c.stats_ficha;
  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-12',generated_at:'2026-10-12T12:00:00Z',signals:[c]}}));
  await page.goto('/');
- const row=page.locator('article[data-card]').filter({hasText:c.title});
+ const row=page.locator(`article[data-card="${c.piece_id}"]`);
  await expect(row).toHaveCount(1);
  await row.locator('[data-detail]').first().click();
  const body=page.locator('#detailBody');

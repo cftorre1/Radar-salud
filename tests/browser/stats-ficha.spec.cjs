@@ -11,7 +11,7 @@ const f1Card=()=>JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f1_card
 async function openF1(page,card){
  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-12',generated_at:'2026-10-12T12:00:00Z',signals:[card]}}));
  await page.goto('/');
- const row=page.locator('article[data-card]').filter({hasText:card.title});
+ const row=page.locator(`article[data-card="${card.piece_id}"]`);
  await expect(row).toHaveCount(1);
  return row;
 }
@@ -251,7 +251,7 @@ test('the F1 share page redirects to the ficha deep link',async({page})=>{
  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-12',generated_at:'2026-10-12T12:00:00Z',signals:[card]}}));
  await page.goto('/data/fichas/f1_cartera.html');
  await page.waitForURL(/index\.html#sig-stats-ficha/);
- await expect(page.locator('article[data-card]').filter({hasText:card.title})).toHaveCount(1);
+ await expect(page.locator(`article[data-card="${card.piece_id}"]`)).toHaveCount(1);
  // The share link opens the ficha detail, not just the row.
  await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(page.locator('#detailBody .sf-headline')).toHaveText(card.stats_ficha.headline);
