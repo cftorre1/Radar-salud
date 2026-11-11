@@ -163,7 +163,10 @@ test('Datos and the Chile data card fit 320 and 390 px with no horizontal scroll
   for(const x of fit.links){expect(x.l).toBeGreaterThanOrEqual(0);expect(x.r).toBeLessThanOrEqual(fit.w)}
   expect(await noHScroll(page)).toBeTruthy();
  }
- await page.goto('/sources.html');await expect(page.locator('.sources-page .topnav a[href="datos.html"]')).toHaveText('Datos');
+ // Fuentes shares the same header (decision 4, 11-nov-2026): no section is current there.
+ await page.goto('/sources.html');await expect(page.locator('.brandbar .topnav a[href="datos.html"]')).toHaveAttribute('data-short','Datos');
+ await expect(page.locator('.topnav a[aria-current="page"]')).toHaveCount(0);expect(await noHScroll(page)).toBeTruthy();
+ await expect(page.locator('#catalogDatos .src2-row').first()).toBeVisible();await expect(page.locator('#catalogGlobal .src2-row').first()).toBeVisible();
 });
 
 test('Datos screenshots at 390 px',async({browser},testInfo)=>{
