@@ -422,10 +422,48 @@ def public_payload(payload: dict, config: dict, as_of: date) -> dict:
     public = dict(payload)
     public.update(_derived(shown, as_of, policy))
     public["items"] = shown
+    public["weekly_pick"] = weekly_pick(shown, as_of)
     public["display"] = {"spanish_only": on, "shown": len(shown), "hidden": sum(hidden.values()),
                          "hidden_by_reason": dict(sorted(hidden.items())), "authorized_by": rule.get("authorized_by") if on else None,
                          "authorized_at": rule.get("authorized_at") if on else None}
     return public
+
+
+# Global «noticia de la semana» on Home (Dirección 11-nov-2026): ONE Global news item, not a multi-source theme, renewed
+# every week like the insight. Rule global_weekly_pick_v1 (deterministic, no AI): among the cards Global shows, those
+# published from the Monday before this week's Monday through this week's Monday; a Spanish title first (verified
+# translation or a Spanish PAHO page), then the highest priority, the newest and the id. The title and the text come from
+# that same card, so they always belong together. None when the window is empty: Home then shows no Global card.
+WEEKLY_PICK_RULE = "global_weekly_pick_v1"
+
+
+def weekly_pick(cards: list[dict], as_of: date) -> dict | None:
+    from datetime import timedelta
+    from .global_translation import already_spanish
+    anchor = as_of - timedelta(days=as_of.weekday())
+    start = anchor - timedelta(days=7)
+
+    def texts(c: dict) -> tuple[str, str, bool]:
+        t = c.get("translation") or {}
+        if t.get("status") == "translated" and t.get("verified") is True and _str(c.get("title_es")):
+            return _str(c["title_es"]), _str(c.get("description_es")), True
+        if already_spanish(c):
+            return _str(c.get("title")), _str(c.get("description")), True
+        if t.get("status") == "summarized" and t.get("verified") is True and _str(c.get("summary_es")):
+            return _str(c.get("title")), _str(c["summary_es"]), False
+        return _str(c.get("title")), "", False
+
+    pool = [c for c in cards if (d := _day(c.get("published_at"))) and start <= d <= anchor]
+    if not pool:
+        return None
+    c = sorted(pool, key=lambda c: (texts(c)[2], int(c.get("priority") or 0), c["published_at"], c["id"]), reverse=True)[0]
+    title, summary, spanish = texts(c)
+    if summary and re.sub(r"\W+", "", summary.lower()) == re.sub(r"\W+", "", title.lower()):
+        summary = ""  # a description that only repeats the title adds nothing under it
+    return {"rule": WEEKLY_PICK_RULE, "week_anchor": anchor.isoformat(), "window": [start.isoformat(), anchor.isoformat()],
+            "id": c["id"], "title": title, "summary": summary or None, "title_in_spanish": spanish,
+            "source_label": c.get("source_label"), "published_at": c["published_at"], "url": c.get("url"),
+            "href": "global.html"}
 
 
 def _read(path: Path, default):
