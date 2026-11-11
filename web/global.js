@@ -15,7 +15,8 @@
 // of the item's title/description. The English title stays as the row and ficha title; the summary is labelled as
 // Alicanto's, never as the source's text. All text is escaped.
 const esc=(s='')=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-const dateText=raw=>raw?new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'short',year:'numeric',timeZone:'America/Santiago'}).format(new Date(`${String(raw).slice(0,10)}T12:00:00Z`)):'Fecha no verificada';
+const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d).map(x=>[x.type,x.value]));return `${Number(p.day)} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(p.month)-1]}${y?' '+p.year:''}`};// Dirección 11-nov-2026: «6 nov 2026», never «06 nov.» or «sept», the same in every browser
+const dateText=raw=>raw?DIA(new Date(`${String(raw).slice(0,10)}T12:00:00Z`)):'Fecha no verificada';
 function stored(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 function globalKey(id){return `global:${id}`}
 function feedKey(id){return `global-feed:${id}`}

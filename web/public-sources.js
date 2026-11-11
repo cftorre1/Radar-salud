@@ -8,7 +8,8 @@
  const LABEL={fresh:'Al día',active:'Activa',partial:'Parcial',trial:'En prueba'};
  function status(x,h){if(/en prueba/i.test(x.description||''))return'trial';if(!h)return'active';const t=String(h.technical_status||'').toLowerCase();if(t==='partial')return'partial';if(t==='ok'&&h.content_freshness==='recent')return'fresh';return'active'}
  function shortDescription(text){return String(text||'').replace(/;.*$/,'').replace(/\.\s*$/,'').trim()}
- function contentDate(h){const raw=h&&(h.latest_original_at||h.last_signal_at);if(!raw)return null;const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return null;return{iso:d.toISOString().slice(0,10),label:new Intl.DateTimeFormat('es-CL',{day:'numeric',month:'short',timeZone:'America/Santiago'}).format(d).replace(/\.$/,'')}}
+const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d).map(x=>[x.type,x.value]));return `${Number(p.day)} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(p.month)-1]}${y?' '+p.year:''}`};// Dirección 11-nov-2026: «6 nov 2026», never «06 nov.» or «sept», the same in every browser
+ function contentDate(h){const raw=h&&(h.latest_original_at||h.last_signal_at);if(!raw)return null;const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return null;return{iso:d.toISOString().slice(0,10),label:DIA(d,false)}}
  function rows(sources,health){const hs=(health&&health.sources)||{};return (Array.isArray(sources)?sources:[]).filter(x=>x.name&&x.group&&/^https:\/\//.test(x.url||'')).map(x=>({...x,st:status(x,hs[x.id]),date:contentDate(hs[x.id])}))}
  function render(host,sources,health){
   const xs=rows(sources,health),groups=new Map(ORDER.map(g=>[g,[]]));
