@@ -35,7 +35,7 @@
   const m={id:f?f.piece_id:(s&&s.piece_id),title:f?(f.index_title||f.label):String((s&&s.stats_ficha&&s.stats_ficha.family_label)||(s&&(s.display_title||s.title))||''),
    period_label:f?f.period_label:null,cadence:f?f.cadence:null,updating:Boolean(f&&f.status==='updating'),
    topics:f&&Array.isArray(f.topics)?f.topics:topicsOf(s&&s.stats_ficha),row:s||(f&&f.feed_row)||{},
-   share_title:(f&&f.share_title)||(f&&f.headline)||'',share_url:(s&&s.share_url)||(f&&f.share_url)||''};
+   share_title:(f&&f.share_title)||(f&&f.headline)||'',dataset:(f&&f.source_dataset)||'',share_url:(s&&s.share_url)||(f&&f.share_url)||''};
   return m;
  }
  function topLine(m){return [`Datos${m.period_label?` ${m.period_label}`:''}`,m.cadence?String(m.cadence).replace(/\s*\([^)]*\)/g,'').trim():'',m.updating?'actualizándose':''].filter(Boolean).join(' · ')}
@@ -53,7 +53,8 @@
   const shareTitle=o.shareTitle||m.share_title||title;
   const toc=first.length?`<ol class="dc-toc" aria-label="Temas de la ficha">${items(m,base,first,0)}</ol>`:'';
   const more=rest.length?`<ol class="dc-toc dc-rest" id="${rid}" start="${shown+1}" aria-label="Temas restantes"${open?'':' hidden'}>${items(m,base,rest,shown)}</ol><button type="button" class="dc-more" aria-expanded="${open}" aria-controls="${rid}" data-dc-more="${esc(m.id)}" data-n="${rest.length}">${moreLabel(open,rest.length)}</button>`:'';
-  const meta=cardMeta(m.row||{});
+  // «SIS · Datos abiertos: Prestaciones Bonificadas»: organism and dataset (Dirección 11-nov-2026).
+  const meta=[cardMeta(m.row||{}),m.dataset?esc(m.dataset):''].filter(Boolean).join(' · ');
   return `<div class="dc-card${read?' read':''}" data-dc="${esc(m.id)}">`+
    (Bar?Bar.dotButton('data-read',m.id,read,title):'')+
    `<div class="dc-top"><span class="dc-src">${esc(topLine(m))}</span>${o.topExtra||''}</div>`+

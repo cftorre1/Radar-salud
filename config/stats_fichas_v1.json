@@ -238,6 +238,7 @@
   },
   "families": {
     "F1": {
+      "source_dataset": "Estadísticas mensuales de cartera, movilidad y desahucios",
       "slug": "f1_cartera",
       "label": "Cartera y movilidad",
       "index_title": "Cartera de beneficiarios Isapre",
@@ -454,6 +455,7 @@
       "builder_version": "f1_index_topic_v10"
     },
     "F2": {
+      "source_dataset": "Estadísticas financieras del sistema Isapre",
       "slug": "f2_financieras",
       "label": "Resultados financieros de aseguradores",
       "index_title": "Resultados financieros de las Isapres",
@@ -1141,9 +1143,10 @@
       }
     },
     "F4": {
+      "source_dataset": "Estadística trimestral de casos GES (AUGE)",
       "slug": "f4_ges",
       "label": "Casos GES",
-      "index_title": "Casos GES por problema de salud",
+      "index_title": "GES: casos nuevos por problema de salud (Fonasa e Isapres)",
       "status": "active",
       "group": "aseguradores",
       "source_short": "SIS",
@@ -1294,6 +1297,7 @@
       "note": "El Boletín IP pasó a F6 (fichas F4/F6, 29-oct-2026)."
     },
     "F6": {
+      "source_dataset": "Boletín de la Intendencia de Prestadores",
       "slug": "f6_prestadores",
       "label": "Prestadores: Boletín IP",
       "index_title": "Prestadores acreditados y reclamos",
@@ -1465,6 +1469,7 @@
       }
     },
     "F7": {
+      "source_dataset": "Informes de ejecución presupuestaria",
       "slug": "f7_financiamiento",
       "label": "Financiamiento público",
       "index_title": "Ejecución presupuestaria de Salud",
@@ -1531,6 +1536,7 @@
       "scope_note": "No publicar 'costo por prestación' como comparación entre Isapres: depende de la mezcla y de qué cuenta como prestación. Candidatas: costo por beneficiario (ajustado por edad y sexo si hay datos), precio de una misma prestación, frecuencia de uso por beneficiario, peso hospitalario, % de bonificación y copago, siniestralidad, alza de costo descompuesta en precio y uso (lógica IRCI). Numerador y denominador de la misma fuente y período; nunca mezclar costo FEFI con conteos estadísticos. Las columnas por Isapre del cap. 3 están sin confirmar: abrir la planilla capturada antes de diseñar."
     },
     "F12": {
+      "source_dataset": "Datos abiertos: Prestaciones Bonificadas",
       "slug": "f12_prestaciones",
       "label": "Prestaciones bonificadas",
       "index_title": "Prestaciones bonificadas por Isapre",
@@ -1695,6 +1701,7 @@
       }
     },
     "F13": {
+      "source_dataset": "Datos abiertos: Licencias Médicas",
       "slug": "f13_licencias",
       "label": "Licencias médicas Isapre",
       "index_title": "Licencias médicas por Isapre",
@@ -1833,9 +1840,10 @@
       }
     },
     "F14": {
+      "source_dataset": "Datos abiertos: Prestaciones Bonificadas",
       "slug": "f14_ges_patologia",
       "label": "GES por patología",
-      "index_title": "GES por patología en Isapres",
+      "index_title": "GES en Isapres: casos atendidos y facturación por problema de salud",
       "status": "active",
       "group": "aseguradores",
       "source_short": "SIS",

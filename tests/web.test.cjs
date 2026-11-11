@@ -553,7 +553,7 @@ test('Al día and Datos draw the same data card for the same ficha (feed shows f
   assert.match(chile,/<span class="tag">Datos<\/span>/);
   assert.match(page,new RegExp(`>${f.index_title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}</a></h3>`));
   // Same date line and the same share target/title as the Chile row of that piece.
-  assert.ok(page.includes(`<span class="meta-text">${c.rowMeta(s)}</span>`),f.family);
+  assert.ok(page.includes(`<span class="meta-text">${[c.rowMeta(s),f.source_dataset?c.AlicantoBar.esc(f.source_dataset):''].filter(Boolean).join(' · ')}</span>`),f.family);
   // Share title: the generic ficha title + period (committee review 11-nov), the same from Al día and Datos.
   assert.ok(f.share_title&&page.includes(`data-share-title="${c.AlicantoBar.esc(f.share_title)}"`)&&chile.includes(`data-share-title="${c.AlicantoBar.esc(f.share_title)}"`),f.family);
  }

@@ -125,6 +125,8 @@ def build(cards: list[dict], *, registry: dict | None = None, root: Path | None 
             "period_label": period_short(ficha["period"], cfg.get("period_kind")),
             "source": cfg.get("source_short") or SOURCE_SHORT.get(source_name) or source_name,
             "source_name": source_name,
+            # Dirección 11-nov-2026: the organism alone does not tell two SIS sources apart; name the dataset too.
+            **({"source_dataset": cfg["source_dataset"]} if cfg.get("source_dataset") else {}),
             "published_at": _day(ficha.get("published_at")),
             # Same day the inbox sorts by: first verification by Alicanto, else validation, else SIS publication.
             "updated_on": _day(card.get("feed_date")) or _day(card.get("validation_date")) or _day(card.get("event_date")),
