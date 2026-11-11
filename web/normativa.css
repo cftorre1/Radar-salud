@@ -1,0 +1,71 @@
+/* Normativa, phase 1 (Dirección, 11-nov-2026; mockup «2 · Cuenta regresiva arriba»). Tokens from home-inbox.css.
+   Countdown first (days lead), one control card (groups, months, «Filtrar»), feed by group with sticky headers.
+   Fits 320 px with no horizontal page scroll. */
+.brandbar .logo-link{display:block;flex:none;min-height:0}
+@media (max-width:759px){.brandbar .logo-link{flex:0 1 auto;min-width:40px}}
+.nm-wrap{--urg:#A4471F;--urg-soft:#F8E4D9;--warn:#9A6A12;--warn-soft:#FBF1DC;--ok:#3B6B4A;--ok-soft:#E5EFE7;--rev:#6B4E8A;--rev-soft:#EFE9F5;--off:#6E6E6E;--off-soft:#ECECEC;
+ max-width:760px;margin:0 auto;padding:18px var(--gutter) 24px}
+.nm-head h1{font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.15;margin:0 0 4px;color:var(--ink)}
+.nm-lead{margin:0 0 14px;font-size:14px;line-height:1.45;color:var(--ink68)}
+.nm-empty{color:var(--ink68);font-size:14px;margin:12px 0}
+/* countdown */
+.nm-hero-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink68);margin:0 0 8px}
+.nm-hero-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.nm-hc{display:block;border-radius:14px;padding:12px 13px 11px;min-width:0;background:var(--warn-soft);color:var(--ink);text-decoration:none}
+.nm-hc.u{background:var(--urg-soft)}
+.nm-hc .nm-hd{display:flex;align-items:baseline;gap:6px;color:var(--warn)}.nm-hc.u .nm-hd{color:var(--urg)}
+.nm-hc .nm-hd b{font-size:44px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.nm-hc .nm-hd span{font-size:14px;font-weight:700}
+.nm-hc .nm-hw{display:block;font-size:12.5px;font-weight:650;color:var(--ink68);margin-top:2px}
+.nm-hc .nm-ht{display:block;font-size:13.5px;font-weight:700;margin-top:8px;overflow-wrap:anywhere}
+.nm-hc .nm-hs{font-size:12px;color:var(--ink68);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* control card */
+.nm-ctl{background:#fff;border:1px solid var(--ink12,rgba(29,51,69,.12));border-radius:14px;padding:10px 10px 8px;display:grid;gap:8px;margin:14px 0 0;min-width:0}
+.nm-pills,.nm-months{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px;min-width:0}
+.nm-pills button{flex:none;min-height:36px;border:1px solid var(--ink18);border-radius:999px;background:#fff;padding:0 11px;font:600 12.5px Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink68);cursor:pointer;white-space:nowrap}
+.nm-pills button b{font-variant-numeric:tabular-nums;margin-left:5px;color:var(--ink)}
+.nm-pills button.zero b{color:var(--ink48)}
+.nm-pills button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}.nm-pills button[aria-pressed="true"] b{color:#fff}
+.nm-mo{flex:1 0 62px;border:1px solid var(--ink12,rgba(29,51,69,.12));background:#fff;border-radius:10px;padding:6px 6px 5px;text-align:center;cursor:pointer;font:inherit;color:var(--ink)}
+.nm-mo .m{display:block;font-size:11.5px;font-weight:650;color:var(--ink68)}
+.nm-mo .c{display:block;font-size:19px;font-weight:750;font-variant-numeric:tabular-nums;line-height:1.15}
+.nm-mo .bar{display:block;height:3px;border-radius:2px;background:var(--ink09,rgba(29,51,69,.09));margin-top:4px;overflow:hidden}.nm-mo .bar i{display:block;height:100%;background:var(--accent)}
+.nm-mo.past{opacity:.6}.nm-mo.cur{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.nm-mo[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}.nm-mo[aria-pressed="true"] .m{color:#fff}
+.nm-fx>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;min-height:36px;border:1px solid var(--ink18);border-radius:999px;background:#fff;padding:0 12px;font:600 12.5px Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink84)}
+.nm-fx>summary::-webkit-details-marker{display:none}
+.nm-fx[open]>summary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.nm-fxb{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0 2px}
+.nm-fxb select{min-height:40px;border:1px solid var(--ink18);border-radius:8px;background:#fff;padding:0 8px;font:inherit;font-size:13px;color:var(--ink);max-width:100%}
+.nm-fxb input{flex:1 1 220px;min-height:40px;border:1px solid var(--ink18);border-radius:8px;padding:0 10px;font:inherit;font-size:16px;background:#fff;min-width:0}
+.nm-count{font-size:12.5px;color:var(--ink68);margin:10px 0 0;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.nm-chip{display:inline-flex;align-items:center;gap:2px;background:var(--accent-soft);color:var(--accent-ink);border-radius:999px;padding:1px 3px 1px 9px;font-weight:600;font-size:12px}
+.nm-chip button{border:0;background:none;color:inherit;cursor:pointer;font:700 13px Inter,sans-serif;min-width:28px;min-height:28px}
+.nm-lnk{border:0;background:none;color:var(--accent-ink);font:600 12.5px Inter,sans-serif;cursor:pointer;min-height:28px}
+/* groups */
+.nm-grp{margin:18px 0 0}
+.nm-gh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-bottom:2px solid var(--ink);padding:6px 0 4px;margin:0 0 10px;position:sticky;top:var(--hdr,52px);background:var(--ivory);z-index:3}
+.nm-gh h2{margin:0;font:750 15px Inter,ui-sans-serif,system-ui,sans-serif}
+.nm-gh .c{font-size:12px;color:var(--ink68);font-variant-numeric:tabular-nums}
+.g-p30{border-color:var(--urg)}.g-p30 h2{color:var(--urg)}.g-p30p{border-color:var(--warn)}.g-p30p h2{color:var(--warn)}
+.g-v30,.g-vhist{border-color:var(--ok)}.g-v30 h2,.g-vhist h2{color:var(--ok)}.g-sin{border-color:var(--rev)}.g-sin h2{color:var(--rev)}
+.g-impl{border-color:var(--accent)}.g-impl h2{color:var(--accent-ink)}.g-susp,.g-sinef{border-color:var(--off)}.g-susp h2,.g-sinef h2{color:var(--off)}
+details.nm-grp>summary{list-style:none;cursor:pointer}details.nm-grp>summary::-webkit-details-marker{display:none}
+details.nm-grp>summary h2::after{content:" ▸";font-weight:600}details.nm-grp[open]>summary h2::after{content:" ▾"}
+.nm-gempty{font-size:12.5px;color:var(--ink48);margin:-4px 0 6px}
+.nm-disc{font-size:12px;color:var(--ink48);margin-top:22px;border-top:1px solid var(--ink18);padding-top:10px}
+mark{background:var(--accent-soft);color:inherit;border-radius:2px}
+@media (max-width:640px){
+ .nm-hero-row{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}
+ .nm-hc{scroll-snap-align:start}.nm-hc .nm-hd b{font-size:40px}
+}
+/* Review 11-nov-2026: readable muted text, clear «hoy», tappable folded groups, scroll hint on the pill row. */
+.nm-wrap .nm-gempty,.nm-disc,.nm-hc .nm-hs,.nm-mo.past .m{color:var(--ink68)}
+.nm-mo.past{opacity:1}.nm-mo.cur{border-color:var(--ink12,rgba(29,51,69,.12));box-shadow:none}
+.nm-mo .hoy{display:block;font-size:10.5px;font-weight:700;color:var(--accent-ink);line-height:1.1}
+details.nm-grp>summary .nm-gh{min-height:44px;align-items:center}
+details.nm-grp>summary h2::after{content:none}
+.nm-show{font-weight:700;color:var(--accent-ink)!important}
+.nm-pills{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:24px}
+.nm-pills button,.nm-fx>summary{min-height:44px}
+.nm-det summary{min-height:44px}

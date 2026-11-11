@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#1D3345"/>
+<meta name="description" content="Normativa de Alicanto Salud: circulares, resoluciones y dictámenes de la Superintendencia de Salud y la SUSESO, ordenados por su vigencia."/>
+<title>Alicanto Salud · Normativa</title>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Alicanto Salud"/>
+<meta property="og:title" content="Normativa · Alicanto Salud"/>
+<meta property="og:description" content="Normas SIS y SUSESO ordenadas por su vigencia: lo que viene, lo vigente y lo que está en revisión."/>
+<meta property="og:image" content="https://cftorre1.github.io/Radar-salud/assets/alicanto-logo-header.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"/>
+<link rel="stylesheet" href="product-ui.css"/><link rel="stylesheet" href="home-inbox.css"/><link rel="stylesheet" href="norma-card.css"/><link rel="stylesheet" href="normativa.css"/></head>
+<body class="normativa-page">
+<main>
+<header class="brandbar">
+<div class="brand-in">
+<a href="index.html" class="logo-link" aria-label="Alicanto Salud: ir a Al día (inicio)"><img class="logo" src="assets/alicanto-logo-header.png" alt="Alicanto Salud"/></a>
+<p class="hero-purpose">Las normas que te rigen, ordenadas por su vigencia.</p>
+<nav class="topnav" aria-label="Navegación principal">
+<a class="header-premium" href="index.html" data-short="Al día">Al día</a><a class="header-premium" href="normativa.html" aria-current="page" data-short="Normativa">Normativa</a><a class="header-premium" href="datos.html" data-short="Datos">Datos del sector</a><a class="header-premium" href="global.html" data-short="Global">Global · Internacional</a><a class="header-newsletter" href="subscription.html" data-open-newsletter data-short="Newsletter">Newsletter semanal</a>
+</nav>
+</div>
+</header>
+<div class="nm-wrap">
+<div class="nm-head">
+<h1>Normativa</h1>
+<p class="nm-lead">Normas de la Superintendencia de Salud y la SUSESO ordenadas por su vigencia. Ninguna sale por antigüedad.</p>
+</div>
+<section id="nmHero" class="nm-hero" aria-label="Próximas entradas en vigencia"></section>
+<section class="nm-ctl" aria-label="Filtrar normas">
+<div class="nm-pills" id="nmGroups" role="group" aria-label="Grupos"></div>
+<div class="nm-months" id="nmMonths" role="group" aria-label="Entradas en vigencia por mes"></div>
+<details class="nm-fx" id="nmFx"><summary>Filtrar<span id="nmFxN"></span></summary><div class="nm-fxb">
+<select id="nmEmi" aria-label="Emisor"><option value="">Todos los emisores</option><option value="SIS">SIS</option><option value="SUSESO">SUSESO</option></select>
+<select id="nmTema" aria-label="Tema"><option value="">Todos los temas</option></select>
+<input id="nmQ" type="search" placeholder="Buscar: 541, licencias, CAEC…" aria-label="Buscar norma"/>
+</div></details>
+</section>
+<p class="nm-count" id="nmCount" aria-live="polite"></p>
+<div id="nmFeed" aria-live="polite"><p class="nm-empty">Cargando normas…</p></div>
+<p class="nm-disc">Alicanto muestra la vigencia que declara el texto oficial de cada norma; si no la declara, la norma queda «en revisión». No es asesoría legal: ante dudas, consulta el documento original. «Implementada» es una marca tuya, guardada solo en este navegador.</p>
+</div>
+<p class="read-status" id="readStatus" role="status" aria-live="polite"></p>
+<footer class="footer">Alicanto Salud · Información seleccionada desde fuentes oficiales y verificadas para que no te pierdas lo que importa</footer>
+</main>
+<script src="analytics.js"></script>
+<script src="read-state.js"></script><script src="inbox-bar.js"></script><script src="norma-card.js"></script><script src="conversion.js"></script><script src="normativa.js"></script>
+</body>
+</html>
