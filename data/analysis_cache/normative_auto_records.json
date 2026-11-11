@@ -430,7 +430,7 @@
      "Vigencia: 6 meses corridos contados desde su publicación. Contiene disposiciones transitorias."
     ]
    },
-   "final": true,
+   "final": false,
    "final_at": "2026-11-10T18:14:47.170698+00:00"
   },
   "https://www.suseso.gob.cl/612/w3-article-793852.html": {
@@ -1023,7 +1023,7 @@
     "42863832667"
    ],
    "attempts": 6,
-   "status": "final_rejected",
+   "status": "rejected",
    "attempt_log": [
     {
      "at": "2026-11-10T09:57:21.632175+00:00",
@@ -1122,9 +1122,34 @@
      ],
      "attempts": 6,
      "runs": 2
+    },
+    {
+     "reopened_at": "2026-11-11T12:00:00+00:00",
+     "reason": "verifier rejected «6 meses corridos» backed literally by its quote; fixed"
     }
    ],
-   "last_run_id": "42863832667"
+   "last_run_id": "42863832667",
+   "pending_review": {
+    "record": {
+     "plain_language_title": "Circular N°3933 · Vigilancia de la salud post ocupacional: imparte instrucciones",
+     "subject_terms": [
+      "VIGILANCIA",
+      "SALUD"
+     ],
+     "action_terms": [
+      "IMPARTE",
+      "MODIFICA"
+     ],
+     "normative_context": "Modifica el Título II del Libro IV. Prestaciones Preventivas del Compendio de Normas del Seguro Social de Accidentes del Trabajo y Enfermedades Profesionales de la Ley N°16.744. Imparte instrucciones a los organismos administradores del Seguro de la Ley N°16.744 y a las empresas con administración delegada. Vigencia: 6 meses corridos contados desde su publicación.",
+     "evidence_quotes": [
+      "MODIFICA EL TÍTULO II DEL LIBRO IV. PRESTACIONES PREVENTIVAS DEL COMPENDIO DE NORMAS DEL SEGURO SOCIAL DE ACCIDENTES DEL TRABAJO Y ENFERMEDADES PROFESIONALES DE LA LEY N°16.744",
+      "IMPARTE INSTRUCCIONES A LOS ORGANISMOS ADMINISTRADORES DEL SEGURO DE LA LEY N°16.744 Y A LAS EMPRESAS CON ADMINISTRACIÓN DELEGADA",
+      "Vigencia: 6 meses corridos contados desde su publicación. Contiene disposiciones transitorias."
+     ]
+    },
+    "evidence_sha256": "4d3af49bbccdb5a7b02c8a8a151594e22e84ef8dfa55f85f207ac5022c84e84c",
+    "reopened": "2026-11-11: verifier fix (decision 7, Dirección); deterministic PASS, independent review pending"
+   }
   },
   "https://www.suseso.gob.cl/612/w3-article-792988.html": {
    "legal_identity": "Circular N°3932",

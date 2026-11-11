@@ -148,3 +148,35 @@ def test_review_round_2_terms_deadlines_and_hidden_norms():
     hidden = ni.update_registry(reg, [], date(2026, 11, 12), history=[s, {**s, "feed_visibility": False}])
     assert hidden["items"][key]["withheld"]
     assert not ni.update_registry(reg, [], date(2026, 11, 12), history=[s])["items"][key].get("withheld")
+
+
+def test_decision_7_archive_only_enters_when_direccion_lists_it(tmp_path):
+    """Dirección 11-nov-2026: an older norm (out of Al día's window) joins the registry only from review.json
+    «archive_include», and never the feed."""
+    import json as _json
+    old = sig("Circular IF/N°532", "Circular", validity="La circular entra en vigencia el 1 de enero de 2027.")
+    old["event_date"] = "2026-07-31"
+    (tmp_path / "data/normativa").mkdir(parents=True)
+    out = tmp_path / "web"; out.mkdir()
+    ni.export([], tmp_path, out, date(2026, 11, 11), persist=False, archive=[old])
+    assert not _json.loads((out / "normativa.json").read_text())["items"]
+    rid = ni.record_from_signal(old)["id"]
+    (tmp_path / "data/normativa/review.json").write_text(_json.dumps({"decisions": {}, "archive_include": [rid]}))
+    items = _json.loads((out / "normativa.json").read_text()) and ni.export([], tmp_path, out, date(2026, 11, 11), persist=False, archive=[old])["items"]
+    assert [x["label"] for x in items] == ["Circular IF/N°532"] and not items[0].get("in_feed")
+
+
+def test_decision_7_verifier_accepts_the_same_qualifier_in_the_quote():
+    from radar_salud import normative_autorecord as na
+    ev = ("MODIFICA EL TÍTULO II DEL LIBRO IV DEL COMPENDIO DE NORMAS DEL SEGURO DE LA LEY N°16.744 E IMPARTE INSTRUCCIONES "
+          "A LOS ORGANISMOS ADMINISTRADORES DEL SEGURO. Vigencia: 6 meses corridos contados desde su publicación. "
+          "Contiene disposiciones transitorias. Plazo: 30 días hábiles contados desde su notificación al organismo.")
+    rec = {"plain_language_title": "Circular N°3933 · Compendio del seguro laboral: modifica el Título II",
+           "subject_terms": ["COMPENDIO"], "action_terms": ["MODIFICA"],
+           "normative_context": "Imparte instrucciones a los organismos administradores. Vigencia: 6 meses corridos contados desde su publicación.",
+           "evidence_quotes": ["MODIFICA EL TÍTULO II DEL LIBRO IV DEL COMPENDIO DE NORMAS DEL SEGURO DE LA LEY N°16.744",
+                               "Vigencia: 6 meses corridos contados desde su publicación. Contiene disposiciones transitorias."]}
+    assert not [p for p in na.verify(rec, "Circular N°3933", ev) if "quantity" in p]
+    bare = {**rec, "normative_context": "Imparte instrucciones a los organismos administradores. Plazo de 30 días.",
+            "evidence_quotes": rec["evidence_quotes"][:1] + ["Plazo: 30 días hábiles contados desde su notificación al organismo."]}
+    assert "date_or_quantity_not_literal_in_quote:30 días" in na.verify(bare, "Circular N°3933", ev)

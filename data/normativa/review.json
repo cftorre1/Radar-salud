@@ -1,4 +1,8 @@
 {
   "_doc": "Decisiones manuales de Dirección sobre la vigencia y el estado de normas del registro (Normativa, Fase 1). Una clave por id del registro. kind: date (eff AAAA-MM-DD + quote literal) | nofija (la norma no fija fecha) | susp | sinef (by: acto que lo dispone + quote literal). on: fecha de la decisión; decided_by: Dirección. Sin estas decisiones, las normas sin fecha se publican «en revisión» y nunca se infiere una suspensión o derogación.",
-  "decisions": {}
+  "decisions": {},
+  "_doc_archive": "archive_include: ids del registro que Dirección pidió incorporar aunque Al día ya no las muestre por antigüedad (decisión 7, 11-nov-2026). Entran solo si pasan el mismo control de publicación.",
+  "archive_include": [
+    "sis-circular-if-n532"
+  ]
 }

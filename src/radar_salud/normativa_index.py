@@ -295,20 +295,27 @@ def _read(path: Path, default):
 
 
 def export(signals: list[dict], root: Path, out_dir: Path, today: date, generated_at: str | None = None,
-           persist: bool = True, history: list[dict] | None = None) -> dict:
+           persist: bool = True, history: list[dict] | None = None, archive: list[dict] | None = None) -> dict:
     """Update the registry with today's signals and write web/data/normativa.json (+ normativa_cards.json).
 
     ``persist`` is False for offline or back-dated builds (tests, QA, --as-of): they read the registry but never write
     it, so a fixture date cannot rewrite the committed repository (review of #180)."""
     reg_path, rev_path = root / REGISTRY, root / REVIEW
-    registry = update_registry(_read(reg_path, {"items": {}}), signals, today, history)
+    # ``archive``: publishable norms from history that Al día no longer shows because they are older than its window
+    # (decision 7, Dirección 11-nov-2026: Circular IF/N°532). They join the standing registry; never the feed.
+    # Only the norms Dirección listed in review.json «archive_include» (by registry id): an older norm can carry a later
+    # suspension or derogation that the registry does not read yet, so none enters by itself.
+    review = _read(rev_path, {"decisions": {}})
+    wanted = set(review.get("archive_include") or [])
+    old = [a for a in (archive or []) if (r := record_from_signal(a)) and r["id"] in wanted]
+    registry = update_registry(_read(reg_path, {"items": {}}), list(signals) + old, today, history)
     if persist:
         reg_path.parent.mkdir(parents=True, exist_ok=True)
         text = json.dumps(registry, ensure_ascii=False, indent=2) + "\n"
         if not reg_path.exists() or reg_path.read_text(encoding="utf-8") != text:
             reg_path.write_text(text, encoding="utf-8")
     feed = index_feed_ids(signals)
-    index = build(registry, _read(rev_path, {"decisions": {}}), feed, generated_at)
+    index = build(registry, review, feed, generated_at)
     (out_dir / "normativa.json").write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     public = {x["id"] for x in index["items"]}
     cards = {"schema": SCHEMA, "cards": [rec["card"] for rid, rec in registry["items"].items()
