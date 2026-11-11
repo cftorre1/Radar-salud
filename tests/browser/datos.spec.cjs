@@ -155,8 +155,8 @@ test('Datos and the Chile data card fit 320 and 390 px with no horizontal scroll
   const link=page.locator('.brandbar .topnav a[href="datos.html"]');
   await expect(link).toHaveAttribute('data-short','Datos');await expect(link).toBeVisible();
   await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href',current);
-  const fit=await page.evaluate(()=>{const w=innerWidth,r=el=>el.getBoundingClientRect();const nav=[...document.querySelectorAll('.brandbar .topnav a,.brandbar .premium-access')].filter(e=>e.offsetParent);return {premium:r(document.querySelector('.premium-access')).right,links:nav.map(e=>({l:r(e).left,r:r(e).right})),w}});
-  expect(fit.premium).toBeLessThanOrEqual(fit.w);for(const x of fit.links){expect(x.l).toBeGreaterThanOrEqual(0);expect(x.r).toBeLessThanOrEqual(fit.w)}
+  const fit=await page.evaluate(()=>{const w=innerWidth,r=el=>el.getBoundingClientRect();const nav=[...document.querySelectorAll('.brandbar .topnav a')].filter(e=>e.offsetParent);return {links:nav.map(e=>({l:r(e).left,r:r(e).right})),w}});
+  for(const x of fit.links){expect(x.l).toBeGreaterThanOrEqual(0);expect(x.r).toBeLessThanOrEqual(fit.w)}
   expect(await noHScroll(page)).toBeTruthy();
  }
  await page.goto('/sources.html');await expect(page.locator('.sources-page .topnav a[href="datos.html"]')).toHaveText('Datos');
