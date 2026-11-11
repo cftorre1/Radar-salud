@@ -32,7 +32,7 @@
  // A card model from a datos.json family (Datos) or from a feed card plus its datos.json family (Chile). Chile passes
  // its own card as `row` (same fields that datos.json copies into feed_row) and its own share title.
  function model(f,s){
-  const m={id:f?f.piece_id:(s&&s.piece_id),title:f?(f.index_title||f.label):String(s&&s.stats_ficha&&s.stats_ficha.family_label||''),
+  const m={id:f?f.piece_id:(s&&s.piece_id),title:f?(f.index_title||f.label):String((s&&s.stats_ficha&&s.stats_ficha.family_label)||(s&&(s.display_title||s.title))||''),
    period_label:f?f.period_label:null,cadence:f?f.cadence:null,updating:Boolean(f&&f.status==='updating'),
    topics:f&&Array.isArray(f.topics)?f.topics:topicsOf(s&&s.stats_ficha),row:s||(f&&f.feed_row)||{},
    share_title:(f&&f.share_title)||(f&&f.headline)||'',share_url:(s&&s.share_url)||(f&&f.share_url)||''};

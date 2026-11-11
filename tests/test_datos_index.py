@@ -1,5 +1,6 @@
 """Datos page index (Dirección, 3-nov-2026): latest published ficha per family, copied verbatim from the snapshot."""
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -158,3 +159,5 @@ def test_published_topics_are_the_live_fichas_tabs():
         tabs = [t for t in live[r["piece_id"]]["tabs"] if t.get("label")]
         assert r["topics"] == [{"id": str(t.get("id") or i), "label": t["label"]} for i, t in enumerate(tabs)]
         assert r["index_title"]
+        # stats-ficha.js only honours #...&tema=<id> when the id matches [\w-]+; anything else opens the index.
+        assert all(re.fullmatch(r"[\w-]+", t["id"]) for t in r["topics"])
