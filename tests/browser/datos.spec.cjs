@@ -11,7 +11,7 @@ const noHScroll=page=>page.evaluate(()=>document.documentElement.scrollWidth<=in
 test('Datos: Recientes by default, Por grupo by actor, the choice persists',async({page})=>{
  const d=await datos(page);expect(live(d).length).toBeGreaterThan(0);
  await page.goto('/datos.html');
- const rows=page.locator('#datosList [data-family]');await expect(rows).toHaveCount(d.families.length);
+ const rows=page.locator('#datosList [data-family]');await expect(rows).toHaveCount(d.families.filter(f=>f.state==='live').length);
  await expect(page.locator('#datosView [data-view="recientes"]')).toHaveAttribute('aria-pressed','true');
  // Live cards first, newest verification first; planned/pending greyed at the end.
  const order=await rows.evaluateAll(xs=>xs.map(x=>x.dataset.family));
@@ -50,7 +50,7 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
 test('Datos works when localStorage throws',async({page})=>{
  await page.addInitScript(()=>{const deny=()=>{throw new Error('blocked')};Storage.prototype.getItem=deny;Storage.prototype.setItem=deny});
  const d=await datos(page);await page.goto('/datos.html');
- await expect(page.locator('#datosList [data-family]')).toHaveCount(d.families.length);
+ await expect(page.locator('#datosList [data-family]')).toHaveCount(d.families.filter(f=>f.state==='live').length);
  await page.locator('#datosView [data-view="grupo"]').click();
  await expect(page.locator('#datosList .dx-sec').first()).toBeVisible();
 });
