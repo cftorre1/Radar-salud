@@ -16,7 +16,7 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
   await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-29',generated_at:'2026-10-29T12:00:00Z',signals:[card]}}));
   await page.goto('/');
   await selectPeriod(page,'90');  // the Boletín (3 ago) is older than the default 30-day window
-  const row=page.locator('article[data-card]').filter({hasText:card.title});
+  const row=page.locator(`article[data-card="${card.piece_id}"]`);
   await expect(row).toHaveCount(1);
   expect(await row.locator('.row-acts .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Ver ficha','Fuente original','Compartir']);
   await expect(row.locator('.act-share')).toHaveAttribute('data-share-url',card.share_url);
@@ -73,7 +73,7 @@ for(const [slug,tabs] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre
   await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-29',generated_at:'2026-10-29T12:00:00Z',signals:[card]}}));
   await page.goto('/');
   await selectPeriod(page,'90');
-  const row=page.locator('article[data-card]').filter({hasText:card.title});
+  const row=page.locator(`article[data-card="${card.piece_id}"]`);
   await expect(row).toHaveCount(1);
   await row.locator('[data-detail]').first().click();
   const body=page.locator('#detailBody');
@@ -105,7 +105,7 @@ for(const slug of ['f4_ges','f6_prestadores']){
   await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-10-29',generated_at:'2026-10-29T12:00:00Z',signals:[card]}}));
   await page.goto('/');await selectPeriod(page,'90');
   await page.addStyleTag({content:'*,svg text{font-family:"DejaVu Sans",sans-serif!important}'});
-  await page.locator('article[data-card]').filter({hasText:card.title}).locator('[data-detail]').first().click();
+  await page.locator(`article[data-card="${card.piece_id}"]`).locator('[data-detail]').first().click();
   const body=page.locator('#detailBody');await expect(body.locator('.sf-index')).toBeVisible();
   const m=sel=>page.evaluate(sel=>{const d=document.getElementById('signalDetail'),bottom=Math.min(innerHeight,d.getBoundingClientRect().bottom);
    return {bottom,scroll:d.scrollTop,bar:d.querySelector('.detail-top').getBoundingClientRect().height,els:[...document.querySelectorAll(sel)].filter(e=>e.offsetParent).map(e=>{const b=e.getBoundingClientRect();return {bottom:b.bottom,mid:b.top+b.height/2}})}},sel);

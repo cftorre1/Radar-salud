@@ -26,6 +26,7 @@
       "group": "aseguradores",
       "order": 0,
       "cadence": "mensual",
+      "index_title": "Cartera de beneficiarios Isapre",
       "state": "live",
       "piece_id": "stats-ficha:F1:2026-08",
       "headline": "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
@@ -41,6 +42,32 @@
           "value": "1.551.169"
         }
       ],
+      "topics": [
+        {
+          "id": "total",
+          "label": "Cartera total"
+        },
+        {
+          "id": "isapres",
+          "label": "Por Isapre"
+        },
+        {
+          "id": "mezcla",
+          "label": "Cotizantes y cargas"
+        },
+        {
+          "id": "movilidad",
+          "label": "Movilidad y desahucios"
+        },
+        {
+          "id": "concentracion",
+          "label": "Concentración"
+        },
+        {
+          "id": "regional",
+          "label": "Regional"
+        }
+      ],
       "period": "2026-08",
       "period_label": "ago 2026",
       "source": "SIS",
@@ -48,7 +75,18 @@
       "published_at": "2026-10-02",
       "updated_on": "2026-10-28",
       "status": "current",
-      "share_url": "data/fichas/f1_cartera.html"
+      "share_url": "data/fichas/f1_cartera.html",
+      "share_title": "La cartera Isapre casi deja de caer: −814 beneficiarios en agosto, la menor baja del año",
+      "feed_row": {
+        "event_date": "2026-10-02",
+        "event_type": "DATA_PULSE",
+        "publication_date": "2026-10-02",
+        "signal_types": [
+          "Datos"
+        ],
+        "source_name": "Superintendencia de Salud",
+        "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx"
+      }
     },
     {
       "family": "F2",
@@ -56,6 +94,7 @@
       "group": "aseguradores",
       "order": 1,
       "cadence": "trimestral",
+      "index_title": "Resultados financieros de las Isapres",
       "state": "live",
       "piece_id": "stats-ficha:F2:2026-03",
       "headline": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
@@ -71,6 +110,32 @@
           "value": "1.091.349 MM$"
         }
       ],
+      "topics": [
+        {
+          "id": "resultados",
+          "label": "Resultados"
+        },
+        {
+          "id": "ingresos",
+          "label": "Ingresos"
+        },
+        {
+          "id": "costos",
+          "label": "Costo de ventas"
+        },
+        {
+          "id": "gastos",
+          "label": "Gastos de administración"
+        },
+        {
+          "id": "siniestralidad",
+          "label": "Siniestralidad"
+        },
+        {
+          "id": "sil",
+          "label": "Licencias (SIL)"
+        }
+      ],
       "period": "2026-03",
       "period_label": "mar 2026",
       "source": "SIS",
@@ -78,7 +143,18 @@
       "published_at": "2026-07-07",
       "updated_on": "2026-11-02",
       "status": "current",
-      "share_url": "data/fichas/f2_financieras.html"
+      "share_url": "data/fichas/f2_financieras.html",
+      "share_title": "Las Isapres ganan 34.120 MM$ en enero–marzo 2026, frente a 1.215 MM$ un año antes",
+      "feed_row": {
+        "event_date": "2026-07-07",
+        "event_type": "DATA_PULSE",
+        "publication_date": "2026-07-07",
+        "signal_types": [
+          "Datos"
+        ],
+        "source_name": "Superintendencia de Salud",
+        "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/07/finan_ifrs_mar_2026_web_v2.xls"
+      }
     },
     {
       "family": "F3",
@@ -86,6 +162,7 @@
       "group": "empleadores_licencias",
       "order": 2,
       "cadence": "mensual",
+      "index_title": "Licencias médicas y SIL",
       "state": "planned"
     },
     {
@@ -94,6 +171,7 @@
       "group": "aseguradores",
       "order": 3,
       "cadence": "trimestral",
+      "index_title": "Casos GES por problema de salud",
       "state": "live",
       "piece_id": "stats-ficha:F4:2026-06",
       "headline": "Cáncer Cérvicouterino reúne el 22,1% de los 1.987.954 casos GES entre enero y junio de 2026",
@@ -109,6 +187,24 @@
           "value": "1.910.382"
         }
       ],
+      "topics": [
+        {
+          "id": "totales",
+          "label": "Totales"
+        },
+        {
+          "id": "problemas",
+          "label": "Top problemas"
+        },
+        {
+          "id": "seguros",
+          "label": "Fonasa vs Isapre"
+        },
+        {
+          "id": "tendencia",
+          "label": "Tendencia trimestral"
+        }
+      ],
       "period": "2026-06",
       "period_label": "jun 2026",
       "source": "SIS",
@@ -116,7 +212,18 @@
       "published_at": "2026-10-14",
       "updated_on": "2026-11-05",
       "status": "current",
-      "share_url": "data/fichas/f4_ges.html"
+      "share_url": "data/fichas/f4_ges.html",
+      "share_title": "Cáncer Cérvicouterino reúne el 22,1% de los 1.987.954 casos GES entre enero y junio de 2026",
+      "feed_row": {
+        "event_date": "2026-10-14",
+        "event_type": "DATA_PULSE",
+        "publication_date": "2026-10-14",
+        "signal_types": [
+          "Datos"
+        ],
+        "source_name": "Superintendencia de Salud",
+        "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/estadistica-trimestral-de-casos-ges-auge-de-fonasa-y-sistema-isapre-junio-2026.xlsx"
+      }
     },
     {
       "family": "F5",
@@ -124,6 +231,7 @@
       "group": "aseguradores",
       "order": 4,
       "cadence": "trimestral",
+      "index_title": "Reclamos, mediación y fiscalización",
       "state": "planned"
     },
     {
@@ -132,6 +240,7 @@
       "group": "prestadores",
       "order": 5,
       "cadence": "trimestral",
+      "index_title": "Prestadores acreditados y reclamos",
       "state": "live",
       "piece_id": "stats-ficha:F6:2026-09",
       "headline": "Prestadores acreditados llegan a 1.009 a septiembre, 38 más que en junio; 124 con observaciones",
@@ -147,6 +256,24 @@
           "value": "1.880"
         }
       ],
+      "topics": [
+        {
+          "id": "acreditacion",
+          "label": "Acreditación"
+        },
+        {
+          "id": "observaciones",
+          "label": "Con observaciones"
+        },
+        {
+          "id": "reclamos",
+          "label": "Reclamos"
+        },
+        {
+          "id": "mediacion",
+          "label": "Mediación"
+        }
+      ],
       "period": "2026-09",
       "period_label": "sep 2026",
       "source": "SIS",
@@ -154,7 +281,19 @@
       "published_at": "2026-10-29",
       "updated_on": "2026-11-03",
       "status": "current",
-      "share_url": "data/fichas/f6_prestadores.html"
+      "share_url": "data/fichas/f6_prestadores.html",
+      "share_title": "Prestadores acreditados llegan a 1.009 a septiembre, 38 más que en junio; 124 con observaciones",
+      "feed_row": {
+        "date_basis": "first_detected",
+        "first_detected_at": "2026-10-29",
+        "event_date": "2026-10-29",
+        "event_type": "DATA_PULSE",
+        "signal_types": [
+          "Datos"
+        ],
+        "source_name": "Superintendencia de Salud",
+        "source_url": "https://www.superdesalud.gob.cl/app/uploads/2026/10/boletin-n3-2026-acreditacion-enero-septiembre-2026-1.pdf"
+      }
     },
     {
       "family": "F7",
@@ -162,6 +301,7 @@
       "group": "sector_publico",
       "order": 6,
       "cadence": "mensual (DIPRES)",
+      "index_title": "Ejecución presupuestaria de Salud",
       "state": "live",
       "piece_id": "stats-ficha:F7:2026-09",
       "headline": "Salud ejecutó el 80,8% de su presupuesto vigente a septiembre 2026",
@@ -177,6 +317,16 @@
           "value": "82,6%"
         }
       ],
+      "topics": [
+        {
+          "id": "salud",
+          "label": "Salud (Partida 16)"
+        },
+        {
+          "id": "fonasa",
+          "label": "Fonasa"
+        }
+      ],
       "period": "2026-09",
       "period_label": "sep 2026",
       "source": "DIPRES",
@@ -184,7 +334,19 @@
       "published_at": "2026-11-05",
       "updated_on": "2026-11-05",
       "status": "current",
-      "share_url": "data/fichas/f7_financiamiento.html"
+      "share_url": "data/fichas/f7_financiamiento.html",
+      "share_title": "Salud ejecutó el 80,8% de su presupuesto vigente a septiembre 2026",
+      "feed_row": {
+        "date_basis": "first_detected",
+        "first_detected_at": "2026-11-05",
+        "event_date": "2026-11-05",
+        "event_type": "DATA_PULSE",
+        "signal_types": [
+          "Datos"
+        ],
+        "source_name": "Dirección de Presupuestos",
+        "source_url": "https://www.dipres.gob.cl/597/articles-436912_doc_pdf.pdf"
+      }
     },
     {
       "family": "F8",
@@ -192,6 +354,7 @@
       "group": "sector_publico",
       "order": 7,
       "cadence": "semanal en temporada",
+      "index_title": "Presión asistencial",
       "state": "planned"
     },
     {
@@ -200,6 +363,7 @@
       "group": "aseguradores",
       "order": 8,
       "cadence": "anual (Series Estadísticas SIS, cap. 3 y 5) + trimestral (FEFI)",
+      "index_title": "Benchmark de costos entre Isapres",
       "state": "planned"
     },
     {
@@ -208,6 +372,7 @@
       "group": "prestadores",
       "order": 9,
       "cadence": "trimestral (datos abiertos SIS)",
+      "index_title": "Prestaciones bonificadas por Isapre",
       "state": "live",
       "piece_id": "stats-ficha:F12:2026-09",
       "headline": "Mismo código, distinto precio: el mapa de prestaciones Isapre, jul–sep 2026",
@@ -223,6 +388,44 @@
           "value": "42,9%"
         }
       ],
+      "topics": [
+        {
+          "id": "dispersion",
+          "label": "Precios en la región"
+        },
+        {
+          "id": "concentracion",
+          "label": "Concentración regional"
+        },
+        {
+          "id": "nacional",
+          "label": "Concentración nacional"
+        },
+        {
+          "id": "vs-rm",
+          "label": "Regiones vs. RM"
+        },
+        {
+          "id": "publico-privado",
+          "label": "Público y privado"
+        },
+        {
+          "id": "cambio",
+          "label": "Cambio trimestral"
+        },
+        {
+          "id": "cobertura",
+          "label": "Cobertura por Isapre"
+        },
+        {
+          "id": "mismo-prestador",
+          "label": "Mismo prestador"
+        },
+        {
+          "id": "regiones",
+          "label": "Precios por región"
+        }
+      ],
       "period": "2026-09",
       "period_label": "jul–sep 2026",
       "source": "SIS",
@@ -230,7 +433,19 @@
       "published_at": "2026-11-10",
       "updated_on": "2026-11-10",
       "status": "current",
-      "share_url": "data/fichas/f12_prestaciones.html"
+      "share_url": "data/fichas/f12_prestaciones.html",
+      "share_title": "Mismo código, distinto precio: el mapa de prestaciones Isapre, jul–sep 2026",
+      "feed_row": {
+        "date_basis": "first_detected",
+        "first_detected_at": "2026-11-10",
+        "event_date": "2026-11-10",
+        "event_type": "DATA_PULSE",
+        "signal_types": [
+          "Datos"
+        ],
+        "source_name": "Superintendencia de Salud",
+        "source_url": "https://datos.superdesalud.gob.cl/archivos/Prestaciones%20Bonificadas/2026/Prestaciones_Bonificadas_2026t3.zip"
+      }
     },
     {
       "family": "F13",
@@ -238,6 +453,7 @@
       "group": "empleadores_licencias",
       "order": 10,
       "cadence": "trimestral (datos abiertos SIS)",
+      "index_title": "Licencias médicas por Isapre",
       "state": "live",
       "piece_id": "stats-ficha:F13:2026-09",
       "headline": "Las Isapres rechazan el 46,4% de las licencias de salud mental y el 5,3% de las respiratorias en julio–septiembre 2026",
@@ -253,6 +469,32 @@
           "value": "71,6%"
         }
       ],
+      "topics": [
+        {
+          "id": "isapres",
+          "label": "Por Isapre"
+        },
+        {
+          "id": "diagnostico",
+          "label": "Diagnóstico"
+        },
+        {
+          "id": "industria",
+          "label": "Industria y emisor"
+        },
+        {
+          "id": "region",
+          "label": "Región"
+        },
+        {
+          "id": "dias",
+          "label": "Días autorizados"
+        },
+        {
+          "id": "subsidio",
+          "label": "Subsidio"
+        }
+      ],
       "period": "2026-09",
       "period_label": "jul–sep 2026",
       "source": "SIS",
@@ -260,7 +502,19 @@
       "published_at": "2026-11-10",
       "updated_on": "2026-11-10",
       "status": "current",
-      "share_url": "data/fichas/f13_licencias.html"
+      "share_url": "data/fichas/f13_licencias.html",
+      "share_title": "Las Isapres rechazan el 46,4% de las licencias de salud mental y el 5,3% de las respiratorias en julio–septiembre 2026",
+      "feed_row": {
+        "date_basis": "first_detected",
+        "first_detected_at": "2026-11-10",
+        "event_date": "2026-11-10",
+        "event_type": "DATA_PULSE",
+        "signal_types": [
+          "Datos"
+        ],
+        "source_name": "Superintendencia de Salud",
+        "source_url": "https://datos.superdesalud.gob.cl/archivos/Licencias%20Medicas/2026/Licencias_Medicas_2026t3.zip"
+      }
     },
     {
       "family": "F14",
@@ -268,6 +522,7 @@
       "group": "aseguradores",
       "order": 11,
       "cadence": "trimestral (datos abiertos SIS)",
+      "index_title": "GES por patología en Isapres",
       "state": "live",
       "piece_id": "stats-ficha:F14:2026-09",
       "headline": "GES en Isapres: facturado +10,6%, casos +0,7%; por caso sube en 59 de 77",
@@ -283,6 +538,32 @@
           "value": "$259.844"
         }
       ],
+      "topics": [
+        {
+          "id": "familias",
+          "label": "Familias"
+        },
+        {
+          "id": "por-caso",
+          "label": "Facturado por caso"
+        },
+        {
+          "id": "problemas",
+          "label": "Problemas principales"
+        },
+        {
+          "id": "serie",
+          "label": "Serie desde 2021"
+        },
+        {
+          "id": "isapres",
+          "label": "Por Isapre"
+        },
+        {
+          "id": "regiones",
+          "label": "Por región"
+        }
+      ],
       "period": "2026-09",
       "period_label": "jul–sep 2026",
       "source": "SIS",
@@ -290,7 +571,19 @@
       "published_at": "2026-11-07",
       "updated_on": "2026-11-10",
       "status": "current",
-      "share_url": "data/fichas/f14_ges_patologia.html"
+      "share_url": "data/fichas/f14_ges_patologia.html",
+      "share_title": "GES en Isapres: facturado +10,6%, casos +0,7%; por caso sube en 59 de 77",
+      "feed_row": {
+        "date_basis": "first_detected",
+        "first_detected_at": "2026-11-07",
+        "event_date": "2026-11-07",
+        "event_type": "DATA_PULSE",
+        "signal_types": [
+          "Datos"
+        ],
+        "source_name": "Superintendencia de Salud",
+        "source_url": "https://datos.superdesalud.gob.cl/archivos/Prestaciones%20Bonificadas/2026/Prestaciones_Bonificadas_2026t3.zip"
+      }
     }
   ]
 }

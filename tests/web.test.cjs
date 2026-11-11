@@ -1,6 +1,6 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const vm=require('node:vm');
-const source=fs.readFileSync('web/app.js','utf8').split("fetch('data/radar_today.json'")[0];const barSource=fs.readFileSync('web/inbox-bar.js','utf8');
-function context(Clock=Date,stored=null){const c={AlicantoRead:{readSet:new Set(),ready:Promise.resolve(),migrate:async function(marker,entries){for(const [id,aliases] of entries)if(aliases.some(x=>this.readSet.has(x)))this.readSet.add(id)}},AlicantoStats:{render:()=>'',wire:()=>{}},localStorage:{getItem:k=>k==='alicanto_filters'?stored:null,setItem:()=>{}},btoa:s=>Buffer.from(s,'binary').toString('base64'),atob:s=>Buffer.from(s,'base64').toString('binary'),escape,unescape,decodeURIComponent,encodeURIComponent,Intl,URL,Date:Clock,Set,Map};vm.createContext(c);c.globalThis=c;vm.runInContext(barSource,c);vm.runInContext(source,c);return c}
+const source=fs.readFileSync('web/app.js','utf8').split("fetch('data/radar_today.json'")[0];const barSource=fs.readFileSync('web/inbox-bar.js','utf8');const cardSource=fs.readFileSync('web/data-card.js','utf8');
+function context(Clock=Date,stored=null){const c={AlicantoRead:{readSet:new Set(),ready:Promise.resolve(),migrate:async function(marker,entries){for(const [id,aliases] of entries)if(aliases.some(x=>this.readSet.has(x)))this.readSet.add(id)}},AlicantoStats:{render:()=>'',wire:()=>{}},localStorage:{getItem:k=>k==='alicanto_filters'?stored:null,setItem:()=>{}},btoa:s=>Buffer.from(s,'binary').toString('base64'),atob:s=>Buffer.from(s,'base64').toString('binary'),escape,unescape,decodeURIComponent,encodeURIComponent,Intl,URL,Date:Clock,Set,Map};vm.createContext(c);c.globalThis=c;vm.runInContext(barSource,c);vm.runInContext(cardSource,c);vm.runInContext(source,c);return c}
 test('full card IDs do not collide for long URLs',()=>{const c=context();assert.notEqual(c.idFor({source_url:'https://example.org/'+ 'a'.repeat(160)+'1'}),c.idFor({source_url:'https://example.org/'+ 'a'.repeat(160)+'2'}))});
 test('date-only publication keeps calendar date in Chile',()=>{const c=context();assert.match(c.fmtDate('2026-09-23'),/23/)});
 test('update label is direct and does not overstate source review',()=>{const c=context();assert.match(c.fmtUpdated('2026-09-24T12:00:00Z'),/^Última actualización:/);assert.doesNotMatch(c.fmtUpdated('2026-09-24T12:00:00Z'),/Portada generada|revisión de las fuentes/)});
@@ -284,7 +284,7 @@ test('datos.gob.cl releases are labelled as data updates, not news publication',
 test('alternatives and related context keep detection/data-release labels',()=>{const c=context();const alt={title:'Memoria',source_name:'Clínicas de Chile A.G.',url:'https://a.cl/1',event_date:'2026-10-20',date_basis:'first_detected',first_detected_at:'2026-10-20T12:00:00Z'};assert.match(c.sourceBlock([alt]),/Detectado el/);assert.doesNotMatch(c.sourceBlock([alt]),/Publicado/);assert.match(c.contextBlock([{...alt,verified:true}]),/Detectado el/);assert.match(c.contextBlock([{title:'Ley',event_date:'2026-10-01'}]),/Fecha:/)});
 test('metadata-only datos.gob.cl changes read as catalog updates',()=>{const c=context();assert.match(c.sourceTiming({event_date:'2026-10-07',date_basis:'data_release',data_release_scope:'catalog'}),/^Catálogo actualizado el/)});
 test('historical connections never label a detection or data-release day as Publicado',()=>{const c=context();const x={label:'Antecedente',url:'https://a.cl/1',title:'Memoria',note:'n',event_date:'2026-10-20',date_basis:'first_detected',first_detected_at:'2026-10-20T12:00:00Z'};const html=c.enrichmentBlock([],[x],null);assert.match(html,/Detectado el/);assert.doesNotMatch(html,/Publicado/);assert.match(c.enrichmentBlock([],[{...x,date_basis:undefined}],null),/Publicado/)});
-test('Global shares the Home header and bar A without inline CSS',()=>{const html=fs.readFileSync('web/global.html','utf8'),home=fs.readFileSync('web/index.html','utf8'),js=fs.readFileSync('web/global.js','utf8'),app=fs.readFileSync('web/app.js','utf8');assert.doesNotMatch(html,/<style/);for(const f of ['home-inbox.css','global.css'])assert.match(html,new RegExp(`href="${f}"`));for(const page of [html,home])assert.match(page,/<script src="inbox-bar\.js"><\/script>/);for(const short of ['Chile','Global','Newsletter'])assert.match(html,new RegExp(`data-short="${short}"`));assert.match(html,/href="subscription\.html"/);assert.match(html,/id="globalLanes"/);assert.match(html,/<details class="filter-details" id="globalFilters">/);assert.match(html,/id="globalMarkAll"/);for(const src of [js,app])assert.match(src,/AlicantoBar\.(syncLanes|wireLanes|dropdown)/);assert.match(js,/globalKey\(id\)\{return `global:\$\{id\}`\}/)});
+test('Global shares the Home header and bar A without inline CSS',()=>{const html=fs.readFileSync('web/global.html','utf8'),home=fs.readFileSync('web/index.html','utf8'),js=fs.readFileSync('web/global.js','utf8'),app=fs.readFileSync('web/app.js','utf8');assert.doesNotMatch(html,/<style/);for(const f of ['home-inbox.css','global.css'])assert.match(html,new RegExp(`href="${f}"`));for(const page of [html,home])assert.match(page,/<script src="inbox-bar\.js"><\/script>/);for(const short of ['Al día','Global','Newsletter'])assert.match(html,new RegExp(`data-short="${short}"`));assert.match(html,/href="subscription\.html"/);assert.match(html,/id="globalLanes"/);assert.match(html,/<details class="filter-details" id="globalFilters">/);assert.match(html,/id="globalMarkAll"/);for(const src of [js,app])assert.match(src,/AlicantoBar\.(syncLanes|wireLanes|dropdown)/);assert.match(js,/globalKey\(id\)\{return `global:\$\{id\}`\}/)});
 test('Dirección 28-oct punto 4: only Actores and Temas filter; a saved format is dropped',()=>{const saved=[];const c=context();c.localStorage.setItem=(k,v)=>saved.push([k,v]);const bupa={entity_refs:[{canonical_id:'cl:org:bupa',basis:'text'}],scopes:[]},none={entity_refs:[],scopes:['Fonasa']};c.bupa=bupa;c.none=none;assert.equal(vm.runInContext('interestMatch(bupa)&&interestMatch(none)',c),true);vm.runInContext("activeInterests.add('fonasa')",c);assert.equal(vm.runInContext('interestMatch(none)',c),true);assert.equal(vm.runInContext('interestMatch(bupa)',c),false);vm.runInContext('persistFilters()',c);const stored=JSON.parse(saved.at(-1)[1]);assert.deepEqual(stored.interests,['fonasa']);assert.deepEqual(stored.entities,[]);assert.ok(!('type' in stored));assert.deepEqual([...new Set(vm.runInContext('INTERESTS.map(x=>x.group)',c))],['Actores','Temas']);const html=fs.readFileSync('web/index.html','utf8'),app=fs.readFileSync('web/app.js','utf8');assert.doesNotMatch(html,/id="typeFilters"|>Formato</);assert.doesNotMatch(app,/entitySearch|entityList|activeEntities|activeType/)});
 test('rows carry no actor chips; a Datos tag and the follow marker are the only row labels (Dirección 28-oct 21:49)',()=>{const c=context();vm.runInContext("entityCatalog=[{id:'a',name:'Clínica A',short:'A'},{id:'b',name:'Clínica B',short:'B'},{id:'c',name:'Clínica C',short:'C'}]",c);const html=c.card({title:'Pulso',source_url:'https://example.org/p',event_date:'2026-10-10',entity_refs:[{canonical_id:'c',basis:'member'},{canonical_id:'b',basis:'text'},{canonical_id:'a',basis:'source'}]});assert.doesNotMatch(html,/data-entity-chip|ent-chip|ent-more|Clínica [ABC]|\+1</);assert.match(html,/<\/div><div class="row-acts"[^>]*><button type="button" class="act act-open" data-detail=/);assert.equal(typeof c.entityChips,'undefined');const fr=c.followRow({entity_refs:[{canonical_id:'b',basis:'text'}],scopes:['Prestadores']});assert.match(fr,/data-follow-topic="prestadores"[^>]*>[\s\S]*Seguir tema: Prestadores/);assert.match(fr,/<p class="follow-mentions">Menciona: B<\/p>/);assert.doesNotMatch(fr,/data-follow="/)});
 test('entity catalog falls back to refs for the chip names',()=>{const c=context();const xs=c.catalogFrom({signals:[{entity_refs:[{canonical_id:'cl:org:meds',name:'Clínica MEDS'}]}]});assert.equal(xs[0].id,'cl:org:meds');assert.equal(c.catalogFrom({entities:[{id:'x',name:'X'}],signals:[]})[0].id,'x');const snap=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8'));assert.ok(snap.entities.length>=30);assert.ok(snap.signals.every(s=>Array.isArray(s.entity_refs)))});
@@ -486,20 +486,70 @@ test('collapsed Boletín card says plainly that figures are being verified and l
  assert.doesNotMatch(c.detailHtml({...s,bulletin_status:{...s.bulletin_status,live_ficha:{id:'javascript:alert(1)',label:'x'}}}),/bulletin-live/);
  assert.doesNotMatch(c.detailHtml({...s,bulletin_status:null}),/bulletin-status/);
 });
-// Datos (Dirección 3-nov-2026): latest ficha per family; views from config groups; Nuevo from the shared read set.
-function datosContext(store={}){const c={localStorage:{getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=v}}};vm.createContext(c);vm.runInContext(fs.readFileSync('web/datos.js','utf8'),c);return c.AlicantoDatos}
-test('Datos orders Recientes by verification day, groups by config and marks Nuevo from the read set',()=>{
+// Datos (Dirección 3-nov-2026; data cards since 10-nov-2026): latest ficha per family; views from config groups;
+// read state from the shared read set; the card is the same renderer as the Chile feed (data-card.js).
+function datosContext(store={}){const c={localStorage:{getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=v}}};vm.createContext(c);c.globalThis=c;for(const f of ['web/inbox-bar.js','web/data-card.js','web/datos.js'])vm.runInContext(fs.readFileSync(f,'utf8'),c);return c.AlicantoDatos}
+const TOPICS=n=>Array.from({length:n},(_,i)=>({id:`t${i+1}`,label:`Tema ${i+1}`}));
+const liveFam=(family,order,group,updated_on,extra={})=>({family,order,group,label:`Familia ${family}`,cadence:'trimestral',state:'live',piece_id:`stats-ficha:${family}:2026-08`,updated_on,index_title:`Título ${family}`,headline:`Hallazgo ${family}`,share_title:`Hallazgo ${family}`,share_url:`data/fichas/${family.toLowerCase()}.html`,topics:TOPICS(4),period_label:'jul–sep 2026',feed_row:{date_basis:'first_detected',first_detected_at:'2026-11-10',event_date:'2026-11-10',source_name:'Superintendencia de Salud'},status:family==='F6'?'updating':'current',...extra});
+test('Datos orders Recientes by verification day, groups by config and shows read state with the Chile dot',()=>{
  const D=datosContext(),fam=(family,order,group,extra={})=>({family,order,group,label:family,...extra});
- const live=(family,order,group,updated_on)=>fam(family,order,group,{state:'live',piece_id:`stats-ficha:${family}:2026-08`,updated_on,headline:`T ${family}`,kpis:[{label:'A',value:'1.234'}],period_label:'ago 2026',source:'SIS',status:family==='F6'?'updating':'current'});
- const data={groups:[{key:'aseguradores',label:'Aseguradores'},{key:'prestadores',label:'Prestadores'},{key:'sector_publico',label:'Sector público'}],families:[live('F1',0,'aseguradores','2026-10-28'),live('F2',1,'aseguradores','2026-11-02'),fam('F3',2,'aseguradores',{state:'planned'}),fam('F4',3,'aseguradores',{state:'pending'}),live('F6',5,'prestadores','2026-10-30')]};
+ const data={groups:[{key:'aseguradores',label:'Aseguradores'},{key:'prestadores',label:'Prestadores'},{key:'sector_publico',label:'Sector público'}],families:[liveFam('F1',0,'aseguradores','2026-10-28'),liveFam('F2',1,'aseguradores','2026-11-02'),fam('F3',2,'aseguradores',{state:'planned'}),fam('F4',3,'aseguradores',{state:'pending'}),liveFam('F6',5,'prestadores','2026-10-30')]};
  assert.deepEqual([...D.recientes(data.families)].map(f=>f.family),['F2','F6','F1','F3','F4']);
  assert.deepEqual(JSON.parse(JSON.stringify(D.byGroup(data).map(g=>[g.label,g.families.map(f=>f.family)]))),[['Aseguradores',['F2','F1','F3','F4']],['Prestadores',['F6']]]);
  const html=D.render(data,'recientes',new Set(['stats-ficha:F1:2026-08']));
- assert.equal((html.match(/dx-badge/g)||[]).length,2);assert.match(html,/Datos a ago 2026 · SIS/);assert.match(html,/Actualizándose/);assert.match(html,/Vigente/);
- assert.match(html,/href="index\.html\?abrir=1&amp;desde=datos#sig-stats-ficha:F2:2026-08"/);
- assert.match(html,/data-family="F3"><div class="dx-kick"><span>F3<\/span><span class="dx-tag">pronto<\/span>/);assert.match(html,/en verificación/);
+ // One read card (F1), two unread; the dot is the read toggle; no «Nuevo» pill, no KPI block, no «Vigente», no headline.
+ assert.equal((html.match(/class="dc-card read"/g)||[]).length,1);assert.equal((html.match(/class="dc-card"/g)||[]).length,2);
+ assert.equal((html.match(/class="dotbtn done" data-read=/g)||[]).length,1);assert.equal((html.match(/<span class="unread-dot"><\/span>/g)||[]).length,2);
+ assert.doesNotMatch(html,/dx-badge|Nuevo|Leída|dx-kpi|Vigente|Hallazgo F1<\/a>/);
+ assert.match(html,/<span class="dc-src">Datos jul–sep 2026 · trimestral<\/span>/);assert.match(html,/Datos jul–sep 2026 · trimestral · actualizándose/);
+ assert.match(html,/<h3 class="dc-title"><a class="dc-open" href="index\.html\?abrir=1&amp;desde=datos#sig-stats-ficha:F2:2026-08">Título F2<\/a><\/h3>/);
+ assert.match(html,/<div class="card-meta dc-meta"><span class="meta-text">Detectado 10 nov\.? 2026 · SIS<\/span><\/div>/);
+ assert.match(html,/class="act act-share" data-share="sig-stats-ficha:F2:2026-08" data-share-url="data\/fichas\/f2\.html" data-share-title="Hallazgo F2"/);
+ assert.match(html,/<div class="dx-soon" data-family="F3"><span>F3<\/span><span class="dx-tag">pronto<\/span><\/div>/);assert.match(html,/en verificación/);
  assert.match(D.render(data,'grupo',new Set()),/<h2 class="dx-sec"[^>]*>Aseguradores<\/h2>/);
  assert.doesNotMatch(html,/cómo leer/i);
+});
+test('data card: topics numbered by row, first 6 shown, «Ver restantes (N)» with aria, every topic links &tema=<id>',()=>{
+ datosContext();const c={};vm.createContext(c);c.globalThis=c;for(const f of ['web/inbox-bar.js','web/data-card.js'])vm.runInContext(fs.readFileSync(f,'utf8'),c);const C=c.AlicantoDataCard;
+ const nine=C.render(C.model(liveFam('F12',0,'x','2026-11-10',{topics:TOPICS(9)})),{base:'index.html?abrir=1&desde=datos'});
+ const firstList=nine.match(/<ol class="dc-toc" aria-label="Temas de la ficha">([\s\S]*?)<\/ol>/)[1],restList=nine.match(/<ol class="dc-toc dc-rest" id="dcr-stats-ficha-F12-2026-08" start="7" aria-label="Temas restantes" hidden>([\s\S]*?)<\/ol>/)[1];
+ // DOM order 1..6 in a two-column grid reads by row: 1 2 / 3 4 / 5 6; the rest continue at 7.
+ assert.deepEqual([...firstList.matchAll(/class="dc-n" aria-hidden="true">(\d+)</g)].map(m=>m[1]),['1','2','3','4','5','6']);
+ assert.deepEqual([...restList.matchAll(/class="dc-n" aria-hidden="true">(\d+)</g)].map(m=>m[1]),['7','8','9']);
+ for(let i=1;i<=9;i++)assert.match(nine,new RegExp(`href="index\\.html\\?abrir=1&amp;desde=datos#sig-stats-ficha:F12:2026-08&amp;tema=t${i}" data-dc-tema="t${i}"><span class="dc-n" aria-hidden="true">${i}</span><span class="dc-l">Tema ${i}</span>`));
+ assert.match(nine,/<button type="button" class="dc-more" aria-expanded="false" aria-controls="dcr-stats-ficha-F12-2026-08" data-dc-more="stats-ficha:F12:2026-08" data-n="3">Ver restantes \(3\) ↓<\/button>/);
+ const six=C.render(C.model(liveFam('F13',0,'x','2026-11-10',{topics:TOPICS(6)})),{});
+ assert.equal((six.match(/class="dc-t"/g)||[]).length,6);assert.doesNotMatch(six,/dc-more|dc-rest/);
+ // An expanded card stays expanded across redraws and its button reads «Ocultar temas ↑».
+ C.expanded.add('stats-ficha:F12:2026-08');const open=C.render(C.model(liveFam('F12',0,'x','2026-11-10',{topics:TOPICS(9)})),{});
+ assert.match(open,/aria-label="Temas restantes">/);assert.match(open,/aria-expanded="true"[^>]*>Ocultar temas ↑</);
+ // Without a datos.json row (Chile fallback) the topics are the ficha's tabs, by the renderer's rule (label required; id or position).
+ assert.deepEqual(JSON.parse(JSON.stringify(C.topicsOf({tabs:[{id:'a',label:'A'},{label:''},{label:'C'}]}))),[{id:'a',label:'A'},{id:'1',label:'C'}]);
+});
+test('Al día and Datos draw the same data card for the same ficha (feed shows fewer topics), apart from the feed extras',()=>{
+ const snap=JSON.parse(fs.readFileSync('web/data/radar_today.json','utf8')),datos=JSON.parse(fs.readFileSync('web/data/datos.json','utf8'));
+ const D=datosContext(),c=context();vm.runInContext('allSignals=[]',c);
+ const live=datos.families.filter(f=>f.state==='live');assert.ok(live.length>=5);
+ for(const f of live){
+  const s=snap.signals.find(x=>x.piece_id===f.piece_id);assert.ok(s,f.piece_id);
+  vm.runInContext(`datosByPiece=new Map([[${JSON.stringify(f.piece_id)},${JSON.stringify(f)}]])`,c);
+  const chile=c.card(s),full=D.card(f,false),DC=c.AlicantoDataCard;
+  // Datos shows 6 topics before «Ver restantes»; the feed shows 2 (Dirección 10-nov 23:29). Same structure otherwise.
+  const page=DC.render(DC.model(f),{read:false,base:'index.html?abrir=1&desde=datos',shown:DC.FEED_SHOWN});
+  assert.equal((full.match(/class="dc-toc" [^]*?<\/ol>/)[0].match(/<li>/g)||[]).length,Math.min(6,f.topics.length),f.family);
+  assert.equal((chile.match(/class="dc-toc" [^]*?<\/ol>/)[0].match(/<li>/g)||[]).length,Math.min(2,f.topics.length),f.family);
+  if(f.topics.length>2)assert.match(chile,new RegExp(`Ver restantes \\(${f.topics.length-2}\\)`));
+  assert.match(chile,/class="signal item dc-row /);
+  const inner=chile.replace(/^<article[^>]*>/,'').replace(/<\/article>$/,'');
+  // Allowed feed extras: its link base, the data-detail hook and its «Datos» tag (and correction tag). «Fuente original» is on both.
+  const norm=h=>h.replace(/index\.html\?abrir=1&amp;desde=datos#/g,'#').replace(/\?abrir=1#/g,'#').replace(/ data-detail="[^"]*"/g,'').replace(/<\/span> <span class="tag">[^<]*<\/span>[^]*?<\/div><h3/,'</span></div><h3');
+  assert.equal(norm(inner),norm(page),f.family);
+  assert.match(chile,/<span class="tag">Datos<\/span>/);
+  assert.match(page,new RegExp(`>${f.index_title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}</a></h3>`));
+  // Same date line and the same share target/title as the Chile row of that piece.
+  assert.ok(page.includes(`<span class="meta-text">${c.rowMeta(s)}</span>`),f.family);
+  assert.ok(page.includes(`data-share-title="${c.AlicantoBar.esc(c.triageTitle(s))}"`),f.family);
+ }
 });
 test('Datos view preference is per viewer and survives a blocked localStorage',()=>{
  const store={},D=datosContext(store);assert.equal(D.loadView(),'recientes');D.saveView('grupo');assert.equal(store.alicanto_datos_view,'grupo');assert.equal(D.loadView(),'grupo');

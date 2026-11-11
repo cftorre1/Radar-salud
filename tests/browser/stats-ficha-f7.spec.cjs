@@ -11,7 +11,7 @@ test('f7 ficha opens with its two topics, nominal labels, detection date and no 
  await page.route('**/data/radar_today.json',route=>route.fulfill({json:{date:'2026-11-04',generated_at:'2026-11-04T12:00:00Z',signals:[card]}}));
  await page.goto('/');
  await selectPeriod(page,'90');
- const row=page.locator('article[data-card]').filter({hasText:card.title});
+ const row=page.locator(`article[data-card="${card.piece_id}"]`);
  await expect(row).toHaveCount(1);
  const name=test.info().project.name;
  fs.mkdirSync(SHOTS,{recursive:true});

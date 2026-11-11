@@ -2,9 +2,15 @@
 
 ``web/data/datos.json`` lists every family of ``config/stats_fichas_v1.json`` once:
 
-- an active family with a live ficha in the snapshot (``stats_ficha`` card, PASS) shows that ficha's verified headline
+- an active family with a live ficha in the snapshot (``stats_ficha`` card, PASS) carries that ficha's verified headline
   and 1–2 of its KPIs copied verbatim (``datos_kpis`` by id, else the first two). Nothing is computed here: values,
   labels and the headline are the strings already shown in the ficha;
+- since Dirección 10-nov-2026 the overview card shows a descriptive title (registry ``index_title``, else the family
+  label) and the ficha's topic index: ``topics`` lists the published ficha's ``tabs`` (``id``/``label`` verbatim, in
+  order, same filter and id rule as the ficha renderer) so each topic deep-links to ``&tema=<id>``. The card looks and
+  behaves as the Chile feed row of the same piece (Dirección 10-nov 22:05): ``feed_row`` copies, verbatim, the card
+  fields the shared row date line reads (web/data-card.js ``rowDate``/``feedSource``), and ``share_title`` is the
+  title the Chile row shares;
 - ``updating`` is true when a HOLD record exists for a period newer than the live one (``hold/<slug>-<period>.json``),
   i.e. a newer release is being verified ("Actualizándose");
 - an active family without a live ficha, and every planned family, is listed without figures (``state`` "pending" /
@@ -42,6 +48,23 @@ def _kpis(ficha: dict, wanted: list[str] | None) -> list[dict]:
     else:
         chosen = kpis
     return [{"id": k.get("id"), "label": k["label"], "value": k["value"]} for k in chosen[:2]]
+
+
+def _topics(ficha: dict) -> list[dict]:
+    """The ficha's tabs as the renderer lists them (web/stats-ficha.js ``topics``): tabs with a label, in order; the id
+    is the tab's own id (the renderer falls back to the position, so this does too)."""
+    tabs = [t for t in ficha.get("tabs") or [] if isinstance(t, dict) and t.get("label")]
+    return [{"id": str(t.get("id") or i), "label": t["label"]} for i, t in enumerate(tabs)]
+
+
+# The fields of a feed card that the shared row date line («Detectado 10 nov 2026 · SIS») reads.
+FEED_ROW_KEYS = ("date_basis", "first_detected_at", "event_date", "data_release_date", "event_type", "emission_date",
+                 "issued_on", "event_date_basis", "published_on", "publication_date", "detected_at", "signal_types",
+                 "source_name", "source_link", "source_url", "source_link_status")
+
+
+def _feed_row(card: dict) -> dict:
+    return {k: card[k] for k in FEED_ROW_KEYS if card.get(k) not in (None, "", [])}
 
 
 def _day(value) -> str | None:
@@ -82,7 +105,7 @@ def build(cards: list[dict], *, registry: dict | None = None, root: Path | None 
         if group not in known:
             raise ValueError(f"datos_group_unknown:{fam}:{group}")
         row = {"family": fam, "label": cfg["label"], "group": group, "order": order,
-               "cadence": cfg.get("cadence")}
+               "cadence": cfg.get("cadence"), "index_title": cfg.get("index_title") or cfg["label"]}
         card = live.get(fam) if cfg.get("status") == "active" else None
         if card is None:
             row["state"] = "planned" if cfg.get("status") != "active" else "pending"
@@ -97,6 +120,7 @@ def build(cards: list[dict], *, registry: dict | None = None, root: Path | None 
             "piece_id": card["piece_id"],
             "headline": ficha["headline"],
             "kpis": _kpis(ficha, cfg.get("datos_kpis")),
+            "topics": _topics(ficha),
             "period": ficha["period"],
             "period_label": period_short(ficha["period"], cfg.get("period_kind")),
             "source": cfg.get("source_short") or SOURCE_SHORT.get(source_name) or source_name,
@@ -107,6 +131,8 @@ def build(cards: list[dict], *, registry: dict | None = None, root: Path | None 
             "status": "updating" if held else "current",
             **({"updating_period": held, "updating_period_label": period_short(held, cfg.get("period_kind"))} if held else {}),
             "share_url": card.get("share_url"),
+            "share_title": card.get("display_title") or card.get("title") or ficha["headline"],
+            "feed_row": _feed_row(card),
         })
         families.append(row)
     return {"schema_version": SCHEMA, "generated_at": generated_at, "groups": groups, "families": families}
