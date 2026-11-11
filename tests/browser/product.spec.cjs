@@ -360,7 +360,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
  const isapre=page.locator('article[data-card="stats-ficha:F1:2026-08"]');
  await expect(isapre).toHaveCount(1);
- await expect(isapre.locator('.card-meta')).toContainText('Publicado 02 oct 2026');
+ await expect(isapre.locator('.card-meta')).toContainText('Actualizado 2 oct 2026');
  await isapre.locator('[data-detail]').first().click();
  // Header as in the approved mockup (Dirección 29-oct): kicker + 'Destacada'; a two-line meta list under the headline.
  await expect(page.locator('#detailBody .sf-kicker .sf-kick')).toHaveText('Cartera y movilidad');

@@ -41,10 +41,10 @@ test('triage title expands opaque regulatory labels without mechanical truncatio
 test('card never cuts a Bupa announcement in the middle of its meaning',()=>{const c=context();const s={title:'Bupa acelera inversiones',what_happened:'Bupa anunció tres proyectos por US$15 millones: abrirá un centro en La Dehesa, comprará Clínicas Huinganal y abrirá Mindplace en San Damián.',why_it_matters:'Incorpora capacidad ambulatoria y salud mental en el sector oriente mediante inversión y compra.'};const html=c.detailHtml(s);assert.match(html,/Huinganal y abrirá Mindplace en San Damián\./);assert.doesNotMatch(html,/inversión y compra/);assert.doesNotMatch(html,/\.\.\.|…/);assert.doesNotMatch(fs.readFileSync('web/index.html','utf8'),/-webkit-line-clamp/)});
 test('editorial enrichment never looks like independent corroboration',()=>{const c=context();const e=[{label:'Mismo emisor · no es corroboración independiente',title:'Canal oficial',url:'https://example.org',note:'No sustenta hechos adicionales.'}],h=[{label:'Contexto del mismo artículo · no es corroboración independiente',title:'Expansión IntegraMédica',url:'https://df.cl/original',event_date:'2026-09-21',note:'Contexto del mismo artículo.'}],s={title:'Señal',what_happened:'Hecho distinto confirmado.',why_it_matters:'Importa por una razón verificable.',source_url:'https://df.cl/original',editorial_enrichment:e,historical_connections:h};const html=c.enrichmentBlock(e,h,'Conexión histórica atribuida al mismo artículo DF.');assert.match(html,/Para profundizar/);assert.doesNotMatch(html,/Enriquecimiento editorial/);assert.match(html,/no es corroboración independiente/);assert.match(html,/No sustenta hechos adicionales/);assert.match(html,/Conexiones históricas/);assert.match(html,/Expansión IntegraMédica/);assert.equal(c.detailKind(s),'context');assert.doesNotMatch(c.sourceBlock(e),/Enriquecimiento editorial/);const card=c.card(s);assert.match(card,/class="title-open" data-detail=/);assert.match(card,/Fuente original/);assert.equal(c.originalLink(s),s.source_url);assert.doesNotMatch(c.detailHtml(s),/ficha-origin[^>]*>[^<]*<a /)});
 test('sanction pulse lists every material resolution including anchor',()=>{const c=context();const links=[1,2,3].map(i=>({title:`Resolución IP/N°${i} - Emisión: 08/09/2026`,material:`Clínica ${i} · 70 UF · cheque en garantía`,url:`https://example.org/${i}`}));const s={title:'Pulso sanciones',what_happened:'3 sanciones registradas.',why_it_matters:'Fiscalización reciente.',sanction_count:3,source_alternatives:links,source_url:links[0].url};const html=c.detailHtml(s);assert.equal((html.match(/Clínica \d · 70 UF/g)||[]).length,3);assert.doesNotMatch(html,/3 sanciones registradas; 2 resoluciones/)});
-test('feed row: one date and the source acronym (Dirección 4-nov-2026)',()=>{const c=context();const sanction=c.cardMetadata({sanction_count:3,event_date:'2026-09-15',source_name:'Superintendencia de Salud'});assert.match(sanction,/^Publicado 15 sept?\.? 2026 · SIS$/);const data=c.cardMetadata({event_type:'DATA_PULSE',data_period:'2026-07',event_date:'2026-09-07',validation_date:'2026-09-24',source_name:'Superintendencia de Salud'});assert.match(data,/^Publicado 07 sept?\.? 2026 · SIS$/);assert.doesNotMatch(data,/Datos a|Validado/);
+test('feed row: one date and the source acronym (Dirección 4-nov-2026)',()=>{const c=context();const sanction=c.cardMetadata({sanction_count:3,event_date:'2026-09-15',source_name:'Superintendencia de Salud'});assert.match(sanction,/^Publicado 15 sep 2026 · SIS$/);const data=c.cardMetadata({event_type:'DATA_PULSE',data_period:'2026-07',event_date:'2026-09-07',validation_date:'2026-09-24',source_name:'Superintendencia de Salud'});assert.match(data,/^Publicado 7 sep 2026 · SIS$/);assert.doesNotMatch(data,/Datos a|Validado/);
  // DIPRES capture: detected, never 'Publicado'.
  assert.match(c.cardMetadata({event_type:'DATA_PULSE',event_date:'2026-10-11',date_basis:'first_detected',validation_date:'2026-11-04',source_name:'Dirección de Presupuestos'}),/^Detectado 11 oct\.? 2026 · DIPRES$/);
- assert.match(c.cardMetadata({event_date:'2026-10-07',date_basis:'data_release',data_release_date:'2026-10-07',source_name:'DEIS-MINSAL (datos.gob.cl)'}),/^Actualizado 07 oct\.? 2026 · DEIS-MINSAL \(datos\.gob\.cl\)$/);
+ assert.match(c.cardMetadata({event_date:'2026-10-07',date_basis:'data_release',data_release_date:'2026-10-07',source_name:'DEIS-MINSAL (datos.gob.cl)'}),/^Actualizado 7 oct 2026 · DEIS-MINSAL \(datos\.gob\.cl\)$/);
  assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Superintendencia de Seguridad Social (SUSESO)'}),/· SUSESO$/);
  assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Congreso Nacional · Tramitación (Senado, datos abiertos)'}),/· Congreso$/);
  assert.match(c.cardMetadata({event_date:'2026-10-20',source_name:'Fiscalía Nacional Económica (FNE)'}),/· FNE$/);
@@ -398,11 +398,12 @@ test('Global Alicanto summary (Dirección 29-oct): sources without translation r
   title:'EMA recommends 4 new medicines <b>',description:'The CHMP recommended 4 medicines.',summary_es:'La EMA propuso autorizar 4 medicamentos <script>alert(1)</script>.',title_es:'Ignorado',
   translation:{status:'summarized',kind:'summary',verified:true,notice_es:'Resumen de Alicanto (la fuente no permite traducir)',check_note_es:'Escrito automáticamente por Alicanto; puede contener errores'}};
  load([base]);const e=c.entryFor('daily-m1');
- assert.equal(e.title,'EMA recommends 4 new medicines <b>');assert.equal(e.key,'global-feed:m1');
+ assert.equal(e.title,'La EMA propuso autorizar 4 medicamentos <script>alert(1)</script>');// decision 3: Spanish row from Alicanto's summary
+assert.equal(e.key,'global-feed:m1');
  assert.match(c.metaFor(e),/<span class="tr-note">Resumen de Alicanto \(la fuente no permite traducir\)<\/span>/);
  const html=c.headlineDetail(e);
- assert.match(html,/<h2 id="globalDetailTitle">EMA recommends 4 new medicines &lt;b&gt;<\/h2><h3 class="ficha-h">Resumen de Alicanto \(la fuente no permite traducir\)<\/h3><p class="alicanto-summary">La EMA propuso autorizar 4 medicamentos &lt;script&gt;alert\(1\)&lt;\/script&gt;\.<\/p>/);
- assert.doesNotMatch(html,/<script>|<b>|Ignorado|Título original/);
+ assert.match(html,/<h2 id="globalDetailTitle">La EMA propuso autorizar 4 medicamentos &lt;script&gt;alert\(1\)&lt;\/script&gt;<\/h2><p class="orig-title"><span>Título original<\/span> EMA recommends 4 new medicines &lt;b&gt;<\/p><p class="sigla"><abbr>EMA<\/abbr>: Agencia Europea de Medicamentos<\/p><h3 class="ficha-h">Resumen de Alicanto \(la fuente no permite traducir\)<\/h3>/);
+ assert.doesNotMatch(html,/<script>|<b>|Ignorado/);
  assert.match(html,/<h3 class="ficha-h">Resumen de la fuente<\/h3><p>The CHMP recommended 4 medicines\.<\/p>/);
  assert.match(html,/Escrito automáticamente por Alicanto; puede contener errores\./);
  // Unverified, wrong kind or empty summary -> the original only.
@@ -504,13 +505,18 @@ test('Datos orders Recientes by verification day, groups by config and shows rea
  // Dirección 11-nov-2026: what was read goes down, unread first (each newest first), in both views.
  assert.deepEqual([...html.matchAll(/class="dx-item" data-family="(F\d+)"/g)].map(m=>m[1]),['F2','F6','F1']);
  assert.deepEqual(JSON.parse(JSON.stringify(D.recientes(data.families,new Set(['stats-ficha:F2:2026-08'])).filter(f=>f.state==='live').map(f=>f.family))),['F6','F1','F2']);
+ // Decision 6 (Dirección 11-nov): a card read during this visit keeps its place; it goes down on the next visit.
+ const order=h=>[...h.matchAll(/data-family="(F\d+)"/g)].map(m=>m[1]).filter((x,i,a)=>a.indexOf(x)===i);
+ const now=D.render(data,'recientes',new Set(['stats-ficha:F2:2026-08']),new Set());
+ assert.deepEqual(order(now).slice(0,3),['F2','F6','F1']);assert.match(now,/class="dotbtn done" data-read="stats-ficha:F2:2026-08"/);
+ assert.deepEqual(order(D.render(data,'recientes',new Set(['stats-ficha:F2:2026-08']))).slice(0,3),['F6','F1','F2']);
  // One read card (F1), two unread; the dot is the read toggle; no «Nuevo» pill, no KPI block, no «Vigente», no headline.
  assert.equal((html.match(/class="dc-card read"/g)||[]).length,1);assert.equal((html.match(/class="dc-card"/g)||[]).length,2);
  assert.equal((html.match(/class="dotbtn done" data-read=/g)||[]).length,1);assert.equal((html.match(/<span class="unread-dot"><\/span>/g)||[]).length,2);
  assert.doesNotMatch(html,/dx-badge|Nuevo|Leída|dx-kpi|Vigente|Hallazgo F1<\/a>/);
  assert.match(html,/<span class="dc-src">Datos jul–sep 2026 · trimestral<\/span>/);assert.match(html,/Datos jul–sep 2026 · trimestral · actualizándose/);
  assert.match(html,/<h3 class="dc-title"><a class="dc-open" href="index\.html\?abrir=1&amp;desde=datos#sig-stats-ficha:F2:2026-08">Título F2<\/a><\/h3>/);
- assert.match(html,/<div class="card-meta dc-meta"><span class="meta-text">Detectado 10 nov\.? 2026 · SIS<\/span><\/div>/);
+ assert.match(html,/<div class="card-meta dc-meta"><span class="meta-text">Actualizado 10 nov 2026 · SIS<\/span><\/div>/);
  assert.match(html,/class="act act-share" data-share="sig-stats-ficha:F2:2026-08" data-share-url="data\/fichas\/f2\.html" data-share-title="Hallazgo F2"/);
  assert.doesNotMatch(html,/dx-soon|pronto|en verificación/);// Dirección 11-nov: unpublished families are not shown
  assert.match(D.render(data,'grupo',new Set()),/<h2 class="dx-sec"[^>]*>Aseguradores<\/h2>/);
@@ -563,7 +569,7 @@ test('Datos view preference is per viewer and survives a blocked localStorage',(
  const store={},D=datosContext(store);assert.equal(D.loadView(),'recientes');D.saveView('grupo');assert.equal(store.alicanto_datos_view,'grupo');assert.equal(D.loadView(),'grupo');
  const c={localStorage:{getItem:()=>{throw new Error('blocked')},setItem:()=>{throw new Error('blocked')}}};vm.createContext(c);vm.runInContext(fs.readFileSync('web/datos.js','utf8'),c);assert.equal(c.AlicantoDatos.loadView(),'recientes');assert.doesNotThrow(()=>c.AlicantoDatos.saveView('grupo'));
 });
-test('Datos is in the top nav of every page that shares it',()=>{for(const p of ['index','global','datos']){const html=fs.readFileSync(`web/${p}.html`,'utf8');assert.match(html,/<a class="header-premium" href="datos\.html"( aria-current="page")? data-short="Datos">/,p)}assert.match(fs.readFileSync('web/sources.html','utf8'),/<a href="datos\.html">Datos<\/a>/);assert.match(fs.readFileSync('web/app.js','utf8'),/get\('desde'\)==='datos'/)});
+test('Datos is in the top nav of every page that shares it',()=>{for(const p of ['index','global','datos']){const html=fs.readFileSync(`web/${p}.html`,'utf8');assert.match(html,/<a class="header-premium" href="datos\.html"( aria-current="page")? data-short="Datos">/,p)}assert.match(fs.readFileSync('web/sources.html','utf8'),/<a class="header-premium" href="datos\.html" data-short="Datos">/);assert.match(fs.readFileSync('web/app.js','utf8'),/get\('desde'\)==='datos'/)});
 test('Dirección 9-nov: normative card and ficha state type, issuer and emission date (SIS and SUSESO)',()=>{const c=context();
 const sis={title:'Circular IF/N°541 - Emisión: 5/11/2026',display_title:'Circular IF/N°541 · Aclara la determinación de la base de cálculo del deducible de la CAEC',source_name:'Superintendencia de Salud',source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n541-emision-5-11-2026/',event_date:'2026-11-05',event_type:'REGULATION',signal_types:['Normativa'],normative_document_type:'Circular',normative_minimal:true,normative_context:'Emitida por Superintendencia de Salud con fecha 2026-11-05. Asunto oficial: Aclara.',radar_score:65};
 const card=c.card(sis);assert.match(card,/>Circular IF\/N°541 · Aclara/);assert.match(card,/<span class="tag">Normativa<\/span>/);
@@ -577,7 +583,7 @@ assert.match(rh,/<p class="wi-kicker norm-kicker">Norma · Circular<\/p><h2 id='
 assert.match(c.detailHtml({...sis,normative_document_type:'Dictamen',display_title:'Dictamen N°1234 · Interpreta'}),/norm-kicker">Norma · Dictamen · Superintendencia de Salud · Emitida/);
 assert.doesNotMatch(c.detailHtml({title:'Noticia',event_date:'2026-11-05',signal_types:['Noticias']}),/norm-kicker/)});
 
-test('a rolling sanctions register shows Actualizado with its newest act (Dirección 10-nov-2026)',()=>{const c=context();const s={event_type:'SANCTION_REGISTER',signal_types:['Fiscalización'],event_date:'2026-11-06',emission_date:'2026-11-06',publication_date:null,detected_at:'2026-11-09T22:34:33Z',event_date_basis:'emission',source_name:'Superintendencia de Seguridad Social (SUSESO)'};assert.match(c.cardMetadata(s),/^Actualizado 0?6 nov\.? 2026 · SUSESO$/);assert.doesNotMatch(c.cardMetadata(s),/Detectado|Publicado/)});
+test('a rolling sanctions register shows Actualizado with its newest act (Dirección 10-nov-2026)',()=>{const c=context();const s={event_type:'SANCTION_REGISTER',signal_types:['Fiscalización'],event_date:'2026-11-06',emission_date:'2026-11-06',publication_date:null,detected_at:'2026-11-09T22:34:33Z',event_date_basis:'emission',source_name:'Superintendencia de Seguridad Social (SUSESO)'};assert.match(c.cardMetadata(s),/^Actualizado 6 nov 2026 · SUSESO$/);assert.doesNotMatch(c.cardMetadata(s),/Detectado|Publicado/)});
 
 test('the header logo links home (Al día) on every page that shows it (Dirección 11-nov)',()=>{
   for(const f of ['index.html','global.html','datos.html','datos-v2.html','subscription.html']){

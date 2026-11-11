@@ -31,22 +31,24 @@
   if(!isLive(f))return '';
   return `<article class="dx-item" data-family="${esc(f.family)}" data-piece="${esc(f.piece_id)}">${card(f,read)}</article>`;
  }
- function render(data,view,readSet){
+ // orderSet: what was read when the reader entered Datos (Dirección 11-nov, decision 6): a card marked read now keeps its
+ // place until the next visit, so the list never jumps under the finger. Defaults to readSet.
+ function render(data,view,readSet,orderSet=readSet){
   const read=f=>Boolean(readSet&&readSet.has(f.piece_id));
   const list=fs=>`<div class="dx-list">${fs.map(f=>row(f,read(f))).join('')}</div>`;
   if(!(data.families||[]).some(isLive))return '<p class="datos-empty">Aún no hay fichas publicadas.</p>';
-  if(view==='grupo')return byGroup(data,readSet).map(g=>`<section class="dx-group" aria-labelledby="dx-g-${esc(g.key)}"><h2 class="dx-sec" id="dx-g-${esc(g.key)}">${esc(g.label)}</h2>${list(g.families)}</section>`).join('');
-  return list(recientes(data.families,readSet).filter(isLive));
+  if(view==='grupo')return byGroup(data,orderSet).map(g=>`<section class="dx-group" aria-labelledby="dx-g-${esc(g.key)}"><h2 class="dx-sec" id="dx-g-${esc(g.key)}">${esc(g.label)}</h2>${list(g.families)}</section>`).join('');
+  return list(recientes(data.families,orderSet).filter(isLive));
  }
  const api={recientes,byGroup,render,row,card,href,loadView,saveView,VIEW_KEY,BASE};
  root.AlicantoDatos=api;
  if(typeof document==='undefined'||!document.getElementById('datosList'))return;
  const host=document.getElementById('datosList'),toggle=document.getElementById('datosView');
  const Read=root.AlicantoRead,Bar=root.AlicantoBar;
- let data=null,view=loadView();
+ let data=null,view=loadView(),entered=null;
  const status=m=>{const el=document.getElementById('readStatus');if(el)el.textContent=m};
  function sync(){toggle.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));host.dataset.view=view}
- function draw(){sync();if(data)host.innerHTML=render(data,view,Read?Read.readSet:null)}
+ function draw(){sync();if(data)host.innerHTML=render(data,view,Read?Read.readSet:null,entered)}
  toggle.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(view===b.dataset.view)return;view=b.dataset.view;saveView(view);draw()});
  // The dot is the read toggle, as in Chile; «Compartir» uses the Chile share path (inbox-bar.js shareCard).
  host.addEventListener('click',async e=>{
@@ -56,5 +58,5 @@
  });
  sync();
  if(Read)Read.subscribe(()=>draw());
- fetch('data/datos.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('datos');return r.json()}).then(async d=>{if(Read)await Read.ready;data=d;draw()}).catch(()=>{host.innerHTML='<p class="datos-empty">No se pudieron cargar los datos.</p>'});
+ fetch('data/datos.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('datos');return r.json()}).then(async d=>{if(Read)await Read.ready;entered=Read?new Set(Read.readSet):null;data=d;draw()}).catch(()=>{host.innerHTML='<p class="datos-empty">No se pudieron cargar los datos.</p>'});
 })(typeof window==='undefined'?globalThis:window);

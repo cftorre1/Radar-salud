@@ -15,7 +15,8 @@
 // of the item's title/description. The English title stays as the row and ficha title; the summary is labelled as
 // Alicanto's, never as the source's text. All text is escaped.
 const esc=(s='')=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-const dateText=raw=>raw?new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'short',year:'numeric',timeZone:'America/Santiago'}).format(new Date(`${String(raw).slice(0,10)}T12:00:00Z`)):'Fecha no verificada';
+const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d).map(x=>[x.type,x.value]));return `${Number(p.day)} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(p.month)-1]}${y?' '+p.year:''}`};// Dirección 11-nov-2026: «6 nov 2026», never «06 nov.» or «sept», the same in every browser
+const dateText=raw=>raw?DIA(new Date(`${String(raw).slice(0,10)}T12:00:00Z`)):'Fecha no verificada';
 function stored(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
 function globalKey(id){return `global:${id}`}
 function feedKey(id){return `global-feed:${id}`}
@@ -52,7 +53,13 @@ function summarized(x){const t=x?.translation;return Boolean(t&&t.status==='summ
 function spanishPage(x){try{const u=new URL(String(x?.url||''));return (u.hostname==='paho.org'||u.hostname.endsWith('.paho.org'))&&u.pathname.startsWith('/es/')}catch{return false}}
 function inSpanish(x){return translated(x)||summarized(x)||spanishPage(x)}
 const SUMMARY_NOTICE='Resumen de Alicanto (la fuente no permite traducir)',ROW_NOTE='Traducido por Alicanto',CHECK_NOTE='Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores';
-function shownTitle(x){return translated(x)?str(x.title_es):x.title}
+// Decision 3: every row reads in Spanish. When the licence forbids translating (WHO), the row shows the first sentence of
+// Alicanto's own verified summary; the original title stays in the ficha as «Título original».
+// Decision 3: what each acronym stands for, once in the ficha (rows keep the short label).
+const SIGLAS={OMS:'Organización Mundial de la Salud',OPS:'Organización Panamericana de la Salud',FDA:'Administración de Alimentos y Medicamentos de EE. UU.',EMA:'Agencia Europea de Medicamentos',ECDC:'Centro Europeo para la Prevención y el Control de Enfermedades',CDC:'Centros para el Control y la Prevención de Enfermedades de EE. UU.',NICE:'Instituto Nacional de Salud y Excelencia Clínica del Reino Unido',OCDE:'Organización para la Cooperación y el Desarrollo Económicos'};
+const ABBR=/\b(?:EE|UU|EE\. ?UU|Dr|Dra|Sr|Sra|N|Nº|art|núm|etc)\.$/;
+function firstSentence(t){t=str(t);const re=/[.!?](?=\s+[A-ZÁÉÍÓÚÑ¿¡]|$)/g;let m;while((m=re.exec(t))){const head=t.slice(0,m.index+1);if(!ABBR.test(head))return head.replace(/[.]$/,'')}return t.replace(/[.]$/,'')}
+function shownTitle(x){return translated(x)?str(x.title_es):summarized(x)?firstSentence(x.summary_es):x.title}
 function headlineEntry(x){return {kind:'headline',id:x.id,dom:`daily-${x.id}`,key:feedKey(x.id),date:String(x.published_at).slice(0,10),seen:String(x.first_seen_on||'').slice(0,10),title:shownTitle(x),publishers:[x.source_label].filter(Boolean),url:httpsUrl(x.url),priority:Number(x.priority)||0,x}}
 function buildEntries(){entries=[...themes.map(themeEntry),...headlines.map(headlineEntry)]}
 function entryFor(dom){return entries.find(e=>e.dom===dom)}
@@ -72,7 +79,7 @@ function license(x){const u=httpsUrl(x.rights_basis?.license_url);return u?` · 
 // Every machine translation is marked on its row ("Traducido por Alicanto"), public-domain sources included; this also
 // indicates the change for CC BY/OGL. A source whose licence forbids translation says so.
 function langNote(x){const t=x.translation||{};if(translated(x))return ` · <span class="tr-note">${esc(str(t.row_note_es)||ROW_NOTE)}</span>`;if(summarized(x))return ` · <span class="tr-note">${esc(str(t.notice_es)||SUMMARY_NOTICE)}</span>`;return t.status==='not_allowed'&&str(t.note_es)?` · <span class="tr-note">${esc(t.note_es)}</span>`:''}
-function metaFor(e){if(e.kind==='theme')return `${esc(e.publishers.join(' + '))} · ${dateText(e.date)}`;const x=e.x,a=authors(x);return `<span class="eyebrow">Titular</span> · ${esc(x.source_label)}${a?` (${esc(a)})`:''} · ${dateText(e.date)}${license(x)}${langNote(x)}`}
+function metaFor(e){if(e.kind==='theme')return `${esc(e.publishers.join(' + '))} · ${dateText(e.date)}`;const x=e.x,a=authors(x);return `${esc(x.source_label)}${a?` (${esc(a)})`:''} · ${dateText(e.date)}${license(x)}${langNote(x)}`}
 function row(e){const read=isRead(e),attr=e.kind==='theme'?`data-theme="${esc(e.id)}"`:`data-daily="${esc(e.id)}"`;return `<article class="${e.kind==='theme'?'theme':'daily-item'} signal item ${read?'read':''}" id="${esc(e.dom)}" tabindex="-1" ${attr}>${AlicantoBar.dotButton('data-read',e.dom,read,e.title)}<div class="item-body"><h2><button type="button" class="title-open" data-open="${esc(e.dom)}">${esc(e.title)}</button></h2><div class="card-meta"><span class="meta-text">${metaFor(e)}</span></div>${AlicantoBar.rowActions(`data-open="${esc(e.dom)}"`,e.url,e.dom,e.title)}</div></article>`}
 // A headline ficha holds only verified data: title, the publisher's own description if one was captured (verbatim;
 // "…" when the feed cut it), date, source and attribution, the OGL statement when it applies, and related sources
@@ -93,10 +100,10 @@ function relatedFor(x,own){const seen=new Set([own].filter(Boolean)),out=[];
  return out}
 function headlineDetail(e){const x=e.x,desc=headlineDesc(x),by=(x.bylines||[]).filter(Boolean),related=relatedFor(x,e.url);
  const origin=`<section class="source">${e.url?`<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(x.source_label||'')}${x.source_label?' · ':''}${esc(x.title)} ↗</a>`:''}<span>Publicado ${dateText(e.date)}${by.length?` · ${esc(by.join(', '))}`:''}${license(x)}</span>${x.attribution&&x.attribution!==x.source_label?`<span>${esc(x.attribution)}</span>`:''}</section>`;
- const tr=translated(x),t=x.translation||{},original=tr?`<p class="orig-title"><span>Título original</span> ${esc(x.title)}</p>`:'';
- const sm=summarized(x),own=sm?`<h3 class="ficha-h">${esc(str(t.notice_es)||SUMMARY_NOTICE)}</h3><p class="alicanto-summary">${esc(str(x.summary_es))}</p>`:'';
+ const tr=translated(x),t=x.translation||{},original=tr||summarized(x)?`<p class="orig-title"><span>Título original</span> ${esc(x.title)}</p>`:'',sig=SIGLAS[x.source_label]?`<p class="sigla"><abbr>${esc(x.source_label)}</abbr>: ${esc(SIGLAS[x.source_label])}</p>`:'';
+ const sm=summarized(x),rest=sm?str(x.summary_es).slice(firstSentence(x.summary_es).length).replace(/^[.!?]?\s*/,''):'',own=sm?`<h3 class="ficha-h">${esc(str(t.notice_es)||SUMMARY_NOTICE)}</h3>${rest?`<p class="alicanto-summary">${esc(rest)}</p>`:''}`:'';// the title already is its first sentence
  const langFoot=tr?`<p class="ficha-note">${esc(t.notice_es||'Traducción automática de Alicanto')}${str(t.change_notice_es)&&t.change_notice_es!==t.notice_es?` · ${esc(t.change_notice_es)}`:''}. ${esc(str(t.check_note_es)||CHECK_NOTE)}.</p>`:sm?`<p class="ficha-note">${esc(str(t.check_note_es)||CHECK_NOTE)}.</p>`:t.status==='not_allowed'&&str(t.note_es)?`<p class="ficha-note">${esc(t.note_es)}.</p>`:'';
- return `<h2 id="globalDetailTitle">${esc(shownTitle(x))}</h2>${original}${own}${desc?`<h3 class="ficha-h">Resumen de la fuente</h3><p>${esc(desc)}</p>`:''}<section class="ficha-sources sources"><h3 class="ficha-h">Fuentes</h3>${origin}${related.map(r=>`<section class="source"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)}${r.label&&r.title?' · ':''}${esc(r.title)} ↗</a>${r.date?`<span>Publicado ${dateText(r.date)}</span>`:''}</section>`).join('')}</section>${oglNote(x,'ficha-note ficha-attr')}${langFoot}<p class="ficha-note">Titular de la fuente, sin análisis de Alicanto.</p>`}
+ return `<h2 id="globalDetailTitle">${esc(shownTitle(x))}</h2>${original}${sig}${own}${desc?`<h3 class="ficha-h">Resumen de la fuente</h3><p>${esc(desc)}</p>`:''}<section class="ficha-sources sources"><h3 class="ficha-h">Fuentes</h3>${origin}${related.map(r=>`<section class="source"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)}${r.label&&r.title?' · ':''}${esc(r.title)} ↗</a>${r.date?`<span>Publicado ${dateText(r.date)}</span>`:''}</section>`).join('')}</section>${oglNote(x,'ficha-note ficha-attr')}${langFoot}<p class="ficha-note">Titular de la fuente, sin análisis de Alicanto.</p>`}
 function renderPublishers(){const base=entries.filter(inPeriod),all=[...new Set(entries.flatMap(e=>e.publishers))].sort((a,b)=>a.localeCompare(b,'es')),host=document.getElementById('globalPublisher');for(const p of [...activePublishers])if(!all.includes(p))activePublishers.delete(p);const count=p=>base.filter(e=>e.publishers.includes(p)).length;const focused=document.activeElement?.dataset?.publisher;host.innerHTML=`<button type="button" class="tog tog-all" data-publisher="" aria-pressed="${!activePublishers.size}"><span class="box" aria-hidden="true"></span><span>Todas las fuentes</span><small>${base.length}</small></button><div class="interest-grid">${all.map(p=>`<button type="button" class="tog" data-publisher="${esc(p)}" aria-pressed="${activePublishers.has(p)}"><span class="box" aria-hidden="true"></span><span>${esc(p)}</span><small>${count(p)}</small></button>`).join('')}</div>`;host.querySelectorAll('[data-publisher]').forEach(b=>b.onclick=()=>{const p=b.dataset.publisher;if(!p)activePublishers.clear();else if(activePublishers.has(p))activePublishers.delete(p);else activePublishers.add(p);persistFilters();render()});if(focused!==undefined)host.querySelector(`[data-publisher="${CSS.escape(focused)}"]`)?.focus()}
 function updateCounts(){const v=visibleEntries(),unread=v.filter(e=>!isRead(e));document.getElementById('globalMetrics').textContent=unread.length?`${unread.length} pendientes`:'Estás al día';AlicantoBar.syncLanes(document.getElementById('globalLanes'),laneMode,{p:unread.length,l:v.length-unread.length,t:v.length});document.getElementById('globalMarkAll').hidden=!unread.length;return v}
 function render(){
@@ -105,8 +112,13 @@ function render(){
  document.getElementById('globalDone').textContent=`Ver ${v.length} señales`;
  document.getElementById('globalFeedCount').textContent=`${v.length} señales · ${periodLabel()}`;
  const empty=laneMode==='p'?'Estás al día con las señales de este período.':laneMode==='l'?'Aún no hay señales leídas en este período.':'No hay señales en este período.';
- const gs=groups(shown);
- host.innerHTML=gs.length?gs.map(([n,xs])=>`<section class="inbox-group" aria-label="${n}"><h3 class="group-head">${n}</h3>${xs.map(row).join('')}</section>`).join(''):`<p class="inbox-empty">${empty}</p>`;
+ // Decision 3 (Dirección 11-nov-2026): the news of the week that Al día shows opens Global, at the top, so both say the
+ // same; it is not repeated in its date group.
+ const pk=feedMeta&&feedMeta.weekly_pick,pe=pk&&shown.find(e=>e.kind==='headline'&&e.id===pk.id);
+ const week=pe?`<section class="inbox-group week-pick" id="semana" aria-label="Noticia de la semana"><h3 class="group-head">Noticia de la semana</h3>${row(pe)}</section>`:'';
+ const gs=groups(shown.filter(e=>e!==pe));
+ host.innerHTML=week+(gs.length?gs.map(([n,xs])=>`<section class="inbox-group" aria-label="${n}"><h3 class="group-head">${n}</h3>${xs.map(row).join('')}</section>`).join(''):(week?'':`<p class="inbox-empty">${empty}</p>`));
+ if(pe&&location.hash==='#semana'&&!render.scrolled){render.scrolled=true;document.getElementById('semana')?.scrollIntoView({block:'start'})}
  host.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openEntry(b.dataset.open));
  host.querySelectorAll('[data-read]').forEach(b=>b.onclick=()=>toggleRead(b.dataset.read));
  host.querySelectorAll('[data-share]').forEach(b=>b.onclick=()=>AlicantoBar.shareCard(b));

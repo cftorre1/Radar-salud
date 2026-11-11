@@ -156,6 +156,11 @@ the independent review (`weekly_insight_a.review_prompt`).
 6. **First screen.** On a 390 × 844 phone the lead paragraph starts on the first screen: the header (date, headline,
    dek, byline) must leave it visible (`tests/browser/insight-essay.spec.cjs`, which sets its own clock to the day after
    the anchor because the suite clock is pinned to an older date). Keep headlines short enough for that.
+7. **Headline without unproven causality** (Dirección, 11-nov-2026). The headline states facts the evidence shows.
+   It never says that one fact causes or «se paga en» another unless a source in the package states that link; two
+   facts that happen at the same time are joined with «y», «mientras» or a colon, never with a causal verb. FAIL
+   criterion of the independent review. Applied to the 9-nov insight: «…pero la falta de cuidados ya se paga en camas
+   de hospital» → «Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña».
 
 **Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
 `verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text

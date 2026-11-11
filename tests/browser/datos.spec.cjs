@@ -118,8 +118,12 @@ test('Datos: read state uses the Chile dot; a read here or in Chile shows in bot
  const unread=await card(first).evaluate(c=>({bg:getComputedStyle(c).backgroundColor,w:getComputedStyle(c.querySelector('.dc-title')).fontWeight}));
  expect(unread.bg).toBe('rgb(255, 255, 255)');expect(Number(unread.w)).toBeGreaterThanOrEqual(700);
  // The dot marks it read (tick, regular muted title, no white fill) and back.
+ const before=await page.locator('#datosList .dx-item').evaluateAll((xs,f)=>xs.findIndex(x=>x.dataset.family===f),first.family);
  await card(first).locator('.dotbtn').click();
  await expect(card(first)).toHaveClass(/\bread\b/);await expect(card(first).locator('.dotbtn.done')).toHaveCount(1);
+ // Decision 6 (Dirección 11-nov): it keeps its place during this visit; it goes down on the next one.
+ const pos=()=>page.locator('#datosList .dx-item').evaluateAll((xs,f)=>xs.findIndex(x=>x.dataset.family===f),first.family);
+ expect(await pos()).toBe(before);
  const read=await card(first).evaluate(c=>({bg:getComputedStyle(c).backgroundColor,w:getComputedStyle(c.querySelector('.dc-title')).fontWeight}));
  expect(read.bg).toBe('rgba(0, 0, 0, 0)');expect(Number(read.w)).toBeLessThan(500);
  await card(first).locator('.dotbtn').click();await expect(card(first)).not.toHaveClass(/\bread\b/);
@@ -159,7 +163,10 @@ test('Datos and the Chile data card fit 320 and 390 px with no horizontal scroll
   for(const x of fit.links){expect(x.l).toBeGreaterThanOrEqual(0);expect(x.r).toBeLessThanOrEqual(fit.w)}
   expect(await noHScroll(page)).toBeTruthy();
  }
- await page.goto('/sources.html');await expect(page.locator('.sources-page .topnav a[href="datos.html"]')).toHaveText('Datos');
+ // Fuentes shares the same header (decision 4, 11-nov-2026): no section is current there.
+ await page.goto('/sources.html');await expect(page.locator('.brandbar .topnav a[href="datos.html"]')).toHaveAttribute('data-short','Datos');
+ await expect(page.locator('.topnav a[aria-current="page"]')).toHaveCount(0);expect(await noHScroll(page)).toBeTruthy();
+ await expect(page.locator('#catalogDatos .src2-row').first()).toBeVisible();await expect(page.locator('#catalogGlobal .src2-row').first()).toBeVisible();
 });
 
 test('Datos screenshots at 390 px',async({browser},testInfo)=>{

@@ -719,6 +719,22 @@ def _sanction_pulses(signals, today=None):
         other.append(pulse)
     return other
 
+def _normative_archive(history,shown):
+    """SIS/SUSESO norms older than Al día's window that pass the same publication gate (decision 7, 11-nov-2026)."""
+    from radar_salud.sis_news import repair_stored_news
+    urls={s.get("source_url") for s in shown};newest={}
+    for s in history:
+        if (s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or [])) and s.get("source_url") not in urls:
+            newest[s.get("source_url")]=s
+    out=[]
+    for s in newest.values():
+        if s.get("feed_visibility") is False or str(s.get("editorial_schema_version"))=="3":continue
+        r=_normative_contract(_suseso_normative_upgrade(_editorial_enrichment(_card_micro(_separate_df_deck(_normalize_scopes(_normalize_type(repair_stored_news(s))))))))
+        ok,_,_=publication_ready(r)
+        if ok and r.get("feed_visibility") is not False:out.append(r)
+    return out
+
+
 def curate(signals,resolve_external=True,as_of=None):
     # Version3 is already reviewed as a complete public artifact. Legacy copy
     # transforms must never rewrite it after its receipt was signed.
@@ -883,7 +899,7 @@ def main():
     (out.parent/"datos.json").write_text(json.dumps(datos,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     # Normativa (Dirección 11-nov-2026): standing SIS/SUSESO registry, no 90-day logic; literal effective dates only.
     from radar_salud import normativa_index
-    normativa_index.export(payload["signals"],Path("."),out.parent,date.fromisoformat(payload["date"]),payload["generated_at"],persist=not args.offline and args.as_of is None,history=signals)
+    normativa_index.export(payload["signals"],Path("."),out.parent,date.fromisoformat(payload["date"]),payload["generated_at"],persist=not args.offline and args.as_of is None,history=signals,archive=_normative_archive(signals,payload["signals"]))
     # Review previews (Dirección 4-nov-2026): fichas held only by their first-review gate, for web/preview.html.
     from radar_salud import review_preview
     review_preview.write(Path("."),out.parent)

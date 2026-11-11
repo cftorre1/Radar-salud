@@ -15,7 +15,8 @@
  // builder's fmt_int/fmt_dec; without it, the integer counts of F1/F6 keep sg(). The sign follows the rounded value.
  const sgd=(v,d)=>{if(!Number.isInteger(d))return sg(v);const q=Number(Number(v).toFixed(d));return(q>0?'+':q<0?'−':'')+dec(Math.abs(q),d)};
  const https=u=>/^https:\/\//.test(String(u||''));
- function fmtDay(raw){const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw||'')?raw+'T12:00:00Z':raw);return Number.isNaN(d.getTime())?esc(raw):new Intl.DateTimeFormat('es-CL',{day:'numeric',month:'short',year:'numeric',timeZone:'America/Santiago'}).format(d)}
+const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d).map(x=>[x.type,x.value]));return `${Number(p.day)} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(p.month)-1]}${y?' '+p.year:''}`};// Dirección 11-nov-2026: «6 nov 2026», never «06 nov.» or «sept», the same in every browser
+ function fmtDay(raw){const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw||'')?raw+'T12:00:00Z':raw);return Number.isNaN(d.getTime())?esc(raw):DIA(d)}
  function table(t){if(!t||!arr(t.columns).length)return'';return`<table class="sf-table"><thead><tr>${t.columns.map((c,i)=>`<th scope="col" class="${i?'n':''}">${esc(c)}</th>`).join('')}</tr></thead><tbody>${arr(t.rows).map(r=>`<tr>${arr(r).map((c,i)=>i?`<td class="n">${esc(c)}</td>`:`<th scope="row">${esc(c)}</th>`).join('')}</tr>`).join('')}</tbody></table>`}
  // Signed columns: bars hang from (or rise to) the zero line; the emphasized period takes the accent.
  function columns(c){

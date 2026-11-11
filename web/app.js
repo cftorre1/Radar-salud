@@ -144,8 +144,9 @@ function sourceCaptureLabel(x){
  if(technical==='partial'||status==='warning'||['partial','gap','format_gap','unverified'].includes(coverage))return'Cobertura parcial o pendiente de validación';
  return x.checked_at?'Consulta registrada · no acredita cobertura completa':'Sin consulta verificable';
 }
-function fmtDate(raw){if(!raw)return'';const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return esc(raw);return new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'short',year:'numeric',timeZone:'America/Santiago'}).format(d)}
-function fmtBriefDate(raw){if(!raw)return'';const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return String(raw);return new Intl.DateTimeFormat('es-CL',{day:'numeric',month:'short',timeZone:'America/Santiago'}).format(d).replace(/^(\d{1,2})-(?=\p{L})/u,'$1 ').replace(/\.$/,'')}
+const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d).map(x=>[x.type,x.value]));return `${Number(p.day)} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(p.month)-1]}${y?' '+p.year:''}`};// Dirección 11-nov-2026: «6 nov 2026», never «06 nov.» or «sept», the same in every browser
+function fmtDate(raw){if(!raw)return'';const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return esc(raw);return DIA(d)}
+function fmtBriefDate(raw){if(!raw)return'';const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return String(raw);return DIA(d,false)}
 function briefSource(x){return x.kind==='weekly'&&x.source==='Superintendencia de Salud'?'SIS':String(x.source||'').replace(/\s*[·+]\s*/g,' + ')}
 function fmtUpdated(raw){const d=new Date(raw);if(Number.isNaN(d.getTime()))return'';const t=new Intl.DateTimeFormat('es-CL',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Santiago'}).format(d);return`Última actualización: ${fmtDate(raw)}, ${t}`}
 function tagHtml(s){return [...typeTags(s).map(x=>`<span class="tag">${esc(x)}</span>`),...scopeTags(s).slice(0,3).map(x=>`<span class="tag scope">${esc(x)}</span>`)].join('')}

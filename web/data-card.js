@@ -11,12 +11,17 @@
  const esc=(s='')=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
  const arr=x=>Array.isArray(x)?x:[];
  // Feed row: one date that says whether it is news ('Publicado' / 'Detectado' / 'Actualizado') and the source acronym.
- function fmtDate(raw){if(!raw)return'';const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return esc(raw);return new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'short',year:'numeric',timeZone:'America/Santiago'}).format(d)}
+const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d).map(x=>[x.type,x.value]));return `${Number(p.day)} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][Number(p.month)-1]}${y?' '+p.year:''}`};// Dirección 11-nov-2026: «6 nov 2026», never «06 nov.» or «sept», the same in every browser
+ function fmtDate(raw){if(!raw)return'';const d=new Date(/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00Z':raw);if(Number.isNaN(d.getTime()))return esc(raw);return DIA(d)}
  function canonicalSource(name){const n=String(name||'').toLowerCase();if(n.includes('suseso')||n.includes('superintendencia de seguridad social'))return'SUSESO';if(n.includes('superintendencia'))return'Superintendencia de Salud';if(n==='minsal'||n.includes('ministerio'))return'Ministerio de Salud';if(/^(?:pulso(?:\s*\/\s*la tercera|\s+latercera)?|la tercera)$/.test(n))return'Pulso / La Tercera';return name}
  const SOURCE_ABBR={'superintendencia de salud':'SIS','ministerio de salud':'Minsal','minsal':'Minsal','fondo nacional de salud':'Fonasa','fonasa':'Fonasa','instituto de salud pública':'ISP','instituto de salud pública de chile':'ISP','isp':'ISP','superintendencia de seguridad social':'SUSESO','superintendencia de seguridad social (suseso)':'SUSESO','suseso':'SUSESO','fiscalía nacional económica':'FNE','fne':'FNE','congreso nacional':'Congreso','dirección de presupuestos':'DIPRES','dipres':'DIPRES','comisión para el mercado financiero':'CMF','cmf':'CMF','biblioteca del congreso nacional':'BCN','achs seguro laboral':'ACHS','sis':'SIS'};
  const bareSource=x=>{const t=String(x||'').trim(),m=t.match(/^(.*\S)\s*\(([^)]*)\)$/);return m&&SOURCE_ABBR[m[1].toLowerCase()]&&SOURCE_ABBR[m[1].toLowerCase()].toLowerCase()===m[2].trim().toLowerCase()?m[1]:t};
  function feedSource(name){const first=String(name||'').split(' · ')[0].trim();if(!first)return'';const bare=bareSource(first);return SOURCE_ABBR[bare.toLowerCase()]||(/^(?:pulso|la tercera)/i.test(bare)?canonicalSource(bare):first)}
- function rowDate(s){if(s.date_basis==='first_detected'){const d=s.first_detected_at||s.event_date;return d?`Detectado ${fmtDate(d)}`:''}
+ // Decision 5 (Dirección 11-nov-2026): one verb per piece type. A Datos ficha is «Actualizado» on the day its data
+ // changed in Alicanto (new release detected); norms are «Emitida» (norma-card.js); news «Publicado», or «Detectado» when
+ // the source gives no publication date (never inferred).
+ function rowDate(s){if(s.stats_ficha){const d=s.publication_date||s.published_on||s.data_release_date||s.first_detected_at||s.event_date;return d?`Actualizado ${fmtDate(d)}`:''}
+  if(s.date_basis==='first_detected'){const d=s.first_detected_at||s.event_date;return d?`Detectado ${fmtDate(d)}`:''}
   if(s.date_basis==='data_release'){const d=s.data_release_date||s.event_date;return d?`Actualizado ${fmtDate(d)}`:''}
   // A rolling sanctions register (Fiscalización · registro de 90 días) is data that updates: its row shows the issuance of
   // the newest act it counts (Dirección 5-nov rule 'Actualizado' for updated data; 10-nov-2026 on the SUSESO register).
@@ -34,7 +39,7 @@
  function model(f,s){
   const m={id:f?f.piece_id:(s&&s.piece_id),title:f?(f.index_title||f.label):String((s&&s.stats_ficha&&s.stats_ficha.family_label)||(s&&(s.display_title||s.title))||''),
    period_label:f?f.period_label:null,cadence:f?f.cadence:null,updating:Boolean(f&&f.status==='updating'),
-   topics:f&&Array.isArray(f.topics)?f.topics:topicsOf(s&&s.stats_ficha),row:s||(f&&f.feed_row)||{},
+   topics:f&&Array.isArray(f.topics)?f.topics:topicsOf(s&&s.stats_ficha),row:s||(f&&f.feed_row?{...f.feed_row,stats_ficha:true}:{}),
    share_title:(f&&f.share_title)||(f&&f.headline)||'',dataset:(f&&f.source_dataset)||'',share_url:(s&&s.share_url)||(f&&f.share_url)||''};
   return m;
  }

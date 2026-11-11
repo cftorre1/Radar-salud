@@ -437,6 +437,36 @@ def public_payload(payload: dict, config: dict, as_of: date) -> dict:
 WEEKLY_PICK_RULE = "global_weekly_pick_v1"
 
 
+_MES = ("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic")
+
+
+_ABBR = re.compile(r"\b(?:EE|UU|EE\. ?UU|Dr|Dra|Sr|Sra|N|Nº|art|núm|etc)\.$")
+
+
+def _first_sentence(text: str) -> str:
+    t = _str(text)
+    for m in re.finditer(r"[.!?](?=\s+[A-ZÁÉÍÓÚÑ¿¡]|$)", t):
+        head = t[:m.end()]
+        if not _ABBR.search(head):
+            return head.rstrip(".")
+    return t.rstrip(".")
+
+
+def _no_relative_day(text: str, day) -> str:
+    """«emitió hoy» copied from the source is wrong a week later on Home: name the publication day instead."""
+    if not text or not day:
+        return text
+    from datetime import timedelta
+    fmt = lambda d: f"{d.day} {_MES[d.month - 1]} {d.year}"
+    def sub(word: str, d) -> None:
+        nonlocal text
+        text = re.sub(rf"\b{word}\b(?! en d[ií]a)", lambda m: ("El " if m.group(0)[0].isupper() else "el ") + fmt(d),
+                      text, flags=re.I)
+    sub("hoy", day)
+    sub("ayer", day - timedelta(days=1))
+    return text
+
+
 def weekly_pick(cards: list[dict], as_of: date) -> dict | None:
     from datetime import timedelta
     from .global_translation import already_spanish
@@ -450,7 +480,10 @@ def weekly_pick(cards: list[dict], as_of: date) -> dict | None:
         if already_spanish(c):
             return _str(c.get("title")), _str(c.get("description")), True
         if t.get("status") == "summarized" and t.get("verified") is True and _str(c.get("summary_es")):
-            return _str(c.get("title")), _str(c["summary_es"]), False
+            # Decision 3 (Dirección 11-nov-2026): the licence forbids translating the title, so the headline is the first
+            # sentence of Alicanto's own verified summary (as on the Global page) and the rest is the summary.
+            first = _first_sentence(c["summary_es"])
+            return first, _str(c["summary_es"])[len(first):].lstrip(".!? "), False
         return _str(c.get("title")), "", False
 
     pool = [c for c in cards if (d := _day(c.get("published_at"))) and start <= d <= anchor]
@@ -458,12 +491,16 @@ def weekly_pick(cards: list[dict], as_of: date) -> dict | None:
         return None
     c = sorted(pool, key=lambda c: (texts(c)[2], int(c.get("priority") or 0), c["published_at"], c["id"]), reverse=True)[0]
     title, summary, spanish = texts(c)
+    tr = c.get("translation") or {}
+    spanish = spanish or bool(tr.get("status") == "summarized" and tr.get("verified") is True
+                              and tr.get("kind") == "summary" and _str(c.get("summary_es")))
+    summary = _no_relative_day(summary, _day(c.get("published_at")))
     if summary and re.sub(r"\W+", "", summary.lower()) == re.sub(r"\W+", "", title.lower()):
         summary = ""  # a description that only repeats the title adds nothing under it
     return {"rule": WEEKLY_PICK_RULE, "week_anchor": anchor.isoformat(), "window": [start.isoformat(), anchor.isoformat()],
             "id": c["id"], "title": title, "summary": summary or None, "title_in_spanish": spanish,
             "source_label": c.get("source_label"), "published_at": c["published_at"], "url": c.get("url"),
-            "href": "global.html"}
+            "href": "global.html#semana"}
 
 
 def _read(path: Path, default):

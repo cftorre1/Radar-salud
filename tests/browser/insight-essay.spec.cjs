@@ -12,7 +12,7 @@ test('weekly insight essay: compact header, text on the first screen, byline, fo
  await page.waitForFunction(()=>typeof currentWeekly==='function'&&Boolean(currentWeekly()));
  await page.evaluate(()=>{renderWeeklyDetail(currentWeekly());document.getElementById('weeklyInsightDialog').showModal()});
  const d=page.locator('#weeklyInsightDialog');
- await expect(d.locator('.we-kicker')).toHaveText(/^Insight de la semana\d{2} [a-z]{3}\.? \d{4}$/i);
+ await expect(d.locator('.we-kicker')).toHaveText(/^Insight de la semana\d{1,2} [a-z]{3} \d{4}$/i);
  await expect(d.locator('.we-byline')).toHaveText(/^AlicantoLectura de \d+ min\d+ fuentes$/);
  // The lead paragraph starts on the first screen (phone 390×844 and desktop).
  const lead=await d.locator('.we-lead').boundingBox();expect(lead.y+60).toBeLessThan(page.viewportSize().height);

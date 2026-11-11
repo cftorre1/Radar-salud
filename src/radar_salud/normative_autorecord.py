@@ -179,6 +179,13 @@ def verify(record: dict[str, Any], label: str, evidence: str, official_subject: 
         if re.search(rf"\b{re.escape(actor)}(?:es|s)?\b", nt + " " + nc) and not re.search(rf"\b{re.escape(actor)}(?:es|s)?\b", ne):
             problems.append(f"actor_not_in_official_text:{actor}")
     for unit in set(_UNIT_RE.findall(nt + " " + nc)):
+        # Decision 7 (Dirección 11-nov-2026, Circular 3933): «6 meses corridos» in the record is backed by «6 meses
+        # corridos» in a quote. A qualifier still never backs a bare figure («30 días» ≠ «30 días hábiles»).
+        qual = {q for q in ("hábiles", "habiles", "corridos")
+                if re.search(rf"(?<![\d.,]){re.escape(unit)} {q}\b", nt + " " + nc)}
+        bare = re.search(rf"(?<![\d.,]){re.escape(unit)}(?! (?:h[aá]biles|habiles|corridos)\b)", nt + " " + nc)
+        if qual and not bare and all(re.search(rf"(?<![\d.,]){re.escape(unit)} {q}\b", nq) for q in qual):
+            continue  # every use of the figure carries its qualifier, and the quote says the same
         if not re.search(rf"(?<![\d.,]){re.escape(unit)}(?!\d| h[aá]biles| corridos| de \d{{4}})", nq) and not (
                 re.search(r" de \d{4}$", unit) and re.search(rf"(?<![\d.,]){re.escape(unit)}", nq)):
             problems.append(f"date_or_quantity_not_literal_in_quote:{unit}")

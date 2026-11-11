@@ -21,7 +21,7 @@ test('fiscalization reconciliation preserves act dates and separates reviewed no
  // The act date used to be read from the card_why paragraph; news fichas no longer carry it (Dirección 28-oct
  // 08:20, punto 4), so the pulse's own publication date is checked on the ficha's dated origin line.
  // Compact origin line (Dirección 1-nov-2026): one date and its kind.
- await expect(page.locator('#detailBody p.ficha-origin')).toContainText('15 sept 2026 (publicación)');
+ await expect(page.locator('#detailBody p.ficha-origin')).toContainText('15 sep 2026 (publicación)');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const instruction=radar.signals.find(signal=>signal.source_url?.endsWith('w3-article-791293.html'));
  expect(instruction.signal_types).toEqual(['Normativa']);
