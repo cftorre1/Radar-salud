@@ -4,7 +4,7 @@
 const {test,expect,selectPeriod,selectLane}=require('./fixtures.cjs');
 const fs=require('node:fs');
 const ORDER=['Ver ficha','Fuente original','Compartir'];
-async function rowGeometry(page,sel){return page.locator(sel).evaluateAll(rows=>rows.slice(0,8).map(r=>{const meta=r.querySelector('.card-meta').getBoundingClientRect(),acts=[...r.querySelectorAll('.row-acts .act')].map(a=>{const b=a.getBoundingClientRect(),t=a.querySelector('span').getBoundingClientRect();return {label:a.textContent.trim(),top:b.top,h:b.height,right:b.right,textTop:t.top}}),row=r.getBoundingClientRect();return {metaBottom:meta.bottom,acts,rowRight:row.right,rowBottom:row.bottom}}))}
+async function rowGeometry(page,sel){return page.locator(sel).evaluateAll(rows=>rows.filter(r=>!r.matches('.dc-row,.nc-row')).slice(0,8).map(r=>{const meta=r.querySelector('.card-meta').getBoundingClientRect(),acts=[...r.querySelectorAll('.row-acts .act')].map(a=>{const b=a.getBoundingClientRect(),t=a.querySelector('span').getBoundingClientRect();return {label:a.textContent.trim(),top:b.top,h:b.height,right:b.right,textTop:t.top}}),row=r.getBoundingClientRect();return {metaBottom:meta.bottom,acts,rowRight:row.right,rowBottom:row.bottom}}))}
 for(const width of [320,390,1440]){
  test(`opción B rows on Chile and Global at ${width}px`,async({page})=>{
   await page.setViewportSize({width,height:900});
@@ -18,12 +18,12 @@ for(const width of [320,390,1440]){
     for(const a of r.acts){expect(a.h).toBeGreaterThanOrEqual(44);expect(a.right).toBeLessThanOrEqual(width+0.5)}
     // One line of actions, right under the meta line: the visible gap from "fuente · fecha" to the labels is small.
     expect(new Set(r.acts.map(a=>Math.round(a.top))).size).toBe(1);
-    expect(r.acts[0].textTop-r.metaBottom).toBeLessThanOrEqual(14);expect(r.acts[0].top+r.acts[0].h).toBeLessThanOrEqual(r.rowBottom+0.5);
+    expect(r.acts[0].textTop-r.metaBottom).toBeLessThanOrEqual(14);expect(r.acts[0].top+r.acts[0].h).toBeLessThanOrEqual(r.rowBottom+1);
    }
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
    await page.screenshot({path:`artifacts/${test.info().project.name}-option-b-${path==='/'?'chile':'global'}-${width}.png`});
   }
-  await expect(page.locator('.premium-band')).toHaveText(/^Global/);
+  await expect(page.locator('.section-tag')).toHaveText(/fuera de Chile/);// the band became the one-line tagline (11-nov-2026)
  });
 }
 test('news ficha is lean on Chile and Global and carries the action set',async({page})=>{

@@ -398,7 +398,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.goto('/');
  await expect(page.locator('#bigThings .big-feature.global .title-open[data-special-open]')).toBeVisible();
  await page.locator('#bigThings .big-feature.global .title-open[data-special-open]').first().click();
- await expect(page).toHaveURL(/\/global\.html$/);await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();await expect(page.locator('#globalDetail')).not.toBeVisible();
+ await expect(page).toHaveURL(/\/global\.html$/);await expect(page.getByRole('heading',{name:'Global',exact:true})).toHaveCount(1);await expect(page.locator('#globalDetail')).not.toBeVisible();
  await expect(page.getByRole('heading',{name:'Ponte al día en Global Intelligence'})).toBeVisible();
  // Staging audit 29-oct: Global is one 90-day inbox, so a viewer without a saved period starts on 90 días.
  await expect(page.locator('#globalPeriod')).toHaveValue('90');
@@ -884,5 +884,13 @@ test('ficha titles share the same font on Chile and Global',async({page})=>{
  const style=sel=>page.locator(sel).evaluate(el=>{const c=getComputedStyle(el);return [c.fontFamily,c.fontWeight,c.fontSize,c.lineHeight].join('|')});
  await page.goto('/');await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]) .title-open').first().click();await expect(page.locator('#detailTitle')).toBeVisible();const chile=await style('#detailTitle');
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');await page.locator('#themes .title-open').first().click();await expect(page.locator('#globalDetailTitle')).toBeVisible();
- expect(await style('#globalDetailTitle')).toBe(chile);expect(chile).toMatch(/Georgia/);
+ expect(await style('#globalDetailTitle')).toBe(chile);expect(chile).toMatch(/Inter/);// one family (Dirección 11-nov-2026)
+});
+
+test('Dirección 11-nov-2026: Al día shows the insight on top and no Global card; each section opens with one line',async({page})=>{
+ await page.addInitScript(()=>{window.ALICANTO_HOME_GLOBAL=false});
+ await page.goto('/');await expect(page.locator('#local article').first()).toBeVisible();
+ await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(0);
+ await expect(page.locator('.section-tag')).toHaveText('Para que no te pierdas lo que está pasando en salud');
+ for(const [u,t] of [['/normativa.html','Para tener a la vista lo que está por entrar en vigencia'],['/datos.html','Para conocer el estado de la industria'],['/global.html','Para que no te pierdas lo que está pasando fuera de Chile']]){await page.goto(u);await expect(page.locator('.section-tag')).toHaveText(t)}
 });

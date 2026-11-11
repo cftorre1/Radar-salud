@@ -7,7 +7,7 @@
 .nm-card>.row-acts,.nm-card>.card-meta.nm-meta{grid-column:1/-1!important}
 /* the check sits top right; the action row may use that width below it */
 .nm-card>.row-acts{margin-right:-38px}
-#local .signal.item.nc-row{padding:7px var(--gutter);max-height:2000px}
+#local .signal.item.nc-row{padding:7px var(--gutter) 7px 0;max-height:2000px}
 @media (min-width:760px){#local .signal.item.nc-row{padding:8px 8px 8px 0}}
 .nm-card.is-impl{border-color:rgba(59,107,74,.35)}.nm-card.is-impl .nm-title{color:var(--ink68)}
 .nm-card.nm-hit{box-shadow:0 0 0 3px var(--accent)}
@@ -34,8 +34,8 @@
 .nm-ck:hover svg{border-color:var(--ok);stroke:rgba(59,107,74,.35)}
 .nm-ck[aria-checked="true"] svg{background:var(--ok);border-color:var(--ok);stroke:#fff}
 /* read dot + kind tag, as on any Al día card */
-.nm-card.has-dot{padding-left:36px}
-.nm-card .dotbtn,#local .signal.item .nm-card .dotbtn{width:36px;padding-top:14px}
+.nm-card.has-dot{padding-left:40px}
+.nm-card .dotbtn,#local .signal.item .nm-card .dotbtn{width:40px;padding-top:9px}
 .nm-card.read{background:transparent}
 .nm-card.read .nm-title,.read>.nm-card .nm-title{font-weight:400;color:var(--ink68)}
 .read>.nm-card{background:transparent}
@@ -45,3 +45,26 @@ button.nm-open{all:unset;cursor:pointer;display:inline}button.nm-open:focus-visi
 .nm-meta{margin-top:4px}
 @media (max-width:640px){.nm-dd{min-width:44px}.nm-dd b{font-size:30px}.nm-card{padding-right:44px}}
 @media (prefers-reduced-motion:reduce){.nm-card,.nm-ck svg{transition:none}}
+
+/* Unified row (Dirección 11-nov-2026): no left «Vigente» column, no type/tema line; state chip + «Implementada» checkbox
+   with its word on one line; the V1 type mark starts the date line right under the title. */
+.nm-card{display:block!important}
+.nm-card>*{min-width:0}
+.nm-card>.row-acts{margin-right:0}
+.nm-title .lab{color:inherit}
+.nm-card .card-meta.nm-meta,#local .signal.item .nm-card .card-meta.nm-meta{margin:2px 0 0;padding:0;border-top:0}
+.nm-state{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:4px}
+.nm-state .nm-vig{margin-top:0;font-size:11.5px;padding:1px 7px}
+.nm-ck{position:static!important;width:auto!important;height:auto!important;min-height:30px;display:inline-flex!important;align-items:center;gap:5px;border-radius:999px!important;padding:0 9px 0 5px!important;border:1px solid var(--ink12,rgba(29,51,69,.12))!important;font:600 11.5px Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink68)}
+.nm-ck .nm-box{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--ink48);display:grid;place-items:center;background:#fff}
+.nm-ck .nm-box svg{width:12px;height:12px;border:0!important;background:none!important;fill:none;stroke:transparent;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.nm-ck[aria-checked="true"]{color:var(--ok);border-color:rgba(59,107,74,.45)!important}
+.nm-ck[aria-checked="true"] .nm-box{background:var(--ok);border-color:var(--ok)}.nm-ck[aria-checked="true"] .nm-box svg{stroke:#fff}
+.nm-ck:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.nm-det summary{min-height:30px}
+.nm-top{margin:0}
+.nm-list{gap:0}.nm-list>.nm-card,.nm-list>*{border-top:1px solid var(--ink09,rgba(29,51,69,.09))!important;padding-top:7px!important;padding-bottom:7px!important}
+.nm-card .row-acts{margin-top:-4px}
+.nm-det{margin-top:0}.nm-det summary{min-height:28px}
+.nm-row2{display:flex;flex-wrap:wrap;align-items:center;gap:0 12px;margin-top:2px}
+.nm-row2 .nm-det[open]{flex-basis:100%;order:2}
