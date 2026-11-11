@@ -7,7 +7,7 @@
 .nm-card>.row-acts,.nm-card>.card-meta.nm-meta{grid-column:1/-1!important}
 /* the check sits top right; the action row may use that width below it */
 .nm-card>.row-acts{margin-right:-38px}
-#local .signal.item.nc-row{padding:7px var(--gutter);max-height:2000px}
+#local .signal.item.nc-row{padding:7px var(--gutter) 7px 0;max-height:2000px}
 @media (min-width:760px){#local .signal.item.nc-row{padding:8px 8px 8px 0}}
 .nm-card.is-impl{border-color:rgba(59,107,74,.35)}.nm-card.is-impl .nm-title{color:var(--ink68)}
 .nm-card.nm-hit{box-shadow:0 0 0 3px var(--accent)}
@@ -34,8 +34,8 @@
 .nm-ck:hover svg{border-color:var(--ok);stroke:rgba(59,107,74,.35)}
 .nm-ck[aria-checked="true"] svg{background:var(--ok);border-color:var(--ok);stroke:#fff}
 /* read dot + kind tag, as on any Al día card */
-.nm-card.has-dot{padding-left:36px}
-.nm-card .dotbtn,#local .signal.item .nm-card .dotbtn{width:36px;padding-top:14px}
+.nm-card.has-dot{padding-left:40px}
+.nm-card .dotbtn,#local .signal.item .nm-card .dotbtn{width:40px;padding-top:9px}
 .nm-card.read{background:transparent}
 .nm-card.read .nm-title,.read>.nm-card .nm-title{font-weight:400;color:var(--ink68)}
 .read>.nm-card{background:transparent}

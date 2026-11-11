@@ -884,7 +884,7 @@ test('ficha titles share the same font on Chile and Global',async({page})=>{
  const style=sel=>page.locator(sel).evaluate(el=>{const c=getComputedStyle(el);return [c.fontFamily,c.fontWeight,c.fontSize,c.lineHeight].join('|')});
  await page.goto('/');await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]) .title-open').first().click();await expect(page.locator('#detailTitle')).toBeVisible();const chile=await style('#detailTitle');
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');await page.locator('#themes .title-open').first().click();await expect(page.locator('#globalDetailTitle')).toBeVisible();
- expect(await style('#globalDetailTitle')).toBe(chile);expect(chile).toMatch(/Georgia/);
+ expect(await style('#globalDetailTitle')).toBe(chile);expect(chile).toMatch(/Inter/);// one family (Dirección 11-nov-2026)
 });
 
 test('Dirección 11-nov-2026: Al día shows the insight on top and no Global card; each section opens with one line',async({page})=>{

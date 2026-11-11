@@ -73,7 +73,7 @@ test('Data card index: numbered by row, «Ver restantes» toggles with aria and 
   expect((await more.boundingBox()).height).toBeGreaterThanOrEqual(28);
   await more.focus();await page.keyboard.press('Enter');
   await expect(more).toHaveAttribute('aria-expanded','true');await expect(more).toHaveText('Ocultar temas ↑');await expect(list).toBeVisible();
-  expect(await list.locator('.dc-n').allTextContents()).toEqual(f.topics.slice(6).map((_,i)=>String(i+7)));
+  expect(await list.locator('.dc-n').allTextContents()).toEqual(f.topics.slice(4).map((_,i)=>String(i+5)));
   await page.keyboard.press(' ');
   await expect(more).toHaveAttribute('aria-expanded','false');await expect(list).toBeHidden();await expect(more).toBeFocused();
  }

@@ -4,7 +4,7 @@
 const {test,expect,selectPeriod,selectLane}=require('./fixtures.cjs');
 const fs=require('node:fs');
 const ORDER=['Ver ficha','Fuente original','Compartir'];
-async function rowGeometry(page,sel){return page.locator(sel).evaluateAll(rows=>rows.slice(0,8).map(r=>{const meta=r.querySelector('.card-meta').getBoundingClientRect(),acts=[...r.querySelectorAll('.row-acts .act')].map(a=>{const b=a.getBoundingClientRect(),t=a.querySelector('span').getBoundingClientRect();return {label:a.textContent.trim(),top:b.top,h:b.height,right:b.right,textTop:t.top}}),row=r.getBoundingClientRect();return {metaBottom:meta.bottom,acts,rowRight:row.right,rowBottom:row.bottom}}))}
+async function rowGeometry(page,sel){return page.locator(sel).evaluateAll(rows=>rows.filter(r=>!r.matches('.dc-row,.nc-row')).slice(0,8).map(r=>{const meta=r.querySelector('.card-meta').getBoundingClientRect(),acts=[...r.querySelectorAll('.row-acts .act')].map(a=>{const b=a.getBoundingClientRect(),t=a.querySelector('span').getBoundingClientRect();return {label:a.textContent.trim(),top:b.top,h:b.height,right:b.right,textTop:t.top}}),row=r.getBoundingClientRect();return {metaBottom:meta.bottom,acts,rowRight:row.right,rowBottom:row.bottom}}))}
 for(const width of [320,390,1440]){
  test(`opción B rows on Chile and Global at ${width}px`,async({page})=>{
   await page.setViewportSize({width,height:900});
