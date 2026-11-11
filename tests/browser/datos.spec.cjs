@@ -27,7 +27,7 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
   await expect(c.locator('.dc-title')).toHaveText(f.index_title);
   await expect(c).not.toContainText(f.headline);
   expect(await c.locator('.dc-t .dc-l').allTextContents()).toEqual(f.topics.map(t=>t.label));
-  await expect(c.locator('.dc-meta')).toContainText(new RegExp(`^(Detectado|Publicado|Actualizado) .+ · ${f.source}$`));
+  await expect(c.locator('.dc-meta')).toContainText(new RegExp(`^(Detectado|Publicado|Actualizado) .+ · ${f.source} · ${f.source_dataset.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));// organism + dataset (Dirección 11-nov)
   await expect(c.locator('.act-share')).toHaveAttribute('data-share-url',f.share_url);
   await expect(c.locator('.dx-kpis,.dx-st,.dx-badge')).toHaveCount(0);
   expect(await c.locator('.dc-open').getAttribute('href')).toBe(`index.html?abrir=1&desde=datos#sig-${f.piece_id}`);
@@ -36,9 +36,9 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
  await page.locator('#datosView [data-view="grupo"]').click();
  await expect(page.locator('#datosView [data-view="grupo"]')).toHaveAttribute('aria-pressed','true');
  const heads=await page.locator('#datosList .dx-sec').allTextContents();
- const groups=d.groups.filter(g=>d.families.some(f=>f.group===g.key)).map(g=>g.label);
+ const groups=d.groups.filter(g=>d.families.some(f=>f.state==='live'&&f.group===g.key)).map(g=>g.label);
  expect(heads).toEqual(groups);
- for(const f of d.families){const g=d.groups.find(x=>x.key===f.group);await expect(page.locator('.dx-group').filter({has:page.locator('.dx-sec',{hasText:g.label})}).locator(`[data-family="${f.family}"]`)).toHaveCount(1)}
+ for(const f of d.families.filter(f=>f.state==='live')){const g=d.groups.find(x=>x.key===f.group);await expect(page.locator('.dx-group').filter({has:page.locator('.dx-sec',{hasText:g.label})}).locator(`[data-family="${f.family}"]`)).toHaveCount(1)}
  await page.reload();
  await expect(page.locator('#datosView [data-view="grupo"]')).toHaveAttribute('aria-pressed','true');
  await expect(page.locator('#datosList .dx-sec').first()).toBeVisible();

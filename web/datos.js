@@ -34,7 +34,7 @@
  function render(data,view,readSet){
   const read=f=>Boolean(readSet&&readSet.has(f.piece_id));
   const list=fs=>`<div class="dx-list">${fs.map(f=>row(f,read(f))).join('')}</div>`;
-  if(!(data.families||[]).length)return '<p class="datos-empty">Aún no hay fichas publicadas.</p>';
+  if(!(data.families||[]).some(isLive))return '<p class="datos-empty">Aún no hay fichas publicadas.</p>';
   if(view==='grupo')return byGroup(data,readSet).map(g=>`<section class="dx-group" aria-labelledby="dx-g-${esc(g.key)}"><h2 class="dx-sec" id="dx-g-${esc(g.key)}">${esc(g.label)}</h2>${list(g.families)}</section>`).join('');
   return list(recientes(data.families,readSet).filter(isLive));
  }

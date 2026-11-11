@@ -106,7 +106,7 @@ test('Lectura shows only after a verifier PASS and all text is escaped',()=>{
 
 test('app.js hands statistics fichas to the self-contained renderer and keeps legacy paths',()=>{
  const app=fs.readFileSync('web/app.js','utf8');
- assert.match(app,/if\(s\.stats_ficha&&typeof AlicantoFicha!=='undefined'\)return AlicantoFicha\.render\(s\.stats_ficha,\{shareId:`sig-\$\{idFor\(s\)\}`,shareUrl:s\.share_url,title:datosByPiece\.get\(idFor\(s\)\)\?\.index_title\}\);/);
+ assert.match(app,/if\(s\.stats_ficha&&typeof AlicantoFicha!=='undefined'\)return AlicantoFicha\.render\(s\.stats_ficha,\{shareId:`sig-\$\{idFor\(s\)\}`,shareUrl:s\.share_url,title:datosByPiece\.get\(idFor\(s\)\)\?\.index_title,shareTitle:datosByPiece\.get\(idFor\(s\)\)\?\.share_title\}\);/);
  // The detail mounts the index → topic behaviour after rendering; a shared '#sig-<id>&tema=<tema>' still finds the signal.
  assert.match(app,/AlicantoFicha\.mount\(body\)/);assert.match(app,/replace\(\/&tema=\[\^&\]\*\$\/,''\)/);
  // A copied topic URL (page-load hash with '&tema=') reopens the ficha; the ficha's own pushState URLs never do.

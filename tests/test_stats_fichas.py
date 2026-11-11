@@ -1233,3 +1233,15 @@ def test_feed_date_after_snapshot_day_is_ignored(root):
     live["published_at"] = "2026-10-02"
     assert "feed_date" not in sf.apply_to_snapshot([], [live], root=root, as_of=date(2026, 10, 12))[0]
     assert sf.apply_to_snapshot([], [live], root=root, as_of=date(2026, 11, 2))[0]["feed_date"] == "2026-11-02"
+
+
+def test_share_pages_carry_the_same_title_as_datos():
+    """Dirección 11-nov-2026 / review of #182: «index_title · period» on the share page, as in Datos and Al día."""
+    import html
+    import re as _re
+    ROOT = Path(__file__).resolve().parents[1]
+    datos = json.loads((ROOT / "web/data/datos.json").read_text(encoding="utf-8"))
+    for f in (x for x in datos["families"] if x.get("state") == "live"):
+        page = (ROOT / "web" / f["share_url"].lstrip("/")).read_text(encoding="utf-8") if f.get("share_url") else ""
+        m = _re.search(r'<meta property="og:title" content="([^"]*)"', page)
+        assert m and html.unescape(m.group(1)) == f["share_title"] + " · Alicanto Salud", f["family"]

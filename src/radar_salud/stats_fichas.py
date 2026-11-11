@@ -1326,7 +1326,8 @@ def share_page(card: dict) -> str:
     # Dirección 11-nov-2026: the shared title is the ficha's generic name and period, not one view's finding.
     fam = (load_registry().get("families") or {}).get(ficha.get("family"), {})
     generic = fam.get("index_title") or ficha.get("family_label") or ficha["headline"]
-    period = str(ficha.get("kicker") or "").split(" · ", 1)[1] if " · " in str(ficha.get("kicker") or "") else ""
+    from radar_salud.datos_index import period_short  # same short period as Datos and Al día («jul–sep 2026»)
+    period = period_short(ficha.get("period"), fam.get("period_kind")) or ""
     title = escape(" · ".join(x for x in (generic, period, "Alicanto Salud") if x), quote=True)
     desc = escape(ficha.get("dek") or "", quote=True)
     return (
