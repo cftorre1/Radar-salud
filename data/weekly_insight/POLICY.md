@@ -94,14 +94,14 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
   into prose (2–3 signals that would confirm or refute the thesis). Narrative h2 subheads are fine; the old section
   labels are rejected. The first block is the lead paragraph.
 - **Length.** Essay (paragraphs + quotes + closing) of 600–900 words (warning outside); FAIL under 500 or over 1.000.
-  Headline ≤ 140 characters, dek ≤ 40 words, kicker ≤ 60 characters.
+  Headline ≤ 140 characters; dek one sentence, ≤ 30 words; no kicker (see «Editorial rules», 11-nov).
 - **Charts.** 1–3, each placed once with a `chart` block right after the paragraph that explains it. `kind` is
-  `oficial`, `prensa` or `estimacion`; an estimate chart names its `estimate_ref` and renders with a dashed frame
-  and the formula in its caption. `source` links its sources with `[nombre](fN)`.
+  `oficial`, `prensa` or `estimacion` (used to verify, never shown as a label); an estimate chart names its
+  `estimate_ref` and its title carries the estimate's footnote letter. `source` links its sources with `[nombre](fN)`.
 - **Quotes.** Only `quote` blocks, with `source_ref` and an `attribution` that names the source's issuer or outlet,
   the part of its label before « · » (the same name, or its initials: «Fiscalía Nacional Económica» for «FNE · …»). Each quote, and each phrase of 3 or more words
   between quotation marks in any displayed text, must be literal in the `evidence_excerpts` of a source cited by that
-  same text (headline, dek, kicker and subheads cite none, so they carry no quotes). `verify_candidate` checks each
+  same text (headline, dek and subheads cite none, so they carry no quotes). `verify_candidate` checks each
   excerpt against the quote pool of its source URL: `evidence.excerpts`, and each signal's `raw_title` and
   `public_lead`. Labels, roles and summaries never count. `[…]` may skip words. Prefer official sources.
 - **Sources.** `sources[]` have `id` (`f1`…), `type` (`oficial` or `prensa`), `label`, `url`, `role`. In the text,
@@ -109,7 +109,8 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
   Every source must be cited at least once, and the source URLs must equal `source_refs`. The web numbers sources
   by first citation in reading order.
 - **Estimates.** Each derived figure is an `estimates[]` entry with a deterministic formula. It is marked in the
-  text with `[texto](est:id)` (dashed underline) or used by an estimate chart or key-figure card, and listed in
+  text with `[texto](est:id)` (a lettered footnote mark: a, b, c in reading order, each a note in «Notas» with
+  its formula) or used by an estimate chart or key-figure card, and listed in
   `method.estimates`. Numbers written as words are read as one value per phrase («dos mil» = 2.000, «treinta y dos»
   = 32, «1,5 millones» = 1.500.000) and checked like digits; a number word left outside a parsed phrase («miles»,
   «decenas») fails as `number_word_unparsed`. A ratio («8 de cada 10», «la mitad», «dos tercios», «tres cuartos»)
@@ -122,14 +123,35 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
   with `value`, `text`, `universe` (literal in the card, e.g. «505 de los 1.498 hogares del catastro 2021»), `kind`
   and `source_ref`; `estimate_ref` when the kind is `estimacion`. One idea per card, never mixed universes; one
   `wide` card at most. Placed once with a `key_figures` block.
-- **Method** («Cómo hicimos este análisis», collapsed): the estimates with their formulas (rendered from
-  `estimates`), `discarded` (what was not used and why) and `limits`. The numbered source list follows, visible.
+- **Notes** («Notas», visible after the closing): one entry per estimate, «Estimación Alicanto. «display»: formula =
+  value». Only when the text uses an estimate.
+- **Method** («Cómo hicimos este análisis», collapsed): `estimates_note`, `discarded` (what was not used and why) and `limits`. The numbered source list follows, visible.
   The method says the text «pasó una revisión independiente» only when `independent_review` has `status: final`
   and a `verdict` of PASS (or PASS_WITH_CORRECTIONS with `corrections_applied`). The pipeline writes it on a second-model
   PASS; an editorial session records each review round and sets the verdict after the last one (`status:
   pending_final` until then). Otherwise it says «Cada número del texto se verificó contra el paquete de evidencia».
 - **Traceability.** `evidence_figures` holds the evidence figures copied verbatim (each must trace to the evidence
   numbers); every displayed number traces to it or to an estimate.
+
+### Editorial rules (Dirección, 11-nov-2026)
+
+Standing rules for every insight, not only the 9-nov one. Deterministic where marked; the rest is a FAIL criterion of
+the independent review (`weekly_insight_a.review_prompt`).
+
+1. **Header.** Only «Insight de la semana · <fecha>» above the headline. No topic kicker: a `kicker` field fails
+   (`kicker_not_used`, deterministic).
+2. **Dek.** One sentence (`dek_more_than_one_sentence`), ≤ 30 words (`dek_over_30_words`), deterministic. It states
+   the single idea behind the headline. It never summarises or strings two news items together; joining two facts
+   needs a connection the evidence shows (review).
+3. **Byline.** Exactly «Alicanto · Lectura de N min · N fuentes». No «equipo editorial», no count of official
+   sources, no verification date, no evidence legend.
+4. **No evidence labels.** The text, charts, key figures and the source list never say «Dato oficial», «Oficial» or
+   «Prensa». The sentence names who published each figure («según La Tercera»); a press figure without its outlet
+   in the sentence fails the review. `type`/`kind` stay in the data for verification only.
+5. **Estimates as footnotes.** Only when there is an estimate: a superscript letter (a, b, c…) next to the figure,
+   chart title or card, pointing to «Notas» at the end with the formula. No dashed styles, no legend.
+6. **First screen.** On a 390 × 844 phone the lead paragraph starts on the first screen: the header (date, headline,
+   dek, byline) must leave it visible (browser test in `product.spec.cjs`). Keep headlines short enough for that.
 
 **Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
 `verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text

@@ -124,7 +124,10 @@ CASES = {
     "normative_id_unexplained:body[15]": lambda w: w["body"][15].update(text="Atención a la Ley 21.822 y su política."),
     "v1_field_in_v2:watch": lambda w: w.update(watch=[{"headline": "x", "explanation": "y"}]),
     "headline_over_140_chars": lambda w: w.update(headline="a" * 141),
-    "dek_over_40_words": lambda w: w.update(dek=" ".join(["palabra"] * 41)),
+    "dek_over_30_words": lambda w: w.update(dek=" ".join(["palabra"] * 31)),
+    # Dirección 11-nov: the dek is ONE sentence (one idea), and there is no topic kicker above the headline.
+    "dek_more_than_one_sentence": lambda w: w.update(dek="La FNE aprobó el fondo. En junio, 1.056 personas seguían hospitalizadas."),
+    "kicker_not_used": lambda w: w.update(kicker="Personas mayores y cuidados"),
 }
 
 
@@ -285,7 +288,9 @@ def test_sources_must_match_source_refs_and_quotes_their_attribution():
 def test_migrated_text_carries_the_review_corrections():
     w = weekly()
     text = " ".join([w["dek"], w["closing"]["text"]] + [b.get("text", "") for b in w["body"]])
-    assert "Las cifras oficiales muestran" not in w["dek"] and "todas las edades" in w["dek"]
+    # The dek was rewritten on 11-nov (one idea, no numbers) instead of stringing the FNE news and the 1.056 together.
+    assert "Las cifras oficiales muestran" not in w["dek"] and "1.056" not in w["dek"] and essay.sentence_count(w["dek"]) == 1
+    assert "kicker" not in w
     card = next(x for x in w["key_figures"]["items"] if x["label"] == "Altas que no salen")
     assert "todas las edades" in card["universe"] and card["universe"] in card["text"]
     assert w["closing"]["text"].count("cuando se publique") == 2 and "apunta a sumar" in w["closing"]["text"]
@@ -334,7 +339,7 @@ def test_quote_may_skip_words_with_an_ellipsis():
 
 # --- writer: future Mondays come out in v2 ----------------------------------------------------
 
-AUTHORED = ("kicker", "headline", "dek", "body", "closing", "key_figures", "charts", "estimates", "method", "sources",
+AUTHORED = ("headline", "dek", "body", "closing", "key_figures", "charts", "estimates", "method", "sources",
             "evidence_figures", "evidence_excerpts", "notes", "insight_teaser")
 
 
@@ -411,3 +416,9 @@ def test_stats_contract_reads_the_v2_closing():
     assert "tesis_missing" not in errors and "que_mirar_missing" not in errors and "closing_missing" not in errors
     w["closing"]["text"] = "Corto."
     assert "closing_missing" in sa.contract_check(w, ev)["errors"]
+
+
+def test_sentence_count_ignores_thousands_and_decimals():
+    assert essay.sentence_count("En junio, 1.056 personas y UF 1.500.000 en el fondo, el 15,3% de los días-cama.") == 1
+    assert essay.sentence_count("Primera idea. Segunda idea.") == 2
+    assert essay.sentence_count("¿Quién paga el cuidado?") == 1 and essay.sentence_count("") == 0

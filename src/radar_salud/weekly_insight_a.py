@@ -288,7 +288,7 @@ def draft_prompt(evidence: dict, anchor: date) -> str:
 
 
 def review_prompt(weekly: dict, evidence: dict, verification: dict) -> str:
-    keys = (("kicker", "headline", "dek", "body", "closing", "key_figures", "charts", "estimates", "method", "sources",
+    keys = (("headline", "dek", "body", "closing", "key_figures", "charts", "estimates", "method", "sources",
              "evidence_excerpts", "notes") if essay_v2.is_v2(weekly) else
             ("headline", "dek", "key_figures", "estimates", "charts", "essay", "watch", "notes", "sources"))
     shown = {k: weekly.get(k) for k in keys}
@@ -298,7 +298,9 @@ def review_prompt(weekly: dict, evidence: dict, verification: dict) -> str:
             "una inferencia presentada como hecho, una norma sin explicar, prensa o encuesta no declarada como tal, "
             "o si la lectura no aporta información incremental a un ejecutivo del sector. En el ensayo v2 revisa además "
             "que cada cita sea fiel a su fuente y no saque frases de contexto, que la estructura sea de noticia (entrada, "
-            "contexto, desarrollo, cierre) y que cada tarjeta de cifras tenga un solo universo. "
+            "contexto, desarrollo, cierre), que cada tarjeta de cifras tenga un solo universo, que la bajada sea una sola "
+            "idea que explica el titular (FAIL si encadena dos noticias sin una conexión demostrada en la evidencia) y que "
+            "toda cifra de prensa diga en la frase quién la publica (el texto no lleva rótulos «oficial»/«prensa»). "
             'Devuelve JSON puro: {"verdict":"PASS|FAIL","issues":[{"severity":"blocker|major|minor","where","text"}],'
             '"lenses":{"editorial","health_business","data","evidence","decision_intelligence"}}.\n'
             "VERIFICACIÓN DETERMINISTA: " + json.dumps(verification, ensure_ascii=False) +
