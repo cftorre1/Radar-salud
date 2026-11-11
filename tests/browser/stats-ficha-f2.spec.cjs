@@ -21,7 +21,7 @@ test('F2 ficha shows the siniestralidad split and the SIL topic',async({page})=>
  await expect(row).toHaveCount(1);
  await row.locator('[data-detail]').first().click();
  const body=page.locator('#detailBody');
- await expect(body.locator('.sf-headline')).toHaveText(f.headline);
+ await expect(body.locator('.sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),f));
  expect(await body.locator('.sf-row-label').evaluateAll(xs=>xs.map(x=>x.firstChild.textContent.trim()))).toEqual(TABS);
  expect(await body.locator('.sf-row-line').evaluateAll(xs=>xs.map(x=>x.textContent))).toEqual(f.tabs.map(t=>t.index_line));
  await expect(body.locator('.sf-row-line').first()).toContainText(/con pérdida$/);

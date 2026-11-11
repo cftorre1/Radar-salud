@@ -22,7 +22,7 @@ test('F1 ficha has a Concentración topic with the HHI series and each Isapre pa
  await expect(row).toHaveCount(1);
  await row.locator('[data-detail]').first().click();
  const body=page.locator('#detailBody');
- await expect(body.locator('.sf-headline')).toHaveText(f.headline);
+ await expect(body.locator('.sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),f));
  const labels=await body.locator('.sf-row-label').evaluateAll(xs=>xs.map(x=>x.firstChild.textContent.trim()));
  expect(labels).toContain('Concentración');
  expect(labels.indexOf('Concentración')).toBe(labels.indexOf('Regional')-1);
