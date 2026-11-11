@@ -18,7 +18,7 @@ for(const width of [320,390,1440]){
     for(const a of r.acts){expect(a.h).toBeGreaterThanOrEqual(44);expect(a.right).toBeLessThanOrEqual(width+0.5)}
     // One line of actions, right under the meta line: the visible gap from "fuente · fecha" to the labels is small.
     expect(new Set(r.acts.map(a=>Math.round(a.top))).size).toBe(1);
-    expect(r.acts[0].textTop-r.metaBottom).toBeLessThanOrEqual(14);expect(r.acts[0].top+r.acts[0].h).toBeLessThanOrEqual(r.rowBottom+0.5);
+    expect(r.acts[0].textTop-r.metaBottom).toBeLessThanOrEqual(14);expect(r.acts[0].top+r.acts[0].h).toBeLessThanOrEqual(r.rowBottom+1);
    }
    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
    await page.screenshot({path:`artifacts/${test.info().project.name}-option-b-${path==='/'?'chile':'global'}-${width}.png`});

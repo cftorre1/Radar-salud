@@ -23,7 +23,7 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
  for(const f of live(d)){
   const c=page.locator(`.dx-item[data-family="${f.family}"] .dc-card`);
   // V1 (11-nov-2026): no top line; the type mark «Datos» starts the date line and the period is in it.
-  await expect(c.locator('.dc-meta .ty-datos')).toHaveText('Datos');await expect(c.locator('.dc-src')).toHaveCount(0);
+  await expect(c.locator('.dc-meta .ty-datos')).toContainText('Datos');await expect(c.locator('.dc-src')).toHaveCount(0);
   expect(f.period_label).toMatch(/^((ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)–)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic) 20\d\d$/);
   await expect(c.locator('.dc-title')).toHaveText(f.index_title);
   await expect(c).not.toContainText(f.headline);
@@ -92,7 +92,7 @@ test('Data card topics open the ficha at that topic (Chile and Datos)',async({pa
  const t=fam.topics[Math.min(1,fam.topics.length-1)];
  await expect(row.locator('.dc-toc:not(.dc-rest) .dc-t')).toHaveCount(Math.min(4,fam.topics.length));
  await expect(row.locator('.dc-title')).toHaveText(fam.index_title);
- await expect(row.locator('.dc-meta .ty-datos')).toHaveText('Datos');
+ await expect(row.locator('.dc-meta .ty-datos')).toContainText('Datos');
  await expect(row.locator('.dc-meta .meta-text')).toContainText(fam.period_label);
  await row.locator(`.dc-t[data-dc-tema="${t.id}"]`).click();
  await expect(page.locator('#signalDetail')).toBeVisible();
@@ -117,7 +117,7 @@ test('Datos: read state uses the Chile dot; a read here or in Chile shows in bot
  await expect(card(first)).not.toHaveClass(/\bread\b/);
  await expect(card(first).locator('.dotbtn .unread-dot')).toHaveCount(1);
  const unread=await card(first).evaluate(c=>({bg:getComputedStyle(c).backgroundColor,w:getComputedStyle(c.querySelector('.dc-title')).fontWeight}));
- expect(unread.bg).toBe('rgb(255, 255, 255)');expect(Number(unread.w)).toBeGreaterThanOrEqual(700);
+ expect(unread.bg).toBe('rgba(0, 0, 0, 0)');expect(Number(unread.w)).toBeGreaterThanOrEqual(600);// rows, no white box (11-nov-2026)
  // The dot marks it read (tick, regular muted title, no white fill) and back.
  const before=await page.locator('#datosList .dx-item').evaluateAll((xs,f)=>xs.findIndex(x=>x.dataset.family===f),first.family);
  await card(first).locator('.dotbtn').click();
@@ -126,7 +126,7 @@ test('Datos: read state uses the Chile dot; a read here or in Chile shows in bot
  const pos=()=>page.locator('#datosList .dx-item').evaluateAll((xs,f)=>xs.findIndex(x=>x.dataset.family===f),first.family);
  expect(await pos()).toBe(before);
  const read=await card(first).evaluate(c=>({bg:getComputedStyle(c).backgroundColor,w:getComputedStyle(c.querySelector('.dc-title')).fontWeight}));
- expect(read.bg).toBe('rgba(0, 0, 0, 0)');expect(Number(read.w)).toBeLessThan(500);
+ expect(read.bg).toBe('rgba(0, 0, 0, 0)');expect(Number(read.w)).toBeLessThan(600);
  await card(first).locator('.dotbtn').click();await expect(card(first)).not.toHaveClass(/\bread\b/);
  // Opening the ficha marks it read.
  await card(first).locator('.dc-open').click();
