@@ -38,7 +38,7 @@
    share_title:(f&&f.share_title)||(f&&f.headline)||'',share_url:(s&&s.share_url)||(f&&f.share_url)||''};
   return m;
  }
- function topLine(m){return [`Datos${m.period_label?` ${m.period_label}`:''}`,m.cadence,m.updating?'actualizándose':''].filter(Boolean).join(' · ')}
+ function topLine(m){return [`Datos${m.period_label?` ${m.period_label}`:''}`,m.cadence?String(m.cadence).replace(/\s*\([^)]*\)/g,'').trim():'',m.updating?'actualizándose':''].filter(Boolean).join(' · ')}
  const safeId=id=>String(id||'').replace(/[^\w-]/g,'-');
  function topicHref(base,id,tid){return `${base}#sig-${id}&tema=${tid}`}
  function items(m,base,ts,from){return ts.map((t,i)=>`<li><a class="dc-t" href="${esc(topicHref(base,m.id,t.id))}" data-dc-tema="${esc(t.id)}"><span class="dc-n" aria-hidden="true">${from+i+1}</span><span class="dc-l">${esc(t.label)}</span></a></li>`).join('')}
