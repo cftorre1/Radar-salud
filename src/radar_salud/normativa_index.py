@@ -128,7 +128,9 @@ def record_from_signal(s: dict) -> dict | None:
             "date": s.get("emission_date") or s.get("issued_on") or s.get("event_date"),
             "subject": _subject(s, label), "url": s.get("source_url"), "validity": s.get("validity_text") or None,
             "related": [str(x) for x in (s.get("related_reference_ids") or []) if isinstance(x, str)][:6],
-            "signal_id": signal_id(s), "signal_event_date": s.get("event_date")}
+            "signal_id": signal_id(s), "signal_event_date": s.get("event_date"),
+            # The public Al día card as published, so «Ver ficha» still opens it after it leaves the 90-day feed.
+            "card": s}
 
 
 def update_registry(registry: dict, signals: list[dict], today: date) -> dict:
@@ -171,11 +173,13 @@ def build(registry: dict, review: dict, feed_ids: set[str], generated_at: str | 
     for rec in (registry.get("items") or {}).values():
         v = parse_validity(rec.get("validity"))
         rv = _review_entry(decisions.get(rec["id"]))
-        item = {k: rec.get(k) for k in ("id", "label", "type", "emisor", "date", "subject", "url", "validity", "related")}
+        item = {k: rec.get(k) for k in ("id", "label", "type", "emisor", "date", "subject", "url", "validity", "related", "signal_id")}
         item.update(v, tema=topic(rec.get("subject") or "", rec.get("emisor")))
         if rv:
             item["review"] = rv
-        item["ficha"] = f"index.html?abrir=1#sig-{rec['signal_id']}" if rec.get("signal_id") in feed_ids else None
+        # «Ver ficha» always opens the Al día ficha: from the live feed, or from normativa_cards.json once it left it.
+        item["ficha"] = f"index.html?abrir=1#sig-{rec['signal_id']}" if rec.get("signal_id") else None
+        item["in_feed"] = rec.get("signal_id") in feed_ids
         out.append(item)
     out.sort(key=lambda x: (str(x.get("date") or ""), x["id"]), reverse=True)
     pending = [x["id"] for x in out if x["kind"] == "none" and not x.get("review")]
@@ -198,4 +202,11 @@ def export(signals: list[dict], root: Path, out_dir: Path, today: date, generate
     reg_path.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     index = build(registry, _read(rev_path, {"decisions": {}}), {signal_id(s) for s in signals}, generated_at)
     (out_dir / "normativa.json").write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    cards = {"schema": SCHEMA, "cards": [rec["card"] for rec in registry["items"].values()
+                                          if isinstance(rec.get("card"), dict) and rec.get("signal_id") not in index_feed_ids(signals)]}
+    (out_dir / "normativa_cards.json").write_text(json.dumps(cards, ensure_ascii=False) + "\n", encoding="utf-8")
     return index
+
+
+def index_feed_ids(signals: list[dict]) -> set[str]:
+    return {signal_id(s) for s in signals}
