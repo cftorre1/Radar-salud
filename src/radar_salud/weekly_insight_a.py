@@ -300,7 +300,8 @@ def review_prompt(weekly: dict, evidence: dict, verification: dict) -> str:
             "que cada cita sea fiel a su fuente y no saque frases de contexto, que la estructura sea de noticia (entrada, "
             "contexto, desarrollo, cierre), que cada tarjeta de cifras tenga un solo universo, que la bajada sea una sola "
             "idea que explica el titular (FAIL si encadena dos noticias sin una conexión demostrada en la evidencia) y que "
-            "toda cifra de prensa diga en la frase quién la publica (el texto no lleva rótulos «oficial»/«prensa»). "
+            "toda cifra de prensa diga en la frase quién la publica (el texto no lleva rótulos «oficial»/«prensa»); "
+            "FAIL si el titular afirma que un hecho causa otro (o «se paga en» otro) sin una fuente que lo diga. "
             'Devuelve JSON puro: {"verdict":"PASS|FAIL","issues":[{"severity":"blocker|major|minor","where","text"}],'
             '"lenses":{"editorial","health_business","data","evidence","decision_intelligence"}}.\n'
             "VERIFICACIÓN DETERMINISTA: " + json.dumps(verification, ensure_ascii=False) +
