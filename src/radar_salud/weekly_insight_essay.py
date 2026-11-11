@@ -8,8 +8,9 @@ is folded into the closing as prose. This module holds the v2 schema and its det
 Schema ``weekly_insight_a_v2`` (authored fields; ids, dates and source_refs are stamped by
 ``weekly_insight_a.normalize_draft``)::
 
-  kicker            topic line above the headline ("Personas mayores y cuidados")
-  headline, dek     same caps as v1: ≤ 140 characters, ≤ 40 words
+  headline          ≤ 140 characters
+  dek               ONE sentence, ≤ 35 words, that states the headline's single idea (Dirección 11-nov)
+  (no kicker: the header reads only «Insight de la semana · <fecha>»; a kicker field fails)
   body              ordered blocks:
                       {"type": "paragraph", "text"}            the first block is the lead
                       {"type": "subhead", "text"}              narrative h2, never a section label
@@ -32,7 +33,7 @@ Schema ``weekly_insight_a_v2`` (authored fields; ids, dates and source_refs are 
 Inline markup inside paragraph, closing, chart source and key-figure text:
 
   [Fiscalía Nacional Económica](f1)   direct link to source f1 + numbered superscript to the list
-  [uno de cada tres](est:sin_auto)    Alicanto estimate: dashed underline, formula in the method
+  [uno de cada tres](est:sin_auto)    Alicanto estimate: a lettered footnote mark; the note at the end gives the formula
   [^n1]                               evidence note (optional)
 
 Nothing here calls a model or the network.
@@ -51,7 +52,10 @@ V2_REQUIRED_FROM = date(2026, 11, 16)
 
 ESSAY_WORDS_MIN, ESSAY_WORDS_MAX = 500, 1000          # hard limits (FAIL)
 ESSAY_WORDS_TARGET = (600, 900)                       # target (warning only)
-HEADLINE_MAX_CHARS, DEK_MAX_WORDS, KICKER_MAX_CHARS = 140, 40, 60
+HEADLINE_MAX_CHARS, DEK_MAX_WORDS = 140, 35  # 35: Dirección's own 9-nov dek (11-nov 01:50) has 32 words
+# Editorial rules of Dirección, 11-nov-2026 (data/weekly_insight/POLICY.md «Reglas editoriales»): the dek is one sentence
+# carrying one idea, never a summary that strings two news items together; no topic kicker above the headline.
+DEK_MAX_SENTENCES = 1
 KEY_FIGURES_MIN, KEY_FIGURES_MAX = 3, 5
 CHARTS_MIN, CHARTS_MAX = 1, 3
 BLOCK_TYPES = {"paragraph", "subhead", "quote", "chart", "key_figures"}
@@ -270,6 +274,33 @@ def quote_segments(text: Any) -> list[str]:
     """A quote may skip words with […]; each segment must be literal on its own."""
     parts = [p.strip(" .,;:") for p in ELLIPSIS.split(str(text or ""))]
     return [p for p in parts if p]
+
+
+# Abbreviations whose final period never ends a sentence (lower-cased, without the trailing period).
+_ABBREV = ("p. ej", "p.ej", "sr", "sra", "srta", "dr", "dra", "s.a", "s.p.a", "ltda", "n.º", "n.°", "nº", "fig", "figs", "art",
+           "arts", "núm", "num", "etc", "aprox", "vol", "pág", "págs", "cap", "inc", "ej", "dto", "ord", "res", "ee.uu", "uu", "vs")
+_SENT_END = re.compile(r"(\.\.\.|…|[.!?])[»”\"')\]]*\s+(?=[¿¡«\"“(]?[A-ZÁÉÍÓÚÑÜ0-9])")
+
+
+def sentence_count(text: Any) -> int:
+    """Sentences in plain Spanish text (Dirección 11-nov: the dek is ONE sentence).
+
+    A break is a closing mark (. ! ? … or ...), optionally followed by closing quotes/brackets, then a space and the start
+    of a new sentence (a capital, an opening ¿ ¡ « “ or a digit). Abbreviations («p. ej.», «Sr.», «S.A.», «Fig.») and
+    numbers («1.056», «UF 1.500.000», «15,3») never split; a last sentence without a final period still counts."""
+    t = re.sub(r"\s+", " ", plain(text)).strip()
+    if not t:
+        return 0
+    n = 1
+    for m in _SENT_END.finditer(t):
+        if m.group(1) == ".":
+            before = t[:m.start(1)].lower()
+            if any(before.endswith(a) and (len(before) == len(a) or not before[-len(a) - 1].isalpha()) for a in _ABBREV):
+                continue
+            if re.search(r"(?:^|[\s(])[a-záéíóúñ]$", before):  # single-letter initial («J. Pérez»)
+                continue
+        n += 1
+    return n
 
 
 def words(text: Any) -> int:
@@ -572,8 +603,10 @@ def presentation_errors(weekly: dict) -> list[str]:
         errors.append(f"headline_over_{HEADLINE_MAX_CHARS}_chars")
     if words(weekly.get("dek")) > DEK_MAX_WORDS:
         errors.append(f"dek_over_{DEK_MAX_WORDS}_words")
-    if len(str(weekly.get("kicker") or "")) > KICKER_MAX_CHARS:
-        errors.append(f"kicker_over_{KICKER_MAX_CHARS}_chars")
+    if sentence_count(weekly.get("dek")) > DEK_MAX_SENTENCES:
+        errors.append("dek_more_than_one_sentence")
+    if str(weekly.get("kicker") or "").strip():
+        errors.append("kicker_not_used")
 
     blocks = weekly.get("body") if isinstance(weekly.get("body"), list) else []
     if any(not isinstance(b, dict) or b.get("type") not in BLOCK_TYPES for b in blocks):
@@ -859,9 +892,8 @@ def evidence_errors(weekly: dict, evidence: dict) -> list[str]:
 # Writer prompt (format and rules; ``weekly_insight_a.draft_prompt`` adds the evidence)
 
 FORMAT_V2 = """Formato A v2, ensayo tipo noticia (aprobado por Dirección el 10-nov-2026; JSON puro, sin texto fuera del JSON):
-{"kicker": "tema en ≤60 caracteres (p. ej. «Personas mayores y cuidados»)",
- "headline": "≤140 caracteres; toma posición, sin causalidad no demostrada",
- "dek": "≤40 palabras; hechos",
+{"headline": "≤140 caracteres; toma posición, sin causalidad no demostrada",
+ "dek": "UNA sola oración, ≤35 palabras, que explica la idea del titular; nunca resume ni encadena dos noticias",
  "body": [  // entrada → contexto → desarrollo; sin rótulos «Qué pasó», «Lectura Alicanto» ni «Qué mirar»
    {"type":"paragraph","text":"la ENTRADA: el hecho de la semana, quién, qué y cuándo, con la fuente enlazada"},
    {"type":"quote","text":"cita textual, copiada LITERALMENTE de evidence_excerpts (sin comillas)","source_ref":"f1",
@@ -890,7 +922,9 @@ FORMAT_V2 = """Formato A v2, ensayo tipo noticia (aprobado por Dirección el 10-
  "insight_teaser": "≤30 palabras para la tarjeta"}
 Marcado dentro de paragraph, closing, charts[].source y key_figures[].text:
   [Fiscalía Nacional Económica](f1) → enlace directo al documento + superíndice numerado a la lista de fuentes.
-  [uno de cada tres](est:sin_autorizacion) → estimación Alicanto (subrayado punteado; la fórmula va en el método)."""
+  [uno de cada tres](est:sin_autorizacion) → estimación Alicanto (llamada con letra a una nota al pie con la fórmula).
+Sin antetítulo de tema (no incluyas «kicker»): la cabecera es solo «Insight de la semana · fecha» y la firma, «Alicanto · Lectura de N min · N fuentes».
+No rotules la evidencia como «oficial» o «prensa» en el texto: la fuente enlazada basta. «type» y «kind» se usan solo para verificar."""
 
 RULES_V2 = """Reglas (se verifican de forma determinista; si fallas, no se publica):
 1. Usa EXCLUSIVAMENTE la EVIDENCIA. Cada número de cualquier campo visible (titular, bajada, cuerpo, cierre, recuadro de
