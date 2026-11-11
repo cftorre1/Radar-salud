@@ -34,6 +34,14 @@ _MONTH_DATE = re.compile(rf"\bmes\s+de\s+({_M})\s+(?:de|del)\s+(\d{{4}})\b", re.
 # «desde su publicación», «a contar de su notificación», «desde la fecha de su publ icació n en el Diario Oficial»…
 _ON_PUBLICATION = re.compile(r"\b(?:desde|a\s+contar\s+de|a\s+partir\s+de)\s+(?:la\s+fecha\s+de\s+)?(?:su|la)\s+"
                              r"(?:publ\s*i\s*caci\s*[oó]\s*n|notificaci[oó]n)", re.I)
+_NOTIFICATION = re.compile(r"\bnotificaci[oó]n\b", re.I)
+_DIARIO_OFICIAL = re.compile(r"\bDiario\s+Ofi", re.I)
+# Not a statement of entry into force («Inicio operativo informado: …» is a paraphrase of an operational start).
+_NOT_VALIDITY = re.compile(r"^\s*Inicio\s+operativo", re.I)
+# An exception («salvo …») or a text cut mid-sentence: the date is shown with «con excepciones / texto incompleto».
+_EXCEPTION = re.compile(r"\bsalvo\b|\bexcepto\b|\bcon\s+excepci[oó]n", re.I)
+# A capture cut mid-sentence (ends on a connector or a clipped word: «…cuya», «…Diario Ofi»).
+_CUT = re.compile(r"\b(?:cuy[oa]s?|que|de|del|la|el|y|en|los|las|con|a|por|para|Ofi)\s*$", re.I)
 # A relative term («6 meses corridos contados desde su publicación») is not a literal date: it goes to review.
 _RELATIVE = re.compile(r"\b\d+\s+(?:d[ií]as|meses|años)\b.*\bcontad[oa]s\b", re.I)
 _TARGET = re.compile(r"\b(Circular|Resoluci[oó]n Exenta|Oficio Circular|Oficio)\s+(IF|IP|SS)?\s*/?\s*N\s*[°º]?\s*([\d\.]+)\s+"
@@ -46,6 +54,9 @@ TOPIC_RULES: list[tuple[str, re.Pattern]] = [
     ("Cajas, bienestar y beneficios", re.compile(r"C\.C\.A\.F|\bCCAF\b|cr[eé]dito social|\bcajas?\b|bienestar|\bbono\b|"
                                                  r"subsidio al empleo|desafiliaci[oó]n|remuneraciones", re.I)),
     ("Prestadores", re.compile(r"prestador|acreditaci[oó]n", re.I)),
+    # Editorial review 11-nov: Isapre operation and debt (bonos, reembolsos, compensaciones, Ley 21.674 plans) is not
+    # «planes, GES y CAEC».
+    ("Isapres: operación y deuda", re.compile(r"\bbonos?\b|reembols|compens|\bdeuda|MAS20\d\d|21\.674|Ley de Isapres", re.I)),
 ]
 TOPIC_SIS_DEFAULT = "Isapres: planes, GES y CAEC"
 TOPIC_OTHER = "Otros"
@@ -67,31 +78,77 @@ def topic(subject: str, emisor: str | None) -> str:
     return TOPIC_SIS_DEFAULT if emisor == "SIS" else TOPIC_OTHER
 
 
-def parse_validity(text: Any) -> dict:
-    """Literal effective date from the captured validity text. kind: date | on_publication | none.
+_SP = r"\s*"
+# «notificación»/«publicación» also in the OCR-spaced form of the captured PDFs («not ificació n», «publ icació n»).
+_NOTIF_W = _SP.join("notificaci") + r"\s*[oó]\s*n"
+_PUBL_W = _SP.join("publicaci") + r"\s*[oó]\s*n"
+_ON_EVENT = re.compile(r"\b(?:desde|a\s+contar\s+de|a\s+partir\s+de)\s+(?:la\s+fecha\s+de\s+)?(?:su\s+|la\s+)?(?:fecha\s+de\s+)?(?:su\s+)?"
+                       rf"({_PUBL_W}|{_NOTIF_W})", re.I)
+_ON_THIS_DATE = re.compile(r"\b(?:desde|a\s+contar\s+de|a\s+partir\s+de)\s+esta\s+fecha\b", re.I)
+# A date counts as the entry into force only right after one of these cues (review of #180, 11-nov-2026).
+_CUE = re.compile(r"(?:entra(?:n|r[aá]n?)?\s+en\s+vigencia|vigencia|comenzar[aá]n?\s+a\s+regir|comienzan?\s+a\s+regir|"
+                  r"rigen?|regir[aá]n?|a\s+partir\s+del?|a\s+contar\s+del?|desde\s+el|desde|difiri[oó]\s+su\s+entrada\s+en\s+vigencia\s+hasta)"
+                  r"(?:\s+(?:el|del|día))*\s*$", re.I)
+# Never an entry into force: deadlines, expiries, sending duties, operational starts.
+_BAD = re.compile(r"(?:hasta(?!.*\bentrada\s+en\s+vigencia)|deber[aá]n?\b|remitir|enviar|informar|plazo|vence|Inicio\s+operativo|"
+                  r"se\s+mantiene|prórroga)[^.;]*$", re.I)
 
-    A day date («1° de enero de 2027») or a month («a contar del mes de marzo de 2027», precision month) counts only
-    when the text states it; «desde su publicación/notificación» is on_publication; a relative term or nothing is none.
-    ``target`` names another norm whose entry into force this act sets («La Circular IF/N° 532 difirió su entrada en
-    vigencia hasta el 1 de enero de 2027»)."""
+
+def _as_date(y: str, month: str, d: str = "1") -> date | None:
+    try:
+        return date(int(y), MONTHS[month.lower()], int(d))
+    except (ValueError, KeyError):
+        return None  # «31 de febrero»: not a date, the norm goes to review
+
+
+def parse_validity(text: Any) -> dict:
+    """Literal effective date from the captured validity text. kind: date | on_publication | on_notification |
+    on_publication_do | on_emission | none.
+
+    Review of #180 (11-nov-2026): a date counts only right after an entry-into-force cue («entra en vigencia el»,
+    «comenzarán a regir a partir del», «rige desde el», «a contar del mes de»), or when the whole text is the date.
+    Deadlines («deberán remitir … hasta»), expiries, «Inicio operativo» and emission dates never count. When the text
+    says «desde su publicación/notificación», that is the rule even if other dates appear (then ``partial``).
+    ``target`` names another norm whose entry into force the act refers to («La Circular IF/N° 532 difirió su entrada
+    en vigencia hasta el 1 de enero de 2027»)."""
     t = " ".join(str(text or "").split())
     out = {"kind": "none", "eff": None, "prec": None, "target": None}
-    if not t:
+    if not t or _NOT_VALIDITY.search(t):
         return out
+    if _EXCEPTION.search(t) or _CUT.search(t):
+        out["partial"] = True
     tm = _TARGET.search(t)
     if tm:
         out["target"] = f"{tm.group(1).replace('Resolucion', 'Resolución')} {tm.group(2).upper() + '/' if tm.group(2) else ''}N°{tm.group(3)}"
-    m = _DAY_DATE.search(t)
-    if m:
-        d = date(int(m.group(3)), MONTHS[m.group(2).lower()], int(m.group(1)))
-        return {**out, "kind": "date", "eff": d.isoformat(), "prec": "day"}
-    m = _MONTH_DATE.search(t)
-    if m:
-        return {**out, "kind": "date", "eff": date(int(m.group(2)), MONTHS[m.group(1).lower()], 1).isoformat(), "prec": "month"}
+    if _RELATIVE.search(t):
+        return out  # «6 meses contados desde su publicación»: a term, not a literal date
+    ev = _ON_EVENT.search(t)
+    others = bool(_DAY_DATE.search(t) or _MONTH_DATE.search(t))
+    if ev:
+        kind = ("on_notification" if re.fullmatch(_NOTIF_W, ev.group(1), re.I)
+                else "on_publication_do" if _DIARIO_OFICIAL.search(t) else "on_publication")
+        return {**out, "kind": kind, **({"partial": True} if others else {})}
+    if _ON_THIS_DATE.search(t):
+        return {**out, "kind": "on_emission", **({"partial": True} if others else {})}
     if _RELATIVE.search(t):
         return out
-    if _ON_PUBLICATION.search(t) or t.lower().rstrip(".") in ("desde su publicación", "desde la publicación"):
-        return {**out, "kind": "on_publication"}
+    bare = _DAY_DATE.fullmatch(t.rstrip(". "))
+    for m in _DAY_DATE.finditer(t):
+        before = t[:m.start()]
+        deferred = re.search(r"entrada\s+en\s+vigencia\s+hasta(?:\s+el)?\s*$", before, re.I)  # «difirió su entrada en vigencia hasta el …»
+        if deferred or ((bare or _CUE.search(before[-60:])) and not _BAD.search(before[-80:])):
+            d = _as_date(m.group(3), m.group(2), m.group(1))
+            if d:
+                # Several dates with their own cue («Capítulo I desde …, Capítulo II desde …»): the first, marked partial.
+                if len({x.group(0) for x in _DAY_DATE.finditer(t)}) > 1 and not deferred:
+                    out["partial"] = True
+                return {**out, "kind": "date", "eff": d.isoformat(), "prec": "day"}
+    for m in _MONTH_DATE.finditer(t):
+        before = t[:m.start()]
+        if _CUE.search(before[-60:] + " desde") or re.search(r"a\s+contar\s+del\s*$", before[-20:], re.I):
+            d = _as_date(m.group(2), m.group(1))
+            if d:
+                return {**out, "kind": "date", "eff": d.isoformat(), "prec": "month"}
     return out
 
 
@@ -110,6 +167,8 @@ def _subject(s: dict, label: str) -> str:
 
 
 def _key(label: str, emisor: str | None) -> str:
+    # «IF/N°10.670» and «IF/N° 10670» are the same norm: the number loses dots and spaces.
+    label = re.sub(r"(\d)[.\s](?=\d)", r"\1", re.sub(r"N\s*[°º]\s*", "N°", label))
     base = unicodedata.normalize("NFKD", f"{emisor or 'x'}-{label}").encode("ascii", "ignore").decode().lower()
     return re.sub(r"[^a-z0-9]+", "-", base).strip("-")
 
@@ -133,9 +192,18 @@ def record_from_signal(s: dict) -> dict | None:
             "card": s}
 
 
+def publishable(s: dict) -> bool:
+    """Same gates as Al día's individualCardAllowed for a norm: visible, not on committee HOLD/REJECT, identified."""
+    verdict = str((s.get("editorial_committee") or {}).get("verdict") or "PASS").upper()
+    return (s.get("feed_visibility") is not False and verdict not in ("HOLD", "REJECT")
+            and bool((s.get("display_title") or s.get("title")) and s.get("normative_document_label") and s.get("source_url")))
+
+
 def update_registry(registry: dict, signals: list[dict], today: date) -> dict:
-    """Upsert today's Normativa signals; never drop a record (no 90-day logic). The literal fields follow the latest
-    capture; ``first_seen`` keeps the first day."""
+    """Upsert today's Normativa signals; never drop a record by age (no 90-day logic).
+
+    A record changes only when its captured fields change (no daily churn). A norm that Al día stops showing (HOLD,
+    REJECT, hidden) is marked ``withheld`` and leaves the public index until it is publishable again (review of #180)."""
     items = dict(registry.get("items") or {})
     for s in signals:
         if s.get("event_type") != "REGULATION" and "Normativa" not in (s.get("signal_types") or []):
@@ -143,18 +211,22 @@ def update_registry(registry: dict, signals: list[dict], today: date) -> dict:
         rec = record_from_signal(s)
         if not rec:
             continue
-        prev = items.get(rec["id"]) or {}
-        rec["first_seen"] = prev.get("first_seen") or today.isoformat()
-        rec["last_seen"] = today.isoformat()
-        if not rec["validity"] and prev.get("validity"):
+        prev = items.get(rec["id"])
+        if not publishable(s):
+            if prev and not prev.get("withheld"):
+                items[rec["id"]] = {**prev, "withheld": True}
+            continue
+        rec["first_seen"] = (prev or {}).get("first_seen") or today.isoformat()
+        if not rec["validity"] and (prev or {}).get("validity"):
             rec["validity"] = prev["validity"]  # a later capture without the text never erases what was literal
-        items[rec["id"]] = rec
+        if prev != rec:
+            items[rec["id"]] = rec
     return {"schema": SCHEMA, "items": dict(sorted(items.items()))}
 
 
 def _review_entry(r: Any) -> dict | None:
     """Dirección's manual decisions. kind: date (eff + literal quote) | nofija | susp | sinef (by + literal quote)."""
-    if not isinstance(r, dict) or r.get("kind") not in ("date", "nofija", "susp", "sinef"):
+    if not isinstance(r, dict) or r.get("kind") not in ("date", "nofija", "susp", "sinef", "retirada"):
         return None
     if r["kind"] == "date" and not (re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get("eff") or "")) and len(str(r.get("quote") or "")) >= 12):
         return None
@@ -173,12 +245,14 @@ def build(registry: dict, review: dict, feed_ids: set[str], generated_at: str | 
     for rec in (registry.get("items") or {}).values():
         v = parse_validity(rec.get("validity"))
         rv = _review_entry(decisions.get(rec["id"]))
+        if rec.get("withheld") or (rv or {}).get("kind") == "retirada":
+            continue  # not public: withheld by Al día's gates or withdrawn by Dirección
         item = {k: rec.get(k) for k in ("id", "label", "type", "emisor", "date", "subject", "url", "validity", "related", "signal_id")}
         item.update(v, tema=topic(rec.get("subject") or "", rec.get("emisor")))
         if rv:
             item["review"] = rv
         # «Ver ficha» always opens the Al día ficha: from the live feed, or from normativa_cards.json once it left it.
-        item["ficha"] = f"index.html?abrir=1#sig-{rec['signal_id']}" if rec.get("signal_id") else None
+        item["ficha"] = f"index.html?abrir=1&desde=normativa&n={rec['id']}#sig-{rec['signal_id']}" if rec.get("signal_id") else None
         item["in_feed"] = rec.get("signal_id") in feed_ids
         out.append(item)
     out.sort(key=lambda x: (str(x.get("date") or ""), x["id"]), reverse=True)
@@ -194,16 +268,25 @@ def _read(path: Path, default):
         return default
 
 
-def export(signals: list[dict], root: Path, out_dir: Path, today: date, generated_at: str | None = None) -> dict:
-    """Update the registry with today's signals and write web/data/normativa.json."""
+def export(signals: list[dict], root: Path, out_dir: Path, today: date, generated_at: str | None = None,
+           persist: bool = True) -> dict:
+    """Update the registry with today's signals and write web/data/normativa.json (+ normativa_cards.json).
+
+    ``persist`` is False for offline or back-dated builds (tests, QA, --as-of): they read the registry but never write
+    it, so a fixture date cannot rewrite the committed repository (review of #180)."""
     reg_path, rev_path = root / REGISTRY, root / REVIEW
     registry = update_registry(_read(reg_path, {"items": {}}), signals, today)
-    reg_path.parent.mkdir(parents=True, exist_ok=True)
-    reg_path.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    index = build(registry, _read(rev_path, {"decisions": {}}), {signal_id(s) for s in signals}, generated_at)
+    if persist:
+        reg_path.parent.mkdir(parents=True, exist_ok=True)
+        text = json.dumps(registry, ensure_ascii=False, indent=2) + "\n"
+        if not reg_path.exists() or reg_path.read_text(encoding="utf-8") != text:
+            reg_path.write_text(text, encoding="utf-8")
+    feed = index_feed_ids(signals)
+    index = build(registry, _read(rev_path, {"decisions": {}}), feed, generated_at)
     (out_dir / "normativa.json").write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    cards = {"schema": SCHEMA, "cards": [rec["card"] for rec in registry["items"].values()
-                                          if isinstance(rec.get("card"), dict) and rec.get("signal_id") not in index_feed_ids(signals)]}
+    public = {x["id"] for x in index["items"]}
+    cards = {"schema": SCHEMA, "cards": [rec["card"] for rid, rec in registry["items"].items()
+                                          if rid in public and isinstance(rec.get("card"), dict) and rec.get("signal_id") not in feed]}
     (out_dir / "normativa_cards.json").write_text(json.dumps(cards, ensure_ascii=False) + "\n", encoding="utf-8")
     return index
 

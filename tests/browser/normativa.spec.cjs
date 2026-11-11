@@ -11,15 +11,16 @@ test('Normativa: countdown, groups, months, filters, shared card and implementad
  // Countdown first: the days lead.
  const hc=page.locator('#nmHero .nm-hc').first();await expect(hc.locator('.nm-hd b')).toHaveText(/^\d+$/);
  await expect(page.locator('#nmCount')).toContainText(`${d.items.length} de ${d.items.length} normas`);
- // Every norm is listed, also the ones without a literal date («en revisión»).
- await expect(page.locator('#nmFeed .nm-card')).toHaveCount(await page.locator('#nmFeed .nm-card').count());
- await page.locator('#nmGroups [data-g="sin"]').click();const sin=d.items.filter(x=>x.kind==='none'&&!x.review).length;
+ await page.locator('#nmGroups [data-g="sin"]').click();const sin=d.items.filter(x=>['none','on_publication_do'].includes(x.kind)&&!x.review).length;
  await expect(page.locator('#nmFeed .nm-card')).toHaveCount(sin);await expect(page.locator('#nmFeed .nm-vig.sin').first()).toContainText('en revisión');
  await page.locator('#nmGroups [data-g="all"]').click();
  // Default actions of any Al día card + Texto oficial + the round check.
  const card=page.locator('#nmFeed .nm-card').first();
  for(const sel of ['.dotbtn','.nm-ck','.nm-det summary','.act-open','.act-share'])await expect(card.locator(sel)).toHaveCount(1);
+ // «Implementada» is a mark: the norm stays in its group; the pill filters the marked ones.
+ const before=await page.locator('#nmFeed .nm-grp').first().locator('.nm-card').count();
  await card.locator('.nm-ck').click();await expect(page.locator('#nmGroups [data-g="impl"] b')).toHaveText('1');
+ await expect(page.locator('#nmFeed .nm-grp').first().locator('.nm-card')).toHaveCount(before);
  await page.reload();await expect(page.locator('#nmGroups [data-g="impl"] b')).toHaveText('1');
  // Filtrar: tema and search combine; months filter by entry into force.
  await page.locator('#nmFx summary').click();await page.locator('#nmQ').fill('541');await expect(page.locator('#nmCount')).toContainText('1 de');

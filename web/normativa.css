@@ -59,3 +59,13 @@ mark{background:var(--accent-soft);color:inherit;border-radius:2px}
  .nm-hero-row{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}
  .nm-hc{scroll-snap-align:start}.nm-hc .nm-hd b{font-size:40px}
 }
+/* Review 11-nov-2026: readable muted text, clear «hoy», tappable folded groups, scroll hint on the pill row. */
+.nm-wrap .nm-gempty,.nm-disc,.nm-hc .nm-hs,.nm-mo.past .m{color:var(--ink68)}
+.nm-mo.past{opacity:1}.nm-mo.cur{border-color:var(--ink12,rgba(29,51,69,.12));box-shadow:none}
+.nm-mo .hoy{display:block;font-size:10.5px;font-weight:700;color:var(--accent-ink);line-height:1.1}
+details.nm-grp>summary .nm-gh{min-height:44px;align-items:center}
+details.nm-grp>summary h2::after{content:none}
+.nm-show{font-weight:700;color:var(--accent-ink)!important}
+.nm-pills{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:24px}
+.nm-pills button,.nm-fx>summary{min-height:44px}
+.nm-det summary{min-height:44px}
