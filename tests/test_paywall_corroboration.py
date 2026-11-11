@@ -221,7 +221,7 @@ def test_apply_attaches_block_without_touching_public_fields():
 def test_ui_renders_attribution_original_source_and_related_sources():
     js = Path("web/app.js").read_text(encoding="utf-8")
     pick = lambda name: re.search(r"^(?:const|function) " + name + r"\b.*$", js, re.M).group(0)
-    script = "\n".join([pick("esc"), pick("arr"), pick("fmtDate"), pick("corroboration"), pick("corrUrlOk"),
+    script = "\n".join([pick("esc"), pick("arr"), pick("DIA"), pick("fmtDate"), pick("corroboration"), pick("corrUrlOk"),
                         pick("corroborationWhat"), pick("corroborationRelated")]) + """
 const card={paywalled:true,corroboration:{status:'corroborated',original_label:'Fuente original: Pulso (contenido para suscriptores)',
  what:[{text:'INDISA aceptó oferta de ACHS.',attribution:'la CMF (hecho esencial)',source_url:'https://www.cmfchile.cl/a'},
