@@ -8,5 +8,14 @@
     "body_sha256": "3eb09b0de958d54fc6fbf9b18c58d624d8205ed958acc32ade1aefd34ea4cf1f",
     "behavior": "no_new_requests_until_retry_until",
     "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/38145510005/capture_manifest.json"
+  },
+  "https://www.ema.europa.eu": {
+    "http_status": 429,
+    "observed_at": "2026-11-11T20:35:48.437974+00:00",
+    "retry_after": "0.000",
+    "retry_until": "2026-11-11T21:35:48.437974+00:00",
+    "requested_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
+    "body_sha256": "a92fd37a3cb079e18cfa9385830024350ea8ccd03a32d03b6dc1dc056a3b2051",
+    "behavior": "no_new_requests_until_retry_until"
   }
 }
