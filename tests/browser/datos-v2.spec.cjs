@@ -8,7 +8,7 @@ test('Datos v2 mockup: KPIs, filters, comparator, profile, series and fichas',as
  await expect(page.locator('#v2Kpis .v2-kpi[data-fam="F1"] .val')).toHaveText('2.486.683');
  await expect(page.locator('#seriesLargas .sl-chart svg')).toBeVisible();
  await expect(page.locator('#v2Fichas .v2-f-card')).toHaveCount(7);
- await expect(page.locator('#v2Fichas .v2-soon-r')).toHaveCount(2);
+ await expect(page.locator('#v2Fichas .v2-soon-r')).toHaveCount(1);
  expect(await noHScroll(page)).toBeTruthy();
  await page.selectOption('#fIsapre','Banmédica');
  await expect(page.locator('#v2Chips .v2-chip')).toContainText('Banmédica');

@@ -243,7 +243,7 @@ function drawFichas(){
   const inner=`<div class="k"><span>${esc(f.family_label)} · ${esc(fam)}</span>${tag}</div><h3>${esc(f.headline)}</h3><div class="row"><div class="kp">${(f.kpis||[]).slice(0,2).map(k=>`<div><b>${esc(k.value)}</b><span>${esc(k.label)}</span></div>`).join('')}</div>${spark(hero)}</div><div class="ft"><span>${esc(per)}</span><span>${esc(fd.cadence||'')}</span></div>`;
   const by=breakdowns(fam);
   return live&&share?`<a class="v2-f-card" data-family="${fam}" data-by="${by}" href="${esc(`index.html?abrir=1&desde=datos#sig-${f.id}`)}">${inner}<span class="v2-go">Ver ficha →</span></a>`:`<div class="v2-f-card" data-family="${fam}" data-by="${by}">${inner}<span class="v2-go muted">Se publica con su primera ficha</span></div>`});
- const soon=[['F14','GES por patología','Casos GES por problema de salud, Fonasa e Isapres, enero al mes vs. mismo período del año anterior.'],['F9','Planes de salud','Planes vigentes y en comercialización por Isapre y su precio base; serie SIS 2006–2026 ya descargada con recibo.']];
+ const soon=[['F9','Planes de salud','Planes vigentes y en comercialización por Isapre y su precio base; serie SIS 2006–2026 ya descargada con recibo.']];
  $('v2Fichas').innerHTML=cards.join('')+`<div class="v2-soon"><p class="v2-soon-h">Próximamente</p>${soon.map(([f,l,d])=>`<p class="v2-soon-r" data-family="${f}"><b>${esc(l)} · ${f}</b> ${esc(d)}</p>`).join('')}</div>`;
  filterFichas();
 }
