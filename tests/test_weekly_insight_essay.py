@@ -124,7 +124,10 @@ CASES = {
     "normative_id_unexplained:body[15]": lambda w: w["body"][15].update(text="Atención a la Ley 21.822 y su política."),
     "v1_field_in_v2:watch": lambda w: w.update(watch=[{"headline": "x", "explanation": "y"}]),
     "headline_over_140_chars": lambda w: w.update(headline="a" * 141),
-    "dek_over_40_words": lambda w: w.update(dek=" ".join(["palabra"] * 41)),
+    "dek_over_35_words": lambda w: w.update(dek=" ".join(["palabra"] * 36)),
+    # Dirección 11-nov: the dek is ONE sentence (one idea), and there is no topic kicker above the headline.
+    "dek_more_than_one_sentence": lambda w: w.update(dek="La FNE aprobó el fondo. En junio, 1.056 personas seguían hospitalizadas."),
+    "kicker_not_used": lambda w: w.update(kicker="Personas mayores y cuidados"),
 }
 
 
@@ -285,7 +288,9 @@ def test_sources_must_match_source_refs_and_quotes_their_attribution():
 def test_migrated_text_carries_the_review_corrections():
     w = weekly()
     text = " ".join([w["dek"], w["closing"]["text"]] + [b.get("text", "") for b in w["body"]])
-    assert "Las cifras oficiales muestran" not in w["dek"] and "todas las edades" in w["dek"]
+    # The dek was rewritten on 11-nov (one idea, no numbers) instead of stringing the FNE news and the 1.056 together.
+    assert "Las cifras oficiales muestran" not in w["dek"] and "1.056" not in w["dek"] and essay.sentence_count(w["dek"]) == 1
+    assert "kicker" not in w
     card = next(x for x in w["key_figures"]["items"] if x["label"] == "Altas que no salen")
     assert "todas las edades" in card["universe"] and card["universe"] in card["text"]
     assert w["closing"]["text"].count("cuando se publique") == 2 and "apunta a sumar" in w["closing"]["text"]
@@ -295,9 +300,10 @@ def test_migrated_text_carries_the_review_corrections():
     assert "para otro segmento" not in w["closing"]["text"]
     review = w["independent_review"]
     # The final PASS is recorded by coordination after the reviewer passes the fix commit, never before.
-    assert review["status"] == "final" and review["verdict"] == "PASS"
+    assert review["status"] == "final" and review["verdict"] == "PASS_WITH_CORRECTIONS" and review["corrections_applied"] is True
     assert [(r["round"], r["verdict"]) for r in review["rounds"]] == [
-        (1, "PASS_WITH_CORRECTIONS"), (2, "FAIL"), (3, "FAIL"), ("3-fix", "FAIL"), (4, "PASS")]
+        (1, "PASS_WITH_CORRECTIONS"), (2, "FAIL"), (3, "FAIL"), ("3-fix", "FAIL"), (4, "PASS"),
+        (5, "PASS_WITH_CORRECTIONS"), (6, "PASS_WITH_CORRECTIONS"), ("6-dir", "DIRECCION")]
     assert review["rounds"][4] == {"round": 4, "on": "2026-11-10", "reviewed_commit": "c8ee171f", "verdict": "PASS"}
     assert review["rounds"][3] == {"round": "3-fix", "reviewed_commit": "8b9487f7", "verdict": "FAIL",
                                    "blocker": "verbo doblar; registro prematuro"}
@@ -334,7 +340,7 @@ def test_quote_may_skip_words_with_an_ellipsis():
 
 # --- writer: future Mondays come out in v2 ----------------------------------------------------
 
-AUTHORED = ("kicker", "headline", "dek", "body", "closing", "key_figures", "charts", "estimates", "method", "sources",
+AUTHORED = ("headline", "dek", "body", "closing", "key_figures", "charts", "estimates", "method", "sources",
             "evidence_figures", "evidence_excerpts", "notes", "insight_teaser")
 
 
@@ -411,3 +417,21 @@ def test_stats_contract_reads_the_v2_closing():
     assert "tesis_missing" not in errors and "que_mirar_missing" not in errors and "closing_missing" not in errors
     w["closing"]["text"] = "Corto."
     assert "closing_missing" in sa.contract_check(w, ev)["errors"]
+
+
+def test_sentence_count_ignores_thousands_and_decimals():
+    assert essay.sentence_count("En junio, 1.056 personas y UF 1.500.000 en el fondo, el 15,3% de los días-cama.") == 1
+    assert essay.sentence_count("Primera idea. Segunda idea.") == 2
+    assert essay.sentence_count("¿Quién paga el cuidado?") == 1 and essay.sentence_count("") == 0
+    # Independent review 11-nov: abbreviations never split; a second sentence without a final period still counts.
+    for one in ("Isapres vs. Fonasa en 2026.", "Banmédica S.A. compró dos clínicas.", "Como p. ej. Colmena, crece.", "El Sr. Pérez habló.",
+                "La oferta crece… pero no alcanza.", "(ver Fig. 2) sube", "Según J. Pérez, sube.", "El art. 8 lo dice."):
+        assert essay.sentence_count(one) == 1, one
+    for two in ("Primera idea. Segunda sin punto", "Primera. ¿Quién paga?»", "Dijo «basta». Luego se fue.",
+                "Crece 3,5%. 2027 será clave."):
+        assert essay.sentence_count(two) == 2, two
+
+
+def test_pipeline_drops_a_kicker_from_model_drafts():
+    from radar_salud import weekly_insight_a as gen
+    assert "kicker" not in gen.normalize_draft({**weekly(), "kicker": "Tema"}, {"series": []}, date(2026, 11, 9))
