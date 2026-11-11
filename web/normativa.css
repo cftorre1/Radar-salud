@@ -13,12 +13,12 @@
 .nm-hero-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .nm-hc{display:block;border-radius:14px;padding:12px 13px 11px;min-width:0;background:var(--warn-soft);color:var(--ink);text-decoration:none}
 .nm-hc.u{background:var(--urg-soft)}
-.nm-hc .d{display:flex;align-items:baseline;gap:6px;color:var(--warn)}.nm-hc.u .d{color:var(--urg)}
-.nm-hc .d b{font-size:44px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.nm-hc .d span{font-size:14px;font-weight:700}
-.nm-hc .w{display:block;font-size:12.5px;font-weight:650;color:var(--ink68);margin-top:2px}
-.nm-hc .t{display:block;font-size:13.5px;font-weight:700;margin-top:8px;overflow-wrap:anywhere}
-.nm-hc .s{font-size:12px;color:var(--ink68);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nm-hc .nm-hd{display:flex;align-items:baseline;gap:6px;color:var(--warn)}.nm-hc.u .nm-hd{color:var(--urg)}
+.nm-hc .nm-hd b{font-size:44px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.nm-hc .nm-hd span{font-size:14px;font-weight:700}
+.nm-hc .nm-hw{display:block;font-size:12.5px;font-weight:650;color:var(--ink68);margin-top:2px}
+.nm-hc .nm-ht{display:block;font-size:13.5px;font-weight:700;margin-top:8px;overflow-wrap:anywhere}
+.nm-hc .nm-hs{font-size:12px;color:var(--ink68);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 /* control card */
 .nm-ctl{background:#fff;border:1px solid var(--ink12,rgba(29,51,69,.12));border-radius:14px;padding:10px 10px 8px;display:grid;gap:8px;margin:14px 0 0;min-width:0}
 .nm-pills,.nm-months{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px;min-width:0}
@@ -57,5 +57,5 @@ details.nm-grp>summary h2::after{content:" ▸";font-weight:600}details.nm-grp[o
 mark{background:var(--accent-soft);color:inherit;border-radius:2px}
 @media (max-width:640px){
  .nm-hero-row{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}
- .nm-hc{scroll-snap-align:start}.nm-hc .d b{font-size:40px}
+ .nm-hc{scroll-snap-align:start}.nm-hc .nm-hd b{font-size:40px}
 }

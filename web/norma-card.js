@@ -54,7 +54,7 @@
    (legal?'':`<button type="button" class="nm-ck" data-impl="${esc(x.id)}" role="checkbox" aria-checked="${on}" aria-label="${on?'Implementada: quitar marca':'Marcar como implementada'}: ${esc(x.label)}" title="${on?'Implementada':'Marcar como implementada'}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg></button>`)+
    box(x)+
    `<p class="nm-top"><span class="nm-kind">Norma</span><span class="nm-emi">${esc(x.emisor)}</span><span>${esc(x.type)}</span><span>${esc(x.tema)}</span>${o.topExtra||''}</p>`+
-   `<h3 class="nm-title">${href||o.openAttr?`<a class="nm-open" href="${esc(href||'#')}"${o.openAttr?` ${o.openAttr}`:''}>`:''}<span class="lab">${hl(x.label,q)}</span> · ${hl(x.subject,q)}${href||o.openAttr?'</a>':''}</h3>${chip(x)}`+
+   `<h3 class="nm-title">${o.openAttr?`<button type="button" class="title-open nm-open" ${o.openAttr}>`:href?`<a class="nm-open" href="${esc(href)}">`:''}<span class="lab">${hl(x.label,q)}</span> · ${hl(x.subject,q)}${o.openAttr?'</button>':href?'</a>':''}</h3>${chip(x)}`+
    `<details class="nm-det"${o.open?' open':''} data-id="${esc(x.id)}"><summary>Texto oficial de vigencia</summary><div class="nm-detb">`+
    (x.validity?`<p><span class="k">Dice la norma:</span> <q>${esc(x.validity)}</q></p>`:'<p>El texto oficial capturado no informa la fecha de vigencia.</p>')+
    (r.kind==='date'?`<p><span class="k">Revisión editorial (${esc(r.on)}):</span> vigencia ${fmt(D(r.eff))}, según <q>${esc(r.quote)}</q></p>`:'')+

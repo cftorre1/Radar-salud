@@ -42,11 +42,8 @@ test('Home V2 loads, filters persist and compact triage remains stable',async({p
  await expect(page.locator('.coverage,.toolbar,.weekly-cta,.preferences-panel')).toHaveCount(0);
  await expect(page.getByText('Personalizar mi radar',{exact:true})).toHaveCount(0);
  await expect(page.getByText(/Ingresar|Registrarse/)).toHaveCount(0);
- await expect(page.locator('#earlyAccessOpen')).toHaveText('Acceso PREMIUM');
- await page.locator('#earlyAccessOpen').click();await expect(page.locator('#earlyAccessDialog')).toBeVisible();
- await expect(page.locator('#earlyAccessDialog')).toContainText('Ve más allá de la señal.');
- await expect(page.locator('#earlyAccessDialog')).toContainText('Inscríbete al acceso anticipado');
- await page.getByRole('button',{name:'Cerrar acceso Premium'}).click();
+ // Dirección 11-nov-2026: no PREMIUM for now, no button and no dialog.
+ await expect(page.locator('#earlyAccessOpen,.premium-access,#earlyAccessDialog')).toHaveCount(0);
  await page.locator('#newsletterOpen').click();await expect(page.locator('#newsletterDialog')).toBeVisible();
  await expect(page.locator('#homeEmail')).toBeDisabled();
  await expect(page.locator('#newsletterDialog')).toContainText('Lo importante de la semana, directo a tu correo.');
@@ -268,7 +265,8 @@ test('Global read state is shared across Home and the research page',async({page
 // Dirección 27-oct 23:13: Global uses the Home header and bar A; mark-all works on the visible themes with undo.
 test('Global shares header, bar A and mark-all with the Home',async({page})=>{
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');
- for(const [name,href] of [['Al día','index.html'],['Global','global.html'],['Newsletter','subscription.html']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
+ expect(await page.locator('.topnav a').evaluateAll(xs=>xs.map(el=>(el.dataset.short||el.textContent).trim()))).toEqual(['Al día','Normativa','Datos','Global','Newsletter']);
+ for(const [name,href] of [['Al día','index.html'],['Normativa','normativa.html'],['Global','global.html'],['Newsletter','subscription.html']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
  await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href','global.html');
  // One inbox (Dirección 28-oct 08:20, punto 2): mark-all covers every visible row, themes and headlines alike.
  const rows=page.locator('#themes article.item');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
@@ -289,9 +287,9 @@ test('review notes: newsletter dialog, focus-out close, touch areas and 320px ba
  for(const [k,v] of Object.entries(hit))expect(v,k).toBeGreaterThanOrEqual(44);
  await page.locator('#markAllRead').focus();await expect(page.locator('#filterDetails')).not.toHaveAttribute('open','');
  await page.setViewportSize({width:320,height:700});
- const bar=await page.evaluate(()=>({h:document.querySelector('.radar-unit').getBoundingClientRect().height,premium:document.querySelector('.premium-access').getBoundingClientRect().right,w:innerWidth}));
+ const bar=await page.evaluate(()=>({h:document.querySelector('.radar-unit').getBoundingClientRect().height,nav:Math.max(...[...document.querySelectorAll('.topnav a')].map(a=>a.getBoundingClientRect().right)),w:innerWidth}));
  // Two lines with Inter; at most three with wider fallback fonts (CI runners have no Inter) — Dirección/review: 2 or 3 lines.
- expect(bar.premium).toBeLessThanOrEqual(bar.w);expect(bar.h).toBeLessThanOrEqual(140);
+ expect(bar.nav).toBeLessThanOrEqual(bar.w);expect(bar.h).toBeLessThanOrEqual(140);
 });
 test('source suggestion is visible, concise and fail-closed without provider',async({page})=>{
  let captured;
@@ -607,7 +605,7 @@ test('Home hero is compact, one-line and exposes subscription plus Global Intell
  await expect(page.locator('.newsletter-strip')).toContainText('Suscríbete para recibir en tu correo las señales más importantes');
  await expect(page.locator('.newsletter-strip #newsletterOpen')).toHaveText('Suscríbete');
  await expect(page.locator('a.header-premium[href="global.html"]')).toHaveAttribute('href','global.html');
- await expect(page.locator('button.premium-access')).toHaveText('Acceso PREMIUM');
+ await expect(page.locator('button.premium-access')).toHaveCount(0);
  if(test.info().project.name==='mobile'){
    const title=await page.locator('#radarTitle').boundingBox();
    // The pending count now lives in the segmented read status (Dirección 27-oct 22:44, punto 5);
@@ -622,11 +620,7 @@ test('Home hero is compact, one-line and exposes subscription plus Global Intell
 
 test('conversion surfaces lead with value and hide internal implementation status',async({page})=>{
  await page.goto('/');
- await page.locator('#earlyAccessOpen').click();
- await expect(page.locator('#earlyAccessDialog')).toContainText('Ve más allá de la señal.');
- await expect(page.locator('#earlyAccessDialog')).toContainText('Inscríbete al acceso anticipado');
- await expect(page.locator('#earlyAccessDialog')).not.toContainText('todavía no hay cuentas ni pagos');
- await page.getByRole('button',{name:'Cerrar acceso Premium'}).click();
+ await expect(page.locator('#earlyAccessOpen,#earlyAccessDialog')).toHaveCount(0);
  await page.locator('#newsletterOpen').click();
  await expect(page.locator('#newsletterDialog')).toContainText('Lo importante de la semana, directo a tu correo.');
  await expect(page.locator('#newsletterDialog')).not.toContainText('proveedor');
@@ -839,19 +833,18 @@ test('segmented read status, floating topics dropdown and toned weekly rows',asy
  expect(Math.max(...lines)).toBeLessThanOrEqual(3);
 });
 
-// Dirección 28-oct (puntos 5, 6 y 7): Premium and Suscribirse open the same dialogs in place on Chile and Global;
-// Global never sends the reader back to Chile.
-test('Premium and Suscribirse behave the same on Chile and Global and keep the reader in place',async({page})=>{
+// Dirección 28-oct (puntos 6 y 7): Suscribirse opens the same dialog in place on Al día and Global. PREMIUM is gone
+// for now (Dirección 11-nov-2026): no button, no dialog, and #premium opens nothing.
+test('Suscribirse behaves the same on Al día and Global and keeps the reader in place; no PREMIUM',async({page})=>{
  for(const path of ['/','/global.html']){
   await page.goto(path);const url=page.url();
-  await page.locator('.topnav .premium-access').click();await expect(page.locator('#earlyAccessDialog')).toBeVisible();await expect(page.locator('#earlyAccessDialog')).toContainText('Ve más allá de la señal.');
-  expect(page.url()).toBe(url);await page.getByRole('button',{name:'Cerrar acceso Premium'}).click();await expect(page.locator('#earlyAccessDialog')).toBeHidden();
+  await expect(page.locator('.topnav .premium-access,#earlyAccessDialog')).toHaveCount(0);
   await page.locator('.topnav .header-newsletter').click();await expect(page.locator('#newsletterDialog')).toBeVisible();expect(page.url()).toBe(url);await page.keyboard.press('Escape');
   const strip=page.locator('.newsletter-strip #newsletterOpen');await expect(strip).toHaveText('Suscríbete');await strip.scrollIntoViewIfNeeded();await strip.click();
   await expect(page.locator('#newsletterDialog')).toBeVisible();expect(page.url()).toBe(url);await page.keyboard.press('Escape');
   await expect(page.locator('a[href="index.html#premium"]')).toHaveCount(0);
  }
- await page.goto('/global.html#premium');await expect(page.locator('#earlyAccessDialog')).toBeVisible();expect(page.url()).toContain('global.html');
+ await page.goto('/global.html#premium');await expect(page.locator('#earlyAccessDialog')).toHaveCount(0);
 });
 test('Global rows match Home rows: dot toggle, title opens the ficha, source and share, inline undo',async({page})=>{
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');
