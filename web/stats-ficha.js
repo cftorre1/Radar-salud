@@ -178,7 +178,7 @@
  // its status as a small note under it. app.js places it; shareFicha() below wires it.
  function shareButton(f,opts={}){
   if(!f||!opts.shareId||!f.headline)return'';
-  return`<span class="sf-share-wrap"><button type="button" class="sf-share" data-ficha-share="${esc(opts.shareId)}" data-share-url="${esc(opts.shareUrl||'')}" data-share-title="${esc(genericTitle(f,opts))}" aria-label="Compartir informe" title="Compartir informe">${I.share}</button><span class="sf-share-status" role="status" aria-live="polite"></span></span>`;
+  return`<span class="sf-share-wrap"><button type="button" class="sf-share" data-ficha-share="${esc(opts.shareId)}" data-share-url="${esc(opts.shareUrl||'')}" data-share-title="${esc(opts.shareTitle||genericTitle(f,opts))}" aria-label="Compartir informe" title="Compartir informe">${I.share}</button><span class="sf-share-status" role="status" aria-live="polite"></span></span>`;
  }
  // Generic title of a ficha with topics: the name Datos gives it (index_title, passed by the page), else its family label;
  // a ficha without topics keeps its headline. Its finding headline stays in the data (share pages, verification).

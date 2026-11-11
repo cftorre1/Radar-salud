@@ -1323,7 +1323,12 @@ def share_page(card: dict) -> str:
     # '?abrir=1' makes the app open the ficha detail, not just scroll to its row.
     target = "../../index.html?abrir=1#" + target_id
     page_url = SITE_URL + card["share_url"]
-    title = escape(f"{ficha['headline']} · Alicanto Salud", quote=True)
+    # Dirección 11-nov-2026: the shared title is the ficha's generic name and period, not one view's finding.
+    fam = (load_registry().get("families") or {}).get(ficha.get("family"), {})
+    generic = fam.get("index_title") or ficha.get("family_label") or ficha["headline"]
+    from radar_salud.datos_index import period_short  # same short period as Datos and Al día («jul–sep 2026»)
+    period = period_short(ficha.get("period"), fam.get("period_kind")) or ""
+    title = escape(" · ".join(x for x in (generic, period, "Alicanto Salud") if x), quote=True)
     desc = escape(ficha.get("dek") or "", quote=True)
     return (
         "<!doctype html>\n<html lang=\"es\"><head><meta charset=\"utf-8\"/>"

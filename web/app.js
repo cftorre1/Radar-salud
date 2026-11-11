@@ -180,7 +180,7 @@ function cardDepth(s){return detailKind(s)!==null}
 function httpsSource(value){try{const url=new URL(value);return url.protocol==='https:'&&Boolean(url.hostname)}catch{return false}}
 function detailHtml(s){
  // Statistics ficha (Dirección 28-oct-2026): self-contained renderer in stats-ficha.js.
- if(s.stats_ficha&&typeof AlicantoFicha!=='undefined')return AlicantoFicha.render(s.stats_ficha,{shareId:`sig-${idFor(s)}`,shareUrl:s.share_url,title:datosByPiece.get(idFor(s))?.index_title});
+ if(s.stats_ficha&&typeof AlicantoFicha!=='undefined')return AlicantoFicha.render(s.stats_ficha,{shareId:`sig-${idFor(s)}`,shareUrl:s.share_url,title:datosByPiece.get(idFor(s))?.index_title,shareTitle:datosByPiece.get(idFor(s))?.share_title});
  const v3=String(s.editorial_schema_version)==='3';const title=triageTitle(s),seen=new Set([String(title).trim().toLowerCase()]);
  const fresh=x=>{if(!x)return false;const n=String(x).trim().toLowerCase();if(seen.has(n))return false;seen.add(n);return true};
  let body='';
@@ -265,7 +265,7 @@ function followMark(s){const ts=topicsOf(s).filter(x=>followedTopics.has(x.k)).m
 // <cadencia>», descriptive title, numbered topic index, date line and «Compartir». Chile adds its «Datos» tag and
 // «Fuente original»; the finding headline stays in the ficha and in what «Compartir» sends.
 let datosByPiece=new Map();
-function dataCard(s){const rd=isRead(s),id=idFor(s),title=triageTitle(s),m=AlicantoDataCard.model(datosByPiece.get(id),s);return `<article id="sig-${esc(id)}" tabindex="-1" data-card="${esc(id)}" data-rel="${rel(s.radar_score).cls}" class="signal item dc-row ${rd?'read':''}">${AlicantoDataCard.render(m,{read:rd,base:'?abrir=1',shareTitle:title,openAttr:`data-detail="${esc(id)}"`,topExtra:formatTag(s),shown:AlicantoDataCard.FEED_SHOWN})}</article>`}
+function dataCard(s){const rd=isRead(s),id=idFor(s),title=triageTitle(s),m=AlicantoDataCard.model(datosByPiece.get(id),s);return `<article id="sig-${esc(id)}" tabindex="-1" data-card="${esc(id)}" data-rel="${rel(s.radar_score).cls}" class="signal item dc-row ${rd?'read':''}">${AlicantoDataCard.render(m,{read:rd,base:'?abrir=1',shareTitle:(datosByPiece.get(id)||{}).share_title||title,openAttr:`data-detail="${esc(id)}"`,topExtra:formatTag(s),shown:AlicantoDataCard.FEED_SHOWN})}</article>`}
 // Normativa rows (Dirección 11-nov-2026): the same card as the Normativa section (norma-card.js), with the default
 // actions of every Al día card plus the countdown, the literal effective-date line, «Texto oficial» and «Implementada».
 const normaBySignal=new Map();let normaCards=null;
@@ -275,7 +275,7 @@ let detailOrigin=null;
 function detailBar(s){const r=isRead(s);return `<button type="button" class="textbtn" id="detailRead">${r?'Marcar no leída':'Marcar leída'}</button>`}
 // Statistics fichas (Dirección 29-oct, approved mockup option C→B): the top bar holds only Volver and the round share
 // icon; "Fuente original ↗" and the read toggle sit at the foot of the ficha, after Notas y fuentes (mockup .mk-foot).
-function statsShare(s){return typeof AlicantoFicha!=='undefined'&&AlicantoFicha.shareButton?AlicantoFicha.shareButton(s.stats_ficha,{shareId:`sig-${idFor(s)}`,shareUrl:s.share_url,title:datosByPiece.get(idFor(s))?.index_title}):''}
+function statsShare(s){return typeof AlicantoFicha!=='undefined'&&AlicantoFicha.shareButton?AlicantoFicha.shareButton(s.stats_ficha,{shareId:`sig-${idFor(s)}`,shareUrl:s.share_url,title:datosByPiece.get(idFor(s))?.index_title,shareTitle:datosByPiece.get(idFor(s))?.share_title}):''}
 function statsFoot(s){const u=AlicantoBar.httpsUrl(originalLink(s));return (u?`<a class="sf-foot-src" href="${esc(u)}" target="_blank" rel="noopener" aria-label="Fuente original: ${esc(triageTitle(s))} (abre en otra pestaña)">Fuente original ↗</a>`:'')+detailBar(s)}
 function wireStatsFoot(s){const body=document.getElementById('detailBody');if(!body)return;let foot=body.querySelector('#detailFoot');if(!foot){foot=document.createElement('div');foot.id='detailFoot';foot.className='sf-foot';foot.setAttribute('role','group');foot.setAttribute('aria-label','Acciones de la ficha');(body.querySelector('article.sf')||body).append(foot)}foot.innerHTML=statsFoot(s)}
 function wireDetailBar(s){const bar=document.getElementById('detailBar');if(!bar)return;if(s.stats_ficha){if(bar.querySelector('.sf-share')?.dataset.fichaShare!==`sig-${idFor(s)}`)bar.innerHTML=statsShare(s);wireStatsFoot(s)}else bar.innerHTML=detailBar(s);bar.closest('.detail-top')?.classList.toggle('sf-top',Boolean(s.stats_ficha));const acts=document.getElementById('detailActs');if(acts){acts.innerHTML=s.stats_ficha?'':AlicantoBar.fichaActions(originalLink(s),`sig-${idFor(s)}`,triageTitle(s));acts.querySelectorAll('[data-share]').forEach(b=>b.onclick=()=>shareCard(b))}const t=document.getElementById('detailRead');if(t)t.onclick=async()=>{await AlicantoRead.set(idFor(s),!isRead(s));readStatus(isRead(s)?'Marcado como leído.':'Marcado como no leído.');wireDetailBar(s);document.getElementById('detailRead')?.focus()}}

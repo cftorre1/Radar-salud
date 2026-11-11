@@ -130,7 +130,7 @@ def test_card_title_topics_and_feed_row(tmp_path):
     # Same rule as the ficha renderer: tabs with a label, in order; id = tab id, else its position among them.
     assert f1["topics"] == [{"id": "total", "label": "Cartera total"}, {"id": "isapres", "label": "Por Isapre"},
                             {"id": "2", "label": "Sin id"}]
-    assert f1["share_title"] == "Titular F1"
+    assert f1["share_title"] == "Cartera de beneficiarios Isapre · ago 2026"  # generic name + period (Dirección 11-nov)
     # The date-line fields, plus the row's own link so «Fuente original» is the same on both pages (Dirección 10-nov 23:29).
     src = card("F1", "2026-08", feed="2026-10-28")
     assert f1["feed_row"] == {"date_basis": "first_detected", "first_detected_at": "2026-10-02",
@@ -141,12 +141,13 @@ def test_card_title_topics_and_feed_row(tmp_path):
 
 
 def test_registry_index_titles_approved_10_nov():
+    # Dirección 11-nov-2026: the two GES fichas say which data each one is (new cases Fonasa+Isapre vs Isapre care and billing).
     fams = sf.load_registry()["families"]
     assert {f: fams[f].get("index_title") for f in ("F1", "F2", "F4", "F6", "F7", "F12", "F13", "F14")} == {
         "F1": "Cartera de beneficiarios Isapre", "F2": "Resultados financieros de las Isapres",
-        "F4": "Casos GES por problema de salud", "F6": "Prestadores acreditados y reclamos",
+        "F4": "GES: casos nuevos por problema de salud (Fonasa e Isapres)", "F6": "Prestadores acreditados y reclamos",
         "F7": "Ejecución presupuestaria de Salud", "F12": "Prestaciones bonificadas por Isapre",
-        "F13": "Licencias médicas por Isapre", "F14": "GES por patología en Isapres"}
+        "F13": "Licencias médicas por Isapre", "F14": "GES en Isapres: casos atendidos y facturación por problema de salud"}
 
 
 def test_published_topics_are_the_live_fichas_tabs():
@@ -164,3 +165,12 @@ def test_published_topics_are_the_live_fichas_tabs():
         assert r["index_title"]
         # stats-ficha.js only honours #...&tema=<id> when the id matches [\w-]+; anything else opens the index.
         assert all(re.fullmatch(r"[\w-]+", t["id"]) for t in r["topics"])
+
+
+def test_every_live_family_names_its_dataset_not_only_the_organism():
+    """Dirección 11-nov-2026: «SIS» alone does not tell F4 (casos GES) from F14 (datos abiertos) apart."""
+    pub = json.loads((ROOT / "web/data/datos.json").read_text(encoding="utf-8"))
+    live = [f for f in pub["families"] if f.get("state") == "live"]
+    assert live and all(f.get("source_dataset") for f in live)
+    by = {f["family"]: f["source_dataset"] for f in live}
+    assert by.get("F4") != by.get("F14")

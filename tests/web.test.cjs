@@ -499,7 +499,7 @@ test('Datos orders Recientes by verification day, groups by config and shows rea
  const D=datosContext(),fam=(family,order,group,extra={})=>({family,order,group,label:family,...extra});
  const data={groups:[{key:'aseguradores',label:'Aseguradores'},{key:'prestadores',label:'Prestadores'},{key:'sector_publico',label:'Sector público'}],families:[liveFam('F1',0,'aseguradores','2026-10-28'),liveFam('F2',1,'aseguradores','2026-11-02'),fam('F3',2,'aseguradores',{state:'planned'}),fam('F4',3,'aseguradores',{state:'pending'}),liveFam('F6',5,'prestadores','2026-10-30')]};
  assert.deepEqual([...D.recientes(data.families)].map(f=>f.family),['F2','F6','F1','F3','F4']);
- assert.deepEqual(JSON.parse(JSON.stringify(D.byGroup(data).map(g=>[g.label,g.families.map(f=>f.family)]))),[['Aseguradores',['F2','F1','F3','F4']],['Prestadores',['F6']]]);
+ assert.deepEqual(JSON.parse(JSON.stringify(D.byGroup(data).map(g=>[g.label,g.families.map(f=>f.family)]))),[['Aseguradores',['F2','F1']],['Prestadores',['F6']]]);
  const html=D.render(data,'recientes',new Set(['stats-ficha:F1:2026-08']));
  // Dirección 11-nov-2026: what was read goes down, unread first (each newest first), in both views.
  assert.deepEqual([...html.matchAll(/class="dx-item" data-family="(F\d+)"/g)].map(m=>m[1]),['F2','F6','F1']);
@@ -512,7 +512,7 @@ test('Datos orders Recientes by verification day, groups by config and shows rea
  assert.match(html,/<h3 class="dc-title"><a class="dc-open" href="index\.html\?abrir=1&amp;desde=datos#sig-stats-ficha:F2:2026-08">Título F2<\/a><\/h3>/);
  assert.match(html,/<div class="card-meta dc-meta"><span class="meta-text">Detectado 10 nov\.? 2026 · SIS<\/span><\/div>/);
  assert.match(html,/class="act act-share" data-share="sig-stats-ficha:F2:2026-08" data-share-url="data\/fichas\/f2\.html" data-share-title="Hallazgo F2"/);
- assert.match(html,/<div class="dx-soon" data-family="F3"><span>F3<\/span><span class="dx-tag">pronto<\/span><\/div>/);assert.match(html,/en verificación/);
+ assert.doesNotMatch(html,/dx-soon|pronto|en verificación/);// Dirección 11-nov: unpublished families are not shown
  assert.match(D.render(data,'grupo',new Set()),/<h2 class="dx-sec"[^>]*>Aseguradores<\/h2>/);
  assert.doesNotMatch(html,/cómo leer/i);
 });
@@ -554,8 +554,9 @@ test('Al día and Datos draw the same data card for the same ficha (feed shows f
   assert.match(chile,/<span class="tag">Datos<\/span>/);
   assert.match(page,new RegExp(`>${f.index_title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}</a></h3>`));
   // Same date line and the same share target/title as the Chile row of that piece.
-  assert.ok(page.includes(`<span class="meta-text">${c.rowMeta(s)}</span>`),f.family);
-  assert.ok(page.includes(`data-share-title="${c.AlicantoBar.esc(c.triageTitle(s))}"`),f.family);
+  assert.ok(page.includes(`<span class="meta-text">${[c.rowMeta(s),f.source_dataset?c.AlicantoBar.esc(f.source_dataset):''].filter(Boolean).join(' · ')}</span>`),f.family);
+  // Share title: the generic ficha title + period (committee review 11-nov), the same from Al día and Datos.
+  assert.ok(f.share_title&&page.includes(`data-share-title="${c.AlicantoBar.esc(f.share_title)}"`)&&chile.includes(`data-share-title="${c.AlicantoBar.esc(f.share_title)}"`),f.family);
  }
 });
 test('Datos view preference is per viewer and survives a blocked localStorage',()=>{

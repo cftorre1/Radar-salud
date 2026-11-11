@@ -16,9 +16,6 @@
 /* Live families: separate data cards 14px apart (data-card.js + the shared block in home-inbox.css). */
 .dx-list{display:grid;gap:14px}
 .dx-item{min-width:0}
-/* Planned / not yet published families: the simple greyed row with a small tag, same spacing as the cards. */
-.dx-soon{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding:11px 14px;border:1px solid var(--ink12);border-radius:12px;font-size:14px;color:var(--ink48)}
-.dx-tag{flex:none;font-size:10.5px;font-weight:650;color:var(--accent-ink);background:var(--accent-soft);border-radius:5px;padding:1px 6px}
 @media (min-width:760px){.datos-wrap{padding-top:28px}.datos-head h1{font-size:34px}}
 @media (max-width:340px){.datos-toggle button{padding:0 12px}}
 /* Series largas 1990–2025 (plan comercial): highlights, one-series chart with selector and period, data table, notes. */

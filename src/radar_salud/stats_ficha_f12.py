@@ -43,7 +43,7 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_informe_v11"  # v10 (Dirección 11-nov): no Isapre-vs-Isapre price comparison at the same provider; v9 (Dirección 10-nov): plain titles, paired charts, intro and topic body; v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
+BUILDER_VERSION = "f12_informe_v11"  # v10–v11 (Dirección 11-nov): no Isapre-vs-Isapre price comparison at the same provider; v9 (Dirección 10-nov): plain titles, paired charts, intro and topic body; v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
 DATASET = "Prestaciones Bonificadas"
 PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
 NATIONAL = "NACIONAL"

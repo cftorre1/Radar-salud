@@ -1014,7 +1014,8 @@ def test_share_page_has_og_preview_and_deep_link(root, tmp_path):
     assert card["share_url"] == "data/fichas/f1_cartera.html"
     written = sf.write_share_pages([card], tmp_path / "web/data")
     html = Path(written[0]).read_text(encoding="utf-8")
-    assert '<meta property="og:title" content="La cartera Isapre casi deja de caer' in html
+    # Dirección 11-nov-2026: the shared title is the ficha's generic name, not one view's finding.
+    assert '<meta property="og:title" content="Cartera de beneficiarios Isapre' in html and "casi deja de caer" not in html.split("og:description")[0]
     assert '<meta name="twitter:card" content="summary"/>' in html  # no real preview image
     assert 'og:image" content="https://cftorre1.github.io/Radar-salud/assets/' in html
     assert 'url=../../index.html?abrir=1#sig-stats-ficha:F1:2026-08' in html  # opens the detail
@@ -1232,3 +1233,15 @@ def test_feed_date_after_snapshot_day_is_ignored(root):
     live["published_at"] = "2026-10-02"
     assert "feed_date" not in sf.apply_to_snapshot([], [live], root=root, as_of=date(2026, 10, 12))[0]
     assert sf.apply_to_snapshot([], [live], root=root, as_of=date(2026, 11, 2))[0]["feed_date"] == "2026-11-02"
+
+
+def test_share_pages_carry_the_same_title_as_datos():
+    """Dirección 11-nov-2026 / review of #182: «index_title · period» on the share page, as in Datos and Al día."""
+    import html
+    import re as _re
+    ROOT = Path(__file__).resolve().parents[1]
+    datos = json.loads((ROOT / "web/data/datos.json").read_text(encoding="utf-8"))
+    for f in (x for x in datos["families"] if x.get("state") == "live"):
+        page = (ROOT / "web" / f["share_url"].lstrip("/")).read_text(encoding="utf-8") if f.get("share_url") else ""
+        m = _re.search(r'<meta property="og:title" content="([^"]*)"', page)
+        assert m and html.unescape(m.group(1)) == f["share_title"] + " · Alicanto Salud", f["family"]

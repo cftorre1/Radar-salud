@@ -125,13 +125,17 @@ def build(cards: list[dict], *, registry: dict | None = None, root: Path | None 
             "period_label": period_short(ficha["period"], cfg.get("period_kind")),
             "source": cfg.get("source_short") or SOURCE_SHORT.get(source_name) or source_name,
             "source_name": source_name,
+            # Dirección 11-nov-2026: the organism alone does not tell two SIS sources apart; name the dataset too.
+            **({"source_dataset": cfg["source_dataset"]} if cfg.get("source_dataset") else {}),
             "published_at": _day(ficha.get("published_at")),
             # Same day the inbox sorts by: first verification by Alicanto, else validation, else SIS publication.
             "updated_on": _day(card.get("feed_date")) or _day(card.get("validation_date")) or _day(card.get("event_date")),
             "status": "updating" if held else "current",
             **({"updating_period": held, "updating_period_label": period_short(held, cfg.get("period_kind"))} if held else {}),
             "share_url": card.get("share_url"),
-            "share_title": card.get("display_title") or card.get("title") or ficha["headline"],
+            # Dirección 11-nov-2026: share the ficha's generic name and period, not one view's finding.
+            "share_title": " · ".join(x for x in (cfg.get("index_title") or ficha.get("family_label") or ficha["headline"],
+                                                  period_short(ficha.get("period"), cfg.get("period_kind"))) if x),
             "feed_row": _feed_row(card),
         })
         families.append(row)
