@@ -570,3 +570,11 @@ assert.match(c.detailHtml({...sis,normative_document_type:'Dictamen',display_tit
 assert.doesNotMatch(c.detailHtml({title:'Noticia',event_date:'2026-11-05',signal_types:['Noticias']}),/norm-kicker/)});
 
 test('a rolling sanctions register shows Actualizado with its newest act (Dirección 10-nov-2026)',()=>{const c=context();const s={event_type:'SANCTION_REGISTER',signal_types:['Fiscalización'],event_date:'2026-11-06',emission_date:'2026-11-06',publication_date:null,detected_at:'2026-11-09T22:34:33Z',event_date_basis:'emission',source_name:'Superintendencia de Seguridad Social (SUSESO)'};assert.match(c.cardMetadata(s),/^Actualizado 0?6 nov\.? 2026 · SUSESO$/);assert.doesNotMatch(c.cardMetadata(s),/Detectado|Publicado/)});
+
+test('the header logo links home (Al día) on every page that shows it (Dirección 11-nov)',()=>{
+  for(const f of ['index.html','global.html','datos.html','datos-v2.html','subscription.html']){
+    const html=fs.readFileSync('web/'+f,'utf8');
+    const m=html.match(/<a href="index\.html" class="logo-link" aria-label="[^"]*Al día[^"]*">\s*<img class="(?:logo|brand)" src="assets\/alicanto-logo-header\.png"[^>]*\/><\/a>/);
+    assert.ok(m,`${f}: logo is not a link to index.html`);
+  }
+});
