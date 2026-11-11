@@ -29,8 +29,8 @@ REVIEW = Path("data/normativa/review.json")
 MONTHS = {m: i for i, m in enumerate(("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
                                       "septiembre", "octubre", "noviembre", "diciembre"), 1)}
 _M = "|".join(MONTHS)
-_DAY_DATE = re.compile(rf"\b(\d{{1,2}})\s*[°º]?\s+de\s+({_M})\s+(?:de|del)\s+(\d{{4}})\b", re.I)
-_MONTH_DATE = re.compile(rf"\bmes\s+de\s+({_M})\s+(?:de|del)\s+(\d{{4}})\b", re.I)
+_DAY_DATE = re.compile(rf"\b(\d{{1,2}})\s*(?:[°º]|ro)?\s+de\s+({_M})\s+(?:de|del)\s+(?:a[ñn]o\s+)?(\d{{4}})\b", re.I)
+_MONTH_DATE = re.compile(rf"\bmes\s+de\s+({_M})\s+(?:de|del)\s+(?:a[ñn]o\s+)?(\d{{4}})\b", re.I)
 # «desde su publicación», «a contar de su notificación», «desde la fecha de su publ icació n en el Diario Oficial»…
 _ON_PUBLICATION = re.compile(r"\b(?:desde|a\s+contar\s+de|a\s+partir\s+de)\s+(?:la\s+fecha\s+de\s+)?(?:su|la)\s+"
                              r"(?:publ\s*i\s*caci\s*[oó]\s*n|notificaci[oó]n)", re.I)
@@ -43,7 +43,11 @@ _EXCEPTION = re.compile(r"\bsalvo\b|\bexcepto\b|\bcon\s+excepci[oó]n", re.I)
 # A capture cut mid-sentence (ends on a connector or a clipped word: «…cuya», «…Diario Ofi»).
 _CUT = re.compile(r"\b(?:cuy[oa]s?|que|de|del|la|el|y|en|los|las|con|a|por|para|Ofi)\s*$", re.I)
 # A relative term («6 meses corridos contados desde su publicación») is not a literal date: it goes to review.
-_RELATIVE = re.compile(r"\b\d+\s+(?:d[ií]as|meses|años)\b.*\bcontad[oa]s\b", re.I)
+_NUM = r"(?:\d+|un[oa]?|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|quince|veinte|treinta|sesenta|noventa)"
+# Review round 2: «en el plazo de 30 días desde su notificación», «dentro de cinco días hábiles desde la notificación»
+# (a reporting or payment deadline) and «seis meses contados desde» are terms, never «vigente desde su notificación».
+_RELATIVE = re.compile(rf"\b{_NUM}\s+(?:d[ií]as|meses|a[ñn]os)(?:\s+(?:h[aá]biles|corridos))?\s+(?:contad[oa]s\s+)?(?:desde|a\s+contar)\b", re.I)
+_DEADLINE = re.compile(r"\b(?:dentro\s+de|en\s+el\s+plazo\s+de|plazo\s+de)\b[^.;]*$", re.I)
 _TARGET = re.compile(r"\b(Circular|Resoluci[oó]n Exenta|Oficio Circular|Oficio)\s+(IF|IP|SS)?\s*/?\s*N\s*[°º]?\s*([\d\.]+)\s+"
                      r"(?:difiri[oó]|posterg[oó]|aplaz[oó])\s+su\s+entrada\s+en\s+vigencia", re.I)
 
@@ -124,6 +128,12 @@ def parse_validity(text: Any) -> dict:
         return out  # «6 meses contados desde su publicación»: a term, not a literal date
     ev = _ON_EVENT.search(t)
     others = bool(_DAY_DATE.search(t) or _MONTH_DATE.search(t))
+    if ev and _DEADLINE.search(t[max(0, ev.start() - 80):ev.start()]):
+        return out  # «dentro de cinco días hábiles desde la notificación»: a deadline, not the entry into force
+    exc = _EXCEPTION.search(t)
+    if ev and exc and exc.start() < ev.start() and any(m.start() < exc.start() and _CUE.search(t[:m.start()][-60:])
+                                                       for m in _DAY_DATE.finditer(t)):
+        ev = None  # «rige desde el 31 de marzo de 2025, con excepción de … que rigen desde su publicación»: the date is the rule
     if ev:
         kind = ("on_notification" if re.fullmatch(_NOTIF_W, ev.group(1), re.I)
                 else "on_publication_do" if _DIARIO_OFICIAL.search(t) else "on_publication")
@@ -145,7 +155,8 @@ def parse_validity(text: Any) -> dict:
                 return {**out, "kind": "date", "eff": d.isoformat(), "prec": "day"}
     for m in _MONTH_DATE.finditer(t):
         before = t[:m.start()]
-        if _CUE.search(before[-60:] + " desde") or re.search(r"a\s+contar\s+del\s*$", before[-20:], re.I):
+        cue = _CUE.search(re.sub(r"\s*mes\s*$", "", before[-60:].rstrip()) + " ") or re.search(r"a\s+contar\s+del\s*$", before[-20:], re.I)
+        if cue and not _BAD.search(before[-80:]):
             d = _as_date(m.group(2), m.group(1))
             if d:
                 return {**out, "kind": "date", "eff": d.isoformat(), "prec": "month"}
@@ -199,7 +210,7 @@ def publishable(s: dict) -> bool:
             and bool((s.get("display_title") or s.get("title")) and s.get("normative_document_label") and s.get("source_url")))
 
 
-def update_registry(registry: dict, signals: list[dict], today: date) -> dict:
+def update_registry(registry: dict, signals: list[dict], today: date, history: list[dict] | None = None) -> dict:
     """Upsert today's Normativa signals; never drop a record by age (no 90-day logic).
 
     A record changes only when its captured fields change (no daily churn). A norm that Al día stops showing (HOLD,
@@ -221,6 +232,21 @@ def update_registry(registry: dict, signals: list[dict], today: date) -> dict:
             rec["validity"] = prev["validity"]  # a later capture without the text never erases what was literal
         if prev != rec:
             items[rec["id"]] = rec
+    # Review round 2: curation drops hidden/rejected cards before they reach this function, so a norm withdrawn later
+    # would keep its last PASS record. The newest history record of each source URL decides: not publishable (and not
+    # in today's feed) → withheld.
+    if history:
+        live = {s.get("source_url") for s in signals}
+        newest: dict[str, dict] = {}
+        for h in history:
+            if h.get("source_url") and (h.get("event_type") == "REGULATION" or "Normativa" in (h.get("signal_types") or [])):
+                newest[h["source_url"]] = h
+        for rid, rec in list(items.items()):
+            h = newest.get(rec.get("url"))
+            if h is not None and rec.get("url") not in live and not rec.get("withheld") and (
+                    h.get("feed_visibility") is False
+                    or str((h.get("editorial_committee") or {}).get("verdict") or "PASS").upper() in ("HOLD", "REJECT")):
+                items[rid] = {**rec, "withheld": True}
     return {"schema": SCHEMA, "items": dict(sorted(items.items()))}
 
 
@@ -269,13 +295,13 @@ def _read(path: Path, default):
 
 
 def export(signals: list[dict], root: Path, out_dir: Path, today: date, generated_at: str | None = None,
-           persist: bool = True) -> dict:
+           persist: bool = True, history: list[dict] | None = None) -> dict:
     """Update the registry with today's signals and write web/data/normativa.json (+ normativa_cards.json).
 
     ``persist`` is False for offline or back-dated builds (tests, QA, --as-of): they read the registry but never write
     it, so a fixture date cannot rewrite the committed repository (review of #180)."""
     reg_path, rev_path = root / REGISTRY, root / REVIEW
-    registry = update_registry(_read(reg_path, {"items": {}}), signals, today)
+    registry = update_registry(_read(reg_path, {"items": {}}), signals, today, history)
     if persist:
         reg_path.parent.mkdir(parents=True, exist_ok=True)
         text = json.dumps(registry, ensure_ascii=False, indent=2) + "\n"

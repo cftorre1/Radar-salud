@@ -126,3 +126,25 @@ def test_withheld_and_withdrawn_norms_leave_the_public_index_and_offline_builds_
     (tmp_path / "web").mkdir()
     ni.export([s], tmp_path, tmp_path / "web", date(2026, 10, 12), persist=False)
     assert not (tmp_path / ni.REGISTRY).exists() and (tmp_path / "web/normativa.json").exists()
+
+
+def test_review_round_2_terms_deadlines_and_hidden_norms():
+    p = ni.parse_validity
+    # Deadlines, sending duties and relative terms are never an entry into force (also in words, without «contados»).
+    for t in ("Deberán remitirse hasta el mes de junio de 2026", "El plazo vence el mes de marzo de 2026",
+              "a contar de la remuneración correspondiente al mes de junio de 2026",
+              "Las instrucciones comenzarán a regir en el plazo de 30 días desde su notificación",
+              "dentro de cinco días hábiles contados desde la notificación",
+              "pagar dentro de cinco días hábiles desde la notificación", "seis meses contados desde su publicación"):
+        assert p(t)["kind"] == "none", t
+    # The cued date is the rule when publication is only the exception; «del año» and «1ro» are dates.
+    r = p("La presente circular rige desde el 31 de marzo del año 2025, con excepción de los numerales que rigen a partir de la fecha de su publicación")
+    assert r["kind"] == "date" and r["eff"] == "2025-03-31" and r["partial"]
+    assert p("entrará en vigencia el 1ro de enero de 2026")["eff"] == "2026-01-01"
+    # A norm hidden later (dropped by curation before export) is withheld from its newest history record.
+    s = sig("Circular IF/N°535", "Circular", validity="Las disposiciones entran en vigencia el 1 de diciembre de 2026.")
+    reg = ni.update_registry({"items": {}}, [s], date(2026, 11, 11))
+    key = next(iter(reg["items"]))
+    hidden = ni.update_registry(reg, [], date(2026, 11, 12), history=[s, {**s, "feed_visibility": False}])
+    assert hidden["items"][key]["withheld"]
+    assert not ni.update_registry(reg, [], date(2026, 11, 12), history=[s])["items"][key].get("withheld")

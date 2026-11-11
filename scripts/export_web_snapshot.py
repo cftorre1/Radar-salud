@@ -883,7 +883,7 @@ def main():
     (out.parent/"datos.json").write_text(json.dumps(datos,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     # Normativa (Dirección 11-nov-2026): standing SIS/SUSESO registry, no 90-day logic; literal effective dates only.
     from radar_salud import normativa_index
-    normativa_index.export(payload["signals"],Path("."),out.parent,date.fromisoformat(payload["date"]),payload["generated_at"],persist=not args.offline and args.as_of is None)
+    normativa_index.export(payload["signals"],Path("."),out.parent,date.fromisoformat(payload["date"]),payload["generated_at"],persist=not args.offline and args.as_of is None,history=signals)
     # Review previews (Dirección 4-nov-2026): fichas held only by their first-review gate, for web/preview.html.
     from radar_salud import review_preview
     review_preview.write(Path("."),out.parent)
