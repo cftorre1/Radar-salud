@@ -33,7 +33,7 @@ test('Normativa: «Ver ficha» opens the Al día ficha',async({page})=>{
 });
 test('Normativa: «Ver ficha» leaves the saved Al día filters untouched',async({page})=>{
  const d=await (await page.request.get('/data/normativa.json')).json();const x=d.items.find(i=>i.in_feed);test.skip(!x,'no norm in the feed');
- await page.goto('/index.html');await page.evaluate(()=>localStorage.setItem('alicanto_filters',JSON.stringify({interests:[],entities:[],topics:[],period:'7',sort:'date',lane:'t'})));
+ await page.goto('/sources.html');await page.evaluate(()=>localStorage.setItem('alicanto_filters',JSON.stringify({interests:[],entities:[],topics:[],period:'7',sort:'date',lane:'t'})));
  await page.goto('/'+x.ficha);await expect(page.locator('#signalDetail')).toBeVisible();
  expect(JSON.parse(await page.evaluate(()=>localStorage.getItem('alicanto_filters'))).period).toBe('7');
 });
