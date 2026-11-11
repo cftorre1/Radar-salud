@@ -57,7 +57,8 @@ const SUMMARY_NOTICE='Resumen de Alicanto (la fuente no permite traducir)',ROW_N
 // Alicanto's own verified summary; the original title stays in the ficha as «Título original».
 // Decision 3: what each acronym stands for, once in the ficha (rows keep the short label).
 const SIGLAS={OMS:'Organización Mundial de la Salud',OPS:'Organización Panamericana de la Salud',FDA:'Administración de Alimentos y Medicamentos de EE. UU.',EMA:'Agencia Europea de Medicamentos',ECDC:'Centro Europeo para la Prevención y el Control de Enfermedades',CDC:'Centros para el Control y la Prevención de Enfermedades de EE. UU.',NICE:'Instituto Nacional de Salud y Excelencia Clínica del Reino Unido',OCDE:'Organización para la Cooperación y el Desarrollo Económicos'};
-function firstSentence(t){t=str(t);const m=t.match(/^.+?[.!?](?=\s+[A-ZÁÉÍÓÚÑ¿¡]|$)/);return (m?m[0]:t).replace(/[.]$/,'')}
+const ABBR=/\b(?:EE|UU|EE\. ?UU|Dr|Dra|Sr|Sra|N|Nº|art|núm|etc)\.$/;
+function firstSentence(t){t=str(t);const re=/[.!?](?=\s+[A-ZÁÉÍÓÚÑ¿¡]|$)/g;let m;while((m=re.exec(t))){const head=t.slice(0,m.index+1);if(!ABBR.test(head))return head.replace(/[.]$/,'')}return t.replace(/[.]$/,'')}
 function shownTitle(x){return translated(x)?str(x.title_es):summarized(x)?firstSentence(x.summary_es):x.title}
 function headlineEntry(x){return {kind:'headline',id:x.id,dom:`daily-${x.id}`,key:feedKey(x.id),date:String(x.published_at).slice(0,10),seen:String(x.first_seen_on||'').slice(0,10),title:shownTitle(x),publishers:[x.source_label].filter(Boolean),url:httpsUrl(x.url),priority:Number(x.priority)||0,x}}
 function buildEntries(){entries=[...themes.map(themeEntry),...headlines.map(headlineEntry)]}
@@ -113,7 +114,7 @@ function render(){
  const empty=laneMode==='p'?'Estás al día con las señales de este período.':laneMode==='l'?'Aún no hay señales leídas en este período.':'No hay señales en este período.';
  // Decision 3 (Dirección 11-nov-2026): the news of the week that Al día shows opens Global, at the top, so both say the
  // same; it is not repeated in its date group.
- const pk=feedMeta&&feedMeta.weekly_pick,pe=pk&&entries.find(e=>e.kind==='headline'&&e.id===pk.id);
+ const pk=feedMeta&&feedMeta.weekly_pick,pe=pk&&shown.find(e=>e.kind==='headline'&&e.id===pk.id);
  const week=pe?`<section class="inbox-group week-pick" id="semana" aria-label="Noticia de la semana"><h3 class="group-head">Noticia de la semana</h3>${row(pe)}</section>`:'';
  const gs=groups(shown.filter(e=>e!==pe));
  host.innerHTML=week+(gs.length?gs.map(([n,xs])=>`<section class="inbox-group" aria-label="${n}"><h3 class="group-head">${n}</h3>${xs.map(row).join('')}</section>`).join(''):(week?'':`<p class="inbox-empty">${empty}</p>`));

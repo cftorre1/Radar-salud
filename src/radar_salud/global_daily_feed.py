@@ -440,10 +440,16 @@ WEEKLY_PICK_RULE = "global_weekly_pick_v1"
 _MES = ("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic")
 
 
+_ABBR = re.compile(r"\b(?:EE|UU|EE\. ?UU|Dr|Dra|Sr|Sra|N|Nº|art|núm|etc)\.$")
+
+
 def _first_sentence(text: str) -> str:
     t = _str(text)
-    m = re.match(r"^.+?[.!?](?=\s+[A-ZÁÉÍÓÚÑ¿¡]|$)", t, re.S)
-    return (m.group(0) if m else t).rstrip(".")
+    for m in re.finditer(r"[.!?](?=\s+[A-ZÁÉÍÓÚÑ¿¡]|$)", t):
+        head = t[:m.end()]
+        if not _ABBR.search(head):
+            return head.rstrip(".")
+    return t.rstrip(".")
 
 
 def _no_relative_day(text: str, day) -> str:
@@ -452,8 +458,13 @@ def _no_relative_day(text: str, day) -> str:
         return text
     from datetime import timedelta
     fmt = lambda d: f"{d.day} {_MES[d.month - 1]} {d.year}"
-    text = re.sub(r"\bhoy\b", f"el {fmt(day)}", text)
-    return re.sub(r"\bayer\b", f"el {fmt(day - timedelta(days=1))}", text)
+    def sub(word: str, d) -> None:
+        nonlocal text
+        text = re.sub(rf"\b{word}\b(?! en d[ií]a)", lambda m: ("El " if m.group(0)[0].isupper() else "el ") + fmt(d),
+                      text, flags=re.I)
+    sub("hoy", day)
+    sub("ayer", day - timedelta(days=1))
+    return text
 
 
 def weekly_pick(cards: list[dict], as_of: date) -> dict | None:
@@ -480,7 +491,9 @@ def weekly_pick(cards: list[dict], as_of: date) -> dict | None:
         return None
     c = sorted(pool, key=lambda c: (texts(c)[2], int(c.get("priority") or 0), c["published_at"], c["id"]), reverse=True)[0]
     title, summary, spanish = texts(c)
-    spanish = spanish or bool((c.get("translation") or {}).get("status") == "summarized")
+    tr = c.get("translation") or {}
+    spanish = spanish or bool(tr.get("status") == "summarized" and tr.get("verified") is True
+                              and tr.get("kind") == "summary" and _str(c.get("summary_es")))
     summary = _no_relative_day(summary, _day(c.get("published_at")))
     if summary and re.sub(r"\W+", "", summary.lower()) == re.sub(r"\W+", "", title.lower()):
         summary = ""  # a description that only repeats the title adds nothing under it

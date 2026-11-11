@@ -39,7 +39,7 @@
 <script src="public-sources.js"></script><script src="conversion.js"></script>
 <script>
 (function(){const j=u=>fetch(u,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null);
-Promise.all([j('data/public_sources.json'),j('data/source_health.json')]).then(([d,health])=>{if(!d){document.getElementById('sourcesContext').textContent='No se pudo cargar el catálogo.';return}const list=AlicantoSources.render(document.getElementById('catalog'),d.sources,health);document.getElementById('sourcesContext').textContent=AlicantoSources.context(list,health)});
+Promise.all([j('data/public_sources.json'),j('data/source_health.json')]).then(([d,health])=>{if(!d){document.getElementById('sourcesContext').textContent='No se pudo cargar el catálogo.';return}const list=AlicantoSources.render(document.getElementById('catalog'),(d.sources||[]).filter(x=>!/^Global/.test(x.group||'')),health);document.getElementById('sourcesContext').textContent=AlicantoSources.context(list,health)});
 j('data/datos.json').then(d=>{const h=document.getElementById('catalogDatos');if(d)AlicantoSources.renderDatos(h,d);else h.innerHTML='<p class="datos-empty">No se pudieron cargar las fuentes de Datos.</p>'});
 j('data/global_feed.json').then(d=>{const h=document.getElementById('catalogGlobal');if(d)AlicantoSources.renderGlobal(h,d);else h.innerHTML='<p class="datos-empty">No se pudieron cargar las fuentes de Global.</p>'});})();
 </script>

@@ -183,8 +183,9 @@ def verify(record: dict[str, Any], label: str, evidence: str, official_subject: 
         # corridos» in a quote. A qualifier still never backs a bare figure («30 días» ≠ «30 días hábiles»).
         qual = {q for q in ("hábiles", "habiles", "corridos")
                 if re.search(rf"(?<![\d.,]){re.escape(unit)} {q}\b", nt + " " + nc)}
-        if qual and all(re.search(rf"(?<![\d.,]){re.escape(unit)} {q}\b", nq) for q in qual):
-            continue
+        bare = re.search(rf"(?<![\d.,]){re.escape(unit)}(?! (?:h[aá]biles|habiles|corridos)\b)", nt + " " + nc)
+        if qual and not bare and all(re.search(rf"(?<![\d.,]){re.escape(unit)} {q}\b", nq) for q in qual):
+            continue  # every use of the figure carries its qualifier, and the quote says the same
         if not re.search(rf"(?<![\d.,]){re.escape(unit)}(?!\d| h[aá]biles| corridos| de \d{{4}})", nq) and not (
                 re.search(r" de \d{4}$", unit) and re.search(rf"(?<![\d.,]){re.escape(unit)}", nq)):
             problems.append(f"date_or_quantity_not_literal_in_quote:{unit}")

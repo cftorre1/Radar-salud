@@ -180,3 +180,15 @@ def test_decision_7_verifier_accepts_the_same_qualifier_in_the_quote():
     bare = {**rec, "normative_context": "Imparte instrucciones a los organismos administradores. Plazo de 30 días.",
             "evidence_quotes": rec["evidence_quotes"][:1] + ["Plazo: 30 días hábiles contados desde su notificación al organismo."]}
     assert "date_or_quantity_not_literal_in_quote:30 días" in na.verify(bare, "Circular N°3933", ev)
+
+
+def test_decision_7_review_a_bare_figure_still_needs_its_own_quote():
+    from radar_salud import normative_autorecord as na
+    ev = ("MODIFICA EL TÍTULO II DEL LIBRO IV DEL COMPENDIO DE NORMAS DEL SEGURO DE LA LEY N°16.744 E IMPARTE INSTRUCCIONES "
+          "A LOS ORGANISMOS ADMINISTRADORES DEL SEGURO. Plazo: 30 días hábiles contados desde su notificación al organismo.")
+    rec = {"plain_language_title": "Circular N°3933 · Compendio del seguro laboral: modifica el Título II",
+           "subject_terms": ["COMPENDIO"], "action_terms": ["MODIFICA"],
+           "normative_context": "Plazo de 30 días hábiles; luego otros 30 días para informar.",
+           "evidence_quotes": ["MODIFICA EL TÍTULO II DEL LIBRO IV DEL COMPENDIO DE NORMAS DEL SEGURO DE LA LEY N°16.744",
+                               "Plazo: 30 días hábiles contados desde su notificación al organismo."]}
+    assert "date_or_quantity_not_literal_in_quote:30 días" in na.verify(rec, "Circular N°3933", ev)

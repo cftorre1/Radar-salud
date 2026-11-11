@@ -36,6 +36,9 @@ def test_summary_only_items_are_a_fallback_and_an_empty_week_hides_the_card():
     # Decision 3 (11-nov): the row title is the first sentence of the verified Alicanto summary (licence forbids translating).
     assert p["id"] == "a" and p["title"] == "Resumen de Alicanto" and p["summary"] is None and p["title_in_spanish"] is True
     assert weekly_pick([card("old", "2026-10-01", 99)], date(2026, 11, 12)) is None
+    unverified = card("u", "2026-11-09", 90, es=False)
+    unverified["translation"] = {**unverified["translation"], "verified": False}
+    assert weekly_pick([unverified], date(2026, 11, 12))["title_in_spanish"] is False
 
 
 def test_published_feed_carries_the_pick():
@@ -49,3 +52,11 @@ def test_pick_summary_names_the_day_instead_of_hoy():
     from radar_salud.global_daily_feed import _no_relative_day
     assert _no_relative_day("La FDA emitió hoy una guía; ayer hubo otra.", date(2026, 11, 2)) == \
         "La FDA emitió el 2 nov 2026 una guía; el 1 nov 2026 hubo otra."
+
+
+def test_pick_review_round_abbreviations_hoy_en_dia_and_unverified_summary():
+    from radar_salud.global_daily_feed import _first_sentence, _no_relative_day
+    assert _first_sentence("La OMS y EE. UU. firmaron un acuerdo. Otra frase.") == "La OMS y EE. UU. firmaron un acuerdo"
+    assert _first_sentence("El Dr. Pérez habló. Otra.") == "El Dr. Pérez habló"
+    assert _no_relative_day("Hoy la FDA emitió; hoy en día hay más.", date(2026, 11, 2)) == \
+        "El 2 nov 2026 la FDA emitió; hoy en día hay más."
