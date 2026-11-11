@@ -131,6 +131,8 @@ jobs:
           git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json data/inbox data/outbox
           if [ "${{ job.status }}" = success ]; then
             git add web/data
+            # Normativa registry (Dirección 11-nov-2026): no 90-day logic, it only grows; kept only with an accepted snapshot.
+            [ -d data/normativa ] && git add data/normativa
           else
             # Rejected snapshot: drop it so it is neither published nor left unstaged to block the rebase.
             git checkout -- web/data

@@ -207,6 +207,8 @@ jobs:
           git add data/audits/global_integration_2026_10_11
           if [ "${{ job.status }}" = success ]; then
             git add web/data
+            # Normativa registry (Dirección 11-nov-2026): no 90-day logic, it only grows; kept only with an accepted snapshot.
+            [ -d data/normativa ] && git add data/normativa
           else
             # Rejected snapshot (10-nov-2026, same fix as queue-hourly #168): drop the unstaged web/data so it is
             # neither published nor left behind to block the rebase; the paid data staged above still persists.
