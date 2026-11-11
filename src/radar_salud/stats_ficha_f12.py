@@ -43,7 +43,7 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_informe_v9"  # v9 (Dirección 10-nov): plain titles, paired charts, intro and topic body; v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
+BUILDER_VERSION = "f12_informe_v11"  # v10 (Dirección 11-nov): no Isapre-vs-Isapre price comparison at the same provider; v9 (Dirección 10-nov): plain titles, paired charts, intro and topic body; v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
 DATASET = "Prestaciones Bonificadas"
 PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
 NATIONAL = "NACIONAL"
@@ -55,6 +55,9 @@ FACT_STABLE_MAX = 5.0
 HEADLINE_MIN_INDEX = 3.0
 # Prices first (Dirección 5-nov-2026 21:25); coverage and concentration follow.
 TAB_ORDER = ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio", "cobertura", "mismo-prestador", "regiones"]
+# Dirección 11-nov-2026: the prices each Isapre pays for the same code at the same provider are not published (no
+# «Mismo prestador» topic, no gap paragraph, no note). The aggregate stays in the evidence, unpublished.
+PUBLISH_CROSS_ISAPRE = False
 SHARE_BANDS = {"50-60": "50–60%", "60-80": "60–80%", ">80": "más de 80%"}
 BAND5 = re.compile(r"^(\d{1,2}|95)-(\d{1,3})$")
 
@@ -426,9 +429,9 @@ def build_package(root: Path, registry: dict | None = None, previous_live: dict 
                    0, 1, 2, 3, 4, 5, 8, 12, 13, 16, 30, 10, 50, 60, 80, 100, 256, 10000, FACT_STABLE_MAX, HEADLINE_MIN_INDEX, n_top, min_cells, len(top), *[int(c["code"]) for c in codes if c["code"].isdigit()],
                    *desc_numbers],
         kpis={"q": q, "pq": pq if prev else None, "isapres": isapres, "hi_b": hi_b, "lo_b": lo_b, "cross_valid": cross_valid,
-              "qualified": qualified, "hi_c": hi_c, "lo_c": lo_c, "gap": gap, "opens": opens, "strong": strong,
+              "qualified": qualified, "hi_c": hi_c, "lo_c": lo_c, "gap": gap if PUBLISH_CROSS_ISAPRE else None, "opens": opens, "strong": strong,
               "closed": [c for c in isapres if types[c] == "closed"], "bands": bands, "small": small,
-              "cross_topic": len(open_q) >= 2, "codes": codes, "status_count": status_count,
+              "cross_topic": PUBLISH_CROSS_ISAPRE and len(open_q) >= 2, "codes": codes, "status_count": status_count,
               "regions": sorted(conc, key=lambda r: (r == NATIONAL, -(conc[r]["hhi"] or 0))), **report},
     )
     package["reconciliation"].update(ok=True, failures=[])
@@ -592,7 +595,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     dek = report["dek"]
     notes += report["notes"]
 
-    if k["small"]:
+    if PUBLISH_CROSS_ISAPRE and k["small"]:
         notes.append({"id": "n0b", "text": f"Base pequeña en la comparación mismo prestador: {', '.join(nm(c) for c in k['small'])} "
                                            f"(menos de {fmt(cfg.get('cross_min_cells') or 1000, 0)} celdas prestador × código). Se incluye "
                                            "igual; leer su índice con cautela."})
@@ -615,11 +618,11 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              "Alicanto nunca intenta revertir el cifrado y nunca muestra nombres de prestadores."},
         {"id": "n5", "text": "Precio por unidad = facturado / frecuencia de cada prestador en el código; la mediana y los percentiles "
                              "son entre prestadores, no ponderados por atenciones."},
-        {"id": "n6", "text": f"Mismo prestador: para cada prestador seudónimo y código Fonasa con ≥ 2 Isapres, el bonificado por unidad "
+        *([{"id": "n6", "text": f"Mismo prestador: para cada prestador seudónimo y código Fonasa con ≥ 2 Isapres, el bonificado por unidad "
                              "de cada Isapre (con ≥ 10 atenciones en la celda) se compara con la media simple de las Isapres de esa celda. Se "
                              "muestran la mediana de ese índice entre celdas y su media ponderada por atenciones; la brecha entre Isapres "
                              f"abiertas se informa solo si ambas medidas tienen el mismo signo y al menos {fmt(HEADLINE_MIN_INDEX, 0)}%. No ajusta por plan ni por "
-                             "bonificación restringida."},
+                             "bonificación restringida."}] if PUBLISH_CROSS_ISAPRE else []),
         {"id": "n7", "text": f"Archivo: ZIP trimestral de datos abiertos de la SIS ({fmt(V('filas'), 0)} filas). Su huella SHA-256 está "
                              "en Fuentes; cada agregado nombra esa misma huella y, si no calza, la ficha queda retenida."},
     ]

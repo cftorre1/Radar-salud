@@ -12,14 +12,16 @@
  function saveView(v){try{root.localStorage?.setItem(VIEW_KEY,v)}catch{}}
  const isLive=f=>f.state==='live'&&f.piece_id;
  // Recientes: live families by their latest verification day, newest first; then pending/planned in registry order.
- function recientes(families){
-  const live=families.filter(isLive).sort((a,b)=>String(b.updated_on||'').localeCompare(String(a.updated_on||''))||a.order-b.order);
+ // Dirección 11-nov-2026: as in Al día, what was read goes down — unread first, then read, each newest first.
+ function recientes(families,readSet){
+  const rd=f=>readSet&&readSet.has(f.piece_id)?1:0;
+  const live=families.filter(isLive).sort((a,b)=>rd(a)-rd(b)||String(b.updated_on||'').localeCompare(String(a.updated_on||''))||a.order-b.order);
   const rest=families.filter(f=>!isLive(f)).sort((a,b)=>a.order-b.order);
   return [...live,...rest];
  }
  // Por grupo: the registry's groups in order; inside each, live families first (newest first), then the rest.
- function byGroup(data){
-  const all=recientes(data.families||[]);
+ function byGroup(data,readSet){
+  const all=recientes(data.families||[],readSet);
   return (data.groups||[]).map(g=>({key:g.key,label:g.label,families:all.filter(f=>f.group===g.key)})).filter(g=>g.families.length);
  }
  function href(f){return `${BASE}#sig-${f.piece_id}`}
@@ -35,8 +37,8 @@
   const read=f=>Boolean(readSet&&readSet.has(f.piece_id));
   const list=fs=>`<div class="dx-list">${fs.map(f=>row(f,read(f))).join('')}</div>`;
   if(!(data.families||[]).length)return '<p class="datos-empty">Aún no hay fichas publicadas.</p>';
-  if(view==='grupo')return byGroup(data).map(g=>`<section class="dx-group" aria-labelledby="dx-g-${esc(g.key)}"><h2 class="dx-sec" id="dx-g-${esc(g.key)}">${esc(g.label)}</h2>${list(g.families)}</section>`).join('');
-  return list(recientes(data.families));
+  if(view==='grupo')return byGroup(data,readSet).map(g=>`<section class="dx-group" aria-labelledby="dx-g-${esc(g.key)}"><h2 class="dx-sec" id="dx-g-${esc(g.key)}">${esc(g.label)}</h2>${list(g.families)}</section>`).join('');
+  return list(recientes(data.families,readSet));
  }
  const api={recientes,byGroup,render,row,card,href,loadView,saveView,VIEW_KEY,BASE};
  root.AlicantoDatos=api;

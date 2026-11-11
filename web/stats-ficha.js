@@ -178,14 +178,18 @@
  // its status as a small note under it. app.js places it; shareFicha() below wires it.
  function shareButton(f,opts={}){
   if(!f||!opts.shareId||!f.headline)return'';
-  return`<span class="sf-share-wrap"><button type="button" class="sf-share" data-ficha-share="${esc(opts.shareId)}" data-share-url="${esc(opts.shareUrl||'')}" data-share-title="${esc(f.headline)}" aria-label="Compartir informe" title="Compartir informe">${I.share}</button><span class="sf-share-status" role="status" aria-live="polite"></span></span>`;
+  return`<span class="sf-share-wrap"><button type="button" class="sf-share" data-ficha-share="${esc(opts.shareId)}" data-share-url="${esc(opts.shareUrl||'')}" data-share-title="${esc(genericTitle(f,opts))}" aria-label="Compartir informe" title="Compartir informe">${I.share}</button><span class="sf-share-status" role="status" aria-live="polite"></span></span>`;
  }
+ // Generic title of a ficha with topics: the name Datos gives it (index_title, passed by the page), else its family label;
+ // a ficha without topics keeps its headline. Its finding headline stays in the data (share pages, verification).
+ function genericTitle(f,opts={}){const ts=arr(f&&f.tabs).filter(t=>t&&t.label);return ts.length?(opts.title||f.family_label||f.headline):f.headline}
  function render(f,opts={}){
   if(!f||f.status!=='PASS'||!f.headline)return'<p>Ficha no disponible.</p>';
   const lect=f.lectura&&f.lectura.status==='pass'&&f.lectura.text?f.lectura.text:null;
   const sources=arr(f.sources).filter(s=>https(s.url));
   const mt=metaLines(f);
   const ts=arr(f.tabs).filter(t=>t&&t.label);
+  const title=genericTitle(f,opts);
   // With topics, KPI cards live inside each topic (only when they add something its charts do not show) and the
   // ficha has no 'Qué mirar' block (Dirección 29-oct, option C→B). A ficha without topics keeps the KPI strip.
   const body=ts.length?topics(f,opts):
@@ -195,10 +199,13 @@
    (arr(f.watch).length?`<aside class="sf-watch"><h3>Qué mirar</h3><ol>${arr(f.watch).slice(0,2).map(w=>`<li><strong>${esc(w.headline)}</strong> ${esc(w.explanation)}</li>`).join('')}</ol></aside>`:'');
   return`<article class="sf${ts.length?' sf-cb':''}"${opts.shareId?` data-sf-sig="${esc(opts.shareId)}"`:''} data-family="${esc(f.family)}" data-period="${esc(f.period)}">`+
    `<p class="sf-kicker"><span class="sf-kick">${esc(f.kicker)}</span>${f.featured?'<span class="sf-featured">Destacada</span>':''}</p>`+
-   `<h2 id="detailTitle" class="sf-headline">${esc(f.headline)}</h2>`+
+   // Dirección 11-nov-2026: the title is the ficha's own, generic name (its views each carry their finding); the
+   // reader goes from the title straight to the topics, and the method (e.g. MLE, baskets) closes the ficha.
+   `<h2 id="detailTitle" class="sf-headline">${esc(title)}</h2>`+
    (mt.lines.length?`<ul class="sf-meta" aria-label="Datos de la publicación">${mt.lines.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'')+
-   `<p class="sf-dek">${dek(f)}</p>`+(arr(f.intro).length?`<section class="sf-intro" aria-label="Qué se compara">${arr(f.intro).map(x=>`<p${/^Nota:/.test(x)?' class="sf-intro-note"':''}>${esc(x)}</p>`).join('')}</section>`:'')+body+
+   (ts.length?'':`<p class="sf-dek">${dek(f)}</p>`)+body+
    (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+
+   (arr(f.intro).length?`<section class="sf-intro sf-method" aria-labelledby="sf-method-h"><h3 id="sf-method-h">Metodología</h3>${arr(f.intro).map(x=>`<p${/^Nota:/.test(x)?' class="sf-intro-note"':''}>${esc(x)}</p>`).join('')}</section>`:'')+
    // Coverage footnote (F2 Esencial, Dirección 2-nov): one short line, always visible, right above 'Notas y fuentes'.
    (f.scope_note?`<p class="sf-scope">${esc(f.scope_note)}</p>`:'')+
    `<details class="sf-notes"><summary>Notas y fuentes</summary>${mt.rest.length?`<p class="sf-cadence">${esc(mt.rest.join(' · '))}.</p>`:''}${arr(f.notes).length?`<h3>Notas sobre la evidencia</h3><ol>${arr(f.notes).map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`:''}`+
@@ -322,5 +329,5 @@
  const MON=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
  function correctionLabel(c){if(c.label)return c.label;const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(c.corrected_at||''));return m?`${Number(m[3])} ${MON[Number(m[2])-1]}`:''}
  function correctionTag(s){const c=s&&s.statistical_view&&s.statistical_view.correction;if(!c||!c.corrected_at)return'';const label=correctionLabel(c);return label?` <span class="tag correction-tag" title="${esc(c.text||'')}">Corregido el ${esc(label)}</span>`:''}
- root.AlicantoFicha={render,shareButton,metaLines,mount,shareFicha,correctionTag,correctionLabel};
+ root.AlicantoFicha={render,shareButton,genericTitle,metaLines,mount,shareFicha,correctionTag,correctionLabel};
 })(typeof window!=='undefined'?window:globalThis);

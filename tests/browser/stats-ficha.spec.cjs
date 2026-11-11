@@ -53,12 +53,12 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  // Kicker + 'Destacada' on one line; the two-line meta list under the headline; the headline and dek are the builder's.
  await expect(body.locator('.sf-kicker')).toHaveText('Cartera y movilidadDestacada');
  expect(await body.locator('.sf-meta li').allTextContents()).toEqual(['Datos a agosto 2026','Publicado por la SIS el 2 oct 2026']);
- await expect(body.locator('.sf-dek')).toHaveText(card.stats_ficha.dek);
+ await expect(body.locator('.sf-dek')).toHaveCount(0);  // Dirección 11-nov-2026: generic title, no dek
  // The share icon sits at the right end of the bar, on the same line as Volver.
  const bar=await page.evaluate(()=>{const r=e=>document.querySelector(e).getBoundingClientRect(),d=r('#signalDetail'),s=r('#signalDetail .sf-share'),b=r('#closeDetail');
   return {right:d.right-s.right,line:Math.abs((s.top+s.height/2)-(b.top+b.height/2)),w:s.width,h:s.height}});
  expect(bar.right).toBeLessThan(40);expect(bar.line).toBeLessThan(4);expect(bar.w).toBeGreaterThanOrEqual(44);expect(bar.h).toBeGreaterThanOrEqual(44);
- await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
+ await expect(body.locator('.sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),card.stats_ficha));
  // Index: 5 topics, each with its one-line reading and a sparkline (Regional pending); no topic open yet.
  const index=body.locator('.sf-index'),topic=body.locator('.sf-topic');
  await expect(index).toBeVisible();await expect(topic).toBeHidden();
@@ -254,7 +254,7 @@ test('the F1 share page redirects to the ficha deep link',async({page})=>{
  await expect(page.locator(`article[data-card="${card.piece_id}"]`)).toHaveCount(1);
  // The share link opens the ficha detail, not just the row.
  await expect(page.locator('#signalDetail')).toBeVisible();
- await expect(page.locator('#detailBody .sf-headline')).toHaveText(card.stats_ficha.headline);
+ await expect(page.locator('#detailBody .sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),card.stats_ficha));
  expect(page.url()).not.toContain('abrir=1');
 });
 

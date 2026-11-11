@@ -22,7 +22,7 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
   await expect(row.locator('.act-share')).toHaveAttribute('data-share-url',card.share_url);
   await row.locator('[data-detail]').first().click();
   const body=page.locator('#detailBody');
-  await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
+  await expect(body.locator('.sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),card.stats_ficha));
   // Index → topic (Dirección 29-oct, generic for every family): one row per topic with the builder's index line.
   await expect(body.locator('.sf-index')).toBeVisible();await expect(body.locator('.sf-kpi:visible')).toHaveCount(kpis);
   expect(await body.locator('.sf-row-label').evaluateAll(xs=>xs.map(x=>x.firstChild.textContent.trim()))).toEqual(tabs);
@@ -77,7 +77,7 @@ for(const [slug,tabs] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre
   await expect(row).toHaveCount(1);
   await row.locator('[data-detail]').first().click();
   const body=page.locator('#detailBody');
-  await expect(body.locator('.sf-headline')).toHaveText(card.stats_ficha.headline);
+  await expect(body.locator('.sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),card.stats_ficha));
   const check=()=>page.evaluate(()=>[...document.querySelectorAll('#detailBody .sf-tpanel:not([hidden]) svg[role=img]')].map(s=>{
    const vb=s.viewBox.baseVal,texts=[...s.querySelectorAll('text')],inside=texts.every(t=>{const b=t.getBBox();return b.x>=-1&&b.x+b.width<=vb.width+1});
    const xl=[...s.querySelectorAll('text.sf-xlab')].map(t=>t.getBBox()).sort((a,b)=>a.x-b.x);

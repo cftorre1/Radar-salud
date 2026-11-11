@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "generated_at": "2026-11-11T00:28:31.606958+00:00",
+  "generated_at": "2026-11-11T05:24:13.594728+00:00",
   "entities": [
     {
       "id": "cl:org:clinica-alemana",
@@ -39227,7 +39227,7 @@
       "publication_date": null,
       "date_basis": "first_detected",
       "first_detected_at": "2026-11-10",
-      "validation_date": "2026-11-10",
+      "validation_date": "2026-11-11",
       "data_period": "2026-09",
       "event_type": "DATA_PULSE",
       "category": "Datos sectoriales",
@@ -39263,7 +39263,7 @@
         "family_label": "Prestaciones bonificadas",
         "period": "2026-09",
         "published_at": "2026-11-10",
-        "generated_at": "2026-11-10T11:21:38.527859+00:00",
+        "generated_at": "2026-11-11T05:23:40.878376+00:00",
         "release_key": "2026-09:dec3705b9d0c6c5a",
         "featured": false,
         "triggers": [
@@ -40878,229 +40878,6 @@
             "index_refs": [
               "isapre.107.2026t3.total.pct_bonif",
               "isapre.78.2026t3.total.pct_bonif"
-            ],
-            "kpis": []
-          },
-          {
-            "id": "mismo-prestador",
-            "label": "Mismo prestador",
-            "charts": [
-              {
-                "id": "f12-mismo-prestador",
-                "form": "pair",
-                "unit": "%",
-                "digits": 1,
-                "series": [
-                  "Mediana",
-                  "Media ponderada"
-                ],
-                "headline": "Cuánto paga cada Isapre al mismo prestador por el mismo código",
-                "subtitle": "% sobre (+) o bajo (−) el promedio de las Isapres en el mismo prestador y código, julio–septiembre 2026",
-                "rows": [
-                  {
-                    "label": "Esencial",
-                    "value": 11.21,
-                    "ref": "cruce.108.mediana",
-                    "base": 20.04,
-                    "base_ref": "cruce.108.ponderada"
-                  },
-                  {
-                    "label": "Isalud",
-                    "tag": "cerrada",
-                    "value": 6.16,
-                    "ref": "cruce.63.mediana",
-                    "base": 0.39,
-                    "base_ref": "cruce.63.ponderada"
-                  },
-                  {
-                    "label": "Cruz Blanca",
-                    "value": 4.27,
-                    "ref": "cruce.78.mediana",
-                    "base": 3.57,
-                    "base_ref": "cruce.78.ponderada"
-                  },
-                  {
-                    "label": "Colmena",
-                    "value": 3.02,
-                    "ref": "cruce.67.mediana",
-                    "base": 0.5,
-                    "base_ref": "cruce.67.ponderada"
-                  },
-                  {
-                    "label": "Cruz del Norte",
-                    "tag": "cerrada",
-                    "value": 2.3,
-                    "ref": "cruce.94.mediana",
-                    "base": 3.13,
-                    "base_ref": "cruce.94.ponderada"
-                  },
-                  {
-                    "label": "Nueva Masvida",
-                    "value": -0.02,
-                    "ref": "cruce.81.mediana",
-                    "base": -3.33,
-                    "base_ref": "cruce.81.ponderada"
-                  },
-                  {
-                    "label": "Vida Tres",
-                    "value": -0.58,
-                    "ref": "cruce.80.mediana",
-                    "base": 1.69,
-                    "base_ref": "cruce.80.ponderada"
-                  },
-                  {
-                    "label": "Fundación",
-                    "tag": "cerrada",
-                    "value": -2.58,
-                    "ref": "cruce.76.mediana",
-                    "base": 3.82,
-                    "base_ref": "cruce.76.ponderada"
-                  },
-                  {
-                    "label": "Consalud",
-                    "value": -4.68,
-                    "ref": "cruce.107.mediana",
-                    "base": -5.58,
-                    "base_ref": "cruce.107.ponderada"
-                  },
-                  {
-                    "label": "Banmédica",
-                    "value": -5.88,
-                    "ref": "cruce.99.mediana",
-                    "base": -5.57,
-                    "base_ref": "cruce.99.ponderada"
-                  }
-                ],
-                "table": {
-                  "columns": [
-                    "Isapre",
-                    "Tipo",
-                    "Mediana",
-                    "p25",
-                    "p75",
-                    "Media ponderada por frecuencia",
-                    "Facturado por unidad (mediana)",
-                    "Celdas"
-                  ],
-                  "rows": [
-                    [
-                      "Esencial",
-                      "abierta",
-                      "+11,2%",
-                      "−2,7%",
-                      "+29,9%",
-                      "+20,0%",
-                      "+0,9%",
-                      "4.242"
-                    ],
-                    [
-                      "Isalud",
-                      "cerrada",
-                      "+6,2%",
-                      "−12,8%",
-                      "+26,8%",
-                      "+0,4%",
-                      "−0,2%",
-                      "2.609"
-                    ],
-                    [
-                      "Cruz Blanca",
-                      "abierta",
-                      "+4,3%",
-                      "−8,4%",
-                      "+17,3%",
-                      "+3,6%",
-                      "0,0%",
-                      "17.279"
-                    ],
-                    [
-                      "Colmena",
-                      "abierta",
-                      "+3,0%",
-                      "−7,2%",
-                      "+14,7%",
-                      "+0,5%",
-                      "0,0%",
-                      "28.793"
-                    ],
-                    [
-                      "Cruz del Norte",
-                      "cerrada",
-                      "+2,3%",
-                      "−11,3%",
-                      "+28,9%",
-                      "+3,1%",
-                      "+4,1%",
-                      "118"
-                    ],
-                    [
-                      "Nueva Masvida",
-                      "abierta",
-                      "0,0%",
-                      "−12,9%",
-                      "+9,4%",
-                      "−3,3%",
-                      "0,0%",
-                      "17.281"
-                    ],
-                    [
-                      "Vida Tres",
-                      "abierta",
-                      "−0,6%",
-                      "−11,4%",
-                      "+9,8%",
-                      "+1,7%",
-                      "−0,1%",
-                      "10.734"
-                    ],
-                    [
-                      "Fundación",
-                      "cerrada",
-                      "−2,6%",
-                      "−15,3%",
-                      "+9,9%",
-                      "+3,8%",
-                      "+2,4%",
-                      "3.145"
-                    ],
-                    [
-                      "Consalud",
-                      "abierta",
-                      "−4,7%",
-                      "−15,0%",
-                      "+4,6%",
-                      "−5,6%",
-                      "0,0%",
-                      "23.290"
-                    ],
-                    [
-                      "Banmédica",
-                      "abierta",
-                      "−5,9%",
-                      "−16,1%",
-                      "+3,8%",
-                      "−5,6%",
-                      "0,0%",
-                      "24.605"
-                    ]
-                  ]
-                },
-                "source": "SIS, datos abiertos; prestadores seudónimos con ≥ 2 Isapres (≥ 10 atenciones cada una) en el mismo código Fonasa. Isalud, Cruz del Norte, Fundación: Isapre cerrada (afiliación restringida). Cuando las dos medidas difieren en signo, la diferencia no es robusta."
-              }
-            ],
-            "text": [],
-            "dek": null,
-            "body": [
-              "Se compara a cada Isapre con las demás en el mismo prestador y el mismo código, así la diferencia no viene de la red ni del tipo de prestación. «Mediana» toma la celda típica; «media ponderada» pesa cada celda por sus atenciones. No ajusta por plan: un plan con mejor cobertura sube el índice."
-            ],
-            "spark": {
-              "chart": "f12-mismo-prestador",
-              "form": "bars"
-            },
-            "index_line": "Medianas, abiertas: Esencial +11,2% · Banmédica −5,9%",
-            "index_refs": [
-              "cruce.108.mediana",
-              "cruce.99.mediana"
             ],
             "kpis": []
           },
@@ -43252,8 +43029,7 @@
           "heading": "Qué muestran los datos",
           "paragraphs": [
             "El 72,9% de lo facturado tiene código MLE; la canasta cubre 80,9% del mundo ambulatorio y 58,3% del hospitalario.",
-            "En julio–septiembre 2026, las Isapres bonificaron el 66,7% de lo facturado por los prestadores.",
-            "En un mismo prestador y código, la mediana del índice de bonificado por unidad de Esencial queda 17,1 puntos sobre la de Banmédica; sus medias ponderadas tienen el mismo signo."
+            "En julio–septiembre 2026, las Isapres bonificaron el 66,7% de lo facturado por los prestadores."
           ],
           "rendered_in_tabs": true
         },
@@ -43290,10 +43066,6 @@
             "text": "«Veces el arancel» divide el precio por el valor nivel 1 del Arancel MLE 2026 del mismo código y se muestra solo para el mundo ambulatorio. En lo hospitalario, lo facturado por código probablemente incluye ítems que el arancel no valoriza por separado (insumos, medicamentos, días cama asociados), por eso no se publica hasta revisarlo."
           },
           {
-            "id": "n0b",
-            "text": "Base pequeña en la comparación mismo prestador: Cruz del Norte (menos de 1.000 celdas prestador × código). Se incluye igual; leer su índice con cautela."
-          },
-          {
             "id": "n0",
             "text": "Isalud, Fundación, Cruz del Norte: Isapre cerrada (afiliación restringida). Aparecen en los temas, marcadas, pero no en los rangos entre Isapres abiertas."
           },
@@ -43316,10 +43088,6 @@
           {
             "id": "n5",
             "text": "Precio por unidad = facturado / frecuencia de cada prestador en el código; la mediana y los percentiles son entre prestadores, no ponderados por atenciones."
-          },
-          {
-            "id": "n6",
-            "text": "Mismo prestador: para cada prestador seudónimo y código Fonasa con ≥ 2 Isapres, el bonificado por unidad de cada Isapre (con ≥ 10 atenciones en la celda) se compara con la media simple de las Isapres de esa celda. Se muestran la mediana de ese índice entre celdas y su media ponderada por atenciones; la brecha entre Isapres abiertas se informa solo si ambas medidas tienen el mismo signo y al menos 3%. No ajusta por plan ni por bonificación restringida."
           },
           {
             "id": "n7",

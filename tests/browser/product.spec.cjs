@@ -367,7 +367,8 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  // Header as in the approved mockup (Dirección 29-oct): kicker + 'Destacada'; a two-line meta list under the headline.
  await expect(page.locator('#detailBody .sf-kicker .sf-kick')).toHaveText('Cartera y movilidad');
  expect(await page.locator('#detailBody .sf-meta li').allTextContents()).toEqual(['Datos a agosto 2026','Publicado por la SIS el 2 oct 2026']);
- await expect(page.locator('#detailBody .sf-dek')).toContainText('2.486.683');
+ // Dirección 11-nov-2026: a ficha with topics has a generic title and no dek; the finding lives in its topics.
+ await expect(page.locator('#detailBody .sf-dek')).toHaveCount(0);
  await expect(page.locator('#detailBody .sf-row')).toHaveCount(6);  // index of topics: 5 (Dirección 29-oct) + Concentración (F1 v9, #138)
  await expect(page.locator('#detailBody .sf-notes')).toContainText('denominador solo las 7 Isapres abiertas');
  await expect(page.locator('#detailBody .sf-notes a').first()).toHaveAttribute('href',/superdesalud\.gob\.cl/);
@@ -533,7 +534,7 @@ test('F1 ficha presents stock KPIs with separate contracts and mobility views',a
  const ficha=page.locator('article[data-card="stats-ficha:F1:2026-08"]');
  await expect(ficha).toHaveCount(1);await ficha.locator('[data-detail]').first().click();
  const detail=page.locator('#detailBody');
- await expect(detail.locator('.sf-dek')).toContainText('2.486.683');
+ await expect(detail.locator('.sf-dek')).toHaveCount(0);
  await detail.locator('.sf-row').filter({hasText:'Movilidad y desahucios'}).click();
  const panel=detail.locator('.sf-tpanel:not([hidden])');
  await expect(panel).toContainText('Contratos suscritos y desahucios voluntarios');
