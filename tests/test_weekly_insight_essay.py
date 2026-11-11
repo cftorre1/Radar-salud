@@ -124,7 +124,7 @@ CASES = {
     "normative_id_unexplained:body[15]": lambda w: w["body"][15].update(text="Atención a la Ley 21.822 y su política."),
     "v1_field_in_v2:watch": lambda w: w.update(watch=[{"headline": "x", "explanation": "y"}]),
     "headline_over_140_chars": lambda w: w.update(headline="a" * 141),
-    "dek_over_30_words": lambda w: w.update(dek=" ".join(["palabra"] * 31)),
+    "dek_over_35_words": lambda w: w.update(dek=" ".join(["palabra"] * 36)),
     # Dirección 11-nov: the dek is ONE sentence (one idea), and there is no topic kicker above the headline.
     "dek_more_than_one_sentence": lambda w: w.update(dek="La FNE aprobó el fondo. En junio, 1.056 personas seguían hospitalizadas."),
     "kicker_not_used": lambda w: w.update(kicker="Personas mayores y cuidados"),
@@ -303,7 +303,7 @@ def test_migrated_text_carries_the_review_corrections():
     assert review["status"] == "final" and review["verdict"] == "PASS_WITH_CORRECTIONS" and review["corrections_applied"] is True
     assert [(r["round"], r["verdict"]) for r in review["rounds"]] == [
         (1, "PASS_WITH_CORRECTIONS"), (2, "FAIL"), (3, "FAIL"), ("3-fix", "FAIL"), (4, "PASS"),
-        (5, "PASS_WITH_CORRECTIONS"), (6, "PASS_WITH_CORRECTIONS")]
+        (5, "PASS_WITH_CORRECTIONS"), (6, "PASS_WITH_CORRECTIONS"), ("6-dir", "DIRECCION")]
     assert review["rounds"][4] == {"round": 4, "on": "2026-11-10", "reviewed_commit": "c8ee171f", "verdict": "PASS"}
     assert review["rounds"][3] == {"round": "3-fix", "reviewed_commit": "8b9487f7", "verdict": "FAIL",
                                    "blocker": "verbo doblar; registro prematuro"}

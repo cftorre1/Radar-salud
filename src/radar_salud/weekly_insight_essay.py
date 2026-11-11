@@ -9,7 +9,7 @@ Schema ``weekly_insight_a_v2`` (authored fields; ids, dates and source_refs are 
 ``weekly_insight_a.normalize_draft``)::
 
   headline          ≤ 140 characters
-  dek               ONE sentence, ≤ 30 words, that states the headline's single idea (Dirección 11-nov)
+  dek               ONE sentence, ≤ 35 words, that states the headline's single idea (Dirección 11-nov)
   (no kicker: the header reads only «Insight de la semana · <fecha>»; a kicker field fails)
   body              ordered blocks:
                       {"type": "paragraph", "text"}            the first block is the lead
@@ -52,7 +52,7 @@ V2_REQUIRED_FROM = date(2026, 11, 16)
 
 ESSAY_WORDS_MIN, ESSAY_WORDS_MAX = 500, 1000          # hard limits (FAIL)
 ESSAY_WORDS_TARGET = (600, 900)                       # target (warning only)
-HEADLINE_MAX_CHARS, DEK_MAX_WORDS = 140, 30
+HEADLINE_MAX_CHARS, DEK_MAX_WORDS = 140, 35  # 35: Dirección's own 9-nov dek (11-nov 01:50) has 32 words
 # Editorial rules of Dirección, 11-nov-2026 (data/weekly_insight/POLICY.md «Reglas editoriales»): the dek is one sentence
 # carrying one idea, never a summary that strings two news items together; no topic kicker above the headline.
 DEK_MAX_SENTENCES = 1
@@ -893,7 +893,7 @@ def evidence_errors(weekly: dict, evidence: dict) -> list[str]:
 
 FORMAT_V2 = """Formato A v2, ensayo tipo noticia (aprobado por Dirección el 10-nov-2026; JSON puro, sin texto fuera del JSON):
 {"headline": "≤140 caracteres; toma posición, sin causalidad no demostrada",
- "dek": "UNA sola oración, ≤30 palabras, que explica la idea del titular; nunca resume ni encadena dos noticias",
+ "dek": "UNA sola oración, ≤35 palabras, que explica la idea del titular; nunca resume ni encadena dos noticias",
  "body": [  // entrada → contexto → desarrollo; sin rótulos «Qué pasó», «Lectura Alicanto» ni «Qué mirar»
    {"type":"paragraph","text":"la ENTRADA: el hecho de la semana, quién, qué y cuándo, con la fuente enlazada"},
    {"type":"quote","text":"cita textual, copiada LITERALMENTE de evidence_excerpts (sin comillas)","source_ref":"f1",

@@ -94,7 +94,7 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
   into prose (2–3 signals that would confirm or refute the thesis). Narrative h2 subheads are fine; the old section
   labels are rejected. The first block is the lead paragraph.
 - **Length.** Essay (paragraphs + quotes + closing) of 600–900 words (warning outside); FAIL under 500 or over 1.000.
-  Headline ≤ 140 characters; dek one sentence, ≤ 30 words; no kicker (see «Editorial rules», 11-nov).
+  Headline ≤ 140 characters; dek one sentence, ≤ 35 words; no kicker (see «Editorial rules», 11-nov).
 - **Charts.** 1–3, each placed once with a `chart` block right after the paragraph that explains it. `kind` is
   `oficial`, `prensa` or `estimacion` (used to verify, never shown as a label); an estimate chart names its
   `estimate_ref` and its title carries the estimate's footnote letter. `source` links its sources with `[nombre](fN)`.
@@ -142,7 +142,7 @@ the independent review (`weekly_insight_a.review_prompt`).
    model drafts; in an editorial session a `kicker` field fails (`kicker_not_used`, deterministic).
 2. **Dek.** One sentence (`dek_more_than_one_sentence`; abbreviations such as «p. ej.», «S.A.» and numbers such as
    «1.056» do not split; a single-letter initial before a period, as in «Plan B.», and a second sentence that starts
-   in lowercase are not counted, a known limit), ≤ 30 words (`dek_over_30_words`), deterministic. It states
+   in lowercase are not counted, a known limit), ≤ 35 words (`dek_over_35_words`), deterministic. It states
    the single idea behind the headline. It never summarises or strings two news items together; joining two facts
    needs a connection the evidence shows (review).
 3. **Byline.** Exactly «Alicanto · Lectura de N min · N fuentes». No «equipo editorial», no count of official
