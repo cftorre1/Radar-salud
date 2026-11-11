@@ -427,7 +427,6 @@ function renderWeeklyA(w){
 // links to the original document and to the numbered list (Oficial/Prensa badge); Alicanto estimates carry a dashed
 // underline or frame and their formula; the method is collapsed. Mirrors src/radar_salud/weekly_insight_essay.py.
 function weIsEssay(w){return Boolean(w&&w.schema_version==='weekly_insight_a_v2'&&Array.isArray(w.body)&&w.headline)}
-const WE_KIND={oficial:'Oficial',prensa:'Prensa',estimacion:'Estimación Alicanto'};
 const WE_LINK=/\[([^\]\[^][^\]\[]*)\]\((f\d{1,2}|est:[A-Za-z0-9_-]+)\)/g;
 function weNum(v,max=1){return Number(v).toLocaleString('es-CL',{maximumFractionDigits:max}).replace(/^-/,'−')}
 // "505 / (993 + 505) * 100" → "505 ÷ (993 + 505)"; the result goes after "=" with its unit.
@@ -473,11 +472,11 @@ function renderWeeklyEssay(w){
  const minutes=Number(w.reading_time_min)||Math.max(1,Math.round(weWords(w)/200));
  let lead=true;
  const body=arr(w.body).map(b=>{if(!b)return'';if(b.type==='paragraph'){const cls=lead?' class="we-lead"':'';lead=false;return`<p${cls}>${weInline(b.text,ctx)}</p>`}if(b.type==='subhead')return`<h3 class="we-h">${esc(b.text)}</h3>`;if(b.type==='quote')return weQuote(b,ctx);if(b.type==='chart'){const c=charts.get(b.chart_ref);return c?weChart(c,ctx):''}if(b.type==='key_figures')return weFigures(w,ctx);return''}).join('');
- const m=w.method||{},ests=arr(m.estimates).map(id=>ctx.est.get(id)).filter(Boolean),para=(label,xs)=>arr(xs).length?`<div><b>${label}</b> ${arr(xs).map(esc).join(' ')}</div>`:'';
- for(const e of ests)weNoteMark(e,ctx);
+ const m=w.method||{},para=(label,xs)=>arr(xs).length?`<div><b>${label}</b> ${arr(xs).map(esc).join(' ')}</div>`:'';
+ const closing=w.closing?.text?`<div class="we-closing"><p class="k">Cierre</p><p>${weInline(w.closing.text,ctx)}<span class="we-end" aria-hidden="true"></span></p></div>`:'';
+ // Notes are lettered by first mark in the text (body, then closing); only estimates the text uses get one.
  const enotes=ctx.enotes.length?`<section class="we-notes" aria-labelledby="we-notes-h"><h3 id="we-notes-h">Notas</h3><ol>${ctx.enotes.map(([e,l])=>`<li id="we-est-${esc(e.id)}" tabindex="-1"><span class="n">${l}</span><div>Estimación Alicanto. «${esc(weCap(e.display||e.label))}»: <code>${esc(weFormula(e.formula))} = ${esc(weNum(e.value)+weUnit(e))}</code>.</div></li>`).join('')}</ol></section>`:'';
  const method=`${m.estimates_note?`<div><b>Estimaciones.</b> ${esc(m.estimates_note)}</div>`:''}${para('Lo que no usamos.',m.discarded)}${para('Límites.',m.limits)}${ctx.notes.size?`<div><b>Notas sobre la evidencia.</b><ol>${arr(w.notes).map(n=>`<li id="wi-note-${esc(n.id)}" tabindex="-1">${esc(n.text)}</li>`).join('')}</ol></div>`:''}<div><b>Verificación.</b> ${weReviewed(w)?'Cada número del texto se contrastó contra su fuente y pasó una revisión independiente antes de publicarse.':'Cada número del texto se verificó contra el paquete de evidencia.'}</div>`;
- const closing=w.closing?.text?`<div class="we-closing"><p class="k">Cierre</p><p>${weInline(w.closing.text,ctx)}<span class="we-end" aria-hidden="true"></span></p></div>`:'';
  const list=sources.map((s,i)=>`<li id="we-src-${esc(s.id)}" tabindex="-1"><span class="n">${i+1}</span><div><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>${s.role?`<span class="role">${esc(s.role)}</span>`:''}</div></li>`).join('');
  return`<article class="we"><header class="we-head"><p class="we-kicker"><span>Insight de la semana</span><span>${fmtDate(w.freshness_anchor_date||w.event_date)}</span></p><h2 id="weeklyInsightTitle" class="we-headline">${esc(w.headline)}</h2>${w.dek?`<p class="we-dek">${esc(w.dek)}</p>`:''}<p class="we-byline"><b>Alicanto</b><span>Lectura de ${minutes} min</span><span>${sources.length} fuentes</span></p></header><div class="we-body">${body}${closing}</div><section class="we-back">${enotes}<details class="we-howto"><summary>Cómo hicimos este análisis</summary><div class="we-method">${method}</div></details><div class="we-sources"><h3>Fuentes</h3><ol>${list}</ol>${w.expires_on?`<p class="we-valid">Vigente hasta el ${fmtDate(w.expires_on)}.</p>`:''}</div></section></article>`;
 }

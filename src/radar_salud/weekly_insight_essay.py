@@ -276,10 +276,31 @@ def quote_segments(text: Any) -> list[str]:
     return [p for p in parts if p]
 
 
+# Abbreviations whose final period never ends a sentence (lower-cased, without the trailing period).
+_ABBREV = ("p. ej", "p.ej", "sr", "sra", "srta", "dr", "dra", "s.a", "s.p.a", "ltda", "n.º", "n.°", "nº", "fig", "figs", "art",
+           "arts", "núm", "num", "etc", "aprox", "vol", "pág", "págs", "cap", "inc", "ej", "dto", "ord", "res", "ee.uu", "uu")
+_SENT_END = re.compile(r"(\.\.\.|…|[.!?])[»”\"')\]]*\s+(?=[¿¡«\"“(]?[A-ZÁÉÍÓÚÑÜ0-9])")
+
+
 def sentence_count(text: Any) -> int:
-    """Sentences in plain text: a closing . ! ? or … followed by a space or the end. «1.056» or «UF 1.500.000» do not split."""
-    t = plain(text).strip()
-    return len(re.findall(r"[.!?…](?=\s|$)", t)) or (1 if t else 0)
+    """Sentences in plain Spanish text (Dirección 11-nov: the dek is ONE sentence).
+
+    A break is a closing mark (. ! ? … or ...), optionally followed by closing quotes/brackets, then a space and the start
+    of a new sentence (a capital, an opening ¿ ¡ « “ or a digit). Abbreviations («p. ej.», «Sr.», «S.A.», «Fig.») and
+    numbers («1.056», «UF 1.500.000», «15,3») never split; a last sentence without a final period still counts."""
+    t = re.sub(r"\s+", " ", plain(text)).strip()
+    if not t:
+        return 0
+    n = 1
+    for m in _SENT_END.finditer(t):
+        if m.group(1) == ".":
+            before = t[:m.start(1)].lower()
+            if any(before.endswith(a) and (len(before) == len(a) or not before[-len(a) - 1].isalpha()) for a in _ABBREV):
+                continue
+            if re.search(r"(?:^|[\s(])[a-záéíóúñ]$", before):  # single-letter initial («J. Pérez»)
+                continue
+        n += 1
+    return n
 
 
 def words(text: Any) -> int:

@@ -329,6 +329,7 @@ def _slug(text: str) -> str:
 
 def normalize_draft(raw: dict, evidence: dict, anchor: date) -> dict:
     w = deepcopy(raw) if isinstance(raw, dict) else {}
+    w.pop("kicker", None)  # Dirección 11-nov: no topic kicker; it is never shown, so a model that writes one is not failed
     series = {s["id"]: s for s in evidence.get("series") or []}
     for chart in w.get("charts") or []:
         ref = chart.pop("series_ref", None) if isinstance(chart, dict) else None

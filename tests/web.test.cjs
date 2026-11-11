@@ -200,7 +200,8 @@ test('current approved insight renders the v2 essay faithfully to the approved m
  // no evidence legend and no «Oficial/Prensa/Dato oficial» labels anywhere.
  assert.match(html,/<p class="we-kicker"><span>Insight de la semana<\/span><span>[^<]+<\/span><\/p>/);
  assert.match(html,/<p class="we-byline"><b>Alicanto<\/b><span>Lectura de \d+ min<\/span><span>9 fuentes<\/span><\/p><\/header>/);
- for(const gone of ['Personas mayores y cuidados','equipo editorial','oficiales','Cifras verificadas','we-legend','we-badge','we-tag','Dato oficial','>Prensa<','>Oficial<','class="we-est"'])assert.ok(!html.includes(gone),gone);
+ assert.doesNotMatch(html,/\d+ oficiales</);
+ for(const gone of ['Personas mayores y cuidados','equipo editorial','Cifras verificadas','we-legend','we-badge','we-tag','Dato oficial','>Prensa<','>Oficial<','class="we-est"'])assert.ok(!html.includes(gone),gone);
  assert.match(html,/<a class="we-sl" href="https:\/\/www\.fne\.gob\.cl[^"]*" target="_blank" rel="noopener">Fiscalía Nacional Económica<\/a><sup class="we-c"><a href="#we-src-f1" data-src="f1"/);
  // Quote: blockquote with attribution and a linked, numbered source.
  assert.match(html,/<blockquote class="we-q"><p>«No resulta apta para reducir sustancialmente la competencia en ninguno de los segmentos analizados»<\/p><footer><b>Fiscalía Nacional Económica<\/b>, <a class="we-sl"/);

@@ -422,3 +422,15 @@ def test_sentence_count_ignores_thousands_and_decimals():
     assert essay.sentence_count("En junio, 1.056 personas y UF 1.500.000 en el fondo, el 15,3% de los días-cama.") == 1
     assert essay.sentence_count("Primera idea. Segunda idea.") == 2
     assert essay.sentence_count("¿Quién paga el cuidado?") == 1 and essay.sentence_count("") == 0
+    # Independent review 11-nov: abbreviations never split; a second sentence without a final period still counts.
+    for one in ("Banmédica S.A. compró dos clínicas.", "Como p. ej. Colmena, crece.", "El Sr. Pérez habló.",
+                "La oferta crece… pero no alcanza.", "(ver Fig. 2) sube", "Según J. Pérez, sube.", "El art. 8 lo dice."):
+        assert essay.sentence_count(one) == 1, one
+    for two in ("Primera idea. Segunda sin punto", "Primera. ¿Quién paga?»", "Dijo «basta». Luego se fue.",
+                "Crece 3,5%. 2027 será clave."):
+        assert essay.sentence_count(two) == 2, two
+
+
+def test_pipeline_drops_a_kicker_from_model_drafts():
+    from radar_salud import weekly_insight_a as gen
+    assert "kicker" not in gen.normalize_draft({**weekly(), "kicker": "Tema"}, {"series": []}, date(2026, 11, 9))

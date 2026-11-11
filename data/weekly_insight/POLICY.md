@@ -138,20 +138,23 @@ example is the 9-nov residencias insight in `editorial_approved.json`, migrated 
 Standing rules for every insight, not only the 9-nov one. Deterministic where marked; the rest is a FAIL criterion of
 the independent review (`weekly_insight_a.review_prompt`).
 
-1. **Header.** Only «Insight de la semana · <fecha>» above the headline. No topic kicker: a `kicker` field fails
-   (`kicker_not_used`, deterministic).
-2. **Dek.** One sentence (`dek_more_than_one_sentence`), ≤ 30 words (`dek_over_30_words`), deterministic. It states
+1. **Header.** Only «Insight de la semana · <fecha>» above the headline. No topic kicker: the pipeline drops it from
+   model drafts; in an editorial session a `kicker` field fails (`kicker_not_used`, deterministic).
+2. **Dek.** One sentence (`dek_more_than_one_sentence`; abbreviations such as «p. ej.», «S.A.» and numbers such as
+   «1.056» do not split), ≤ 30 words (`dek_over_30_words`), deterministic. It states
    the single idea behind the headline. It never summarises or strings two news items together; joining two facts
    needs a connection the evidence shows (review).
 3. **Byline.** Exactly «Alicanto · Lectura de N min · N fuentes». No «equipo editorial», no count of official
    sources, no verification date, no evidence legend.
 4. **No evidence labels.** The text, charts, key figures and the source list never say «Dato oficial», «Oficial» or
    «Prensa». The sentence names who published each figure («según La Tercera»); a press figure without its outlet
-   in the sentence fails the review. `type`/`kind` stay in the data for verification only.
+   in the sentence fails the review. `type`/`kind` stay in the data for verification only. The renderer never prints
+   these labels (web test on the current insight); the wording of the text is a review criterion.
 5. **Estimates as footnotes.** Only when there is an estimate: a superscript letter (a, b, c…) next to the figure,
    chart title or card, pointing to «Notas» at the end with the formula. No dashed styles, no legend.
 6. **First screen.** On a 390 × 844 phone the lead paragraph starts on the first screen: the header (date, headline,
-   dek, byline) must leave it visible (browser test in `product.spec.cjs`). Keep headlines short enough for that.
+   dek, byline) must leave it visible (`tests/browser/insight-essay.spec.cjs`, which sets its own clock to the day after
+   the anchor because the suite clock is pinned to an older date). Keep headlines short enough for that.
 
 **Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
 `verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text
