@@ -8,6 +8,11 @@ const STATISTICAL_URLS={
 };
 let historicalSignals;
 // Global is one inbox with a 90-day window since Dirección 28-oct 08:20; themes older than that are not listed.
+// Monday of the suite clock's week (the Global weekly pick is shown only during its week).
+const FIXTURE_MONDAY=(()=>{const d=new Date(FIXTURE_AS_OF+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-((d.getUTCDay()+6)%7));return d.toISOString().slice(0,10)})();
+// Every test starts with a Global pick for the suite clock's week; tests that need another pick route their own (the
+// last registered route wins).
+test.beforeEach(async({page})=>{await routeGlobalPick(page,{id:'pick0',title:'Noticia global de la semana',summary:'Resumen de la misma noticia.',source_label:'OMS',published_at:FIXTURE_MONDAY})});
 function globalInWindow(t){const d=(t.sources||[]).map(s=>s.published_at).filter(Boolean).sort().at(-1)||'1900-01-01',age=(Date.parse(FIXTURE_AS_OF+'T00:00:00Z')-Date.parse(d+'T00:00:00Z'))/86400000;return age>=0&&age<90}
 function knownHistoricalSignal(predicate){
  historicalSignals ||= JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../data/history/superintendencia_signals.json'),'utf8')).signals;
@@ -229,12 +234,15 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  const specialShare=page.locator('#bigThings .big-feature.global [data-share]');await expect(specialShare).toHaveAttribute('data-share',/^special-/);
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
+// Home's Global card is the week's ONE Global news item (Dirección 11-nov-2026, rule global_weekly_pick_v1); its title
+// and CTA open the Global page itself, not a ficha. The pick is routed to the suite clock's week.
+async function routeGlobalPick(page,item){await page.route('**/data/global_feed.json',async r=>{const d=await (await r.fetch()).json();d.weekly_pick={rule:'global_weekly_pick_v1',week_anchor:FIXTURE_MONDAY,id:item.id,title:item.title,summary:item.summary,source_label:item.source_label,published_at:item.published_at,href:'global.html'};if(item.card)d.items=[item.card,...d.items];await r.fulfill({json:d})})}
 test('Global read state is shared across Home and the research page',async({page})=>{
  const globalData=JSON.parse(fs.readFileSync('web/data/global_themes.json','utf8'));globalData.themes=globalData.themes.filter(globalInWindow);
- await page.goto('/');await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(1);
- const free=await (await page.request.get('/data/free_value.json')).json(),teaserId=free.global_teaser.theme_id;
- await page.locator('#bigThings .big-feature.global .title-open[data-special-open]').first().click();
- await expect(page).toHaveURL(/global\.html#theme-/);await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
+ await routeGlobalPick(page,{id:'pick1',title:'La FDA publica una guía',summary:'Texto de la misma noticia.',source_label:'FDA',published_at:FIXTURE_MONDAY});
+ await page.goto('/');const g=page.locator('#bigThings .big-feature.global');await expect(g).toHaveCount(1);await expect(g).toContainText('Global · noticia de la semana');
+ await g.locator('.title-open[data-special-open]').first().click();await expect(page).toHaveURL(/\/global\.html$/);
+ const teaserId=globalData.themes[0].id;await page.goto(`/global.html#theme-${teaserId}`);await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
  await page.locator('#globalPeriod').selectOption('90');
  // Filter its publisher to verify read-state persistence independently of rank.
  const teaser=globalData.themes.find(t=>t.id===teaserId);
@@ -391,7 +399,7 @@ test('Global Intelligence mirrors Home while keeping global facts and Chile hypo
  await page.goto('/');
  await expect(page.locator('#bigThings .big-feature.global .title-open[data-special-open]')).toBeVisible();
  await page.locator('#bigThings .big-feature.global .title-open[data-special-open]').first().click();
- await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();await expect(page.locator('#globalDetail')).toBeVisible();await page.keyboard.press('Escape');
+ await expect(page).toHaveURL(/\/global\.html$/);await expect(page.getByRole('heading',{name:'Global Intelligence',exact:true})).toBeVisible();await expect(page.locator('#globalDetail')).not.toBeVisible();
  await expect(page.getByRole('heading',{name:'Ponte al día en Global Intelligence'})).toBeVisible();
  // Staging audit 29-oct: Global is one 90-day inbox, so a viewer without a saved period starts on 90 días.
  await expect(page.locator('#globalPeriod')).toHaveValue('90');
@@ -863,11 +871,18 @@ test('news fichas are lean: headline, Qué pasó and sources, never why it matte
  await expect(page.locator('#detailBody')).not.toContainText(/Contexto editorial|Enriquecimiento editorial|Por qué importa/);
  await expect(page.locator('#detailBody .ficha-h').first()).toHaveText(/Qué pasó/i);expect(await page.locator('#detailBody > p').count()).toBeGreaterThanOrEqual(1);
 });
-test('the Global teaser in Chile invites to Global Premium without saying limitado',async({page})=>{
+test('the Global card in Al día is one news item of the week and its CTA enters Global',async({page})=>{
+ await routeGlobalPick(page,{id:'pick1',title:'La FDA publica una guía',summary:'Texto de la misma noticia.',source_label:'FDA',published_at:FIXTURE_MONDAY});
  await page.goto('/');const g=page.locator('#bigThings .big-feature.global');await expect(g).toHaveCount(1);
- await expect(g).toContainText('Global Premium');await g.locator('[data-special-toggle]').click();
- await expect(g.locator('.big-invite')).toHaveText('El análisis completo, con sus fuentes, te espera en Global Premium.');await expect(g.locator('.big-cta')).toHaveText('Entrar a Global →');
- await expect(g).not.toContainText(/limitad/i);
+ await expect(g).toContainText('Global · noticia de la semana');await g.locator('[data-special-toggle]').click();
+ await expect(g.locator('.big-summary')).toHaveText('Texto de la misma noticia.');await expect(g.locator('.big-invite')).toHaveCount(0);
+ await expect(g.locator('.card-meta .meta-text')).toHaveText(/^FDA · /);await expect(g.locator('.big-cta')).toHaveText('Entrar a Global →');
+ await expect(g).not.toContainText(/limitad|desde afuera|Premium/i);
+ await g.locator('.big-cta').click();await expect(page).toHaveURL(/\/global\.html$/);
+});
+test('a Global pick from another week is not shown in Al día',async({page})=>{
+ await page.route('**/data/global_feed.json',async r=>{const d=await (await r.fetch()).json();d.weekly_pick={rule:'global_weekly_pick_v1',week_anchor:'2026-09-28',id:'old',title:'Vieja',published_at:'2026-09-28',href:'global.html'};await r.fulfill({json:d})});
+ await page.goto('/');await expect(page.locator('#local article').first()).toBeVisible();await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(0);
 });
 
 // Dirección 28-oct (punto 5): the ficha title has one style on Chile and Global.
