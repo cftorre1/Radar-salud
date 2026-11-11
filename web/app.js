@@ -424,8 +424,8 @@ function renderWeeklyA(w){
 }
 // Weekly insight v2 (Dirección 10-nov-2026): a news-style essay, lead → context → development → closing.
 // Charts sit after the paragraph that explains them; quotes carry a linked source; every source named in the text
-// links to the original document and to the numbered list (Oficial/Prensa badge); Alicanto estimates carry a dashed
-// underline or frame and their formula; the method is collapsed. Mirrors src/radar_salud/weekly_insight_essay.py.
+// links to the original document and to the numbered list (no Oficial/Prensa labels, Dirección 11-nov); Alicanto
+// estimates are lettered footnotes with their formula in «Notas»; the method is collapsed. Mirrors src/radar_salud/weekly_insight_essay.py.
 function weIsEssay(w){return Boolean(w&&w.schema_version==='weekly_insight_a_v2'&&Array.isArray(w.body)&&w.headline)}
 const WE_LINK=/\[([^\]\[^][^\]\[]*)\]\((f\d{1,2}|est:[A-Za-z0-9_-]+)\)/g;
 function weNum(v,max=1){return Number(v).toLocaleString('es-CL',{maximumFractionDigits:max}).replace(/^-/,'−')}

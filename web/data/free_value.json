@@ -53,7 +53,7 @@
     "editorial_review_pass": true,
     "source_name": "FNE · Superintendencia de Salud · INE · Minsal · prensa",
     "source_url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
-    "dek": "La oferta formal de cuidados para personas mayores sigue siendo pequeña frente a la demanda, y parte de esa brecha ya se paga en camas de hospital.",
+    "dek": "La oferta formal de cuidados para personas mayores sigue siendo pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital.",
     "body": [
       {
         "type": "paragraph",
@@ -424,14 +424,14 @@
       }
     ],
     "notes": [],
-    "summary": "La oferta formal de cuidados para personas mayores sigue siendo pequeña frente a la demanda, y parte de esa brecha ya se paga en camas de hospital.",
-    "insight_teaser": "La oferta formal de cuidados para personas mayores sigue siendo pequeña frente a la demanda, y parte de esa brecha ya se paga en camas de hospital.",
+    "summary": "La oferta formal de cuidados para personas mayores sigue siendo pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital.",
+    "insight_teaser": "La oferta formal de cuidados para personas mayores sigue siendo pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital.",
     "verified_on": "2026-11-08",
     "independent_review": {
       "kind": "independent_review",
       "reviewer": "revisión independiente del PR #174 (coordinación)",
-      "status": "pending_final",
-      "verdict": "PASS",
+      "status": "final",
+      "verdict": "PASS_WITH_CORRECTIONS",
       "rounds": [
         {
           "round": 1,
@@ -473,10 +473,20 @@
           "reviewed_commit": "f382d9b0",
           "scope": "reglas editoriales de Dirección 11-nov: cabecera sin tema, bajada de una idea, firma, sin rótulos, estimaciones como nota al pie (texto y renderer)",
           "verdict": "PASS_WITH_CORRECTIONS",
-          "corrections": "bajada reescrita sin encadenar las dos noticias; summary e insight_teaser alineados; detección de oraciones con abreviaturas; prueba de navegador con su propio reloj"
+          "corrections": "bajada reescrita sin encadenar las dos noticias; summary e insight_teaser alineados; detección de oraciones con abreviaturas; prueba de navegador con su propio reloj",
+          "corrections_applied_in": "b08b1373"
+        },
+        {
+          "round": 6,
+          "on": "2026-11-11",
+          "reviewed_commit": "b08b1373",
+          "verdict": "PASS_WITH_CORRECTIONS",
+          "corrections": "bajada «ese cuidado» en vez de «esa brecha» (sin implicar causa); «vs.» como abreviatura; comentario del renderer",
+          "corrections_applied_in": "este commit (ver PR)"
         }
       ],
-      "note": "Ronda 4 PASS sobre c8ee171f (10-nov). Ronda 5 (11-nov, reglas editoriales de Dirección) PASS_WITH_CORRECTIONS sobre f382d9b0; correcciones aplicadas, pendiente de la ronda final."
+      "note": "Ronda 4 PASS sobre c8ee171f (10-nov). Rondas 5 y 6 (11-nov, reglas editoriales de Dirección) PASS_WITH_CORRECTIONS; correcciones menores aplicadas sobre b08b1373. Registrado por coordinación.",
+      "corrections_applied": true
     },
     "weekly_mode": "reviewed_cross_source_deep_dive",
     "model_trace": {

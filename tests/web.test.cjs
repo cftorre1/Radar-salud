@@ -229,8 +229,8 @@ test('current approved insight renders the v2 essay faithfully to the approved m
  assert.deepEqual(firsts,[1,2,3,4,5,6,7,8,9]);
  assert.ok(html.indexOf('id="we-src-f1"')<html.indexOf('id="we-src-f2"')&&html.indexOf('id="we-src-f2"')<html.indexOf('id="we-src-f6"'));
  // The review line is drawn from the recorded independent review, and only from a FINAL PASS. The current insight
- // has a final PASS (round 4 on c8ee171f, recorded by coordination), so it claims one.
- assert.equal(w.independent_review.status,'final');assert.equal(w.independent_review.verdict,'PASS');
+ // has a final verdict (rounds 5–6 on 11-nov, PASS_WITH_CORRECTIONS with corrections applied), so it claims one.
+ assert.equal(w.independent_review.status,'final');assert.equal(w.independent_review.verdict,'PASS_WITH_CORRECTIONS');assert.equal(w.independent_review.corrections_applied,true);
  assert.match(html,/pasó una revisión independiente antes de publicarse/);
  c.renderWeeklyDetail({...w,independent_review:{status:'final',verdict:'PASS'}});
  assert.match(body.innerHTML,/pasó una revisión independiente antes de publicarse/);

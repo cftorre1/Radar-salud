@@ -141,7 +141,8 @@ the independent review (`weekly_insight_a.review_prompt`).
 1. **Header.** Only «Insight de la semana · <fecha>» above the headline. No topic kicker: the pipeline drops it from
    model drafts; in an editorial session a `kicker` field fails (`kicker_not_used`, deterministic).
 2. **Dek.** One sentence (`dek_more_than_one_sentence`; abbreviations such as «p. ej.», «S.A.» and numbers such as
-   «1.056» do not split), ≤ 30 words (`dek_over_30_words`), deterministic. It states
+   «1.056» do not split; a single-letter initial before a period, as in «Plan B.», and a second sentence that starts
+   in lowercase are not counted, a known limit), ≤ 30 words (`dek_over_30_words`), deterministic. It states
    the single idea behind the headline. It never summarises or strings two news items together; joining two facts
    needs a connection the evidence shows (review).
 3. **Byline.** Exactly «Alicanto · Lectura de N min · N fuentes». No «equipo editorial», no count of official

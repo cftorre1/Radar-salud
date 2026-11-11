@@ -278,7 +278,7 @@ def quote_segments(text: Any) -> list[str]:
 
 # Abbreviations whose final period never ends a sentence (lower-cased, without the trailing period).
 _ABBREV = ("p. ej", "p.ej", "sr", "sra", "srta", "dr", "dra", "s.a", "s.p.a", "ltda", "n.º", "n.°", "nº", "fig", "figs", "art",
-           "arts", "núm", "num", "etc", "aprox", "vol", "pág", "págs", "cap", "inc", "ej", "dto", "ord", "res", "ee.uu", "uu")
+           "arts", "núm", "num", "etc", "aprox", "vol", "pág", "págs", "cap", "inc", "ej", "dto", "ord", "res", "ee.uu", "uu", "vs")
 _SENT_END = re.compile(r"(\.\.\.|…|[.!?])[»”\"')\]]*\s+(?=[¿¡«\"“(]?[A-ZÁÉÍÓÚÑÜ0-9])")
 
 
