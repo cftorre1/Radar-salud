@@ -131,8 +131,11 @@ def test_card_title_topics_and_feed_row(tmp_path):
     assert f1["topics"] == [{"id": "total", "label": "Cartera total"}, {"id": "isapres", "label": "Por Isapre"},
                             {"id": "2", "label": "Sin id"}]
     assert f1["share_title"] == "Titular F1"
+    # The date-line fields, plus the row's own link so «Fuente original» is the same on both pages (Dirección 10-nov 23:29).
+    src = card("F1", "2026-08", feed="2026-10-28")
     assert f1["feed_row"] == {"date_basis": "first_detected", "first_detected_at": "2026-10-02",
-                              "event_date": "2026-10-02", "source_name": "Superintendencia de Salud"}
+                              "event_date": "2026-10-02", "source_name": "Superintendencia de Salud",
+                              **{k: src[k] for k in ("source_link", "source_url", "source_link_status") if src.get(k)}}
     # A family without index_title falls back to its label; planned rows carry no topics.
     assert rows["F3"]["index_title"] == reg["families"]["F3"]["label"] and "topics" not in rows["F3"]
 
