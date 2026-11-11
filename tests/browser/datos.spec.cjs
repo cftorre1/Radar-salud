@@ -87,7 +87,9 @@ test('Data card topics open the ficha at that topic (Chile and Datos)',async({pa
  await page.goto('/');
  const row=page.locator('#local article.dc-row').first();await expect(row).toBeVisible();
  const id=await row.getAttribute('data-card'),fam=live(d).find(x=>x.piece_id===id);expect(fam).toBeTruthy();
- const t=fam.topics[Math.min(2,fam.topics.length-1)];
+ // The feed shows 2 topics before «Ver restantes» (Dirección 10-nov 23:29); Datos shows 6.
+ const t=fam.topics[Math.min(1,fam.topics.length-1)];
+ await expect(row.locator('.dc-toc:not(.dc-rest) .dc-t')).toHaveCount(Math.min(2,fam.topics.length));
  await expect(row.locator('.dc-title')).toHaveText(fam.index_title);
  await expect(row.locator('.dc-top .tag')).toHaveText('Datos');
  await expect(row.locator('.dc-src')).toHaveText(new RegExp(`^Datos ${fam.period_label}`));

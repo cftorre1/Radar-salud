@@ -25,7 +25,7 @@
   const pub=s.published_on||s.publication_date||(fiscal?null:s.event_date);if(pub)return `Publicado ${fmtDate(pub)}`;
   const det=s.first_detected_at||s.detected_at;return det?`Detectado ${fmtDate(det)}`:''} function cardMeta(s){return [rowDate(s),esc(feedSource(s.source_name))].filter(Boolean).join(' · ')}
 
- const SHOWN=6;
+ const SHOWN=6,FEED_SHOWN=2; // Dirección 10-nov 23:29: shorter in the feed, same structure
  const expanded=new Set();
  // The ficha's topics as its renderer lists them (stats-ficha.js `topics`): tabs with a label; id = tab id, else position.
  function topicsOf(ficha){return arr(ficha&&ficha.tabs).filter(t=>t&&t.label).map((t,i)=>({id:String(t.id||i),label:String(t.label)}))}
@@ -42,15 +42,17 @@
  const safeId=id=>String(id||'').replace(/[^\w-]/g,'-');
  function topicHref(base,id,tid){return `${base}#sig-${id}&tema=${tid}`}
  function items(m,base,ts,from){return ts.map((t,i)=>`<li><a class="dc-t" href="${esc(topicHref(base,m.id,t.id))}" data-dc-tema="${esc(t.id)}"><span class="dc-n" aria-hidden="true">${from+i+1}</span><span class="dc-l">${esc(t.label)}</span></a></li>`).join('')}
+ // «Fuente original»: the row's own link, same rule as the feed (app.js originalLink), so both pages show the same acts.
+ function srcLink(r){if(!r||r.source_link_status==='invalid')return '';const u=String(r.source_link||r.source_url||'');return /^https:\/\/[^\s\/?#]+\.[^\s\/?#]+(\/\S*)?$/.test(u)?u:''}
  const moreLabel=(open,n)=>open?'Ocultar temas ↑':`Ver restantes (${n}) ↓`;
- // o: {read, base (link to the ficha, before '#'), shareTitle, openAttr (Chile: its data-detail), topExtra (Chile: «Datos»
- // tag), actsExtra (Chile: «Fuente original»)}. The Bar (inbox-bar.js) draws the dot and «Compartir» on both pages.
+ // o: {read, base (link to the ficha, before '#'), shareTitle, openAttr (Chile: its data-detail), topExtra (Al día: «Datos»
+ // tag), shown (topics visible before «Ver restantes»: 6 in Datos, 2 in Al día)}. The Bar (inbox-bar.js) draws the dot and «Compartir» on both pages.
  function render(m,o={}){
-  const Bar=root.AlicantoBar,read=Boolean(o.read),base=o.base||'',ts=arr(m.topics),first=ts.slice(0,SHOWN),rest=ts.slice(SHOWN);
+  const Bar=root.AlicantoBar,read=Boolean(o.read),base=o.base||'',ts=arr(m.topics),shown=Number.isInteger(o.shown)?o.shown:SHOWN,first=ts.slice(0,shown),rest=ts.slice(shown);
   const open=expanded.has(m.id),rid=`dcr-${safeId(m.id)}`,title=m.title||'';
   const shareTitle=o.shareTitle||m.share_title||title;
   const toc=first.length?`<ol class="dc-toc" aria-label="Temas de la ficha">${items(m,base,first,0)}</ol>`:'';
-  const more=rest.length?`<ol class="dc-toc dc-rest" id="${rid}" start="${SHOWN+1}" aria-label="Temas restantes"${open?'':' hidden'}>${items(m,base,rest,SHOWN)}</ol><button type="button" class="dc-more" aria-expanded="${open}" aria-controls="${rid}" data-dc-more="${esc(m.id)}" data-n="${rest.length}">${moreLabel(open,rest.length)}</button>`:'';
+  const more=rest.length?`<ol class="dc-toc dc-rest" id="${rid}" start="${shown+1}" aria-label="Temas restantes"${open?'':' hidden'}>${items(m,base,rest,shown)}</ol><button type="button" class="dc-more" aria-expanded="${open}" aria-controls="${rid}" data-dc-more="${esc(m.id)}" data-n="${rest.length}">${moreLabel(open,rest.length)}</button>`:'';
   const meta=cardMeta(m.row||{});
   return `<div class="dc-card${read?' read':''}" data-dc="${esc(m.id)}">`+
    (Bar?Bar.dotButton('data-read',m.id,read,title):'')+
@@ -58,7 +60,7 @@
    `<h3 class="dc-title"><a class="dc-open" href="${esc(`${base}#sig-${m.id}`)}"${o.openAttr?` ${o.openAttr}`:''}>${esc(title)}</a></h3>`+
    toc+more+
    (meta?`<div class="card-meta dc-meta"><span class="meta-text">${meta}</span></div>`:'')+
-   `<div class="row-acts" role="group" aria-label="Acciones"><a class="act act-open" href="${esc(`${base}#sig-${m.id}`)}"${o.openAttr?` ${o.openAttr}`:''} aria-label="Ver ficha: ${esc(title)}"><span>Ver ficha</span>${Bar&&Bar.icons?Bar.icons.chev:''}</a>${o.actsExtra||''}${Bar?Bar.shareAct(`sig-${m.id}`,shareTitle,m.share_url):''}</div>`+
+   `<div class="row-acts" role="group" aria-label="Acciones"><a class="act act-open" href="${esc(`${base}#sig-${m.id}`)}"${o.openAttr?` ${o.openAttr}`:''} aria-label="Ver ficha: ${esc(title)}"><span>Ver ficha</span>${Bar&&Bar.icons?Bar.icons.chev:''}</a>${Bar?Bar.sourceAct(srcLink(m.row||{}),title):''}${Bar?Bar.shareAct(`sig-${m.id}`,shareTitle,m.share_url):''}</div>`+
    `</div>`;
  }
  // «Ver restantes» / «Ocultar temas»: a native button (Enter/Space), aria-expanded on it, aria-controls the hidden list.
@@ -69,5 +71,5 @@
   const id=b.dataset.dcMore;if(id){if(open)expanded.add(id);else expanded.delete(id)}
  }
  if(root.document&&root.document.addEventListener)root.document.addEventListener('click',e=>{const b=e.target&&e.target.closest&&e.target.closest('.dc-more');if(b)toggle(b)});
- root.AlicantoDataCard={esc,fmtDate,canonicalSource,SOURCE_ABBR,bareSource,feedSource,rowDate,cardMeta,topicsOf,model,topLine,topicHref,render,toggle,expanded,SHOWN};
+ root.AlicantoDataCard={esc,fmtDate,canonicalSource,SOURCE_ABBR,bareSource,feedSource,rowDate,cardMeta,topicsOf,model,topLine,topicHref,render,toggle,expanded,SHOWN,FEED_SHOWN,srcLink};
 })(typeof window==='undefined'?globalThis:window);

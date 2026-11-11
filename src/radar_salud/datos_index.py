@@ -60,7 +60,7 @@ def _topics(ficha: dict) -> list[dict]:
 # The fields of a feed card that the shared row date line («Detectado 10 nov 2026 · SIS») reads.
 FEED_ROW_KEYS = ("date_basis", "first_detected_at", "event_date", "data_release_date", "event_type", "emission_date",
                  "issued_on", "event_date_basis", "published_on", "publication_date", "detected_at", "signal_types",
-                 "source_name")
+                 "source_name", "source_link", "source_url", "source_link_status")
 
 
 def _feed_row(card: dict) -> dict:

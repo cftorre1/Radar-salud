@@ -260,7 +260,7 @@ test('Global read state is shared across Home and the research page',async({page
 // Dirección 27-oct 23:13: Global uses the Home header and bar A; mark-all works on the visible themes with undo.
 test('Global shares header, bar A and mark-all with the Home',async({page})=>{
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');
- for(const [name,href] of [['Chile','index.html'],['Global','global.html'],['Newsletter','subscription.html']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
+ for(const [name,href] of [['Al día','index.html'],['Global','global.html'],['Newsletter','subscription.html']])expect(await page.locator(`.topnav a[href="${href}"]`).evaluate(el=>(el.dataset.short||el.textContent).trim())).toBe(name);
  await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href','global.html');
  // One inbox (Dirección 28-oct 08:20, punto 2): mark-all covers every visible row, themes and headlines alike.
  const rows=page.locator('#themes article.item');await expect(rows.first()).toBeVisible();const total=await rows.count();expect(total).toBeGreaterThan(2);
