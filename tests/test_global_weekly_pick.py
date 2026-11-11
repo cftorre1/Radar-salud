@@ -21,7 +21,7 @@ def test_window_is_the_week_before_through_this_monday_and_spanish_first():
     assert p["week_anchor"] == "2026-11-09" and p["window"] == ["2026-11-02", "2026-11-09"]
     # d is before the window and e after this week's Monday; a (English title) loses to Spanish titles.
     assert p["id"] == "c" and p["title"] == "Título c" and p["summary"] == "Texto de la noticia." and p["title_in_spanish"]
-    assert p["href"] == "global.html" and p["rule"] == "global_weekly_pick_v1"
+    assert p["href"] == "global.html#semana" and p["rule"] == "global_weekly_pick_v1"
     # Stable through the week: Sunday gives the same pick.
     assert weekly_pick(cards, date(2026, 11, 15))["id"] == "c"
 
@@ -33,7 +33,8 @@ def test_title_and_text_come_from_the_same_card_and_a_repeated_title_is_dropped(
 
 def test_summary_only_items_are_a_fallback_and_an_empty_week_hides_the_card():
     p = weekly_pick([card("a", "2026-11-09", 90, es=False)], date(2026, 11, 12))
-    assert p["id"] == "a" and p["summary"] == "Resumen de Alicanto." and p["title_in_spanish"] is False
+    # Decision 3 (11-nov): the row title is the first sentence of the verified Alicanto summary (licence forbids translating).
+    assert p["id"] == "a" and p["title"] == "Resumen de Alicanto" and p["summary"] is None and p["title_in_spanish"] is True
     assert weekly_pick([card("old", "2026-10-01", 99)], date(2026, 11, 12)) is None
 
 
@@ -42,3 +43,9 @@ def test_published_feed_carries_the_pick():
     from pathlib import Path
     d = json.loads((Path(__file__).resolve().parents[1] / "web/data/global_feed.json").read_text(encoding="utf-8"))
     assert d["weekly_pick"] is None or d["weekly_pick"]["rule"] == "global_weekly_pick_v1"
+
+
+def test_pick_summary_names_the_day_instead_of_hoy():
+    from radar_salud.global_daily_feed import _no_relative_day
+    assert _no_relative_day("La FDA emitió hoy una guía; ayer hubo otra.", date(2026, 11, 2)) == \
+        "La FDA emitió el 2 nov 2026 una guía; el 1 nov 2026 hubo otra."

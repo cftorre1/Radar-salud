@@ -22,7 +22,7 @@ test('headlines and themes are one list, newest first, each row with Ver ficha �
  const dates=await page.evaluate(()=>[...document.querySelectorAll('#themes article.item')].map(r=>entryFor(r.id).date));expect(dates).toEqual([...dates].sort().reverse());
  const acts=await rows.evaluateAll(xs=>xs.map(r=>[...r.querySelectorAll('.row-acts .act')].map(a=>a.textContent.trim())));
  for(const a of acts)expect(a).toEqual(['Ver ficha','Fuente original','Compartir']);
- const d0=page.locator('#daily-d0');await expect(d0).toContainText('Titular · EMA (Zoe Z, Al A y otros)');
+ const d0=page.locator('#daily-d0');await expect(d0).toContainText('EMA (Zoe Z, Al A y otros)');await expect(d0).not.toContainText('Titular');
  await expect(page.locator('#daily-d1 a.lic')).toHaveAttribute('href','https://creativecommons.org/licenses/by/4.0/');
  const note=page.locator('#globalAttribution');await expect(note).toBeVisible();await expect(note).toContainText('CDC, HHS, el Gobierno de EE. UU.');
  expect(await page.evaluate(()=>{const n=document.getElementById('globalAttribution').getBoundingClientRect().top,last=[...document.querySelectorAll('#themes article.item')].at(-1).getBoundingClientRect().top;return n>last})).toBeTruthy();
@@ -65,4 +65,6 @@ test('Spanish only: English-only, pending and failed headlines are not listed; s
  expect((await page.locator('#themes .daily-item').evaluateAll(xs=>xs.map(x=>x.id))).sort()).toEqual(['daily-es','daily-sum','daily-tr']);
  await expect(page.locator('#themes')).not.toContainText(/English only|pending headline|failed headline/);
  await expect(page.locator('#daily-tr')).toContainText('Los CDC informan casos');
+ // Decision 3 (11-nov): the licence-blocked row reads in Spanish (Alicanto's summary), not in English.
+ await expect(page.locator('#daily-sum h2')).toHaveText('La OMS publicó una guía');
 });

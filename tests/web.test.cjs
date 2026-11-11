@@ -398,11 +398,12 @@ test('Global Alicanto summary (Dirección 29-oct): sources without translation r
   title:'EMA recommends 4 new medicines <b>',description:'The CHMP recommended 4 medicines.',summary_es:'La EMA propuso autorizar 4 medicamentos <script>alert(1)</script>.',title_es:'Ignorado',
   translation:{status:'summarized',kind:'summary',verified:true,notice_es:'Resumen de Alicanto (la fuente no permite traducir)',check_note_es:'Escrito automáticamente por Alicanto; puede contener errores'}};
  load([base]);const e=c.entryFor('daily-m1');
- assert.equal(e.title,'EMA recommends 4 new medicines <b>');assert.equal(e.key,'global-feed:m1');
+ assert.equal(e.title,'La EMA propuso autorizar 4 medicamentos <script>alert(1)</script>');// decision 3: Spanish row from Alicanto's summary
+assert.equal(e.key,'global-feed:m1');
  assert.match(c.metaFor(e),/<span class="tr-note">Resumen de Alicanto \(la fuente no permite traducir\)<\/span>/);
  const html=c.headlineDetail(e);
- assert.match(html,/<h2 id="globalDetailTitle">EMA recommends 4 new medicines &lt;b&gt;<\/h2><h3 class="ficha-h">Resumen de Alicanto \(la fuente no permite traducir\)<\/h3><p class="alicanto-summary">La EMA propuso autorizar 4 medicamentos &lt;script&gt;alert\(1\)&lt;\/script&gt;\.<\/p>/);
- assert.doesNotMatch(html,/<script>|<b>|Ignorado|Título original/);
+ assert.match(html,/<h2 id="globalDetailTitle">La EMA propuso autorizar 4 medicamentos &lt;script&gt;alert\(1\)&lt;\/script&gt;<\/h2><p class="orig-title"><span>Título original<\/span> EMA recommends 4 new medicines &lt;b&gt;<\/p><p class="sigla"><abbr>EMA<\/abbr>: Agencia Europea de Medicamentos<\/p><h3 class="ficha-h">Resumen de Alicanto \(la fuente no permite traducir\)<\/h3>/);
+ assert.doesNotMatch(html,/<script>|<b>|Ignorado/);
  assert.match(html,/<h3 class="ficha-h">Resumen de la fuente<\/h3><p>The CHMP recommended 4 medicines\.<\/p>/);
  assert.match(html,/Escrito automáticamente por Alicanto; puede contener errores\./);
  // Unverified, wrong kind or empty summary -> the original only.
