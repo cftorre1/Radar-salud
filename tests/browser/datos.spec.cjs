@@ -22,7 +22,7 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
  // its topics with their published labels, the Chile date line and «Compartir»; no KPI block, no «Vigente».
  for(const f of live(d)){
   const c=page.locator(`.dx-item[data-family="${f.family}"] .dc-card`);
-  await expect(c.locator('.dc-src')).toHaveText(new RegExp(`^Datos ${f.period_label} · ${f.cadence.replace(/[()]/g,'\\$&')}`));
+  await expect(c.locator('.dc-src')).toHaveText(new RegExp(`^Datos ${f.period_label} · ${f.cadence.replace(/\s*\([^)]*\)/g,'').trim()}(?: · |$)`));  // the source note in parentheses is dropped from the top line
   expect(f.period_label).toMatch(/^((ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)–)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic) 20\d\d$/);
   await expect(c.locator('.dc-title')).toHaveText(f.index_title);
   await expect(c).not.toContainText(f.headline);
