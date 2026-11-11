@@ -504,6 +504,11 @@ test('Datos orders Recientes by verification day, groups by config and shows rea
  // Dirección 11-nov-2026: what was read goes down, unread first (each newest first), in both views.
  assert.deepEqual([...html.matchAll(/class="dx-item" data-family="(F\d+)"/g)].map(m=>m[1]),['F2','F6','F1']);
  assert.deepEqual(JSON.parse(JSON.stringify(D.recientes(data.families,new Set(['stats-ficha:F2:2026-08'])).filter(f=>f.state==='live').map(f=>f.family))),['F6','F1','F2']);
+ // Decision 6 (Dirección 11-nov): a card read during this visit keeps its place; it goes down on the next visit.
+ const order=h=>[...h.matchAll(/data-family="(F\d+)"/g)].map(m=>m[1]).filter((x,i,a)=>a.indexOf(x)===i);
+ const now=D.render(data,'recientes',new Set(['stats-ficha:F2:2026-08']),new Set());
+ assert.deepEqual(order(now).slice(0,3),['F2','F6','F1']);assert.match(now,/class="dotbtn done" data-read="stats-ficha:F2:2026-08"/);
+ assert.deepEqual(order(D.render(data,'recientes',new Set(['stats-ficha:F2:2026-08']))).slice(0,3),['F6','F1','F2']);
  // One read card (F1), two unread; the dot is the read toggle; no «Nuevo» pill, no KPI block, no «Vigente», no headline.
  assert.equal((html.match(/class="dc-card read"/g)||[]).length,1);assert.equal((html.match(/class="dc-card"/g)||[]).length,2);
  assert.equal((html.match(/class="dotbtn done" data-read=/g)||[]).length,1);assert.equal((html.match(/<span class="unread-dot"><\/span>/g)||[]).length,2);

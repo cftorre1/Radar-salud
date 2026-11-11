@@ -120,6 +120,9 @@ test('Datos: read state uses the Chile dot; a read here or in Chile shows in bot
  // The dot marks it read (tick, regular muted title, no white fill) and back.
  await card(first).locator('.dotbtn').click();
  await expect(card(first)).toHaveClass(/\bread\b/);await expect(card(first).locator('.dotbtn.done')).toHaveCount(1);
+ // Decision 6 (Dirección 11-nov): it keeps its place during this visit; it goes down on the next one.
+ const pos=()=>page.locator('#datosList[data-view="recientes"] .dx-item').evaluateAll((xs,f)=>xs.findIndex(x=>x.dataset.family===f),first.family);
+ if(await page.locator('#datosList[data-view="recientes"]').count())expect(await pos()).toBe(0);
  const read=await card(first).evaluate(c=>({bg:getComputedStyle(c).backgroundColor,w:getComputedStyle(c.querySelector('.dc-title')).fontWeight}));
  expect(read.bg).toBe('rgba(0, 0, 0, 0)');expect(Number(read.w)).toBeLessThan(500);
  await card(first).locator('.dotbtn').click();await expect(card(first)).not.toHaveClass(/\bread\b/);
