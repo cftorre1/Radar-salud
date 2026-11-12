@@ -755,3 +755,16 @@ main{max-width:none;margin:0;padding:0 0 70px}
 @media (min-width:760px){#globalDetail[open]{height:calc(100dvh - 72px);padding:0 28px}#globalDetail .sheet-grab,#globalDetail .detail-top,#globalDetail .ficha-dock{margin-left:-28px;margin-right:-28px}}
 #globalDetail .norm-kicker{text-transform:none;letter-spacing:0}
 .global-detail h2#globalDetailTitle,#globalDetail h2{font:700 20px/1.25 var(--serif);letter-spacing:-.005em}
+/* Dirección 11-nov-2026 (night): no section taglines; the same short gap under the menu on every section; Newsletter is a
+   call to action (a filled pill), not one more section. */
+.nm-wrap{padding-top:8px!important}
+.datos-wrap{padding-top:5px!important}.datos-head{margin:0!important}
+.sources-v2 .datos-head h1{margin-top:0}
+.brandbar .topnav a.header-newsletter{align-self:center;min-height:30px;height:30px;display:inline-flex;align-items:center;margin-left:4px;padding:0 11px!important;border-radius:999px;background:#8A5420;color:#fff!important;font-weight:700;box-shadow:none;text-decoration:none}
+.brandbar .topnav a.header-newsletter::after{display:none!important}
+.brandbar .topnav a.header-newsletter[data-short]::before{color:#fff}
+.brandbar .topnav a.header-newsletter:hover{background:#6F4318}
+.brandbar .topnav a.header-newsletter:focus-visible{outline:2px solid #E3A24F;outline-offset:2px}
+@media (max-width:380px){.brandbar .topnav a.header-newsletter{padding:0 8px!important;margin-left:2px}}
+.sources-v2 .datos-wrap{padding-top:8px!important}
+.foot-contact{color:inherit;font-weight:650;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;display:inline-block;min-height:24px}
