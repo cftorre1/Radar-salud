@@ -164,9 +164,11 @@ the independent review (`weekly_insight_a.review_prompt`).
 8. **Headline and dek never repeat each other** (Dirección, 12-nov-2026: «Primer y segundo párrafo son redundantes…
    un título destacado y luego una bajada de un párrafo sin redundancias»). The dek adds what the headline does not say
    (the figures of the analysis); `dek_repeats_headline` fails when half or more of the headline's content words
-   reappear in the dek. Applied to the 9-nov insight: «El capital privado llega a las residencias para mayores» + «La
-   oferta formal sigue siendo chica frente a una demanda que crece, y hay pacientes con alta médica que siguen
-   hospitalizados por falta de redes familiares o sociales» (one idea, no numbers, as the 11-nov review asked).
+   reappear in the dek. The headline carries the tension that is the news (Dirección, 12-nov-2026: «el título habla de
+   más oferta, pero el cuerpo habla de oferta insuficiente… ¿no debiese el título mostrar ese conflicto?»). Applied
+   to the 9-nov insight: «El capital privado llega a las residencias para mayores, pero la oferta sigue siendo chica»
+   + «Los primeros proyectos suman 250 habitaciones frente a 593.010 personas de 80 años o más, y hay pacientes con
+   alta médica que siguen hospitalizados por falta de redes».
 
 **Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
 `verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text
