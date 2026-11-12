@@ -234,33 +234,48 @@ class SuperintendenciaStatsScout:
             hub = None
         items: List[RawItem] = []
         if hub is not None:
-            listings += [u for u in self.publication_listings(hub, self.PUBLICATIONS_URL) if u not in listings]
-            for raw in self.discover_from_html(hub, self.PUBLICATIONS_URL):
-                raw.metadata["collection"] = "publicaciones"
-                items.append(raw)
+            try:
+                listings += [u for u in self.publication_listings(hub, self.PUBLICATIONS_URL) if u not in listings]
+                for raw in self.discover_from_html(hub, self.PUBLICATIONS_URL):
+                    raw.metadata["collection"] = "publicaciones"
+                    items.append(raw)
+            except Exception as exc:  # noqa: BLE001
+                self.publication_errors.append((self.PUBLICATIONS_URL, type(exc).__name__))
         for listing in listings:
             page_url, pages = listing, 0
             while page_url and pages < self.MAX_PAGES:
                 try:
                     html = fetch(page_url)
-                except Exception as exc:  # noqa: BLE001
+                    found = self.discover_from_html(html, page_url)
+                    following = self.next_page(html, page_url)
+                except Exception as exc:  # noqa: BLE001 - fetch or parse: this collection stops, the rest go on
                     self.publication_errors.append((page_url, type(exc).__name__))
                     break
-                for raw in self.discover_from_html(html, page_url):
+                for raw in found:
                     raw.metadata["collection"] = self.collection(listing)
                     items.append(raw)
                 pages += 1
-                page_url = self.next_page(html, page_url)
+                page_url = following
+            if page_url and pages >= self.MAX_PAGES:
+                self.publication_errors.append((page_url, "page_cap"))  # older pages left unread: reported
         return items
 
     def discover(self, url: Optional[str] = None) -> List[RawItem]:
         target = url or self.DEFAULT_URL
         items = self.discover_from_html(fetch_html(target), target)
+        self.discovery_errors = []
         if url is None:
             seen = {raw.url for raw in items}
             # A collection page (e.g. documentos metodológicos) wins over the hub for the same document.
             extra = {}
-            for raw in self.discover_publications():
+            try:
+                publications = self.discover_publications()
+            except Exception as exc:  # noqa: BLE001 - Publicaciones never breaks Estadísticas
+                self.publication_errors = getattr(self, "publication_errors", []) + [(self.PUBLICATIONS_URL, type(exc).__name__)]
+                publications = []
+            # Surfaced to the engine (partial_discovery, source health): a failing collection is reported, not hidden.
+            self.discovery_errors = [f"publicaciones:{u}:{why}" for u, why in getattr(self, "publication_errors", [])]
+            for raw in publications:
                 if raw.url in seen:
                     continue
                 if raw.url not in extra or extra[raw.url].metadata.get("collection") == "publicaciones":

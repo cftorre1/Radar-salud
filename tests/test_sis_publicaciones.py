@@ -84,3 +84,40 @@ def test_discover_adds_publications_after_statistics_and_survives_hub_failure():
         scout = S()
         assert len(scout.discover()) == 6  # statistics unaffected
         assert scout.publication_errors
+
+
+def test_malformed_markup_never_breaks_statistics():
+    stats = _f("estadisticas_listing_20261028.html")
+
+    def fetch(url, timeout=20):
+        if url == S.DEFAULT_URL:
+            return stats
+        if url == S.PUBLICATIONS_URL:
+            return "<a href='http://[bad'>x</a>"
+        return "<a href='http://[bad'>x</a><a href='/biblioteca-digital/y/'>y</a>"
+    with mock.patch.object(scouts, "fetch_html", fetch):
+        scout = S()
+        assert len(scout.discover()) == 6
+    assert scout.discovery_errors and all(e.startswith("publicaciones:") for e in scout.discovery_errors)
+
+
+def test_page_cap_is_reported():
+    pages = {S.PUBLICATIONS_URL: "<html></html>"}
+    for n in range(1, 20):
+        url = METODO if n == 1 else METODO + f"page/{n}/"
+        pages[url] = f"<a href='{METODO}page/{n + 1}/'>{n + 1}</a>"
+    scout = S()
+    scout.discover_publications(fetch=lambda u: pages[u])
+    assert (METODO + f"page/{S.MAX_PAGES + 1}/", "page_cap") in scout.publication_errors
+
+
+def test_publication_is_not_classified_as_a_statistics_family():
+    from radar_salud.analysis import analyze_superintendencia
+    from radar_salud.models import RawItem
+    raw = RawItem("superintendencia_salud", "Documento de trabajo: Gestión de reclamos y casos GES 2025",
+                  "https://www.superdesalud.gob.cl/biblioteca-digital/x/", "Superintendencia de Salud", "official",
+                  event_date="2026-11-10", metadata={"collection": "documentos-de-trabajo"})
+    a = analyze_superintendencia(raw)
+    assert "tasas de uso GES" not in a.what_happened and a.what_happened.startswith("La Superintendencia publicó en su biblioteca digital") and "ges" not in a.watch_tags and "publicaciones" in a.watch_tags
+    src = (Path(__file__).parents[1] / "src/radar_salud/superintendencia_pipeline.py").read_text(encoding="utf-8")
+    assert 'fam=None if (raw.metadata or {}).get("collection")' in src

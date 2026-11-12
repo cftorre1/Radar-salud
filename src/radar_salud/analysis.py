@@ -29,7 +29,12 @@ def analyze_superintendencia(raw: RawItem) -> AnalysisResult:
     what=clean_technical_text(raw.metadata.get("description") or raw.raw_text) or raw.title
     why="Actualiza una fuente oficial útil para seguir la evolución del sistema de salud."
 
-    if "movilidad" in title:
+    if (raw.metadata or {}).get("collection"):
+        # Publicaciones (documentos metodológicos, de trabajo): no statistics-family wording (review #187).
+        tags += ["publicaciones","metodología" if "metodolog" in raw.metadata["collection"] else raw.metadata["collection"].replace("-"," ")]
+        what=f"La Superintendencia publicó en su biblioteca digital: {raw.title.strip()}."
+        why="Documento oficial de referencia (método, metadatos o estudio) para interpretar series y bases de la Superintendencia."
+    elif "movilidad" in title:
         tags += ["isapres","cartera","movilidad"];who += ["isapres","prestadores","desarrollo de negocios"]
         economic,novelty,actionability,scope=65,75,80,82
         what=f"La Superintendencia actualizó{_period(raw)} la movilidad de cotizantes entre Isapres y su entrada o salida del sistema, con cortes por edad, sexo y región."
