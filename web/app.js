@@ -264,7 +264,8 @@ function rowMeta(s){return cardMetadata(s)}
 // Dense rows label only formats that change how a row is read (Normativa, Fiscalización, Datos).
 // V1 (Dirección 11-nov-2026): the piece type is the icon + word that starts the date line (AlicantoBar.typeMark);
 // «Fiscalización» stays as a small tag after the date, and a correction keeps its tag.
-function pieceKind(s){if(s.insight)return 'insight';const t=typeTags(s);return s.stats_ficha||t.includes('Datos')?'datos':t.includes('Normativa')?'normativa':'noticia'}
+// Dirección 12-nov-2026: Congreso, Diario Oficial and other legal sources («Legal») get their own mark, Legislación.
+function pieceKind(s){if(s.insight)return 'insight';const t=typeTags(s);return s.stats_ficha||t.includes('Datos')?'datos':t.includes('Normativa')?'normativa':t.includes('Legal')?'legal':'noticia'}
 function formatTag(s){return (typeTags(s).includes('Fiscalización')?' <span class="tag">Fiscalización</span>':'')+(typeof AlicantoFicha!=='undefined'?AlicantoFicha.correctionTag(s):'')}
 // Rows carry no actor chips (Dirección 28-oct 21:49): who is involved is named in the ficha ('Menciona: …'),
 // and a row of a followed topic keeps only its small follow marker (Dirección 4-nov-2026).

@@ -96,8 +96,8 @@
  if(root.AlicantoRead&&typeof root.AlicantoRead.subscribe==='function'&&root.document){const syncVolatile=()=>root.document.documentElement.toggleAttribute('data-read-volatile',!root.AlicantoRead.persistent);root.AlicantoRead.subscribe(syncVolatile);syncVolatile()}
  // Piece type (Dirección 11-nov-2026, V1): a small icon and its word at the start of the date line, so a reader sees at a
  // glance why rows differ (news, a Datos ficha, a norm) in Al día, Normativa and Datos. Global lists only news, so it has none.
- const TYPE_ICON={noticia:'<path d="M4 6h16M4 12h16M4 18h10"/>',datos:'<path d="M5 20V10M12 20V4M19 20v-7"/>',normativa:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',insight:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>'};
- const TYPE_WORD={noticia:'Noticia',datos:'Datos',normativa:'Normativa',insight:'Insight'};
+ const TYPE_ICON={noticia:'<path d="M4 6h16M4 12h16M4 18h10"/>',datos:'<path d="M5 20V10M12 20V4M19 20v-7"/>',normativa:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',legal:'<path d="M3 21h18M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 9l9-5 9 5z"/>',insight:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>'};
+ const TYPE_WORD={noticia:'Noticia',datos:'Datos',normativa:'Normativa',legal:'Legislación',insight:'Insight'};
  function typeMark(kind){const k=TYPE_WORD[kind]?kind:'noticia';return `<span class="ty ty-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${TYPE_WORD[k]}<span class="sr-only"> · </span></span>`}
  root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull};
 })(typeof window!=='undefined'?window:globalThis);
