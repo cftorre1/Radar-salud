@@ -1,0 +1,867 @@
+{
+ "schema": "alicanto_insights_v1",
+ "generated_at": "2026-11-12T23:55:22.976156+00:00",
+ "items": [
+  {
+   "slug": "2026-11-02-sarampion-rezago",
+   "date": "2026-11-02",
+   "title": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
+   "dek": "Desde julio, el Minsal vacunó a 44.386 niños con el esquema contra el sarampión incompleto. Aun así, quedan más de 140 mil, frente a más de 143 mil en julio.",
+   "share_path": "i/2026-11-02-sarampion-rezago.html",
+   "weekly": {
+    "id": "weekly-insight:2026-11-02:sarampion-rezago",
+    "title": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
+    "insight_title": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
+    "event_date": "2026-10-28",
+    "freshness_anchor_date": "2026-11-02",
+    "anchor_kind": "monday",
+    "expires_on": "2026-11-09",
+    "editorial_review_pass": true,
+    "source_name": "Minsal · OPS · prensa (Presupuesto 2027)",
+    "source_url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
+    "schema_version": "weekly_insight_a_v1",
+    "headline": "Sarampión: Chile vacunó a 44 mil niños rezagados y el rezago casi no bajó. El desafío parece ser encontrarlos, no comprar vacunas",
+    "dek": "Desde julio, el Minsal vacunó a 44.386 niños con el esquema contra el sarampión incompleto. Aun así, quedan más de 140 mil, frente a más de 143 mil en julio.",
+    "dek_emphasis": "44.386 niños",
+    "estimates": [
+     {
+      "id": "crecimiento_casos",
+      "label": "veces que crecieron los casos confirmados en las Américas",
+      "value": 2.54,
+      "unit": "veces",
+      "display": "≈ 2,5 veces",
+      "formula": "56753 / 22324",
+      "inputs": [
+       "22.324 casos al 18 de junio",
+       "56.753 casos al 17 de octubre"
+      ],
+      "note_ref": "n4"
+     },
+     {
+      "id": "sin_dosis_pct",
+      "label": "porcentaje de rezagados sin ninguna dosis",
+      "value": 33,
+      "unit": "%",
+      "formula": "27 + 6"
+     },
+     {
+      "id": "sin_dosis",
+      "label": "niños rezagados sin ninguna dosis, octubre",
+      "value": 46.2,
+      "unit": "miles",
+      "display": "≈ 46 mil",
+      "formula": "140 * (27 + 6) / 100",
+      "inputs": [
+       "más de 140 mil",
+       "27% + 6%"
+      ],
+      "note_ref": "n2"
+     }
+    ],
+    "charts": [
+     {
+      "id": "rezago",
+      "form": "columns",
+      "headline": "El rezago casi no se mueve",
+      "subtitle": "Niños con el esquema contra el sarampión incompleto, en miles (cifra mínima informada)",
+      "unit": "miles",
+      "rows": [
+       {
+        "label": "1 jul",
+        "value": 143
+       },
+       {
+        "label": "28 oct",
+        "value": 140,
+        "strong": true
+       }
+      ],
+      "footnote": "Entre ambas fechas se vacunó a 44.386 niños rezagados.",
+      "source": "OPS (1 jul) y Minsal (28 oct).",
+      "note_refs": [
+       "n1"
+      ]
+     },
+     {
+      "id": "casos_americas",
+      "form": "columns",
+      "headline": "Los casos de la región se multiplicaron por 2,5",
+      "subtitle": "Casos confirmados de sarampión en las Américas, acumulados desde enero",
+      "unit": "casos",
+      "rows": [
+       {
+        "label": "al 18 jun",
+        "value": 22324
+       },
+       {
+        "label": "al 17 oct",
+        "value": 56753,
+        "strong": true
+       }
+      ],
+      "source": "OPS: nota del 1 jul e informe de situación del 22 oct.",
+      "note_refs": [
+       "n4"
+      ]
+     }
+    ],
+    "essay": {
+     "facts": {
+      "heading": "Qué pasó",
+      "paragraphs": [
+       "El Minsal informó que, desde julio, vacunó a 44.386 niños de hasta 6 años que tenían una dosis o ninguna. De los que siguen pendientes, 27% necesita ambas dosis y casi 62 mil viven en la Región Metropolitana. Chile no tiene transmisión comunitaria desde 1993 y este año confirmó tres casos importados.",
+       "En la región, la OPS registra 81 muertes en 2026 y Perú suma 2.698 casos. Según el Minsal, la OPS califica de \"muy alto\" el riesgo en los eventos masivos de la visita del Papa León XIV a Argentina, Perú y Uruguay, entre el 6 y el 17 de noviembre. El proyecto de Presupuesto 2027 recorta 5,3% real el Programa Nacional de Inmunizaciones, unos $9 mil millones según la Subsecretaría. La subsecretaria Pizarro aseguró que \"no le va a faltar vacuna a nadie\".[^n3]"
+      ]
+     },
+     "reading": {
+      "heading": "Lectura Alicanto",
+      "paragraphs": [
+       "Lo que importa es cuánto bajó el rezago: muy poco. Y los niños sin ninguna dosis no muestran una baja. Eran alrededor de 43 mil en julio; estimamos unos 46 mil en octubre.[^n2] Una explicación compatible con los datos: el rezago se repone con niños que llegan a la edad de cada dosis sin recibirla.[^n5]",
+       "Si es así, el cuello de botella no está en la compra de dosis, sino en encontrar y citar a cada niño: trabajo de atención primaria, municipios y colegios que el debate sobre la línea de vacunas no mide. Para clínicas y aseguradoras, un caso importado tras los viajes de noviembre podría significar aislamientos, rastreo y presión sobre urgencias pediátricas."
+      ]
+     }
+    },
+    "watch_heading": "Qué mirar en las próximas semanas",
+    "watch": [
+     {
+      "headline": "Viajes por la gira del Papa León XIV.",
+      "explanation": "La OPS califica de muy alto el riesgo de propagación ante eventos religiosos masivos en Sudamérica; un caso importado al regreso pondría a prueba la vigilancia y la red pediátrica."
+     },
+     {
+      "headline": "La próxima cifra de rezago del Minsal.",
+      "explanation": "Si sigue sobre 140 mil pese a la búsqueda activa, entran niños al rezago casi tan rápido como salen y la estrategia necesitaría otro diseño."
+     },
+     {
+      "headline": "La votación de la partida de Salud en el Congreso.",
+      "explanation": "El recorte de 5,3% real al Programa Nacional de Inmunizaciones todavía puede cambiar antes de que el presupuesto se convierta en ley."
+     }
+    ],
+    "notes": [
+     {
+      "id": "n1",
+      "kind": "coverage",
+      "text": "Ambas cifras son mínimas (\"más de\") y describen niños con esquema incompleto; ninguna fuente precisa la fecha de corte ni el rango de edad de cada una, así que la comparación es aproximada. La de julio la publicó la OPS; la de octubre, el Minsal. Ninguna informa cuántos niños entraron al rezago en el período."
+     },
+     {
+      "id": "n2",
+      "kind": "estimate",
+      "text": "Estimación Alicanto: 27% que necesita ambas dosis más 6% de menores de 3 años sin la primera, aplicado a 140 mil (≈ 46 mil). Los porcentajes vienen redondeados y 140 mil es un mínimo; es un orden de magnitud, no una cifra oficial."
+     },
+     {
+      "id": "n3",
+      "kind": "press",
+      "text": "El recorte proviene de prensa: Radio Universidad de Chile informa una reducción de $9.696 millones y Diario Estrategia, citando a la Subsecretaría de Salud Pública, un recorte de 5,3% real (unos $9 mil millones). Ninguna fuente aclara si los $9.696 millones son reales o nominales. Es un proyecto en discusión en el Congreso; todavía no es ley."
+     },
+     {
+      "id": "n4",
+      "kind": "coverage",
+      "text": "Casos confirmados acumulados desde el 4 de enero. La OPS advierte que la falta de notificación y los retrasos pueden subestimar el total de casos."
+     },
+     {
+      "id": "n5",
+      "kind": "causality",
+      "text": "Es una inferencia de Alicanto: el Minsal no publica cuántos niños se suman al rezago cada mes, así que no se puede separar el avance de la campaña de la reposición."
+     }
+    ],
+    "reading_time_min": 2,
+    "summary": "Desde julio, el Minsal vacunó a 44.386 niños rezagados contra el sarampión, pero el rezago pasó de más de 143 mil (julio) a más de 140 mil (octubre), y los niños sin ninguna dosis no muestran una baja (≈ 46 mil en octubre frente a unos 43 mil en julio, estimación Alicanto). Ocurre mientras los casos confirmados en las Américas crecieron ≈ 2,5 veces entre junio y octubre, la OPS califica de muy alto el riesgo en la gira del Papa León XIV (6 al 17 de noviembre) y el proyecto de Presupuesto 2027 recorta 5,3% real el Programa Nacional de Inmunizaciones.",
+    "insight_teaser": "Chile vacunó a 44.386 niños rezagados contra el sarampión, pero el rezago sigue sobre 140 mil: el desafío parece ser encontrarlos, no comprar dosis.",
+    "key_figures": [
+     "Minsal (28 oct): más de 44 mil niños vacunados; 44.386 niños de hasta 6 años con una dosis o ninguna, inmunizados desde julio.",
+     "Minsal (28 oct): más de 140 mil niños con esquema incompleto; casi 62 mil en la Región Metropolitana; cerca de 7 de cada 10 son mayores de 3 años a quienes solo les falta la segunda dosis; 27% requiere ambas dosis; 6% son menores de 3 años sin primera dosis.",
+     "OPS (1 jul): más de 143 mil niños con vacunación incompleta; alrededor de 43 mil sin primera dosis y cerca de 100 mil con la segunda pendiente.",
+     "Minsal (28 oct): sin transmisión comunitaria desde 1993; 460 casos sospechosos y tres casos importados confirmados en 2026; según el Minsal, citando a la OPS, los contagios en las Américas son los más altos en 22 años.",
+     "OPS (1 jul): 22.324 casos confirmados y 38 fallecimientos en las Américas al 18 de junio.",
+     "OPS, informe de situación (22 oct): 56.753 casos confirmados y 81 muertes en 2026, al 17 de octubre; Perú 2.698 casos; Bolivia 120; aumento de 4,8 veces frente a 2025.",
+     "OPS (9 oct): riesgo de propagación muy alto ante eventos religiosos masivos; Minsal (28 oct): gira del Papa León XIV por Argentina, Perú y Uruguay entre el 6 y el 17 de noviembre.",
+     "Proyecto de Presupuesto 2027: Programa Nacional de Inmunizaciones con un recorte de 5,3% real, unos 9 mil millones de pesos (Subsecretaría de Salud Pública, vía Diario Estrategia, 20 oct); Radio Universidad de Chile (19 oct) informa una reducción de 9.696 millones de pesos, sin precisar si es real o nominal."
+    ],
+    "source_refs": [
+     "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
+     "https://www.paho.org/es/noticias/1-7-2026-chile-sale-busqueda-mas-143-mil-ninas-ninos-con-vacunacion-incompleta-contra",
+     "https://www.paho.org/sites/default/files/2026/10/ops-sarampion-sitrep14-es.pdf",
+     "https://www.paho.org/es/noticias/9-10-2026-ops-evalua-como-muy-alto-riesgo-propagacion-sarampion-ante-proximos-eventos",
+     "https://radio.uchile.cl/2026/10/19/presupuesto-de-salud-2027-recortes-a-la-ley-ricarte-soto-y-al-plan-de-vacunas-abren-debate-en-el-congreso/",
+     "https://www.diarioestrategia.cl/texto-diario/mostrar/6058803/recortes-asignaciones-salud-concitan-debate-tercera-subcomision-mixta-presupuestos"
+    ],
+    "sources": [
+     {
+      "label": "Minsal · Minsal buscó y vacunó a más de 44 mil niños contra el sarampión · 28 oct",
+      "url": "https://www.minsal.cl/minsal-busco-y-vacuno-a-mas-de-44-mil-ninos-y-ninas-contra-el-sarampion-y-llama-a-vacunar-a-mas-de-140-mil-con-su-esquema-pendiente/",
+      "role": "Fuente primaria de la noticia: vacunados, rezago de octubre, casos en Chile y gira del Papa.",
+      "short_label": "Minsal · vacunación contra el sarampión (28 oct)",
+      "short_role": "noticia gatillante"
+     },
+     {
+      "label": "OPS · Chile sale a la búsqueda de niños con vacunación incompleta · 1 jul",
+      "url": "https://www.paho.org/es/noticias/1-7-2026-chile-sale-busqueda-mas-143-mil-ninas-ninos-con-vacunacion-incompleta-contra",
+      "role": "Fuente primaria del rezago de julio y de los casos regionales al 18 de junio.",
+      "short_label": "OPS · búsqueda de niños rezagados (1 jul)",
+      "short_role": "rezago de julio"
+     },
+     {
+      "label": "OPS · Informe de situación de sarampión en las Américas · 22 oct",
+      "url": "https://www.paho.org/sites/default/files/2026/10/ops-sarampion-sitrep14-es.pdf",
+      "role": "Fuente primaria de casos y muertes por país al 17 de octubre.",
+      "short_label": "OPS · informe de situación (22 oct)",
+      "short_role": "casos por país"
+     },
+     {
+      "label": "OPS · Riesgo muy alto de propagación ante eventos masivos · 9 oct",
+      "url": "https://www.paho.org/es/noticias/9-10-2026-ops-evalua-como-muy-alto-riesgo-propagacion-sarampion-ante-proximos-eventos",
+      "role": "Fuente primaria de la evaluación de riesgo.",
+      "short_label": "OPS · evaluación de riesgo (9 oct)",
+      "short_role": "riesgo en eventos masivos"
+     },
+     {
+      "label": "Radio Universidad de Chile · Recortes a la Ley Ricarte Soto y al plan de vacunas · 19 oct",
+      "url": "https://radio.uchile.cl/2026/10/19/presupuesto-de-salud-2027-recortes-a-la-ley-ricarte-soto-y-al-plan-de-vacunas-abren-debate-en-el-congreso/",
+      "role": "Prensa: monto del recorte al Programa Nacional de Inmunizaciones y respuesta de la subsecretaria.",
+      "short_label": "Radio U. de Chile · recorte al plan de vacunas (19 oct)",
+      "short_role": "prensa"
+     },
+     {
+      "label": "Diario Estrategia · Recortes y asignaciones en Salud (Subcomisión Mixta de Presupuestos) · 20 oct",
+      "url": "https://www.diarioestrategia.cl/texto-diario/mostrar/6058803/recortes-asignaciones-salud-concitan-debate-tercera-subcomision-mixta-presupuestos",
+      "role": "Prensa: recorte en términos reales al Programa Nacional de Inmunizaciones.",
+      "short_label": "Diario Estrategia · debate de la partida de Salud (20 oct)",
+      "short_role": "prensa"
+     }
+    ],
+    "weekly_mode": "reviewed_cross_source_deep_dive",
+    "model_trace": {
+     "mode": "senior_editorial_work_session",
+     "api_call": false,
+     "model": "claude-opus-5-5 (sesión editorial programada)",
+     "note": "Redactado desde fuentes primarias Minsal y OPS, con prensa declarada; revisión independiente aparte."
+    }
+   }
+  },
+  {
+   "slug": "2026-10-23-licencias-control-y-costo",
+   "date": "2026-10-23",
+   "title": "Licencias médicas caen 12,3% en plena ofensiva de control: la caída se modera y eso importa para 2027",
+   "dek": "Entre enero y septiembre se emitieron 5.155.495 licencias médicas electrónicas, 12,3% menos que en 2025. Un mes antes, la baja acumulada era de 14%.",
+   "share_path": "i/2026-10-23-licencias-control-y-costo.html",
+   "weekly": {
+    "id": "weekly-insight:2026-10-23:licencias-control-y-costo",
+    "title": "Licencias médicas caen 12,3% en plena ofensiva de control: la caída se modera y eso importa para 2027",
+    "insight_title": "Licencias médicas caen 12,3% en plena ofensiva de control: la caída se modera y eso importa para 2027",
+    "event_date": "2026-10-23",
+    "freshness_anchor_date": "2026-10-23",
+    "expires_on": "2026-11-02",
+    "editorial_review_pass": true,
+    "source_name": "SUSESO · registro de sanciones · DF y La Tercera",
+    "source_url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
+    "schema_version": "weekly_insight_a_v1",
+    "headline": "Las licencias médicas caen 12,3%, pero la caída ya se frena: 2027 no debería presupuestarse con el ahorro de 2026",
+    "dek": "Entre enero y septiembre se emitieron 5.155.495 licencias médicas electrónicas, 12,3% menos que en 2025. Un mes antes, la baja acumulada era de 14%.",
+    "dek_emphasis": "5.155.495 licencias médicas electrónicas",
+    "estimates": [
+     {
+      "id": "dias_reposo",
+      "label": "días totales de reposo",
+      "value": -21.9,
+      "unit": "%",
+      "display": "≈ −22%",
+      "formula": "(0.877 * 0.891 - 1) * 100",
+      "inputs": [
+       "licencias -12,3%",
+       "días promedio 12,8→11,4"
+      ],
+      "note_ref": "n1"
+     },
+     {
+      "id": "moderacion_total",
+      "label": "moderación de la caída acumulada, Total",
+      "value": 1.7,
+      "unit": "pp",
+      "formula": "-12.3 - (-14.0)"
+     },
+     {
+      "id": "moderacion_fonasa",
+      "label": "moderación de la caída acumulada, Fonasa",
+      "value": 1.0,
+      "unit": "pp",
+      "formula": "-13.4 - (-14.4)"
+     },
+     {
+      "id": "moderacion_isapres",
+      "label": "moderación de la caída acumulada, Isapres",
+      "value": 1.3,
+      "unit": "pp",
+      "formula": "-12.2 - (-13.5)"
+     }
+    ],
+    "charts": [
+     {
+      "id": "moderacion",
+      "form": "paired_bars",
+      "headline": "La caída se achica en todos los seguros",
+      "subtitle": "Variación interanual acumulada de licencias emitidas",
+      "unit": "%",
+      "series": [
+       {
+        "key": "ago",
+        "label": "ene–ago",
+        "emphasis": false
+       },
+       {
+        "key": "sep",
+        "label": "ene–sep",
+        "emphasis": true
+       }
+      ],
+      "rows": [
+       {
+        "label": "Total",
+        "values": {
+         "ago": -14.0,
+         "sep": -12.3
+        },
+        "strong": true
+       },
+       {
+        "label": "Fonasa",
+        "values": {
+         "ago": -14.4,
+         "sep": -13.4
+        }
+       },
+       {
+        "label": "Isapres",
+        "values": {
+         "ago": -13.5,
+         "sep": -12.2
+        }
+       }
+      ],
+      "delta": {
+       "from": "ago",
+       "to": "sep",
+       "unit": "pp",
+       "label": "se modera"
+      },
+      "footnote": "Barra más corta = caída menor · pp = puntos porcentuales",
+      "source": "SUSESO (ene–sep, 23 oct) y datos SUSESO citados por Pulso (ene–ago, 9 oct).",
+      "note_refs": []
+     },
+     {
+      "id": "sanciones",
+      "form": "columns",
+      "headline": "Más de 30 sanciones a emisores al mes",
+      "subtitle": "Oficios de sanción a emisores de licencias, por mes",
+      "unit": "oficios",
+      "rows": [
+       {
+        "label": "Ago",
+        "value": 36
+       },
+       {
+        "label": "Sep",
+        "value": 32
+       },
+       {
+        "label": "Oct",
+        "value": 15,
+        "style": "partial",
+        "partial_label": "parcial · al día 16"
+       }
+      ],
+      "source": "Registro de sanciones SUSESO capturado por Alicanto.",
+      "note_refs": [
+       "n4"
+      ]
+     }
+    ],
+    "essay": {
+     "facts": {
+      "heading": "Qué pasó",
+      "paragraphs": [
+       "La baja es pareja entre seguros, sexo y sector. Los reposos también son más cortos, con 11,4 días promedio frente a 12,8 un año antes. Las licencias por trastornos mentales caen 24,3%. Todo ocurre en el ciclo de control más intenso registrado: la SUSESO observó 190.219 licencias de 114.099 personas por posibles usos indebidos, con un techo bruto de más de $85 mil millones en subsidios,[^n5] abrió 312 investigaciones a emisores y, desde el 23 de octubre, limita qué diagnósticos pueden certificar dentistas y matronas. La SUSESO no atribuye la baja a una sola causa."
+      ]
+     },
+     "reading": {
+      "heading": "Lectura Alicanto",
+      "paragraphs": [
+       "Para quien paga el subsidio, la cifra que importa son los días, no las licencias. Combinando menos licencias y reposos más cortos, estimamos que los días de reposo cayeron en torno a 22%.[^n1]",
+       "Ese ahorro es real, pero no es una tendencia. La caída perdió casi dos puntos en un mes, y agosto ya mostró un alza interanual de 4,6% por baja base de comparación. Si el control explica parte de la baja,[^n2] su efecto podría estar tocando piso. Las Isapres, cuyos planes más baratos la prensa atribuye en parte al menor gasto en licencias,[^n3] harían mal en proyectar a 2027 la caída de 2026.",
+       "La baja en salud mental pide cautela: puede mezclar abuso corregido con reposos legítimos que dejaron de otorgarse."
+      ]
+     }
+    },
+    "watch_heading": "Qué mirar en las próximas semanas",
+    "watch": [
+     {
+      "headline": "Cifras de licencias de octubre a diciembre.",
+      "explanation": "Si vuelven a superar a las del mismo mes de 2025, el efecto del control habría tocado piso y el ahorro de 2026 no se repetiría."
+     },
+     {
+      "headline": "Rechazos por competencia profesional.",
+      "explanation": "Desde el 23 de octubre, Isapres y COMPIN deben rechazar licencias de dentistas y matronas por diagnósticos que ya no pueden certificar (Circular 3931)."
+     },
+     {
+      "headline": "Precios de planes Isapre 2027.",
+      "explanation": "Conviene revisar si cada aseguradora explica cuánto pesa el gasto en licencias en su tarifa."
+     }
+    ],
+    "notes": [
+     {
+      "id": "n1",
+      "kind": "estimate",
+      "text": "Estimación Alicanto: 0,877 × 0,891 ≈ 0,78. Licencias emitidas y días autorizados tienen denominadores distintos; es un orden de magnitud, no una cifra oficial."
+     },
+     {
+      "id": "n2",
+      "kind": "causality",
+      "text": "La coincidencia entre fiscalización y menor emisión es temporal; no está demostrado que una cause la otra."
+     },
+     {
+      "id": "n3",
+      "kind": "press",
+      "text": "El vínculo entre gasto en licencias y precio de planes proviene de prensa, no de estados financieros verificados."
+     },
+     {
+      "id": "n4",
+      "kind": "coverage",
+      "text": "El registro es una ventana móvil de 90 días. Octubre es parcial (hasta el día 16) y julio se excluye por posible cobertura incompleta."
+     },
+     {
+      "id": "n5",
+      "kind": "non_final",
+      "text": "Las licencias observadas por fiscalización no son resoluciones firmes; el monto es un techo bruto entre todos los pagadores."
+     }
+    ],
+    "reading_time_min": 2,
+    "summary": "Entre enero y septiembre de 2026 se emitieron 5.155.495 licencias médicas electrónicas, 12,3% menos que en 2025 (Fonasa -13,4%, Isapres -12,2%), con reposos más cortos (11,4 días promedio vs 12,8). Combinando ambas cifras, los días de reposo habrían caído en torno a 22%, la variable que mueve el costo del subsidio. Pero la caída se está moderando: a agosto era de 14% y ese mes las licencias subieron 4,6% por baja base de comparación. Ocurre en el ciclo de fiscalización más intenso registrado (VigIA, sanciones a emisores, causas penales), sin que la SUSESO atribuya la baja a una sola causa.",
+    "insight_teaser": "−12,3% en licencias y ≈ −22% en días de reposo, pero la caída se modera: qué significa para Isapres, Fonasa y prestadores en 2027.",
+    "key_figures": [
+     "5.155.495 licencias electrónicas entre enero y septiembre de 2026: -12,3% interanual (Fonasa -13,4%, Isapres -12,2%).",
+     "Días promedio autorizados: de 12,8 a 11,4. Estimación Alicanto: días totales de reposo ≈ -22% (0,877 × 0,891; aproximado, porque licencias emitidas y días autorizados tienen denominadores distintos).",
+     "La caída se modera: -14% a agosto (Fonasa -14,4%, Isapres -13,5%) vs -12,3% a septiembre; agosto subió 4,6% interanual por baja base de comparación.",
+     "Trastornos mentales: -24,3% a septiembre (cerca de -26% a agosto); pasaron de 32,1% a 27,8% del total a agosto.",
+     "Fiscalización 2025–2026: 190.219 licencias de 114.099 personas observadas por posibles usos indebidos; techo bruto estimado de más de $85 mil millones en subsidios, entre todos los pagadores. 312 investigaciones a emisores con VigIA.",
+     "Registro de sanciones a emisores capturado por Alicanto: entre agosto y septiembre, 32–36 oficios mensuales; octubre lleva 15 al día 16."
+    ],
+    "actors": [
+     "Isapres y Fonasa: pagadores del subsidio por incapacidad laboral de origen común.",
+     "Médicos, dentistas y matronas emisores, y los prestadores donde emiten.",
+     "COMPIN y contralorías médicas de las Isapres, que dictaminan y ahora deben rechazar licencias fuera de competencia.",
+     "Empleadores públicos y privados."
+    ],
+    "insight_reading": [
+     "Hecho: la baja es transversal por seguro, sexo y sector, y viene con reposos más cortos y menos personas usuarias.",
+     "Inferencia Alicanto: ese patrón es consistente con un cambio en la conducta de emisión y autorización, no solo con menos enfermedad; la SUSESO no lo atribuye a una sola causa.",
+     "Hecho: el control cambió de escala en 2026 (cruces masivos con VigIA, oficios de sanción mensuales, derivaciones al Ministerio Público y condenas por emisión fraudulenta), y desde el 23 de octubre la Circular 3931 limita los diagnósticos que pueden certificar dentistas y matronas.",
+     "Inferencia Alicanto: la moderación de la caída sugiere que el ajuste de 2026 podría estar tocando su piso. Para las Isapres, cuya baja de precios de planes la prensa atribuye a la ley corta y a un gasto SIL 13,6% menor entre 2024 y 2025, proyectar a 2027 la misma intensidad de caída sería arriesgado.",
+     "Inferencia Alicanto: la caída en salud mental (-24,3%) es la cifra que requiere más cuidado: puede combinar uso indebido corregido con barreras a reposos legítimos."
+    ],
+    "decision_use": [
+     "Isapres: modelar el costo SIL 2027 por días (≈ -22% en 2026), no solo por número de licencias, y con un escenario de caída moderándose.",
+     "Prestadores y redes: revisar los perfiles de emisión de sus profesionales frente al registro de sanciones y a la Circular 3931; la exposición reputacional ya no es teórica.",
+     "Fonasa y empleadores públicos: priorizar la recuperación sobre el techo bruto observado y el seguimiento de los 5.646 funcionarios que viajaron durante su licencia.",
+     "COMPIN e Isapres: ajustar procesos para rechazar, con motivo explícito, licencias fuera de competencia profesional desde el 23 de octubre."
+    ],
+    "what_to_watch": [
+     "Cifras de octubre a diciembre: si la variación interanual vuelve a terreno positivo, el efecto del control habría tocado piso.",
+     "Aplicación de la Circular 3931 y rechazos por competencia; la Circular 3926 regirá el procedimiento del artículo 30 del DS 3 desde el 4 de enero de 2027.",
+     "Resultados de las 312 investigaciones VigIA: sanciones, suspensiones y casos penales.",
+     "Tarifas y planes de Isapres para 2027 y si explicitan el gasto en licencias."
+    ],
+    "uncertainties": [
+     "La relación entre fiscalización y caída de emisión es temporal, no causal demostrada.",
+     "La estimación de días (≈ -22%) combina dos indicadores con denominadores distintos; es un orden de magnitud, no una cifra oficial.",
+     "El registro de sanciones es una ventana móvil de 90 días; julio puede estar incompleto y no se usa para comparar.",
+     "El vínculo entre gasto en licencias y precios de planes proviene de prensa, no de estados financieros verificados.",
+     "Las licencias observadas por fiscalización no son resoluciones firmes."
+    ],
+    "source_refs": [
+     "https://www.suseso.gob.cl/605/w3-article-792643.html",
+     "https://www.suseso.gob.cl/605/w3-article-792305.html",
+     "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+     "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+     "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+     "https://www.suseso.gob.cl/605/w3-article-792754.html"
+    ],
+    "sources": [
+     {
+      "label": "SUSESO · Emisión de licencias médicas disminuyó 12,3% (ene–sep 2026) · 23 oct",
+      "url": "https://www.suseso.gob.cl/605/w3-article-792643.html",
+      "role": "Fuente primaria de volumen, días promedio y variación por seguro y diagnóstico.",
+      "short_label": "SUSESO · Emisión de licencias médicas disminuyó 12,3% (23 oct)",
+      "short_role": "volumen, días y variación por seguro"
+     },
+     {
+      "label": "SUSESO · Avances en fiscalización ante Comisión de Salud del Senado · 19 oct",
+      "url": "https://www.suseso.gob.cl/605/w3-article-792305.html",
+      "role": "Fuente primaria de licencias observadas, gasto estimado e investigaciones VigIA.",
+      "short_label": "SUSESO · Avances en fiscalización ante el Senado (19 oct)",
+      "short_role": "licencias observadas, VigIA"
+     },
+     {
+      "label": "SUSESO · Registro de sanciones a emisores de licencias",
+      "url": "https://www.suseso.gob.cl/609/w3-propertyvalue-799701.html",
+      "role": "Oficios de sanción capturados por Alicanto (registro de 90 días).",
+      "short_label": "SUSESO · Registro de sanciones a emisores",
+      "short_role": "oficios mensuales"
+     },
+     {
+      "label": "SUSESO · Circular 3931: diagnósticos que pueden certificar dentistas y matronas (vigente desde 23 oct)",
+      "url": "https://www.suseso.gob.cl/605/w3-article-792754.html",
+      "role": "Fuente primaria de la nueva regla de emisión.",
+      "short_label": "SUSESO · Circular 3931 (vigente desde 23 oct)",
+      "short_role": "nueva regla de emisión"
+     },
+     {
+      "label": "La Tercera/Pulso · Licencias anotan en agosto su mayor alza en año y medio · 9 oct",
+      "url": "https://www.latercera.com/pulso/noticia/licencias-medicas-anotan-en-agosto-su-mayor-alza-en-ano-y-medio-debido-a-baja-base-de-comparacion/",
+      "role": "Prensa: contrapunto de corto plazo por baja base de comparación.",
+      "short_label": "La Tercera/Pulso · Licencias anotan en agosto su mayor alza (9 oct)",
+      "short_role": "prensa"
+     },
+     {
+      "label": "La Tercera/Pulso · Isapres ofrecen los planes más baratos en cinco años · 30 ago",
+      "url": "https://www.latercera.com/pulso/noticia/isapres-ofrecen-los-planes-mas-baratos-en-cinco-anos-gracias-a-la-ley-corta-y-menor-gasto-en-licencias/",
+      "role": "Prensa: vínculo informado entre menor gasto en licencias y precios de planes.",
+      "short_label": "La Tercera/Pulso · Isapres ofrecen los planes más baratos en cinco años (30 ago)",
+      "short_role": "prensa"
+     }
+    ],
+    "weekly_mode": "reviewed_cross_source_deep_dive",
+    "model_trace": {
+     "mode": "senior_editorial_work_session",
+     "api_call": false,
+     "model": "claude-opus-5-5 (sesión de orquestación)",
+     "note": "Redactado desde señales verificadas del historial y fuentes primarias SUSESO; revisión independiente aparte."
+    },
+    "legacy_charts": [
+     {
+      "type": "bars",
+      "title": "La caída se modera: variación acumulada de licencias emitidas",
+      "unit": "%",
+      "rows": [
+       {
+        "label": "Total ene–ago",
+        "value": -14.0
+       },
+       {
+        "label": "Total ene–sep",
+        "value": -12.3
+       },
+       {
+        "label": "Fonasa ene–ago",
+        "value": -14.4
+       },
+       {
+        "label": "Fonasa ene–sep",
+        "value": -13.4
+       },
+       {
+        "label": "Isapres ene–ago",
+        "value": -13.5
+       },
+       {
+        "label": "Isapres ene–sep",
+        "value": -12.2
+       }
+      ],
+      "source": "SUSESO (ene–sep, 23 oct) y datos SUSESO citados por Pulso (ene–ago, 9 oct)"
+     },
+     {
+      "type": "bars",
+      "title": "Oficios de sanción a emisores de licencias por mes",
+      "unit": "oficios",
+      "rows": [
+       {
+        "label": "Ago",
+        "value": 36
+       },
+       {
+        "label": "Sep",
+        "value": 32
+       },
+       {
+        "label": "Oct (al 16)",
+        "value": 15,
+        "style": "partial"
+       }
+      ],
+      "source": "Registro SUSESO capturado por Alicanto (ventana de 90 días); octubre parcial"
+     }
+    ],
+    "editorial_notes": [
+     "27-oct: vigencia extendida al lunes 2-nov (paso a insight semanal de los lunes, Dirección 27-oct)."
+    ]
+   }
+  },
+  {
+   "slug": "2026-10-10-ucchristus-continuidad",
+   "date": "2026-10-10",
+   "title": "San Carlos de Apoquindo: activar capacidad de reemplazo para sostener la continuidad",
+   "dek": "La suspensión exige verificar reemplazos por prestación, reprogramar agendas y coordinar autorizaciones. El alcance financiero sigue sin cuantificarse.",
+   "share_path": "i/2026-10-10-ucchristus-continuidad.html",
+   "weekly": {
+    "id": "weekly-insight:2026-10-10:ucchristus-continuidad",
+    "title": "San Carlos de Apoquindo: activar capacidad de reemplazo para sostener la continuidad",
+    "insight_title": "San Carlos de Apoquindo: activar capacidad de reemplazo para sostener la continuidad",
+    "event_date": "2026-10-10",
+    "incident_date": "2026-10-08",
+    "freshness_anchor_date": "2026-10-10",
+    "expires_on": "2026-10-17",
+    "editorial_review_pass": true,
+    "source_name": "UC CHRISTUS · DF + La Tercera",
+    "source_url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+    "summary": "La suspensión de la Clínica San Carlos de Apoquindo convierte la continuidad asistencial en una decisión inmediata de red. El desafío ejecutivo es traducir el cierre en capacidad receptora confirmada, agendas reprogramadas y condiciones de atención comunicadas. La existencia de convenios o infraestructura cercana, por sí sola, no acredita que cada prestación tenga reemplazo disponible.",
+    "insight_teaser": "La suspensión exige verificar reemplazos por prestación, reprogramar agendas y coordinar autorizaciones. El alcance financiero sigue sin cuantificarse.",
+    "key_figures": [
+     "8 de octubre: aluvión. 10 de octubre: comunicación de traslados concluidos y suspensión durante algunas semanas, según DF y La Tercera.",
+     "No se informan en estas fuentes cifras completas de pacientes trasladados, camas fuera de servicio, atenciones postergadas o pérdidas. No se estima un impacto económico sin esos datos."
+    ],
+    "actors": [
+     "UC CHRISTUS y los centros de su red que reciben o reprograman atenciones.",
+     "Pacientes hospitalizados y personas con consultas, exámenes o procedimientos agendados.",
+     "Equipos de convenios, operaciones y atención de aseguradores y prestadores que deban coordinar continuidad."
+    ],
+    "insight_reading": [
+     "Hecho informado: la clínica cerró por semanas tras el aluvión, completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a la limpieza, el despeje y la recuperación de las áreas afectadas (título y bajada públicos de DF; título público de La Tercera).",
+     "Inferencia editorial: el cuello de botella debe evaluarse por tipo de prestación y soporte operativo. Una alternativa sólo es útil cuando tiene cupo, coordinación clínica, autorización y condiciones de cobertura verificadas.",
+     "Conexión con el stock: la inversión anunciada por Bupa en el sector oriente y el convenio RedSalud–Nueva Masvida describen oferta o acceso contractual. Este episodio añade la dimensión de disponibilidad efectiva; no demuestra que esas instituciones puedan absorber pacientes ni que hayan firmado acuerdos de contingencia."
+    ],
+    "decision_use": [
+     "Identificar agendas y derivaciones expuestas por prestación, prioridad definida por los equipos clínicos y fecha, con responsable de seguimiento.",
+     "Confirmar con la red receptora capacidad, autorizaciones y condiciones contractuales antes de informar una alternativa al beneficiario.",
+     "Establecer un control diario de casos contactados, reprogramados y pendientes; separar continuidad lograda de la mera oferta de una nueva hora."
+    ],
+    "what_to_watch": [
+     "Comunicaciones oficiales sobre servicios reabiertos y fechas, sin asumir una reapertura simultánea de toda la clínica.",
+     "Tiempo hasta nueva atención, cancelaciones sin solución y saturación de destinos, con volumen de casos y línea base explícitos.",
+     "Duración de la interrupción y costos incrementales documentados; no atribuir automáticamente mayores ingresos a competidores."
+    ],
+    "uncertainties": [
+     "“Algunas semanas” no entrega fecha cierta de reapertura.",
+     "DF y La Tercera recogen el mismo comunicado institucional: no se cuentan como dos mediciones independientes del daño.",
+     "No hay cifras suficientes para estimar pérdida de capacidad regional, impacto en siniestralidad, daño financiero o resultados clínicos.",
+     "Las acciones propuestas son análisis de gestión de red; las decisiones clínicas, coberturas y destinos requieren verificación caso a caso."
+    ],
+    "source_refs": [
+     "https://www.ucchristus.cl/contingencias",
+     "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+     "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/"
+    ],
+    "sources": [
+     {
+      "label": "UC CHRISTUS · información de contingencia",
+      "url": "https://www.ucchristus.cl/contingencias",
+      "role": "Fuente primaria del estado operativo; consultada 11-oct, sin fecha editorial visible."
+     },
+     {
+      "label": "Diario Financiero · suspensión de San Carlos · 10 oct",
+      "url": "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+      "role": "Cronología del anuncio y cierre por semanas; señal pendiente recuperada desde auditoría Work3."
+     },
+     {
+      "label": "La Tercera · traslados · 10 oct",
+      "url": "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+      "role": "Detalle del mismo comunicado; no corroboración independiente del impacto."
+     }
+    ],
+    "weekly_mode": "reviewed_primary_evidence_deep_dive",
+    "model_trace": {
+     "mode": "senior_editorial_work_session",
+     "api_call": false,
+     "model": null,
+     "note": "Sesión Work2, evidencia Work3 contrastada directamente; no ejecución TERRA ni segundo revisor del contenido final."
+    },
+    "public_teaser": "UC Christus completó el traslado de todos los pacientes hospitalizados y condicionó la reapertura a los trabajos de limpieza, despeje y recuperación de las áreas afectadas.",
+    "rights_redactions": [
+     {
+      "field": "key_figures",
+      "sha256": "4bdd526e9e616b1de883dfe52958f2a4438fc928d6c49252575dd8dc0332bda3",
+      "characters": 481,
+      "reason": "independent_qa_unsupported_claim_removed",
+      "redacted_at": "2026-10-28"
+     },
+     {
+      "field": "uncertainties",
+      "sha256": "a13ce0a1f0fb8cf1b94c3ababb766621dfd31f8fc373905bdebb87e61a4a470f",
+      "characters": 613,
+      "reason": "independent_qa_unsupported_claim_removed",
+      "redacted_at": "2026-10-28"
+     },
+     {
+      "field": "insight_reading",
+      "sha256": "67956e479e8281c3f9a8f59ce771e34674cd0240eb58dc525a3b3d5be914d39a",
+      "characters": 731,
+      "reason": "independent_qa_unsupported_claim_removed",
+      "redacted_at": "2026-10-28"
+     },
+     {
+      "field": "key_figures",
+      "sha256": "75b5c1cf2327d4ad6f7db27804bf1a2beeb06f3d5982d294cb35ed06dbdcd005",
+      "characters": 529,
+      "reason": "independent_review_4_claim_not_in_allowed_text",
+      "redacted_at": "2026-10-28"
+     },
+     {
+      "field": "insight_reading",
+      "sha256": "150dad0464ac5b0ea25bc9edc08047ba7da44df0f8ae971b948fb95f3ba99954",
+      "characters": 757,
+      "reason": "independent_review_4_claim_not_in_allowed_text",
+      "redacted_at": "2026-10-28"
+     },
+     {
+      "field": "sources[2].label",
+      "sha256": "768d05683a6ffc378bc0bd6c24779ce3b525aa4ec9ac8271b179f9bfe4f9f44f",
+      "characters": 48,
+      "reason": "independent_review_4_claim_not_in_allowed_text",
+      "redacted_at": "2026-10-28"
+     }
+    ],
+    "rights_review_revoked": [
+     {
+      "basis": "Hechos de la página oficial UC CHRISTUS (contingencias) y de La Tercera /nacional/ (abierta; servicios de apoyo, redistribución de agendas); de DF sólo título y bajada públicos (cierre por semanas, traslado concluido). Contrastado con el cuerpo DF bloqueado: ningún hecho proviene sólo de él.",
+      "reviewer": "Claude (migración de derechos 28-oct-2026; QA independiente registrado)",
+      "reviewed_at": "2026-10-28",
+      "fields": {
+       "summary": "c027c7db8c7bca40cc78cc1cb434692344469c97d6c2e3cf6860e6b825b0e825",
+       "insight_teaser": "4208f6f37bff2e949a53f71032fb538f65f5e65be7ab5d9dfad2ed5f13a00165",
+       "key_figures": "75b5c1cf2327d4ad6f7db27804bf1a2beeb06f3d5982d294cb35ed06dbdcd005",
+       "actors": "88f6de3058e917cdc61d067c61bedfebdb6652b394aabc7a913897449be93085",
+       "insight_reading": "150dad0464ac5b0ea25bc9edc08047ba7da44df0f8ae971b948fb95f3ba99954",
+       "decision_use": "85c2d6322a1242d5cff47400f2b3caf36613eecee5d75abd77d59cd1f250b032",
+       "what_to_watch": "09b7479d9f8faaad9be3993213f10f94f47fba807a1626413da90205fd7e6922",
+       "uncertainties": "b1907196f38755533ef6b902b110d8b420baab2fb7f2bc09457da808bbb3a82b"
+      },
+      "qa_status": "revoked",
+      "qa_by": "independent-qa-agent",
+      "qa_at": "2026-10-28",
+      "qa_method": "Live WebFetch of every cited URL was refused by the session allowlist (28-oct). Claims were checked against stored open captures: La Tercera /nacional/ full body in data/state/pulso_discovery_cache.json (open section), DF headline + public lead in data/state/pending_queue.json (public_teaser_source), and the open bupa.cl / redsalud.cl records in the queue. The UC CHRISTUS page has no stored capture (only an 11-oct audit note): claims resting on it alone were removed.",
+      "qa_evidence_urls": [
+       "https://www.latercera.com/nacional/noticia/clinica-uc-christus-de-san-carlos-de-apoquindo-termina-traslado-de-pacientes-ante-suspension-de-operaciones-por-aluvion/",
+       "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+       "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+       "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio"
+      ],
+      "qa_verified_claims": [
+       "suspensión por algunas semanas y traslado de todos los pacientes (LT abierta; bajada DF)",
+       "servicios de apoyo sin capacidad habitual como causa (LT abierta)",
+       "redistribución de consultas, exámenes y procedimientos de San Carlos y El Alba (LT abierta)",
+       "aluvión el 8-oct; balance del sábado 10-oct (LT abierta)",
+       "sin cifras de pacientes/camas/pérdidas en estas fuentes (LT abierta, bajada DF)",
+       "inversión de Bupa en el sector oriente (bupa.cl, título abierto)",
+       "convenio RedSalud–Nueva Masvida (redsalud.cl, abierta)"
+      ],
+      "qa_removed_claims": [
+       "key_figures[1]: estado de dos recintos 'en la página oficial consultada' (página UC sin captura) -> reescrito con la redistribución que informa La Tercera",
+       "uncertainties[0]: frase sobre la fecha/estado de la página operativa oficial (sin captura)",
+       "insight_reading[2]: 'inversiones Bupa/Andes' (Andes sin fuente abierta) -> 'inversión anunciada por Bupa en el sector oriente'"
+      ],
+      "qa_unverified": [
+       "UC CHRISTUS /contingencias: no alcanzable desde esta sesión ni capturada; ninguna afirmación depende ya de ella"
+      ],
+      "qa_unreachable_sources": [
+       "https://www.ucchristus.cl/contingencias"
+      ],
+      "revoked_at": "2026-10-28",
+      "revoked_reason": "basis_la_tercera_nacional_paid_since_policy_1_3_0_and_self_qa_not_independent",
+      "revoked_by_review": "Cuarta revisión independiente de la rama claude/source-links-paywall-20261028 @ c9ca95a4 (28-oct-2026), veredicto FAIL. QA de campos del revisor: Laboratorios 'reason' PASS sin cambios; San Carlos 'reason': quitar 'agendas redistribuidas en la red UC Christus'; insight San Carlos: quitar 'servicios de apoyo' y 'redistribución San Carlos/El Alba'. Base: La Tercera /nacional/ es pagada desde la política 1.3.0 (Dirección 28-oct) y el QA anterior ('independent-qa-agent') no era independiente.",
+      "qa_status_before_revocation": "approved"
+     }
+    ],
+    "rights_review": {
+     "basis": "De DF sólo título y bajada públicos (cierre por semanas, traslado concluido, reapertura condicionada); de La Tercera (pagada, política 1.3.0) sólo el título público; Bupa y RedSalud de sus páginas abiertas. Ningún hecho del cuerpo de La Tercera ni del cuerpo DF bloqueado.",
+     "implemented_by": "claude-implementer:source-links-paywall-20261028",
+     "reviewer": "claude-rights-reviewer:source-links-paywall-20261028",
+     "reviewed_at": "2026-10-28",
+     "fields": {
+      "summary": "c027c7db8c7bca40cc78cc1cb434692344469c97d6c2e3cf6860e6b825b0e825",
+      "insight_teaser": "4208f6f37bff2e949a53f71032fb538f65f5e65be7ab5d9dfad2ed5f13a00165",
+      "key_figures": "dd531a227ee8929982f242e600fded2b3059eb69dfd3d79a4418325ae04404ef",
+      "actors": "88f6de3058e917cdc61d067c61bedfebdb6652b394aabc7a913897449be93085",
+      "insight_reading": "a7a42de9a30acde0684d0a61696ee42ac9a59dce6cf5afdcb5c4dc8328a07445",
+      "decision_use": "85c2d6322a1242d5cff47400f2b3caf36613eecee5d75abd77d59cd1f250b032",
+      "what_to_watch": "09b7479d9f8faaad9be3993213f10f94f47fba807a1626413da90205fd7e6922",
+      "uncertainties": "b1907196f38755533ef6b902b110d8b420baab2fb7f2bc09457da808bbb3a82b"
+     },
+     "qa_status": "approved",
+     "qa_by": "independent-reviewer-4th-review",
+     "qa_at": "2026-10-28",
+     "qa_review_ref": "Cuarta revisión independiente de la rama claude/source-links-paywall-20261028 @ c9ca95a4 (28-oct-2026), veredicto FAIL. QA de campos del revisor: Laboratorios 'reason' PASS sin cambios; San Carlos 'reason': quitar 'agendas redistribuidas en la red UC Christus'; insight San Carlos: quitar 'servicios de apoyo' y 'redistribución San Carlos/El Alba'. Base: La Tercera /nacional/ es pagada desde la política 1.3.0 (Dirección 28-oct) y el QA anterior ('independent-qa-agent') no era independiente.",
+     "qa_findings": [
+      "key_figures: se quitó la redistribución de agendas de San Carlos/El Alba (cuerpo La Tercera)",
+      "insight_reading[0]: se quitaron 'servicios de apoyo' y la redistribución dentro de UC CHRISTUS (cuerpo La Tercera)"
+     ],
+     "qa_evidence_urls": [
+      "https://www.df.cl/economia-y-politica/actualidad/aluvion-en-las-condes-obliga-a-cerrar-por-semanas-la-clinica-san-carlos",
+      "https://www.bupa.cl/bupa-acelera-su-crecimiento-en-el-sector-oriente-de-santiago-con-inversion",
+      "https://www.redsalud.cl/noticias/redsalud-y-nueva-masvida-convenio"
+     ],
+     "qa_unverified": [],
+     "identity_note": "implemented_by y reviewer son roles de la sesión Claude que implementa la rama (identidades distintas por rol); la independencia la aporta sólo qa_by, que no puede coincidir con ninguno de los dos (source_rights.review_qa_approved)."
+    },
+    "rights_note": "28-oct (cuarta revisión): textos con hechos del cuerpo de La Tercera reescritos; recibos sha256 + longitud en rights_redactions. QA previo revocado (rights_review_revoked)."
+   }
+  },
+  {
+   "slug": "2026-09-14-circular-if-n535-prohibe-a-las",
+   "date": "2026-09-14",
+   "title": "Circular IF/N°535 prohíbe a las isapres compensar reembolsos adeudados a empleadores públicos con deudas de estos, salvo habilitación legal expresa",
+   "dek": "La instrucción exige que las isapres paguen los reembolsos adeudados a empleadores del sector público sin utilizar mecanismos de compensación frente a obligaciones de esos empleadores.",
+   "share_path": "i/2026-09-14-circular-if-n535-prohibe-a-las.html",
+   "weekly": {
+    "id": "weekly-insight-v2:2026-09-14",
+    "title": "Circular IF/N°535 prohíbe a las isapres compensar reembolsos adeudados a empleadores públicos con deudas de estos, salvo habilitación legal expresa",
+    "insight_title": "Circular IF/N°535 prohíbe a las isapres compensar reembolsos adeudados a empleadores públicos con deudas de estos, salvo habilitación legal expresa",
+    "summary": "La Superintendencia de Salud, mediante la Circular IF/N°535 de 14 de septiembre de 2026, modificó la Circular IF/N°77 para impedir que las isapres compensen créditos de órganos públicos por reembolsos vinculados a subsidios por incapacidad laboral con obligaciones que dichos órganos mantengan frente a la isapre, excepto cuando exista una habilitación legal expresa.",
+    "insight_teaser": [
+     "La instrucción exige que las isapres paguen los reembolsos adeudados a empleadores del sector público sin utilizar mecanismos de compensación frente a obligaciones de esos empleadores.",
+     "La materia afecta la gestión de cuentas por pagar y por cobrar asociadas a subsidios por incapacidad laboral y los mecanismos aplicables a entidades públicas.",
+     "La regla se funda, según la evidencia, en jurisprudencia administrativa que impide la compensación de obligaciones en derecho público sin habilitación legal expresa."
+    ],
+    "insight_reading": [
+     "Las isapres deben revisar sus procesos de liquidación, pago, cobranza y conciliación vinculados a empleadores públicos.",
+     "Los saldos por reembolsos a órganos públicos deben gestionarse separadamente de las deudas que dichos órganos mantengan con la isapre, salvo que se identifique una habilitación legal expresa.",
+     "Se requiere adecuar los mecanismos operativos de compensación aplicables a entidades públicas."
+    ],
+    "decision_use": [
+     "Priorizar una revisión de los casos vigentes de reembolsos a empleadores públicos asociados al artículo 12 de la Ley N°18.196 y normas análogas.",
+     "Validar que los procedimientos de cuentas por cobrar y cuentas por pagar no ejecuten compensaciones prohibidas.",
+     "Establecer un control legal para documentar cualquier excepción basada en habilitación legal expresa.",
+     "Incorporar la regla en los protocolos internos de cumplimiento normativo y en los flujos operativos relacionados con subsidios por incapacidad laboral."
+    ],
+    "what_to_watch": [
+     "La implementación de ajustes operativos por parte de las isapres en sus mecanismos de pago, cobranza y compensación frente a órganos públicos.",
+     "La identificación de casos en que pudiera invocarse una habilitación legal expresa para aplicar compensación.",
+     "La eventual fiscalización del cumplimiento de la Circular IF/N°535."
+    ],
+    "uncertainties": [
+     "La evidencia no informa un plazo específico de implementación ni detalles operativos adicionales de la Circular IF/N°535.",
+     "La evidencia no cuantifica montos, número de empleadores públicos afectados ni impacto financiero por isapre.",
+     "La evidencia no identifica habilitaciones legales expresas concretas que permitan aplicar la excepción.",
+     "No se incluyen textos ni URLs verificadas de la Circular IF/N°77, del artículo 12 de la Ley N°18.196 ni de las disposiciones del DFL N°1 de 2005 citadas como atribuciones."
+    ],
+    "source_refs": [
+     "https://www.superdesalud.gob.cl/normativa/circular-if-n535/"
+    ],
+    "source_name": "Superintendencia de Salud",
+    "source_url": "https://www.superdesalud.gob.cl/normativa/circular-if-n535/",
+    "event_date": "2026-09-14",
+    "weekly_mode": "deep_intelligence",
+    "engine": "gpt-5.6-terra",
+    "engine_fallback": false,
+    "model_trace": {
+     "api_call": true,
+     "model": "gpt-5.6-terra",
+     "response_id": "resp_0e3d5ebb765fdadc006ab86e8e4e6087d1927956caedb1070a",
+     "estimated_cost_usd": 0.016476
+    }
+   }
+  }
+ ],
+ "current": {
+  "slug": "2026-11-09-residencias-mayores-camas",
+  "date": "2026-11-09",
+  "title": "Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña",
+  "share_path": "i/2026-11-09-residencias-mayores-camas.html"
+ }
+}

@@ -34,7 +34,7 @@
  function dotButton(attr,id,read,title,inner=dotInner(read)){return `<button type="button" class="dotbtn ${read?'done':''}" ${attr}="${esc(id)}" aria-label="${dotLabel(read)}: ${esc(title)}" aria-description="Estado: ${read?'leído':'no leído'}" title="${dotLabel(read)}">${inner}</button>`}
  function syncDot(b,read,title){b.classList.toggle('done',read);b.innerHTML=dotInner(read);b.setAttribute('aria-label',`${dotLabel(read)}: ${title}`);b.setAttribute('aria-description',`Estado: ${read?'leído':'no leído'}`);b.title=dotLabel(read)}
  function sourceLink(url){return url?`<a class="iconbtn" href="${esc(url)}" target="_blank" rel="noopener" title="Fuente original" aria-label="Fuente original">${icons.link}<span class="sr-only">Fuente original</span></a>`:''}
- function miniShare(targetId,title){return `<button type="button" class="iconbtn sharebtn" data-share="${esc(targetId)}" data-share-title="${esc(title)}" aria-label="Compartir: ${esc(title)}" title="Compartir">${icons.share}</button><span class="share-feedback" role="status" aria-live="polite"></span>`}
+ function miniShare(targetId,title,shareUrl){return `<button type="button" class="iconbtn sharebtn" data-share="${esc(targetId)}"${shareUrl?` data-share-url="${esc(shareUrl)}"`:''} data-share-title="${esc(title)}" aria-label="Compartir: ${esc(title)}" title="Compartir">${icons.share}</button><span class="share-feedback" role="status" aria-live="polite"></span>`}
  // Dirección 28-oct 08:20 (opción B): every row shows its actions in plain view and in one fixed order,
  // Ver ficha › · Fuente original ↗ · Compartir. `open` is the attribute the page wires to its ficha. The source
  // link is only rendered from the item's captured https URL; without one the button is absent, never a placeholder.
@@ -96,8 +96,8 @@
  if(root.AlicantoRead&&typeof root.AlicantoRead.subscribe==='function'&&root.document){const syncVolatile=()=>root.document.documentElement.toggleAttribute('data-read-volatile',!root.AlicantoRead.persistent);root.AlicantoRead.subscribe(syncVolatile);syncVolatile()}
  // Piece type (Dirección 11-nov-2026, V1): a small icon and its word at the start of the date line, so a reader sees at a
  // glance why rows differ (news, a Datos ficha, a norm) in Al día, Normativa and Datos. Global lists only news, so it has none.
- const TYPE_ICON={noticia:'<path d="M4 6h16M4 12h16M4 18h10"/>',datos:'<path d="M5 20V10M12 20V4M19 20v-7"/>',normativa:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>'};
- const TYPE_WORD={noticia:'Noticia',datos:'Datos',normativa:'Normativa'};
+ const TYPE_ICON={noticia:'<path d="M4 6h16M4 12h16M4 18h10"/>',datos:'<path d="M5 20V10M12 20V4M19 20v-7"/>',normativa:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',insight:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>'};
+ const TYPE_WORD={noticia:'Noticia',datos:'Datos',normativa:'Normativa',insight:'Insight'};
  function typeMark(kind){const k=TYPE_WORD[kind]?kind:'noticia';return `<span class="ty ty-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${TYPE_WORD[k]}<span class="sr-only"> · </span></span>`}
  root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull};
 })(typeof window!=='undefined'?window:globalThis);

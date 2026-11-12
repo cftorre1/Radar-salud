@@ -376,6 +376,13 @@ def build(root, output):
         pmo=project_pmo(baseline_path, os.environ.get("ALICANTO_CANDIDATE_SHA") or os.environ.get("GITHUB_SHA")) if baseline_path.exists() else None)
     output.mkdir(parents=True, exist_ok=True)
     atomic_json(output / "free_value.json", free_value)
+    try:  # past weekly insights stay in the feed with their date and a share page (Dirección 12-nov-2026)
+        import importlib.util as _ilu
+        _spec = _ilu.spec_from_file_location("export_insights", Path(__file__).with_name("export_insights.py"))
+        _mod = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_mod)
+        _mod.write(Path(__file__).resolve().parents[1], output.parent if output.name == "data" else output)
+    except Exception as exc:  # noqa: BLE001 - never blocks the daily report
+        print("insights archive not written:", type(exc).__name__, exc)
     atomic_json(output / "product.json", report)
     # Same canonical validation records shown in the dashboard. Historical
     # publication diagnostics live in product.json and must not masquerade as

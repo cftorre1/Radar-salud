@@ -781,3 +781,19 @@ main{max-width:none;margin:0;padding:0 0 70px}
 #signalDetail .ficha-dock .act .mini-icon,#globalDetail .ficha-dock .act .mini-icon{display:block}
 #signalDetail .ficha-dock .act-src,#globalDetail .ficha-dock .act-src{flex-direction:column-reverse}
 #signalDetail .ficha-dock .share-feedback,#globalDetail .ficha-dock .share-feedback{background:#fff;padding:4px 0;border-top:1px solid var(--ink12,rgba(29,51,69,.12))}
+
+/* Insight dock (Dirección 12-nov-2026): Compartir · Marcar leído, fixed at the bottom like the F2 fichas. */
+#weeklyInsightDialog .ficha-dock{position:sticky;bottom:0;z-index:30;margin:20px -16px 0;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:var(--ivory,#FAF9F5);border-top:1px solid var(--ink12,rgba(29,51,69,.12))}
+#weeklyInsightDialog .ficha-dock .ficha-acts{display:flex;justify-content:space-around;gap:4px;margin:0;flex-wrap:nowrap}
+#weeklyInsightDialog .ficha-dock .act{flex:1 1 0;min-width:0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px;font:700 11.5px/1.15 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--accent-ink,#8A5420);text-align:center;border:0;background:none;border-radius:10px}
+#weeklyInsightDialog .ficha-dock .act svg{width:18px;height:18px}
+#weeklyInsightDialog .ficha-dock .act span{white-space:normal}
+#weeklyInsightDialog .ficha-dock .act-read.is-read{color:var(--ok,#3B6B4A)}
+#weeklyInsightDialog .ficha-dock .nm-ck{border:0!important;padding:4px 2px!important;min-height:52px;flex-direction:column;color:var(--ink68)}
+#weeklyInsightDialog .ficha-dock .share-feedback{position:absolute;left:0;right:0;bottom:100%;text-align:center;font-size:12px}
+#weeklyInsightDialog .ficha-dock .share-feedback:empty{display:none}
+@media (min-width:820px){#weeklyInsightDialog .ficha-dock{margin-left:-36px;margin-right:-36px}}
+#weeklyInsightDialog:not(.wi-dialog) .ficha-dock{margin:16px -18px 0}
+#weeklyInsightDialog:has(#weeklyActs:not(:empty)){padding-bottom:0}
+#weeklyInsightDialog .ficha-dock .ficha-acts{border:0;padding:0}
+#weeklyInsightDialog .ficha-dock:empty{display:none}
