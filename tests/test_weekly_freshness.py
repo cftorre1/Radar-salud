@@ -128,3 +128,15 @@ def test_legacy_list_schema_still_requires_its_sections():
     assert reviewed_weekly(payload, date(2026,10,11))
     weekly.pop('decision_use')
     assert reviewed_weekly(payload, date(2026,10,11)) is None
+
+
+def test_dek_must_not_repeat_headline_rule_8():
+    """Dirección 12-nov-2026: «un título destacado y luego una bajada de un párrafo sin redundancias»."""
+    from radar_salud.weekly_freshness import dek_repeats_headline
+    old = {"headline": "Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña",
+           "dek": "El capital privado apuesta por las residencias para mayores; sin embargo, la oferta sigue siendo "
+                  "pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital."}
+    new = {"headline": "El capital privado llega a las residencias para mayores",
+           "dek": "La oferta formal sigue siendo chica frente a una demanda que crece, y hay pacientes con alta médica "
+                  "que siguen hospitalizados por falta de redes familiares o sociales."}
+    assert dek_repeats_headline(old) and not dek_repeats_headline(new)

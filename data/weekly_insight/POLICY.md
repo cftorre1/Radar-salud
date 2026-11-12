@@ -161,6 +161,12 @@ the independent review (`weekly_insight_a.review_prompt`).
    facts that happen at the same time are joined with «y», «mientras» or a colon, never with a causal verb. FAIL
    criterion of the independent review. Applied to the 9-nov insight: «…pero la falta de cuidados ya se paga en camas
    de hospital» → «Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña».
+8. **Headline and dek never repeat each other** (Dirección, 12-nov-2026: «Primer y segundo párrafo son redundantes…
+   un título destacado y luego una bajada de un párrafo sin redundancias»). The dek adds what the headline does not say
+   (the figures of the analysis); `dek_repeats_headline` fails when half or more of the headline's content words
+   reappear in the dek. Applied to the 9-nov insight: «El capital privado llega a las residencias para mayores» + «La
+   oferta formal sigue siendo chica frente a una demanda que crece, y hay pacientes con alta médica que siguen
+   hospitalizados por falta de redes familiares o sociales» (one idea, no numbers, as the 11-nov review asked).
 
 **Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
 `verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text
