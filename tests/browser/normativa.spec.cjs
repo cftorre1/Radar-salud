@@ -14,9 +14,9 @@ test('Normativa: countdown, groups, months, filters, shared card and implementad
  await page.locator('#nmGroups [data-g="sin"]').click();const sin=d.items.filter(x=>['none','on_publication_do'].includes(x.kind)&&!x.review).length;
  await expect(page.locator('#nmFeed .nm-card')).toHaveCount(sin);await expect(page.locator('#nmFeed .nm-vig.sin').first()).toContainText('en revisión');
  await page.locator('#nmGroups [data-g="all"]').click();
- // Default actions of any Al día card + Texto oficial + the round check.
+ // Default actions of any Al día card + the Implementada check (no «Texto oficial» toggle, Dirección 11-nov-2026).
  const card=page.locator('#nmFeed .nm-card').first();
- for(const sel of ['.dotbtn','.nm-ck','.nm-det summary','.act-open','.act-share'])await expect(card.locator(sel)).toHaveCount(1);
+ for(const sel of ['.dotbtn','.nm-ck','.act-open','.act-share'])await expect(card.locator(sel)).toHaveCount(1);
  // «Implementada» is a mark: the norm stays in its group; the pill filters the marked ones.
  const before=await page.locator('#nmFeed .nm-grp').first().locator('.nm-card').count();
  await card.locator('.nm-ck').click();await expect(page.locator('#nmGroups [data-g="impl"] b')).toHaveText('1');

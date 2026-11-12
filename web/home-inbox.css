@@ -726,7 +726,7 @@ main{max-width:none;margin:0;padding:0 0 70px}
 #signalDetail .ficha-dock .share-feedback{position:absolute;left:0;right:0;bottom:100%;text-align:center;font-size:12px}
 #signalDetail .ficha-dock .share-feedback:empty{display:none}
 #signalDetail .nm-ficha{margin:6px 0 10px}
-#signalDetail .nm-ficha .nm-det{margin-top:4px}
+
 @media (min-width:760px){#signalDetail[open]{height:calc(100dvh - 72px);padding:0 28px}#signalDetail .sheet-grab,#signalDetail .detail-top,#signalDetail .ficha-dock{margin-left:-28px;margin-right:-28px}}
 #signalDetail[open]:has(.sf){width:100%;max-width:980px;height:calc(100dvh - 48px);max-height:none;padding:0 16px}
 #signalDetail .norm-kicker{text-transform:none;letter-spacing:0}
@@ -751,7 +751,7 @@ main{max-width:none;margin:0;padding:0 0 70px}
 #globalDetail .ficha-dock .share-feedback{position:absolute;left:0;right:0;bottom:100%;text-align:center;font-size:12px}
 #globalDetail .ficha-dock .share-feedback:empty{display:none}
 #globalDetail .nm-ficha{margin:6px 0 10px}
-#globalDetail .nm-ficha .nm-det{margin-top:4px}
+
 @media (min-width:760px){#globalDetail[open]{height:calc(100dvh - 72px);padding:0 28px}#globalDetail .sheet-grab,#globalDetail .detail-top,#globalDetail .ficha-dock{margin-left:-28px;margin-right:-28px}}
 #globalDetail .norm-kicker{text-transform:none;letter-spacing:0}
 .global-detail h2#globalDetailTitle,#globalDetail h2{font:700 20px/1.25 var(--serif);letter-spacing:-.005em}
@@ -760,14 +760,14 @@ main{max-width:none;margin:0;padding:0 0 70px}
 .nm-wrap{padding-top:8px!important}
 .datos-wrap{padding-top:5px!important}.datos-head{margin:0!important}
 .sources-v2 .datos-head h1{margin-top:0}
-.brandbar .topnav a.header-newsletter{align-self:center;min-height:30px;height:30px;display:inline-flex;align-items:center;margin-left:4px;padding:0 11px!important;border-radius:999px;background:#8A5420;color:#fff!important;font-weight:700;box-shadow:none;text-decoration:none}
-.brandbar .topnav a.header-newsletter::after{display:none!important}
+.brandbar .topnav a.header-newsletter{position:relative;isolation:isolate;align-self:center;min-height:44px;display:inline-flex;align-items:center;margin-left:2px;padding:0 10px!important;background:none;color:#fff!important;font-weight:700;box-shadow:none;text-decoration:none}
+.brandbar .topnav a.header-newsletter::after{content:""!important;display:block!important;position:absolute;inset:7px 0;border-radius:999px;background:#8A5420;z-index:-1}
 .brandbar .topnav a.header-newsletter[data-short]::before{color:#fff}
-.brandbar .topnav a.header-newsletter:hover{background:#6F4318}
+.brandbar .topnav a.header-newsletter:hover::after{background:#6F4318}
 .brandbar .topnav a.header-newsletter:focus-visible{outline:2px solid #E3A24F;outline-offset:2px}
-@media (max-width:380px){.brandbar .topnav a.header-newsletter{padding:0 8px!important;margin-left:2px}}
+@media (max-width:380px){.brandbar .topnav a.header-newsletter{padding:0 7px!important;margin-left:0}}
 .sources-v2 .datos-wrap{padding-top:8px!important}
-.foot-contact{color:inherit;font-weight:650;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;display:inline-block;min-height:24px}
+.foot-contact{color:inherit;font-weight:650;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere;display:inline-block;min-height:24px}
 /* Review of #186. */
 #signalDetail[open],#signalDetail[open]:has(.sf),#globalDetail[open]{display:flex;flex-direction:column}
 #signalDetail[open]>*,#globalDetail[open]>*{flex:none}

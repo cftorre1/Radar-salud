@@ -235,7 +235,8 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   let cur=-1,last=0,entered=false,act=0;
   const url=i=>i<0?home:temaHash(sig,ids[i]);
   // The dialog's top bar is sticky too (mockup .mk-bar): the picker pins right under it.
-  const barH=()=>bar&&root.getComputedStyle&&root.getComputedStyle(bar).position==='sticky'?bar.getBoundingClientRect().height:0;
+  // F2 sheet: the bar sticks below the grab handle (top:14px), so count its own offset too.
+  const barH=()=>bar&&root.getComputedStyle&&root.getComputedStyle(bar).position==='sticky'?bar.getBoundingClientRect().height+(parseFloat(root.getComputedStyle(bar).top)||0):0;
   const top0=()=>(dialog?dialog.getBoundingClientRect().top+(dialog.clientTop||0):0)+barH();
   const offset=el=>el.getBoundingClientRect().top-top0();
   const go=y=>{try{scroller.scrollTo({top:Math.max(0,y),behavior:reduce?'auto':'smooth'})}catch{scroller.scrollTop=Math.max(0,y)}};

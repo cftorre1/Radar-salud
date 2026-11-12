@@ -613,7 +613,7 @@ test('Home specials: Global weekly pick and insight footer',()=>{
 });
 
 // Dirección 11-nov-2026: ONE norm card for Normativa and Al día (norma-card.js): the default Al día actions plus the
-// countdown, the literal effective-date line, «Texto oficial» and «Implementada»; groups move with the date.
+// countdown and «Implementada» (no «Texto oficial» toggle since 11-nov-2026); groups move with the date.
 test('norm card: same renderer in both sections, literal dates, groups and implementada',()=>{
  const store={};const c={localStorage:{getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=v}},Intl,Date,Set,Map,JSON,Math,String,Number,Array,Object,Promise,URL};c.globalThis=c;vm.createContext(c);
  vm.runInContext(fs.readFileSync('web/inbox-bar.js','utf8'),c);vm.runInContext(fs.readFileSync('web/norma-card.js','utf8'),c);
@@ -626,7 +626,8 @@ test('norm card: same renderer in both sections, literal dates, groups and imple
  assert.match(N.chip({...base,eff:'2027-03-01',prec:'month'}),/Entra en vigencia en 110 días · marzo de 2027/);assert.match(N.chip({...base,partial:true}),/con excepciones o texto incompleto/);
  assert.equal(N.grp({...base,review:{kind:'susp',by:'Res. Ex. 1',quote:'Se suspende la circular.',on:'2026-11-12'}}),'susp');
  const html=N.render(base,{read:false,readId:'abc',openHref:'index.html?abrir=1#sig-abc',dateLine:N.dateLine(base)});
- for(const re of [/data-read="abc"/,/Entra en vigencia en 20 días · 1 dic 2026/,/Texto oficial de vigencia/,/<q>Las disposiciones entran en vigencia el 1 de diciembre de 2026\.<\/q>/,/Emitida 14 sept?\.? 2026 · SIS|Emitida 14 sep 2026 · SIS/,/act act-open" href="index\.html\?abrir=1#sig-abc"/,/act act-src" href="https:\/\/www\.superdesalud\.gob\.cl\/x\/"/,/act act-share" data-share="n-sis-circular-if-n534"/,/class="nm-ck" data-impl="sis-circular-if-n534" role="checkbox" aria-checked="false"/,/<span class="ty ty-normativa">/])assert.match(html,re);
+ for(const re of [/data-read="abc"/,/Entra en vigencia en 20 días · 1 dic 2026/,/Emitida 14 sept?\.? 2026 · SIS|Emitida 14 sep 2026 · SIS/,/act act-open" href="index\.html\?abrir=1#sig-abc"/,/act act-src" href="https:\/\/www\.superdesalud\.gob\.cl\/x\/"/,/act act-share" data-share="n-sis-circular-if-n534"/,/class="nm-ck" data-impl="sis-circular-if-n534" role="checkbox" aria-checked="false"/,/<span class="ty ty-normativa">/])assert.match(html,re);
+ assert.doesNotMatch(html,/Texto oficial de vigencia|nm-det/);
  assert.match(N.render({...base,kind:'none',eff:null,validity:null}),/Vigencia no informada en la fuente <span class="tag">· en revisión<\/span>/);
  // «Implementada» is a mark: it never moves the norm out of its group or the countdown (review 11-nov).
  assert.equal(N.toggleImpl(base.id),true);assert.equal(N.isImpl(base.id),true);assert.equal(N.grp(base),'p30');assert.match(store[N.IMPL_KEY],/sis-circular-if-n534/);
