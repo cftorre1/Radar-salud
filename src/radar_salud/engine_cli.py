@@ -59,6 +59,9 @@ OFFICIAL_PRIORITY = ("superintendencia_normativa", "superintendencia_fiscalizaci
                      "suseso", "suseso_news", "suseso_fiscalizacion", "minsal", "diario_oficial")
 
 
+# SIS Biblioteca digital > Publicaciones awaiting editorial review (Dirección 12-nov-2026).
+PUBLICATION_HOLD="sis_publicacion_pendiente_revision_editorial"
+
 def _prioritize_official(ready):
     """Stable partition: official regulator items first, all relative orders kept."""
     ordered = list(ready)
@@ -185,6 +188,9 @@ def main():
         if meta.get("collection"):
             # Biblioteca digital > Publicaciones (Dirección 12-nov-2026): which collection listed the document.
             row["publication_collection"]=meta["collection"]
+            # Dirección 12-nov-2026: «Que los documentos de publicaciones pasen por revisión editorial».
+            # Kept in history, hidden from the feed until approved in config/sis_publicaciones_aprobadas.json.
+            row.update(feed_visibility=False,editorial_hold=PUBLICATION_HOLD)
         return row
     specs=[
       ("superintendencia","superintendencia_salud",SuperintendenciaStatsScout().discover,stats),

@@ -148,6 +148,8 @@ def statistics_parser_backlog(history):
     rows=[]
     seen=set()
     for item in history or []:
+        if item.get("publication_collection"):
+            continue  # SIS Publicaciones are not statistics releases (#188)
         if "Datos" not in (item.get("signal_types") or []):
             continue
         title=str(item.get("title") or "")
@@ -275,6 +277,8 @@ def build(root, output):
     for row in history:
         if "Datos" not in row.get("signal_types", []) and not row.get("data_insight_meta"):
             continue
+        if row.get("publication_collection"):
+            continue  # SIS Publicaciones: editorial review, never in public diagnostics (#188)
         meta = row.get("data_insight_meta") or {}
         diagnostics.append({"title": row.get("title"), "source_url": row.get("source_url"),
             "status": meta.get("status", "not_recorded_legacy"), "family": meta.get("family"),

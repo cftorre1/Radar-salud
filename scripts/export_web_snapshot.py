@@ -30,9 +30,23 @@ def _exclusions(path=Path("config/editorial_exclusions.json")):
     try:return {str(x["url"]):x for x in json.loads(path.read_text(encoding="utf-8")).get("items",[]) if x.get("url")}
     except (OSError,ValueError,KeyError):return {}
 
+def _url_key(url):
+    """Approval key tolerant to http/https and a trailing slash."""
+    u=str(url or "").strip()
+    return u.replace("http://","https://",1).rstrip("/")
+
+def _publication_approvals(path=Path("config/sis_publicaciones_aprobadas.json")):
+    try:return {_url_key(x["url"]):x for x in json.loads(path.read_text(encoding="utf-8")).get("items",[]) if x.get("url")}
+    except (OSError,ValueError,KeyError):return {}
+
 def _apply_persistent_editorial_decisions(signals):
-    audit=_audit_map();excluded=_exclusions();out=[]
+    audit=_audit_map();excluded=_exclusions();approved=_publication_approvals();out=[]
     for s in signals:
+        if s.get("publication_collection"):
+            # Dirección 12-nov-2026: SIS Publicaciones pass editorial review; shown only once approved.
+            s=dict(s);ok=_url_key(s.get("source_url")) in approved
+            s["editorial_hold"]=None if ok else "sis_publicacion_pendiente_revision_editorial"
+            if ok:s["editorial_review"]={k:v for k,v in approved[_url_key(s["source_url"])].items() if k!="url"}
         if str(s.get("source_url") or "") in excluded:
             # Dirección exclusion: kept in history, never shown in the feed.
             r=dict(s);r["feed_visibility"]=False;r["editorial_exclusion"]=excluded[str(s["source_url"])]["reason"];out.append(r);continue
@@ -51,6 +65,7 @@ def _apply_persistent_editorial_decisions(signals):
         # A publication hold set earlier in curation (e.g. a sanction card without a descriptive
         # title) must survive the editorial pass; only an explicit reject adds a new hold here.
         held=r.get("feed_visibility") is False and r.get("publication_gate_reason")=="fiscalization_title_needs_description"
+        held=held or r.get("editorial_hold")=="sis_publicacion_pendiente_revision_editorial"
         r["feed_visibility"]=False if held or r.get("editorial_decision")=="reject" else True
         out.append(r)
     return out
@@ -474,6 +489,7 @@ def _late_related_documents(recent, history, index_path=Path("data/state/sis_nor
     return out
 
 def _stat_family(s):
+    if s.get("publication_collection"):return None  # SIS Publicaciones are never a statistics family (#188)
     if s.get("source_name")!="Superintendencia de Salud" or "Datos" not in (s.get("signal_types") or []):return None
     t=(s.get("title") or "").lower()
     if "movilidad" in t:return "movilidad"
@@ -782,6 +798,9 @@ def curate(signals,resolve_external=True,as_of=None):
     # Enrich each one to the highest supported level: connected insight -> deep analysis
     # -> central finding -> useful publication inventory.
     recent=_apply_statistical_analysis(recent)
+    # Held SIS Publicaciones leave before grouping/merging so they can never displace a visible card (#188).
+    _pub_ok=_publication_approvals()
+    recent=[s for s in recent if not s.get("publication_collection") or _url_key(s.get("source_url")) in _pub_ok]
     recent=[_statistical_value_ladder(s) for s in recent]
     recent=_latest_stats(recent);recent=_merge_duplicates(recent);recent=_sanction_pulses(recent,today=as_of);recent=_related_context(recent,resolve_external);recent=_resolution_relation_titles(recent);recent=_individual_sanction_titles(recent)
     recent=_normative_status(recent,normalized)

@@ -121,3 +121,40 @@ def test_publication_is_not_classified_as_a_statistics_family():
     assert "tasas de uso GES" not in a.what_happened and a.what_happened.startswith("La Superintendencia publicó en su biblioteca digital") and "ges" not in a.watch_tags and "publicaciones" in a.watch_tags
     src = (Path(__file__).parents[1] / "src/radar_salud/superintendencia_pipeline.py").read_text(encoding="utf-8")
     assert 'fam=None if (raw.metadata or {}).get("collection")' in src
+
+
+def test_publications_are_held_for_editorial_review_until_approved(tmp_path, monkeypatch):
+    import importlib.util, json
+    from radar_salud import engine_cli
+    assert engine_cli.PUBLICATION_HOLD == "sis_publicacion_pendiente_revision_editorial"
+    src = (Path(__file__).parents[1] / "src/radar_salud/engine_cli.py").read_text(encoding="utf-8")
+    assert "row.update(feed_visibility=False,editorial_hold=PUBLICATION_HOLD)" in src
+    spec = importlib.util.spec_from_file_location("ews", Path(__file__).parents[1] / "scripts/export_web_snapshot.py")
+    ews = importlib.util.module_from_spec(spec); spec.loader.exec_module(ews)
+    url = "https://www.superdesalud.gob.cl/biblioteca-digital/indicador-de-costos-de-la-salud-icsa-2025/"
+    rows = [{"source_url": url, "title": "ICSA 2025", "publication_collection": "documentos-metodologicos",
+             "feed_visibility": False, "editorial_hold": engine_cli.PUBLICATION_HOLD, "signal_types": ["Datos"]},
+            {"source_url": "https://x/stats", "title": "Cartera", "signal_types": ["Datos"]}]
+    monkeypatch.setattr(ews, "_publication_approvals", lambda: {})
+    held, other = ews._apply_persistent_editorial_decisions(rows)
+    assert held["feed_visibility"] is False and held["editorial_hold"] and other.get("feed_visibility") is not False
+    monkeypatch.setattr(ews, "_publication_approvals", lambda: {ews._url_key(url): {"url": url, "approved_by": "Dirección", "on": "2026-11-13"}})
+    shown, _ = ews._apply_persistent_editorial_decisions(rows)
+    assert shown["feed_visibility"] is True and shown["editorial_hold"] is None
+    assert shown["editorial_review"] == {"approved_by": "Dirección", "on": "2026-11-13"}
+    cfg = json.loads((Path(__file__).parents[1] / "config/sis_publicaciones_aprobadas.json").read_text(encoding="utf-8"))
+    assert cfg["items"] == []  # nothing pre-approved
+
+
+def test_held_publication_never_displaces_a_statistics_card():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("ews2", Path(__file__).parents[1] / "scripts/export_web_snapshot.py")
+    ews = importlib.util.module_from_spec(spec); spec.loader.exec_module(ews)
+    pub = {"source_name": "Superintendencia de Salud", "signal_types": ["Datos"], "title": "Documento de trabajo: gestión de prestadores 2026",
+           "publication_collection": "documentos-de-trabajo"}
+    assert ews._stat_family(pub) is None
+    assert ews._url_key("http://x/a/") == ews._url_key("https://x/a")
+    src = (Path(__file__).parents[1] / "scripts/export_web_snapshot.py").read_text(encoding="utf-8")
+    assert src.index("_pub_ok=_publication_approvals()") < src.index("recent=_latest_stats(recent)")
+    rep = (Path(__file__).parents[1] / "scripts/product_report.py").read_text(encoding="utf-8")
+    assert rep.count('publication_collection') >= 2
