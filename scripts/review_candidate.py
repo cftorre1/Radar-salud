@@ -2,11 +2,16 @@
 import argparse
 import importlib.util
 import json
+import re
 from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 from radar_salud.editorial_gate import publication_ready
 from radar_salud.pending_queue import atomic_json
+# Ficha mínima wording before the committee audit (12-nov-2026); accepted only on snapshots exported earlier.
+LEGACY_BADGE="Sin lectura editorial"
+LEGACY_DISCLAIMER="Aún sin lectura editorial: los datos provienen del documento oficial; revisa el texto antes de decidir."
+ROOT=Path(__file__).resolve().parents[1]
 _statistics_spec=importlib.util.spec_from_file_location("statistics_reviewer",Path(__file__).with_name("statistics_reviewer.py"))
 _statistics_module=importlib.util.module_from_spec(_statistics_spec)
 _statistics_spec.loader.exec_module(_statistics_module)
@@ -90,17 +95,29 @@ def review(web, sha):
                 # Opción A (Dirección 26-oct-2026): verifiable listing facts only + badge + fixed disclaimer.
                 from radar_salud.normative_minimal import BADGE, DISCLAIMER, INTERPRETIVE_FIELDS, ISSUERS, _official, minimal_title
                 issuer=str(signal.get("source_name") or "")
-                expected_context=f"Emitida por {issuer} con fecha {signal.get('event_date')}. Asunto oficial: "
                 problems=[]
-                if record:problems.append("has an approved V2.1 record; must use it")
-                if signal.get("editorial_badge")!=BADGE or signal.get("normative_act_scope")!="general":problems.append("badge/scope")
+                # Dirección 12-nov-2026: a norm listed in data/normativa/registro.json stays a ficha de registro even
+                # with an automated record (committee audit).
+                try:registro=set(json.loads((ROOT/"data/normativa/registro.json").read_text(encoding="utf-8")).get("labels") or [])
+                except (OSError,ValueError):registro=set()
+                if record and identity not in registro:problems.append("has an approved V2.1 record; must use it")
+                if signal.get("editorial_badge") not in (BADGE,LEGACY_BADGE) or signal.get("normative_act_scope")!="general":problems.append("badge/scope")
                 if issuer not in ISSUERS or not _official(signal.get("source_url"),issuer):problems.append("issuer/official link")
                 # The title is the identity plus the official subject shortened deterministically (no new words).
-                official=context.split("Asunto oficial: ",1)[1].rstrip(".") if "Asunto oficial: " in context else ""
+                # Context = the official materia itself (committee audit 12-nov-2026: no ISO date, no «Asunto oficial:»).
+                # Snapshots exported before 12-nov-2026 carry the old wording until the next daily export.
+                legacy=signal.get("editorial_badge")==LEGACY_BADGE
+                official=(context.split("Asunto oficial: ",1)[1].rstrip(".") if legacy and "Asunto oficial: " in context
+                          else context.rstrip("."))
                 if not identity or not official or title!=minimal_title(identity,official):problems.append("title template")
-                if not context.startswith(expected_context):problems.append("context template")
+                if legacy:
+                    if not context.startswith(f"Emitida por {issuer} con fecha {signal.get('event_date')}. Asunto oficial: "):
+                        problems.append("context template")
+                elif (not context.endswith(".") or "Asunto oficial" in context or "Emitida por" in context
+                        or re.search(r"\b20\d{2}-\d{2}-\d{2}\b",context)):problems.append("context template")
                 if not (signal.get("card_what")==context==signal.get("what_happened")):problems.append("card copy")
-                if not (signal.get("why_it_matters")==DISCLAIMER==signal.get("card_why")):problems.append("disclaimer")
+                if not (signal.get("why_it_matters")==signal.get("card_why")==(LEGACY_DISCLAIMER if legacy else DISCLAIMER)):
+                    problems.append("disclaimer")
                 leaked=[f for f in INTERPRETIVE_FIELDS if signal.get(f)]
                 if leaked:problems.append("interpretive fields: "+",".join(leaked))
                 if problems:

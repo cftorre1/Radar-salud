@@ -91,7 +91,7 @@ def test_minimal_titles_use_shortened_official_subject():
         card = minimal_card(row, label)
         assert card["display_title"] == TITLES[label]
         assert len(card["display_title"]) <= 110 and "Emisión" not in card["display_title"]
-        assert card["normative_context"].startswith(f"Emitida por {SIS} con fecha {emitted}.")
+        assert not card["normative_context"].startswith("Emitida por") and emitted not in card["normative_context"]
         assert row["title"] == title  # official listing title is kept in 'title'
 
 

@@ -13,7 +13,7 @@ import re
 from typing import Any
 from urllib.parse import urlparse
 
-BADGE = "Sin lectura editorial"
+BADGE = "Ficha de registro"  # Dirección 12-nov-2026 (auditoría de fichas normativas)
 # Fields produced by automated analysis or enrichment. A minimal card carries none.
 INTERPRETIVE_FIELDS = (
     "key_points", "key_facts", "key_numbers", "validity_text", "risk_notes", "review_points",
@@ -26,8 +26,8 @@ INTERPRETIVE_FIELDS = (
 # Neutral relevance until an editor reads the act: "Relevante", never "Esencial".
 UNREVIEWED_RADAR_SCORE = 65
 _LISTING_SCOPES = {"Prestadores": ["Prestadores"], "Isapres / Fonasa": ["Isapres", "Fonasa"]}
-DISCLAIMER = ("Aún sin lectura editorial: los datos provienen del documento oficial; "
-              "revisa el texto antes de decidir.")
+DISCLAIMER = ("Ficha de registro: solo datos del documento oficial; la lectura editorial está en preparación. "
+              "Revisa el texto oficial antes de decidir.")
 # Diario Oficial stays held until its reader stops producing truncated titles
 # and raw PDF bytes (see revisión de fuentes 26-oct-2026).
 ISSUERS = {
@@ -206,7 +206,9 @@ def minimal_card(r: dict[str, Any], label: str) -> dict[str, Any] | None:
     # Only facts read from the regulator's own listing. Referenced acts and
     # scopes come from automated PDF analysis (once bound to the wrong PDF), so
     # they never appear on a minimal card.
-    context = f"Emitida por {issuer} con fecha {r['event_date']}. Asunto oficial: {full}."
+    # Committee audit 12-nov-2026: the materia itself, no ISO date or «Asunto oficial:» template (issuer and date
+    # already sit in the ficha's origin line).
+    context = f"{full}."
     card = {field: None for field in INTERPRETIVE_FIELDS}
     card.update({
         "display_title": title,

@@ -205,8 +205,9 @@ def record_from_signal(s: dict) -> dict | None:
 
 def publishable(s: dict) -> bool:
     """Same gates as Al día's individualCardAllowed for a norm: visible, not on committee HOLD/REJECT, identified."""
+    from .health_scope import outside_health
     verdict = str((s.get("editorial_committee") or {}).get("verdict") or "PASS").upper()
-    return (s.get("feed_visibility") is not False and verdict not in ("HOLD", "REJECT")
+    return (not outside_health(s) and s.get("feed_visibility") is not False and verdict not in ("HOLD", "REJECT")
             and bool((s.get("display_title") or s.get("title")) and s.get("normative_document_label") and s.get("source_url")))
 
 
@@ -247,6 +248,11 @@ def update_registry(registry: dict, signals: list[dict], today: date, history: l
                     h.get("feed_visibility") is False
                     or str((h.get("editorial_committee") or {}).get("verdict") or "PASS").upper() in ("HOLD", "REJECT")):
                 items[rid] = {**rec, "withheld": True}
+    # Dirección 12-nov-2026: norms outside health leave the index too (kept in the registry as withheld).
+    from .health_scope import outside_health
+    for rid, rec in list(items.items()):
+        if not rec.get("withheld") and (outside_health(rec) or outside_health(rec.get("card") or {})):
+            items[rid] = {**rec, "withheld": True}
     return {"schema": SCHEMA, "items": dict(sorted(items.items()))}
 
 
