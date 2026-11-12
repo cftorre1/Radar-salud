@@ -46,7 +46,14 @@
  function rowActions(open,url,targetId,title,shareUrl){return `<div class="row-acts" role="group" aria-label="Acciones"><button type="button" class="act act-open" ${open} aria-label="Ver ficha: ${esc(title)}"><span>Ver ficha</span>${icons.chev}</button>${sourceAct(url,title)}${shareAct(targetId,title,shareUrl)}</div>`}
  // The ficha carries the same set minus "Ver ficha" (it is the ficha), just under its header bar. A stats ficha
  // passes no targetId: its own "Compartir informe" (stats-ficha.js) is the share action, so it is not doubled.
- function fichaActions(url,targetId,title){return `<div class="row-acts ficha-acts" role="group" aria-label="Acciones de la ficha">${sourceAct(url,title)}${targetId?shareAct(targetId,title):''}</div>`}
+ function fichaActions(url,targetId,title,extra=''){return `<div class="row-acts ficha-acts" role="group" aria-label="Acciones de la ficha">${sourceAct(url,title)}${targetId?shareAct(targetId,title):''}${extra}</div>`}
+ // F2 sheet (Dirección 11-nov-2026): pull it down by its handle or top bar to close it, when its content is at the top.
+ function sheetPull(d){if(!d)return;let y0=null,dy=0;const reduce=()=>root.matchMedia&&root.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const start=e=>{if(d.scrollTop>0||!e.touches||e.touches.length!==1)return;y0=e.touches[0].clientY;dy=0;d.style.transition='none'};
+  const move=e=>{if(y0===null)return;dy=Math.max(0,e.touches[0].clientY-y0);d.style.transform=dy?`translateY(${dy}px)`:''};
+  const end=()=>{if(y0===null)return;d.style.transition=reduce()?'none':'transform .18s ease-out';const close=dy>90;d.style.transform='';y0=null;if(close)d.close()};
+  for(const sel of ['.sheet-grab','.detail-top'])d.querySelector(sel)?.addEventListener('touchstart',start,{passive:true});
+  d.addEventListener('touchmove',move,{passive:true});d.addEventListener('touchend',end);d.addEventListener('touchcancel',end)}
  async function shareCard(button){let url;if(button.dataset.shareUrl)url=new URL(button.dataset.shareUrl,location.href);else{url=new URL(location.href);url.hash=button.dataset.share;// a shared piece opens its ficha, not only its row (Dirección 11-nov-2026)
  if(/^sig-/.test(button.dataset.share)){url.search='';url.searchParams.set('abrir','1')}}const payload={title:button.dataset.shareTitle,text:button.dataset.shareTitle,url:url.href},feedback=button.nextElementSibling,report=(state,message)=>{button.dataset.shareResult=state;button.title=message;button.setAttribute('aria-label',`${message}: ${button.dataset.shareTitle}`);if(feedback?.classList.contains('share-feedback'))feedback.textContent=message};try{if(navigator.share){await navigator.share(payload);report('shared','Compartido');return}if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(url.href);else{const field=document.createElement('textarea');field.value=url.href;field.setAttribute('readonly','');field.style.position='fixed';field.style.opacity='0';document.body.append(field);field.select();const copied=document.execCommand('copy');field.remove();if(!copied)throw new Error('copy failed')}report('copied','Enlace copiado')}catch(error){if(error?.name!=='AbortError')report('error','No se pudo compartir')}}
 
@@ -92,5 +99,5 @@
  const TYPE_ICON={noticia:'<path d="M4 6h16M4 12h16M4 18h10"/>',datos:'<path d="M5 20V10M12 20V4M19 20v-7"/>',normativa:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>'};
  const TYPE_WORD={noticia:'Noticia',datos:'Datos',normativa:'Normativa'};
  function typeMark(kind){const k=TYPE_WORD[kind]?kind:'noticia';return `<span class="ty ty-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${TYPE_WORD[k]}<span class="sr-only"> · </span></span>`}
- root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark};
+ root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull};
 })(typeof window!=='undefined'?window:globalThis);
