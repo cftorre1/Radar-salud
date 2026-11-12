@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-11-10",
-  "generated_at": "2026-11-11T01:06:39.514527+00:00",
+  "as_of": "2026-11-11",
+  "generated_at": "2026-11-12T02:21:23.339468+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,9 +16,9 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-11-09",
-    "items_last_2_days": 2,
+    "items_last_2_days": 0,
     "items_last_7_days": 3,
-    "status": "fresh",
+    "status": "stale",
     "stale_after_days": 2
   },
   "sources": [
@@ -49,12 +49,12 @@
   ],
   "held": {
     "feed_not_authorized_for_display": 17,
-    "not_global_interest:facility_opening": 1,
+    "not_global_interest:facility_opening": 2,
     "not_global_interest:no_global_interest_signal": 54,
     "not_global_interest:source_rule_exclusion": 8,
-    "not_material_or_unverified": 443,
-    "not_relevant_or_undated": 76,
-    "official_title_without_executive_keyword": 258
+    "not_material_or_unverified": 446,
+    "not_relevant_or_undated": 77,
+    "official_title_without_executive_keyword": 259
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 1,
@@ -188,7 +188,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-10",
+      "first_seen_on": "2026-11-11",
       "title_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "description_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "translation": {
@@ -471,6 +471,56 @@
       }
     },
     {
+      "id": "518ae8b745241b4f952f",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Development, management and support of care workers - towards an integrated health and care workforce: policy options",
+      "url": "https://www.who.int/publications/i/item/9789240124011",
+      "published_at": "2026-10-20",
+      "segments": [
+        "providers",
+        "regulation"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-10",
+      "summary_es": "El recurso presenta opciones de política basadas en evidencia para planificar, desarrollar, gestionar y apoyar a trabajadores remunerados y no remunerados de cuidados, cubriendo 20 áreas temáticas y considerando equidad, derechos humanos, género, condición migratoria y entornos laborales.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "30fd35616e55788b6a4f289e45868fc4"
+      },
+      "summary_input": "publisher_page_meta_description"
+    },
+    {
       "id": "363698bbe819db64daac",
       "source": "fda",
       "source_label": "FDA",
@@ -679,62 +729,6 @@
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "cache_key": "767607cf4ec6568446f67144d2e9b858"
-      }
-    },
-    {
-      "id": "075ea1273caa1acd719b",
-      "source": "ec_health",
-      "source_label": "Comisión Europea",
-      "attribution": "European Commission – Public Health (DG SANTE)",
-      "bylines": [],
-      "title": "Commission welcomes PPPR resolution adopted by UN General Assembly",
-      "url": "https://health.ec.europa.eu/latest-updates/commission-welcomes-pppr-resolution-adopted-un-general-assembly-2026-10-16_en",
-      "published_at": "2026-10-16",
-      "segments": [
-        "regulation"
-      ],
-      "description": "Commission welcomes PPPR resolution adopted by UN General Assembly",
-      "description_truncated": false,
-      "description_source": "publisher_feed_summary_verbatim",
-      "tags_es": [
-        "Regulación"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": true,
-      "priority": 73,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
-        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
-        "license_url": "https://creativecommons.org/licenses/by/4.0/",
-        "license_label": "CC BY 4.0",
-        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
-        "evidence_urls": [
-          "https://health.ec.europa.eu/legal-notice_en",
-          "https://commission.europa.eu/legal-notice_en"
-        ],
-        "verified_on": "2026-10-28"
-      },
-      "sections": [
-        "latest_updates"
-      ],
-      "first_seen_on": "2026-11-10",
-      "title_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
-      "description_es": "La Comisión acoge con satisfacción la resolución sobre PPPR adoptada por la Asamblea General de la ONU",
-      "translation": {
-        "status": "translated",
-        "kind": "translation",
-        "method": "machine_translation_two_layer_v2",
-        "verified": true,
-        "independent_review": true,
-        "notice_es": "Traducción automática de Alicanto",
-        "row_note_es": "Traducido por Alicanto",
-        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
-        "change_notice_es": "Traducción de Alicanto",
-        "cache_key": "566f56e26f30c0623ef9e8db70e80050"
       }
     },
     {
@@ -1818,6 +1812,54 @@
       }
     },
     {
+      "id": "0e2cceea0cf02f02cd4d",
+      "source": "who",
+      "source_label": "OMS",
+      "attribution": "Organización Mundial de la Salud (OMS)",
+      "bylines": [],
+      "title": "Monitoring progress on universal health coverage and the health-related Sustainable Development Goals in the South-East Asia Region, 2026",
+      "url": "https://www.who.int/publications/i/item/9789292800208",
+      "published_at": "2026-09-01",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-10",
+      "summary_es": "El undécimo informe anual sobre cobertura sanitaria universal y objetivos de desarrollo sostenible relacionados con la salud en la Región de Asia Sudoriental reúne evidencia científica reciente, sigue indicadores en los 10 estados miembros y compara avances y brechas con metas mundiales para 2030.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "52091e7d3e67cce575f2f8564e72429f"
+      },
+      "summary_input": "publisher_page_meta_description"
+    },
+    {
       "id": "9d23be3b5b15c433c5a1",
       "source": "who",
       "source_label": "OMS",
@@ -1952,16 +1994,16 @@
     }
   ],
   "translation": {
-    "translated": 13,
-    "summarized": 18,
-    "from_cache": 30,
+    "translated": 12,
+    "summarized": 20,
+    "from_cache": 32,
     "verification_failed": 7,
     "review_failed": 0,
-    "not_allowed": 35,
+    "not_allowed": 32,
     "pending": 0,
     "source_in_spanish": 6
   },
-  "ai_text_items": 31,
+  "ai_text_items": 32,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget",
   "weekly_pick": {
     "rule": "global_weekly_pick_v1",
@@ -1981,10 +2023,10 @@
   },
   "display": {
     "spanish_only": true,
-    "shown": 37,
-    "hidden": 42,
+    "shown": 38,
+    "hidden": 39,
     "hidden_by_reason": {
-      "not_allowed_without_verified_summary": 35,
+      "not_allowed_without_verified_summary": 32,
       "translation_verification_failed": 7
     },
     "authorized_by": "Dirección (cftorre1)",
