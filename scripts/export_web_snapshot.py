@@ -30,9 +30,18 @@ def _exclusions(path=Path("config/editorial_exclusions.json")):
     try:return {str(x["url"]):x for x in json.loads(path.read_text(encoding="utf-8")).get("items",[]) if x.get("url")}
     except (OSError,ValueError,KeyError):return {}
 
+def _publication_approvals(path=Path("config/sis_publicaciones_aprobadas.json")):
+    try:return {str(x["url"]):x for x in json.loads(path.read_text(encoding="utf-8")).get("items",[]) if x.get("url")}
+    except (OSError,ValueError,KeyError):return {}
+
 def _apply_persistent_editorial_decisions(signals):
-    audit=_audit_map();excluded=_exclusions();out=[]
+    audit=_audit_map();excluded=_exclusions();approved=_publication_approvals();out=[]
     for s in signals:
+        if s.get("publication_collection"):
+            # Dirección 12-nov-2026: SIS Publicaciones pass editorial review; shown only once approved.
+            s=dict(s);ok=str(s.get("source_url") or "") in approved
+            s["editorial_hold"]=None if ok else "sis_publicacion_pendiente_revision_editorial"
+            if ok:s["editorial_review"]={k:v for k,v in approved[str(s["source_url"])].items() if k!="url"}
         if str(s.get("source_url") or "") in excluded:
             # Dirección exclusion: kept in history, never shown in the feed.
             r=dict(s);r["feed_visibility"]=False;r["editorial_exclusion"]=excluded[str(s["source_url"])]["reason"];out.append(r);continue
@@ -51,6 +60,7 @@ def _apply_persistent_editorial_decisions(signals):
         # A publication hold set earlier in curation (e.g. a sanction card without a descriptive
         # title) must survive the editorial pass; only an explicit reject adds a new hold here.
         held=r.get("feed_visibility") is False and r.get("publication_gate_reason")=="fiscalization_title_needs_description"
+        held=held or r.get("editorial_hold")=="sis_publicacion_pendiente_revision_editorial"
         r["feed_visibility"]=False if held or r.get("editorial_decision")=="reject" else True
         out.append(r)
     return out
