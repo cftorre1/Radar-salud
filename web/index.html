@@ -50,13 +50,12 @@
 </form>
 </dialog>
 <dialog id="signalDetail" aria-labelledby="detailTitle">
-<div class="detail-top"><button type="button" id="closeDetail" class="detail-close" aria-label="Cerrar ficha"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"></path></svg><span>Volver</span></button><div class="detail-bar" id="detailBar"></div></div>
-<div class="ficha-acts-host" id="detailActs"></div>
+<div class="sheet-grab" aria-hidden="true"></div><div class="detail-top"><button type="button" id="closeDetail" class="detail-close" aria-label="Cerrar ficha"><svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg><span>Cerrar</span></button><div class="detail-bar" id="detailBar"></div></div>
 <div id="detailBody">
 </div>
+<div class="ficha-dock" id="detailActs"></div>
 </dialog>
 <div class="page"><div class="layout"><div class="col">
-<p class="section-tag">Para que no te pierdas lo que está pasando en salud</p>
 <section class="week" aria-label="Esta semana">
 <div class="week-label"><span>Esta semana</span><span class="meta" id="meta"></span></div>
 <p id="freshness" class="freshness" role="status" hidden></p>
@@ -109,7 +108,7 @@
 <div class="rail-box rail-news"><p>Lo importante de la semana, directo a tu correo.</p><button type="button" data-open-newsletter>Suscríbete</button></div>
 </aside>
 </div></div>
-<footer class="footer">Alicanto Salud · Información seleccionada desde fuentes oficiales y verificadas para que no te pierdas lo que importa</footer>
+<footer class="footer">Alicanto Salud · Información seleccionada desde fuentes oficiales y verificadas para que no te pierdas lo que importa · <a class="foot-contact" href="mailto:hola@alicantosalud.cl">Contacto: hola@alicantosalud.cl</a></footer>
 <p class="read-status" id="readStatus" role="status" aria-live="polite"></p></main><button type="button" class="back-top" id="backTop">Volver arriba ↑</button>
 <script src="analytics.js">
 </script>

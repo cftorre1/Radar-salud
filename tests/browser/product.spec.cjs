@@ -227,7 +227,8 @@ test('Feed-only share uses Web Share and clipboard fallback without analytics',a
  await share.click();const shared=(await page.evaluate(()=>window.__shared))[0];expect(shared.url).toContain('#');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Compartido');
  await page.evaluate(()=>{delete navigator.share;window.__copied=[];Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:value=>{window.__copied.push(value);return Promise.resolve()}}})});
  await share.click();await expect(share).toHaveAttribute('data-share-result','copied');await expect(share.locator('xpath=following-sibling::*[1]')).toHaveText('Enlace copiado');expect((await page.evaluate(()=>window.__copied))[0]).toContain('#');
- await page.goto(shared.url);await expect(page.locator('#meta')).toContainText('Última actualización:');const target=new URL(shared.url).hash.slice(1),targetCard=page.locator(`[id="${target}"]`);await expect(targetCard).toBeVisible();await expect(targetCard).toBeFocused();await expect(targetCard).not.toHaveClass(/read/);await expect(page).toHaveURL(new RegExp(`#${target.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));
+ await page.goto(shared.url);await expect(page.locator('#meta')).toContainText('Última actualización:');const target=new URL(shared.url).hash.slice(1),targetCard=page.locator(`[id="${target}"]`);await expect(targetCard).toBeVisible();// A shared piece opens its ficha (Dirección 11-nov-2026): ?abrir=1#sig-<id>.
+ expect(new URL(shared.url).searchParams.get('abrir')).toBe('1');await expect(page.locator('#signalDetail')).toBeVisible();await expect(page).toHaveURL(new RegExp(`#${target.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));
  const specialShare=page.locator('#bigThings .big-feature.global [data-share]');await expect(specialShare).toHaveAttribute('data-share',/^special-/);
  await page.goto('/#%E0%A4%A');await expect(page.locator('#meta')).toContainText('Última actualización:');await expect(page.locator('article').first()).toBeVisible();
 });
@@ -853,7 +854,7 @@ test('Global rows match Home rows: dot toggle, title opens the ficha, source and
  await expect(same.locator('.row-acts .act-src')).toHaveAttribute('target','_blank');await expect(same.locator('.row-acts [data-share]')).toBeVisible();
  await expect(page.locator('#globalUndo,.undo-bar')).toHaveCount(0);
  await same.locator('.title-open').click();await expect(page.locator('#globalDetail')).toBeVisible();
- await expect(page.locator('#globalDetail .detail-top #closeGlobalDetail')).toHaveText('Volver');await expect(page.locator('#globalDetailActs [data-share]')).toBeVisible();
+ await expect(page.locator('#globalDetail .detail-top #closeGlobalDetail')).toHaveText('Cerrar');await expect(page.locator('#globalDetailActs [data-share]')).toBeVisible();
  await page.keyboard.press('Escape');
  await expect(same.locator('.row-undo')).toContainText('Leída');await same.locator('.row-undo button').click();await expect(same).not.toHaveClass(/read/);
  await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);await page.mouse.move(0,0);await page.locator('#globalLanes .lane.on').focus();
@@ -891,6 +892,9 @@ test('Dirección 11-nov-2026: Al día shows the insight on top and no Global car
  await page.addInitScript(()=>{window.ALICANTO_HOME_GLOBAL=false});
  await page.goto('/');await expect(page.locator('#local article').first()).toBeVisible();
  await expect(page.locator('#bigThings .big-feature.global')).toHaveCount(0);
- await expect(page.locator('.section-tag')).toHaveText('Para que no te pierdas lo que está pasando en salud');
- for(const [u,t] of [['/normativa.html','Para tener a la vista lo que está por entrar en vigencia'],['/datos.html','Para conocer el estado de la industria'],['/global.html','Para que no te pierdas lo que está pasando fuera de Chile']]){await page.goto(u);await expect(page.locator('.section-tag')).toHaveText(t)}
+ // Dirección 11-nov-2026 (night): no taglines; the same gap under the menu on every section; Newsletter is a filled CTA.
+ const gap=async()=>page.evaluate(()=>{const bar=document.querySelector('.brandbar').getBoundingClientRect().bottom;const els=[...document.querySelectorAll('main *, body > div *')].filter(e=>{const r=e.getBoundingClientRect();return r.height>4&&r.width>40&&r.top>=bar-1&&!e.closest('.brandbar,dialog,.sr-only')&&e.children.length===0&&e.textContent.trim()});return Math.min(...els.map(e=>e.getBoundingClientRect().top))-bar});
+ const gaps=[];for(const u of ['/','/normativa.html','/datos.html','/global.html']){await page.goto(u);await page.waitForTimeout(800);await expect(page.locator('.section-tag')).toHaveCount(0);gaps.push(await gap())}
+ if(test.info().project.name==='mobile')expect(Math.max(...gaps)-Math.min(...gaps)).toBeLessThanOrEqual(3);
+ const cta=page.locator('.brandbar a.header-newsletter');expect(await cta.evaluate(a=>getComputedStyle(a,'::after').backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');expect((await cta.boundingBox()).height).toBeGreaterThanOrEqual(44);
 });

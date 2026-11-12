@@ -1,7 +1,7 @@
 // Norm card (Dirección, 11-nov-2026): ONE renderer for a SIS/SUSESO norm in Normativa and in Al día, as data-card.js is
 // for Datos, so both sections show the same thing. Every card has the default actions of any Al día card (read dot, date
 // line, Ver ficha, Fuente original, Compartir) plus what the Normativa mockup added: the countdown or date box, the
-// effective-date line (literal from the norm, or «en revisión»), «Texto oficial» and the round «Implementada» check.
+// effective-date line (literal from the norm, or «en revisión») and the «Implementada» check.
 // Item fields come from data/normativa.json (src/radar_salud/normativa_index.py). Nothing here infers a date or a state.
 (function(root){
  'use strict';
@@ -55,8 +55,7 @@
  function hl(t,q){t=String(t??'');if(!q)return esc(t);const i=t.toLowerCase().indexOf(String(q).toLowerCase());return i<0?esc(t):`${esc(t.slice(0,i))}<mark>${esc(t.slice(i,i+q.length))}</mark>${esc(t.slice(i+q.length))}`}
  const title=x=>`${x.label} · ${x.subject}`;
  // o: {read (true/false draws the dot; undefined draws none), readId, openHref, openAttr (Al día's data-detail), dateLine
- // (already-escaped «Publicado 6 nov 2026 · SUSESO»), shareId, shareTitle, shareUrl, srcUrl, q (search highlight), open
- // (Texto oficial expanded), topExtra}
+ // (already-escaped «Publicado 6 nov 2026 · SUSESO»), shareId, shareTitle, shareUrl, srcUrl, q (search highlight)}
  function render(x,o={}){
   const Bar=root.AlicantoBar,on=impl.has(x.id),r=x.review||{},legal=legalOf(x),t=o.shareTitle||title(x),q=o.q||'';
   const href=o.openHref||'';
@@ -66,19 +65,19 @@
    // Dirección 11-nov-2026: no left column («Vigente» box) and no «Norma · Circular · tema» line; the type is the V1 mark
    // in the date line and «Implementada» is a checkbox with its word, next to the state.
    (o.topExtra?`<p class="nm-top">${o.topExtra}</p>`:'')+
-   `<h3 class="nm-title">${o.openAttr?`<button type="button" class="title-open nm-open" ${o.openAttr}>`:href?`<a class="nm-open" href="${esc(href)}">`:''}<span class="lab">${hl(x.label,q)}</span> · ${hl(x.subject,q)}${o.openAttr?'</button>':href?'</a>':''}</h3>${`<div class="card-meta nm-meta">${Bar&&Bar.typeMark?Bar.typeMark('normativa'):''}${o.dateLine?`<span class="meta-text">${o.dateLine}</span>`:''}</div>`}<div class="nm-state">${chip(x)}</div>`+
-   `<div class="nm-row2">`+`<details class="nm-det"${o.open?' open':''} data-id="${esc(x.id)}"><summary>Texto oficial de vigencia</summary><div class="nm-detb">`+
-   (x.validity?`<p><span class="k">Dice la norma:</span> <q>${esc(x.validity)}</q></p>`:'<p>El texto oficial capturado no informa la fecha de vigencia.</p>')+
-   (r.kind==='date'?`<p><span class="k">Revisión editorial (${esc(r.on)}):</span> vigencia ${fmt(D(r.eff))}, según <q>${esc(r.quote)}</q></p>`:'')+
-   (r.kind==='nofija'?`<p><span class="k">Revisión editorial (${esc(r.on)}):</span> la norma no fija fecha de vigencia.</p>`:'')+
-   (legal?`<p><span class="k">${legal==='susp'?'Suspensión':'Sin efecto'} (${esc(r.on)}):</span> ${esc(r.by)}: <q>${esc(r.quote)}</q></p>`:'')+
-   (x.target?`<p><span class="k">Relación:</span> se refiere a la entrada en vigencia de ${esc(x.target)}, que fijó esa norma.</p>`:'')+
-   `</div></details>`+`${legal?'':`<button type="button" class="nm-ck" data-impl="${esc(x.id)}" role="checkbox" aria-checked="${on}" aria-label="Implementada: ${esc(x.label)}"><span class="nm-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Implementada</button>`}</div>`+
+   `<h3 class="nm-title">${o.openAttr?`<button type="button" class="title-open nm-open" ${o.openAttr}>`:href?`<a class="nm-open" href="${esc(href)}">`:''}<span class="lab">${hl(x.label,q)}</span> · ${hl(x.subject,q)}${o.openAttr?'</button>':href?'</a>':''}</h3>${`<div class="card-meta nm-meta">${Bar&&Bar.typeMark?Bar.typeMark('normativa'):''}${o.dateLine?`<span class="meta-text">${o.dateLine}</span>`:''}</div>`}<div class="nm-state">${chip(x)}${legal?'':`<button type="button" class="nm-ck" data-impl="${esc(x.id)}" role="checkbox" aria-checked="${on}" aria-label="Implementada: ${esc(x.label)}"><span class="nm-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Implementada</button>`}</div>`+
 
    `<div class="row-acts" role="group" aria-label="Acciones">${open}${Bar?Bar.sourceAct(o.srcUrl||x.url,t):''}${Bar?Bar.shareAct(o.shareId||`n-${x.id}`,t,o.shareUrl):''}</div></div>`;
  }
+ // Inside the open ficha (F2, 11-nov-2026): the same state chip and official text as the row, so a norm reads the same
+ // in its row, in Normativa and in its ficha.
+ // Inside the open ficha: the same state chip as the row. Dirección 11-nov-2026: no «Texto oficial de vigencia» toggle;
+ // only a suspension, «sin efecto» or an editorial date decision is quoted inline, since it explains the state.
+ function fichaState(x){const r=x.review||{},legal=legalOf(x);
+  const note=legal?`<p class="nm-note"><span class="k">${legal==='susp'?'Suspensión':'Sin efecto'}:</span> ${esc(r.by)}: <q>${esc(r.quote)}</q></p>`:r.kind==='date'?`<p class="nm-note"><span class="k">Fecha de vigencia registrada en revisión:</span> <q>${esc(r.quote)}</q></p>`:'';
+  return `<div class="nm-ficha"><div class="nm-state">${chip(x)}</div>${note}</div>`}
  // The date line both pages print: the norm's emission and its issuer («Emitida 6 nov 2026 · SUSESO»).
  function dateLine(x){return [x.date?`Emitida ${fmt(D(x.date))}`:'',esc(x.emisor)].filter(Boolean).join(' · ')}
- root.AlicantoNormCard={vstat,grp,effKey,chip,box,render,dateLine,title,toggleImpl,isImpl,legalOf,fmt,ymd,D,MES,MESL,IMPL_KEY,
+ root.AlicantoNormCard={vstat,grp,effKey,chip,box,render,dateLine,fichaState,title,toggleImpl,isImpl,legalOf,fmt,ymd,D,MES,MESL,IMPL_KEY,
   setToday:d=>{today=D(ymd(d))}};
 })(typeof window==='undefined'?globalThis:window);

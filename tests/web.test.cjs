@@ -574,15 +574,16 @@ test('Datos is in the top nav of every page that shares it',()=>{for(const p of 
 test('Dirección 9-nov: normative card and ficha state type, issuer and emission date (SIS and SUSESO)',()=>{const c=context();
 const sis={title:'Circular IF/N°541 - Emisión: 5/11/2026',display_title:'Circular IF/N°541 · Aclara la determinación de la base de cálculo del deducible de la CAEC',source_name:'Superintendencia de Salud',source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n541-emision-5-11-2026/',event_date:'2026-11-05',event_type:'REGULATION',signal_types:['Normativa'],normative_document_type:'Circular',normative_minimal:true,normative_context:'Emitida por Superintendencia de Salud con fecha 2026-11-05. Asunto oficial: Aclara.',radar_score:65};
 const card=c.card(sis);assert.match(card,/>Circular IF\/N°541 · Aclara/);assert.match(card,/<span class="ty ty-normativa">/);
-const ficha=c.detailHtml(sis);const kicker=ficha.match(/<p class="wi-kicker norm-kicker">([^<]*)<\/p><h2 id='detailTitle'>/);assert.ok(kicker,ficha.slice(0,300));
-assert.match(kicker[1],/^Norma · Circular · Superintendencia de Salud · Emitida .*5.*2026$/);
-const suseso={...sis,source_name:'Superintendencia de Seguridad Social (SUSESO)',normative_document_type:'Circular',display_title:'Circular N°3938 · Complementa instrucciones',event_date:'2026-11-06'};
-assert.match(c.detailHtml(suseso),/<p class="wi-kicker norm-kicker">Norma · Circular · SUSESO · Emitida [^<]*6[^<]*2026<\/p><h2 id='detailTitle'>/);
-// Reviewed ficha: the source line already carries issuer and date, so the kicker does not repeat them.
-const reviewed={...suseso,normative_minimal:false};const rh=c.detailHtml(reviewed);
-assert.match(rh,/<p class="wi-kicker norm-kicker">Norma · Circular<\/p><h2 id='detailTitle'>/);assert.match(rh,/ficha-origin/);
-assert.match(c.detailHtml({...sis,normative_document_type:'Dictamen',display_title:'Dictamen N°1234 · Interpreta'}),/norm-kicker">Norma · Dictamen · Superintendencia de Salud · Emitida/);
-assert.doesNotMatch(c.detailHtml({title:'Noticia',event_date:'2026-11-05',signal_types:['Noticias']}),/norm-kicker/)});
+// V1 (Dirección 11-nov-2026): the ficha kicker is the «Normativa» type mark + issuer + emission; the document type is
+ // already the title's label («Circular N°…»).
+ const ficha=c.detailHtml(sis);const kicker=ficha.match(/<p class="wi-kicker norm-kicker"><span class="ty ty-normativa">[^]*?<\/span><\/span>([^<]*)<\/p><h2 id='detailTitle'>/);assert.ok(kicker,ficha.slice(0,400));
+ assert.match(kicker[1],/^Superintendencia de Salud · Emitida .*5.*2026$/);
+ const suseso={...sis,source_name:'Superintendencia de Seguridad Social (SUSESO)',normative_document_type:'Circular',display_title:'Circular N°3938 · Complementa instrucciones',event_date:'2026-11-06'};
+ assert.match(c.detailHtml(suseso),/norm-kicker"><span class="ty ty-normativa">[^]*?<\/span><\/span>SUSESO · Emitida [^<]*6[^<]*2026<\/p><h2 id='detailTitle'>/);
+ const rh=c.detailHtml({...suseso,normative_minimal:false});
+ assert.match(rh,/norm-kicker"><span class="ty ty-normativa">[^]*?<\/span><\/span><\/p><h2 id='detailTitle'>/);assert.match(rh,/ficha-origin/);
+ assert.match(c.detailHtml({...sis,normative_document_type:'Dictamen',display_title:'Dictamen N°1234 · Interpreta'}),/norm-kicker"><span class="ty ty-normativa">/);
+ assert.doesNotMatch(c.detailHtml({title:'Noticia',event_date:'2026-11-05',signal_types:['Noticias']}),/norm-kicker/)});
 
 test('a rolling sanctions register shows Actualizado with its newest act (Dirección 10-nov-2026)',()=>{const c=context();const s={event_type:'SANCTION_REGISTER',signal_types:['Fiscalización'],event_date:'2026-11-06',emission_date:'2026-11-06',publication_date:null,detected_at:'2026-11-09T22:34:33Z',event_date_basis:'emission',source_name:'Superintendencia de Seguridad Social (SUSESO)'};assert.match(c.cardMetadata(s),/^Actualizado 6 nov 2026 · SUSESO$/);assert.doesNotMatch(c.cardMetadata(s),/Detectado|Publicado/)});
 
@@ -612,7 +613,7 @@ test('Home specials: Global weekly pick and insight footer',()=>{
 });
 
 // Dirección 11-nov-2026: ONE norm card for Normativa and Al día (norma-card.js): the default Al día actions plus the
-// countdown, the literal effective-date line, «Texto oficial» and «Implementada»; groups move with the date.
+// countdown and «Implementada» (no «Texto oficial» toggle since 11-nov-2026); groups move with the date.
 test('norm card: same renderer in both sections, literal dates, groups and implementada',()=>{
  const store={};const c={localStorage:{getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=v}},Intl,Date,Set,Map,JSON,Math,String,Number,Array,Object,Promise,URL};c.globalThis=c;vm.createContext(c);
  vm.runInContext(fs.readFileSync('web/inbox-bar.js','utf8'),c);vm.runInContext(fs.readFileSync('web/norma-card.js','utf8'),c);
@@ -625,7 +626,8 @@ test('norm card: same renderer in both sections, literal dates, groups and imple
  assert.match(N.chip({...base,eff:'2027-03-01',prec:'month'}),/Entra en vigencia en 110 días · marzo de 2027/);assert.match(N.chip({...base,partial:true}),/con excepciones o texto incompleto/);
  assert.equal(N.grp({...base,review:{kind:'susp',by:'Res. Ex. 1',quote:'Se suspende la circular.',on:'2026-11-12'}}),'susp');
  const html=N.render(base,{read:false,readId:'abc',openHref:'index.html?abrir=1#sig-abc',dateLine:N.dateLine(base)});
- for(const re of [/data-read="abc"/,/Entra en vigencia en 20 días · 1 dic 2026/,/Texto oficial de vigencia/,/<q>Las disposiciones entran en vigencia el 1 de diciembre de 2026\.<\/q>/,/Emitida 14 sept?\.? 2026 · SIS|Emitida 14 sep 2026 · SIS/,/act act-open" href="index\.html\?abrir=1#sig-abc"/,/act act-src" href="https:\/\/www\.superdesalud\.gob\.cl\/x\/"/,/act act-share" data-share="n-sis-circular-if-n534"/,/class="nm-ck" data-impl="sis-circular-if-n534" role="checkbox" aria-checked="false"/,/<span class="ty ty-normativa">/])assert.match(html,re);
+ for(const re of [/data-read="abc"/,/Entra en vigencia en 20 días · 1 dic 2026/,/Emitida 14 sept?\.? 2026 · SIS|Emitida 14 sep 2026 · SIS/,/act act-open" href="index\.html\?abrir=1#sig-abc"/,/act act-src" href="https:\/\/www\.superdesalud\.gob\.cl\/x\/"/,/act act-share" data-share="n-sis-circular-if-n534"/,/class="nm-ck" data-impl="sis-circular-if-n534" role="checkbox" aria-checked="false"/,/<span class="ty ty-normativa">/])assert.match(html,re);
+ assert.doesNotMatch(html,/Texto oficial de vigencia|nm-det/);
  assert.match(N.render({...base,kind:'none',eff:null,validity:null}),/Vigencia no informada en la fuente <span class="tag">· en revisión<\/span>/);
  // «Implementada» is a mark: it never moves the norm out of its group or the countdown (review 11-nov).
  assert.equal(N.toggleImpl(base.id),true);assert.equal(N.isImpl(base.id),true);assert.equal(N.grp(base),'p30');assert.match(store[N.IMPL_KEY],/sis-circular-if-n534/);
