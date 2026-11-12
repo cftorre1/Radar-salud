@@ -38,26 +38,19 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  await expect(row.locator('.act-share')).toHaveAttribute('data-share-url',card.share_url);
  await row.locator('[data-detail]').first().click();
  const body=page.locator('#detailBody'),dialog=page.locator('#signalDetail');
- // Header and chrome as in the approved mockup (Dirección 29-oct): the top bar holds only '← Volver' and the round share
- // icon; 'Fuente original ↗' and the read toggle are at the foot, after Notas y fuentes; no 'Seguir <entidad>' chips.
- await expect(page.locator('#detailActs .act')).toHaveCount(0);
+ // F2 (Dirección 11-nov-2026): the ficha is a sheet; the top bar holds only «Cerrar», and the same dock as every ficha
+ // (Fuente original · Compartir · Marcar leída) sits at the bottom; no foot, no round share icon, no 'Seguir' chips.
  await expect(dialog.locator('.follow-row, .follow-chip')).toHaveCount(0);await expect(dialog).not.toContainText('Seguir ');
- const share=dialog.locator('.detail-top .sf-share');
- await expect(share).toHaveAttribute('aria-label','Compartir informe');await expect(body.locator('.sf-share, .sf-actions')).toHaveCount(0);
- expect(await dialog.locator('.detail-top').locator('a,button').evaluateAll(xs=>xs.map(x=>x.id||x.className))).toEqual(['closeDetail','sf-share']);
- const foot=body.locator('#detailFoot');
- await expect(foot.locator('#detailRead')).toHaveText('Marcar no leída');
- expect(await foot.locator('a,button').evaluateAll(xs=>xs.map(x=>x.textContent.trim()))).toEqual(['Fuente original ↗','Marcar no leída']);
- await expect(foot.locator('a')).toHaveAttribute('href',/^https:\/\//);
- expect(await page.evaluate(()=>{const n=document.querySelector('#detailBody .sf-notes'),f=document.getElementById('detailFoot');return Boolean(n.compareDocumentPosition(f)&Node.DOCUMENT_POSITION_FOLLOWING)})).toBe(true);
+ expect(await dialog.locator('.detail-top').locator('a,button').evaluateAll(xs=>xs.map(x=>x.id||x.className))).toEqual(['closeDetail']);
+ await expect(body.locator('#detailFoot')).toHaveCount(0);await expect(dialog.locator('.sf-share')).toHaveCount(0);
+ expect(await page.locator('#detailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir','Marcar no leída']);
+ await expect(page.locator('#detailActs .act-src')).toHaveAttribute('href',/^https:\/\//);
+ await expect(page.locator('#detailActs .act-share')).toHaveAttribute('data-share-url',/fichas\//);
+ const share=page.locator('#detailActs .act-share');
  // Kicker + 'Destacada' on one line; the two-line meta list under the headline; the headline and dek are the builder's.
  await expect(body.locator('.sf-kicker')).toHaveText('Cartera y movilidadDestacada');
  expect(await body.locator('.sf-meta li').allTextContents()).toEqual(['Datos a agosto 2026','Publicado por la SIS el 2 oct 2026']);
  await expect(body.locator('.sf-dek')).toHaveCount(0);  // Dirección 11-nov-2026: generic title, no dek
- // The share icon sits at the right end of the bar, on the same line as Volver.
- const bar=await page.evaluate(()=>{const r=e=>document.querySelector(e).getBoundingClientRect(),d=r('#signalDetail'),s=r('#signalDetail .sf-share'),b=r('#closeDetail');
-  return {right:d.right-s.right,line:Math.abs((s.top+s.height/2)-(b.top+b.height/2)),w:s.width,h:s.height}});
- expect(bar.right).toBeLessThan(40);expect(bar.line).toBeLessThan(4);expect(bar.w).toBeGreaterThanOrEqual(44);expect(bar.h).toBeGreaterThanOrEqual(44);
  await expect(body.locator('.sf-headline')).toHaveText(await page.evaluate(f=>AlicantoFicha.genericTitle(f,{title:((typeof datosByPiece!=='undefined'&&datosByPiece.get(f.id))||{}).index_title}),card.stats_ficha));
  // Index: 5 topics, each with its one-line reading and a sparkline (Regional pending); no topic open yet.
  const index=body.locator('.sf-index'),topic=body.locator('.sf-topic');
@@ -76,9 +69,9 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  await expect.poll(()=>noOverflow(page),{timeout:3000}).toBe(true);
  const box=await body.locator('.sf-row').first().boundingBox();expect(box.height).toBeGreaterThanOrEqual(44);
  await share.click();
- await expect(dialog.locator('.sf-share-status')).toHaveText('Enlace copiado.');
+ await expect(page.locator('#detailActs .share-feedback')).toHaveText(/copiado/i);
  expect(await page.evaluate(()=>window.__copied[0])).toMatch(/\/data\/fichas\/f1_cartera\.html$/);
- await dialog.locator('.sf-share-status').evaluate(e=>{e.textContent=''});
+ await page.locator('#detailActs .share-feedback').evaluate(e=>{e.textContent=''});
  await shot(page,`stats-ficha-f1-index-${test.info().project.name}`);
  // Index → topic pushes a history entry: #sig-<id>&tema=total, the picker reads 'Cartera total 1/5', the stock line comes first.
  const len0=await page.evaluate(()=>history.length);
@@ -141,7 +134,7 @@ test('F1 ficha opens as an index and walks its topics',async({page})=>{
  await expect(index).toBeVisible();await expect(topic).toBeHidden();await expect(dialog).toBeVisible();
  expect(page.url()).not.toContain('tema=');
  const last=body.locator('.sf-row').filter({hasText:'Cotizantes y cargas'});await expect(last).toHaveClass(/sf-last/);await expect(last).toBeFocused();
- await expect(page.locator('#closeDetail')).toContainText('Volver');await expect(page.locator('#closeDetail')).toHaveAttribute('aria-label','Cerrar ficha');
+ await expect(page.locator('#closeDetail')).toContainText('Cerrar');await expect(page.locator('#closeDetail')).toHaveAttribute('aria-label','Cerrar ficha');
  // The foot's 'Siguiente tema' and 'Todos los temas', and the dialog's back button in topic mode, also lead back.
  await body.locator('.sf-row').filter({hasText:'Movilidad y desahucios'}).click();
  await expect(panel.locator('.sf-tdek')).toHaveCount(0);await expect(panel.locator('.sf-kpi')).toHaveCount(0);
@@ -338,5 +331,5 @@ test('the top "Todos los temas" button returns to the index like Back',async({pa
  await expect(body.locator('.sf-index')).toBeVisible();await expect(page.locator('#signalDetail')).toBeVisible();
  await expect.poll(()=>page.url()).not.toContain('tema=');expect(await page.evaluate(()=>history.length)).toBe(len0+1);
  await expect(body.locator('.sf-row').filter({hasText:'Movilidad y desahucios'})).toBeFocused();
- await expect(page.locator('#closeDetail')).toHaveText('Volver');
+ await expect(page.locator('#closeDetail')).toHaveText('Cerrar');
 });

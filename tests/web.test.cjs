@@ -574,15 +574,16 @@ test('Datos is in the top nav of every page that shares it',()=>{for(const p of 
 test('Dirección 9-nov: normative card and ficha state type, issuer and emission date (SIS and SUSESO)',()=>{const c=context();
 const sis={title:'Circular IF/N°541 - Emisión: 5/11/2026',display_title:'Circular IF/N°541 · Aclara la determinación de la base de cálculo del deducible de la CAEC',source_name:'Superintendencia de Salud',source_url:'https://www.superdesalud.gob.cl/normativa/circular-if-n541-emision-5-11-2026/',event_date:'2026-11-05',event_type:'REGULATION',signal_types:['Normativa'],normative_document_type:'Circular',normative_minimal:true,normative_context:'Emitida por Superintendencia de Salud con fecha 2026-11-05. Asunto oficial: Aclara.',radar_score:65};
 const card=c.card(sis);assert.match(card,/>Circular IF\/N°541 · Aclara/);assert.match(card,/<span class="ty ty-normativa">/);
-const ficha=c.detailHtml(sis);const kicker=ficha.match(/<p class="wi-kicker norm-kicker">([^<]*)<\/p><h2 id='detailTitle'>/);assert.ok(kicker,ficha.slice(0,300));
-assert.match(kicker[1],/^Norma · Circular · Superintendencia de Salud · Emitida .*5.*2026$/);
-const suseso={...sis,source_name:'Superintendencia de Seguridad Social (SUSESO)',normative_document_type:'Circular',display_title:'Circular N°3938 · Complementa instrucciones',event_date:'2026-11-06'};
-assert.match(c.detailHtml(suseso),/<p class="wi-kicker norm-kicker">Norma · Circular · SUSESO · Emitida [^<]*6[^<]*2026<\/p><h2 id='detailTitle'>/);
-// Reviewed ficha: the source line already carries issuer and date, so the kicker does not repeat them.
-const reviewed={...suseso,normative_minimal:false};const rh=c.detailHtml(reviewed);
-assert.match(rh,/<p class="wi-kicker norm-kicker">Norma · Circular<\/p><h2 id='detailTitle'>/);assert.match(rh,/ficha-origin/);
-assert.match(c.detailHtml({...sis,normative_document_type:'Dictamen',display_title:'Dictamen N°1234 · Interpreta'}),/norm-kicker">Norma · Dictamen · Superintendencia de Salud · Emitida/);
-assert.doesNotMatch(c.detailHtml({title:'Noticia',event_date:'2026-11-05',signal_types:['Noticias']}),/norm-kicker/)});
+// V1 (Dirección 11-nov-2026): the ficha kicker is the «Normativa» type mark + issuer + emission; the document type is
+ // already the title's label («Circular N°…»).
+ const ficha=c.detailHtml(sis);const kicker=ficha.match(/<p class="wi-kicker norm-kicker"><span class="ty ty-normativa">[^]*?<\/span><\/span>([^<]*)<\/p><h2 id='detailTitle'>/);assert.ok(kicker,ficha.slice(0,400));
+ assert.match(kicker[1],/^Superintendencia de Salud · Emitida .*5.*2026$/);
+ const suseso={...sis,source_name:'Superintendencia de Seguridad Social (SUSESO)',normative_document_type:'Circular',display_title:'Circular N°3938 · Complementa instrucciones',event_date:'2026-11-06'};
+ assert.match(c.detailHtml(suseso),/norm-kicker"><span class="ty ty-normativa">[^]*?<\/span><\/span>SUSESO · Emitida [^<]*6[^<]*2026<\/p><h2 id='detailTitle'>/);
+ const rh=c.detailHtml({...suseso,normative_minimal:false});
+ assert.match(rh,/norm-kicker"><span class="ty ty-normativa">[^]*?<\/span><\/span><\/p><h2 id='detailTitle'>/);assert.match(rh,/ficha-origin/);
+ assert.match(c.detailHtml({...sis,normative_document_type:'Dictamen',display_title:'Dictamen N°1234 · Interpreta'}),/norm-kicker"><span class="ty ty-normativa">/);
+ assert.doesNotMatch(c.detailHtml({title:'Noticia',event_date:'2026-11-05',signal_types:['Noticias']}),/norm-kicker/)});
 
 test('a rolling sanctions register shows Actualizado with its newest act (Dirección 10-nov-2026)',()=>{const c=context();const s={event_type:'SANCTION_REGISTER',signal_types:['Fiscalización'],event_date:'2026-11-06',emission_date:'2026-11-06',publication_date:null,detected_at:'2026-11-09T22:34:33Z',event_date_basis:'emission',source_name:'Superintendencia de Seguridad Social (SUSESO)'};assert.match(c.cardMetadata(s),/^Actualizado 6 nov 2026 · SUSESO$/);assert.doesNotMatch(c.cardMetadata(s),/Detectado|Publicado/)});
 

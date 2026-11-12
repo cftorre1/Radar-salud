@@ -77,8 +77,15 @@
 
    `<div class="row-acts" role="group" aria-label="Acciones">${open}${Bar?Bar.sourceAct(o.srcUrl||x.url,t):''}${Bar?Bar.shareAct(o.shareId||`n-${x.id}`,t,o.shareUrl):''}</div></div>`;
  }
+ // Inside the open ficha (F2, 11-nov-2026): the same state chip and official text as the row, so a norm reads the same
+ // in its row, in Normativa and in its ficha.
+ function fichaState(x){const r=x.review||{},legal=legalOf(x);return `<div class="nm-ficha"><div class="nm-state">${chip(x)}</div><details class="nm-det"><summary>Texto oficial de vigencia</summary><div class="nm-detb">`+
+  (x.validity?`<p><span class="k">Dice la norma:</span> <q>${esc(x.validity)}</q></p>`:'<p>El texto oficial capturado no informa la fecha de vigencia.</p>')+
+  (r.kind==='date'?`<p><span class="k">Revisión editorial (${esc(r.on)}):</span> vigencia ${fmt(D(r.eff))}, según <q>${esc(r.quote)}</q></p>`:'')+
+  (legal?`<p><span class="k">${legal==='susp'?'Suspensión':'Sin efecto'} (${esc(r.on)}):</span> ${esc(r.by)}: <q>${esc(r.quote)}</q></p>`:'')+
+  (x.target?`<p><span class="k">Relación:</span> se refiere a la entrada en vigencia de ${esc(x.target)}, que fijó esa norma.</p>`:'')+`</div></details></div>`}
  // The date line both pages print: the norm's emission and its issuer («Emitida 6 nov 2026 · SUSESO»).
  function dateLine(x){return [x.date?`Emitida ${fmt(D(x.date))}`:'',esc(x.emisor)].filter(Boolean).join(' · ')}
- root.AlicantoNormCard={vstat,grp,effKey,chip,box,render,dateLine,title,toggleImpl,isImpl,legalOf,fmt,ymd,D,MES,MESL,IMPL_KEY,
+ root.AlicantoNormCard={vstat,grp,effKey,chip,box,render,dateLine,fichaState,title,toggleImpl,isImpl,legalOf,fmt,ymd,D,MES,MESL,IMPL_KEY,
   setToday:d=>{today=D(ymd(d))}};
 })(typeof window==='undefined'?globalThis:window);

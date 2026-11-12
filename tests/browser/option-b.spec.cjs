@@ -33,12 +33,12 @@ test('news ficha is lean on Chile and Global and carries the action set',async({
  await expect(body).not.toContainText(/Por qué importa/);await expect(body.locator('.ficha-h').first()).toHaveText(/Qué pasó/i);
  const id=await row.getAttribute('data-card');const s=await page.evaluate(id=>{const x=allSignals.find(s=>idFor(s)===id);return {why:x.card_why||x.why_it_matters,url:originalLink(x)}},id);
  if(s.why&&!s.why.startsWith((await body.locator('p').first().textContent()).slice(0,40)))await expect(body).not.toContainText(s.why.slice(0,60));
- expect(await page.locator('#detailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir']);
+ expect(await page.locator('#detailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir',expect.stringMatching(/^Marcar (no )?leída$/)]);// F2 dock (11-nov-2026)
  await expect(page.locator('#detailActs .act-src')).toHaveAttribute('href',s.url);
- await expect(page.locator('#detailBar')).toHaveText(/Marcar (no )?leída/);
+ await expect(page.locator('#detailActs #detailRead')).toHaveText(/Marcar (no )?leída/);
  await page.keyboard.press('Escape');
  await page.goto('/global.html');await page.locator('#themes article.item .act-open').first().click();await expect(page.locator('#globalDetail')).toBeVisible();
- expect(await page.locator('#globalDetailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir']);
+ expect(await page.locator('#globalDetailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir',expect.stringMatching(/^Marcar (no )?leída$/)]);// F2 dock (11-nov-2026)
  await expect(page.locator('#globalDetailBody')).not.toContainText(/Por qué importa/);
 });
 test('a headline ficha with no captured description shows no Qué pasó and no invented source',async({page})=>{

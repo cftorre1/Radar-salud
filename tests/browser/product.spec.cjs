@@ -853,7 +853,7 @@ test('Global rows match Home rows: dot toggle, title opens the ficha, source and
  await expect(same.locator('.row-acts .act-src')).toHaveAttribute('target','_blank');await expect(same.locator('.row-acts [data-share]')).toBeVisible();
  await expect(page.locator('#globalUndo,.undo-bar')).toHaveCount(0);
  await same.locator('.title-open').click();await expect(page.locator('#globalDetail')).toBeVisible();
- await expect(page.locator('#globalDetail .detail-top #closeGlobalDetail')).toHaveText('Volver');await expect(page.locator('#globalDetailActs [data-share]')).toBeVisible();
+ await expect(page.locator('#globalDetail .detail-top #closeGlobalDetail')).toHaveText('Cerrar');await expect(page.locator('#globalDetailActs [data-share]')).toBeVisible();
  await page.keyboard.press('Escape');
  await expect(same.locator('.row-undo')).toContainText('Leída');await same.locator('.row-undo button').click();await expect(same).not.toHaveClass(/read/);
  await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);await page.mouse.move(0,0);await page.locator('#globalLanes .lane.on').focus();

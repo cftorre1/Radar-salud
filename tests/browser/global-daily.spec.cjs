@@ -32,7 +32,7 @@ test('headlines and themes are one list, newest first, each row with Ver ficha �
  const body=page.locator('#globalDetailBody');await expect(body).not.toContainText(/Qué pasó|Resumen de la fuente|Regulador\. Relevante|Por qué importa|Medicamentos y farma/);
  expect(await body.locator('a').evaluateAll(xs=>xs.map(a=>a.getAttribute('href')))).toEqual(['https://www.ema.europa.eu/en/news/item-0']);
  await expect(body).toContainText('Zoe Z, Al A, Mo M');await expect(body).toContainText('European Medicines Agency');
- expect(await page.locator('#globalDetailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir']);
+ expect(await page.locator('#globalDetailActs .act').evaluateAll(xs=>xs.map(a=>a.textContent.trim()))).toEqual(['Fuente original','Compartir',expect.stringMatching(/^Marcar (no )?leída$/)]);// F2 dock (11-nov-2026)
  await page.keyboard.press('Escape');await expect(d0).toHaveClass(/read/);
  // Opening a headline's source marks it read, as before.
  const d2=page.locator('#daily-d2');await expect(d2).not.toHaveClass(/read/);

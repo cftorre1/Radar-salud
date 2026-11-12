@@ -43,16 +43,15 @@ for(const [slug,tabs,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs I
   await charts.first().locator('summary').click();
   // Header as in the approved mockup (Dirección 29-oct): share icon in the top bar, no follow chips, source and read
   // toggle at the foot, and the bar's back button reads 'Todos los temas' in topic mode.
-  const share=page.locator('#signalDetail .detail-top .sf-share');
-  await expect(share).toHaveAttribute('aria-label','Compartir informe');await expect(body.locator('.sf-share')).toHaveCount(0);
-  await expect(page.locator('#signalDetail .follow-chip')).toHaveCount(0);await expect(page.locator('#detailActs .act')).toHaveCount(0);
+  // F2 (11-nov-2026): one dock for every ficha; no round share icon, no foot.
+  await expect(page.locator('#signalDetail .sf-share')).toHaveCount(0);const share=page.locator('#detailActs .act-share');
+  await expect(page.locator('#signalDetail .follow-chip')).toHaveCount(0);await expect(page.locator('#detailActs .act')).toHaveCount(3);
   await expect(page.locator('#closeDetail')).toContainText('Todos los temas');
-  await expect(body.locator('#detailFoot #detailRead')).toHaveText('Marcar no leída');
-  expect(await body.locator('#detailFoot').locator('a,button').evaluateAll(xs=>xs.map(x=>x.textContent.trim()))).toEqual(['Fuente original ↗','Marcar no leída']);
+  await expect(page.locator('#detailActs #detailRead')).toHaveText('Marcar no leída');
   expect(await body.locator('.sf-meta li').count()).toBe(2);
   for(const loc of [body.locator('.sf-pick'),share]){const box=await loc.boundingBox();expect(box.height).toBeGreaterThanOrEqual(44)}
   await share.click();
-  await expect(page.locator('#signalDetail .sf-share-status')).toHaveText('Enlace copiado.');
+  await expect(page.locator('#detailActs .share-feedback')).toHaveText(/copiado/i);
   expect(await page.evaluate(()=>window.__copied[0])).toMatch(new RegExp(`/data/fichas/${slug}\\.html$`));
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
   await expect.poll(()=>page.evaluate(()=>{const d=document.getElementById('signalDetail');return d.scrollWidth<=d.clientWidth+1}),{timeout:3000}).toBe(true);  // settled layout (a topic switch can overflow for a frame)

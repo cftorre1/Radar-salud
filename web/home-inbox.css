@@ -704,3 +704,54 @@ main{max-width:none;margin:0;padding:0 0 70px}
 @media (min-width:760px){#local .signal.item.dc-row,#local .signal.item.nc-row{padding:8px 8px 8px 0}}
 .nm-head .section-tag,.global-intro .section-tag{margin-left:0;margin-right:0}
 #local .signal .title-open:focus-visible{outline:2px solid #E3A24F;outline-offset:2px;border-radius:3px}
+/* ===== F2 (Dirección 11-nov-2026): the open ficha is a sheet that rises over the list; a grab handle and «Cerrar» on top,
+   the content scrolls, and one dock at the bottom carries Fuente original · Compartir · Leída (+ Implementada). ===== */
+#signalDetail[open],#signalDetail[open]:has(.sf){position:fixed;inset:auto 0 0 0;margin:0 auto;width:100%;max-width:760px;box-sizing:border-box;height:calc(100dvh - 48px);max-height:none;border:0;border-radius:18px 18px 0 0;padding:0 16px;overflow-y:auto;overscroll-behavior:contain;background:var(--ivory,#FAF9F5);box-shadow:0 -8px 30px rgba(20,35,47,.18);animation:sheetUp .22s ease-out}
+@keyframes sheetUp{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){#signalDetail[open]{animation:none}}
+#signalDetail::backdrop{background:rgba(20,35,47,.45)}
+#signalDetail .sheet-grab{position:sticky;top:0;z-index:31;height:14px;margin:0 -16px;background:var(--ivory,#FAF9F5);display:flex;justify-content:center;align-items:flex-end;touch-action:none}
+#signalDetail .sheet-grab::before{content:"";width:40px;height:4px;border-radius:2px;background:rgba(29,51,69,.22)}
+#signalDetail .detail-top{position:sticky;top:14px;z-index:30;margin:0 -16px 6px;padding:0 8px;background:var(--ivory,#FAF9F5);min-height:44px;touch-action:none}
+#signalDetail .detail-close{min-height:44px;padding:0 8px;gap:6px;font:600 14px/1 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink68)}
+#signalDetail .detail-top.sf-top{top:14px;height:44px}
+#signalDetail #detailTitle,#signalDetail h2#detailTitle{font:700 20px/1.25 var(--serif)!important;letter-spacing:-.005em;margin:2px 0 4px}
+#signalDetail .ficha-dock{position:sticky;bottom:0;z-index:30;margin:12px -16px 0;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--ink12,rgba(29,51,69,.12))}
+#signalDetail .ficha-dock .ficha-acts{display:flex;justify-content:space-around;gap:4px;margin:0;flex-wrap:nowrap}
+#signalDetail .ficha-dock .act{flex:1 1 0;min-width:0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px;font:700 11.5px/1.15 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--accent-ink,#8A5420);text-align:center;border:0;background:none;border-radius:10px}
+#signalDetail .ficha-dock .act svg{width:18px;height:18px}
+#signalDetail .ficha-dock .act span{white-space:normal}
+#signalDetail .ficha-dock .act-read[aria-pressed="true"]{color:var(--ok,#3B6B4A)}
+#signalDetail .ficha-dock .nm-ck{border:0!important;padding:4px 2px!important;min-height:52px;flex-direction:column;color:var(--ink68)}
+#signalDetail .ficha-dock .share-feedback{position:absolute;left:0;right:0;bottom:100%;text-align:center;font-size:12px}
+#signalDetail .ficha-dock .share-feedback:empty{display:none}
+#signalDetail .nm-ficha{margin:6px 0 10px}
+#signalDetail .nm-ficha .nm-det{margin-top:4px}
+@media (min-width:760px){#signalDetail[open]{height:calc(100dvh - 72px);padding:0 28px}#signalDetail .sheet-grab,#signalDetail .detail-top,#signalDetail .ficha-dock{margin-left:-28px;margin-right:-28px}}
+#signalDetail[open]:has(.sf){width:100%;max-width:980px;height:calc(100dvh - 48px);max-height:none;padding:0 16px}
+#signalDetail .norm-kicker{text-transform:none;letter-spacing:0}
+
+/* Global's ficha: the same F2 sheet. */
+#globalDetail[open]{position:fixed;inset:auto 0 0 0;margin:0 auto;width:100%;max-width:760px;box-sizing:border-box;height:calc(100dvh - 48px);max-height:none;border:0;border-radius:18px 18px 0 0;padding:0 16px;overflow-y:auto;overscroll-behavior:contain;background:var(--ivory,#FAF9F5);box-shadow:0 -8px 30px rgba(20,35,47,.18);animation:sheetUp .22s ease-out}
+@media (prefers-reduced-motion:reduce){#globalDetail[open]{animation:none}}
+#globalDetail::backdrop{background:rgba(20,35,47,.45)}
+#globalDetail .sheet-grab{position:sticky;top:0;z-index:31;height:14px;margin:0 -16px;background:var(--ivory,#FAF9F5);display:flex;justify-content:center;align-items:flex-end;touch-action:none}
+#globalDetail .sheet-grab::before{content:"";width:40px;height:4px;border-radius:2px;background:rgba(29,51,69,.22)}
+#globalDetail .detail-top{position:sticky;top:14px;z-index:30;margin:0 -16px 6px;padding:0 8px;background:var(--ivory,#FAF9F5);min-height:44px;touch-action:none}
+#globalDetail .detail-close{min-height:44px;padding:0 8px;gap:6px;font:600 14px/1 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink68)}
+#globalDetail .detail-top.sf-top{top:14px;height:44px}
+#globalDetail #detailTitle,#globalDetail h2#detailTitle{font:700 20px/1.25 var(--serif)!important;letter-spacing:-.005em;margin:2px 0 4px}
+#globalDetail .ficha-dock{position:sticky;bottom:0;z-index:30;margin:12px -16px 0;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--ink12,rgba(29,51,69,.12))}
+#globalDetail .ficha-dock .ficha-acts{display:flex;justify-content:space-around;gap:4px;margin:0;flex-wrap:nowrap}
+#globalDetail .ficha-dock .act{flex:1 1 0;min-width:0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px;font:700 11.5px/1.15 Inter,ui-sans-serif,system-ui,sans-serif;color:var(--accent-ink,#8A5420);text-align:center;border:0;background:none;border-radius:10px}
+#globalDetail .ficha-dock .act svg{width:18px;height:18px}
+#globalDetail .ficha-dock .act span{white-space:normal}
+#globalDetail .ficha-dock .act-read[aria-pressed="true"]{color:var(--ok,#3B6B4A)}
+#globalDetail .ficha-dock .nm-ck{border:0!important;padding:4px 2px!important;min-height:52px;flex-direction:column;color:var(--ink68)}
+#globalDetail .ficha-dock .share-feedback{position:absolute;left:0;right:0;bottom:100%;text-align:center;font-size:12px}
+#globalDetail .ficha-dock .share-feedback:empty{display:none}
+#globalDetail .nm-ficha{margin:6px 0 10px}
+#globalDetail .nm-ficha .nm-det{margin-top:4px}
+@media (min-width:760px){#globalDetail[open]{height:calc(100dvh - 72px);padding:0 28px}#globalDetail .sheet-grab,#globalDetail .detail-top,#globalDetail .ficha-dock{margin-left:-28px;margin-right:-28px}}
+#globalDetail .norm-kicker{text-transform:none;letter-spacing:0}
+.global-detail h2#globalDetailTitle,#globalDetail h2{font:700 20px/1.25 var(--serif);letter-spacing:-.005em}
