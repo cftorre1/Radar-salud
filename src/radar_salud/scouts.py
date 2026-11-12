@@ -176,9 +176,112 @@ class SuperintendenciaStatsScout:
             )
         return items
 
+    # Dirección 12-nov-2026: the "Publicaciones" branch of the Biblioteca digital (documentos metodológicos such as
+    # ICSA/IRCI, documentos de trabajo, ...) uses the same dated listing and /biblioteca-digital/ detail pages. Its
+    # sub-listings are read from the hub's menu, so a new collection is picked up without a code change.
+    PUBLICATIONS_URL = "https://www.superdesalud.gob.cl/tax-biblioteca-digital/publicaciones-6509/"
+    PUBLICATION_LISTINGS = (
+        "https://www.superdesalud.gob.cl/tax-biblioteca-digital/publicaciones-6509/documentos-metodologicos-7455/",
+    )
+    SUBLISTING_RE = re.compile(r"/tax-biblioteca-digital/publicaciones-6509/([a-z0-9-]+?)-\d+/?$", re.I)
+    MAX_PAGES = 8  # 51 documentos metodológicos at 10 per page on 12-nov-2026; the cap bounds a runaway loop.
+
+    def publication_listings(self, html: str, base_url: Optional[str] = None) -> List[str]:
+        base_url = base_url or self.PUBLICATIONS_URL
+        parser = _AnchorParser()
+        parser.feed(html)
+        out = []
+        for href, _text in parser.links:
+            absolute = urljoin(base_url, href or "").split("#")[0].split("?")[0]
+            if self.SUBLISTING_RE.search(absolute) and "/page/" not in absolute and absolute not in out:
+                out.append(absolute if absolute.endswith("/") else absolute + "/")
+        return out
+
+    @staticmethod
+    def next_page(html: str, page_url: str) -> Optional[str]:
+        """The next page of the same listing (WordPress ``/page/N/``), or None."""
+        base = re.sub(r"page/\d+/?$", "", page_url.split("?")[0])
+        if not base.endswith("/"):
+            base += "/"
+        current = re.search(r"/page/(\d+)/?$", page_url.split("?")[0])
+        wanted = (int(current.group(1)) if current else 1) + 1
+        parser = _AnchorParser()
+        parser.feed(html)
+        for href, _text in parser.links:
+            absolute = urljoin(page_url, href or "").split("#")[0]
+            m = re.search(r"/page/(\d+)/?(?:\?.*)?$", absolute)
+            if m and int(m.group(1)) == wanted and absolute.split("?")[0].startswith(base):
+                return absolute
+        return None
+
+    @classmethod
+    def collection(cls, listing_url: str) -> str:
+        m = cls.SUBLISTING_RE.search(listing_url)
+        return m.group(1).lower() if m else "publicaciones"
+
+    def discover_publications(self, fetch=None) -> List[RawItem]:
+        """Detail pages from the Publicaciones hub and each of its sub-listings, all pages.
+
+        A failing listing is recorded in ``publication_errors`` and skipped: it never blocks the statistics
+        listing or the other collections."""
+        fetch = fetch or fetch_html
+        self.publication_errors = []
+        listings = list(self.PUBLICATION_LISTINGS)
+        try:
+            hub = fetch(self.PUBLICATIONS_URL)
+        except Exception as exc:  # noqa: BLE001 - network/HTTP errors are reported, not raised
+            self.publication_errors.append((self.PUBLICATIONS_URL, type(exc).__name__))
+            hub = None
+        items: List[RawItem] = []
+        if hub is not None:
+            try:
+                listings += [u for u in self.publication_listings(hub, self.PUBLICATIONS_URL) if u not in listings]
+                for raw in self.discover_from_html(hub, self.PUBLICATIONS_URL):
+                    raw.metadata["collection"] = "publicaciones"
+                    items.append(raw)
+            except Exception as exc:  # noqa: BLE001
+                self.publication_errors.append((self.PUBLICATIONS_URL, type(exc).__name__))
+        for listing in listings:
+            page_url, pages = listing, 0
+            while page_url and pages < self.MAX_PAGES:
+                try:
+                    html = fetch(page_url)
+                    found = self.discover_from_html(html, page_url)
+                    following = self.next_page(html, page_url)
+                except Exception as exc:  # noqa: BLE001 - fetch or parse: this collection stops, the rest go on
+                    self.publication_errors.append((page_url, type(exc).__name__))
+                    break
+                for raw in found:
+                    raw.metadata["collection"] = self.collection(listing)
+                    items.append(raw)
+                pages += 1
+                page_url = following
+            if page_url and pages >= self.MAX_PAGES:
+                self.publication_errors.append((page_url, "page_cap"))  # older pages left unread: reported
+        return items
+
     def discover(self, url: Optional[str] = None) -> List[RawItem]:
         target = url or self.DEFAULT_URL
-        return self.discover_from_html(fetch_html(target), target)
+        items = self.discover_from_html(fetch_html(target), target)
+        self.discovery_errors = []
+        if url is None:
+            seen = {raw.url for raw in items}
+            # A collection page (e.g. documentos metodológicos) wins over the hub for the same document.
+            extra = {}
+            try:
+                publications = self.discover_publications()
+            except Exception as exc:  # noqa: BLE001 - Publicaciones never breaks Estadísticas
+                self.publication_errors = getattr(self, "publication_errors", []) + [(self.PUBLICATIONS_URL, type(exc).__name__)]
+                publications = []
+            # Surfaced to the engine (partial_discovery, source health): a failing collection is reported, not hidden.
+            self.discovery_errors = [f"publicaciones:{u}:{why}" for u, why in getattr(self, "publication_errors", [])]
+            for raw in publications:
+                if raw.url in seen:
+                    continue
+                if raw.url not in extra or extra[raw.url].metadata.get("collection") == "publicaciones":
+                    extra[raw.url] = raw
+            items += list(extra.values())
+        return items
 
     def discover_new(self, store: SeenStore, url: Optional[str] = None) -> List[RawItem]:
         items = self.discover(url)

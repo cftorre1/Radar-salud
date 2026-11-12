@@ -22,7 +22,9 @@ def process_superintendencia_detail(raw: RawItem, html: str, source_cfg: Dict[st
     data_insights=[]
     insight_meta={"status":"not_applicable"}
     file_url=_xlsx(enriched.metadata.get("attachments"))
-    fam=family_from_title(enriched.title)
+    # Biblioteca digital > Publicaciones (12-nov-2026): methodology/working documents are never a statistics
+    # family release, even when the title says "GES" or "cartera" (review #187).
+    fam=None if (raw.metadata or {}).get("collection") else family_from_title(enriched.title)
     if file_url and fam:
         insight_meta=source_specific_insights(file_url,enriched.title)
         data_insights=insight_meta.get("insights") or []

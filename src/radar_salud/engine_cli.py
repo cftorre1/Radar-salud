@@ -182,6 +182,9 @@ def main():
             row["release_key"]=meta["release_key"]
         if meta.get("listing_publication_date"):
             row["listing_publication_date"]=meta["listing_publication_date"]
+        if meta.get("collection"):
+            # Biblioteca digital > Publicaciones (Dirección 12-nov-2026): which collection listed the document.
+            row["publication_collection"]=meta["collection"]
         return row
     specs=[
       ("superintendencia","superintendencia_salud",SuperintendenciaStatsScout().discover,stats),

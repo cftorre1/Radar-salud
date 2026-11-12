@@ -101,7 +101,8 @@ def ges_releases(root: Path) -> list[dict]:
     out = {}
     for sig in _signals(root):
         title = str(sig.get("title") or "")
-        if "casos ges" not in _fold(title) or sig.get("source_name") != "Superintendencia de Salud":
+        if ("casos ges" not in _fold(title) or sig.get("source_name") != "Superintendencia de Salud"
+                or sig.get("publication_collection")):  # a methodology document is never a GES release (#187)
             continue
         period = title_period(title)
         docs = [u for u in _docs(sig) if u.lower().endswith((".xlsx", ".xls"))]
