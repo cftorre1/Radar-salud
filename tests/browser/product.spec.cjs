@@ -896,5 +896,5 @@ test('Dirección 11-nov-2026: Al día shows the insight on top and no Global car
  const gap=async()=>page.evaluate(()=>{const bar=document.querySelector('.brandbar').getBoundingClientRect().bottom;const els=[...document.querySelectorAll('main *, body > div *')].filter(e=>{const r=e.getBoundingClientRect();return r.height>4&&r.width>40&&r.top>=bar-1&&!e.closest('.brandbar,dialog,.sr-only')&&e.children.length===0&&e.textContent.trim()});return Math.min(...els.map(e=>e.getBoundingClientRect().top))-bar});
  const gaps=[];for(const u of ['/','/normativa.html','/datos.html','/global.html']){await page.goto(u);await page.waitForTimeout(800);await expect(page.locator('.section-tag')).toHaveCount(0);gaps.push(await gap())}
  if(test.info().project.name==='mobile')expect(Math.max(...gaps)-Math.min(...gaps)).toBeLessThanOrEqual(3);
- const cta=page.locator('.brandbar a.header-newsletter');expect(await cta.evaluate(a=>getComputedStyle(a).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+ const cta=page.locator('.brandbar a.header-newsletter');expect(await cta.evaluate(a=>getComputedStyle(a,'::after').backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');expect((await cta.boundingBox()).height).toBeGreaterThanOrEqual(44);
 });

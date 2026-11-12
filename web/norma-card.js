@@ -55,8 +55,7 @@
  function hl(t,q){t=String(t??'');if(!q)return esc(t);const i=t.toLowerCase().indexOf(String(q).toLowerCase());return i<0?esc(t):`${esc(t.slice(0,i))}<mark>${esc(t.slice(i,i+q.length))}</mark>${esc(t.slice(i+q.length))}`}
  const title=x=>`${x.label} · ${x.subject}`;
  // o: {read (true/false draws the dot; undefined draws none), readId, openHref, openAttr (Al día's data-detail), dateLine
- // (already-escaped «Publicado 6 nov 2026 · SUSESO»), shareId, shareTitle, shareUrl, srcUrl, q (search highlight), open
- // topExtra}
+ // (already-escaped «Publicado 6 nov 2026 · SUSESO»), shareId, shareTitle, shareUrl, srcUrl, q (search highlight)}
  function render(x,o={}){
   const Bar=root.AlicantoBar,on=impl.has(x.id),r=x.review||{},legal=legalOf(x),t=o.shareTitle||title(x),q=o.q||'';
   const href=o.openHref||'';
