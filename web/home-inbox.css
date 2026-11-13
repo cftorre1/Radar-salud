@@ -819,3 +819,6 @@ main{max-width:none;margin:0;padding:0 0 70px}
 
 /* Insight and Global specials (Dirección 12-nov-2026): the same pill as the feed, in the «Esta semana» tray. */
 .big-eyebrow .rk,.anchor-label .rk{display:inline-flex;margin:0}
+/* Read rows (Dirección 12-nov-2026: read and unread must differ, without losing contrast): the pill and the state
+   chip turn into an outline of the same colour on the page background — same hue, still ≥4.5:1, clearly «leída». */
+.read .rk-pill,.read .rk-state,.big-feature.read .rk-pill{background:transparent;box-shadow:inset 0 0 0 1px currentColor}
