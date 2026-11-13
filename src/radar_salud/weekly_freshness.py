@@ -267,12 +267,31 @@ def _paragraphs(section):
     xs = (section or {}).get("paragraphs") if isinstance(section, dict) else None
     return [str(x) for x in xs] if isinstance(xs, list) else []
 
+_STOP = {"para", "pero", "como", "sobre", "entre", "desde", "hasta", "este", "esta", "estos", "estas", "frente",
+         "sigue", "siendo", "tiene", "tienen", "más", "menos", "cada", "todo", "toda", "todos", "todas", "también"}
+
+
+def _content_stems(text):
+    words = re.findall(r"[a-záéíóúñü]{4,}", str(text or "").lower())
+    return {w[:5] for w in words if w not in _STOP}
+
+
+def dek_repeats_headline(weekly):
+    """Rule 8 (Dirección, 12-nov-2026): the dek adds to the headline instead of restating it."""
+    head = _content_stems(weekly.get("headline") or weekly.get("insight_title") or weekly.get("title"))
+    dek = _content_stems(weekly.get("dek"))
+    shared = head & dek
+    return bool(head) and len(shared) >= 2 and len(shared) / len(head) >= 0.5  # 2+ stems: no false hit on short headlines
+
+
 def presentation_a_errors(weekly):
     """Return the list of broken presentation-A rules (empty list means PASS)."""
     from .weekly_insight_essay import presentation_errors, v1_retired
     if _v2(weekly):
-        return presentation_errors(weekly)
+        return list(presentation_errors(weekly)) + (["dek_repeats_headline"] if dek_repeats_headline(weekly) else [])
     errors = ["schema_v1_retired_use_weekly_insight_a_v2"] if v1_retired(weekly) else []
+    if dek_repeats_headline(weekly):
+        errors.append("dek_repeats_headline")
     essay = weekly.get("essay") or {}
     facts, reading = _paragraphs(essay.get("facts")), _paragraphs(essay.get("reading"))
     if not facts or not reading:

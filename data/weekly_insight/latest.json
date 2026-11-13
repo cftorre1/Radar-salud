@@ -19,9 +19,9 @@
   "weekly_insight": {
     "id": "weekly-insight:2026-11-09:residencias-mayores-camas",
     "schema_version": "weekly_insight_a_v2",
-    "title": "Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña",
-    "insight_title": "Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña",
-    "headline": "Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña",
+    "title": "Un fondo de inversión parte con 250 habitaciones para mayores en un país donde más de uno de cada cuatro tendría 60 años o más en 2035",
+    "insight_title": "Un fondo de inversión parte con 250 habitaciones para mayores en un país donde más de uno de cada cuatro tendría 60 años o más en 2035",
+    "headline": "Un fondo de inversión parte con 250 habitaciones para mayores en un país donde más de uno de cada cuatro tendría 60 años o más en 2035",
     "event_date": "2026-11-02",
     "freshness_anchor_date": "2026-11-09",
     "anchor_kind": "monday",
@@ -29,7 +29,7 @@
     "editorial_review_pass": true,
     "source_name": "FNE · Superintendencia de Salud · INE · Minsal · prensa",
     "source_url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
-    "dek": "El capital privado apuesta por las residencias para mayores; sin embargo, la oferta sigue siendo pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital.",
+    "dek": "El fondo apunta a UF 1.500.000 y hasta 1.000 habitaciones en un plazo de hasta 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más.",
     "body": [
       {
         "type": "paragraph",
@@ -44,18 +44,18 @@
       },
       {
         "type": "paragraph",
-        "text": "La [FNE](f1), que analizó la gestión de residencias para adultos mayores y el desarrollo inmobiliario, describe al nuevo actor con “foco en proyectos de mayor tamaño”. Es una señal de que el capital institucional ve negocio en el cuidado de largo plazo. Para el sistema de salud la pregunta es otra: cuánta demanda queda fuera de esa oferta y dónde termina."
+        "text": "La [FNE](f1), que analizó la gestión de residencias para adultos mayores y el desarrollo inmobiliario, describe al nuevo actor con “foco en proyectos de mayor tamaño”. Es una señal de que el capital de inversión ve negocio en el cuidado de largo plazo. Para el sistema de salud la pregunta es otra: cuánta demanda queda fuera de esa oferta y dónde termina."
       },
       {
         "type": "key_figures"
       },
       {
         "type": "subhead",
-        "text": "Una oferta formal chica frente a una demanda que crece"
+        "text": "Una oferta formal chica frente a la demanda"
       },
       {
         "type": "paragraph",
-        "text": "El [Censo 2024 del INE](f6) contó 3.665.028 personas de 60 años o más, el 19,8% de la población. De ellas, 593.010 tienen 80 años o más, y el 54,0% de ese grupo vive en situación de discapacidad. La red pública es acotada: Senama mantiene 23 residencias (Eleam) con cupo para 1.318 personas, según su informe del primer trimestre de 2026 citado por [Emol](f3). A eso se suman unos 900 hogares privados autorizados por resolución sanitaria, algunos con subvenciones."
+        "text": "El [Censo 2024 del INE](f6) contó 3.665.028 personas de 60 años o más, el 19,8% de la población; en 1992 eran el 9,7%, y según el documento del INE y Senama que recoge [Diario Estrategia](f10) serían el 26,4% en 2035: [más de uno de cada cuatro](est:mayores_2035). De las personas de 60 años o más, 593.010 tienen 80 años o más, y el 54,0% de ese grupo vive en situación de discapacidad. La red pública es acotada: Senama mantiene 23 residencias (Eleam) con cupo para 1.318 personas, según su informe del primer trimestre de 2026 citado por [Emol](f3). A eso se suman unos 900 hogares privados autorizados por resolución sanitaria, algunos con subvenciones."
       },
       {
         "type": "paragraph",
@@ -253,13 +253,25 @@
           "1.318 cupos Senama"
         ],
         "display": "ocho de cada diez"
+      },
+      {
+        "id": "mayores_2035",
+        "label": "personas de 60 años o más en 2035, % de la población (proyección)",
+        "value": 26.4,
+        "unit": "%",
+        "formula": "26.4 / 100 * 100",
+        "inputs": [
+          "26,4% de la población en 2035 (proyección citada por INE y Senama)"
+        ],
+        "display": "más de uno de cada cuatro"
       }
     ],
     "method": {
       "estimates": [
         "sin_autorizacion",
         "altas_vs_cupos",
-        "catastro_total"
+        "catastro_total",
+        "mayores_2035"
       ],
       "estimates_note": "Ninguna cifra es monetaria, así que no se mezclan pesos de distintos años.",
       "discarded": [
@@ -356,6 +368,15 @@
         "role": "Plazo para dictar la Política Nacional de Envejecimiento.",
         "short_label": "Diario Oficial · Ley 21.822 (1 jun)",
         "short_role": "política pública"
+      },
+      {
+        "id": "f10",
+        "type": "prensa",
+        "label": "Diario Estrategia · INE y Senama: 3.665.028 personas de 60 años o más (30 sep)",
+        "url": "https://www.diarioestrategia.cl/texto-diario/mostrar/6034175/ine-pais-residen-3665028-personas-60-anos-equivalentes-198-poblacion-residente",
+        "role": "Documento del INE y Senama (29 sep): evolución desde 1992 y proyección a 2035 de la población de 60 años o más.",
+        "short_label": "Diario Estrategia · INE y Senama (30 sep)",
+        "short_role": "envejecimiento"
       }
     ],
     "source_refs": [
@@ -367,7 +388,8 @@
       "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/09/29/en-el-pa%C3%ADs-residen-3.665.028-personas-de-60-a%C3%B1os-o-m%C3%A1s-equivalentes-al-19-8-de-la-poblaci%C3%B3n-residente",
       "https://www.latercera.com/nacional/noticia/pacientes-sociosanitarios-las-1056-personas-dadas-de-alta-que-siguen-ocupando-camas-hospitalarias-por-falta-de-redes/",
       "https://www.superdesalud.gob.cl/documentacion/666/articles-19660_recurso_1.pdf",
-      "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/"
+      "https://actualidadjuridica.doe.cl/ley-integral-de-personas-mayores-y-promocion-del-envejecimiento-digno-activo-y-saludable/",
+      "https://www.diarioestrategia.cl/texto-diario/mostrar/6034175/ine-pais-residen-3665028-personas-60-anos-equivalentes-198-poblacion-residente"
     ],
     "evidence_figures": [
       "FNE (comunicado del 2 nov; aprobación del 29 oct): aprobó de manera pura y simple la asociación entre SalfaCorp, el grupo Angelini y sociedades ligadas a Villa Soleares y a Vivendi (esta administrará las residencias); analizó la gestión de residencias para adultos mayores y el desarrollo inmobiliario, y concluyó que la operación no reduce sustancialmente la competencia.",
@@ -379,7 +401,8 @@
       "INE (29 sep, Censo 2024): 3.665.028 personas de 60 años o más (19,8% de la población); 593.010 de 80 años o más; 54,0% de las personas de 80 o más en situación de discapacidad.",
       "La Tercera (jun): el subsecretario de Redes Asistenciales informó 996 pacientes con alta médica hospitalizados por falta de redes en marzo y 1.056 en junio.",
       "Superintendencia de Salud (estudio publicado en 2020, datos de 2017): hospitalización social es una estadía de 60 o más días con baja necesidad de atención médica; fue el 1% de los egresos de las personas de 60 años o más y el 15% de sus días-cama (15,3% de 3.918.415 días-cama).",
-      "Ley 21.822 (Diario Oficial, 1 jun 2026): la Política Nacional de Envejecimiento deberá dictarse dentro de seis meses desde la entrada en vigencia de la ley."
+      "Ley 21.822 (Diario Oficial, 1 jun 2026): la Política Nacional de Envejecimiento deberá dictarse dentro de seis meses desde la entrada en vigencia de la ley.",
+      "Diario Estrategia (30 sep), sobre el documento presentado por el INE y Senama el 29 sep: la participación de las personas de 60 años o más en la población nacional pasó de 9,7% en 1992 a 19,8% en 2024; según las proyecciones citadas, representarían el 26,4% de la población en 2035."
     ],
     "evidence_excerpts": [
       {
@@ -397,11 +420,19 @@
       {
         "source_ref": "f8",
         "text": "estadía prolongada (60 o más días) con una baja necesidad de atención médica hospitalaria"
+      },
+      {
+        "source_ref": "f10",
+        "text": "su participación en la población nacional se duplicó desde 9,7% hasta 19,8%"
+      },
+      {
+        "source_ref": "f10",
+        "text": "las personas de 60 años o más representarían el 26,4% de la población en 2035"
       }
     ],
     "notes": [],
-    "summary": "El capital privado apuesta por las residencias para mayores; sin embargo, la oferta sigue siendo pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital.",
-    "insight_teaser": "El capital privado apuesta por las residencias para mayores; sin embargo, la oferta sigue siendo pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital.",
+    "summary": "El fondo apunta a UF 1.500.000 y hasta 1.000 habitaciones en un plazo de hasta 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más.",
+    "insight_teaser": "El fondo apunta a UF 1.500.000 y hasta 1.000 habitaciones en un plazo de hasta 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más.",
     "verified_on": "2026-11-08",
     "independent_review": {
       "kind": "independent_review",

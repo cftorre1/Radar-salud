@@ -190,14 +190,14 @@ test('current approved insight renders the v2 essay faithfully to the approved m
  const html=body.innerHTML;
  assert.match(html,/^<article class="we">/);assert.ok(html.includes(w.headline.slice(0,40)));
  for(const label of ['Qué pasó','Lectura Alicanto','Qué mirar','wi-facts','wi-watch'])assert.ok(!html.includes(label),label);
- for(const label of ['Insight de la semana','9 fuentes','Lo que debes saber en 5 cifras','Notas','Cierre','Cómo hicimos este análisis','Lo que no usamos.','Límites.','Fuentes'])assert.ok(html.includes(label),label);
+ for(const label of ['Insight de la semana','10 fuentes','Lo que debes saber en 5 cifras','Notas','Cierre','Cómo hicimos este análisis','Lo que no usamos.','Límites.','Fuentes'])assert.ok(html.includes(label),label);
  // No raw markup leaks; every source is linked, numbered and badged; superscripts point to the list.
  assert.doesNotMatch(html,/\]\((f\d+|est:)/);assert.doesNotMatch(html,/\[\^n\d+\]/);
  for(const s of w.sources){assert.ok(html.includes(`href="${s.url}"`),s.id);assert.ok(html.includes(`id="we-src-${s.id}"`),s.id)}
  // Dirección 11-nov: header «Insight de la semana · fecha», byline «Alicanto · Lectura de N min · N fuentes», no kicker,
  // no evidence legend and no «Oficial/Prensa/Dato oficial» labels anywhere.
  assert.match(html,/<p class="we-kicker"><span>Insight de la semana<\/span><span>[^<]+<\/span><\/p>/);
- assert.match(html,/<p class="we-byline"><b>Alicanto<\/b><span>Lectura de \d+ min<\/span><span>9 fuentes<\/span><\/p><\/header>/);
+ assert.match(html,/<p class="we-byline"><b>Alicanto<\/b><span>Lectura de \d+ min<\/span><span>10 fuentes<\/span><\/p><\/header>/);
  assert.doesNotMatch(html,/\d+ oficiales</);
  for(const gone of ['Personas mayores y cuidados','equipo editorial','Cifras verificadas','we-legend','we-badge','we-tag','Dato oficial','>Prensa<','>Oficial<','class="we-est"'])assert.ok(!html.includes(gone),gone);
  assert.match(html,/<a class="we-sl" href="https:\/\/www\.fne\.gob\.cl[^"]*" target="_blank" rel="noopener">Fiscalía Nacional Económica<\/a><sup class="we-c"><a href="#we-src-f1" data-src="f1"/);
@@ -211,7 +211,7 @@ test('current approved insight renders the v2 essay faithfully to the approved m
  // Estimates: dashed underline in the text, formulas in the collapsed method.
  // Estimates: a lettered footnote mark in reading order (a, b, c) and a visible «Notas» list with each formula.
  const marks=[...html.split('<section class="we-back">')[0].matchAll(/<sup class="we-n"><a href="#we-est-([\w-]+)"[^>]*>([a-z])<\/a>/g)].map(m=>m[2]);
- assert.deepEqual([...new Set(marks)],['a','b','c']);
+ assert.deepEqual([...new Set(marks)],w.estimates.map((_,i)=>'abcdefgh'[i]));
  assert.match(html,/<section class="we-notes"[^>]*><h3 id="we-notes-h">Notas<\/h3><ol><li id="we-est-/);
  assert.match(html,/<details class="we-howto"><summary>/);assert.doesNotMatch(html,/<details class="we-howto" open/);
  assert.match(html,/«Uno de cada tres»: <code>505 ÷ \(993 \+ 505\) = 33,7%<\/code>/);assert.match(html,/<code>1\.056 ÷ 1\.318 = 80,1%<\/code>/);
@@ -224,7 +224,7 @@ test('current approved insight renders the v2 essay faithfully to the approved m
  assert.match(html,/<span class="we-end" aria-hidden="true"><\/span><\/p><\/div><\/div><section class="we-back"><section class="we-notes"/);
  // Sources are numbered by first citation, so superscripts first appear as 1, 2, 3… and the list follows that order.
  const firsts=[];for(const m of html.split('<section class="we-back">')[0].matchAll(/aria-label="Fuente (\d+)"/g)){const n=Number(m[1]);if(!firsts.includes(n))firsts.push(n)}
- assert.deepEqual(firsts,[1,2,3,4,5,6,7,8,9]);
+ assert.deepEqual(firsts,Array.from({length:w.sources.length},(_,i)=>i+1));
  assert.ok(html.indexOf('id="we-src-f1"')<html.indexOf('id="we-src-f2"')&&html.indexOf('id="we-src-f2"')<html.indexOf('id="we-src-f6"'));
  // The review line is drawn from the recorded independent review, and only from a FINAL PASS. The current insight
  // has a final verdict (rounds 5–6 on 11-nov, PASS_WITH_CORRECTIONS with corrections applied), so it claims one.
@@ -608,8 +608,8 @@ test('Home specials: Global weekly pick and insight footer',()=>{
  const old=new Date(mon);old.setDate(old.getDate()-7);c.old={...c.pick,week_anchor:iso(old)};vm.runInContext("globalWeekly=old",c);assert.equal(c.specials().filter(x=>x.kind==='global').length,0);
  vm.runInContext("globalWeekly=null",c);assert.equal(c.specials().length,0);
  const w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight;c.w=w;vm.runInContext("currentWeekly=()=>w",c);
- const x=c.specials().find(s=>s.kind==='weekly');assert.equal(x.summary,w.dek);assert.equal(x.source,'9 fuentes');assert.equal(x.date,null);
- const card=c.specialCard(x);assert.match(card,/<span>Insight de la semana<\/span>/);assert.match(card,/<span class="meta-text">9 fuentes<\/span>/);assert.doesNotMatch(card,/FNE ·|· prensa/);
+ const x=c.specials().find(s=>s.kind==='weekly');assert.equal(x.summary,w.dek);assert.equal(x.source,'10 fuentes');assert.equal(x.date,null);
+ const card=c.specialCard(x);assert.match(card,/<span>Insight de la semana<\/span>/);assert.match(card,/<span class="meta-text">10 fuentes<\/span>/);assert.doesNotMatch(card,/FNE ·|· prensa/);
 });
 
 // Dirección 11-nov-2026: ONE norm card for Normativa and Al día (norma-card.js): the default Al día actions plus the
