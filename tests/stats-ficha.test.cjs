@@ -95,10 +95,10 @@ test('a builder without topic fields falls back to its tab text and first chart'
  assert.match(load().render({...pub,tabs:[]}),/aria-label="Indicadores clave"/);
 });
 
-test('Lectura shows only after a verifier PASS and all text is escaped',()=>{
+test('Lectura Alicanto is never shown (retired, Dirección 12-nov-2026), nor the internal note; all text is escaped',()=>{
  const F=load();
- const ok=F.render({...pub,lectura:{status:'pass',text:'Para las Isapres <b>importa</b> la base de cotizantes.'}});
- assert.match(ok,/Lectura Alicanto<\/h3><p>Para las Isapres &lt;b&gt;importa&lt;\/b&gt;/);
+ const ok=F.render({...pub,lectura:{status:'pass',text:'Para las Isapres <b>importa</b> la base de cotizantes.'},machine_note:'Ficha generada por la regla'});
+ assert.doesNotMatch(ok,/Lectura Alicanto|Para las Isapres|Ficha generada por la regla/);
  assert.doesNotMatch(F.render({...pub,lectura:{status:'verifier_fail',text:'x'}}),/Lectura Alicanto<\/h3>/);
  assert.match(F.render({...pub,family_label:'<img src=x onerror=1>'}),/&lt;img src=x onerror=1&gt;/);assert.match(F.render({...pub,tabs:[]},{}),/class="sf-headline">/);
  assert.match(F.render({...pub,status:'HOLD'}),/Ficha no disponible/);
