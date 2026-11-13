@@ -19,9 +19,9 @@
   "weekly_insight": {
     "id": "weekly-insight:2026-11-09:residencias-mayores-camas",
     "schema_version": "weekly_insight_a_v2",
-    "title": "El capital privado entra a las residencias para mayores, pero el envejecimiento deja espacio para mucho más",
-    "insight_title": "El capital privado entra a las residencias para mayores, pero el envejecimiento deja espacio para mucho más",
-    "headline": "El capital privado entra a las residencias para mayores, pero el envejecimiento deja espacio para mucho más",
+    "title": "Un fondo institucional suma 250 habitaciones para mayores en un país donde más de uno de cada cuatro tendrá 60 años o más en 2035",
+    "insight_title": "Un fondo institucional suma 250 habitaciones para mayores en un país donde más de uno de cada cuatro tendrá 60 años o más en 2035",
+    "headline": "Un fondo institucional suma 250 habitaciones para mayores en un país donde más de uno de cada cuatro tendrá 60 años o más en 2035",
     "event_date": "2026-11-02",
     "freshness_anchor_date": "2026-11-09",
     "anchor_kind": "monday",
@@ -29,7 +29,7 @@
     "editorial_review_pass": true,
     "source_name": "FNE · Superintendencia de Salud · INE · Minsal · prensa",
     "source_url": "https://www.fne.gob.cl/fne-aprobo-asociacion-entre-salfacorp-el-grupo-angelini-y-otros-para-el-desarrollo-y-operacion-de-residencias-para-adultos-mayores/",
-    "dek": "Los dos primeros proyectos del fondo suman 250 habitaciones; las personas de 60 años o más ya son el 19,8% de la población y serían el 26,4% en 2035, según el INE.",
+    "dek": "El fondo apunta a UF 1.500.000 y hasta 1.000 habitaciones en 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más.",
     "body": [
       {
         "type": "paragraph",
@@ -55,7 +55,7 @@
       },
       {
         "type": "paragraph",
-        "text": "El [Censo 2024 del INE](f6) contó 3.665.028 personas de 60 años o más, el 19,8% de la población; en 1992 eran el 9,7%, y según las proyecciones del INE que recoge [Diario Estrategia](f10) serían el 26,4% en 2035. De ellas, 593.010 tienen 80 años o más, y el 54,0% de ese grupo vive en situación de discapacidad. La red pública es acotada: Senama mantiene 23 residencias (Eleam) con cupo para 1.318 personas, según su informe del primer trimestre de 2026 citado por [Emol](f3). A eso se suman unos 900 hogares privados autorizados por resolución sanitaria, algunos con subvenciones."
+        "text": "El [Censo 2024 del INE](f6) contó 3.665.028 personas de 60 años o más, el 19,8% de la población; en 1992 eran el 9,7%, y según el documento del INE y Senama que recoge [Diario Estrategia](f10) serían el 26,4% en 2035: [más de uno de cada cuatro](est:mayores_2035). De las personas de 60 años o más, 593.010 tienen 80 años o más, y el 54,0% de ese grupo vive en situación de discapacidad. La red pública es acotada: Senama mantiene 23 residencias (Eleam) con cupo para 1.318 personas, según su informe del primer trimestre de 2026 citado por [Emol](f3). A eso se suman unos 900 hogares privados autorizados por resolución sanitaria, algunos con subvenciones."
       },
       {
         "type": "paragraph",
@@ -253,13 +253,25 @@
           "1.318 cupos Senama"
         ],
         "display": "ocho de cada diez"
+      },
+      {
+        "id": "mayores_2035",
+        "label": "personas de 60 años o más en 2035, % de la población (proyección)",
+        "value": 26.4,
+        "unit": "%",
+        "formula": "26.4 / 100 * 100",
+        "inputs": [
+          "26,4% de la población en 2035 (proyección citada por INE y Senama)"
+        ],
+        "display": "uno de cada cuatro"
       }
     ],
     "method": {
       "estimates": [
         "sin_autorizacion",
         "altas_vs_cupos",
-        "catastro_total"
+        "catastro_total",
+        "mayores_2035"
       ],
       "estimates_note": "Ninguna cifra es monetaria, así que no se mezclan pesos de distintos años.",
       "discarded": [
@@ -360,10 +372,10 @@
       {
         "id": "f10",
         "type": "prensa",
-        "label": "Diario Estrategia · INE: 3.665.028 personas de 60 años o más (comunicado del 29 sep)",
+        "label": "Diario Estrategia · INE y Senama: 3.665.028 personas de 60 años o más (30 sep)",
         "url": "https://www.diarioestrategia.cl/texto-diario/mostrar/6034175/ine-pais-residen-3665028-personas-60-anos-equivalentes-198-poblacion-residente",
-        "role": "Comunicado del INE: evolución desde 1992 y proyección a 2035 de la población de 60 años o más.",
-        "short_label": "Diario Estrategia · comunicado INE (29 sep)",
+        "role": "Documento del INE y Senama (29 sep): evolución desde 1992 y proyección a 2035 de la población de 60 años o más.",
+        "short_label": "Diario Estrategia · INE y Senama (30 sep)",
         "short_role": "envejecimiento"
       }
     ],
@@ -390,7 +402,7 @@
       "La Tercera (jun): el subsecretario de Redes Asistenciales informó 996 pacientes con alta médica hospitalizados por falta de redes en marzo y 1.056 en junio.",
       "Superintendencia de Salud (estudio publicado en 2020, datos de 2017): hospitalización social es una estadía de 60 o más días con baja necesidad de atención médica; fue el 1% de los egresos de las personas de 60 años o más y el 15% de sus días-cama (15,3% de 3.918.415 días-cama).",
       "Ley 21.822 (Diario Oficial, 1 jun 2026): la Política Nacional de Envejecimiento deberá dictarse dentro de seis meses desde la entrada en vigencia de la ley.",
-      "Diario Estrategia, reproduciendo el comunicado del INE (29 sep): la participación de las personas de 60 años o más en la población nacional pasó de 9,7% en 1992 a 19,8% en 2024; según las proyecciones del INE, representarían el 26,4% de la población en 2035."
+      "Diario Estrategia (30 sep), sobre el documento presentado por el INE y Senama el 29 sep: la participación de las personas de 60 años o más en la población nacional pasó de 9,7% en 1992 a 19,8% en 2024; según las proyecciones citadas, representarían el 26,4% de la población en 2035."
     ],
     "evidence_excerpts": [
       {
@@ -419,8 +431,8 @@
       }
     ],
     "notes": [],
-    "summary": "Los dos primeros proyectos del fondo suman 250 habitaciones; las personas de 60 años o más ya son el 19,8% de la población y serían el 26,4% en 2035, según el INE.",
-    "insight_teaser": "Los dos primeros proyectos del fondo suman 250 habitaciones; las personas de 60 años o más ya son el 19,8% de la población y serían el 26,4% en 2035, según el INE.",
+    "summary": "El fondo apunta a UF 1.500.000 y hasta 1.000 habitaciones en 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más.",
+    "insight_teaser": "El fondo apunta a UF 1.500.000 y hasta 1.000 habitaciones en 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más.",
     "verified_on": "2026-11-08",
     "independent_review": {
       "kind": "independent_review",

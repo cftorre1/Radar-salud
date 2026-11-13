@@ -211,7 +211,7 @@ test('current approved insight renders the v2 essay faithfully to the approved m
  // Estimates: dashed underline in the text, formulas in the collapsed method.
  // Estimates: a lettered footnote mark in reading order (a, b, c) and a visible «Notas» list with each formula.
  const marks=[...html.split('<section class="we-back">')[0].matchAll(/<sup class="we-n"><a href="#we-est-([\w-]+)"[^>]*>([a-z])<\/a>/g)].map(m=>m[2]);
- assert.deepEqual([...new Set(marks)],['a','b','c']);
+ assert.deepEqual([...new Set(marks)],w.estimates.map((_,i)=>'abcdefgh'[i]));
  assert.match(html,/<section class="we-notes"[^>]*><h3 id="we-notes-h">Notas<\/h3><ol><li id="we-est-/);
  assert.match(html,/<details class="we-howto"><summary>/);assert.doesNotMatch(html,/<details class="we-howto" open/);
  assert.match(html,/«Uno de cada tres»: <code>505 ÷ \(993 \+ 505\) = 33,7%<\/code>/);assert.match(html,/<code>1\.056 ÷ 1\.318 = 80,1%<\/code>/);
