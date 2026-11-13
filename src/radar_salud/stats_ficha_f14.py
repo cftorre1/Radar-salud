@@ -513,7 +513,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
            "dek": (f"{n_top} problemas concentran {pc('prob.top.share')} del facturado GES; "
                    f"«{p0}. {plain(package, p0, q)}» lidera con {mm(f'prob.{p0}.{q}.facturado_mm')}"),
            "dek_refs": ["prob.top.n", "prob.top.share", f"prob.{p0}.{q}.facturado_mm", *label_refs(package, plain(package, p0, q))]}
-    sf.topic_fields(tab, f"{p0}. {plain(package, p0, q)}: {mm(f'prob.{p0}.{q}.facturado_mm')}",
+    sf.topic_fields(tab, f"«{p0}. {plain(package, p0, q)}»: {mm(f'prob.{p0}.{q}.facturado_mm')}",
                     index_refs=[f"prob.{p0}.{q}.facturado_mm", *label_refs(package, plain(package, p0, q))], kpis=[])
     tabs.append(tab)
 
@@ -559,7 +559,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
            "dek": (f"Facturado por caso: {sg('tot.yoy.por_caso')} en el total; «{r0name}» lidera con "
                    f"{sg(f'prob.{r0}.yoy.por_caso')}. {r0_n}"),
            "dek_refs": ["tot.yoy.por_caso", f"prob.{r0}.yoy.por_caso", f"prob.{r0}.{py}.casos", f"prob.{r0}.{q}.casos",
-                        *label_refs(package, r0name)] + (["umbral.base_chica"] if min(n_py, n_q) < CPC_SMALL_BASE else [])}
+                        *label_refs(package, plain(package, r0, q))] + (["umbral.base_chica"] if min(n_py, n_q) < CPC_SMALL_BASE else [])}
     sf.topic_fields(tab, f"Total {sg('tot.yoy.por_caso')} · mediana {sg('prob.yoy.mediana_por_caso')} por caso",
                     index_refs=["tot.yoy.por_caso", "prob.yoy.mediana_por_caso"], kpis=[])
     tabs.append(tab)
@@ -620,8 +620,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                    "source": src + " Región del prestador; un caso con prestadores en dos regiones cuenta en ambas."}]
         tab = {"id": "regiones", "label": "Por región", "charts": charts, "text": [],
                "dek": f"{rname}: el facturado por caso va de {money(V('reg.min'))} a {money(V('reg.max'))} fuera de la RM",
-               "dek_refs": ["reg.min", "reg.max", *label_refs(package, rname)]}
-        sf.topic_fields(tab, f"{rname}: {fmt(V('reg.n'), 0)} regiones con datos publicables", index_refs=["reg.n", *label_refs(package, rname)], kpis=[])
+               "dek_refs": ["reg.min", "reg.max", *label_refs(package, plain(package, rp, q))]}
+        sf.topic_fields(tab, f"{rname}: {fmt(V('reg.n'), 0)} regiones con datos publicables", index_refs=["reg.n", *label_refs(package, plain(package, rp, q))], kpis=[])
         tabs.append(tab)
 
     # Topic 6: series (same quarter each year) and the GES share.

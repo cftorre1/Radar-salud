@@ -34,7 +34,9 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
  // Diverging bars by actor: ink loses, accent gains; bold labels for ≥ 5.000 personas.
  function diverging(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';
-  const vals=rows.map(r=>Number(r.value)),lo=Math.min(0,...vals),hi=Math.max(0,...vals),W=360,row=26,top=8,x0=162,x1=356,k=(x1-x0)/((hi-lo)||1),z=x0+(-lo)*k,H=top+rows.length*row+24,f=v=>sgd(v,c.digits);
+  const f0=v=>sgd(v,c.digits),ml=Math.max(...rows.map(r=>String(r.label).length)),vl=Math.max(...rows.map(r=>f0(Number(r.value)).length));
+  // The label and its value share the left column: it widens for long («#. Nombre») labels so they never touch (review #200).
+  const vals=rows.map(r=>Number(r.value)),lo=Math.min(0,...vals),hi=Math.max(0,...vals),W=360,row=26,top=8,x0=Math.min(232,Math.max(162,Math.ceil(ml*6.9+vl*7.6+22))),x1=356,k=(x1-x0)/((hi-lo)||1),z=x0+(-lo)*k,H=top+rows.length*row+24,f=v=>sgd(v,c.digits);
   let s=`<line x1="${z.toFixed(1)}" y1="${top-4}" x2="${z.toFixed(1)}" y2="${top+rows.length*row}" stroke="${C.axis}"/>`;
   rows.forEach((r,i)=>{const v=Number(r.value),y=top+i*row,w=Math.max(Math.abs(v)*k,2),x=v<0?z-w:z,strong=Math.abs(v)>=5000;
    s+=`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text><text x="${x0-8}" y="${y+15}" font-size="12.5" text-anchor="end" font-weight="${strong?700:400}" fill="${C.ink}">${f(v)}</text>`;
