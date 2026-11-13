@@ -43,7 +43,7 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F12"
-BUILDER_VERSION = "f12_informe_v11"  # v10–v11 (Dirección 11-nov): no Isapre-vs-Isapre price comparison at the same provider; v9 (Dirección 10-nov): plain titles, paired charts, intro and topic body; v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
+BUILDER_VERSION = "f12_informe_v12"  # v12 (Dirección 13-nov): 6 topics → 4 (no «Precios por región» nor «Cambio trimestral»; merged prices and concentration); v10–v11 (Dirección 11-nov): no Isapre-vs-Isapre price comparison at the same provider; v9 (Dirección 10-nov): plain titles, paired charts, intro and topic body; v5 (Dirección 6-nov-2026 21:54): report title, stratified basket, finding sections
 DATASET = "Prestaciones Bonificadas"
 PRICE_MIN_PROVIDERS, PRICE_MIN_FREQ, IQR_MIN_PROVIDERS = 2, 30, 4
 NATIONAL = "NACIONAL"
@@ -54,7 +54,30 @@ FACT_STABLE_MAX = 5.0
 # frecuencia-weighted mean of its index agree in sign and both are at least this many % (review of PR #152).
 HEADLINE_MIN_INDEX = 3.0
 # Prices first (Dirección 5-nov-2026 21:25); coverage and concentration follow.
-TAB_ORDER = ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio", "cobertura", "mismo-prestador", "regiones"]
+TAB_ORDER = ["precios", "concentracion", "dispersion", "nacional", "vs-rm", "publico-privado", "cambio", "cobertura", "mismo-prestador", "regiones"]
+# Dirección 13-nov-2026: «Precios por región» (one code's price per region) and «Cambio trimestral» add nothing and
+# leave the ficha; «Precios en la región» joins «Regiones vs. RM», and «Concentración nacional» joins «Concentración
+# regional». Their figures stay in the evidence package.
+DROP_TOPICS = {"regiones", "cambio"}
+MERGE_TOPICS = (("dispersion", "vs-rm", "precios", "Precios en regiones y RM"),
+                ("nacional", "concentracion", "concentracion", "Concentración"))
+
+
+def merge_topics(tabs: list[dict]) -> list[dict]:
+    """Drop and merge topics (Dirección 13-nov-2026). The first topic of a pair keeps its dek, index line and spark;
+    the second brings its charts, its dek as the opening of its own text, its body and its cards."""
+    by = {t["id"]: t for t in tabs if t["id"] not in DROP_TOPICS}
+    for a, b, nid, label in MERGE_TOPICS:
+        if a not in by or b not in by:
+            continue
+        first, second = by.pop(a), by.pop(b)
+        lead = [f"{second['dek']}." if second.get("dek") and not str(second["dek"]).endswith(".") else second.get("dek")]
+        by[nid] = {**first, "id": nid, "label": label,
+                   "charts": [*(first.get("charts") or []), *(second.get("charts") or [])],
+                   "text": [*(first.get("text") or []), *(second.get("text") or [])],
+                   "body": [*(first.get("body") or []), *[x for x in lead if x], *(second.get("body") or [])],
+                   "kpis": [*(first.get("kpis") or []), *(second.get("kpis") or [])][:2]}
+    return list(by.values())
 # Dirección 11-nov-2026: the prices each Isapre pays for the same code at the same provider are not published (no
 # «Mismo prestador» topic, no gap paragraph, no note). The aggregate stays in the evidence, unpublished.
 PUBLISH_CROSS_ISAPRE = False
@@ -649,7 +672,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         "kicker_meta": tpl["kicker_meta"].format(quarter_label=ql, published_label=sf.day_label(package["published_at"])),
         "date_basis": "first_detected", "headline": headline, "headline_type": "report_title", "dek": dek, "dek_emphasis": None,
         "intro": report.get("intro") or [],
-        "kpis": kpis[:5], "tabs": sorted(tabs, key=lambda t: TAB_ORDER.index(t["id"])),
+        "kpis": kpis[:5], "tabs": sorted(merge_topics(tabs), key=lambda t: TAB_ORDER.index(t["id"])),
         "facts": {"heading": "Qué muestran los datos", "paragraphs": paragraphs, "rendered_in_tabs": True},
         "watch": watch[:2], "notes": notes, "sources": sources, "machine_note": machine,
         "featured": bool((decision or {}).get("featured")), "triggers": triggers, "late_release": late,

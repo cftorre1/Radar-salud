@@ -168,7 +168,7 @@ function fmt(v,c){if(!Number.isFinite(v))return'—';const u=c.unit,d=Number.isI
 const LABEL={F1:'Cartera',F2:'Financieras',F4:'GES',F6:'Prestadores',F7:'Presupuesto',F12:'Precios',F13:'Licencias'};
 // Comparator columns: chart ids from the published fichas, with a short column header.
 const COMP={isapre:[['f1-isapres','Δ beneficiarios ene–ago'],['f1-share','Participación (abiertas)'],['f2-resultado-isapres','Resultado ene–mar'],['f2-siniestralidad-isapres','Siniestralidad'],['f12-bonif-isapre','Bonificado / facturado'],['f13-rechazo-isapre','Licencias rechazadas'],['f13-dias-isapre','Días autorizados']],
- region:[['f12-precio-region','Precio mediano 0601105'],['f12-vs-rm','Precio vs. RM'],['f12-disp','Caro / barato'],['f12-conc-regional','3 mayores prestadores'],['f13-rechazo-region','Licencias rechazadas']]};
+ region:[['f12-vs-rm','Precio vs. RM'],['f12-disp','Caro / barato'],['f12-conc-regional','3 mayores prestadores'],['f13-rechazo-region','Licencias rechazadas']]};
 const state={isapre:'',region:'',periodo:'todo',view:'isapre'};
 let D=null,series=null;
 function load(u){return fetch(u,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)}
