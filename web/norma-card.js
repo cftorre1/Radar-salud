@@ -66,7 +66,7 @@
    // in the date line and «Implementada» is a checkbox with its word, next to the state.
    // Option B (Dirección 12-nov-2026): pill («Normativa» in Al día, the act type in Normativa) + «día · emisor» above
    // the title; the validity chip and «Implementada» stay under it.
-   (Bar&&Bar.kicker?Bar.kicker('normativa',o.kickerLabel||x.type||'Normativa',(o.topExtra||'')+[Bar.shortDay(x.date),esc(x.emisor)].filter(Boolean).join(' · ')):'')+
+   (Bar&&Bar.kicker?Bar.kicker('normativa',o.kickerLabel||x.type||'Normativa',[Bar.shortDay(x.date),esc(x.emisor)].filter(Boolean).join(' · '),o.topExtra||''):'')+
    `<h3 class="nm-title">${o.openAttr?`<button type="button" class="title-open nm-open" ${o.openAttr}>`:href?`<a class="nm-open" href="${esc(href)}">`:''}<span class="lab">${hl(x.label,q)}</span> · ${hl(x.subject,q)}${o.openAttr?'</button>':href?'</a>':''}</h3><div class="nm-state">${chip(x)}${legal?'':`<button type="button" class="nm-ck" data-impl="${esc(x.id)}" role="checkbox" aria-checked="${on}" aria-label="Implementada: ${esc(x.label)}"><span class="nm-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Implementada</button>`}</div>`+
 
    `<div class="row-acts" role="group" aria-label="Acciones">${open}${Bar?Bar.sourceAct(o.srcUrl||x.url,t):''}${Bar?Bar.shareAct(o.shareId||`n-${x.id}`,t,o.shareUrl):''}</div></div>`;

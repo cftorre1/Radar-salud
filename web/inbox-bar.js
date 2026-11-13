@@ -107,7 +107,8 @@
  function shortDay(raw,now){const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(raw||''));if(!m)return '';const y=+m[1],year=(now||new Date()).getFullYear();return `${+m[3]} ${MES[+m[2]-1]}${y!==year?` ${y}`:''}`}
  // «ago 2026» / «jul–sep 2026» → «agosto 2026» / «julio–septiembre 2026» for the «Datos a …» chip.
  function longPeriod(p){return String(p||'').replace(/\b(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)\b/g,x=>MES_LARGO[MES.indexOf(x)])}
- function kicker(kind,label,meta){const k=TYPE_ICON[kind]?kind:'noticia';return `<div class="rk"><span class="rk-pill rk-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${esc(label||TYPE_WORD[k])}</span>${meta?`<span class="rk-meta">${meta}</span><span class="sr-only"> · </span>`:''}</div>`}
+ // `extra` (follow marker, «Corregido el …») sits beside the meta, never inside its ellipsis (review #193).
+ function kicker(kind,label,meta,extra){const k=TYPE_ICON[kind]?kind:'noticia';return `<div class="rk"><span class="rk-pill rk-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${esc(label||TYPE_WORD[k])}</span>${extra?`<span class="rk-extra">${extra}</span>`:''}${meta?`<span class="rk-meta">${meta}</span><span class="sr-only"> · </span>`:''}</div>`}
  function stateChip(text,tone){return text?`<span class="rk-state rk-st-${tone||'ok'}">${esc(text)}</span>`:''}
  function typeMark(kind){const k=TYPE_WORD[kind]?kind:'noticia';return `<span class="ty ty-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${TYPE_WORD[k]}<span class="sr-only"> · </span></span>`}
  root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull,kicker,stateChip,shortDay,longPeriod,TYPE_WORD};

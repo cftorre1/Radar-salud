@@ -67,8 +67,8 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   // Option B (Dirección 12-nov-2026): pill (the topic on the Datos page, «Datos» in Al día) + «día · fuente»; the period
   // the data cover is the one chip under the title («Datos a agosto 2026»), never a second date in the top line.
   const r=m.row||{},src=esc(feedSource(r.source_name||''));
-  const kmeta=[Bar&&Bar.shortDay?Bar.shortDay(m.published||r.event_date):'',src].filter(Boolean).join(' · ')+(o.topExtra||'');
-  const top=Bar&&Bar.kicker?Bar.kicker('datos',o.kickerLabel||m.topic||'Datos',kmeta):'';
+  const kmeta=[Bar&&Bar.shortDay?Bar.shortDay(m.published||r.event_date):'',src].filter(Boolean).join(' · ');
+  const top=Bar&&Bar.kicker?Bar.kicker('datos',o.kickerLabel||m.topic||'Datos',kmeta,o.topExtra||''):'';
   const state=m.period_label&&Bar&&Bar.stateChip?Bar.stateChip(`Datos a ${Bar.longPeriod(m.period_label)}${m.updating?' (actualizándose)':''}`,'per'):'';
   return `<div class="dc-card${read?' read':''}" data-dc="${esc(m.id)}">`+
    (Bar?Bar.dotButton('data-read',m.id,read,title):'')+

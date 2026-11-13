@@ -65,7 +65,7 @@ test('feed rows carry no actor chips, only content-type labels',async({page})=>{
  const withRefs=await page.evaluate(()=>[...document.querySelectorAll('#local article[data-card]')].filter(r=>refIds(allSignals.find(x=>idFor(x)===r.dataset.card)).length).length);
  expect(withRefs).toBeGreaterThan(0);
  await expect(page.locator('#local [data-entity-chip],#local .ent-chips,#local .ent-chip,#local .ent-more')).toHaveCount(0);
- for(const tag of await page.locator('#local article[data-card] .rk-meta .tag').allTextContents())expect(tag.trim()).toMatch(/^(Normativa|Fiscalización|Datos|Corregido el .+)$/);
+ for(const tag of await page.locator('#local article[data-card] .rk .tag').allTextContents())expect(tag.trim()).toMatch(/^(Normativa|Fiscalización|Datos|Corregido el .+)$/);
  await expect(page.locator('#local article[data-card] .follow-mark')).toHaveCount(0);
 });
 
