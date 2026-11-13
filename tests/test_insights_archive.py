@@ -47,7 +47,8 @@ def test_expired_current_joins_the_feed(tmp_path):
 
 def test_published_files_match_the_repository_archive():
     d = json.loads((ROOT / "web/data/insights.json").read_text(encoding="utf-8"))
-    assert d["schema"] == "alicanto_insights_v1" and len(d["items"]) >= 4
+    held = set(json.loads((ROOT / "data/weekly_insight/feed_hold.json").read_text(encoding="utf-8"))["slugs"])
+    assert d["schema"] == "alicanto_insights_v1" and len(d["items"]) >= 2 and not held & {x["slug"] for x in d["items"]}
     for x in d["items"]:
         assert (ROOT / "web" / x["share_path"]).exists() and x["weekly"] and x["dek"] and x["date"]
     app = (ROOT / "web/app.js").read_text(encoding="utf-8")

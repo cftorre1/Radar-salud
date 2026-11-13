@@ -89,6 +89,10 @@ def build(root: Path = ROOT, today: str | None = None) -> dict:
     # Past its week the insight leaves «Esta semana»; if no newer one replaced it yet, it joins the feed here.
     current = None if _expired(approved, today) else approved
     seen, items = set(), []
+    try:  # committee audit 12-nov-2026: archived insights below today's standard wait for Dirección
+        held = set(json.loads((folder / "feed_hold.json").read_text(encoding="utf-8")).get("slugs") or [])
+    except (OSError, ValueError):
+        held = set()
     paths = sorted((folder / "archive").glob("*.json"), reverse=True)
     if approved and current is None:
         paths = [folder / "editorial_approved.json"] + paths
@@ -100,7 +104,7 @@ def build(root: Path = ROOT, today: str | None = None) -> dict:
         if not w or (current and _title(w) == _title(current)):
             continue
         s = slug(w)
-        if s in seen:
+        if s in seen or s in held:
             continue
         seen.add(s)
         items.append({"slug": s, "date": _date(w), "title": _title(w), "dek": _dek(w), "share_path": f"i/{s}.html",
