@@ -280,7 +280,8 @@ def dek_repeats_headline(weekly):
     """Rule 8 (Dirección, 12-nov-2026): the dek adds to the headline instead of restating it."""
     head = _content_stems(weekly.get("headline") or weekly.get("insight_title") or weekly.get("title"))
     dek = _content_stems(weekly.get("dek"))
-    return bool(head) and len(head & dek) / len(head) >= 0.5
+    shared = head & dek
+    return bool(head) and len(shared) >= 2 and len(shared) / len(head) >= 0.5  # 2+ stems: no false hit on short headlines
 
 
 def presentation_a_errors(weekly):

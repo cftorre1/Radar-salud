@@ -142,8 +142,9 @@ the independent review (`weekly_insight_a.review_prompt`).
    model drafts; in an editorial session a `kicker` field fails (`kicker_not_used`, deterministic).
 2. **Dek.** One sentence (`dek_more_than_one_sentence`; abbreviations such as «p. ej.», «S.A.» and numbers such as
    «1.056» do not split; a single-letter initial before a period, as in «Plan B.», and a second sentence that starts
-   in lowercase are not counted, a known limit), ≤ 35 words (`dek_over_35_words`), deterministic. It states
-   the single idea behind the headline. It never summarises or strings two news items together; joining two facts
+   in lowercase are not counted, a known limit), ≤ 35 words (`dek_over_35_words`), deterministic. It adds what
+   the headline does not say (the figures that support it) without repeating its words (rule 8); any comparison
+   uses equivalent universes (e.g. supply against population, not one fund against the population). It never summarises or strings two news items together; joining two facts
    needs a connection the evidence shows (review).
 3. **Byline.** Exactly «Alicanto · Lectura de N min · N fuentes». No «equipo editorial», no count of official
    sources, no verification date, no evidence legend.
@@ -163,12 +164,12 @@ the independent review (`weekly_insight_a.review_prompt`).
    de hospital» → «Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña».
 8. **Headline and dek never repeat each other** (Dirección, 12-nov-2026: «Primer y segundo párrafo son redundantes…
    un título destacado y luego una bajada de un párrafo sin redundancias»). The dek adds what the headline does not say
-   (the figures of the analysis); `dek_repeats_headline` fails when half or more of the headline's content words
-   reappear in the dek. The headline carries the tension that is the news (Dirección, 12-nov-2026: «el título habla de
+   (the figures of the analysis); `dek_repeats_headline` fails when two or more of the headline's content words,
+   and at least half of them, reappear in the dek. The headline carries the tension that is the news (Dirección, 12-nov-2026: «el título habla de
    más oferta, pero el cuerpo habla de oferta insuficiente… ¿no debiese el título mostrar ese conflicto?»). Applied
-   to the 9-nov insight: «El capital privado llega a las residencias para mayores, pero la oferta sigue siendo chica»
-   + «Los primeros proyectos suman 250 habitaciones frente a 593.010 personas de 80 años o más, y hay pacientes con
-   alta médica que siguen hospitalizados por falta de redes».
+   to the 9-nov insight: «El capital privado llega a las residencias para mayores, pero la oferta sigue siendo pequeña»
+   + «La red pública de Senama tiene cupo para 1.318 personas frente a 593.010 de 80 años o más, y hay pacientes de
+   todas las edades con alta médica que permanecen hospitalizados por falta de redes» (independent review, 12-nov).
 
 **Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
 `verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text

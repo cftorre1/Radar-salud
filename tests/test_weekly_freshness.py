@@ -136,7 +136,8 @@ def test_dek_must_not_repeat_headline_rule_8():
     old = {"headline": "Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña",
            "dek": "El capital privado apuesta por las residencias para mayores; sin embargo, la oferta sigue siendo "
                   "pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital."}
-    new = {"headline": "El capital privado llega a las residencias para mayores, pero la oferta sigue siendo chica",
-           "dek": "Los primeros proyectos suman 250 habitaciones frente a 593.010 personas de 80 años o más, y hay "
-                  "pacientes con alta médica que siguen hospitalizados por falta de redes."}
-    assert dek_repeats_headline(old) and not dek_repeats_headline(new)
+    new = {"headline": "El capital privado llega a las residencias para mayores, pero la oferta sigue siendo pequeña",
+           "dek": "La red pública de Senama tiene cupo para 1.318 personas frente a 593.010 de 80 años o más, y hay "
+                  "pacientes de todas las edades con alta médica que permanecen hospitalizados por falta de redes."}
+    short = {"headline": "El precio de los medicamentos", "dek": "La Superintendencia precisa cómo se informan los cobros."}
+    assert dek_repeats_headline(old) and not dek_repeats_headline(new) and not dek_repeats_headline(short)

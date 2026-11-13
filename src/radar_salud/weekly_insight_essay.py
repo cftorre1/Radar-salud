@@ -893,7 +893,7 @@ def evidence_errors(weekly: dict, evidence: dict) -> list[str]:
 
 FORMAT_V2 = """Formato A v2, ensayo tipo noticia (aprobado por Dirección el 10-nov-2026; JSON puro, sin texto fuera del JSON):
 {"headline": "≤140 caracteres; toma posición, sin causalidad no demostrada",
- "dek": "UNA sola oración, ≤35 palabras, que explica la idea del titular; nunca resume ni encadena dos noticias",
+ "dek": "UNA sola oración, ≤35 palabras, que agrega lo que el titular no dice (las cifras que lo sostienen) sin repetir sus palabras; nunca resume ni encadena dos noticias; compara solo universos equivalentes",
  "body": [  // entrada → contexto → desarrollo; sin rótulos «Qué pasó», «Lectura Alicanto» ni «Qué mirar»
    {"type":"paragraph","text":"la ENTRADA: el hecho de la semana, quién, qué y cuándo, con la fuente enlazada"},
    {"type":"quote","text":"cita textual, copiada LITERALMENTE de evidence_excerpts (sin comillas)","source_ref":"f1",
