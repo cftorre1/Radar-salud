@@ -193,10 +193,39 @@ def _bill_items():
 def test_bill_card_is_deterministic_and_passes_gate():
     row = cg.process_congreso(_bill_items()[4], CG_CFG)
     assert row["what_happened"].startswith("La comisión de Salud emitió informe sobre el proyecto «Modifica el DFL N° 1")
-    assert "(Boletín N° 99901-11) el 27-10-2026, en el Senado." in row["what_happened"]
+    assert row["what_happened"].endswith("(Boletín N° 99901-11) el 27 de octubre de 2026, en el Senado.")
+    assert "Trámite oficial" not in row["what_happened"] and row["key_facts"][0].startswith("Trámite oficial: «")
+    assert not row["key_facts"][0].endswith("..»."), row["key_facts"]
     assert row["signal_types"] == ["Legal"] and row["bill_milestone"] == "informe_comision"
     assert "aún no es ley vigente" in row["why_it_matters"]
     assert row["primary_source_url"].endswith("boletin_ini=99901-11")
+
+
+def test_stored_congreso_card_is_restructured():
+    old = {"bill_boletin": "18255-31", "deterministic_processing": True, "card_what": "x",
+           "what_happened": "La comisión de Familia, Infancia y Adolescencia emitió informe sobre el proyecto «Establece "
+                            "un beneficio de compensación por la compra de pañales y de medicamentos» (Boletín N° "
+                            "18255-31) el 11-11-2026, en el Senado. Trámite oficial: «Primer informe de comisión de "
+                            "Familia, Infancia y Adolescencia..». Etapa actual: Segundo trámite constitucional (Senado); "
+                            "Cuenta de primer informe de comisión."}
+    new = cg.restructure(old)
+    assert new["what_happened"].endswith("(Boletín N° 18255-31) el 11 de noviembre de 2026, en el Senado.")
+    assert new["card_what"] == new["what_happened"]
+    assert new["key_facts"] == ["Trámite oficial: «Primer informe de comisión de Familia, Infancia y Adolescencia».",
+                                "Etapa actual: Segundo trámite constitucional (Senado)."]
+    assert cg.restructure({"what_happened": "otra cosa"}) == {"what_happened": "otra cosa"}
+    dip = {"bill_boletin": "18865-11", "deterministic_processing": True,
+           "what_happened": "El Ejecutivo formuló observaciones (veto) a el proyecto «Modifica la ley N° 20.584 (derechos)» "
+                            "(Boletín N° 18865-11) el 04-11-2026, en la Cámara de Diputadas y Diputados. Trámite oficial: "
+                            "«Ingreso de proyecto.». Etapa actual: Primer trámite constitucional (C.Diputados); Cuenta."}
+    new = cg.restructure(dip)
+    assert new["what_happened"] == ("El Ejecutivo formuló observaciones (veto) al proyecto «Modifica la ley N° 20.584 "
+                                    "(derechos)» (Boletín N° 18865-11) el 4 de noviembre de 2026, en la Cámara de "
+                                    "Diputadas y Diputados.")
+    assert new["key_facts"] == ["Trámite oficial: «Ingreso de proyecto».",
+                                "Etapa actual: Primer trámite constitucional (Cámara de Diputadas y Diputados)."]
+    assert "card_what" not in new
+
 
 
 def test_bill_card_rejects_tampered_milestone():

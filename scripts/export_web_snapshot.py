@@ -824,6 +824,9 @@ def curate(signals,resolve_external=True,as_of=None):
     recent=[s for s in recent if not (s.get('source_name')=='Diario Financiero' and s.get('df_duplicate_of')
         and s.get('df_duplicate_of') in counterpart_urls)]
     recent=_apply_persistent_editorial_decisions(recent)
+    # Congreso cards: what happened, then the official trámite and the stage on their own lines (Dirección 13-nov-2026).
+    from radar_salud.congreso_sources import restructure as _congreso_restructure
+    recent=[_congreso_restructure(s) for s in recent]
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     # Official acts (Diario Oficial etc.): short deterministic row title; full title kept.
     from radar_salud.official_titles import apply_short_title
