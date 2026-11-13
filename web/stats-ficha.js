@@ -34,7 +34,9 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
  // Diverging bars by actor: ink loses, accent gains; bold labels for ≥ 5.000 personas.
  function diverging(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';
-  const vals=rows.map(r=>Number(r.value)),lo=Math.min(0,...vals),hi=Math.max(0,...vals),W=360,row=26,top=8,x0=162,x1=356,k=(x1-x0)/((hi-lo)||1),z=x0+(-lo)*k,H=top+rows.length*row+24,f=v=>sgd(v,c.digits);
+  const f0=v=>sgd(v,c.digits),ml=Math.max(...rows.map(r=>String(r.label).length)),vl=Math.max(...rows.map(r=>f0(Number(r.value)).length));
+  // The label and its value share the left column: it widens for long («#. Nombre») labels so they never touch (review #200).
+  const vals=rows.map(r=>Number(r.value)),lo=Math.min(0,...vals),hi=Math.max(0,...vals),W=360,row=26,top=8,x0=Math.min(236,Math.max(162,Math.ceil(ml*7.4+vl*8.4+22))),x1=356,k=(x1-x0)/((hi-lo)||1),z=x0+(-lo)*k,H=top+rows.length*row+24,f=v=>sgd(v,c.digits);
   let s=`<line x1="${z.toFixed(1)}" y1="${top-4}" x2="${z.toFixed(1)}" y2="${top+rows.length*row}" stroke="${C.axis}"/>`;
   rows.forEach((r,i)=>{const v=Number(r.value),y=top+i*row,w=Math.max(Math.abs(v)*k,2),x=v<0?z-w:z,strong=Math.abs(v)>=5000;
    s+=`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text><text x="${x0-8}" y="${y+15}" font-size="12.5" text-anchor="end" font-weight="${strong?700:400}" fill="${C.ink}">${f(v)}</text>`;
@@ -45,9 +47,12 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
  // Line for stocks and ratios: the axis does not start at zero; last point in accent.
  function line(c){
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(rows.length<2)return'';const d=Number.isInteger(c.digits)?c.digits:0;
-  const vals=rows.map(r=>Number(r.value)),lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo)*.15||Math.abs(hi)*.01||1,min=lo-pad,max=hi+pad,W=360,top=24,H=130,x=i=>20+i*(W-40)/(rows.length-1),y=v=>top+(max-v)/(max-min)*H;
+  // c.zero_base (a share, Dirección 13-nov-2026): the axis starts at 0 so the size of the share reads right; c.label_points
+  // labels every point, with its unit suffix (e.g. «4,0%»), and draws a light 0 baseline.
+  const sfx=c.label_points&&c.unit==='%'?'%':'';
+  const vals=rows.map(r=>Number(r.value)),lo0=Math.min(...vals),hi=Math.max(...vals),lo=c.zero_base?Math.min(0,lo0):lo0,pad=(hi-lo)*.15||Math.abs(hi)*.01||1,min=c.zero_base?lo:lo-pad,max=hi+pad,W=360,top=24,H=130,x=i=>20+i*(W-40)/(rows.length-1),y=v=>top+(max-v)/(max-min)*H;
   const pts=rows.map((r,i)=>`${x(i).toFixed(1)},${y(Number(r.value)).toFixed(1)}`).join(' ');
-  let s=`<polyline points="${pts}" fill="none" stroke="${C.ink}" stroke-width="2.5"/>`;
+  let s=(c.zero_base?`<line x1="14" x2="${W-14}" y1="${y(min).toFixed(1)}" y2="${y(min).toFixed(1)}" stroke="${C.ink50}" stroke-width="1" opacity=".5"/><text x="14" y="${(y(min)-4).toFixed(1)}" font-size="11" fill="${C.ink50}">0${sfx}</text>`:'')+`<polyline points="${pts}" fill="none" stroke="${C.ink}" stroke-width="2.5"/>`;
   // Long labels (>4 chars) at the edges are anchored start/end, so their neighbour needs 1.5 label widths of room.
   // Axis labels thin out when they would collide (e.g. 12 quarters 'T2 2026' at 390 px): every 2nd, 3rd, 4th or 6th,
   // counted back from the last point so the latest period is always labelled. Short monthly labels (F1) all fit: unchanged.
@@ -56,7 +61,10 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
    // Dirección 29-oct: when the series descends into the last point, its label goes below the point, so it never
    // sits on the line ('0,603').
    const down=last&&i>0&&v<Number(rows[i-1].value);
-   if(first||last)s+=`<text class="${last?'sf-lastlab':'sf-firstlab'}" x="${x(i).toFixed(1)}" y="${(down?y(v)+20:y(v)-10).toFixed(1)}" font-size="${last?13:12}" font-weight="${last?700:500}" text-anchor="${first?'start':'end'}" fill="${C.ink}">${dec(v,d)}</text>`});
+   // A label goes under its point when a neighbour is clearly higher, so it never sits on the rising line.
+   const nb=[rows[i-1],rows[i+1]].filter(Boolean).map(q=>Number(q.value)),under=c.label_points&&nb.some(q=>q-v>(hi-lo0||1)*.15);
+   if(c.label_points)s+=`<text class="${last?'sf-lastlab':'sf-ptlab'}" x="${x(i).toFixed(1)}" y="${(under?y(v)+20:y(v)-10).toFixed(1)}" font-size="${last?13:11.5}" font-weight="${last?700:500}" text-anchor="${first?'start':last?'end':'middle'}" fill="${C.ink}">${dec(v,d)}${sfx}</text>`;
+   else if(first||last)s+=`<text class="${last?'sf-lastlab':'sf-firstlab'}" x="${x(i).toFixed(1)}" y="${(down?y(v)+20:y(v)-10).toFixed(1)}" font-size="${last?13:12}" font-weight="${last?700:500}" text-anchor="${first?'start':'end'}" fill="${C.ink}">${dec(v,d)}</text>`});
   return`<svg viewBox="0 0 ${W} ${top+H+30}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label} ${dec(r.value,d)}`).join(', ')}.`)}">${s}</svg>`;
  }
  // Dot plot vs. the base period: dot = current, ring = base.
@@ -80,8 +88,11 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   const fv=v=>Number.isInteger(c.digits)?dec(v,c.digits)+(c.unit==='%'?'%':''):nf(v);
   // Long value labels ('17.750.797') shorten the bars so the label ends inside the viewBox, also with a wider fallback
   // font than Inter (CI: DejaVu, ~7.6 px per character at 12.5 px bold). Short labels keep the full 160 px.
-  const tagged=rows.some(r=>r.tag),max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=tagged?36:30,x0=128,H=rows.length*row+8;
-  const L=Math.max(80,Math.min(160,W-x0-8-Math.max(...rows.map(r=>fv(r.value).length))*7.6));
+  const tagged=rows.some(r=>r.tag),max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=tagged?36:30,H=rows.length*row+8,
+   // GES problems carry their number («70. Cáncer colorrectal», Dirección 13-nov-2026): the label column widens up to 24 characters.
+   x0=Math.min(186,Math.max(128,Math.max(...rows.map(r=>String(r.label).length))*7.4+8));
+  // Bold values in the CI fallback font run ~8.4 px per character: the bar leaves that room plus a margin.
+  const L=Math.max(80,Math.min(160,W-x0-(x0>128?14:8)-Math.max(...rows.map(r=>fv(r.value).length))*(x0>128?8.4:7.6)));
   const s=rows.map((r,i)=>{const v=Number(r.value),w=Math.max(Math.abs(v)/max*L,2),y=4+i*row,tag=r.tag?`<text class="sf-tag" x="1.5" y="${y+28}" font-size="10.5" fill="${C.ink50}">${esc(r.tag)}</text>`:'';return`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text>${tag}<g class="sf-mark"><title>${esc(r.label)}${r.tag?` (${esc(r.tag)})`:''}: ${fv(v)}</title><rect x="${x0}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="3" fill="${r.emphasis?C.accent:r.muted?'#E6E1D6':'#CFC9BC'}"${r.muted?` stroke="${C.ink50}" stroke-dasharray="3 2"`:''}/></g><text x="${(x0+w+6).toFixed(1)}" y="${y+15}" font-size="12.5" font-weight="${r.emphasis?700:500}" fill="${C.ink}">${fv(v)}</text>`}).join('');
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label}${r.tag?` (${r.tag})`:''} ${fv(r.value)}`).join(', ')}.`)}">${s}</svg>`;
  }

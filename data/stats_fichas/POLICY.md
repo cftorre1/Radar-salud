@@ -174,3 +174,12 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
 ## Primera publicación de familias nuevas (Dirección 10-nov-2026 00:54)
 
 «No son necesarios mis VB para nuevas fichas, publícalas nomás, pero avísame para revisarlo en staging». Desde esta fecha una familia nueva publica en staging sin visto bueno personal de Dirección cuando tiene PASS determinista, conciliación y revisión independiente aprobada; el integrador registra `first_review` con esta autorización y avisa a Dirección con el enlace de staging para revisión posterior. F12 y F13 son las primeras publicadas así.
+
+## Hypotheses and known facts (Dirección 13-nov-2026, applies to all Alicanto)
+
+- A hypothesis is checked against evidence before it is published. If it is confirmed, the ficha states it as a fact
+  with its source; if not, the ficha states only what the data shows. `verify_ficha` rejects parenthetical guesses
+  such as «(posible cambio de decreto GES)» (`unverified_hypothesis`).
+- Public facts of the health system are known, not guessed: e.g. the GES 2025–2028 decree (Decreto N° 29 de 2025,
+  Minsal) took effect on 1-dic-2025 and added problems 88, 89 and 90; the GES list only grows, every three years.
+- GES problems are named «#. Nombre» (e.g. «7. Diabetes tipo 2»): charts use the short name, tables the official one.
