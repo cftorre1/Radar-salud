@@ -159,7 +159,8 @@ def test_f14_pass_and_headline_recomputed_from_raw_rows(root):
     assert fi["headline_type"] == "gap_spend_cases"
     assert fi["headline"].startswith(f"GES en Isapres: facturado +{f14.fmt(fact, 1)}%, casos +{f14.fmt(cases, 1)}%; por caso sube en ")
     assert fi["kpis"][0]["value"] == f"{f14.fmt(tot['2026t3'][0] / 1e6, 0)} MM$"
-    assert [t["id"] for t in fi["tabs"]] == f14.TAB_ORDER
+    # «Nuevos problemas» (Dirección 13-nov-2026) appears only when problems 88–90 have data; the fixture has none.
+    assert [t["id"] for t in fi["tabs"]] == [x for x in f14.TAB_ORDER if x != "nuevos"]
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t3.zip")
     assert len(fi["headline"]) <= 140 and len(fi["dek"].split()) <= 40
     assert SECRET not in json.dumps(fi, ensure_ascii=False)

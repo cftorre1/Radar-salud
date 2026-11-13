@@ -95,10 +95,10 @@ test('a builder without topic fields falls back to its tab text and first chart'
  assert.match(load().render({...pub,tabs:[]}),/aria-label="Indicadores clave"/);
 });
 
-test('Lectura shows only after a verifier PASS and all text is escaped',()=>{
+test('Lectura Alicanto is never shown (retired, Dirección 12-nov-2026), nor the internal note; all text is escaped',()=>{
  const F=load();
- const ok=F.render({...pub,lectura:{status:'pass',text:'Para las Isapres <b>importa</b> la base de cotizantes.'}});
- assert.match(ok,/Lectura Alicanto<\/h3><p>Para las Isapres &lt;b&gt;importa&lt;\/b&gt;/);
+ const ok=F.render({...pub,lectura:{status:'pass',text:'Para las Isapres <b>importa</b> la base de cotizantes.'},machine_note:'Ficha generada por la regla'});
+ assert.doesNotMatch(ok,/Lectura Alicanto|Para las Isapres|Ficha generada por la regla/);
  assert.doesNotMatch(F.render({...pub,lectura:{status:'verifier_fail',text:'x'}}),/Lectura Alicanto<\/h3>/);
  assert.match(F.render({...pub,family_label:'<img src=x onerror=1>'}),/&lt;img src=x onerror=1&gt;/);assert.match(F.render({...pub,tabs:[]},{}),/class="sf-headline">/);
  assert.match(F.render({...pub,status:'HOLD'}),/Ficha no disponible/);
@@ -138,7 +138,7 @@ test('GES correction: the row tag and the detail note use the same date label',(
 
 // F4 (GES) and F6 (Boletín IP) fichas: fixture cards built by tests/stats_ficha_fixtures.py (fixture hashes; F4 values
 // are synthetic, F6 values are the verified N°2-2026 reading). Layout only: every number comes from the package.
-for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Tendencia trimestral'],5,0],
+for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fonasa vs Isapre','Nuevos problemas','Tendencia trimestral'],6,0],
                                       ['f6_prestadores',['Acreditación','Con observaciones','Reclamos','Mediación'],3,0]]){
  test(`${slug}: index of topics, topic text, collapsed notes and Option-B share`,()=>{
   const card=JSON.parse(fs.readFileSync(`tests/fixtures/stats_fichas/${slug}.card.json`,'utf8'));const f=card.stats_ficha;
@@ -165,8 +165,8 @@ for(const [slug,tabs,charts,kpis] of [['f4_ges',['Totales','Top problemas','Fona
 test('F4 shows ene–jun vs ene–jun, tasa bruta, Fonasa rate not available and percent bars with one decimal',()=>{
  const f=JSON.parse(fs.readFileSync('tests/fixtures/stats_fichas/f4_ges.card.json','utf8')).stats_ficha;const html=load().render(f);
  assert.match(html,/Tasa bruta Isapre/);assert.match(html,/tasa no disponible/);
- assert.match(html,/aria-label="Problemas que crecen: variación de ene–jun 2026 frente a ene–jun 2025[^"]*Cáncer de mama en… 28,8%/);
- assert.match(html,/Tres problemas superan 15% a\/a/);assert.match(html,/posible cambio de decreto GES/);
+ assert.match(html,/aria-label="Problemas que crecen: variación de ene–jun 2026 frente a ene–jun 2025[^"]*\d+\. Cáncer de mama[^"]* 28,8%/);
+ assert.match(html,/Tres problemas superan 15% a\/a/);assert.doesNotMatch(html,/posible cambio de decreto/);assert.match(html,/1 problema no tiene casos/);
  // Year-to-date measure (Dirección 3-nov-2026): the period is explicit in the headline.
  // The dek is no longer shown (generic title, 11-nov); the year-to-date period stays in the data.
  assert.match(f.headline,/entre enero y junio de 2026/);assert.match(f.headline,/frente a enero–junio de 2025/);

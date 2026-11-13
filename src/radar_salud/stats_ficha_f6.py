@@ -28,7 +28,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F6"
-BUILDER_VERSION = "f6_index_topic_v5"
+BUILDER_VERSION = "f6_index_topic_v6"
 CAPTURE = Path("data/stats_fichas/captures/boletin_ip.json")
 MONTH_EN = {m: i for i, m in enumerate(("january", "february", "march", "april", "may", "june", "july", "august", "september",
                                          "october", "november", "december"), 1)}
@@ -519,7 +519,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         watch = [{"headline": f"Boletín IP a {sf.month_label(nxt)}: publicación atrasada.",
                   "explanation": f"Lleva {late['days_late']} días de atraso según el calendario histórico."}]
     else:
-        watch = [{"headline": f"Boletín IP a {sf.month_label(nxt)} (la SIS lo publicaría hacia el {sf.day_label(expected)}).",
+        watch = [{"headline": f"Boletín IP a {sf.month_label(nxt)}.",
                   "explanation": (f"Sus stocks se compararán con los de {mlabel}." if qoq else
                                   "Con dos boletines verificados se comparan los stocks entre cortes.")}]
     watch.append({"headline": "Comparación entre boletines." if not qoq else "Solicitudes en tramitación.",

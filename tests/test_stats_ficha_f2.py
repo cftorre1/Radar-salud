@@ -1171,3 +1171,25 @@ def test_closed_note_only_when_the_data_supports_it(tmp_path):
 def test_costo_sil_registry_has_no_real_threshold_while_the_rule_is_nominal():
     k = sf.load_registry()["families"]["F2"]["kpis"]["costo_sil"]
     assert "nominal" in k["period_rule"] and "real_pct" not in (k.get("threshold") or {})
+
+
+
+@pytest.mark.lectura_retired
+def test_retired_lectura_never_calls_the_model_in_run_family(tmp_path):
+    """Dirección 12-nov-2026: the shared runner (F2, F4, F6, F7, F12–F14) never calls the model for the Lectura."""
+    assert sf.LECTURA_RETIRED is True
+    root = make_root(tmp_path, prev=True)
+    capture(root, files={URL: workbook(), URL_PREV: workbook(prev_data(), year="2025")}, max_new=2)
+    calls = []
+    first = f2.run(root, today=TODAY, registry=registry(), llm=True, model_call=lambda *a, **k: calls.append(1),
+                   budget=lambda w: calls.append(w) or (True, "ok"))
+    assert first["status"] == "pass" and calls == [] and first["ficha"]["lectura"]["status"] == "retired"
+    assert "Lectura Alicanto omitida" not in first["ficha"]["machine_note"]
+    sf.publish(first, root)
+    live = root / "data/stats_fichas/live/f2_financieras.json"
+    old = json.loads(live.read_text(encoding="utf-8"))
+    old["lectura"] = {"status": "not_attempted", "text": None}  # the old retry trigger
+    live.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+    again = f2.run(root, today=TODAY, registry=registry(), llm=True, model_call=lambda *a, **k: calls.append(1),
+                   budget=lambda w: calls.append(w) or (True, "ok"))
+    assert again["status"] == "no_change" and calls == []

@@ -36,7 +36,34 @@ from .stats_fichas import fmt_dec, fmt_int, value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F4"
-BUILDER_VERSION = "f4_ytd_v4"
+BUILDER_VERSION = "f4_ytd_v6"  # v6 (Dirección 12/13-nov): no next-release date, no Lectura; v5 (Dirección 13-nov-2026): decree named, «#. Nombre», «Nuevos problemas» topic, share chart in %
+# Known public fact, verified 13-nov-2026 (Dirección: never present the obvious as a hypothesis; check hypotheses
+# against evidence): the GES 2025–2028 decree (Decreto N° 29 de 2025, Minsal; extract in the Diario Oficial on
+# 28-nov-2025) took effect on 1-dic-2025 and added problems 88, 89 and 90. The list only grows, every three years.
+# Sources: minsal.cl «Chile garantiza 90 problemas de salud…» (1-dic-2025); diarioconstitucional.cl (15-dic-2025,
+# Contraloría on Decreto N° 29). Used only when the problems the data shows as new are exactly these.
+GES_DECREE = {"name": "Decreto GES 2025–2028", "number": "Decreto N° 29 de 2025 del Minsal", "in_force": "2025-12-01",
+              "in_force_label": "1 de diciembre de 2025", "added": (88, 89, 90),
+              "sources": ["https://www.minsal.cl/chile-garantiza-90-problemas-de-salud-con-inversion-record-de-100-mil-millones-anuales/",
+                          "https://www.diarioconstitucional.cl/2025/12/15/contraloria-ordena-publicar-integramente-decreto-que-fija-las-garantias-explicitas-en-salud-en-el-diario-oficial/"]}
+
+
+def plabel(r: dict, n: int | None = None) -> str:
+    """«#. Nombre» (Dirección 13-nov-2026: the system speaks of GES problems by number). Charts (``n``) use the short
+    name shared with F14 («70. Cáncer colorrectal»); tables use the full official name."""
+    if r.get("code") is None:
+        return str(r["label"]) if n is None else short_label(r["label"], n)
+    if n is None:
+        return f"{int(r['code'])}. {' '.join(str(r['label']).split())}"
+    from .stats_ficha_f14 import SHORT
+    name = SHORT.get(int(r["code"]))
+    # The short name is used only when it matches the official label (its first word appears in it): a code that the
+    # sheet labels differently never borrows another problem's name.
+    folded = re.sub(r"[^a-z ]", "", _fold(r["label"]))
+    stems = [w[:4] for w in (re.sub(r"[^a-z]", "", _fold(x)) for x in str(name or "").split()) if len(w) >= 5]
+    if not name or not stems or any(s not in folded for s in stems):
+        name = r["label"]
+    return short_label(f"{int(r['code'])}. {name}", n)
 CAPTURE = Path("data/stats_fichas/captures/ges_quarterly.json")
 PORTFOLIO = Path("data/market/isapre_portfolio.json")
 QWORD = {1: "primer", 2: "segundo", 3: "tercer", 4: "cuarto"}
@@ -556,6 +583,7 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
     package["reconciliation"]["cross_release"] = cross
 
     # Label digits ('Diabetes Mellitus Tipo 2') are captured text, not figures: they may be shown.
+    # Problem numbers («70. Cáncer…», Dirección 13-nov-2026) are official identifiers read from the sheet.
     label_numbers = sorted({abs(v) for r in problems for _, v, _ in numbers_in(r["label"])})
     # An atypical quarter inside the current period makes the period's own figures (and any headline on them)
     # suspect; with no alternative headline the comparison would lead. Either way a human decides (HOLD).
@@ -710,9 +738,17 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     rate_clause = (f" Tasa bruta Isapre: {fmt_dec(rate, 1)} casos de enero a {mname(tm)} de {ty} por 1.000 beneficiarios."
                    if rate is not None else " Sin tasas por beneficiario para este período.")
     na, nd = len(k["added"]), len(k["dropped"])
+    new_rows = sorted((r for r in k["problems"] if r["key"] in k["added"]), key=lambda r: int(r["code"]))
+    by_decree = bool(new_rows) and not nd and tuple(int(r["code"]) for r in new_rows) == GES_DECREE["added"]
+    nums = (lambda rs: ", ".join(str(int(r["code"])) for r in rs[:-1]) + " y " + str(int(rs[-1]["code"])) if len(rs) > 1
+            else (str(int(rs[0]["code"])) if rs else ""))(new_rows)
+    if by_decree:  # the decree's own numbers are literal facts, not computed figures
+        package.setdefault("constants", []).extend([*GES_DECREE["added"], 29, 2025, 2028, 1])
     pl = lambda n, one, many: f"{fmt_int(n)} {one if n == 1 else many}"  # noqa: E731
     comparable = pct("ges.yoy.total_comparable_pct")
     decree_clause = ("" if not (na or nd) else
+                     f" Sin los problemas {nums}, nuevos del {GES_DECREE['name']}: {comparable}."
+                     if by_decree else
                      f" La variación incluye {pl(na, 'problema nuevo', 'problemas nuevos')} por decreto; comparable: {comparable}."
                      if na and not nd else
                      # A dropped problem has no flow this year but stays in last year's base (review of #129).
@@ -763,7 +799,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
              "base": val(f"ges.ytd.{b}.{ins}"), "base_ref": f"ges.ytd.{b}.{ins}"}
             for lab, ins in (("Total", "total"), ("Fonasa", "fonasa"), ("Isapres", "isapre"))]
     c_tot = {"id": "f4-totales", "form": "dots", "digits": 0, "unit": "casos",
-             "headline": f"Casos de {st} frente a {sb}",
+             "headline": f"Casos de {sb} vs {ty}",  # Dirección 13-nov-2026: one line, earlier year first
              "subtitle": f"Casos GES ingresados por seguro · punto = {st}, aro = {sb}", "rows": rows,
              "table": {"columns": ["Seguro", sb, st, "a/a"],
                        "rows": [[r["label"], fmt_int(r["base"]), fmt_int(r["value"]),
@@ -774,8 +810,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     tot_text = [f"{between(ty, tm).capitalize()} Fonasa e Isapres informaron {fmt_int(total)} casos GES, "
                 f"{fmt_int(abs(d))} {'más' if d >= 0 else 'menos'} que {between(by, tm)} ({pct('ges.yoy.total_pct')})."]
     if list_changed:
-        tot_text.append(f"Con solo los problemas presentes en ambos períodos la variación es {pct('ges.yoy.total_comparable_pct')}: "
-                        "la lista de problemas cambió entre ambos años (posible cambio de decreto GES).")
+        tot_text.append(f"Sin los problemas {nums}, que agregó el {GES_DECREE['name']} ({GES_DECREE['number']}, vigente desde el "
+                        f"{GES_DECREE['in_force_label']}), la variación es {pct('ges.yoy.total_comparable_pct')}."
+                        if by_decree else
+                        f"Con solo los problemas presentes en ambos períodos la variación es {pct('ges.yoy.total_comparable_pct')}.")
     atyp_sentences = []
     for a in atyp:
         kq = qid(a["y"], a["q"])
@@ -806,10 +844,10 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         head = f"{phrase} {fmt_dec(tp['pct'], 0)}% a/a" if n else "Ningún problema supera el umbral de crecimiento"
         c_top = {"id": "f4-top", "form": "bars", "unit": "%", "digits": 1, "headline": head,
                  "subtitle": f"Problemas que crecen: variación de {st} frente a {sb} · base ≥ {fmt_int(tp['min_cases'])} casos en {sb}",
-                 "rows": [{"label": short_label(r["label"]), "value": r["pct"], "ref": f"ges.p.{r['key']}.yoy_pct",
+                 "rows": [{"label": plabel(r, 24), "value": r["pct"], "ref": f"ges.p.{r['key']}.yoy_pct",
                            "emphasis": r["pct"] >= tp["pct"]} for r in ranked],
                  "table": {"columns": ["Problema de salud", sb, st, "a/a"],
-                           "rows": [[r["label"], fmt_int(r["base"]), fmt_int(r["t"]), fmt_dec(r["pct"], 1, signed=True) + "%"] for r in ranked]},
+                           "rows": [[plabel(r), fmt_int(r["base"]), fmt_int(r["t"]), fmt_dec(r["pct"], 1, signed=True) + "%"] for r in ranked]},
                  "source": "SIS, casos GES por problema (Fonasa + Isapre). Solo problemas presentes en ambos períodos."}
         top_text = [f"Se ordenan los problemas que crecen, con al menos {fmt_int(tp['min_cases'])} casos {between(by, tm)}; "
                     f"cruzan el umbral los que crecen {fmt_dec(tp['pct'], 0)}% o más."]
@@ -821,13 +859,15 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         biggest = sorted(k["problems"], key=lambda r: (-r["t"], r["label"]))[:MAX_PROBLEM_ROWS]
         c_top = {"id": "f4-top", "form": "bars", "unit": "casos", "headline": f"Problemas con más casos en {st}",
                  "subtitle": f"Casos GES por problema, {st} (Fonasa + Isapre)",
-                 "rows": [{"label": short_label(r["label"]), "value": r["t"], "ref": f"ges.p.{r['key']}.ytd.{t}"} for r in biggest],
-                 "table": {"columns": ["Problema de salud", st], "rows": [[r["label"], fmt_int(r["t"])] for r in biggest]},
+                 "rows": [{"label": plabel(r, 24), "value": r["t"], "ref": f"ges.p.{r['key']}.ytd.{t}"} for r in biggest],
+                 "table": {"columns": ["Problema de salud", st], "rows": [[plabel(r), fmt_int(r["t"])] for r in biggest]},
                  "source": "SIS, casos GES por problema."}
         top_text = [f"Ningún problema comparable crece frente a {sb}; se muestran los problemas con más casos."]
     if list_changed:
-        top_text.append(f"La lista de problemas cambió entre {sb} y {st} (posible cambio de decreto GES). Problemas sin base "
-                        f"comparable: {fmt_int(len(k['added']))}; que ya no aparecen: {fmt_int(len(k['dropped']))}. No entran al ranking.")
+        top_text.append(f"Los problemas {nums} entraron con el {GES_DECREE['name']} y no tienen casos en {sb}: no entran al "
+                        "ranking y se ven en «Nuevos problemas»." if by_decree else
+                        f"{pl(na, 'problema no tiene', 'problemas no tienen')} casos en {sb} y no entran al ranking."
+                        + (f" {pl(nd, 'problema de', 'problemas de')} {sb} no aparecen en {st}." if nd else ""))
     if bad and ranked:
         top_text.append(f"La base por problema incluye {atyp_ref}, {'atípico' if len(atyp) == 1 else 'atípicos'} en los "
                         "datos SIS: las variaciones por problema pueden estar distorsionadas.")
@@ -835,8 +875,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     # Tab 3 · Fonasa vs Isapre
     qs = k["quarters"]
-    c_share = {"id": "f4-share", "form": "line", "unit": "%", "digits": 1, "headline": "Parte Isapre de los casos GES por trimestre",
-               "subtitle": "% de los casos informados por Fonasa e Isapres en cada trimestre",
+    c_share = {"id": "f4-share", "form": "line", "unit": "%", "digits": 1, "zero_base": True, "label_points": True,
+               "headline": "Peso relativo de la actividad Isapre (%)",
+               "subtitle": "Casos GES de las Isapres como % del total Fonasa + Isapres, por trimestre",
                "rows": [{"label": qshort(y, q), "value": val(f"ges.q.{qid(y, q)}.isapre_share"), "ref": f"ges.q.{qid(y, q)}.isapre_share",
                          "emphasis": (y, q) == tuple(k["tq"])} for (y, q) in qs[-12:]],
                "table": {"columns": ["Trimestre", "Fonasa", "Isapres", "% Isapre"],
@@ -855,14 +896,31 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                                      "rows": [[short(*sf.period_parts(p)), fmt_int(val(f"ges.ytd.{p}.isapre")),
                                                fmt_int(half_up(val(f"benef.isapre.avg.ytd.{p}"))), fmt_dec(k["rates"][p], 1)] for p in rp]},
                            "source": "Beneficiarios: cartera mensual Isapre (ficha F1). Tasa bruta: sin ajuste por edad ni sexo; cuenta casos, no personas."})
-    ins_text = [f"Las Isapres informaron el {fmt_dec(share, 1)}% de los casos {between(ty, tm)}; es una parte de los casos, "
-                "no de la población."]
+    ins_text = [f"Las Isapres aportaron el {fmt_dec(share, 1)}% de los casos GES {between(ty, tm)}; Fonasa, el resto. Es una "
+                "proporción de casos, no de beneficiarios."]
     ins_text.append(f"Tasa bruta Isapre {between(ty, tm)}: {fmt_dec(rate, 1)} casos por 1.000 beneficiarios Isapre. Fonasa: tasa no "
                     "disponible, porque Alicanto no tiene capturados sus beneficiarios." if rate is not None else
                     "Tasa por beneficiario no disponible: faltan los beneficiarios Isapre del período y Alicanto no captura los de Fonasa.")
     for a in k.get("atypical") or []:
         ins_text.append(f"El {qshort(a['y'], a['q'])} de {who(a)} es atípico en los datos SIS (ver Totales).")
     tabs.append({"id": "seguros", "label": "Fonasa vs Isapre", "charts": ins_charts[:2], "text": ins_text})
+
+    # Tab · Nuevos problemas (Dirección 13-nov-2026): the decree's added problems get their own topic.
+    if new_rows:
+        c_new = {"id": "f4-nuevos", "form": "bars", "unit": "casos", "digits": 0,
+                 "headline": f"Casos de los problemas nuevos, {st}",
+                 "subtitle": f"Casos GES ingresados por problema, Fonasa + Isapres, {st}",
+                 "rows": [{"label": plabel(r, 24), "value": r["t"], "ref": f"ges.p.{r['key']}.ytd.{t}"} for r in new_rows],
+                 "table": {"columns": ["Problema de salud", "Fonasa", "Isapres", "Total"],
+                           "rows": [[plabel(r), fmt_int(val(f"ges.ytd.{t}.p.{r['key']}.fonasa")),
+                                     fmt_int(val(f"ges.ytd.{t}.p.{r['key']}.isapre")), fmt_int(r["t"])] for r in new_rows]},
+                 "source": "SIS, casos GES por problema (columna de ingresos del año)."}
+        top_new = max(new_rows, key=lambda r: r["t"])
+        new_text = ([f"El {GES_DECREE['name']} ({GES_DECREE['number']}) rige desde el {GES_DECREE['in_force_label']} y sumó "
+                     f"los problemas {nums}: la lista GES pasó a 90 problemas."] if by_decree else [])
+        new_text.append(f"{between(ty, tm).capitalize()} el problema nuevo con más casos es el «{plabel(top_new)}»: "
+                        f"{fmt_int(top_new['t'])} casos.")
+        tabs.append({"id": "nuevos", "label": "Nuevos problemas", "charts": [c_new], "text": new_text})
 
     # Tab 4 · Tendencia trimestral (quarters by difference of cumulative cuts)
     cuts = k["quarter_cuts"]
@@ -879,6 +937,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
 
     # Index → topic layout (Dirección 29-oct): generic index fields; the topic dek falls back to the tab text.
     index_refs = {"problemas": ["regla.top_problemas.pct"], "tendencia": ["conteo.trimestres"],
+                  "nuevos": [f"ges.p.{r['key']}.ytd.{t}" for r in new_rows],
                   "seguros": [f"ges.ytd.{t}.isapre_share"], "totales": [f"ges.ytd.{t}.total", "ges.yoy.total"]}
     for tab in tabs:
         refs = index_refs.get(tab["id"], [])
@@ -891,12 +950,12 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     ny, nq = qprev(*k["tq"], -1)
     late = (decision or {}).get("late_release")
     watch = [{"headline": f"Casos GES a {sf.month_label(qend(ny, nq))}: publicación atrasada." if late else
-              f"Casos GES a {sf.month_label(qend(ny, nq))} (la SIS la publicaría hacia el {sf.day_label(expected)}).",
+              f"Casos GES a {sf.month_label(qend(ny, nq))}.",
               "explanation": (f"Lleva {late['days_late']} días de atraso según el calendario histórico." if late else
                               f"Una variación de {yoy_th}% o más frente a los mismos meses del año anterior marca la ficha como destacada.")}]
     if k["crossing"]:
         r = k["crossing"][0]
-        watch.append({"headline": f"{short_label(r['label'], 60)}: {fmt_dec(r['pct'], 1, signed=True)}% a/a.",
+        watch.append({"headline": f"{plabel(r, 60)}: {fmt_dec(r['pct'], 1, signed=True)}% a/a.",
                       "explanation": ("La base incluye un trimestre atípico de los datos SIS: la variación puede estar distorsionada."
                                       if bad else "Un salto en un problema puede venir de un cambio de decreto o de registro; "
                                       "la ficha no infiere la causa.")})

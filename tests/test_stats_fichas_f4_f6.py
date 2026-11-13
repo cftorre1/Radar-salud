@@ -241,7 +241,9 @@ def test_f4_top_problems_threshold_and_decree_change(root):
     assert v["ges.yoy.total_comparable_pct"]["value"] == pytest.approx((comp_t - comp_b) / comp_b * 100)
     ficha = f4.compose(p, reg_ok(), today=TODAY)
     tab = next(t for t in ficha["tabs"] if t["id"] == "problemas")
-    assert any("posible cambio de decreto GES" in x for x in tab["text"])
+    # Dirección 13-nov-2026: no hypothesis wording; an unknown new problem is stated as a fact, the decree only when verified.
+    assert any("1 problema no tiene casos" in x for x in tab["text"]) and not any("posible" in x for x in tab["text"])
+    assert any(t["id"] == "nuevos" for t in ficha["tabs"])
     assert "+10,0% solo problemas comparables" in ficha["kpis"][0]["lines"]
 
 
@@ -249,7 +251,8 @@ def test_f4_ficha_publishes_with_tabs_kpis_and_tasa_bruta(root):
     out = f4.run(root, today=TODAY, registry=reg_ok(), llm=False)
     assert out["status"] == "pass", out.get("errors")
     fi = out["ficha"]
-    assert [t["label"] for t in fi["tabs"]] == ["Totales", "Top problemas", "Fonasa vs Isapre", "Tendencia trimestral"]
+    assert [t["label"] for t in fi["tabs"]][:3] == ["Totales", "Top problemas", "Fonasa vs Isapre"]
+    assert [t["label"] for t in fi["tabs"]][-1] == "Tendencia trimestral"
     assert fi["kicker_meta"].startswith("datos de enero–junio de 2026 · ")
     assert "tasa no disponible" in " ".join(fi["kpis"][1]["lines"])
     assert fi["featured"] is True and "threshold_crossed" in fi["triggers"]  # |a/a| ≥ 5 %
@@ -635,7 +638,7 @@ def test_registry_declares_f4_f6_rules():
     assert "(T1 = corte de marzo)" not in json.dumps(a, ensure_ascii=False)
     assert a["capture"]["parser"] == sf.GES_PARSER
     assert a["supersedes"]["stat_families"] == ["ges"] and b["supersedes"]["stat_families"] == ["boletin_ip"]
-    assert [t["label"] for t in a["tabs"]] == ["Totales", "Top problemas", "Fonasa vs Isapre", "Tendencia trimestral"]
+    assert [t["label"] for t in a["tabs"]][:3] == ["Totales", "Top problemas", "Fonasa vs Isapre"]
     assert [t["label"] for t in b["tabs"]] == ["Acreditación", "Con observaciones", "Reclamos", "Mediación"]
     assert list(b["hidden_topics"]) == ["rnpi"] and f6.HIDDEN_TOPICS == ("rnpi",)
 

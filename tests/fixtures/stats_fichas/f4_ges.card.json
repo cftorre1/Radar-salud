@@ -119,7 +119,7 @@
       "form": "dots",
       "digits": 0,
       "unit": "casos",
-      "headline": "Casos de ene–jun 2026 frente a ene–jun 2025",
+      "headline": "Casos de ene–jun 2025 vs 2026",
       "subtitle": "Casos GES ingresados por seguro · punto = ene–jun 2026, aro = ene–jun 2025",
       "rows": [
        {
@@ -177,13 +177,13 @@
     ],
     "text": [
      "Entre enero y junio de 2026 Fonasa e Isapres informaron 97.923 casos GES, 10.865 más que entre enero y junio de 2025 (+12,5%).",
-     "Con solo los problemas presentes en ambos períodos la variación es +10,0%: la lista de problemas cambió entre ambos años (posible cambio de decreto GES)."
+     "Con solo los problemas presentes en ambos períodos la variación es +10,0%."
     ],
     "spark": {
      "chart": "f4-totales",
      "form": "bars"
     },
-    "index_line": "Casos de ene–jun 2026 frente a ene–jun 2025",
+    "index_line": "Casos de ene–jun 2025 vs 2026",
     "index_refs": [
      "ges.ytd.2026-06.total",
      "ges.yoy.total"
@@ -202,31 +202,31 @@
       "subtitle": "Problemas que crecen: variación de ene–jun 2026 frente a ene–jun 2025 · base ≥ 500 casos en ene–jun 2025",
       "rows": [
        {
-        "label": "Cáncer de mama en…",
+        "label": "3. Cáncer de mama en pe…",
         "value": 28.8,
         "ref": "ges.p.ps03.yoy_pct",
         "emphasis": true
        },
        {
-        "label": "Depresión en pers…",
+        "label": "4. Depresión en persona…",
         "value": 18.4,
         "ref": "ges.p.ps04.yoy_pct",
         "emphasis": true
        },
        {
-        "label": "Hipoacusia bilate…",
+        "label": "5. Hipoacusia bilateral…",
         "value": 15.8,
         "ref": "ges.p.ps05.yoy_pct",
         "emphasis": true
        },
        {
-        "label": "Diabetes Mellitus…",
+        "label": "1. Diabetes Mellitus Ti…",
         "value": 11.9,
         "ref": "ges.p.ps01.yoy_pct",
         "emphasis": false
        },
        {
-        "label": "Hipertensión arte…",
+        "label": "2. Hipertensión arteria…",
         "value": 5.3,
         "ref": "ges.p.ps02.yoy_pct",
         "emphasis": false
@@ -241,31 +241,31 @@
        ],
        "rows": [
         [
-         "Cáncer de mama en personas de 15 años y más",
+         "3. Cáncer de mama en personas de 15 años y más",
          "2.950",
          "3.800",
          "+28,8%"
         ],
         [
-         "Depresión en personas de 15 años y más",
+         "4. Depresión en personas de 15 años y más",
          "13.600",
          "16.100",
          "+18,4%"
         ],
         [
-         "Hipoacusia bilateral en personas de 65 años y más",
+         "5. Hipoacusia bilateral en personas de 65 años y más",
          "1.360",
          "1.575",
          "+15,8%"
         ],
         [
-         "Diabetes Mellitus Tipo 2",
+         "1. Diabetes Mellitus Tipo 2",
          "23.100",
          "25.850",
          "+11,9%"
         ],
         [
-         "Hipertensión arterial en personas de 15 años y más",
+         "2. Hipertensión arterial en personas de 15 años y más",
          "45.100",
          "47.500",
          "+5,3%"
@@ -277,7 +277,7 @@
     ],
     "text": [
      "Se ordenan los problemas que crecen, con al menos 500 casos entre enero y junio de 2025; cruzan el umbral los que crecen 15% o más.",
-     "La lista de problemas cambió entre ene–jun 2025 y ene–jun 2026 (posible cambio de decreto GES). Problemas sin base comparable: 1; que ya no aparecen: 0. No entran al ranking."
+     "1 problema no tiene casos en ene–jun 2025 y no entran al ranking."
     ],
     "spark": {
      "chart": "f4-top",
@@ -297,8 +297,10 @@
       "form": "line",
       "unit": "%",
       "digits": 1,
-      "headline": "Parte Isapre de los casos GES por trimestre",
-      "subtitle": "% de los casos informados por Fonasa e Isapres en cada trimestre",
+      "zero_base": true,
+      "label_points": true,
+      "headline": "Peso relativo de la actividad Isapre (%)",
+      "subtitle": "Casos GES de las Isapres como % del total Fonasa + Isapres, por trimestre",
       "rows": [
        {
         "label": "T1 2025",
@@ -420,16 +422,62 @@
      }
     ],
     "text": [
-     "Las Isapres informaron el 12,4% de los casos entre enero y junio de 2026; es una parte de los casos, no de la población.",
+     "Las Isapres aportaron el 12,4% de los casos GES entre enero y junio de 2026; Fonasa, el resto. Es una proporción de casos, no de beneficiarios.",
      "Tasa bruta Isapre entre enero y junio de 2026: 4,9 casos por 1.000 beneficiarios Isapre. Fonasa: tasa no disponible, porque Alicanto no tiene capturados sus beneficiarios."
     ],
     "spark": {
      "chart": "f4-share",
      "form": "line"
     },
-    "index_line": "Parte Isapre de los casos GES por trimestre",
+    "index_line": "Peso relativo de la actividad Isapre (%)",
     "index_refs": [
      "ges.ytd.2026-06.isapre_share"
+    ]
+   },
+   {
+    "id": "nuevos",
+    "label": "Nuevos problemas",
+    "charts": [
+     {
+      "id": "f4-nuevos",
+      "form": "bars",
+      "unit": "casos",
+      "digits": 0,
+      "headline": "Casos de los problemas nuevos, ene–jun 2026",
+      "subtitle": "Casos GES ingresados por problema, Fonasa + Isapres, ene–jun 2026",
+      "rows": [
+       {
+        "label": "85. Problema nuevo de p…",
+        "value": 2150,
+        "ref": "ges.p.ps85.ytd.2026-06"
+       }
+      ],
+      "table": {
+       "columns": [
+        "Problema de salud",
+        "Fonasa",
+        "Isapres",
+        "Total"
+       ],
+       "rows": [
+        [
+         "85. Problema nuevo de prueba",
+         "1.700",
+         "450",
+         "2.150"
+        ]
+       ]
+      },
+      "source": "SIS, casos GES por problema (columna de ingresos del año)."
+     }
+    ],
+    "text": [
+     "Entre enero y junio de 2026 el problema nuevo con más casos es el «85. Problema nuevo de prueba»: 2.150 casos."
+    ],
+    "spark": null,
+    "index_line": "Casos de los problemas nuevos, ene–jun 2026",
+    "index_refs": [
+     "ges.p.ps85.ytd.2026-06"
     ]
    },
    {
@@ -548,11 +596,11 @@
   "lectura": null,
   "watch": [
    {
-    "headline": "Casos GES a septiembre 2026 (la SIS la publicaría hacia el 14 ene).",
+    "headline": "Casos GES a septiembre 2026.",
     "explanation": "Una variación de 5% o más frente a los mismos meses del año anterior marca la ficha como destacada."
    },
    {
-    "headline": "Cáncer de mama en personas de 15 años y más: +28,8% a/a.",
+    "headline": "3. Cáncer de mama en personas de 15 años y más: +28,8% a/a.",
     "explanation": "Un salto en un problema puede venir de un cambio de decreto o de registro; la ficha no infiere la causa."
    }
   ],

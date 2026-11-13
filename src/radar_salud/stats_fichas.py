@@ -266,6 +266,11 @@ def late_release(published_at: str | None, *, today: date, calendar: dict) -> di
 
 # ---------------------------------------------------------------------------------------------
 # Lectura Alicanto: verifier and budgeted generation
+# Dirección 12-nov-2026 (audit of fichas, point 6): «la Lectura Alicanto de Datos no debería existir … prefiero ser
+# dueño del silencio que esclavo de las palabras». Retired: no family calls the model and no ficha shows the block.
+# The verifier and generator stay for audit of past records; the run sets status "retired" without a call.
+LECTURA_RETIRED = True
+LECTURA_OFF = {"status": "retired", "text": None, "cost_usd": 0.0}
 
 
 def _isapre_catalog(root: Path = ROOT) -> list[dict]:
@@ -436,7 +441,7 @@ def line_ref_errors(text: str | None, refs: list[str] | None, package: dict, whe
     refs = list(refs or [])
     errors = [f"topic_ref_missing:{where}:{r}" for r in refs if r not in entries]
     cited = [entries[r] for r in refs if r in entries]
-    for tok, val, dec, unit in numbers_with_units(str(text)):
+    for tok, val, dec, unit in numbers_with_units(GES_PROBLEM_ID.sub(r"\1", str(text))):
         cands = [x * 100 if u == "share" else x for x, u in cited if _unit_class(u) == unit]
         if not number_traces(val, dec, cands):
             errors.append(f"topic_number_not_in_refs:{where}:{tok}{'' if unit == 'n' else unit}")
@@ -903,6 +908,9 @@ def lens_checks(ficha: dict, package: dict) -> dict:
     tabs = ficha.get("tabs") or []
     # A report (headline_type "report_title", F12 only) carries one section per finding: up to REPORT_MAX_TABS.
     max_tabs = REPORT_MAX_TABS if ficha.get("headline_type") == "report_title" else 6
+    # Dirección 13-nov-2026: the new GES problems get their own topic, on top of the usual six.
+    if any(t.get("id") == "nuevos" for t in tabs) and max_tabs == 6:
+        max_tabs = 7
     if tabs and not 2 <= len(tabs) <= max_tabs:
         out["ui"].append("tabs_out_of_range")
     for tab in tabs:
@@ -926,7 +934,8 @@ def lens_checks(ficha: dict, package: dict) -> dict:
             out["ui"].append(f"chart_rows_out_of_range:{c.get('id')}")
         if not (c.get("table") or {}).get("rows") or not c.get("subtitle"):
             out["ui"].append(f"chart_without_table_or_subtitle:{c.get('id')}")
-        if any(len(str(r.get("label") or "")) > 18 for r in rows):
+        # A numbered GES problem («70. Cáncer colorrectal», Dirección 13-nov-2026) may use up to 24 characters.
+        if any(len(str(r.get("label") or "")) > (24 if re.match(r"^\d{1,2}\. ", str(r.get("label") or "")) else 18) for r in rows):
             out["ui"].append(f"chart_label_long:{c.get('id')}")
     # A count word in a chart headline ('tres crecen') must equal a count the builder derived from the data.
     counts = {float(e.get("value")) for e in package.get("derived_ratios") or [] if e.get("unit") == "count"}
@@ -970,8 +979,15 @@ def report_title_errors(ficha: dict) -> list[str]:
 SIGNED_WITH_WORD = re.compile(r"(?<![\w.,])[−+-]\s?\d[\d.,]*\s?(?:%|pp\b)?\s+(?:menos|más|mas|mayor|menor)\b", re.I)
 
 
+# Dirección 13-nov-2026 (applies to all Alicanto): a hypothesis is checked against evidence before it is published; a
+# ficha never prints a guess about the health system («posible cambio de decreto»). Verified facts are stated as such.
+GES_PROBLEM_ID = re.compile(r"(^|«)\d{1,2}\. (?=[A-ZÁÉÍÓÚÑ])")
+HYPOTHESIS = re.compile(r"\((?:posible|posiblemente|probable|quiz[aá]s)\b[^)]*\)|\bposible cambio de decreto\b", re.I)
+
+
 def verify_ficha(ficha: dict, package: dict) -> dict:
     errors: list[str] = []
+    errors += [f"unverified_hypothesis:{m.group(0)[:40]}" for x in displayed_texts(ficha) for m in [HYPOTHESIS.search(str(x or ""))] if m]
     for key in ("headline", "dek", "kpis", "facts", "sources"):
         if not ficha.get(key):
             errors.append(f"missing:{key}")
@@ -986,6 +1002,9 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
     # Derived counts ('3 Isapres crecen') are not in this pool: a count traces only through the line that cites it.
     # The Lectura's figures are traced by verify_lectura (pool, unit, sign, entity, period), not by value alone.
     for text in displayed_texts(ficha, include_lectura=False):
+        # A GES problem number at the start of a label or inside «…» («70. Cáncer colorrectal», Dirección 13-nov-2026)
+        # is an identifier, not a figure; every other number is still traced.
+        text = GES_PROBLEM_ID.sub(r"\1", str(text or ""))
         for tok in text_numbers_trace(text, pool):
             errors.append(f"number_not_in_evidence:{tok}")
     # Derived claims ('menor baja del año', 'suben por segundo mes') are recomputed from the series.
@@ -1477,7 +1496,7 @@ def run_family(family: str, *, builder_version: str, build_package: Callable[...
     if decision["decision"] == "NO_CHANGE" and previous and previous.get("builder_version") != builder_version:
         decision = {**decision, "decision": "PUBLISH", "triggers": list(dict.fromkeys([*(previous.get("triggers") or []), "format_update"]))}
         base["decision"] = decision
-    retry = (decision["decision"] == "NO_CHANGE" and previous and llm
+    retry = (decision["decision"] == "NO_CHANGE" and previous and llm and not LECTURA_RETIRED
              and (previous.get("lectura") or {}).get("status") in {"not_attempted", "no_budget"})
     if decision["decision"] == "NO_CHANGE" and not retry:
         return {**base, "status": "no_change"}
@@ -1489,7 +1508,9 @@ def run_family(family: str, *, builder_version: str, build_package: Callable[...
         return {**base, "status": "hold", "verification": verification, "errors": verification["errors"], "candidate": ficha}
     same = previous and previous.get("release_key") == package["release_key"]
     prev_lect = (previous or {}).get("lectura") or {}
-    if same and prev_lect.get("status") not in {"not_attempted", "no_budget", None}:
+    if LECTURA_RETIRED:
+        lect = dict(LECTURA_OFF)
+    elif same and prev_lect.get("status") not in {"not_attempted", "no_budget", None}:
         lect = prev_lect  # never pay twice for one release
     else:
         lect = generate_lectura(ficha, package, registry=registry, enabled=llm, model_call=model_call, budget=budget)
@@ -1506,7 +1527,7 @@ def run_family(family: str, *, builder_version: str, build_package: Callable[...
         ficha["lectura"] = lect
     if lect.get("status") == "pass":
         ficha["machine_note"] += f" Costo de IA: USD {lect.get('cost_usd', 0):.4f}."
-    else:
+    elif lect.get("status") != "retired":
         ficha["machine_note"] += " Lectura Alicanto omitida (" + LECTURA_OMITTED.get(lect.get("status"), "no disponible") + ")."
     if retry:
         ficha["triggers"] = previous.get("triggers") or ficha["triggers"]
