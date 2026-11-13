@@ -926,7 +926,8 @@ def lens_checks(ficha: dict, package: dict) -> dict:
             out["ui"].append(f"chart_rows_out_of_range:{c.get('id')}")
         if not (c.get("table") or {}).get("rows") or not c.get("subtitle"):
             out["ui"].append(f"chart_without_table_or_subtitle:{c.get('id')}")
-        if any(len(str(r.get("label") or "")) > 18 for r in rows):
+        # A numbered GES problem («70. Cáncer colorrectal», Dirección 13-nov-2026) may use up to 24 characters.
+        if any(len(str(r.get("label") or "")) > (24 if re.match(r"^\d{1,2}\. ", str(r.get("label") or "")) else 18) for r in rows):
             out["ui"].append(f"chart_label_long:{c.get('id')}")
     # A count word in a chart headline ('tres crecen') must equal a count the builder derived from the data.
     counts = {float(e.get("value")) for e in package.get("derived_ratios") or [] if e.get("unit") == "count"}
@@ -970,8 +971,14 @@ def report_title_errors(ficha: dict) -> list[str]:
 SIGNED_WITH_WORD = re.compile(r"(?<![\w.,])[−+-]\s?\d[\d.,]*\s?(?:%|pp\b)?\s+(?:menos|más|mas|mayor|menor)\b", re.I)
 
 
+# Dirección 13-nov-2026 (applies to all Alicanto): a hypothesis is checked against evidence before it is published; a
+# ficha never prints a guess about the health system («posible cambio de decreto»). Verified facts are stated as such.
+HYPOTHESIS = re.compile(r"\((?:posible|posiblemente|probable|quiz[aá]s)\b[^)]*\)|\bposible cambio de decreto\b", re.I)
+
+
 def verify_ficha(ficha: dict, package: dict) -> dict:
     errors: list[str] = []
+    errors += [f"unverified_hypothesis:{m.group(0)[:40]}" for x in displayed_texts(ficha) for m in [HYPOTHESIS.search(str(x or ""))] if m]
     for key in ("headline", "dek", "kpis", "facts", "sources"):
         if not ficha.get(key):
             errors.append(f"missing:{key}")
