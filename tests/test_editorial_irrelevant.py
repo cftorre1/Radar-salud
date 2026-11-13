@@ -19,7 +19,7 @@ def test_regulator_agenda_is_noise_but_material_outcomes_are_not():
 
 def test_direccion_exclusions_never_reach_the_feed():
     excluded = {x["url"] for x in json.loads(Path("config/editorial_exclusions.json").read_text())["items"]}
-    assert len(excluded) == 4
+    assert len(excluded) >= 12  # 4 (27-oct) + 8 from the committee audit (12-nov-2026)
     history = json.loads(Path("data/history/superintendencia_signals.json").read_text())["signals"]
     shown = {r.get("source_url") for r in exporter.curate(history, resolve_external=False) if r.get("feed_visibility") is not False}
     assert not excluded & shown
