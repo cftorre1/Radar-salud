@@ -167,9 +167,11 @@ the independent review (`weekly_insight_a.review_prompt`).
    (the figures of the analysis); `dek_repeats_headline` fails when two or more of the headline's content words,
    and at least half of them, reappear in the dek. The headline carries the tension that is the news (Dirección, 12-nov-2026: «el título habla de
    más oferta, pero el cuerpo habla de oferta insuficiente… ¿no debiese el título mostrar ese conflicto?»). Applied
-   to the 9-nov insight: «El capital privado llega a las residencias para mayores, pero la oferta sigue siendo pequeña»
-   + «La red pública de Senama tiene cupo para 1.318 personas frente a 593.010 de 80 años o más, y hay pacientes de
-   todas las edades con alta médica que permanecen hospitalizados por falta de redes» (independent review, 12-nov).
+   to the 9-nov insight (Dirección, 12-nov-2026: the conflict is private investment against the room an ageing
+   population leaves, not the patients without networks, whom private residences would hardly serve): «El capital
+   privado entra a las residencias para mayores, pero el envejecimiento deja espacio para mucho más» + «Los dos
+   primeros proyectos del fondo suman 250 habitaciones; las personas de 60 años o más ya son el 19,8% de la población
+   y serían el 26,4% en 2035, según el INE».
 
 **Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
 `verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text
