@@ -36,7 +36,7 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   const rows=arr(c.rows).filter(r=>Number.isFinite(Number(r.value)));if(!rows.length)return'';
   const f0=v=>sgd(v,c.digits),ml=Math.max(...rows.map(r=>String(r.label).length)),vl=Math.max(...rows.map(r=>f0(Number(r.value)).length));
   // The label and its value share the left column: it widens for long («#. Nombre») labels so they never touch (review #200).
-  const vals=rows.map(r=>Number(r.value)),lo=Math.min(0,...vals),hi=Math.max(0,...vals),W=360,row=26,top=8,x0=Math.min(232,Math.max(162,Math.ceil(ml*6.9+vl*7.6+22))),x1=356,k=(x1-x0)/((hi-lo)||1),z=x0+(-lo)*k,H=top+rows.length*row+24,f=v=>sgd(v,c.digits);
+  const vals=rows.map(r=>Number(r.value)),lo=Math.min(0,...vals),hi=Math.max(0,...vals),W=360,row=26,top=8,x0=Math.min(236,Math.max(162,Math.ceil(ml*7.4+vl*8.4+22))),x1=356,k=(x1-x0)/((hi-lo)||1),z=x0+(-lo)*k,H=top+rows.length*row+24,f=v=>sgd(v,c.digits);
   let s=`<line x1="${z.toFixed(1)}" y1="${top-4}" x2="${z.toFixed(1)}" y2="${top+rows.length*row}" stroke="${C.axis}"/>`;
   rows.forEach((r,i)=>{const v=Number(r.value),y=top+i*row,w=Math.max(Math.abs(v)*k,2),x=v<0?z-w:z,strong=Math.abs(v)>=5000;
    s+=`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text><text x="${x0-8}" y="${y+15}" font-size="12.5" text-anchor="end" font-weight="${strong?700:400}" fill="${C.ink}">${f(v)}</text>`;
@@ -90,8 +90,9 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   // font than Inter (CI: DejaVu, ~7.6 px per character at 12.5 px bold). Short labels keep the full 160 px.
   const tagged=rows.some(r=>r.tag),max=Math.max(...rows.map(r=>Math.abs(Number(r.value))))||1,W=360,row=tagged?36:30,H=rows.length*row+8,
    // GES problems carry their number («70. Cáncer colorrectal», Dirección 13-nov-2026): the label column widens up to 24 characters.
-   x0=Math.min(176,Math.max(128,Math.max(...rows.map(r=>String(r.label).length))*6.9+6));
-  const L=Math.max(80,Math.min(160,W-x0-8-Math.max(...rows.map(r=>fv(r.value).length))*7.6));
+   x0=Math.min(186,Math.max(128,Math.max(...rows.map(r=>String(r.label).length))*7.4+8));
+  // Bold values in the CI fallback font run ~8.4 px per character: the bar leaves that room plus a margin.
+  const L=Math.max(80,Math.min(160,W-x0-(x0>128?14:8)-Math.max(...rows.map(r=>fv(r.value).length))*(x0>128?8.4:7.6)));
   const s=rows.map((r,i)=>{const v=Number(r.value),w=Math.max(Math.abs(v)/max*L,2),y=4+i*row,tag=r.tag?`<text class="sf-tag" x="1.5" y="${y+28}" font-size="10.5" fill="${C.ink50}">${esc(r.tag)}</text>`:'';return`<text x="1.5" y="${y+15}" font-size="12.5" fill="${C.ink}">${esc(r.label)}</text>${tag}<g class="sf-mark"><title>${esc(r.label)}${r.tag?` (${esc(r.tag)})`:''}: ${fv(v)}</title><rect x="${x0}" y="${y+3}" width="${w.toFixed(1)}" height="16" rx="3" fill="${r.emphasis?C.accent:r.muted?'#E6E1D6':'#CFC9BC'}"${r.muted?` stroke="${C.ink50}" stroke-dasharray="3 2"`:''}/></g><text x="${(x0+w+6).toFixed(1)}" y="${y+15}" font-size="12.5" font-weight="${r.emphasis?700:500}" fill="${C.ink}">${fv(v)}</text>`}).join('');
   return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`${c.subtitle||c.headline}: ${rows.map(r=>`${r.label}${r.tag?` (${r.tag})`:''} ${fv(r.value)}`).join(', ')}.`)}">${s}</svg>`;
  }
