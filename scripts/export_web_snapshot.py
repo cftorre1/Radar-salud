@@ -737,8 +737,10 @@ def _sanction_pulses(signals, today=None):
             ent=str(x.get("regulated_entity") or "").strip() or str(x.get("title") or "").strip()
             amount=x.get("sanction_amount");unit=str(x.get("sanction_unit") or "").strip()
             amt=f"{amount:,.0f} {unit}".replace(",",".") if isinstance(amount,(int,float)) and not isinstance(amount,bool) and amount>=0 and unit else ""
-            res=re.search(r"(?:Resoluci[oó]n\s+Exenta\s+)?([A-Z]{1,4}/N°\s*\d+)",str(x.get("title") or ""))
-            tail=", ".join(v for v in ((f"Res. Ex. {res.group(1)}" if res else ""),_short_day(x)) if v)
+            ttl=str(x.get("title") or "")
+            res=re.search(r"([A-Z]{1,4})/N°\s*(\d+)",ttl)
+            kind="Res. Ex." if re.search(r"Exenta",ttl,re.I) else "Res."
+            tail=", ".join(v for v in ((f"{kind} {res.group(1)}/N° {res.group(2)}" if res else ""),_short_day(x)) if v)
             return " — ".join(v for v in (ent,amt) if v)+(f" ({tail})" if tail else "")
         by_topic=defaultdict(list)
         for x in items:
