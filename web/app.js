@@ -272,7 +272,9 @@ function pieceKind(s){if(s.insight)return 'insight';const t=typeTags(s);return s
 function formatTag(s){return typeof AlicantoFicha!=='undefined'?AlicantoFicha.correctionTag(s):''}
 // «día · fuente» beside the pill: the publication day (year only when it is not this year) and the short source.
 // A rolling register (sanciones, acreditación) keeps «Actualizado» (Dirección 10-nov-2026): it is updated data.
-function kickerMeta(s){const day=AlicantoBar.shortDay(s.event_date),rolling=/^Actualizado /.test(String(rowMeta(s)||''))&&!s.stats_ficha;return [day?(rolling?`Actualizado ${day}`:day):'',esc(AlicantoDataCard.feedSource(s.source_name))].filter(Boolean).join(' · ')}
+// Dirección 13-nov-2026: the row shows the same date the inbox sorts and groups by (feedDate). A data ficha that
+// Alicanto verified after the source published it reads «Agregado <día>»; its source date stays in the ficha.
+function kickerMeta(s){const fd=String(feedDate(s)||'').slice(0,10),ev=String(s.event_date||'').slice(0,10),later=fd&&ev&&fd>ev,day=AlicantoBar.shortDay(later?fd:s.event_date),rolling=/^Actualizado /.test(String(rowMeta(s)||''))&&!s.stats_ficha;return [day?(rolling?`Actualizado ${day}`:later?`Agregado ${day}`:day):'',esc(AlicantoDataCard.feedSource(s.source_name))].filter(Boolean).join(' · ')}
 // Rows carry no actor chips (Dirección 28-oct 21:49): who is involved is named in the ficha ('Menciona: …'),
 // and a row of a followed topic keeps only its small follow marker (Dirección 4-nov-2026).
 const followIcon='<svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"></path></svg>';
@@ -317,7 +319,9 @@ async function openDetail(s,o={}){if(s&&s.insight)return openInsightPiece(s);let
 
 // Statistics fichas age and sort by the day Alicanto first verified the release (feed_date); cards still show the SIS date.
 // A feed_date later than today (clock skew, a snapshot built after the viewer's day) falls back to the SIS date.
-function feedDate(s,now=new Date()){if(!s.feed_date)return s.event_date;const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago'}).format(now);return String(s.feed_date).slice(0,10)<=today?s.feed_date:s.event_date}
+// A ficha dated by Alicanto's own detection (date_basis first_detected: no source date) keeps that date in the row and
+// the order, the same one its ficha shows («Detectado por Alicanto el …»), review of #201.
+function feedDate(s,now=new Date()){if(!s.feed_date||s.date_basis==='first_detected')return s.event_date;const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago'}).format(now);return String(s.feed_date).slice(0,10)<=today?s.feed_date:s.event_date}
 function dateVal(s){const raw=feedDate(s)||0,dateOnly=typeof raw==='string'&&raw.length===10&&raw[4]==='-'&&raw[7]==='-';const normalized=dateOnly?raw+'T12:00:00Z':raw;return new Date(normalized).getTime()||0}
 function ageDays(s,now=new Date()){const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now).map(x=>[x.type,x.value]));const today=Date.parse(`${p.year}-${p.month}-${p.day}T00:00:00Z`),event=Date.parse(String(feedDate(s,now)||'').slice(0,10)+'T00:00:00Z');return Math.floor((today-event)/86400000)}
 function freshness(s){const a=ageDays(s);if(a<=2)return 100;if(a<=7)return 88;if(a<=14)return 72;if(a<=30)return 48;if(a<=60)return 28;return 12}

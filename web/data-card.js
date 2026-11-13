@@ -44,7 +44,10 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
    period_label:f?f.period_label:null,cadence:f?f.cadence:null,updating:Boolean(f&&f.status==='updating'),
    topics:f&&Array.isArray(f.topics)?f.topics:topicsOf(s&&s.stats_ficha),row:s||(f&&f.feed_row?{...f.feed_row,stats_ficha:true}:{}),
    share_title:(f&&f.share_title)||(f&&f.headline)||'',dataset:(f&&f.source_dataset)||'',share_url:(s&&s.share_url)||(f&&f.share_url)||'',
-   topic:f?(GROUP_LABEL[f.group]||''):'',published:(s&&s.event_date)||(f&&(f.published_at||(f.feed_row&&f.feed_row.event_date)))||''};
+   topic:f?(GROUP_LABEL[f.group]||''):'',published:(s&&s.event_date)||(f&&(f.published_at||(f.feed_row&&f.feed_row.event_date)))||'',
+   // The day Alicanto verified the release (the inbox sorts by it): shown as «Agregado <día>» when later than the
+   // source's date and not in the future (Dirección 13-nov-2026).
+   added:(()=>{const fd=String((s&&s.date_basis!=='first_detected'&&s.feed_date)||'').slice(0,10),ev=String((s&&s.event_date)||'').slice(0,10),today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago'}).format(new Date());return fd&&ev&&fd>ev&&fd<=today?fd:''})()};
   return m;
  }
  function topLine(m){return [`Datos${m.period_label?` ${m.period_label}`:''}`,m.cadence?String(m.cadence).replace(/\s*\([^)]*\)/g,'').trim():'',m.updating?'actualizándose':''].filter(Boolean).join(' · ')}
@@ -67,7 +70,8 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   // Option B (Dirección 12-nov-2026): pill (the topic on the Datos page, «Datos» in Al día) + «día · fuente»; the period
   // the data cover is the one chip under the title («Datos a agosto 2026»), never a second date in the top line.
   const r=m.row||{},src=esc(feedSource(r.source_name||''));
-  const kmeta=[Bar&&Bar.shortDay?Bar.shortDay(m.published||r.event_date):'',src].filter(Boolean).join(' · ');
+  const kday=Bar&&Bar.shortDay?Bar.shortDay(m.added||m.published||r.event_date):'';
+  const kmeta=[kday?(m.added?`Agregado ${kday}`:kday):'',src].filter(Boolean).join(' · ');
   const top=Bar&&Bar.kicker?Bar.kicker('datos',o.kickerLabel||m.topic||'Datos',kmeta,o.topExtra||''):'';
   const state=m.period_label&&Bar&&Bar.stateChip?Bar.stateChip(`Datos a ${Bar.longPeriod(m.period_label)}${m.updating?' (actualizándose)':''}`,'per'):'';
   return `<div class="dc-card${read?' read':''}" data-dc="${esc(m.id)}">`+

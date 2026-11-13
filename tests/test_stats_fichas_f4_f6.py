@@ -190,6 +190,9 @@ def test_f4_cumulative_since_2005_never_shown(root):
     assert totals and min(totals) > 100_000  # the fixture's since-2005 totals are large, never confused with a flow
     # Every public key of the ficha (sf.PUBLIC_KEYS, revisions included) and the feed card built from it.
     shown = json.dumps([sf.public_ficha(fi), sf.ficha_card(fi, reg_ok()["families"]["F4"])], ensure_ascii=False)
+    # Run timestamps (fetched_at, generated_at: «…T10:31:36.883260+00:00») are not figures; their digits made this
+    # test fail at random (CI 13-nov-2026).
+    shown = re.sub(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:[+-]\d{2}:\d{2}|Z)?", "", shown)
     for n in cums:
         assert sf.fmt_int(n) not in shown and not re.search(rf"(?<![\d.]){int(n)}(?![\d])", shown), n
     # A cumulative input is never a showable number nor a revision.
