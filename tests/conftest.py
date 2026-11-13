@@ -76,3 +76,14 @@ def _rights_policy_scope(request, monkeypatch):
     # fingerprinted, so each replayed piece would match its own sentences.
     monkeypatch.setattr(source_rights, "_runtime_fingerprints", lambda: frozenset())
     yield
+
+
+@pytest.fixture(autouse=True)
+def _lectura_machinery_testable(request, monkeypatch):
+    """Dirección 12-nov-2026 retired the Datos «Lectura Alicanto» (stats_fichas.LECTURA_RETIRED). Its verifier,
+    generator and review stay in the code for audits, so their tests keep exercising them with the switch off;
+    tests marked ``lectura_retired`` check the production behaviour (no call, no block)."""
+    if request.node.get_closest_marker("lectura_retired"):
+        return
+    from radar_salud import stats_fichas
+    monkeypatch.setattr(stats_fichas, "LECTURA_RETIRED", False)
