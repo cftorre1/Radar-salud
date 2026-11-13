@@ -259,8 +259,46 @@ VERB = {
 }
 
 
+MESES = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre",
+         "noviembre", "diciembre")
+
+
 def _when(day):
-    return f"{day[8:10]}-{day[5:7]}-{day[:4]}"
+    return f"{int(day[8:10])} de {MESES[int(day[5:7]) - 1]} de {day[:4]}"
+
+
+def _official(text):
+    """The official trámite text, without the source's trailing dots (they would read «…Adolescencia..»)."""
+    return re.sub(r"[\s.]+$", "", re.sub(r"\s+([.,;])", r"\1", text or "").strip())
+
+
+def card_text(lead: str, official_text: str, stage: str | None) -> tuple[str, list[str]]:
+    """Dirección 13-nov-2026: one sentence for what happened, then one line each for the official trámite and the
+    current stage (its sub-stage, e.g. «Cuenta de primer informe», is procedural and left out)."""
+    facts = []
+    if official_text:
+        facts.append(f"Trámite oficial: «{official_text}».")
+    if stage:
+        facts.append(f"Etapa actual: {stage}.")
+    return lead, facts
+
+
+_LEGACY = re.compile(r"^(?P<lead>.*?\)) el (?P<d>\d{2})-(?P<m>\d{2})-(?P<y>\d{4}), en (?P<ch>[^.]+)\. "
+                     r"Trámite oficial: «(?P<off>.*)»\.(?: Etapa actual: (?P<stage>[^;.]+)[^.]*\.)?$")
+
+
+def restructure(row: dict) -> dict:
+    """Rewrite a stored Congreso card (one long paragraph) into the 13-nov structure; other rows are untouched."""
+    if not row.get("bill_boletin") or not row.get("deterministic_processing"):
+        return row
+    m = _LEGACY.match(str(row.get("what_happened") or ""))
+    if not m:
+        return row
+    day = f"{m['y']}-{m['m']}-{m['d']}"
+    lead = f"{m['lead']} el {_when(day)}, en {m['ch']}."
+    what, facts = card_text(lead, _official(m["off"]), m["stage"])
+    return {**row, "what_happened": what, "card_what": what if row.get("card_what") else row.get("card_what"),
+            "key_facts": facts}
 
 
 def process_congreso(raw, cfg):
@@ -283,25 +321,22 @@ def process_congreso(raw, cfg):
     chamber = CHAMBER.get(fold(t.get("camara")).casefold().replace(" ", ""), t.get("camara") or "el Congreso")
     law = f" N° {bill['leynro']}" if kind == "publicacion" and bill.get("leynro") else ""
     lead = VERB[kind].format(committee=md.get("committee") or "respectiva", law=law)
-    official_text = re.sub(r"\s+([.,;])", r"\1", t.get("descripcion") or "")
-    what = (f"{lead} el proyecto «{bill.get('titulo')}» (Boletín N° {bill['boletin']}) el {_when(raw.event_date)}, "
-            f"en {chamber}. Trámite oficial: «{official_text}».")
-    stage = "; ".join(x for x in (bill.get("etapa"), bill.get("subetapa")) if x)
-    if stage:
-        what += f" Etapa actual: {stage}."
+    what, key_facts = card_text(
+        f"{lead} el proyecto «{bill.get('titulo')}» (Boletín N° {bill['boletin']}) el {_when(raw.event_date)}, en {chamber}.",
+        _official(t.get("descripcion")), bill.get("etapa"))
     why = ("Marca un cambio de estado en la tramitación de un proyecto de ley de salud; "
            + ("la ley queda publicada y su vigencia depende del texto oficial."
               if kind == "publicacion" else "aún no es ley vigente y su contenido puede cambiar en los trámites siguientes."))
     if bill.get("urgencia_actual"):
         why += f" Urgencia vigente: {bill['urgencia_actual']}."
     scopes = scopes_for(bill.get("titulo"))
-    raw.metadata.update({"what_happened": what, "why_it_matters": why, "signal_types": ["Legal"], "scopes": scopes,
+    raw.metadata.update({"what_happened": what, "key_facts": key_facts, "why_it_matters": why, "signal_types": ["Legal"], "scopes": scopes,
                          "watch_tags": ["congreso", "proyecto de ley", f"boletín {bill['boletin']}"],
                          "event_type": "LAW_OR_POLICY_CHANGE",
                          "scores": {"economic": 50, "regulatory": 80, "scope": 70,
                                     "novelty": 70, "actionability": 60}})
     row = build_signal(raw, cfg).to_dict()
-    row.update(signal_types=["Legal"], scopes=scopes, publication_date=raw.event_date,
+    row.update(signal_types=["Legal"], scopes=scopes, key_facts=key_facts, publication_date=raw.event_date,
                publication_date_source=EVIDENCE_KIND, publication_date_evidence=ev,
                bill_boletin=bill["boletin"], bill_title=bill.get("titulo"), bill_milestone=kind,
                bill_chamber=chamber, bill_stage=bill.get("etapa"), bill_committee=md.get("committee"),
