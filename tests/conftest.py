@@ -48,6 +48,7 @@ CURRENT_POLICY_MODULES = {"test_paywall_rights_v2_20261028", "test_paywall_right
 
 def pytest_configure(config):
     config.addinivalue_line("markers", "current_rights_policy: run against config/paywalled_press.json as is")
+    config.addinivalue_line("markers", "lectura_retired: run with the Datos Lectura retired, as in production")
 
 
 @pytest.fixture(autouse=True)
