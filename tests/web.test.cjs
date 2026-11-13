@@ -639,7 +639,7 @@ test('norm card: same renderer in both sections, literal dates, groups and imple
 
 test('option B: follow marker and correction tag sit beside the meta, never inside its ellipsis (review #193)',()=>{
  const c=context();const html=c.AlicantoBar.kicker('noticia','Noticia','12 nov · Diario Financiero','<span class="tag">Corregido el 10 nov</span>');
- assert.match(html,/<span class="rk-extra"><span class="tag">Corregido el 10 nov<\/span><\/span><span class="rk-meta">12 nov · Diario Financiero<\/span>/);
+ assert.match(html,/<span class="rk-meta">12 nov · Diario Financiero<\/span><span class="sr-only"> · <\/span><span class="rk-extra"><span class="tag">Corregido el 10 nov<\/span><\/span>/);// DOM order = visual order
  assert.doesNotMatch(html.match(/<span class="rk-meta">[^]*?<\/span>/)[0],/Corregido/);
  const css=fs.readFileSync('web/home-inbox.css','utf8');assert.match(css,/\.rk-extra\{flex:none/);
 });
