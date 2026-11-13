@@ -45,7 +45,7 @@ function drawFeed(){const xs=shown(),by={};for(const x of xs)(by[grp(x)]=by[grp(
   const h=`<div class="nm-gh g-${g}"><h2>${l}</h2><span class="c">${list.length}</span></div>`,body=`<div class="nm-list">${list.map(card).join('')}</div>`;
   if(FOLD.includes(g)&&S.g==='all'){const k='G:'+g,hf=`<div class="nm-gh g-${g}"><h2>${l}</h2><span class="c nm-show">${S.open.has(k)?'Ocultar':`Mostrar ${list.length}`}</span></div>`;return `<details class="nm-grp" data-gk="${k}"${S.open.has(k)?' open':''}><summary>${hf}</summary>${body}</details>`}
   return `<section class="nm-grp" data-g="${g}">${h}${body}</section>`}).join('');
- document.getElementById('nmFeed').innerHTML=html||'<p class="nm-empty">Ninguna norma coincide. Prueba con el número («3937») o quita un filtro.</p>'}
+ document.getElementById('nmFeed').innerHTML=html||'<p class="nm-empty">Ninguna norma coincide. Prueba con el número («541») o quita un filtro.</p>'}
 function draw(){drawHero();drawGroups();drawMonths();drawCount();drawFeed()}
 function jumpTo(id){const el=document.getElementById('n-'+id);if(!el)return;const fold=el.closest('details.nm-grp');if(fold&&!fold.open){fold.open=true;S.open.add(fold.dataset.gk)}el.scrollIntoView({block:'center'});el.classList.add('nm-hit');setTimeout(()=>el.classList.remove('nm-hit'),1600)}
 function wire(){

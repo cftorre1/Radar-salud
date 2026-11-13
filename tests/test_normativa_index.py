@@ -93,7 +93,10 @@ def test_published_index_is_built_from_the_registry_and_review():
     pub = json.loads((ROOT / "web/data/normativa.json").read_text(encoding="utf-8"))
     reg = json.loads((ROOT / ni.REGISTRY).read_text(encoding="utf-8"))
     review = json.loads((ROOT / ni.REVIEW).read_text(encoding="utf-8"))
-    assert pub["schema"] == ni.SCHEMA and pub["count"] == len(reg["items"]) >= 31
+    # Withheld records (e.g. norms outside health, Dirección 12-nov-2026) stay in the registry but leave the index.
+    shown = [r for r in reg["items"].values() if not r.get("withheld")]
+    assert pub["schema"] == ni.SCHEMA and pub["count"] == len(pub["items"]) >= 25
+    assert pub["count"] <= len(shown) <= len(reg["items"])
     rebuilt = ni.build(reg, review, {x["signal_id"] for x in pub["items"] if x.get("in_feed")}, pub.get("generated_at"))
     assert rebuilt["items"] == pub["items"]
     for x in pub["items"]:
@@ -192,3 +195,13 @@ def test_decision_7_review_a_bare_figure_still_needs_its_own_quote():
            "evidence_quotes": ["MODIFICA EL TÍTULO II DEL LIBRO IV DEL COMPENDIO DE NORMAS DEL SEGURO DE LA LEY N°16.744",
                                "Plazo: 30 días hábiles contados desde su notificación al organismo."]}
     assert "date_or_quantity_not_literal_in_quote:30 días" in na.verify(rec, "Circular N°3933", ev)
+
+
+def test_withheld_registry_records_leave_the_published_index():
+    reg = {"items": {"a": {"id": "a", "label": "Circular N°1", "emisor": "SUSESO", "type": "Circular", "date": "2026-11-01",
+                           "subject": "Licencias médicas", "url": "https://www.suseso.gob.cl/a", "validity": None, "related": []},
+                     "b": {"id": "b", "label": "Circular N°3937", "emisor": "SUSESO", "type": "Circular", "date": "2026-11-01",
+                           "subject": "Crédito social de las C.C.A.F.", "url": "https://www.suseso.gob.cl/b", "validity": None,
+                           "related": [], "withheld": True}}}
+    built = ni.build(reg, {"decisions": {}}, set(), "2026-11-12T00:00:00+00:00")
+    assert [x["id"] for x in built["items"]] == ["a"] and built["count"] == 1

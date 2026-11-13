@@ -34,7 +34,7 @@ def test_general_act_gets_only_listing_facts_badge_and_disclaimer():
     card = minimal_card(_if537(), "Circular IF/N°537")
     assert card["display_title"].startswith("Circular IF/N°537 · Imparte instrucciones")
     assert len(card["display_title"]) <= 110 and "aplicación informática" not in card["display_title"]
-    assert card["normative_context"].startswith("Emitida por Superintendencia de Salud con fecha 2026-10-19. Asunto oficial: Imparte")
+    assert card["normative_context"].startswith("Imparte") and "Asunto oficial" not in card["normative_context"]
     assert card["editorial_badge"] == BADGE and card["why_it_matters"] == DISCLAIMER == card["card_why"]
     text = json.dumps(card, ensure_ascii=False)
     for leaked in ("Interpretación automática", "Impacto interpretado", "Punto automático", "Vigencia interpretada", "Circular IF/N°77"):

@@ -61,6 +61,7 @@ def _record(identity):
 def _gate(tmp_path, signal, records, monkeypatch):
     monkeypatch.setattr(auto, "load_auto_records",
                         lambda root: {u: auto._canonical_record(r) for u, r in records.items()})
+    monkeypatch.setattr(exporter, "_registro_labels", lambda: set())  # registro.json is tested on its own
     exported = exporter._normative_contract(signal)
     web = tmp_path / "web"
     (web / "data").mkdir(parents=True)

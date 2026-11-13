@@ -35,6 +35,10 @@ def _url_key(url):
     u=str(url or "").strip()
     return u.replace("http://","https://",1).rstrip("/")
 
+def _registro_labels(path=Path("data/normativa/registro.json")):
+    try:return set(json.loads(path.read_text(encoding="utf-8")).get("labels") or [])
+    except (OSError,ValueError):return set()
+
 def _publication_approvals(path=Path("config/sis_publicaciones_aprobadas.json")):
     try:return {_url_key(x["url"]):x for x in json.loads(path.read_text(encoding="utf-8")).get("items",[]) if x.get("url")}
     except (OSError,ValueError,KeyError):return {}
@@ -47,6 +51,10 @@ def _apply_persistent_editorial_decisions(signals):
             s=dict(s);ok=_url_key(s.get("source_url")) in approved
             s["editorial_hold"]=None if ok else "sis_publicacion_pendiente_revision_editorial"
             if ok:s["editorial_review"]={k:v for k,v in approved[_url_key(s["source_url"])].items() if k!="url"}
+        from radar_salud.health_scope import outside_health, REASON as _NOT_HEALTH
+        if outside_health(s):
+            # Dirección 12-nov-2026: outside health (CCAF, bienestar, SENCE, bonos) leaves the whole platform; history kept.
+            r=dict(s);r["feed_visibility"]=False;r["editorial_exclusion"]=_NOT_HEALTH;out.append(r);continue
         if str(s.get("source_url") or "") in excluded:
             # Dirección exclusion: kept in history, never shown in the feed.
             r=dict(s);r["feed_visibility"]=False;r["editorial_exclusion"]=excluded[str(s["source_url"])]["reason"];out.append(r);continue
@@ -259,6 +267,8 @@ def _normative_contract(s):
     has_subject=any(norm(x) in title_norm for x in record.get("subject_terms",[]))
     has_action=any(norm(x) in title_norm for x in record.get("action_terms",[]))
     reviewed=bool(record and plain and context and has_identity and has_subject and has_action and identity_hits==1)
+    registro=label in _registro_labels()
+    if registro:reviewed=False  # Dirección 12-nov-2026: ficha de registro until rewritten (data/normativa/registro.json)
     if not reviewed:
         from radar_salud.normative_minimal import minimal_card
         if r.get("normative_minimal"):return r  # already reduced to verifiable facts
@@ -269,6 +279,9 @@ def _normative_contract(s):
             r.update(minimal);r["legal_subtitle"]=subtitle
             r["normative_editorial"]={"legal_identity":label,"plain_language_title":minimal["display_title"],"legal_subtitle":subtitle,"editorial_state":"minimal_unreviewed","affected_actor":r.get("scopes") or []}
             return r
+        if registro:
+            # A ficha de registro never falls back to the automated reading: held until it can be built.
+            r["feed_visibility"]=False;r["publication_gate_reason"]="registro_sin_materia_oficial";return r
         r["normative_title_review_required"]=True
         if not plain:
             plain=str(r.get("display_title") or r.get("title") or label).strip()
