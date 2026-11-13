@@ -102,7 +102,9 @@ def test_sanctions_become_two_rolling_pulses_without_losing_individual_sources()
     assert {x["source_url"] for x in pulses if x.get("sanction_count")} <= {r["source_url"] for r in rows}
     assert all(len(x["source_alternatives"])==x["sanction_count"] for x in pulses if x.get("sanction_count"))
     assert all(x["ingestion_mode"]=="LIVE" for x in pulses if x.get("sanction_count"))
-    assert "1 incorporadas desde el histórico" in next(x["what_happened"] for x in pulses if x.get("sanction_count")==3)
+    three = next(x for x in pulses if x.get("sanction_count")==3)
+    assert "histórico" not in three["what_happened"] and "LIVE" not in three["what_happened"]  # no pipeline jargon (13-nov)
+    assert three["what_happened"].count(".") >= 1 and sum(len(g["items"]) for g in three["groups"]) == 3
 
 def test_offline_recuration_keeps_local_context_without_fetching(monkeypatch):
     row=sig("Circular IF/N°535",event="2026-09-23",cat="Regulación & Legal")
@@ -118,7 +120,9 @@ def test_real_prestador_pulse_keeps_material_and_all_three_resolutions():
     from datetime import date
     pulse=next(s for s in m.curate(history,resolve_external=False,as_of=date(2026,10,12)) if s.get("sanction_count") and "Prestadores" in s["title"])
     assert pulse["sanction_count"]==len(pulse["source_alternatives"])==3
-    assert "Clínica Los Carrera · 70 UF · cheque en garantía" in pulse["card_what"]
+    bullets=[x for g in pulse["groups"] for x in g["items"]]
+    assert any(x.startswith("Clínica Los Carrera — 70 UF") for x in bullets), bullets
+    assert any("cheque en garantía" in g["label"].lower() for g in pulse["groups"])
     assert all("UF" in x["material"] and x["title"] and x["url"] for x in pulse["source_alternatives"])
 
 def test_real_circular_535_keeps_unverified_77_relationship():

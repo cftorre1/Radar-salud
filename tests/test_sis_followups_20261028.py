@@ -239,9 +239,9 @@ def test_accreditation_acts_stay_available_90_days():
     pulses = accreditation_pulses(acts, date(2026, 10, 28))
     assert [p["title"] for p in pulses] == ["Acreditación de prestadores · últimos 30 días: 2 actos",
                                             "Acreditación de prestadores · días 31 a 90: 1 acto"]
-    assert "Hospital de Río Negro" in pulses[0]["what_happened"]  # registry changes were invisible before
-    assert "Clínica Dos" in pulses[1]["what_happened"] and "Entre 31 y 90 días atrás" in pulses[1]["what_happened"]
-    assert all("Antigua" not in p["what_happened"] for p in pulses)  # 100 days: history only
+    assert "Hospital de Río Negro" in pulses[0]["summary_text"]  # registry changes were invisible before
+    assert "Clínica Dos" in pulses[1]["summary_text"] and "Entre 31 y 90 días atrás" in pulses[1]["what_happened"]
+    assert all("Antigua" not in p["summary_text"] for p in pulses)  # 100 days: history only
     assert accreditation_pulse(acts, date(2026, 10, 28))["window_days"] == [0, 30]
 
 
