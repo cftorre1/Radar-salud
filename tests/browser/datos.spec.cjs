@@ -22,13 +22,14 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
  // its topics with their published labels, the Chile date line and «Compartir»; no KPI block, no «Vigente».
  for(const f of live(d)){
   const c=page.locator(`.dx-item[data-family="${f.family}"] .dc-card`);
-  // V1 (11-nov-2026): no top line; the type mark «Datos» starts the date line and the period is in it.
-  await expect(c.locator('.dc-meta .ty-datos')).toContainText('Datos');await expect(c.locator('.dc-src')).toHaveCount(0);
+  // Option B (12-nov-2026): pill with the family's group + «día · fuente»; the period is the chip under the title.
+  await expect(c.locator('.rk .rk-pill.rk-datos')).toHaveText(/Aseguradores|Prestadores|Empleadores y licencias|Sector público/);await expect(c.locator('.dc-src')).toHaveCount(0);
   expect(f.period_label).toMatch(/^((ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)–)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic) 20\d\d$/);
   await expect(c.locator('.dc-title')).toHaveText(f.index_title);
   await expect(c).not.toContainText(f.headline);
   expect(await c.locator('.dc-t .dc-l').allTextContents()).toEqual(f.topics.map(t=>t.label));
-  await expect(c.locator('.dc-meta .meta-text')).toHaveText(new RegExp(`^(Detectado|Publicado|Actualizado) .+ · ${f.source} · ${f.period_label}( \\(actualizándose\\))? · ${f.source_dataset.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`));// organism + dataset (Dirección 11-nov)
+  await expect(c.locator('.rk-meta')).toHaveText(new RegExp(`^\\d{1,2} \\p{L}+( 20\\d\\d)? · ${f.source}$`,'u'));
+  await expect(c.locator('.rk-state')).toHaveText(/^Datos a \p{L}+(–\p{L}+)? 20\d\d( \(actualizándose\))?$/u);
   await expect(c.locator('.act-share')).toHaveAttribute('data-share-url',f.share_url);
   await expect(c.locator('.dx-kpis,.dx-st,.dx-badge')).toHaveCount(0);
   expect(await c.locator('.dc-open').getAttribute('href')).toBe(`index.html?abrir=1&desde=datos#sig-${f.piece_id}`);
@@ -88,13 +89,14 @@ test('Data card topics open the ficha at that topic (Chile and Datos)',async({pa
  await page.goto('/');
  const row=page.locator('#local article.dc-row').first();await expect(row).toBeVisible();
  const id=await row.getAttribute('data-card'),fam=live(d).find(x=>x.piece_id===id);expect(fam).toBeTruthy();
- // Both show 4 topics (two rows) before «Ver restantes» (Dirección 11-nov-2026).
+ // Option B (12-nov-2026): the Al día row shows no index; its pill says «Datos» and the period is a chip.
  const t=fam.topics[Math.min(1,fam.topics.length-1)];
- await expect(row.locator('.dc-toc:not(.dc-rest) .dc-t')).toHaveCount(Math.min(4,fam.topics.length));
+ await expect(row.locator('.dc-toc')).toHaveCount(0);
  await expect(row.locator('.dc-title')).toHaveText(fam.index_title);
- await expect(row.locator('.dc-meta .ty-datos')).toContainText('Datos');
- await expect(row.locator('.dc-meta .meta-text')).toContainText(fam.period_label);
- await row.locator(`.dc-t[data-dc-tema="${t.id}"]`).click();
+ await expect(row.locator('.rk .rk-pill.rk-datos')).toHaveText('Datos');
+ if(fam.period_label)await expect(row.locator('.rk-state')).toContainText('Datos a ');
+ // A topic deep link (as shared from Datos) still opens the Al día ficha at that topic.
+ await page.goto(`/?abrir=1#sig-${fam.piece_id}&tema=${t.id}`);
  await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(page.locator('#detailBody [data-sf-view="topic"]')).toBeVisible();
  await expect(page.locator('#detailBody .sf-pick-label')).toHaveText(t.label);

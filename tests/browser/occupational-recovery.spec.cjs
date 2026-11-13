@@ -48,9 +48,10 @@ test('occupational backfills retain their publisher and original publication yea
     const age=(Date.parse(snapshot.date+'T00:00:00Z')-Date.parse(signal.event_date+'T00:00:00Z'))/86400000;
     if(age<0||age>=90){await expect(card).toHaveCount(0);continue;}
     await expect(card).toHaveCount(1);
-    await expect(card.locator('.card-meta')).toContainText(await page.evaluate(n=>feedSource(n),signal.source_name));
-    await expect(card.locator('.card-meta')).toContainText('2026');
-    await expect(card.locator('.card-meta')).not.toContainText('2025');
+    // Option B (12-nov-2026): «día · fuente» beside the pill; the year shows only when it is not the current one.
+    await expect(card.locator('.rk-meta')).toContainText(await page.evaluate(n=>feedSource(n),signal.source_name));
+    await expect(card.locator('.rk-meta')).toHaveText(/^\d{1,2} \p{L}+ · /u);
+    await expect(card.locator('.rk-meta')).not.toContainText('2025');
     if(signal.market_role==='mutuality')expect(signal.watch_tags).not.toContain('clinicas_achs_salud');
     await expect(card).not.toContainText('aún está abierta');
     if(signal.source_slug==='mutual_seguridad'){

@@ -4,7 +4,7 @@
 const {test,expect,selectPeriod,selectLane}=require('./fixtures.cjs');
 const fs=require('node:fs');
 const ORDER=['Ver ficha','Fuente original','Compartir'];
-async function rowGeometry(page,sel){return page.locator(sel).evaluateAll(rows=>rows.filter(r=>!r.matches('.dc-row,.nc-row')).slice(0,8).map(r=>{const meta=r.querySelector('.card-meta').getBoundingClientRect(),acts=[...r.querySelectorAll('.row-acts .act')].map(a=>{const b=a.getBoundingClientRect(),t=a.querySelector('span').getBoundingClientRect();return {label:a.textContent.trim(),top:b.top,h:b.height,right:b.right,textTop:t.top}}),row=r.getBoundingClientRect();return {metaBottom:meta.bottom,acts,rowRight:row.right,rowBottom:row.bottom}}))}
+async function rowGeometry(page,sel){return page.locator(sel).evaluateAll(rows=>rows.filter(r=>!r.matches('.dc-row,.nc-row')).slice(0,8).map(r=>{const meta=(r.querySelector('h2')||r.querySelector('.card-meta')).getBoundingClientRect()/* option B (12-nov-2026): the title sits right above the actions */,acts=[...r.querySelectorAll('.row-acts .act')].map(a=>{const b=a.getBoundingClientRect(),t=a.querySelector('span').getBoundingClientRect();return {label:a.textContent.trim(),top:b.top,h:b.height,right:b.right,textTop:t.top}}),row=r.getBoundingClientRect();return {metaBottom:meta.bottom,acts,rowRight:row.right,rowBottom:row.bottom}}))}
 for(const width of [320,390,1440]){
  test(`opción B rows on Chile and Global at ${width}px`,async({page})=>{
   await page.setViewportSize({width,height:900});
@@ -16,7 +16,7 @@ for(const width of [320,390,1440]){
    for(const r of rows){
     const labels=r.acts.map(a=>a.label);expect(ORDER.filter(l=>labels.includes(l))).toEqual(labels);expect(labels[0]).toBe('Ver ficha');expect(labels.at(-1)).toBe('Compartir');
     for(const a of r.acts){expect(a.h).toBeGreaterThanOrEqual(44);expect(a.right).toBeLessThanOrEqual(width+0.5)}
-    // One line of actions, right under the meta line: the visible gap from "fuente · fecha" to the labels is small.
+    // One line of actions, right under the title (option B: the pill and «día · fuente» are above it); the gap is small.
     expect(new Set(r.acts.map(a=>Math.round(a.top))).size).toBe(1);
     expect(r.acts[0].textTop-r.metaBottom).toBeLessThanOrEqual(14);expect(r.acts[0].top+r.acts[0].h).toBeLessThanOrEqual(r.rowBottom+1);
    }

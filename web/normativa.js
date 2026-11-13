@@ -24,7 +24,7 @@ function shown(){const ks=keysOf(S.g);return base().filter(x=>(!ks||ks.includes(
 const when=(x,e)=>x.prec==='month'&&!(x.review&&x.review.kind==='date')?`${MESL[e.getUTCMonth()]} de ${e.getUTCFullYear()}`:fmt(e);
 const isRead=x=>Boolean(Read&&Read.readSet&&Read.readSet.has(x.signal_id||x.id));
 // Same card as Al día (norma-card.js): read dot, date line, Ver ficha (the Al día ficha), Fuente original, Compartir.
-function card(x){return `<article class="nm-item${isRead(x)?' read':''}" id="n-${esc(x.id)}" tabindex="-1">${NC.render(x,{read:isRead(x),readId:x.signal_id||x.id,openHref:x.ficha,dateLine:NC.dateLine(x),shareId:`n-${x.id}`,q:S.q.trim(),open:S.open.has(x.id)})}</article>`}
+function card(x){return `<article class="nm-item${isRead(x)?' read':''}" id="n-${esc(x.id)}" tabindex="-1">${NC.render(x,{read:isRead(x),readId:x.signal_id||x.id,openHref:x.ficha,shareId:`n-${x.id}`,q:S.q.trim(),open:S.open.has(x.id)})}</article>`}
 function counts(){const xs=base(),c={};for(const [k,,ks] of PANEL)c[k]=k==='impl'?xs.filter(x=>NC.isImpl(x.id)).length:ks?xs.filter(x=>ks.includes(grp(x))).length:xs.length;return c}
 // Empty groups have no pill (except the selected one), so the row fits; each pill reads «Vigentes: 13 normas».
 function drawGroups(){const c=counts();document.getElementById('nmGroups').innerHTML=PANEL.filter(([k])=>k==='all'||c[k]||S.g===k).map(([k,l])=>`<button type="button" data-g="${k}" aria-pressed="${S.g===k}" aria-label="${l}: ${c[k]} ${c[k]===1?'norma':'normas'}">${l} <b>${c[k]}</b></button>`).join('')}

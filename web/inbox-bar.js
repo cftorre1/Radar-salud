@@ -97,7 +97,19 @@
  // Piece type (Dirección 11-nov-2026, V1): a small icon and its word at the start of the date line, so a reader sees at a
  // glance why rows differ (news, a Datos ficha, a norm) in Al día, Normativa and Datos. Global lists only news, so it has none.
  const TYPE_ICON={noticia:'<path d="M4 6h16M4 12h16M4 18h10"/>',datos:'<path d="M5 20V10M12 20V4M19 20v-7"/>',normativa:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',legal:'<path d="M3 21h18M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 9l9-5 9 5z"/>',insight:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>'};
- const TYPE_WORD={noticia:'Noticia',datos:'Datos',normativa:'Normativa',legal:'Legislación',insight:'Insight'};
+ const TYPE_WORD={noticia:'Noticia',datos:'Datos',normativa:'Normativa',legal:'Legislación',insight:'Insight',fiscalizacion:'Fiscalización',global:'Global'};
+ TYPE_ICON.fiscalizacion='<path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>';
+ TYPE_ICON.global='<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 2.5 15.2 0 18M12 3c-2.5 2.8-2.5 15.2 0 18"/>';
+ // Option B (Dirección 12-nov-2026): every row starts with a colour pill (icon + category, or the sub-type inside a
+ // one-category section) and, beside it, «día · fuente». Under the title, at most one state chip of its own type.
+ const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+ const MES_LARGO=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+ function shortDay(raw,now){const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(raw||''));if(!m)return '';const y=+m[1],year=(now||new Date()).getFullYear();return `${+m[3]} ${MES[+m[2]-1]}${y!==year?` ${y}`:''}`}
+ // «ago 2026» / «jul–sep 2026» → «agosto 2026» / «julio–septiembre 2026» for the «Datos a …» chip.
+ function longPeriod(p){return String(p||'').replace(/\b(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)\b/g,x=>MES_LARGO[MES.indexOf(x)])}
+ // `extra` (follow marker, «Corregido el …») sits beside the meta, never inside its ellipsis (review #193).
+ function kicker(kind,label,meta,extra){const k=TYPE_ICON[kind]?kind:'noticia';return `<div class="rk"><span class="rk-pill rk-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${esc(label||TYPE_WORD[k])}</span>${meta?`<span class="rk-meta">${meta}</span><span class="sr-only"> · </span>`:''}${extra?`<span class="rk-extra">${extra}</span>`:''}</div>`}
+ function stateChip(text,tone){return text?`<span class="rk-state rk-st-${tone||'ok'}">${esc(text)}</span>`:''}
  function typeMark(kind){const k=TYPE_WORD[kind]?kind:'noticia';return `<span class="ty ty-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${TYPE_WORD[k]}<span class="sr-only"> · </span></span>`}
- root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull};
+ root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull,kicker,stateChip,shortDay,longPeriod,TYPE_WORD};
 })(typeof window!=='undefined'?window:globalThis);

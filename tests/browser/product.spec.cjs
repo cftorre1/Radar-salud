@@ -353,7 +353,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await expect(page.locator('#detailBody')).not.toContainText('No es solo expansión física');
  await expect(page.locator('#detailBody')).toContainText('Mostramos sólo el titular y la bajada pública');
  await expect(bupa).not.toContainText('…');
- await expect(bupa.locator('.card-meta')).toContainText(/\d{1,2} \p{L}+\.? 2026/u);
+ await expect(bupa.locator('.rk-meta')).toContainText(/\d{1,2} \p{L}+\.?( 2026)? · /u);// option B (12-nov-2026)
  for(const derived of ['No es solo expansión física','La Dehesa: inauguración','Clínicas Huinganal: crecimiento mediante adquisición','capacidad nueva, compra y diversificación de servicios','Bupa refuerza su red'])
   await expect(page.locator('#detailBody')).not.toContainText(derived);
  await expect(page.locator('#detailBody')).not.toContainText('Enriquecimiento editorial');
@@ -361,7 +361,7 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  // Dirección 28-oct-2026: the live F1 ficha (Cartera y movilidad) replaces the Pulso Isapre card.
  const isapre=page.locator('article[data-card="stats-ficha:F1:2026-08"]');
  await expect(isapre).toHaveCount(1);
- await expect(isapre.locator('.card-meta')).toContainText('Actualizado 2 oct 2026');
+ await expect(isapre.locator('.rk-meta')).toHaveText(/^2 oct( 2026)? · SIS$/);await expect(isapre.locator('.rk-state')).toHaveText('Datos a agosto 2026');// option B (12-nov-2026)
  await isapre.locator('[data-detail]').first().click();
  // Header as in the approved mockup (Dirección 29-oct): kicker + 'Destacada'; a two-line meta list under the headline.
  await expect(page.locator('#detailBody .sf-kicker .sf-kick')).toHaveText('Cartera y movilidad');
@@ -791,21 +791,21 @@ test('a shared link is revealed once in a lane that shows it and never rewrites 
 test('in Todas a read row keeps source, date and buttons, and the dot toggles back',async({page})=>{
  await page.goto('/');await selectLane(page,'t');
  const row=page.locator('#local article[data-card]:not(.read)').first();const id=await row.getAttribute('data-card');const same=page.locator(`#local [data-card="${id}"]`);
- const meta=await same.locator('.meta-text').innerText();expect(meta.trim().length).toBeGreaterThan(4);
+ const meta=await same.locator('.rk-meta').innerText();expect(meta.trim().length).toBeGreaterThan(4);
  const dot=same.locator('[data-read]');await dot.click();await expect(same).toHaveClass(/read/);
  await expect(dot).toBeVisible();await expect(dot).toBeFocused();await expect(dot).toHaveAttribute('aria-label',/^Marcar como no leído/);
- await expect(same.locator('.card-meta')).toBeVisible();await expect(same.locator('.meta-text')).toHaveText(meta);
+ await expect(same.locator('.rk')).toBeVisible();await expect(same.locator('.rk-meta')).toHaveText(meta);
  await expect(same.locator('.row-acts .act-src')).toBeVisible();await expect(same.locator('.row-acts [data-share]')).toBeVisible();await expect(same.locator('.row-acts .act-open')).toBeVisible();
  const size=await same.locator('h2').evaluate(el=>getComputedStyle(el).fontSize);expect(size).toBe(await page.locator('#local article[data-card]:not(.read) h2').first().evaluate(el=>getComputedStyle(el).fontSize));
- await page.reload();await expect(same).toHaveClass(/read/);await expect(same.locator('.meta-text')).toHaveText(meta);await expect(same.locator('[data-read]')).toBeVisible();
+ await page.reload();await expect(same).toHaveClass(/read/);await expect(same.locator('.rk-meta')).toHaveText(meta);await expect(same.locator('[data-read]')).toBeVisible();
  await same.locator('[data-read]').click();await expect(same).not.toHaveClass(/read/);await expect(same.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como leído/);
 });
 test('Global read rows keep publisher and date',async({page})=>{
  await page.goto('/global.html');await page.locator('#globalPeriod').selectOption('90');await page.locator('#globalLanes [data-lane="t"]').click();
  const row=page.locator('#themes .theme:not(.read)').first();const id=await row.getAttribute('data-theme');const same=page.locator(`#theme-${id}`);
- const meta=await same.locator('.meta-text').innerText();
+ const meta=await same.locator('.rk-meta').innerText();
  await same.locator('[data-read]').click();await expect(same).toHaveClass(/read/);
- await expect(same.locator('.meta-text')).toBeVisible();await expect(same.locator('.meta-text')).toHaveText(meta);await expect(same.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como no leído/);
+ await expect(same.locator('.rk-meta')).toBeVisible();await expect(same.locator('.rk-meta')).toHaveText(meta);await expect(same.locator('[data-read]')).toHaveAttribute('aria-label',/^Marcar como no leído/);
 });
 // Dirección 27-oct 22:44 (puntos 2, 3 y 5) supersede the lanes menu of PR #72 review N1: read status is an
 // always-visible segmented control; topics are one compact multi-select dropdown floating over the feed;

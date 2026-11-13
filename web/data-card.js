@@ -30,7 +30,10 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   const pub=s.published_on||s.publication_date||(fiscal?null:s.event_date);if(pub)return `Publicado ${fmtDate(pub)}`;
   const det=s.first_detected_at||s.detected_at;return det?`Detectado ${fmtDate(det)}`:''} function cardMeta(s){return [rowDate(s),esc(feedSource(s.source_name))].filter(Boolean).join(' · ')}
 
- const SHOWN=4,FEED_SHOWN=4; // Dirección 11-nov-2026: two rows of the index (4 topics) before «Ver restantes», Datos and Al día
+ // Option B (Dirección 12-nov-2026): Al día rows show no index; the Datos page keeps two rows of it.
+ const SHOWN=4,FEED_SHOWN=0;  // Datos page: 4 topics (two rows); Al día: none
+ // Datos page pill: the family's group (datos.json «groups»), so it never repeats the title.
+ const GROUP_LABEL={aseguradores:'Aseguradores',prestadores:'Prestadores',empleadores_licencias:'Empleadores y licencias',sector_publico:'Sector público'};
  const expanded=new Set();
  // The ficha's topics as its renderer lists them (stats-ficha.js `topics`): tabs with a label; id = tab id, else position.
  function topicsOf(ficha){return arr(ficha&&ficha.tabs).filter(t=>t&&t.label).map((t,i)=>({id:String(t.id||i),label:String(t.label)}))}
@@ -40,7 +43,8 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   const m={id:f?f.piece_id:(s&&s.piece_id),title:f?(f.index_title||f.label):String((s&&s.stats_ficha&&s.stats_ficha.family_label)||(s&&(s.display_title||s.title))||''),
    period_label:f?f.period_label:null,cadence:f?f.cadence:null,updating:Boolean(f&&f.status==='updating'),
    topics:f&&Array.isArray(f.topics)?f.topics:topicsOf(s&&s.stats_ficha),row:s||(f&&f.feed_row?{...f.feed_row,stats_ficha:true}:{}),
-   share_title:(f&&f.share_title)||(f&&f.headline)||'',dataset:(f&&f.source_dataset)||'',share_url:(s&&s.share_url)||(f&&f.share_url)||''};
+   share_title:(f&&f.share_title)||(f&&f.headline)||'',dataset:(f&&f.source_dataset)||'',share_url:(s&&s.share_url)||(f&&f.share_url)||'',
+   topic:f?(GROUP_LABEL[f.group]||''):'',published:(s&&s.event_date)||(f&&(f.published_at||(f.feed_row&&f.feed_row.event_date)))||''};
   return m;
  }
  function topLine(m){return [`Datos${m.period_label?` ${m.period_label}`:''}`,m.cadence?String(m.cadence).replace(/\s*\([^)]*\)/g,'').trim():'',m.updating?'actualizándose':''].filter(Boolean).join(' · ')}
@@ -53,20 +57,23 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
  // o: {read, base (link to the ficha, before '#'), shareTitle, openAttr (Chile: its data-detail), topExtra (Al día: «Datos»
  // tag), shown (topics visible before «Ver restantes»: 6 in Datos, 2 in Al día)}. The Bar (inbox-bar.js) draws the dot and «Compartir» on both pages.
  function render(m,o={}){
-  const Bar=root.AlicantoBar,read=Boolean(o.read),base=o.base||'',ts=arr(m.topics),shown=Number.isInteger(o.shown)?o.shown:SHOWN,first=ts.slice(0,shown),rest=ts.slice(shown);
+  const Bar=root.AlicantoBar,read=Boolean(o.read),base=o.base||'',ts=arr(m.topics),shown=Number.isInteger(o.shown)?o.shown:SHOWN,first=ts.slice(0,shown),rest=shown>0?ts.slice(shown):[];  // shown 0 (Al día): no index at all
   const open=expanded.has(m.id),rid=`dcr-${safeId(m.id)}`,title=m.title||'';
   const shareTitle=o.shareTitle||m.share_title||title;
   const toc=first.length?`<ol class="dc-toc" aria-label="Temas de la ficha">${items(m,base,first,0)}</ol>`:'';
   const more=rest.length?`<ol class="dc-toc dc-rest" id="${rid}" start="${shown+1}" aria-label="Temas restantes"${open?'':' hidden'}>${items(m,base,rest,shown)}</ol><button type="button" class="dc-more" aria-expanded="${open}" aria-controls="${rid}" data-dc-more="${esc(m.id)}" data-n="${rest.length}">${moreLabel(open,rest.length)}</button>`:'';
   // «SIS · Datos abiertos: Prestaciones Bonificadas»: organism and dataset (Dirección 11-nov-2026).
   // V1 (Dirección 11-nov-2026): the type marker starts the date line; the period moves here from the old top line.
-  const meta=[cardMeta(m.row||{}),m.period_label?esc(m.period_label)+(m.updating?' (actualizándose)':''):'',m.dataset?esc(m.dataset):''].filter(Boolean).join(' · ');
-  const mark=Bar&&Bar.typeMark?Bar.typeMark('datos'):'';
+  // Option B (Dirección 12-nov-2026): pill (the topic on the Datos page, «Datos» in Al día) + «día · fuente»; the period
+  // the data cover is the one chip under the title («Datos a agosto 2026»), never a second date in the top line.
+  const r=m.row||{},src=esc(feedSource(r.source_name||''));
+  const kmeta=[Bar&&Bar.shortDay?Bar.shortDay(m.published||r.event_date):'',src].filter(Boolean).join(' · ');
+  const top=Bar&&Bar.kicker?Bar.kicker('datos',o.kickerLabel||m.topic||'Datos',kmeta,o.topExtra||''):'';
+  const state=m.period_label&&Bar&&Bar.stateChip?Bar.stateChip(`Datos a ${Bar.longPeriod(m.period_label)}${m.updating?' (actualizándose)':''}`,'per'):'';
   return `<div class="dc-card${read?' read':''}" data-dc="${esc(m.id)}">`+
    (Bar?Bar.dotButton('data-read',m.id,read,title):'')+
 
-   `<h3 class="dc-title"><a class="dc-open" href="${esc(`${base}#sig-${m.id}`)}"${o.openAttr?` ${o.openAttr}`:''}>${esc(title)}</a></h3>`+
-   (meta||mark?`<div class="card-meta dc-meta">${mark}${o.topExtra||''}<span class="meta-text">${meta}</span></div>`:'')+
+   top+`<h3 class="dc-title"><a class="dc-open" href="${esc(`${base}#sig-${m.id}`)}"${o.openAttr?` ${o.openAttr}`:''}>${esc(title)}</a></h3>`+state+
    toc+more+
    `<div class="row-acts" role="group" aria-label="Acciones"><a class="act act-open" href="${esc(`${base}#sig-${m.id}`)}"${o.openAttr?` ${o.openAttr}`:''} aria-label="Ver ficha: ${esc(title)}"><span>Ver ficha</span>${Bar&&Bar.icons?Bar.icons.chev:''}</a>${Bar?Bar.sourceAct(srcLink(m.row||{}),title):''}${Bar?Bar.shareAct(`sig-${m.id}`,shareTitle,m.share_url):''}</div>`+
    `</div>`;
