@@ -190,34 +190,33 @@ def test_f12_pass_recomputes_every_kpi_from_the_raw_rows(root):
     assert fi["headline_type"] == "report_title"
     # Within-region dispersion, recomputed: linear p25/p75 of base × (1 + 0,2·i), i = 0..5 → 1,25 and 1,75.
     assert k["dispersion_amb"]["value"] == k["dispersion_hosp"]["value"] == f12.fmt(1.75 / 1.25, 2) + " veces"
-    disp = next(t for t in fi["tabs"] if t["id"] == "dispersion")
+    disp = next(t for t in fi["tabs"] if t["id"] == "precios")  # Dirección 13-nov: dispersion + vs-rm
     assert disp["dek"] == ("La mayor diferencia hospitalaria está en la Metropolitana: el prestador caro cobra 1,40 veces lo del "
                            "barato (1,40 en ambulatorio)")
     # Regional index vs RM: every code's median scales with the region factor → (RF[r] / RF[RM] − 1), simple average.
     amb_idx = sum(RF[r] / RF["13"] - 1 for r in AMB_REG[1:]) / 13 * 100
     hosp_idx = sum(RF[r] / RF["13"] - 1 for r in HOSP_REG[1:]) / 8 * 100
-    vs = next(t for t in fi["tabs"] if t["id"] == "vs-rm")
-    assert vs["dek"] == (f"Ambulatorio: regiones {f12.fmt(abs(amb_idx), 1)}% más baratas que RM en promedio; "
-                         f"hospitalario, {f12.fmt(abs(hosp_idx), 1)}% más baratas")
+    assert (f"Ambulatorio: regiones {f12.fmt(abs(amb_idx), 1)}% más baratas que RM en promedio; "
+            f"hospitalario, {f12.fmt(abs(hosp_idx), 1)}% más baratas.") in disp["body"]
+    assert [c["id"] for c in disp["charts"]] == ["f12-disp", "f12-vs-rm"]
     # Public (providers 0-2, median 1,2) vs private (3-5, median 1,8) in the same code and region.
     pp = next(t for t in fi["tabs"] if t["id"] == "publico-privado")
     x = f12.fmt((1.2 / 1.8 - 1) * 100, 1, True)
     assert pp["dek"] == f"Mismo código y región: los públicos facturan menos — ambulatorio {x}%, hospitalario {x}% (ponderado)"
     assert len(pp["dek"].split()) <= 16 and pp["index_line"].startswith("Medianas: ambulatorio ")
-    ch_tab = next(t for t in fi["tabs"] if t["id"] == "cambio")
-    assert ch_tab["dek"] and all(t["dek"] for t in fi["tabs"][:6])  # every report section carries its finding title
-    # Same providers, previous quarter 1% cheaper.
-    ch = next(t for t in fi["tabs"] if t["id"] == "cambio")
-    assert ch["dek"] == "El prestador mediano cambió +1,0% en ambulatorio y +1,0% en hospitalario; ponderado +1,0% y +1,0%"
+    assert all(t["dek"] for t in fi["tabs"][:3])  # every report section carries its finding title
+    # Dirección 13-nov-2026: no «Cambio trimestral» and no «Precios por región» topic; concentration merged.
+    conc = next(t for t in fi["tabs"] if t["id"] == "concentracion")
+    assert [c["id"] for c in conc["charts"]] == ["f12-conc-nacional", "f12-conc-regional"] and conc["label"] == "Concentración"
+    assert not any(c["id"] in ("f12-cambio", "f12-precio-region") for t in fi["tabs"] for c in t["charts"])
     assert fi["kicker"] == "Prestaciones bonificadas · abril–junio 2026" and fi["date_basis"] == "first_detected"
     assert fi["sources"][0]["url"].endswith("Prestaciones_Bonificadas_2026t2.zip")
-    assert [t["id"] for t in fi["tabs"]] == ["dispersion", "concentracion", "nacional", "vs-rm", "publico-privado", "cambio",
-                                             "cobertura", "regiones"]
+    assert [t["id"] for t in fi["tabs"]] == ["precios", "concentracion", "publico-privado", "cobertura"]
     blob = json.dumps(fi, ensure_ascii=False)
     assert "SECRET" not in blob and '"P1"' not in blob and "P9" not in blob
 
 
-def test_f12_disclosure_rule_one_provider_no_price_two_providers_price_national_counts_all(root):
+def test_f12_disclosure_rule_one_provider_no_price_two_providers_price_national_counts_all(root, monkeypatch):
     p = f12.build_package(root, reg_open())
     assert p["reconciliation"]["ok"], p["reconciliation"]["failures"]
     v = p["values"]
@@ -233,6 +232,7 @@ def test_f12_disclosure_rule_one_provider_no_price_two_providers_price_national_
     # national: every provider counts, including the one alone in region 6
     assert v[f"{b}.NACIONAL.n"]["value"] == 4 + 2 + 1 + 2
     assert v[f"{b}.NACIONAL.frec"]["value"] == 4 * 60 + 40 + 400 + 4
+    monkeypatch.setattr(f12, "DROP_TOPICS", set())  # the topic left the ficha (13-nov); the rule still applies to the data
     fi = f12.compose(p, reg_open(), today=TODAY)
     table = next(c for t in fi["tabs"] for c in t["charts"] if c["id"] == "f12-precio-region")["table"]["rows"]
     r6 = next(r for r in table if r[0] == "0101001" and r[1] == "O'Higgins")
@@ -519,7 +519,7 @@ def test_report_title_is_narrow_and_carries_the_quarter(root):
     assert "report_title_without_period" in sf.verify_ficha({**fi, "headline": fi["headline"].replace("abr–jun", "jul–sep")}, p)["errors"]
     assert "report_title_with_figures" in sf.verify_ficha({**fi, "headline": fi["headline"] + " con 42,9%"}, p)["errors"]
     # ordinary fichas keep the 2–6 topic rule
-    assert "ui:tabs_out_of_range" in sf.verify_ficha({**fi, "headline_type": "default"}, p)["errors"]
+    assert "ui:tabs_out_of_range" in sf.verify_ficha({**fi, "headline_type": "default", "tabs": fi["tabs"] * 2}, p)["errors"]
 
 
 def test_f12_report_holds_without_the_mle_reference_or_with_a_short_stratum(root):

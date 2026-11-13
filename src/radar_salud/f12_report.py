@@ -572,8 +572,7 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
                               "Las regiones pesan igual en los promedios regionales; el promedio ponderado por región va en «Ver datos».")},
         {"id": "g3", "text": ("Dispersión: p75 / p25 del precio por unidad (facturado / frecuencia) entre prestadores de un mismo código y "
                               "región, solo con ≥ 4 prestadores; se informa la mediana entre regiones. Concentración: participación de "
-                              "prestadores seudónimos en todo lo facturado a Isapres. Cambio trimestral: solo prestadores presentes en "
-                              "ambos trimestres, con ≥ 4 por código.")},
+                              "prestadores seudónimos en todo lo facturado a Isapres.")},
         {"id": "g4", "text": ("El seudónimo de cada prestador es el que trae cada archivo trimestral; Alicanto verificó que se repite entre "
                               "trimestres, pero la SIS no lo garantiza. Si cambiara, la comparación entre trimestres se suspende.")},
         {"id": "g5", "text": ("Regiones con pocos códigos hospitalarios: " + (f"{R[thin]} tiene {fmt(V(f'idx.{q}.hosp.{thin}.n'), 0)} códigos con "
