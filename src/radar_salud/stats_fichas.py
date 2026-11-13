@@ -266,6 +266,11 @@ def late_release(published_at: str | None, *, today: date, calendar: dict) -> di
 
 # ---------------------------------------------------------------------------------------------
 # Lectura Alicanto: verifier and budgeted generation
+# Dirección 12-nov-2026 (audit of fichas, point 6): «la Lectura Alicanto de Datos no debería existir … prefiero ser
+# dueño del silencio que esclavo de las palabras». Retired: no family calls the model and no ficha shows the block.
+# The verifier and generator stay for audit of past records; the run sets status "retired" without a call.
+LECTURA_RETIRED = True
+LECTURA_OFF = {"status": "retired", "text": None, "cost_usd": 0.0}
 
 
 def _isapre_catalog(root: Path = ROOT) -> list[dict]:
@@ -1491,7 +1496,7 @@ def run_family(family: str, *, builder_version: str, build_package: Callable[...
     if decision["decision"] == "NO_CHANGE" and previous and previous.get("builder_version") != builder_version:
         decision = {**decision, "decision": "PUBLISH", "triggers": list(dict.fromkeys([*(previous.get("triggers") or []), "format_update"]))}
         base["decision"] = decision
-    retry = (decision["decision"] == "NO_CHANGE" and previous and llm
+    retry = (decision["decision"] == "NO_CHANGE" and previous and llm and not LECTURA_RETIRED
              and (previous.get("lectura") or {}).get("status") in {"not_attempted", "no_budget"})
     if decision["decision"] == "NO_CHANGE" and not retry:
         return {**base, "status": "no_change"}
@@ -1503,7 +1508,9 @@ def run_family(family: str, *, builder_version: str, build_package: Callable[...
         return {**base, "status": "hold", "verification": verification, "errors": verification["errors"], "candidate": ficha}
     same = previous and previous.get("release_key") == package["release_key"]
     prev_lect = (previous or {}).get("lectura") or {}
-    if same and prev_lect.get("status") not in {"not_attempted", "no_budget", None}:
+    if LECTURA_RETIRED:
+        lect = dict(LECTURA_OFF)
+    elif same and prev_lect.get("status") not in {"not_attempted", "no_budget", None}:
         lect = prev_lect  # never pay twice for one release
     else:
         lect = generate_lectura(ficha, package, registry=registry, enabled=llm, model_call=model_call, budget=budget)
@@ -1520,7 +1527,7 @@ def run_family(family: str, *, builder_version: str, build_package: Callable[...
         ficha["lectura"] = lect
     if lect.get("status") == "pass":
         ficha["machine_note"] += f" Costo de IA: USD {lect.get('cost_usd', 0):.4f}."
-    else:
+    elif lect.get("status") != "retired":
         ficha["machine_note"] += " Lectura Alicanto omitida (" + LECTURA_OMITTED.get(lect.get("status"), "no disponible") + ")."
     if retry:
         ficha["triggers"] = previous.get("triggers") or ficha["triggers"]

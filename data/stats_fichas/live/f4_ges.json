@@ -628,7 +628,7 @@
   },
   "watch": [
     {
-      "headline": "Casos GES a septiembre 2026 (la SIS la publicaría hacia el 14 ene).",
+      "headline": "Casos GES a septiembre 2026.",
       "explanation": "Una variación de 5% o más frente a los mismos meses del año anterior marca la ficha como destacada."
     },
     {
@@ -688,7 +688,7 @@
       "key": "cartera"
     }
   ],
-  "machine_note": "Ficha generada por la regla \"nuevo período\" (release del 14 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (error del modelo).",
+  "machine_note": "Ficha generada por la regla \"nuevo período\" (release del 14 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador.",
   "featured": true,
   "triggers": [
     "new_period",
@@ -698,14 +698,13 @@
   "late_release": null,
   "revisions": [],
   "lectura": {
-    "status": "generation_error",
-    "reason": "RuntimeError:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)",
+    "status": "retired",
     "text": null,
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-11-13T10:50:21.152050+00:00",
-  "builder_version": "f4_ytd_v5",
+  "generated_at": "2026-11-13T11:31:15.078739+00:00",
+  "builder_version": "f4_ytd_v6",
   "verification": {
     "verdict": "PASS",
     "errors": [],

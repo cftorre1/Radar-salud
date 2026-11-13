@@ -35,7 +35,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, value
 
 FAMILY = "F2"
-BUILDER_VERSION = "f2_index_topic_v6"  # v5 (3-nov-2026): siniestralidad separada, SIL / cotizaciones, Isapres con pérdida
+BUILDER_VERSION = "f2_index_topic_v7"  # v5 (3-nov-2026): siniestralidad separada, SIL / cotizaciones, Isapres con pérdida
 # v6 (4-nov-2026): margen operacional por beneficiario (denominador: cartera F1 de las mismas Isapres y los mismos meses).
 CAPTURE = fc.STORE
 EDITORIAL_RULES = Path("config/editorial_rules_v3.json")
@@ -924,7 +924,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     late = (decision or {}).get("late_release")
     watch = [({"headline": f"Estadísticas financieras a {sf.month_label(nxt)}: publicación atrasada.",
                "explanation": f"Lleva {late['days_late']} días de atraso según el calendario histórico."} if late else
-              {"headline": f"Estadísticas financieras a {sf.month_label(nxt)} (la SIS las publicaría hacia el {sf.day_label(expected)}).",
+              {"headline": f"Estadísticas financieras a {sf.month_label(nxt)}.",
                "explanation": ("Si la nota de cobertura deja de decir que Esencial está en revisión, la ficha se retiene hasta una nueva decisión."
                                if excl else "Un cambio de signo del resultado destaca la ficha.")})]
     notes = []

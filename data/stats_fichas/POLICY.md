@@ -183,3 +183,11 @@ How to build a ficha, and where each design and truth rule is enforced, is in [P
 - Public facts of the health system are known, not guessed: e.g. the GES 2025–2028 decree (Decreto N° 29 de 2025,
   Minsal) took effect on 1-dic-2025 and added problems 88, 89 and 90; the GES list only grows, every three years.
 - GES problems are named «#. Nombre» (e.g. «7. Diabetes tipo 2»): charts use the short name, tables the official one.
+
+## Lectura Alicanto retired (Dirección 12-nov-2026)
+
+«La "Lectura Alicanto" de Datos no debería existir … prefiero ser dueño del silencio que esclavo de las palabras».
+`stats_fichas.LECTURA_RETIRED = True`: no family calls the model and no ficha shows the block; the verifier and
+generator stay for audit of past records. The rules above about the Lectura apply only to historical records.
+Fichas never promise the next release date («la SIS la publicaría hacia el …»): a ficha stays current until a new
+release arrives. The internal build note (`machine_note`) stays in the data for audit and is not shown.

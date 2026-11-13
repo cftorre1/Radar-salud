@@ -197,7 +197,6 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
  function genericTitle(f,opts={}){const ts=arr(f&&f.tabs).filter(t=>t&&t.label);return ts.length?(opts.title||f.family_label||f.headline):f.headline}
  function render(f,opts={}){
   if(!f||f.status!=='PASS'||!f.headline)return'<p>Ficha no disponible.</p>';
-  const lect=f.lectura&&f.lectura.status==='pass'&&f.lectura.text?f.lectura.text:null;
   const sources=arr(f.sources).filter(s=>https(s.url));
   const mt=metaLines(f);
   const ts=arr(f.tabs).filter(t=>t&&t.label);
@@ -216,13 +215,13 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
    `<h2 id="detailTitle" class="sf-headline">${esc(title)}</h2>`+
    (mt.lines.length?`<ul class="sf-meta" aria-label="Datos de la publicación">${mt.lines.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'')+
    (ts.length?'':`<p class="sf-dek">${dek(f)}</p>`)+body+
-   (lect?`<section class="sf-reading"><h3>Lectura Alicanto</h3><p>${esc(lect)}</p></section>`:'')+
+   // Dirección 12-nov-2026: no «Lectura Alicanto» and no internal build note («dueño del silencio»).
    (arr(f.intro).length?`<section class="sf-intro sf-method" aria-labelledby="sf-method-h"><h3 id="sf-method-h">Metodología</h3>${arr(f.intro).map(x=>`<p${/^Nota:/.test(x)?' class="sf-intro-note"':''}>${esc(x)}</p>`).join('')}</section>`:'')+
    // Coverage footnote (F2 Esencial, Dirección 2-nov): one short line, always visible, right above 'Notas y fuentes'.
    (f.scope_note?`<p class="sf-scope">${esc(f.scope_note)}</p>`:'')+
    `<details class="sf-notes"><summary>Notas y fuentes</summary>${mt.rest.length?`<p class="sf-cadence">${esc(mt.rest.join(' · '))}.</p>`:''}${arr(f.notes).length?`<h3>Notas sobre la evidencia</h3><ol>${arr(f.notes).map(n=>`<li>${esc(n.text)}</li>`).join('')}</ol>`:''}`+
    `<h3>Fuentes</h3><ul>${sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a> <span class="sf-role">· ${esc(s.role||'')}</span><br><code>sha256 ${esc(String(s.sha256||'').slice(0,12))}… · ${esc(s.locator||'')}${s.fetched_at?` · capturado ${fmtDay(String(s.fetched_at).slice(0,10))}`:''}</code></li>`).join('')}</ul>`+
-   (f.machine_note?`<p class="sf-machine">${esc(f.machine_note)}</p>`:'')+`</details></article>`;
+   `</details></article>`;
  }
 
  // Behaviour of the index → topic layout inside the ficha detail (dialog). One ficha is mounted at a time; closing the

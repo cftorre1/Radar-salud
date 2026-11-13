@@ -184,3 +184,27 @@ def test_new_builder_version_republishes_without_a_new_paid_call(root):
     assert res["status"] == "pass" and "format_update" in res["ficha"]["triggers"] and calls == []
     assert any(t["id"] == "concentracion" for t in res["ficha"]["tabs"])
     assert sf.load_registry()["families"]["F1"]["builder_version"] == f1.BUILDER_VERSION
+
+
+
+@pytest.mark.lectura_retired
+def test_retired_lectura_never_calls_the_model_even_on_a_retry(root):
+    """Dirección 12-nov-2026: no «Lectura Alicanto». Production switch on: no model call, no retry, no omitted-note."""
+    assert sf.LECTURA_RETIRED is True
+    first = f1.run(root, today=TODAY, llm=False)
+    sf.publish(first, root)
+    live = root / "data/stats_fichas/live/f1_cartera.json"
+    old = json.loads(live.read_text(encoding="utf-8"))
+    old["lectura"] = {"status": "not_attempted", "text": None}  # the old retry trigger
+    live.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+    calls = []
+    res = f1.run(root, today=TODAY, llm=True, model_call=lambda *a, **k: calls.append(1),
+                 budget=lambda w: calls.append(w) or (True, "ok"))
+    assert calls == []
+    assert res["status"] in ("no_change", "pass")
+    old["builder_version"] = "f1_index_topic_v1"
+    live.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+    res = f1.run(root, today=TODAY, llm=True, model_call=lambda *a, **k: calls.append(1),
+                 budget=lambda w: calls.append(w) or (True, "ok"))
+    assert res["status"] == "pass" and calls == []
+    assert res["ficha"]["lectura"]["status"] == "retired" and "Lectura Alicanto omitida" not in res["ficha"]["machine_note"]

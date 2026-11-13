@@ -24,7 +24,7 @@ from . import stats_fichas as sf
 from .stats_fichas import fmt_dec, fmt_int, fmt_signed, month_label, month_name, value
 
 FAMILY = "F1"
-BUILDER_VERSION = "f1_index_topic_v10"  # a new builder republishes the same release (no archive, no new paid Lectura)
+BUILDER_VERSION = "f1_index_topic_v11"  # a new builder republishes the same release (no archive, no new paid Lectura)
 # v9 (3-nov-2026): tema «Concentración» (participación e HHI de las Isapres abiertas).
 # v10 (4-nov-2026): comparación a/a (mismo mes del año anterior) desde la planilla SIS del año anterior capturada.
 PRIOR_PORTFOLIO = "data/market/isapre_portfolio_{year}.json"  # written by market_sources.collect_isapres
@@ -919,9 +919,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     nxt = sf.shift_period(t, 1)
     if late:
         watch.append({"headline": f"Cartera a {month_label(nxt)}: publicación atrasada.",
-                      "explanation": f"Según el calendario histórico debía publicarse hacia el {sf.day_label(late['expected_on'])}; lleva {late['days_late']} días de atraso."})
+                      "explanation": f"Lleva {late['days_late']} días de atraso según el calendario histórico."})
     else:
-        watch.append({"headline": f"Cartera a {month_label(nxt)} (la SIS la publicaría hacia el {sf.day_label(expected_day)}).",
+        watch.append({"headline": f"Cartera a {month_label(nxt)}.",
                       "explanation": f"Si la variación mensual supera 0,25% del stock o los cotizantes cambian de signo, la ficha pasa a destacada."})
     share_to = v[f"share.{top}.{t}"]["value"]
     watch.append({"headline": f"Participación de {names[top]} entre las abiertas ({fmt_dec(share_to, 1)}% en {month}).",
@@ -1003,7 +1003,8 @@ def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = Tr
         decision = {**decision, "decision": "PUBLISH", "triggers": list(dict.fromkeys([*(previous.get("triggers") or []), "format_update"]))}
         base["decision"] = decision
     retry_lectura = (decision["decision"] == "NO_CHANGE" and previous
-                     and (previous.get("lectura") or {}).get("status") in {"not_attempted", "no_budget"} and llm)
+                     and (previous.get("lectura") or {}).get("status") in {"not_attempted", "no_budget"} and llm
+                     and not sf.LECTURA_RETIRED)
     if decision["decision"] == "NO_CHANGE" and not retry_lectura:
         return {**base, "status": "no_change"}
     if decision.get("late_release"):
@@ -1013,7 +1014,9 @@ def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = Tr
     if verification["verdict"] != "PASS":
         return {**base, "status": "hold", "verification": verification, "errors": verification["errors"], "candidate": ficha}
     reuse = previous and previous.get("release_key") == package["release_key"] and (previous.get("lectura") or {}).get("status") == "pass"
-    if reuse:
+    if sf.LECTURA_RETIRED:  # Dirección 12-nov-2026: no Lectura Alicanto in Datos
+        lect = dict(sf.LECTURA_OFF)
+    elif reuse:
         lect = previous["lectura"]
     elif previous and previous.get("release_key") == package["release_key"] and (previous.get("lectura") or {}).get("status") not in {"not_attempted", "no_budget", None}:
         lect = previous["lectura"]  # a paid attempt for this release is never repeated automatically
@@ -1037,7 +1040,7 @@ def run(root: Path, *, today: date, registry: dict | None = None, llm: bool = Tr
             ficha["lectura"] = lect
     if lect.get("status") == "pass":
         ficha["machine_note"] += f" Costo de IA: USD {lect.get('cost_usd', 0):.4f}."
-    else:
+    elif lect.get("status") != "retired":
         ficha["machine_note"] += " Lectura Alicanto omitida (" + {"not_attempted": "sin modelo en esta corrida", "no_budget": "sin presupuesto",
                                                                   "verifier_fail": "no pasó el verificador", "generation_error": "error del modelo",
                                                                   "review_fail": "no pasó la revisión de un segundo modelo",
