@@ -47,7 +47,7 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
    topic:f?(GROUP_LABEL[f.group]||''):'',published:(s&&s.event_date)||(f&&(f.published_at||(f.feed_row&&f.feed_row.event_date)))||'',
    // The day Alicanto verified the release (the inbox sorts by it): shown as «Agregado <día>» when later than the
    // source's date and not in the future (Dirección 13-nov-2026).
-   added:(()=>{const fd=String((s&&s.feed_date)||'').slice(0,10),ev=String((s&&s.event_date)||'').slice(0,10),today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago'}).format(new Date());return fd&&ev&&fd>ev&&fd<=today?fd:''})()};
+   added:(()=>{const fd=String((s&&s.date_basis!=='first_detected'&&s.feed_date)||'').slice(0,10),ev=String((s&&s.event_date)||'').slice(0,10),today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago'}).format(new Date());return fd&&ev&&fd>ev&&fd<=today?fd:''})()};
   return m;
  }
  function topLine(m){return [`Datos${m.period_label?` ${m.period_label}`:''}`,m.cadence?String(m.cadence).replace(/\s*\([^)]*\)/g,'').trim():'',m.updating?'actualizándose':''].filter(Boolean).join(' · ')}
