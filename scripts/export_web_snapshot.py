@@ -729,16 +729,40 @@ def _sanction_pulses(signals, today=None):
         if brief_topic:brief_parts.append(brief_topic)
         brief_material=" · ".join(x for x in brief_parts if x)
         period='últimos 30 días' if window==30 else 'días 31 a 90'
+        # Dirección 13-nov-2026: one lead sentence, then the resolutions grouped by matter as bullets (no pipeline jargon).
+        def _short_day(x):
+            dd=_d(x.get("emission_date") or x.get("publication_date") or x.get("event_date"))
+            return f"{dd.day} {('ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic')[dd.month-1]}" if dd else ""
+        def _bullet(x):
+            ent=str(x.get("regulated_entity") or "").strip() or str(x.get("title") or "").strip()
+            amount=x.get("sanction_amount");unit=str(x.get("sanction_unit") or "").strip()
+            amt=f"{amount:,.0f} {unit}".replace(",",".") if isinstance(amount,(int,float)) and not isinstance(amount,bool) and amount>=0 and unit else ""
+            res=re.search(r"(?:Resoluci[oó]n\s+Exenta\s+)?([A-Z]{1,4}/N°\s*\d+)",str(x.get("title") or ""))
+            tail=", ".join(v for v in ((f"Res. Ex. {res.group(1)}" if res else ""),_short_day(x)) if v)
+            return " — ".join(v for v in (ent,amt) if v)+(f" ({tail})" if tail else "")
+        by_topic=defaultdict(list)
+        for x in items:
+            tp=str(x.get("fiscalization_topic") or "").strip() or "Otras materias"
+            by_topic[tp].append(x)
+        sanction_groups=[{"label":f"{tp} ({len(xs)})","items":[_bullet(x) for x in xs]} for tp,xs in sorted(by_topic.items(),key=lambda kv:-len(kv[1]))]
+        units={str(x.get("sanction_unit") or "").strip() for x in items}
+        amounts=[x.get("sanction_amount") for x in items]
+        total_txt=""
+        if len(units)==1 and all(isinstance(a,(int,float)) and not isinstance(a,bool) for a in amounts) and next(iter(units)):
+            total_txt=", por "+f"{sum(amounts):,.0f}".replace(",",".")+f" {next(iter(units))} en total"
+        when="En los últimos 30 días" if window==30 else "Entre 31 y 90 días atrás"
+        sanction_lead=(f"{when} la Superintendencia de Salud publicó {len(items)} "
+                       f"{'resolución sancionadora' if len(items)==1 else 'resoluciones sancionadoras'} a {sector.lower()}{total_txt}.")
         title=f"Pulso de sanciones a {sector} · {period}" if window==30 else f"Sanciones a {sector} · {period}"
         pulse=dict(latest,title=title,
-            what_happened=f"{len(items)} {'resolución sancionadora publicada' if len(items)==1 else 'resoluciones sancionadoras publicadas'} en {period}. {len(live)} detectadas en LIVE; {len(items)-len(live)} incorporadas desde el histórico."+(f" Entre ellas: {lead}." if lead else ""),
+            what_happened=sanction_lead,groups=sanction_groups,
             why_it_matters="Permite observar focos recientes de fiscalización y revisar cada resolución en su fuente original.",
             source_alternatives=resolutions,
-            card_what=f"{len(items)} sanciones a {sector} · {period}."+(f" Entre ellas: {brief_material}." if brief_material else ""),
+            card_what=sanction_lead,
             event_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
             publication_date=max((s.get("publication_date") or s.get("event_date") or "" for s in items)),
             event_date_basis="publication", emission_date=None,
-            window_basis="publication_date", sanction_count=len(items),source_documents=[],key_points=[f"{x['material']} · {x['title']}" for x in resolutions if x['material']],risk_notes=[],key_facts=[],
+            window_basis="publication_date", sanction_count=len(items),source_documents=[],key_points=[],risk_notes=[],key_facts=[],
             related_reference_ids=[],related_reference_contexts=[],affected_processes=[],
             regulated_entity=None,sanction_amount=None,sanction_unit=None,fiscalization_topic=None,
             radar_score=max(s.get("radar_score") or 0 for s in items),

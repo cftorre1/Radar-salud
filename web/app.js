@@ -214,7 +214,9 @@ function detailHtml(s){
   const texts=[s.card_what||s.what_happened,s.normative_context,...arr(s.key_points),...arr(s.key_facts)].filter(fresh);
   // Paywall corroboration (Dirección 28-oct 15:16): attributed sentences from authorized open sources join "Qué pasó".
   const corr=corroborationWhat(s);
-  body=texts.length||corr?`<h3 class="ficha-h">Qué pasó</h3>${texts.map(x=>`<p>${esc(x)}</p>`).join('')}${corr}`:'';
+  // Dirección 13-nov-2026: pulses (acreditación, sanciones) list their acts by group — bold label, one bullet each.
+  const groups=arr(s.groups).filter(g=>g&&g.label).map(g=>`<div class="ficha-group"><p class="ficha-group-h"><strong>${esc(g.label)}</strong></p>${arr(g.items).length?`<ul>${arr(g.items).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}</div>`).join('');
+  body=texts.length||corr||groups?`<h3 class="ficha-h">Qué pasó</h3>${texts.map(x=>`<p>${esc(x)}</p>`).join('')}${groups}${corr}`:'';
   body+=bulletinStatus(s);
   if(analysis){body+=summaryTableBlock(s)+insightBlock(s);body+=arr(s.risk_notes).filter(fresh).map(x=>`<p>${esc(x)}</p>`).join('')}
  }

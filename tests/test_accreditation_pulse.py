@@ -27,11 +27,14 @@ def test_pulse_reads_names_only_from_official_listing():
     ]
     p = accreditation_pulse(acts, date(2026, 10, 27))
     assert p["title"] == "Acreditación de prestadores · últimos 30 días: 4 actos"
-    assert "Clínica Uno, Talca" in p["what_happened"] and "Clínica Dávila, Recoleta" in p["what_happened"]
-    assert "Alborada" in p["what_happened"] and "1 rectificación" in p["what_happened"]
-    assert "Duplicado" not in p["what_happened"]  # same URL counted once
-    assert "1 entidad acreditadora autorizada" in p["what_happened"]
-    assert "Antigua" not in p["what_happened"] and "Otra" not in p["what_happened"]
+    assert "Clínica Uno, Talca" in p["summary_text"] and "Clínica Dávila, Recoleta" in p["summary_text"]
+    assert "Alborada" in p["summary_text"] and "1 rectificación" in p["summary_text"]
+    assert "Duplicado" not in p["summary_text"]  # same URL counted once
+    assert "1 entidad acreditadora autorizada" in p["summary_text"]
+    assert "Antigua" not in p["summary_text"] and "Otra" not in p["summary_text"]
+    # Dirección 13-nov-2026: lead sentence + groups with bullets.
+    assert p["what_happened"] == "En los últimos 30 días la Superintendencia de Salud publicó 4 actos de acreditación."
+    assert any("Clínica Uno (Talca)" in g["items"] for g in p["groups"]) and all(g["label"] for g in p["groups"])
     assert "Análisis automático" not in json.dumps(p, ensure_ascii=False)
     assert p["accreditation_counts"] == {"new": 1, "kept": 1, "entity": 1, "fix": 1, "change": 0}
     assert len(p["source_alternatives"]) == 4 and p["scopes"] == ["Prestadores"]
@@ -55,7 +58,7 @@ def test_window_is_thirty_calendar_days():
     inside = _act(8, "Inscríbase … al Prestador Institucional Borde, de la Ciudad de Arica", day="2026-09-28")
     outside = _act(9, "Inscríbase … al Prestador Institucional Fuera, de la Ciudad de Arica", day="2026-09-27")
     p = accreditation_pulse([inside, outside], date(2026, 10, 27))
-    assert "Borde" in p["what_happened"] and "Fuera" not in p["what_happened"]
+    assert "Borde" in p["summary_text"] and "Fuera" not in p["summary_text"]
 
 
 def test_every_curated_card_carries_committee_pass_like_the_web_contract():
