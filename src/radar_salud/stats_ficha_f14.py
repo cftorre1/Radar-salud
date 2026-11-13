@@ -45,12 +45,12 @@ from .stats_fichas import value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F14"
-BUILDER_VERSION = "f14_ges_patologia_v1"
+BUILDER_VERSION = "f14_ges_patologia_v2"  # v2 (Dirección 13-nov-2026): «#. Nombre» in charts; «Nuevos problemas» topic (decree 2025–2028)
 SCRIPT_VERSION = "sis_historico_v3"  # GES part of scripts/sis_historico_ges.py (same code as the backfill)
 ROOT_DIR = Path("data/sis_open_data_history")
 REF = Path("data/reference/ges_problemas_ds29_2025.json")
 HEADLINE_MIN_GAP_PP = 3.0
-TAB_ORDER = ["familias", "por-caso", "problemas", "serie", "isapres", "regiones"]
+TAB_ORDER = ["familias", "por-caso", "problemas", "nuevos", "serie", "isapres", "regiones"]
 CPC_SMALL_BASE = 300  # cases: under this in either quarter, the per-case change carries a small-base caution
 NUMBER_WORD = {10: "Diez"}
 FAMILY_LABEL = {"cancer": "Cáncer", "cardiometabolico": "Cardiometabólico", "salud_mental": "Salud mental",
@@ -91,7 +91,8 @@ def year_before(q: str) -> str:
 
 
 def short(p: int) -> str:
-    return SHORT.get(p, f"Problema {p}")
+    """Chart label «#. Nombre» (Dirección 13-nov-2026: the system names GES problems by number)."""
+    return f"{p}. {SHORT[p]}" if p in SHORT else f"Problema {p}"
 
 
 def receipt_failures(rec: dict | None, q: str) -> list[str]:
@@ -510,9 +511,9 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     n_top = NUMBER_WORD.get(len(top)) or f"Los {fmt(len(top), 0)}"
     tab = {"id": "problemas", "label": "Problemas principales", "charts": charts, "text": [],
            "dek": (f"{n_top} problemas concentran {pc('prob.top.share')} del facturado GES; "
-                   f"{plain(package, p0, q).lower()} lidera con {mm(f'prob.{p0}.{q}.facturado_mm')}"),
+                   f"«{p0}. {plain(package, p0, q)}» lidera con {mm(f'prob.{p0}.{q}.facturado_mm')}"),
            "dek_refs": ["prob.top.n", "prob.top.share", f"prob.{p0}.{q}.facturado_mm", *label_refs(package, plain(package, p0, q))]}
-    sf.topic_fields(tab, f"{plain(package, p0, q)}: {mm(f'prob.{p0}.{q}.facturado_mm')}",
+    sf.topic_fields(tab, f"{p0}. {plain(package, p0, q)}: {mm(f'prob.{p0}.{q}.facturado_mm')}",
                     index_refs=[f"prob.{p0}.{q}.facturado_mm", *label_refs(package, plain(package, p0, q))], kpis=[])
     tabs.append(tab)
 
@@ -545,7 +546,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
                              [f"Mediana entre problemas {pys}", sg("prob.yoy_prev.mediana_por_caso"),
                               f"{fmt(V('prob.yoy_prev.n_suben'), 0)} de {fmt(V('prob.yoy_prev.n_comparables'), 0)}"]] if ppy else [])},
                "source": src + " Mediana entre problemas con fila publicada en ambos trimestres."}]
-    r0name = plain(package, r0, q)
+    r0name = f"{r0}. {plain(package, r0, q)}"  # «#. Nombre» (Dirección 13-nov-2026)
     if not any(e.get("id") == "umbral.base_chica" for e in package["derived_ratios"]):
         package["derived_ratios"].append({"id": "umbral.base_chica", "value": CPC_SMALL_BASE, "unit": "count"})
     n_py, n_q = V(f"prob.{r0}.{py}.casos"), V(f"prob.{r0}.{q}.casos")
@@ -555,7 +556,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     if min(n_py, n_q) < CPC_SMALL_BASE:
         r0_n += f" Base chica (menos de {fmt(CPC_SMALL_BASE, 0)} casos): léase como señal."
     tab = {"id": "por-caso", "label": "Facturado por caso", "charts": charts, "text": [r0_text],
-           "dek": (f"Facturado por caso: {sg('tot.yoy.por_caso')} en el total; {r0name.lower()} lidera con "
+           "dek": (f"Facturado por caso: {sg('tot.yoy.por_caso')} en el total; «{r0name}» lidera con "
                    f"{sg(f'prob.{r0}.yoy.por_caso')}. {r0_n}"),
            "dek_refs": ["tot.yoy.por_caso", f"prob.{r0}.yoy.por_caso", f"prob.{r0}.{py}.casos", f"prob.{r0}.{q}.casos",
                         *label_refs(package, r0name)] + (["umbral.base_chica"] if min(n_py, n_q) < CPC_SMALL_BASE else [])}
@@ -607,7 +608,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     if rp is not None:
         regs = [r for r in so.REGIONS if f"reg.{rp}.{r}.{q}.por_caso" in v and r != "0"]
         big = sorted(regs, key=lambda r: -V(f"reg.{rp}.{r}.{q}.casos"))[:12]
-        rname = plain(package, rp, q)
+        rname = f"{rp}. {plain(package, rp, q)}"
         charts = [{"id": "f14-region-por-caso", "form": "bars", "unit": "$", "digits": 0,
                    "headline": f"{short(rp)}: facturado por caso por región",
                    "subtitle": f"$ por caso, región del prestador, {ql}; 12 regiones con más casos",
@@ -654,6 +655,31 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
            "dek_refs": ["tot.serie.facturado", "tot.serie.casos", f"tot.{q}.pct_ges"]}
     sf.topic_fields(tab, f"GES: {pc(f'tot.{q}.pct_ges')} de lo facturado en {qs_}", index_refs=[f"tot.{q}.pct_ges"], kpis=[])
     tabs.append(tab)
+
+    # Topic · Nuevos problemas (Dirección 13-nov-2026): the problems the GES 2025–2028 decree added, on their own.
+    from .stats_ficha_f4 import GES_DECREE
+    new = [p for p in GES_DECREE["added"] if f"prob.{p}.{q}.facturado_mm" in v and f"prob.{p}.{q}.casos" in v]
+    if new:
+        charts = [{"id": "f14-nuevos-facturado", "form": "bars", "unit": "MM$", "digits": 1,
+                   "headline": "Facturado de los problemas nuevos",
+                   "subtitle": f"MM$ facturados a las Isapres, {ql}",
+                   "rows": [{"label": short(p), "value": V(f"prob.{p}.{q}.facturado_mm"), "ref": f"prob.{p}.{q}.facturado_mm"} for p in new],
+                   "table": {"columns": ["Problema", "Casos", "Facturado (MM$)", "Por caso"],
+                             "rows": [[f"{p}. {package_name(package, p, q)}", fmt(V(f"prob.{p}.{q}.casos"), 0),
+                                       fmt(V(f"prob.{p}.{q}.facturado_mm"), 1), money(V(f"prob.{p}.{q}.por_caso"))] for p in new]},
+                   "source": src + " Problema = número del decreto GES (prefijo del código GPP)."}]
+        hi = max(new, key=lambda p: V(f"prob.{p}.{q}.por_caso"))
+        package.setdefault("constants", []).extend([*GES_DECREE["added"], 29, 2025, 2028, 1])
+        tab = {"id": "nuevos", "label": "Nuevos problemas", "charts": charts,
+               "text": [f"El {GES_DECREE['name']} ({GES_DECREE['number']}) rige desde el {GES_DECREE['in_force_label']} y sumó "
+                        f"los problemas {', '.join(str(p) for p in GES_DECREE['added'][:-1])} y {GES_DECREE['added'][-1]}; no "
+                        f"tienen base comparable en {pys}.",
+                        f"En {ql} el de mayor facturado por caso es el «{short(hi)}»: {money(V(f'prob.{hi}.{q}.por_caso'))} "
+                        f"por caso, con {fmt(V(f'prob.{hi}.{q}.casos'), 0)} casos."],
+               "dek": None}
+        sf.topic_fields(tab, None, text_refs=[f"prob.{hi}.{q}.por_caso", f"prob.{hi}.{q}.casos"],
+                        headline_refs=[], kpis=[])
+        tabs.append(tab)
 
     paragraphs.append(f"En {ql}, las Isapres registraron {mm(f'tot.{q}.facturado_mm')} facturados con código de problema GES, el "
                       f"{pc(f'tot.{q}.pct_ges')} de todo lo facturado en prestaciones bonificadas.")

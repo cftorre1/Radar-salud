@@ -436,7 +436,7 @@ def line_ref_errors(text: str | None, refs: list[str] | None, package: dict, whe
     refs = list(refs or [])
     errors = [f"topic_ref_missing:{where}:{r}" for r in refs if r not in entries]
     cited = [entries[r] for r in refs if r in entries]
-    for tok, val, dec, unit in numbers_with_units(str(text)):
+    for tok, val, dec, unit in numbers_with_units(GES_PROBLEM_ID.sub(r"\1", str(text))):
         cands = [x * 100 if u == "share" else x for x, u in cited if _unit_class(u) == unit]
         if not number_traces(val, dec, cands):
             errors.append(f"topic_number_not_in_refs:{where}:{tok}{'' if unit == 'n' else unit}")
@@ -903,6 +903,9 @@ def lens_checks(ficha: dict, package: dict) -> dict:
     tabs = ficha.get("tabs") or []
     # A report (headline_type "report_title", F12 only) carries one section per finding: up to REPORT_MAX_TABS.
     max_tabs = REPORT_MAX_TABS if ficha.get("headline_type") == "report_title" else 6
+    # Dirección 13-nov-2026: the new GES problems get their own topic, on top of the usual six.
+    if any(t.get("id") == "nuevos" for t in tabs) and max_tabs == 6:
+        max_tabs = 7
     if tabs and not 2 <= len(tabs) <= max_tabs:
         out["ui"].append("tabs_out_of_range")
     for tab in tabs:
