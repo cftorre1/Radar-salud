@@ -31,9 +31,9 @@ const DIA=(d,y=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA
   const det=s.first_detected_at||s.detected_at;return det?`Detectado ${fmtDate(det)}`:''} function cardMeta(s){return [rowDate(s),esc(feedSource(s.source_name))].filter(Boolean).join(' · ')}
 
  // Option B (Dirección 12-nov-2026): Al día rows show no index; the Datos page keeps two rows of it.
- const SHOWN=4,FEED_SHOWN=0;
+ const SHOWN=4,FEED_SHOWN=0;  // Datos page: 4 topics (two rows); Al día: none
  // Datos page pill: the family's group (datos.json «groups»), so it never repeats the title.
- const GROUP_LABEL={aseguradores:'Aseguradores',prestadores:'Prestadores',empleadores_licencias:'Empleadores y licencias',sector_publico:'Sector público'}; // Dirección 11-nov-2026: two rows of the index (4 topics) before «Ver restantes», Datos and Al día
+ const GROUP_LABEL={aseguradores:'Aseguradores',prestadores:'Prestadores',empleadores_licencias:'Empleadores y licencias',sector_publico:'Sector público'};
  const expanded=new Set();
  // The ficha's topics as its renderer lists them (stats-ficha.js `topics`): tabs with a label; id = tab id, else position.
  function topicsOf(ficha){return arr(ficha&&ficha.tabs).filter(t=>t&&t.label).map((t,i)=>({id:String(t.id||i),label:String(t.label)}))}

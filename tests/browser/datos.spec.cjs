@@ -100,6 +100,7 @@ test('Data card topics open the ficha at that topic (Chile and Datos)',async({pa
  await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(page.locator('#detailBody [data-sf-view="topic"]')).toBeVisible();
  await expect(page.locator('#detailBody .sf-pick-label')).toHaveText(t.label);
+ await expect(page).toHaveURL(new RegExp(`&tema=${t.id}$`));
  // Datos: the same topic link is a deep link that opens the ficha at that topic.
  await page.goto('/datos.html');
  const link=page.locator(`.dx-item[data-family="${fam.family}"] .dc-t[data-dc-tema="${t.id}"]`);
