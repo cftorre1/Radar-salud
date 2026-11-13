@@ -973,6 +973,7 @@ SIGNED_WITH_WORD = re.compile(r"(?<![\w.,])[−+-]\s?\d[\d.,]*\s?(?:%|pp\b)?\s+(
 
 # Dirección 13-nov-2026 (applies to all Alicanto): a hypothesis is checked against evidence before it is published; a
 # ficha never prints a guess about the health system («posible cambio de decreto»). Verified facts are stated as such.
+GES_PROBLEM_ID = re.compile(r"(^|«)\d{1,2}\. (?=[A-ZÁÉÍÓÚÑ])")
 HYPOTHESIS = re.compile(r"\((?:posible|posiblemente|probable|quiz[aá]s)\b[^)]*\)|\bposible cambio de decreto\b", re.I)
 
 
@@ -993,6 +994,9 @@ def verify_ficha(ficha: dict, package: dict) -> dict:
     # Derived counts ('3 Isapres crecen') are not in this pool: a count traces only through the line that cites it.
     # The Lectura's figures are traced by verify_lectura (pool, unit, sign, entity, period), not by value alone.
     for text in displayed_texts(ficha, include_lectura=False):
+        # A GES problem number at the start of a label or inside «…» («70. Cáncer colorrectal», Dirección 13-nov-2026)
+        # is an identifier, not a figure; every other number is still traced.
+        text = GES_PROBLEM_ID.sub(r"\1", str(text or ""))
         for tok in text_numbers_trace(text, pool):
             errors.append(f"number_not_in_evidence:{tok}")
     # Derived claims ('menor baja del año', 'suben por segundo mes') are recomputed from the series.

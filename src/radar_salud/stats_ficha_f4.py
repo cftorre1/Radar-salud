@@ -584,7 +584,7 @@ def _fill(package: dict, parse: dict, cfg: dict, root: Path, ty: int, tq: int, i
 
     # Label digits ('Diabetes Mellitus Tipo 2') are captured text, not figures: they may be shown.
     # Problem numbers («70. Cáncer…», Dirección 13-nov-2026) are official identifiers read from the sheet.
-    label_numbers = sorted({abs(v) for r in problems for _, v, _ in numbers_in(r["label"])} | {int(r["code"]) for r in problems})
+    label_numbers = sorted({abs(v) for r in problems for _, v, _ in numbers_in(r["label"])})
     # An atypical quarter inside the current period makes the period's own figures (and any headline on them)
     # suspect; with no alternative headline the comparison would lead. Either way a human decides (HOLD).
     failures += atypical_holds(atypical, ty, lead)
@@ -799,7 +799,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
              "base": val(f"ges.ytd.{b}.{ins}"), "base_ref": f"ges.ytd.{b}.{ins}"}
             for lab, ins in (("Total", "total"), ("Fonasa", "fonasa"), ("Isapres", "isapre"))]
     c_tot = {"id": "f4-totales", "form": "dots", "digits": 0, "unit": "casos",
-             "headline": f"Casos de {sb} vs {ty}",
+             "headline": f"Casos de {sb} vs {ty}",  # Dirección 13-nov-2026: one line, earlier year first
              "subtitle": f"Casos GES ingresados por seguro · punto = {st}, aro = {sb}", "rows": rows,
              "table": {"columns": ["Seguro", sb, st, "a/a"],
                        "rows": [[r["label"], fmt_int(r["base"]), fmt_int(r["value"]),
@@ -918,7 +918,8 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
         top_new = max(new_rows, key=lambda r: r["t"])
         new_text = ([f"El {GES_DECREE['name']} ({GES_DECREE['number']}) rige desde el {GES_DECREE['in_force_label']} y sumó "
                      f"los problemas {nums}: la lista GES pasó a 90 problemas."] if by_decree else [])
-        new_text.append(f"{between(ty, tm).capitalize()} el problema nuevo con más casos es {plabel(top_new)}: {fmt_int(top_new['t'])}.")
+        new_text.append(f"{between(ty, tm).capitalize()} el problema nuevo con más casos es el «{plabel(top_new)}»: "
+                        f"{fmt_int(top_new['t'])} casos.")
         tabs.append({"id": "nuevos", "label": "Nuevos problemas", "charts": [c_new], "text": new_text})
 
     # Tab 4 · Tendencia trimestral (quarters by difference of cumulative cuts)
