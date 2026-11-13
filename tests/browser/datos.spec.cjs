@@ -28,7 +28,7 @@ test('Datos: Recientes by default, Por grupo by actor, the choice persists',asyn
   await expect(c.locator('.dc-title')).toHaveText(f.index_title);
   await expect(c).not.toContainText(f.headline);
   expect(await c.locator('.dc-t .dc-l').allTextContents()).toEqual(f.topics.map(t=>t.label));
-  await expect(c.locator('.rk-meta')).toHaveText(new RegExp(`^\\d{1,2} \\p{L}+( 20\\d\\d)? · ${f.source}$`,'u'));
+  await expect(c.locator('.rk-meta')).toHaveText(new RegExp(`^(Agregado )?\\d{1,2} \\p{L}+( 20\\d\\d)? · ${f.source}$`,'u'));
   await expect(c.locator('.rk-state')).toHaveText(/^Datos a \p{L}+(–\p{L}+)? 20\d\d( \(actualizándose\))?$/u);
   await expect(c.locator('.act-share')).toHaveAttribute('data-share-url',f.share_url);
   await expect(c.locator('.dx-kpis,.dx-st,.dx-badge')).toHaveCount(0);

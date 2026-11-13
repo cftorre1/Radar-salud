@@ -272,7 +272,9 @@ function pieceKind(s){if(s.insight)return 'insight';const t=typeTags(s);return s
 function formatTag(s){return typeof AlicantoFicha!=='undefined'?AlicantoFicha.correctionTag(s):''}
 // «día · fuente» beside the pill: the publication day (year only when it is not this year) and the short source.
 // A rolling register (sanciones, acreditación) keeps «Actualizado» (Dirección 10-nov-2026): it is updated data.
-function kickerMeta(s){const day=AlicantoBar.shortDay(s.event_date),rolling=/^Actualizado /.test(String(rowMeta(s)||''))&&!s.stats_ficha;return [day?(rolling?`Actualizado ${day}`:day):'',esc(AlicantoDataCard.feedSource(s.source_name))].filter(Boolean).join(' · ')}
+// Dirección 13-nov-2026: the row shows the same date the inbox sorts and groups by (feedDate). A data ficha that
+// Alicanto verified after the source published it reads «Agregado <día>»; its source date stays in the ficha.
+function kickerMeta(s){const fd=String(feedDate(s)||'').slice(0,10),ev=String(s.event_date||'').slice(0,10),later=fd&&ev&&fd>ev,day=AlicantoBar.shortDay(later?fd:s.event_date),rolling=/^Actualizado /.test(String(rowMeta(s)||''))&&!s.stats_ficha;return [day?(rolling?`Actualizado ${day}`:later?`Agregado ${day}`:day):'',esc(AlicantoDataCard.feedSource(s.source_name))].filter(Boolean).join(' · ')}
 // Rows carry no actor chips (Dirección 28-oct 21:49): who is involved is named in the ficha ('Menciona: …'),
 // and a row of a followed topic keeps only its small follow marker (Dirección 4-nov-2026).
 const followIcon='<svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"></path></svg>';
