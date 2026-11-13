@@ -374,9 +374,9 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const pulse=page.locator('article').filter({has:page.getByRole('heading',{name:/Pulso de sanciones a Prestadores/})});
  await pulse.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('Resoluciones incluidas en este pulso · 3');
- await expect(page.locator('#detailBody')).toContainText('Clínica Los Carrera · 70 UF · cheque en garantía');
+ await expect(page.locator('#detailBody .ficha-group')).toContainText('Clínica Los Carrera — 70 UF');// groups with bullets (13-nov-2026)
  await expect(page.locator('#detailBody .sourceverify .related-item')).toHaveCount(3);
- await expect(page.locator('#detailBody')).toContainText('Clínica Redsalud Providencia · 200 UF');
+ await expect(page.locator('#detailBody .ficha-group')).toContainText('Clínica Redsalud Providencia — 200 UF');
  await page.getByRole('button',{name:'Cerrar ficha'}).click();
  const tea=page.locator('article[data-card]').filter({has:page.getByRole('heading',{name:/Resolución Exenta IF\/N°11156 · TEA:/i})});
  await tea.locator('[data-detail]').first().click();

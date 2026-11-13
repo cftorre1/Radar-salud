@@ -94,6 +94,19 @@ def accreditation_pulse(signals: Iterable[dict[str, Any]], as_of: date, first_da
     by = {k: [name for _, kind, name, _ in acts if kind == k] for k, _ in _KINDS}
     def n(count, one, many):
         return f"{count} {one if count == 1 else many}"
+    # Dirección 13-nov-2026: easy to read — one lead sentence, then one group per kind with its providers as bullets.
+    def item(name):
+        head, _, place = name.rpartition(", ")
+        return f"{head} ({place})" if head and place else name
+    groups = []
+    for kind, one, many in (("new", "nueva inscripción", "nuevas inscripciones"),
+                            ("kept", "mantiene su acreditación", "mantienen su acreditación"),
+                            ("entity", "entidad acreditadora autorizada", "entidades acreditadoras autorizadas"),
+                            ("change", "modificación de inscripción", "modificaciones de inscripción"),
+                            ("fix", "rectificación", "rectificaciones")):
+        if by[kind]:
+            groups.append({"label": n(len(by[kind]), one, many),
+                           "items": [item(x) if kind in ("new", "kept") else x for x in by[kind] if x]})
     parts = []
     if by["new"]:
         parts.append(f"{n(len(by['new']), 'nueva inscripción', 'nuevas inscripciones')}: {_names(by['new'])}")
@@ -109,15 +122,16 @@ def accreditation_pulse(signals: Iterable[dict[str, Any]], as_of: date, first_da
     period = f"últimos {last_day} días" if first_day == 0 else f"días {first_day + 1} a {last_day}"
     lead = (f"En los últimos {last_day} días" if first_day == 0
             else f"Entre {first_day + 1} y {last_day} días atrás")
-    what = (f"{lead} la Superintendencia de Salud publicó "
-            f"{n(total, 'acto', 'actos')} de acreditación. " + ". ".join(p[0].upper() + p[1:] for p in parts) + ".")
+    what = f"{lead} la Superintendencia de Salud publicó {n(total, 'acto', 'actos')} de acreditación."
+    summary = what + " " + ". ".join(p[0].upper() + p[1:] for p in parts) + "."  # share text / search
     latest = acts[0][0].isoformat()
     title = f"Acreditación de prestadores · {period}: {n(total, 'acto', 'actos')}"
     return {
         "title": title, "display_title": title, "source_name": SOURCE, "source_type": "official",
         "source_url": REGISTRY_URL, "event_date": latest, "publication_date": latest,
         "event_type": "ACCREDITATION_PULSE", "signal_types": ["Acreditación"], "scopes": ["Prestadores"],
-        "category": "Calidad y acreditación", "what_happened": what, "card_what": what,
+        "category": "Calidad y acreditación", "what_happened": what, "card_what": what, "summary_text": summary,
+        "groups": groups,
         "why_it_matters": WHY, "card_why": WHY, "radar_score": 60, "confidence_score": 100,
         "accreditation_counts": {k: len(v) for k, v in by.items()},
         "source_alternatives": [{"title": s.get("title"), "source_name": SOURCE, "url": s.get("source_url"), "event_date": s.get("event_date")}
