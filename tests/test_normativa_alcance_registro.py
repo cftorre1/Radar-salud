@@ -87,3 +87,19 @@ def test_registro_list_and_minimal_wording():
 def test_registro_forces_the_minimal_card_over_an_automated_record():
     src = (ROOT / "scripts/export_web_snapshot.py").read_text(encoding="utf-8")
     assert "registro=label in _registro_labels()" in src and "if registro:reviewed=False" in src
+
+
+def test_decided_list_and_news_presenting_a_retired_circular():
+    from radar_salud.health_scope import decided_numbers, presents_retired_norm
+    assert decided_numbers() == frozenset({"3937", "3936", "3928", "3927", "3925", "3923", "3922", "3921"})
+    # Decided by name: later text mentioning salud cannot bring it back.
+    later = dict(_norm("Modifica el régimen de crédito social de las CCAF para gastos de salud"),
+                 normative_document_label="Circular N°3928", source_url="https://www.suseso.gob.cl/612/w3-article-1.html")
+    assert outside_health(later)
+    news = {"source_name": SUSESO, "signal_types": ["Noticias"], "source_url": "https://www.suseso.gob.cl/605/w3-article-791717.html",
+            "title": "Créditos sociales: límite de descuento podrá subir del 25% al 35% para gastos de salud",
+            "what_happened": "La Circular N°3928 permite elevar el límite…"}
+    assert presents_retired_norm(news) and outside_health(news)
+    other = dict(news, what_happened="La Circular N°3931 instruye sobre licencias médicas.")
+    assert not outside_health(other)
+    assert not outside_health(dict(news, source_name="Diario Financiero", source_url="https://www.df.cl/x"))

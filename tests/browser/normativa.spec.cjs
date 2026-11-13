@@ -3,7 +3,9 @@ const {test,expect}=require('./fixtures.cjs');
 // «Filtrar» (emisor, tema, búsqueda), feed by group; the same norm card as Al día; «Implementada» persists per reader.
 const noHScroll=page=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1);
 test('Normativa: countdown, groups, months, filters, shared card and implementada',async({page})=>{
- const d=await (await page.request.get('/data/normativa.json')).json();expect(d.items.length).toBeGreaterThanOrEqual(31);
+ const d=await (await page.request.get('/data/normativa.json')).json();expect(d.items.length).toBeGreaterThanOrEqual(25);
+ // Dirección 12-nov-2026: norms unrelated to health leave the platform (CCAF, bienestar, SENCE, bonos).
+ for(const n of ['3937','3936','3928','3927','3925','3923','3922','3921'])expect(d.items.some(x=>x.label===`Circular N°${n}`)).toBe(false);
  await page.clock.setFixedTime(new Date('2026-11-11T09:00:00-03:00'));
  await page.goto('/normativa.html');await expect(page.locator('#nmFeed .nm-card').first()).toBeVisible();
  await expect(page.locator('.topnav a[aria-current="page"]')).toHaveAttribute('href','normativa.html');
