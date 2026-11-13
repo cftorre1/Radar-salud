@@ -367,7 +367,7 @@
   },
   "watch": [
     {
-      "headline": "Boletín IP a diciembre 2026 (la SIS lo publicaría hacia el 29 ene).",
+      "headline": "Boletín IP a diciembre 2026.",
       "explanation": "Sus stocks se compararán con los de septiembre 2026."
     },
     {
@@ -443,95 +443,22 @@
       "key": "prev_acreditacion"
     }
   ],
-  "machine_note": "Ficha generada por la regla \"nuevo período\" (boletín N°3-2026, detectado por Alicanto el 29 oct). Las cifras vienen del paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador. Lectura Alicanto omitida (error del modelo).",
+  "machine_note": "Ficha generada por la regla \"nuevo período\" (boletín N°3-2026, detectado por Alicanto el 29 oct). Las cifras vienen del paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador.",
   "featured": false,
   "triggers": [
-    "new_period"
+    "new_period",
+    "format_update"
   ],
   "late_release": null,
-  "revisions": [
-    {
-      "id": "acr.acreditados",
-      "period": "2026-09",
-      "from": 971,
-      "to": 1009,
-      "pct": 3.9135,
-      "material": true,
-      "previous_source": "acreditacion"
-    },
-    {
-      "id": "acr.con_observaciones",
-      "period": "2026-09",
-      "from": 101,
-      "to": 124,
-      "pct": 22.7723,
-      "material": true,
-      "previous_source": "acreditacion"
-    },
-    {
-      "id": "acr.tramite",
-      "period": "2026-09",
-      "from": 584,
-      "to": 574,
-      "pct": -1.7123,
-      "material": true,
-      "previous_source": "acreditacion"
-    },
-    {
-      "id": "acr.tramite.privadas",
-      "period": "2026-09",
-      "from": 367,
-      "to": 357,
-      "pct": -2.7248,
-      "material": true,
-      "previous_source": "acreditacion"
-    },
-    {
-      "id": "med.mediadores",
-      "period": "2026-09",
-      "from": 175,
-      "to": 179,
-      "pct": 2.2857,
-      "material": true,
-      "previous_source": "mediacion"
-    },
-    {
-      "id": "med.solicitudes_acumuladas",
-      "period": "2026-09",
-      "from": 12067,
-      "to": 12697,
-      "pct": 5.2209,
-      "material": true,
-      "previous_source": "mediacion"
-    },
-    {
-      "id": "rec.promedio.2026",
-      "period": "2026-09",
-      "from": 1996,
-      "to": 1880,
-      "pct": -5.8116,
-      "material": true,
-      "previous_source": "reclamos"
-    },
-    {
-      "id": "rec.pct_informado",
-      "period": "2026-09",
-      "from": 30,
-      "to": 23,
-      "pct": -23.3333,
-      "material": true,
-      "previous_source": "reclamos"
-    }
-  ],
+  "revisions": [],
   "lectura": {
-    "status": "generation_error",
-    "reason": "RuntimeError:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)",
+    "status": "retired",
     "text": null,
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-11-03T20:19:30.271733+00:00",
-  "builder_version": "f6_index_topic_v5",
+  "generated_at": "2026-11-13T11:31:15.257182+00:00",
+  "builder_version": "f6_index_topic_v6",
   "verification": {
     "verdict": "PASS",
     "errors": [],
@@ -569,10 +496,7 @@
         "formula": null,
         "inputs": [],
         "kind": "captured",
-        "revised": {
-          "from": 971,
-          "pct": 3.9135
-        }
+        "revised": null
       },
       "acr.con_observaciones": {
         "id": "acr.con_observaciones",
@@ -584,10 +508,7 @@
         "formula": null,
         "inputs": [],
         "kind": "captured",
-        "revised": {
-          "from": 101,
-          "pct": 22.7723
-        }
+        "revised": null
       },
       "acr.tramite": {
         "id": "acr.tramite",
@@ -599,10 +520,7 @@
         "formula": null,
         "inputs": [],
         "kind": "captured",
-        "revised": {
-          "from": 584,
-          "pct": -1.7123
-        }
+        "revised": null
       },
       "acr.tramite.privadas": {
         "id": "acr.tramite.privadas",
@@ -614,10 +532,7 @@
         "formula": null,
         "inputs": [],
         "kind": "captured",
-        "revised": {
-          "from": 367,
-          "pct": -2.7248
-        }
+        "revised": null
       },
       "acr.tramite.publicas": {
         "id": "acr.tramite.publicas",
@@ -641,10 +556,7 @@
         "formula": null,
         "inputs": [],
         "kind": "captured",
-        "revised": {
-          "from": 175,
-          "pct": 2.2857
-        }
+        "revised": null
       },
       "med.solicitudes_acumuladas": {
         "id": "med.solicitudes_acumuladas",
@@ -656,10 +568,7 @@
         "formula": null,
         "inputs": [],
         "kind": "captured",
-        "revised": {
-          "from": 12067,
-          "pct": 5.2209
-        }
+        "revised": null
       },
       "rec.promedio.2026": {
         "id": "rec.promedio.2026",
@@ -671,10 +580,7 @@
         "formula": null,
         "inputs": [],
         "kind": "captured",
-        "revised": {
-          "from": 1996,
-          "pct": -5.8116
-        }
+        "revised": null
       },
       "rec.promedio.2025": {
         "id": "rec.promedio.2025",
@@ -698,10 +604,7 @@
         "formula": null,
         "inputs": [],
         "kind": "captured",
-        "revised": {
-          "from": 30,
-          "pct": -23.3333
-        }
+        "revised": null
       },
       "acr.sin_observaciones": {
         "id": "acr.sin_observaciones",
@@ -926,102 +829,6 @@
           "acr.acreditados.2026-06"
         ],
         "kind": "derived",
-        "revised": null
-      },
-      "acr.acreditados.previous": {
-        "id": "acr.acreditados.previous",
-        "value": 971,
-        "unit": "prestadores",
-        "period": "2026-09",
-        "source": "acreditacion",
-        "locator": "págs. 1,2,7,8",
-        "formula": null,
-        "inputs": [],
-        "kind": "previous_release",
-        "revised": null
-      },
-      "acr.con_observaciones.previous": {
-        "id": "acr.con_observaciones.previous",
-        "value": 101,
-        "unit": "prestadores",
-        "period": "2026-09",
-        "source": "acreditacion",
-        "locator": "págs. 1,2,7,8",
-        "formula": null,
-        "inputs": [],
-        "kind": "previous_release",
-        "revised": null
-      },
-      "acr.tramite.previous": {
-        "id": "acr.tramite.previous",
-        "value": 584,
-        "unit": "solicitudes",
-        "period": "2026-09",
-        "source": "acreditacion",
-        "locator": "págs. 1,2,7,8",
-        "formula": null,
-        "inputs": [],
-        "kind": "previous_release",
-        "revised": null
-      },
-      "acr.tramite.privadas.previous": {
-        "id": "acr.tramite.privadas.previous",
-        "value": 367,
-        "unit": "solicitudes",
-        "period": "2026-09",
-        "source": "acreditacion",
-        "locator": "págs. 1,2,7,8",
-        "formula": null,
-        "inputs": [],
-        "kind": "previous_release",
-        "revised": null
-      },
-      "med.mediadores.previous": {
-        "id": "med.mediadores.previous",
-        "value": 175,
-        "unit": "mediadores",
-        "period": "2026-09",
-        "source": "mediacion",
-        "locator": "págs. 2,5,6",
-        "formula": null,
-        "inputs": [],
-        "kind": "previous_release",
-        "revised": null
-      },
-      "med.solicitudes_acumuladas.previous": {
-        "id": "med.solicitudes_acumuladas.previous",
-        "value": 12067,
-        "unit": "solicitudes",
-        "period": "2026-09",
-        "source": "mediacion",
-        "locator": "págs. 2,5,6",
-        "formula": null,
-        "inputs": [],
-        "kind": "previous_release",
-        "revised": null
-      },
-      "rec.promedio.2026.previous": {
-        "id": "rec.promedio.2026.previous",
-        "value": 1996,
-        "unit": "reclamos",
-        "period": "2026-09",
-        "source": "reclamos",
-        "locator": "págs. 2",
-        "formula": null,
-        "inputs": [],
-        "kind": "previous_release",
-        "revised": null
-      },
-      "rec.pct_informado.previous": {
-        "id": "rec.pct_informado.previous",
-        "value": 30,
-        "unit": "%",
-        "period": "2026-09",
-        "source": "reclamos",
-        "locator": "págs. 2",
-        "formula": null,
-        "inputs": [],
-        "kind": "previous_release",
         "revised": null
       },
       "acr.publicas_pct": {
