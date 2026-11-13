@@ -214,6 +214,17 @@ def test_stored_congreso_card_is_restructured():
     assert new["key_facts"] == ["Trámite oficial: «Primer informe de comisión de Familia, Infancia y Adolescencia».",
                                 "Etapa actual: Segundo trámite constitucional (Senado)."]
     assert cg.restructure({"what_happened": "otra cosa"}) == {"what_happened": "otra cosa"}
+    dip = {"bill_boletin": "18865-11", "deterministic_processing": True,
+           "what_happened": "El Ejecutivo formuló observaciones (veto) a el proyecto «Modifica la ley N° 20.584 (derechos)» "
+                            "(Boletín N° 18865-11) el 04-11-2026, en la Cámara de Diputadas y Diputados. Trámite oficial: "
+                            "«Ingreso de proyecto.». Etapa actual: Primer trámite constitucional (C.Diputados); Cuenta."}
+    new = cg.restructure(dip)
+    assert new["what_happened"] == ("El Ejecutivo formuló observaciones (veto) al proyecto «Modifica la ley N° 20.584 "
+                                    "(derechos)» (Boletín N° 18865-11) el 4 de noviembre de 2026, en la Cámara de "
+                                    "Diputadas y Diputados.")
+    assert new["key_facts"] == ["Trámite oficial: «Ingreso de proyecto».",
+                                "Etapa actual: Primer trámite constitucional (Cámara de Diputadas y Diputados)."]
+    assert "card_what" not in new
 
 
 

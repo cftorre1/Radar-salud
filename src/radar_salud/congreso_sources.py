@@ -275,16 +275,18 @@ def _official(text):
 def card_text(lead: str, official_text: str, stage: str | None) -> tuple[str, list[str]]:
     """Dirección 13-nov-2026: one sentence for what happened, then one line each for the official trámite and the
     current stage (its sub-stage, e.g. «Cuenta de primer informe», is procedural and left out)."""
+    lead = lead.replace(" a el proyecto", " al proyecto")  # «observaciones (veto) al proyecto»
     facts = []
     if official_text:
         facts.append(f"Trámite oficial: «{official_text}».")
     if stage:
+        stage = re.sub(r"\(C\.\s*Diputados\)", "(Cámara de Diputadas y Diputados)", stage)
         facts.append(f"Etapa actual: {stage}.")
     return lead, facts
 
 
 _LEGACY = re.compile(r"^(?P<lead>.*?\)) el (?P<d>\d{2})-(?P<m>\d{2})-(?P<y>\d{4}), en (?P<ch>[^.]+)\. "
-                     r"Trámite oficial: «(?P<off>.*)»\.(?: Etapa actual: (?P<stage>[^;.]+)[^.]*\.)?$")
+                     r"Trámite oficial: «(?P<off>.*?)»\.(?: Etapa actual: (?P<stage>[^;]+?)(?:;[^;]*)?\.)?$")
 
 
 def restructure(row: dict) -> dict:
@@ -297,8 +299,10 @@ def restructure(row: dict) -> dict:
     day = f"{m['y']}-{m['m']}-{m['d']}"
     lead = f"{m['lead']} el {_when(day)}, en {m['ch']}."
     what, facts = card_text(lead, _official(m["off"]), m["stage"])
-    return {**row, "what_happened": what, "card_what": what if row.get("card_what") else row.get("card_what"),
-            "key_facts": facts}
+    out = {**row, "what_happened": what, "key_facts": facts}
+    if row.get("card_what"):
+        out["card_what"] = what
+    return out
 
 
 def process_congreso(raw, cfg):
