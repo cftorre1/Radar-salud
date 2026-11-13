@@ -169,9 +169,9 @@ the independent review (`weekly_insight_a.review_prompt`).
    más oferta, pero el cuerpo habla de oferta insuficiente… ¿no debiese el título mostrar ese conflicto?»). Applied
    to the 9-nov insight (Dirección, 12-nov-2026: the conflict is the scale of private investment against an ageing
    population, not the patients without networks, whom private residences would hardly serve; independent review:
-   «espacio para mucho más» is an unproven inference): «Un fondo institucional suma 250 habitaciones para mayores en
-   un país donde más de uno de cada cuatro tendrá 60 años o más en 2035» + «El fondo apunta a UF 1.500.000 y hasta
-   1.000 habitaciones en 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más».
+   «espacio para mucho más» is an unproven inference): «Un fondo de inversión parte con 250 habitaciones para mayores
+   en un país donde más de uno de cada cuatro tendría 60 años o más en 2035» + «El fondo apunta a UF 1.500.000 y hasta
+   1.000 habitaciones en un plazo de hasta 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más».
 
 **Editorial sessions** write v2 directly in `editorial_approved.json` and run, as the last edit:
 `verify_candidate(weekly, evidence, monday)` with the session's evidence package (it must contain the literal text
