@@ -136,7 +136,7 @@ def test_dek_must_not_repeat_headline_rule_8():
     old = {"headline": "Residencias para mayores: llega el capital privado a una oferta que sigue siendo pequeña",
            "dek": "El capital privado apuesta por las residencias para mayores; sin embargo, la oferta sigue siendo "
                   "pequeña frente a la demanda, y parte de ese cuidado ya se paga en camas de hospital."}
-    new = {"headline": "Fondo de UF 1,5 millones apuesta por residencias para mayores",
+    new = {"headline": "Fondo con meta de UF 1,5 millones apuesta por residencias para mayores",
            "dek": "Parte con 250 habitaciones cuando el 19,8% de la población ya tiene 60 años o más; en 2035 sería más "
                   "de uno de cada cuatro."}
     short = {"headline": "El precio de los medicamentos", "dek": "La Superintendencia precisa cómo se informan los cobros."}

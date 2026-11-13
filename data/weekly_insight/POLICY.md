@@ -173,7 +173,7 @@ the independent review (`weekly_insight_a.review_prompt`).
    en un país donde más de uno de cada cuatro tendría 60 años o más en 2035» + «El fondo apunta a UF 1.500.000 y hasta
    1.000 habitaciones en un plazo de hasta 15 años, mientras hoy el 19,8% de la población ya tiene 60 años o más».
    Dirección 13-nov-2026 replaced it with the «hecho + tensión» form (short headline with its figure, the tension in
-   the dek, no word repeated): «Fondo de UF 1,5 millones apuesta por residencias para mayores» + «Parte con 250
+   the dek, no word repeated): «Fondo con meta de UF 1,5 millones apuesta por residencias para mayores» + «Parte con 250
    habitaciones cuando el 19,8% de la población ya tiene 60 años o más; en 2035 sería más de uno de cada cuatro».
    Future titles: three candidates (hecho + tensión, consecuencia de negocio, corto con contraste) scored blind by an
    independent reviewer; tie → hecho + tensión.
