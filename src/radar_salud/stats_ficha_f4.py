@@ -36,7 +36,7 @@ from .stats_fichas import fmt_dec, fmt_int, value
 from .weekly_freshness import numbers_in
 
 FAMILY = "F4"
-BUILDER_VERSION = "f4_ytd_v5"  # v5 (Dirección 13-nov-2026): decree named, «#. Nombre», «Nuevos problemas» topic, share chart in %
+BUILDER_VERSION = "f4_ytd_v6"  # v6 (Dirección 12/13-nov): no next-release date, no Lectura; v5 (Dirección 13-nov-2026): decree named, «#. Nombre», «Nuevos problemas» topic, share chart in %
 # Known public fact, verified 13-nov-2026 (Dirección: never present the obvious as a hypothesis; check hypotheses
 # against evidence): the GES 2025–2028 decree (Decreto N° 29 de 2025, Minsal; extract in the Diario Oficial on
 # 28-nov-2025) took effect on 1-dic-2025 and added problems 88, 89 and 90. The list only grows, every three years.
@@ -950,7 +950,7 @@ def compose(package: dict, registry: dict | None = None, *, today: date, decisio
     ny, nq = qprev(*k["tq"], -1)
     late = (decision or {}).get("late_release")
     watch = [{"headline": f"Casos GES a {sf.month_label(qend(ny, nq))}: publicación atrasada." if late else
-              f"Casos GES a {sf.month_label(qend(ny, nq))} (la SIS la publicaría hacia el {sf.day_label(expected)}).",
+              f"Casos GES a {sf.month_label(qend(ny, nq))}.",
               "explanation": (f"Lleva {late['days_late']} días de atraso según el calendario histórico." if late else
                               f"Una variación de {yoy_th}% o más frente a los mismos meses del año anterior marca la ficha como destacada.")}]
     if k["crossing"]:
