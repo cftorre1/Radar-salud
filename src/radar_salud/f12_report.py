@@ -448,7 +448,7 @@ def sections(package: dict, cfg: dict, fmt: Callable, topic_fields: Callable) ->
         drefs += [f"idx.{q}.{w}.media"] + ([] if agree else [f"idx.{q}.{w}.media_unw"])
     tab = {"id": "vs-rm", "label": "Regiones vs. RM", "charts": charts, "text": [],
            "dek": "; ".join(phrase), "dek_refs": drefs,
-           "body": [("Cómo se mide: para cada código de la canasta se compara el precio mediano de la región con el de la "
+           "body": [("Cómo se compara con RM: para cada código de la canasta se compara el precio mediano de la región con el de la "
                      "Metropolitana, y luego se promedia con el peso de lo que factura cada código. Un valor negativo significa que "
                      "la misma canasta cuesta menos que en la Metropolitana.")]
                    + [(f"En {WORLD_LABEL[w]} el signo cambia según se pese o no cada código por lo que factura: con ese peso, las "
