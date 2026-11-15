@@ -1,0 +1,32 @@
+name: Probe Senado informes (read-only, temporary)
+
+on:
+  push:
+    branches: [claude/probe-senado]
+    paths: [.github/workflows/probe-senado-informes.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    if: github.ref == 'refs/heads/claude/probe-senado'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch public tramitación XML (no secrets, no writes)
+        run: |
+          mkdir out
+          for b in 18255 18832 17765; do
+            curl -sS --max-time 60 -A "AlicantoSalud/1.0 (+https://alicantosalud.cl)" "https://tramitacion.senado.cl/wspublico/tramitacion.php?boletin=$b" -o out/$b.xml || true
+            python3 - "$b" <<'PY'
+          import sys,re
+          b=sys.argv[1];t=open(f"out/{b}.xml",encoding="latin-1",errors="replace").read()
+          m=re.search(r"<informes>.*?</informes>",t,re.S)
+          print("==",b,len(t));print((m.group(0) if m else "NO INFORMES")[:3000])
+          PY
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: senado-informes
+          path: out/
