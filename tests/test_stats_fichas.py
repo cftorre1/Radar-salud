@@ -1258,3 +1258,19 @@ def test_a_value_that_moves_to_a_new_period_is_not_a_revision():
     assert sf.detect_revisions(cur, prev) == [] and not cur["values"]["acr.acreditados"].get("revised")
     cur["values"]["acr.acreditados"]["period"] = "2026-06"  # same period, new value: a real revision
     assert [r["id"] for r in sf.detect_revisions(cur, prev)] == ["acr.acreditados"]
+
+
+
+def test_a_closed_year_figure_is_compared_across_bulletins():
+    """Review of #203: «rec.promedio.2025» keeps the bulletin month as period; a change is still a revision."""
+    prev = {"values": {"rec.promedio.2025": sf.value("rec.promedio.2025", 1530, unit="reclamos", period="2026-06",
+                                                      source="s", locator="l", kind="captured")}}
+    cur = {"values": {"rec.promedio.2025": sf.value("rec.promedio.2025", 1490, unit="reclamos", period="2026-09",
+                                                     source="s", locator="l", kind="captured")}}
+    assert [r["id"] for r in sf.detect_revisions(cur, prev)] == ["rec.promedio.2025"]
+
+    ytd = {"values": {"rec.promedio.2026": sf.value("rec.promedio.2026", 1996, unit="reclamos", period="2026-06",
+                                                     source="s", locator="l", kind="captured")}}
+    now = {"values": {"rec.promedio.2026": sf.value("rec.promedio.2026", 1880, unit="reclamos", period="2026-09",
+                                                     source="s", locator="l", kind="captured")}}
+    assert sf.detect_revisions(now, ytd) == []  # the current year is year-to-date: a new bulletin, not a revision
