@@ -9,7 +9,7 @@ PDF text only; it is published only if:
    the PDF; no strong legal effect absent from the text; 8–45 words, no line breaks;
 2. an independent second call confirms it is faithful.
 
-Results are cached per report (data/congreso/informes/<boletin>_<fecha>.json, committed by the daily bot), so a report
+Results are cached per report (data/analysis_cache/congreso_informes/<boletin>_<fecha>.json, committed by the daily bot), so a report
 is paid once. A report whose link is not published yet is retried on later runs; a failed draft is final for that PDF
 (re-opened only if the PDF changes). Budget: every call goes through openai_runtime (weekly + paced monthly cap).
 """
@@ -26,7 +26,7 @@ from typing import Any, Callable
 
 from .normative_autorecord import _STRONG, _has_token, _norm, _numbers
 
-CACHE_DIR = Path("data/congreso/informes")
+CACHE_DIR = Path("data/analysis_cache/congreso_informes")  # committed by the daily bot (paid outputs persist)
 WS = "https://tramitacion.senado.cl/wspublico/tramitacion.php?boletin={n}"
 DOC_HOST = "tramitacion.senado.cl"
 DRAFT_FEATURE = "congreso_informe"
