@@ -254,7 +254,7 @@ def _json_spec(label: str) -> str:
             f"'{label} · ', luego tema y acción concreta en lenguaje simple, máx. 140 caracteres), subject_terms "
             "(1-3 palabras del tema presentes en el título), action_terms (1-3 verbos/efectos presentes en el título), "
             "normative_context (ESTRUCTURA FIJA, 3 frases propias, en este orden: 1) qué cambia; 2) a quién obliga o "
-            "aplica; 3) desde cuándo rige; cifras y fechas tal como en el texto; sin pegar trozos del documento, sin "
+            "aplica; 3) desde cuándo rige, con las palabras del texto (p. ej. «desde su publicación») si no da una fecha; cifras y fechas tal como en el texto; sin pegar trozos del documento, sin "
             "notas al pie, sin frases cortadas ni referencias genéricas a otras normas), evidence_quotes (2-4 citas "
             "LITERALES del texto que respaldan el contexto).\n")
 
