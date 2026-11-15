@@ -28,7 +28,7 @@ jobs:
           done
       - name: Fetch one informe document (type and first text)
         run: |
-          curl -sS -L --max-time 90 -A "AlicantoSalud/1.0 (+https://alicantosalud.cl)" -D out/head.txt "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=28246&tipodoc=info" -o out/doc.bin || true
+          curl -sS -L --max-time 90 -A "AlicantoSalud/1.0 (+https://alicantosalud.cl)" -D out/head.txt "https://tramitacion.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=28246&tipodoc=info" -o out/doc.bin || true
           head -30 out/head.txt; ls -l out/doc.bin; file out/doc.bin
           pip install -q pypdf python-docx >/dev/null 2>&1 || true
           python3 - <<'PY'
