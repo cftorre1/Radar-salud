@@ -1,0 +1,212 @@
+{
+  "mode": "editorial_session",
+  "numbers": [
+    0.99,
+    1.0,
+    2.0,
+    5.0,
+    8.0,
+    15.0,
+    32.0,
+    46.9,
+    52.0,
+    60.0,
+    61.2,
+    230.0,
+    580.0,
+    850.0,
+    4072.0,
+    5000.0,
+    9000.0,
+    10500.0,
+    20000.0,
+    26217.0,
+    67530.0,
+    129470.0,
+    146446.0,
+    244670.0,
+    2517305.0,
+    3410487.0
+  ],
+  "allowed_urls": [
+    "https://www.ciperchile.cl/2026/02/26/fertilizacion-asistida-con-fonasa-disponible-en-solo-cinco-regiones-y-con-anos-de-espera/",
+    "https://www.cnnchile.com/pais/plan-chile-renace-gobierno-presento-comision-asesora-y-los-8-ejes-clave-de-la-iniciativa-que-buscara-enfrentar-la-baja-natalidad/",
+    "https://www.cooperativa.cl/noticias/site/artic/20170825/pags-amp/20170825113703.html",
+    "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+    "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+    "https://www.diarioconstitucional.cl/2026/07/12/comision-de-salud-conoce-propuestas-para-revertir-la-baja-natalidad/",
+    "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/05/27/estad%C3%ADsticas-vitales-cifras-provisionales-2025-confirman-que-los-nacimientos-en-chile-disminuyeron-un-46-9-en-32-a%C3%B1os",
+    "https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/"
+  ],
+  "sources": [
+    {
+      "label": "Diario Financiero · De cierres de maternidades a nuevos focos de inversión: cómo la salud privada enfrenta la crisis de natalidad (12 nov)",
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "role": "Noticia gatillante: egresos por partos en el sector privado (cifras de Clínicas de Chile) y giro de las clínicas.",
+      "short_label": "Diario Financiero · maternidades y natalidad (12 nov)",
+      "short_role": "noticia gatillante"
+    },
+    {
+      "label": "INE · Estadísticas Vitales, cifras provisionales 2025 (27 may)",
+      "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/05/27/estad%C3%ADsticas-vitales-cifras-provisionales-2025-confirman-que-los-nacimientos-en-chile-disminuyeron-un-46-9-en-32-a%C3%B1os",
+      "role": "Nacimientos de 2025 y tasa global de fecundidad.",
+      "short_label": "INE · estadísticas vitales 2025 (27 may)",
+      "short_role": "nacimientos 2025"
+    },
+    {
+      "label": "Cooperativa · Tendencias poblacionales en Chile: más muertes, menos nacimientos y matrimonios (25 ago 2017)",
+      "url": "https://www.cooperativa.cl/noticias/site/artic/20170825/pags-amp/20170825113703.html",
+      "role": "Nacimientos de 2015 según el Anuario de Estadísticas Vitales 2015 del INE.",
+      "short_label": "Cooperativa · Anuario INE 2015 (2017)",
+      "short_role": "nacimientos 2015"
+    },
+    {
+      "label": "Superintendencia de Salud · Series estadísticas del sistema Isapre 1990–2025 (mar 2026)",
+      "url": "https://www.superdesalud.gob.cl/biblioteca-digital/series-estadisticas-del-sistema-isapre-1990-2025/",
+      "role": "Beneficiarios de isapres a diciembre de 2015 y de 2025.",
+      "short_label": "Superintendencia de Salud · series Isapre",
+      "short_role": "cartera de isapres"
+    },
+    {
+      "label": "CIPER · Fertilización asistida con Fonasa: disponible en solo cinco regiones y con años de espera (26 feb)",
+      "url": "https://www.ciperchile.cl/2026/02/26/fertilizacion-asistida-con-fonasa-disponible-en-solo-cinco-regiones-y-con-anos-de-espera/",
+      "role": "Ciclos de reproducción asistida al año, ciclos necesarios según un especialista y prestadores con bono PAD.",
+      "short_label": "CIPER · fertilización asistida con Fonasa (26 feb)",
+      "short_role": "oferta de fertilidad"
+    },
+    {
+      "label": "Diario Constitucional · Comisión de Salud conoce propuestas para revertir la baja natalidad (12 jul)",
+      "url": "https://www.diarioconstitucional.cl/2026/07/12/comision-de-salud-conoce-propuestas-para-revertir-la-baja-natalidad/",
+      "role": "Ciclos de fertilización y ciclos financiados por el Estado, expuestos en la Comisión de Salud del Senado.",
+      "short_label": "Diario Constitucional · Comisión de Salud del Senado (12 jul)",
+      "short_role": "financiamiento público"
+    },
+    {
+      "label": "CNN Chile · Plan Chile Renace: Gobierno presentó comisión asesora y los 8 ejes clave",
+      "url": "https://www.cnnchile.com/pais/plan-chile-renace-gobierno-presento-comision-asesora-y-los-8-ejes-clave-de-la-iniciativa-que-buscara-enfrentar-la-baja-natalidad/",
+      "role": "Ejes del plan, entre ellos la salud reproductiva, y plazo de la propuesta.",
+      "short_label": "CNN Chile · Plan Chile Renace",
+      "short_role": "política pública"
+    },
+    {
+      "label": "Diario Financiero · Segunda clínica privada de Antofagasta cierra su unidad de maternidad desde 2025 (5 oct)",
+      "url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+      "role": "Cierre de maternidades privadas en Antofagasta.",
+      "short_label": "Diario Financiero · maternidades en Antofagasta (5 oct)",
+      "short_role": "cierres"
+    }
+  ],
+  "candidate": {
+    "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+    "event_date": "2026-11-12",
+    "source_name": "Diario Financiero",
+    "raw_title": "De cierres de maternidades a nuevos focos de inversión: cómo la salud privada enfrenta la crisis de natalidad",
+    "public_lead": "En la última década, los partos en prestadores privados han caído más de un 60%, llevando a las clínicas a reforzar sus servicios de reproducción asistida y atención de embarazos de alto riesgo."
+  },
+  "figures": [
+    "Superintendencia de Salud, Series estadísticas del sistema Isapre 1990–2025 (cuadro 2.1, beneficiarios vigentes a diciembre): 3.410.487 en 2015 y 2.517.305 en 2025."
+  ],
+  "excerpts": [
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "De cierres de maternidades a nuevos focos de inversión: cómo la salud privada enfrenta la crisis de natalidad"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "En la última década, los partos en prestadores privados han caído más de un 60%, llevando a las clínicas a reforzar sus servicios de reproducción asistida y atención de embarazos de alto riesgo."
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "Según cifras de Clínicas de Chile, entre 2015 y 2025"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "los egresos hospitalarios por partos en el sector privado pasaron de 67.530 a 26.217 anuales"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "lo que representa una caída de 61,2%"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "en 2015 los partos y cesáreas ocupaban el segundo lugar entre las principales causas de egreso hospitalario"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "Una década después, descendieron al décimo puesto"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "entre 2021 y 2025 los procedimientos aumentaron de 5.000 a 9.000 anuales"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "los ciclos de reproducción asistida pasaron de 230 en 2017 a cerca de 850 en 2025"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "durante 2025 atendió 4.072 partos en su red, equivalentes al 52% de los registrados en 2019"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "la compañía decidió cerrar cinco maternidades"
+    },
+    {
+      "url": "https://www.df.cl/empresas/salud/de-cierres-de-maternidades-a-nuevos-focos-de-inversion-como-la-salud",
+      "text": "Creemos que los partos se van a concentrar en los centros capaces de atender embarazos complejos, con neonatología avanzada y equipos de alta especialidad."
+    },
+    {
+      "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/05/27/estad%C3%ADsticas-vitales-cifras-provisionales-2025-confirman-que-los-nacimientos-en-chile-disminuyeron-un-46-9-en-32-a%C3%B1os",
+      "text": "si se compara con 2025, cuando nacieron 146.446 personas, la diferencia es de 129.470 nacimientos"
+    },
+    {
+      "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/05/27/estad%C3%ADsticas-vitales-cifras-provisionales-2025-confirman-que-los-nacimientos-en-chile-disminuyeron-un-46-9-en-32-a%C3%B1os",
+      "text": "reflejando un descenso de 46,9% en 32 años"
+    },
+    {
+      "url": "https://www.ine.gob.cl/sala-de-prensa/prensa/general/noticia/2026/05/27/estad%C3%ADsticas-vitales-cifras-provisionales-2025-confirman-que-los-nacimientos-en-chile-disminuyeron-un-46-9-en-32-a%C3%B1os",
+      "text": "Por primera vez, la TGF se encuentra por debajo de un hijo por mujer (0,99 nacidos vivos promedio por mujer)"
+    },
+    {
+      "url": "https://www.cooperativa.cl/noticias/site/artic/20170825/pags-amp/20170825113703.html",
+      "text": "en 2015 hubo un total de 244.670 nacimientos"
+    },
+    {
+      "url": "https://www.ciperchile.cl/2026/02/26/fertilizacion-asistida-con-fonasa-disponible-en-solo-cinco-regiones-y-con-anos-de-espera/",
+      "text": "En Chile se hacen alrededor de 10.500 ciclos de reproducción asistida al año"
+    },
+    {
+      "url": "https://www.ciperchile.cl/2026/02/26/fertilizacion-asistida-con-fonasa-disponible-en-solo-cinco-regiones-y-con-anos-de-espera/",
+      "text": "cuando deberíamos estar haciendo aproximadamente 20.000 para cubrir las necesidades del país"
+    },
+    {
+      "url": "https://www.ciperchile.cl/2026/02/26/fertilizacion-asistida-con-fonasa-disponible-en-solo-cinco-regiones-y-con-anos-de-espera/",
+      "text": "En Chile existen únicamente 15 prestadores de Bono PAD para tratamientos de fertilización asistida"
+    },
+    {
+      "url": "https://www.ciperchile.cl/2026/02/26/fertilizacion-asistida-con-fonasa-disponible-en-solo-cinco-regiones-y-con-anos-de-espera/",
+      "text": "los prestadores adheridos sólo se encuentran en cinco regiones del país"
+    },
+    {
+      "url": "https://www.diarioconstitucional.cl/2026/07/12/comision-de-salud-conoce-propuestas-para-revertir-la-baja-natalidad/",
+      "text": "Hoy se hacen 9 mil ciclos y de ellos solo 580 son financiados por Estado."
+    },
+    {
+      "url": "https://www.cnnchile.com/pais/plan-chile-renace-gobierno-presento-comision-asesora-y-los-8-ejes-clave-de-la-iniciativa-que-buscara-enfrentar-la-baja-natalidad/",
+      "text": "Salud reproductiva"
+    },
+    {
+      "url": "https://www.cnnchile.com/pais/plan-chile-renace-gobierno-presento-comision-asesora-y-los-8-ejes-clave-de-la-iniciativa-que-buscara-enfrentar-la-baja-natalidad/",
+      "text": "para entregar una propuesta de políticas públicas al presidente José Antonio Kast a comienzos de 2027"
+    },
+    {
+      "url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+      "text": "Segunda clínica privada de Antofagasta cierra su unidad de maternidad desde 2025 por fuerte caída de natalidad"
+    },
+    {
+      "url": "https://www.df.cl/regiones/antofagasta/baja-natalidad-golpea-oferta-privada-de-salud-en-antofagasta-y-dos-clinicas",
+      "text": "Clínica Portada se convierte en segunda entidad privada de Antofagasta en cerrar unidad de maternidad desde 2025, ante caída de natalidad"
+    }
+  ],
+  "excerpts_provenance": "Extractos copiados literalmente de cada página el 15-nov-2026 (lectura con WebFetch; el acceso directo por curl a ine.gob.cl y df.cl estaba bloqueado por el proxy). Las cifras de isapres vienen del archivo de la Superintendencia ya verificado en web/data/series_isapre.json (cuadro 2.1, sha256 4db87d29…)."
+}
