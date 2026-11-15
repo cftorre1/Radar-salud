@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-11-14",
-  "generated_at": "2026-11-15T00:08:27.641600+00:00",
+  "as_of": "2026-11-15",
+  "generated_at": "2026-11-15T20:14:09.442232+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,9 +16,9 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-11-13",
-    "items_last_2_days": 1,
-    "items_last_7_days": 4,
-    "status": "fresh",
+    "items_last_2_days": 0,
+    "items_last_7_days": 3,
+    "status": "stale",
     "stale_after_days": 2
   },
   "sources": [
@@ -50,11 +50,11 @@
   "held": {
     "feed_not_authorized_for_display": 18,
     "not_global_interest:facility_opening": 2,
-    "not_global_interest:no_global_interest_signal": 60,
+    "not_global_interest:no_global_interest_signal": 59,
     "not_global_interest:source_rule_exclusion": 8,
-    "not_material_or_unverified": 450,
-    "not_relevant_or_undated": 86,
-    "official_title_without_executive_keyword": 262
+    "not_material_or_unverified": 444,
+    "not_relevant_or_undated": 85,
+    "official_title_without_executive_keyword": 260
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 1,
@@ -72,15 +72,6 @@
   "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
   "weekly_signal": [
     {
-      "segment": "healthtech",
-      "label_es": "Salud digital y dispositivos",
-      "count": 2,
-      "item_ids": [
-        "2e3bdb4b9a86cdfd37a2",
-        "0506b158cfb2c41aab5a"
-      ]
-    },
-    {
       "segment": "pharma",
       "label_es": "Medicamentos y farma",
       "count": 1,
@@ -91,6 +82,14 @@
     {
       "segment": "providers",
       "label_es": "Prestadores",
+      "count": 1,
+      "item_ids": [
+        "87c4aa46b70504c3924c"
+      ]
+    },
+    {
+      "segment": "regulation",
+      "label_es": "Regulación",
       "count": 1,
       "item_ids": [
         "87c4aa46b70504c3924c"
@@ -227,7 +226,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-14",
+      "first_seen_on": "2026-11-15",
       "title_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "description_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "translation": {
@@ -3681,46 +3680,6 @@
       "translation": {
         "status": "source_in_spanish"
       }
-    },
-    {
-      "id": "95429adb3956a68da943",
-      "source": "paho",
-      "source_label": "OPS",
-      "attribution": "Organización Panamericana de la Salud (OPS)",
-      "bylines": [],
-      "title": "Saint Kitts and Nevis advances health workforce planning with rollout of centralised health workforce database",
-      "url": "https://www.paho.org/en/news/17-8-2026-saint-kitts-and-nevis-advances-health-workforce-planning-rollout-centralised-health",
-      "published_at": "2026-08-17",
-      "segments": [
-        "providers"
-      ],
-      "description": null,
-      "description_truncated": false,
-      "description_source": null,
-      "tags_es": [
-        "Prestadores"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 88,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-11-03",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
-      }
     }
   ],
   "translation": {
@@ -3729,7 +3688,7 @@
     "from_cache": 32,
     "verification_failed": 7,
     "review_failed": 0,
-    "not_allowed": 34,
+    "not_allowed": 33,
     "pending": 0,
     "source_in_spanish": 6
   },
