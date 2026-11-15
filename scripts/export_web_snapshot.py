@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse,json,re,shutil,base64
+import argparse,json,os,re,shutil,base64
 from collections import defaultdict
 from datetime import datetime,timezone,date
 from pathlib import Path
@@ -856,6 +856,15 @@ def curate(signals,resolve_external=True,as_of=None):
     # Congreso cards: what happened, then the official trámite and the stage on their own lines (Dirección 13-nov-2026).
     from radar_salud.congreso_sources import restructure as _congreso_restructure
     recent=[_congreso_restructure(s) for s in recent]
+    # «El informe dice que …» for committee reports (Dirección 13-nov-2026): drafted online, published from the cache.
+    from radar_salud.congreso_sources import with_report_summary as _with_report
+    if resolve_external and os.getenv("OPENAI_API_KEY"):
+        try:
+            from radar_salud.congreso_informe import refresh as _refresh_reports
+            print("congreso_informe:",_refresh_reports(Path("."),recent,today=as_of or date.today()))
+        except Exception as exc:  # never blocks the export
+            print("congreso_informe skipped:",type(exc).__name__,str(exc)[:120])
+    recent=[_with_report(s) for s in recent]
     # FNE cards stored with an ISO date «… (2026-11-02).» read it in words (audit P1, Dirección 13-nov-2026).
     from radar_salud.congreso_sources import _when as _day_words
     def _fne_date(s):
