@@ -622,6 +622,17 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
     if verification["verdict"] != "PASS":
         return {**out, "status": "deterministic_fail", "weekly_insight": None,
                 "review": {"verdict": "NOT_RUN", "reason": "deterministic_fail"}}
+    draft_model = calls[-1]["model"]  # the draft that the final review checks
+    # Dirección 13-nov-2026: three headline candidates (A hecho + tensión, B consecuencia, C contraste), each verified
+    # like the insight, scored blind by the review model; tie → A. Never blocks: on any failure the draft's title stays.
+    from . import weekly_headline as wh
+    weekly["headline_selection"] = wh.choose(
+        weekly, evidence, lambda w: verify_candidate(w, evidence, anchor),
+        lambda pr, feat: call(DRAFT_ROUTE, pr, feat, 1200), lambda pr, feat: call(REVIEW_ROUTE, pr, feat, 800))
+    if weekly["headline_selection"].get("status") == "chosen":
+        verification = verify_candidate(weekly, evidence, anchor)
+        out["verification"] = verification
+    out.update(model_calls=calls, total_cost_usd=round(spent, 6))
     try:
         rprompt = review_prompt(weekly, evidence, verification) + (sa.REVIEW_SUFFIX if stats_mode else "")
         reviewed = call(REVIEW_ROUTE, rprompt, "weekly_insight_a_review", REVIEW_MAX_OUTPUT)
@@ -631,7 +642,6 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
                 "total_cost_usd": round(spent, 6), "review": {"verdict": "NOT_RUN", "reason": f"{type(exc).__name__}:{exc}"[:300]}}
     blockers = [i for i in review.get("issues") or [] if isinstance(i, dict) and i.get("severity") == "blocker"]
     review_model = calls[-1]["model"]
-    draft_model = calls[-2]["model"]  # the draft that was reviewed (a stats-anchor fallback adds an earlier one)
     independent = review_model != draft_model
     passed = review.get("verdict") == "PASS" and not blockers and independent
     out.update(review=review, model_calls=calls, total_cost_usd=round(spent, 6))

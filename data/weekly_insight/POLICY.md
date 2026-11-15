@@ -183,3 +183,12 @@ the independent review (`weekly_insight_a.review_prompt`).
 of every excerpt, under the URL of its source), then `python -m pytest -q tests/test_weekly_insight_essay.py
 tests/test_weekly_insight_a.py tests/test_weekly_freshness.py` and `node --test tests/web.test.cjs`. The
 independent second review and the auto-publish conditions above are unchanged.
+
+## Headline: three candidates and a blind reviewer (Dirección 13-nov-2026)
+
+After the drafted insight passes deterministic verification, `weekly_headline.choose` asks the writer model for three
+title + dek pairs (A «hecho + tensión», B «consecuencia de negocio», C «corto con contraste»). Each must pass the same
+verification as the insight. The review model scores the passing ones blind (styles hidden, shuffled) on precisión,
+claridad, novedad and largo; the highest total wins, a tie goes to A. All candidates and scores are kept in
+`weekly_insight.headline_selection`. Any failure keeps the draft's own title; the final independent review then checks
+the insight with the chosen title. Cost: two short calls inside the weekly run cap.

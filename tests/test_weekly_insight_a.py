@@ -107,8 +107,8 @@ def test_pass_publishes_monday_insight_and_archives_previous(pipeline, tmp_path)
     fake = FakeModels(pipeline["raw"], PASS_REVIEW)
     result = gen.run_weekly_a(pipeline["signals"], as_of=date(2026, 11, 2), model_call=fake)
     assert result["status"] == "pass", (result.get("verification"), result.get("review"))
-    assert [c["feature"] for c in fake.calls] == ["weekly_insight_a_draft", "weekly_insight_a_review"]
-    assert fake.calls[0]["model"] == "gpt-6-astra" and fake.calls[1]["model"] == "gpt-5.6-terra"
+    assert [c["feature"] for c in fake.calls] == ["weekly_insight_a_draft", "weekly_headline_candidates", "weekly_insight_a_review"]
+    assert fake.calls[0]["model"] == "gpt-6-astra" and fake.calls[-1]["model"] == "gpt-5.6-terra"
     assert not any(c["fallback"] for c in fake.calls)
     weekly = result["weekly_insight"]
     assert weekly["freshness_anchor_date"] == "2026-11-02" and weekly["expires_on"] == "2026-11-09"
