@@ -374,7 +374,7 @@ def test_pipeline_writes_and_publishes_v2(monkeypatch, tmp_path):
     prompt = fake.calls[0]["prompt"]
     assert "Formato A v2" in prompt and "evidence_excerpts" in prompt and "unas 750 palabras" in prompt
     assert fake.calls[0]["max"] == gen.DRAFT_MAX_OUTPUT
-    assert "evidence_excerpts" in fake.calls[1]["prompt"]  # the reviewer sees the v2 fields
+    assert "evidence_excerpts" in fake.calls[-1]["prompt"]  # the reviewer sees the v2 fields
     assert w["independent_review"]["verdict"] == "PASS" and w["independent_review"]["reviewer"] != w["independent_review"]["writer"]
 
 

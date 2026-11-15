@@ -107,8 +107,8 @@ def test_pass_publishes_monday_insight_and_archives_previous(pipeline, tmp_path)
     fake = FakeModels(pipeline["raw"], PASS_REVIEW)
     result = gen.run_weekly_a(pipeline["signals"], as_of=date(2026, 11, 2), model_call=fake)
     assert result["status"] == "pass", (result.get("verification"), result.get("review"))
-    assert [c["feature"] for c in fake.calls] == ["weekly_insight_a_draft", "weekly_insight_a_review"]
-    assert fake.calls[0]["model"] == "gpt-6-astra" and fake.calls[1]["model"] == "gpt-5.6-terra"
+    assert [c["feature"] for c in fake.calls] == ["weekly_insight_a_draft", "weekly_headline_candidates", "weekly_insight_a_review"]
+    assert fake.calls[0]["model"] == "gpt-6-astra" and fake.calls[-1]["model"] == "gpt-5.6-terra"
     assert not any(c["fallback"] for c in fake.calls)
     weekly = result["weekly_insight"]
     assert weekly["freshness_anchor_date"] == "2026-11-02" and weekly["expires_on"] == "2026-11-09"
@@ -484,3 +484,30 @@ def test_runner_skips_a_paid_fail_candidate_unless_forced(tmp_path):
                    {"status": "generation_error", "total_cost_usd": 0.2}):
         path.write_text(json.dumps(record))
         assert runner.paid_fail_candidate(ANCHOR, tmp_path)["status"] == record["status"]
+
+
+def test_winning_headline_candidate_reaches_every_title_field_and_selection_stays_internal(pipeline):
+    """Review of #207: the chosen title replaces headline/title/insight_title; scores never reach the public insight."""
+    class WithCandidates(FakeModels):
+        def __call__(self, prompt, *, feature, preferred_model, allow_luna_fallback, max_output_tokens):
+            out = super().__call__(prompt, feature=feature, preferred_model=preferred_model,
+                                   allow_luna_fallback=allow_luna_fallback, max_output_tokens=max_output_tokens)
+            if feature == "weekly_headline_candidates":
+                w = self.first
+                out.output = {"A": {"headline": "Chile envejece y las residencias se vuelven negocio", "dek": w["dek"]},
+                              "B": {"headline": w["headline"], "dek": w["dek"]}, "C": {"headline": "", "dek": ""}}
+            elif feature == "weekly_headline_review":
+                out.output = {"scores": [{"option": i, "precision": 5, "claridad": 5, "novedad": 5, "largo": 5}
+                                         for i in (1, 2)]}
+            return out
+    probe = gen.run_weekly_a(pipeline["signals"], as_of=date(2026, 11, 2), model_call=FakeModels(pipeline["raw"], PASS_REVIEW))
+    fake = WithCandidates(pipeline["raw"], PASS_REVIEW)
+    fake.first = probe["weekly_insight"]
+    result = gen.run_weekly_a(pipeline["signals"], as_of=date(2026, 11, 2), model_call=fake)
+    assert result["status"] == "pass"
+    w = result["weekly_insight"]
+    sel = result["headline_selection"]
+    assert sel["status"] == "chosen" and sel["winner"] == "A"  # tie → A
+    assert w["headline"] == w["title"] == w["insight_title"] == "Chile envejece y las residencias se vuelven negocio"
+    assert "headline_selection" not in w
+    assert [c["feature"] for c in fake.calls][-1] == "weekly_insight_a_review"

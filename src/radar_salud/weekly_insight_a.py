@@ -622,6 +622,36 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
     if verification["verdict"] != "PASS":
         return {**out, "status": "deterministic_fail", "weekly_insight": None,
                 "review": {"verdict": "NOT_RUN", "reason": "deterministic_fail"}}
+    draft_model = calls[-1]["model"]  # the draft that the final review checks
+    # Dirección 13-nov-2026: three headline candidates (A hecho + tensión, B consecuencia, C contraste), each verified
+    # like the insight, scored blind by the review model; tie → A. Never blocks: on any failure the draft's title stays.
+    from . import weekly_headline as wh
+
+    def full_verify(w: dict) -> dict:
+        v = verify_candidate(w, evidence, anchor)
+        if evidence.get("mode") == "stats_anchor":  # the stats contract also covers headline and dek (review of #207)
+            contract = sa.contract_check(w, evidence)
+            v["stats_anchor_contract"] = contract
+            if contract["verdict"] != "PASS":
+                v["errors"] = list(v["errors"]) + [f"stats_contract:{e}" for e in contract["errors"]]
+                v["verdict"] = "FAIL"
+        return v
+
+    keep = {k: weekly.get(k) for k in ("headline", "dek", "title", "insight_title")}
+    selection = wh.choose(weekly, evidence, full_verify, lambda pr, feat: call(DRAFT_ROUTE, pr, feat, 1200),
+                          lambda pr, feat: call(REVIEW_ROUTE, pr, feat, 800))
+    if selection.get("status") == "chosen":
+        try:
+            rechecked = full_verify(weekly)
+        except Exception as exc:  # noqa: BLE001
+            rechecked = {"verdict": "FAIL", "errors": [f"verifier_error:{type(exc).__name__}"]}
+        if rechecked["verdict"] == "PASS":
+            verification = rechecked
+        else:  # never publish an unverified title: back to the draft's
+            weekly.update(keep)
+            selection.update(status="reverted_to_draft", recheck_errors=rechecked.get("errors"))
+    # The selection record (candidates, scores) is internal: it stays in the run output, not in the public insight.
+    out.update(verification=verification, model_calls=calls, total_cost_usd=round(spent, 6), headline_selection=selection)
     try:
         rprompt = review_prompt(weekly, evidence, verification) + (sa.REVIEW_SUFFIX if stats_mode else "")
         reviewed = call(REVIEW_ROUTE, rprompt, "weekly_insight_a_review", REVIEW_MAX_OUTPUT)
@@ -631,7 +661,6 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
                 "total_cost_usd": round(spent, 6), "review": {"verdict": "NOT_RUN", "reason": f"{type(exc).__name__}:{exc}"[:300]}}
     blockers = [i for i in review.get("issues") or [] if isinstance(i, dict) and i.get("severity") == "blocker"]
     review_model = calls[-1]["model"]
-    draft_model = calls[-2]["model"]  # the draft that was reviewed (a stats-anchor fallback adds an earlier one)
     independent = review_model != draft_model
     passed = review.get("verdict") == "PASS" and not blockers and independent
     out.update(review=review, model_calls=calls, total_cost_usd=round(spent, 6))
@@ -648,7 +677,8 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
         "reviewer": f"{review_model} (revisor independiente del redactor {draft_model})",
         "deterministic_verification": verification, "lenses": review.get("lenses") or {},
         "minor_issues": [i for i in review.get("issues") or [] if isinstance(i, dict) and i.get("severity") != "blocker"],
-        "presentation": {"format": weekly.get("schema_version") or SCHEMA, "approved_by": "pipeline (verificación determinista + revisor independiente)"}})
+        "presentation": {"format": weekly.get("schema_version") or SCHEMA, "approved_by": "pipeline (verificación determinista + revisor independiente)"},
+        "headline_selection": out.get("headline_selection")})
     return out
 
 
