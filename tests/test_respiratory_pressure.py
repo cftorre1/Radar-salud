@@ -20,7 +20,7 @@ def test_official_weekly_report_builds_noncausal_provider_ready_signal():
     assert signal["distribution"] == "promoted_material_weekly_change"
     assert signal["ingestion_mode"] == "BACKFILL"
     assert signal["data_period"] == "SE 37 · 2026-09-13 a 2026-09-19"
-    assert "93.1%" in signal["why_it_matters"]
+    assert "93,1%" in signal["why_it_matters"]
     assert "no atribuye causalidad" in signal["why_it_matters"]
     assert evaluate_editorial_v2(signal).decision == "accept"
     assert len(signal["editorial_v2"]["evidence_refs"]) == 2
@@ -78,8 +78,8 @@ def test_future_valid_increase_and_new_occupancy_are_not_rendered_as_decline_or_
     changed["virus_surveillance"]["positivity_pct"] = 65.0
     signal = build_respiratory_pressure(changed, date(2026, 9, 26))
     assert signal is not None
-    assert "sube" in signal["title"] and "88.0%" in signal["title"]
-    assert "positividad respiratoria subió de 56.7% a 65.0%" in signal["what_happened"]
-    assert "aumentaron 4.2%" in signal["why_it_matters"]
-    assert "aumentaron 1.1%" in signal["why_it_matters"]
+    assert "sube" in signal["title"] and "88,0%" in signal["title"]
+    assert "positividad respiratoria subió de 56,7% a 65,0%" in signal["what_happened"]
+    assert "aumentaron 4,2%" in signal["why_it_matters"]
+    assert "aumentaron 1,1%" in signal["why_it_matters"]
     assert "disminuyeron" not in signal["why_it_matters"]

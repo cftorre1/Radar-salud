@@ -123,7 +123,7 @@ def _salcobrand():
 
 def test_fne_card_is_deterministic_and_passes_gate():
     row = fne.process_fne(_salcobrand(), FNE_CFG)
-    assert row["what_happened"].startswith("La FNE aprobó una operación de concentración: «FNE aprueba adquisición")
+    assert row["what_happened"].startswith("La FNE aprobó una operación de concentración el 23 de septiembre de 2026: «FNE aprueba adquisición")
     assert "Partes: Rotter & Krauss; Salcobrand." in row["what_happened"]
     assert row["signal_types"] == ["Mercado"] and row["deterministic_processing"] is True
     assert row["terms_policy"] == "title_date_link_only" and row["publication_ready_score"] >= 62
