@@ -94,7 +94,7 @@ test('recovered registers retain offices, actors, effects and issuance dates in 
  await expect(page.locator('#detailBody')).toContainText('anteriores mantienen suspensiones vigentes');
  await page.locator('#detailBody .sourceverify:not(.historical-sanctions) summary').click();
  await expect(page.locator('#detailBody')).toContainText('O-02-S-03209-2026');
- await expect(page.locator('#detailBody')).toContainText('2027-01-04');
+ await expect(page.locator('#detailBody')).toContainText('4 ene 2027');
  expect(await page.locator('#detailBody').evaluate(e=>e.scrollWidth<=e.clientWidth+2)).toBe(true);
  await page.screenshot({path:testInfo.outputPath('native-register.png')});
  await page.getByRole('button',{name:'Cerrar ficha'}).click();

@@ -192,6 +192,18 @@ def detect_revisions(current: dict, previous: dict | None) -> list[dict]:
         cur = (current.get("values") or {}).get(vid)
         if not cur or prev.get("kind") != "captured" or cur.get("kind") != "captured":
             continue
+        # A revision is the same figure for the same period, republished with another value. An id that holds the
+        # latest period (e.g. F6 «acr.acreditados», jun → sep) moving to a new period is a new release, not a
+        # revision (review of #202, 13-nov-2026).
+        # An id that names its own closed period (e.g. F6 «rec.promedio.2025», a full-year average kept with the
+        # bulletin month) is still the same figure across bulletins: it is compared (review of #203).
+        m_year = re.search(r"\.((?:19|20)\d\d)$", vid)
+        # only a CLOSED year (before the current period's year); the current year's average is year-to-date and moves
+        # closed in BOTH releases: «rec.promedio.2026» year-to-date in 2026-09 vs full-year in 2027-03 is not a revision
+        own_year = bool(m_year and all(str(x.get("period") or "")[:4].isdigit() and
+                                       int(m_year.group(1)) < int(str(x["period"])[:4]) for x in (prev, cur)))
+        if prev.get("period") and cur.get("period") and str(prev["period"]) != str(cur["period"]) and not own_year:
+            continue
         a, b = prev.get("value"), cur.get("value")
         if not isinstance(a, (int, float)) or not isinstance(b, (int, float)) or a == b:
             continue

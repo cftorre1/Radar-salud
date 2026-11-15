@@ -267,8 +267,11 @@ def _normative_contract(s):
     has_subject=any(norm(x) in title_norm for x in record.get("subject_terms",[]))
     has_action=any(norm(x) in title_norm for x in record.get("action_terms",[]))
     reviewed=bool(record and plain and context and has_identity and has_subject and has_action and identity_hits==1)
-    registro=label in _registro_labels()
-    if registro:reviewed=False  # Dirección 12-nov-2026: ficha de registro until rewritten (data/normativa/registro.json)
+    # Dirección 12-nov-2026: ficha de registro until rewritten with the fixed structure (data/normativa/registro.json);
+    # an automatic record redrafted under it (structure «fija-2026-11», verified + reviewed) replaces the minimal card.
+    from radar_salud.normative_autorecord import STRUCTURE as _NORM_STRUCTURE
+    registro=label in _registro_labels() and record.get("structure")!=_NORM_STRUCTURE
+    if registro:reviewed=False
     if not reviewed:
         from radar_salud.normative_minimal import minimal_card
         if r.get("normative_minimal"):return r  # already reduced to verifiable facts
@@ -862,6 +865,15 @@ def curate(signals,resolve_external=True,as_of=None):
         except Exception as exc:  # never blocks the export
             print("congreso_informe skipped:",type(exc).__name__,str(exc)[:120])
     recent=[_with_report(s) for s in recent]
+    # FNE cards stored with an ISO date «… (2026-11-02).» read it in words (audit P1, Dirección 13-nov-2026).
+    from radar_salud.congreso_sources import _when as _day_words
+    def _fne_date(s):
+        w=str(s.get("what_happened") or "")
+        m=re.match(r"^(La FNE [^:«]+): («.*») \((20\d\d-\d\d-\d\d)\)\.(.*)$",w,re.S)
+        if not m: return s
+        new=f"{m.group(1)} el {_day_words(m.group(3))}: {m.group(2)}.{m.group(4)}"
+        return {**s,"what_happened":new,**({"card_what":new} if s.get("card_what")==w else {})}
+    recent=[_fne_date(s) for s in recent]
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     # Official acts (Diario Oficial etc.): short deterministic row title; full title kept.
     from radar_salud.official_titles import apply_short_title
