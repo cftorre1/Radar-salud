@@ -862,7 +862,10 @@ test('Global rows match Home rows: dot toggle, title opens the ficha, source and
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 test('news fichas are lean: headline, Qué pasó and sources, never why it matters (Dirección 28-oct 08:20)',async({page})=>{
- await page.goto('/');await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]) .title-open').first().click();await expect(page.locator('#signalDetail')).toBeVisible();
+ await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
+ const ok=await page.evaluate(()=>allSignals.filter(s=>s.paywalled!==true).map(idFor));// paywalled rows show no Qué pasó (#208)
+ const rowId=await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"])').evaluateAll((xs,ok)=>xs.map(x=>x.dataset.card).find(id=>ok.includes(id)),ok);
+ await page.locator(`#local article[data-card="${rowId}"] .title-open`).first().click();await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(page.locator('#detailBody')).not.toContainText(/Contexto editorial|Enriquecimiento editorial|Por qué importa/);
  await expect(page.locator('#detailBody .ficha-h').first()).toHaveText(/Qué pasó/i);expect(await page.locator('#detailBody > p').count()).toBeGreaterThanOrEqual(1);
 });

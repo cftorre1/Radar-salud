@@ -28,7 +28,11 @@ for(const width of [320,390,1440]){
 }
 test('news ficha is lean on Chile and Global and carries the action set',async({page})=>{
  // The first news row (a statistics ficha has its own spec).
- await page.goto('/');const row=page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]):not(.nc-row)').first();await row.locator('.act-open').click();
+ await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
+ // paywalled rows open without «Qué pasó» (#208): take the first row whose text we may show
+ const open=await page.evaluate(()=>allSignals.filter(s=>s.paywalled!==true).map(idFor));
+ const rowId=await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]):not(.nc-row)').evaluateAll((xs,ok)=>xs.map(x=>x.dataset.card).find(id=>ok.includes(id)),open);
+ const row=page.locator(`#local article[data-card="${rowId}"]`);await row.locator('.act-open').click();
  const body=page.locator('#detailBody');await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(body).not.toContainText(/Por qué importa/);await expect(body.locator('.ficha-h').first()).toHaveText(/Qué pasó/i);
  const id=await row.getAttribute('data-card');const s=await page.evaluate(id=>{const x=allSignals.find(s=>idFor(s)===id);return {why:x.card_why||x.why_it_matters,url:originalLink(x)}},id);
