@@ -302,7 +302,9 @@ def with_report_summary(row: dict, root=".") -> dict:
     out = {**row, "key_facts": [*facts[:1], line, *facts[1:]], "report_summary": True, "report_url": rec.get("url")}
     url = str(rec.get("url") or "")
     alts = list(row.get("source_alternatives") or [])
-    if url.startswith("https://") and all(a.get("url") != url for a in alts if isinstance(a, dict)):
+    from urllib.parse import urlsplit
+    from .congreso_informe import DOC_HOST
+    if url.startswith("https://") and urlsplit(url).hostname == DOC_HOST and all(a.get("url") != url for a in alts if isinstance(a, dict)):
         # the reader can open the report the summary comes from (open tramitacion host, no challenge)
         out["source_alternatives"] = [*alts, {"source_name": "Senado", "title": "Informe de la comisión (PDF)", "url": url,
                                               "event_date": str(row.get("event_date") or "")[:10]}]
