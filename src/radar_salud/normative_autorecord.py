@@ -32,6 +32,19 @@ EVIDENCE_DIR = Path("data/analysis_cache/normative_evidence")
 # run of it (cost_estimate()['act_worst_run_usd']) fits in budget_headroom_usd(). Dirección 9-nov-2026.
 MAX_PER_RUN = 8
 _TEXT_LIMIT = 24_000
+# Fixed structure of a normative ficha (Dirección 12-nov-2026, committee audit): the context says, in its own words and
+# in this order, what changes, whom it obliges and since when; never pasted fragments of the PDF (cut sentences,
+# footnotes, generic relations). Records written under it carry STRUCTURE; registro fichas (data/normativa/registro.json)
+# are redrafted once and leave the minimal card only when a record with this structure passes verification and review.
+STRUCTURE = "fija-2026-11"
+REGISTRO_PATH = Path("data/normativa/registro.json")
+
+
+def registro_labels(root: Path) -> set[str]:
+    try:
+        return set(json.loads((Path(root) / REGISTRO_PATH).read_text(encoding="utf-8")).get("labels") or [])
+    except (OSError, ValueError):
+        return set()
 
 
 def _norm(text: str) -> str:
@@ -240,8 +253,10 @@ def _json_spec(label: str) -> str:
     return ("Responde SOLO JSON con: plain_language_title (empieza con "
             f"'{label} · ', luego tema y acción concreta en lenguaje simple, máx. 140 caracteres), subject_terms "
             "(1-3 palabras del tema presentes en el título), action_terms (1-3 verbos/efectos presentes en el título), "
-            "normative_context (2-3 frases: qué cambia, a quién obliga y desde cuándo; cifras y fechas tal como en el "
-            "texto), evidence_quotes (2-4 citas LITERALES del texto que respaldan el contexto).\n")
+            "normative_context (ESTRUCTURA FIJA, 3 frases propias, en este orden: 1) qué cambia; 2) a quién obliga o "
+            "aplica; 3) desde cuándo rige; cifras y fechas tal como en el texto; sin pegar trozos del documento, sin "
+            "notas al pie, sin frases cortadas ni referencias genéricas a otras normas), evidence_quotes (2-4 citas "
+            "LITERALES del texto que respaldan el contexto).\n")
 
 
 def _draft_prompt(label: str, issuer: str, subject: str, evidence: str) -> str:
@@ -449,6 +464,7 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
     written: list[str] = []
     numbered = {str(k) for k in (human.get("records") or {})}
 
+    redraft = registro_labels(root)
     candidates = []
     for s in signals:
         url = str(s.get("source_url") or "")
@@ -485,6 +501,15 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
                     act["status"] = "rejected"
             if not act.get("detected_at"):
                 act["detected_at"] = s.get("detected_at")
+            auto_rec = store["source_records"].get(url)
+            if (label in redraft and auto_rec and auto_rec.get("origin") == "auto_verified"
+                    and url not in (human.get("source_records") or {})
+                    and auto_rec.get("structure") != STRUCTURE and not act.get("redraft_started")):
+                # Registro ficha (Dirección 12-nov-2026): one fresh redraft under the fixed structure. The old record
+                # moves to the act's history; the site keeps the minimal card until the new one passes.
+                act.setdefault("superseded", []).append(store["source_records"].pop(url))
+                existing.pop(url, None)
+                act.update(status="pending", runs=[], attempts=0, published_at=None, redraft_started=_now().isoformat())
             if url in existing:
                 auto = store["source_records"].get(url)
                 if auto and not act.get("published_at"):
@@ -627,7 +652,7 @@ def build_auto_records(root: Path, signals: list[dict[str, Any]], *, call: Calla
                     "normative_context": record["normative_context"].strip(),
                     "evidence_quotes": record["evidence_quotes"],
                     "evidence_sha256": evidence_hash,
-                    "origin": "auto_verified", "verified_at": now,
+                    "origin": "auto_verified", "verified_at": now, "structure": STRUCTURE,
                     "attempts": int(act.get("attempts") or 0) + 1, "runs": len(set(act["runs"]) | {run_id}),
                 }
                 act.update(status="published", published_at=now)

@@ -293,3 +293,24 @@ def test_daily_commit_step_persists_paid_data_and_fails_loudly():
     assert "git clean -fdq -- web/data" in text
     assert "Daily commit was NOT pushed" in text
     assert "git push --dry-run" not in text
+
+
+def test_registro_act_is_redrafted_once_under_the_fixed_structure(tmp_path):
+    """Dirección 12-nov-2026: registro fichas are rewritten with the fixed structure; the old record goes to history."""
+    signals = _repo(tmp_path)
+    auto.build_auto_records(tmp_path, signals, call=_fake([GOOD]), today=TODAY, run_id="r1")
+    store = _store(tmp_path)
+    store["source_records"][URL].pop("structure")  # a record from before the fixed structure
+    (tmp_path / auto.AUTO_PATH).write_text(json.dumps(store, ensure_ascii=False), encoding="utf-8")
+    label = store["source_records"][URL]["legal_identity"]
+    (tmp_path / auto.REGISTRO_PATH).parent.mkdir(parents=True, exist_ok=True)
+    (tmp_path / auto.REGISTRO_PATH).write_text(json.dumps({"labels": [label]}), encoding="utf-8")
+    log = []
+    out = auto.build_auto_records(tmp_path, signals, call=_fake([GOOD], log=log), today=TODAY, run_id="r2")
+    store = _store(tmp_path)
+    assert out == [URL] and store["source_records"][URL]["structure"] == auto.STRUCTURE
+    assert len(store["acts"][URL]["superseded"]) == 1 and store["acts"][URL]["redraft_started"]
+    assert "ESTRUCTURA FIJA" in log[0][1]
+    # once redrafted (or while the redraft runs) it is never started again
+    log.clear()
+    assert auto.build_auto_records(tmp_path, signals, call=_fake([]), today=TODAY, run_id="r3") == [] and log == []
