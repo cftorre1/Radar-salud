@@ -10,8 +10,7 @@ PDF text only; it is published only if:
 2. an independent second call confirms it is faithful.
 
 Results are cached per report (data/analysis_cache/congreso_informes/<boletin>_<fecha>.json, committed by the daily bot), so a report
-is paid once. A report whose link is not published yet is retried on later runs; a failed draft is final for that PDF
-(re-opened only if the PDF changes). Budget: every call goes through openai_runtime (weekly + paced monthly cap).
+is paid once. A report whose link is not published yet is retried on later runs; a failed or errored draft is final. Budget: every call goes through openai_runtime (weekly + paced monthly cap).
 """
 from __future__ import annotations
 
@@ -45,8 +44,10 @@ def _iso(ddmmyyyy: str) -> str | None:
 def doc_url(link: str) -> str | None:
     """The Senate links reports on www.senado.cl (behind a browser challenge); the same document is served openly by
     tramitacion.senado.cl. Only the iddocto/tipodoc of an informe is kept."""
+    from urllib.parse import urlsplit
+    host = (urlsplit(str(link or "").strip()).hostname or "").lower()
     m = re.search(r"iddocto=(\d+)", str(link or ""))
-    if not m:
+    if not m or not (host == "senado.cl" or host.endswith(".senado.cl")):
         return None
     return f"https://{DOC_HOST}/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto={m.group(1)}&tipodoc=info"
 
@@ -66,13 +67,13 @@ def _fold(s: str) -> str:
 
 
 def match_informe(informes: list[dict[str, Any]], day: str, tramite: str) -> dict[str, Any] | None:
-    """The report published on the card's day whose trámite matches the card's (first 40 folded characters)."""
-    want = _fold(tramite)[:40]
-    hits = [i for i in informes if i.get("url") and i.get("date") == day and _fold(i.get("tramite"))[:40] == want]
-    if not hits:  # same day, any linked report of a committee named in the card
-        hits = [i for i in informes if i.get("url") and i.get("date") == day and want and
-                _fold(i.get("tramite"))[:25] == want[:25]]
-    return hits[-1] if hits else None
+    """The one linked report of the card's day whose whole trámite (committee included) equals the card's. Two
+    different documents for the same day and trámite are ambiguous: nothing is attached (review of #205)."""
+    want = " ".join(_fold(tramite).split())
+    if not want:
+        return None
+    hits = [i for i in informes if i.get("url") and i.get("date") == day and " ".join(_fold(i.get("tramite")).split()) == want]
+    return hits[0] if len({i["url"] for i in hits}) == 1 else None
 
 
 def is_report(row: dict[str, Any]) -> bool:
@@ -87,17 +88,20 @@ def official_tramite(row: dict[str, Any]) -> str:
     return m.group(1).rstrip(". ") if m else ""
 
 
-def cache_key(boletin: str, day: str) -> str:
-    return f"{re.sub(r'[^0-9-]', '', str(boletin))}_{day}"
+def cache_key(boletin: str, day: str, tramite: str) -> str:
+    """One file per report: bill, day and the committee's trámite (two committees the same day are two reports)."""
+    tag = hashlib.sha1(" ".join(_fold(tramite).split()).encode("utf-8")).hexdigest()[:10]
+    return f"{re.sub(r'[^0-9-]', '', str(boletin))}_{day}_{tag}"
 
 
-def load_summary(root: Path, boletin: str, day: str) -> dict[str, Any] | None:
+def load_summary(root: Path, boletin: str, day: str, tramite: str) -> dict[str, Any] | None:
     try:
-        rec = json.loads((Path(root) / CACHE_DIR / f"{cache_key(boletin, day)}.json").read_text(encoding="utf-8"))
+        rec = json.loads((Path(root) / CACHE_DIR / f"{cache_key(boletin, day, tramite)}.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
     s = rec.get("summary") or {}
-    return rec if s.get("status") == "pass" and str(s.get("dice") or "").strip() else None
+    same = " ".join(_fold(rec.get("card_tramite")).split()) == " ".join(_fold(tramite).split())
+    return rec if same and s.get("status") == "pass" and str(s.get("dice") or "").strip() else None
 
 
 def fact(rec: dict[str, Any] | None) -> str | None:
@@ -107,7 +111,13 @@ def fact(rec: dict[str, Any] | None) -> str | None:
     dice = str((rec.get("summary") or {}).get("dice") or "").strip().rstrip(".")
     if not dice:
         return None
-    return f"El informe dice que {dice[0].lower() + dice[1:]}."
+    first, _, rest = dice.partition(" ")
+    if first in _LOWER_FIRST:  # «La comisión…» → «la comisión…»; never «FONASA», «Hacienda», «Comisión de Salud»
+        dice = first.lower() + (" " + rest if rest else "")
+    return f"El informe dice que {dice}."
+
+
+_LOWER_FIRST = {"La", "El", "Los", "Las", "Se", "Un", "Una", "En", "Con", "Por", "Tras", "Al", "Ambas", "Ambos"}
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -200,7 +210,8 @@ def _pdf_text(data: bytes) -> str:
 
 
 def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Callable[..., bytes] | None = None,
-            call: Callable[..., Any] | None = None, max_new: int = MAX_PER_RUN) -> dict[str, int]:
+            call: Callable[..., Any] | None = None, max_new: int = MAX_PER_RUN,
+            robots: Callable[[str], bool] | None = None) -> dict[str, int]:
     """Draft summaries for recent report cards that lack one. Returns counters for the run log."""
     root = Path(root)
     stats = {"candidates": 0, "no_link_yet": 0, "written": 0, "failed": 0, "errors": 0}
@@ -211,6 +222,10 @@ def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Ca
             return _fetch(url, (DOC_HOST,), timeout=60, max_bytes=_PDF_MAX_BYTES, accept=accept)[0]
     if call is None:
         from .openai_runtime import call_json as call
+    if robots is None:
+        from .official_open import RobotsGate, fetch as _robots_fetch
+        gate = RobotsGate(lambda url: _robots_fetch(url, (DOC_HOST,), accept="text/plain"))
+        robots = lambda url: gate.allowed(url)  # noqa: E731
     done = 0
     for s in signals:
         if done >= max_new:
@@ -224,21 +239,28 @@ def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Ca
         except ValueError:
             continue
         boletin = str(s.get("bill_boletin"))
-        path = root / CACHE_DIR / f"{cache_key(boletin, day)}.json"
+        tramite = official_tramite(s)
+        path = root / CACHE_DIR / f"{cache_key(boletin, day, tramite)}.json"
         try:
             rec = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, ValueError):
-            rec = {"boletin": boletin, "date": day}
+            rec = {"boletin": boletin, "date": day, "card_tramite": tramite}
         if (rec.get("summary") or {}).get("status") in ("pass", "fail"):
             continue  # paid once per PDF (a changed PDF re-opens below)
         stats["candidates"] += 1
         try:
-            xml = fetch(WS.format(n=boletin.split("-")[0]), "application/xml")
-            tramite = official_tramite(s)
+            ws = WS.format(n=boletin.split("-")[0])
+            if not robots(ws):
+                stats["errors"] += 1
+                continue
+            xml = fetch(ws, "application/xml")
             inf = match_informe(parse_informes(xml if isinstance(xml, bytes) else str(xml).encode("utf-8")), day,
                                 tramite)
             if not inf:
                 stats["no_link_yet"] += 1
+                continue
+            if not robots(inf["url"]):
+                stats["errors"] += 1
                 continue
             pdf = fetch(inf["url"], "application/pdf")
             pdf = pdf if isinstance(pdf, bytes) else str(pdf).encode("latin-1", "ignore")
@@ -247,10 +269,16 @@ def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Ca
             if len(text) < 800:
                 rec.update(url=inf["url"], sha256=sha, summary={"status": "fail", "problems": ["no_text_layer"]})
             else:
-                summary = summarize(text, str(s.get("bill_title") or s.get("title") or ""), inf["tramite"], call)
+                done += 1  # every paid attempt counts toward the run cap, even if it errors (review of #205)
+                try:
+                    summary = summarize(text, str(s.get("bill_title") or s.get("title") or ""), inf["tramite"], call)
+                except RuntimeError as exc:
+                    if "budget" in str(exc):
+                        raise
+                    # A provider/parse error after a billed call is final for this report: never paid twice.
+                    summary = {"status": "fail", "problems": [f"model_error:{str(exc)[:160]}"]}
                 summary["at"] = datetime.now(timezone.utc).isoformat()
                 rec.update(url=inf["url"], sha256=sha, chars=len(text), tramite=inf["tramite"], summary=summary)
-                done += 1
                 stats["written" if summary["status"] == "pass" else "failed"] += 1
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(json.dumps(rec, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

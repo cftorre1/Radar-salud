@@ -291,14 +291,15 @@ _LEGACY = re.compile(r"^(?P<lead>.*?\)) el (?P<d>\d{2})-(?P<m>\d{2})-(?P<y>\d{4}
 
 def with_report_summary(row: dict, root=".") -> dict:
     """Adds «El informe dice que …» (verified + reviewed, cached per report) to a committee-report card."""
-    from .congreso_informe import fact, is_report, load_summary
+    from .congreso_informe import fact, is_report, load_summary, official_tramite
     if not is_report(row):
         return row
-    line = fact(load_summary(root, row["bill_boletin"], str(row.get("event_date") or "")[:10]))
+    rec = load_summary(root, row["bill_boletin"], str(row.get("event_date") or "")[:10], official_tramite(row))
+    line = fact(rec)
     if not line or line in (row.get("key_facts") or []):
         return row
     facts = list(row.get("key_facts") or [])
-    return {**row, "key_facts": [*facts[:1], line, *facts[1:]], "report_summary": True}
+    return {**row, "key_facts": [*facts[:1], line, *facts[1:]], "report_summary": True, "report_url": rec.get("url")}
 
 
 def restructure(row: dict) -> dict:
