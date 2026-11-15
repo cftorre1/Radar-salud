@@ -62,7 +62,11 @@ def choose(weekly: dict, evidence: dict, verify: Callable[[dict], dict], call_dr
         c = raw.get(k) if isinstance(raw, dict) else None
         if isinstance(c, dict) and str(c.get("headline") or "").strip() and str(c.get("dek") or "").strip():
             trial = {**weekly, "headline": str(c["headline"]).strip(), "dek": str(c["dek"]).strip()}
-            v = verify(trial)
+            trial["title"] = trial["insight_title"] = trial["headline"]
+            try:
+                v = verify(trial)
+            except Exception as exc:  # noqa: BLE001 - a verifier crash rejects the candidate, never the insight
+                v = {"verdict": "FAIL", "errors": [f"verifier_error:{type(exc).__name__}"]}
             cands[k] = {"headline": trial["headline"], "dek": trial["dek"], "verdict": v["verdict"],
                         "errors": v.get("errors") or []}
     audit["candidates"] = cands
@@ -71,6 +75,7 @@ def choose(weekly: dict, evidence: dict, verify: Callable[[dict], dict], call_dr
         return audit
     order = passing[:]
     (rng or random.Random()).shuffle(order)
+    audit["review_order"] = [k for k, _ in order]  # option n of the review = review_order[n-1]
     try:
         out = call_review(review_prompt(order, weekly), REVIEW_FEATURE).output
         scores = {}
@@ -86,6 +91,8 @@ def choose(weekly: dict, evidence: dict, verify: Callable[[dict], dict], call_dr
         return audit
     audit["scores"] = scores
     winner = sorted(scores, key=lambda k: (-scores[k]["total"], "ABC".index(k)))[0]
+    # Every field that carries the title (home card, share pages, archive) gets the chosen one (review of #207).
     weekly["headline"], weekly["dek"] = cands[winner]["headline"], cands[winner]["dek"]
+    weekly["title"] = weekly["insight_title"] = cands[winner]["headline"]
     audit.update(status="chosen", winner=winner)
     return audit
