@@ -6,6 +6,11 @@ from typing import Any
 from urllib.parse import urlparse
 
 
+
+def _pct_es(v: float) -> str:
+    """Chilean format: one decimal with a comma (Dirección, audit P1 13-nov-2026)."""
+    return f"{v:.1f}".replace(".", ",")
+
 def _pct(value: Any) -> float:
     if not isinstance(value, (int, float)) or isinstance(value, bool) or not -100 <= value <= 100:
         raise ValueError("invalid percentage")
@@ -20,9 +25,9 @@ def _count(value: Any) -> int:
 
 def _change_phrase(label: str, value: float) -> str:
     if value < 0:
-        return f"{label} disminuyeron {abs(value):.1f}%"
+        return f"{label} disminuyeron {_pct_es(abs(value))}%"
     if value > 0:
-        return f"{label} aumentaron {value:.1f}%"
+        return f"{label} aumentaron {_pct_es(value)}%"
     return f"{label} no variaron"
 
 
@@ -98,7 +103,7 @@ def build_respiratory_pressure(dataset: dict[str, Any], today: date | None = Non
             raise ValueError("missing risk disclosure")
         emergency_direction = "baja" if emergency < previous_emergency else "sube" if emergency > previous_emergency else "se mantiene"
         return {
-            "title": f"Urgencias respiratorias {emergency_direction}, con ocupación crítica adulta en {adult_occupancy:.1f}%",
+            "title": f"Urgencias respiratorias {emergency_direction}, con ocupación crítica adulta en {_pct_es(adult_occupancy)}%",
             "source_name": "Ministerio de Salud",
             "source_type": "official",
             "source_url": source["url"],
@@ -114,20 +119,20 @@ def build_respiratory_pressure(dataset: dict[str, Any], today: date | None = Non
             "radar_score": 78,
             "confidence_score": 100,
             "what_happened": (
-                f"En SE {week}, la positividad respiratoria {_level_direction(positivity, previous_positivity)} de {previous_positivity:.1f}% a {positivity:.1f}% "
-                f"y la proporción de urgencias respiratorias de {previous_emergency:.1f}% a {emergency:.1f}%."
+                f"En SE {week}, la positividad respiratoria {_level_direction(positivity, previous_positivity)} de {_pct_es(previous_positivity)}% a {_pct_es(positivity)}% "
+                f"y la proporción de urgencias respiratorias de {_pct_es(previous_emergency)}% a {_pct_es(emergency)}%."
             ),
             "why_it_matters": (
                 f"{_change_phrase('Las consultas de urgencia respiratoria baja', emergency_change)} y "
                 f"{_change_phrase('las hospitalizaciones respiratorias', hospital_change)} en la comparación semanal; "
                 f"la ocupación de camas críticas fue "
-                f"{pediatric_occupancy:.1f}% en pediatría y {adult_occupancy:.1f}% en adultos. La señal orienta capacidad y "
+                f"{_pct_es(pediatric_occupancy)}% en pediatría y {_pct_es(adult_occupancy)}% en adultos. La señal orienta capacidad y "
                 "demanda; no atribuye causalidad entre circulación viral y uso de camas."
             ),
             "key_points": [
-                f"Circulación: rinovirus {shares['rhinovirus']:.1f}%, VRS {shares['respiratory_syncytial_virus']:.1f}% y metapneumovirus {shares['metapneumovirus']:.1f}%.",
-                f"Pediatría: {pediatric_beds} camas críticas, {pediatric_occupancy:.1f}% ocupadas y {pediatric_respiratory:.1f}% de ocupación respiratoria.",
-                f"Adultos: {adult_beds} camas críticas, {adult_occupancy:.1f}% ocupadas y {adult_respiratory:.1f}% de ocupación respiratoria."
+                f"Circulación: rinovirus {_pct_es(shares['rhinovirus'])}%, VRS {_pct_es(shares['respiratory_syncytial_virus'])}% y metapneumovirus {_pct_es(shares['metapneumovirus'])}%.",
+                f"Pediatría: {pediatric_beds} camas críticas, {_pct_es(pediatric_occupancy)}% ocupadas y {_pct_es(pediatric_respiratory)}% de ocupación respiratoria.",
+                f"Adultos: {adult_beds} camas críticas, {_pct_es(adult_occupancy)}% ocupadas y {_pct_es(adult_respiratory)}% de ocupación respiratoria."
             ],
             "risk_notes": risk_notes,
             "editorial_v2": {

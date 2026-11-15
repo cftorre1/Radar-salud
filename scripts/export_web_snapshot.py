@@ -856,6 +856,15 @@ def curate(signals,resolve_external=True,as_of=None):
     # Congreso cards: what happened, then the official trámite and the stage on their own lines (Dirección 13-nov-2026).
     from radar_salud.congreso_sources import restructure as _congreso_restructure
     recent=[_congreso_restructure(s) for s in recent]
+    # FNE cards stored with an ISO date «… (2026-11-02).» read it in words (audit P1, Dirección 13-nov-2026).
+    from radar_salud.congreso_sources import _when as _day_words
+    def _fne_date(s):
+        w=str(s.get("what_happened") or "")
+        m=re.match(r"^(La FNE [^:«]+): («.*») \((20\d\d-\d\d-\d\d)\)\.(.*)$",w,re.S)
+        if not m: return s
+        new=f"{m.group(1)} el {_day_words(m.group(3))}: {m.group(2)}.{m.group(4)}"
+        return {**s,"what_happened":new,**({"card_what":new} if s.get("card_what")==w else {})}
+    recent=[_fne_date(s) for s in recent]
     recent=[_normative_contract(s) if s.get("event_type")=="REGULATION" or "Normativa" in (s.get("signal_types") or []) else s for s in recent]
     # Official acts (Diario Oficial etc.): short deterministic row title; full title kept.
     from radar_salud.official_titles import apply_short_title

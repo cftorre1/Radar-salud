@@ -311,7 +311,8 @@ def process_fne(raw, cfg):
     if not health_basis(raw.title):
         raise RejectedProcessing("fne_not_health_sector")
     names = [p["name"] for p in md.get("parties") or []]
-    what = f"La FNE {STAGE_LABEL.get(stage, STAGE_LABEL['comunicado'])}: «{raw.title}» ({raw.event_date})."
+    from .congreso_sources import _when  # noqa: E402  «2 de noviembre de 2026» (audit P1, Dirección 13-nov-2026)
+    what = f"La FNE {STAGE_LABEL.get(stage, STAGE_LABEL['comunicado'])} el {_when(str(raw.event_date)[:10])}: «{raw.title}»."
     if names:
         what += " Partes: " + "; ".join(names) + "."
     scopes = scopes_for(raw.title)
