@@ -199,8 +199,9 @@ def detect_revisions(current: dict, previous: dict | None) -> list[dict]:
         # bulletin month) is still the same figure across bulletins: it is compared (review of #203).
         m_year = re.search(r"\.((?:19|20)\d\d)$", vid)
         # only a CLOSED year (before the current period's year); the current year's average is year-to-date and moves
-        own_year = bool(m_year and str(cur.get("period") or "")[:4].isdigit()
-                        and int(m_year.group(1)) < int(str(cur["period"])[:4]))
+        # closed in BOTH releases: «rec.promedio.2026» year-to-date in 2026-09 vs full-year in 2027-03 is not a revision
+        own_year = bool(m_year and all(str(x.get("period") or "")[:4].isdigit() and
+                                       int(m_year.group(1)) < int(str(x["period"])[:4]) for x in (prev, cur)))
         if prev.get("period") and cur.get("period") and str(prev["period"]) != str(cur["period"]) and not own_year:
             continue
         a, b = prev.get("value"), cur.get("value")

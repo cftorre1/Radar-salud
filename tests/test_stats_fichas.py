@@ -1274,3 +1274,9 @@ def test_a_closed_year_figure_is_compared_across_bulletins():
     now = {"values": {"rec.promedio.2026": sf.value("rec.promedio.2026", 1880, unit="reclamos", period="2026-09",
                                                      source="s", locator="l", kind="captured")}}
     assert sf.detect_revisions(now, ytd) == []  # the current year is year-to-date: a new bulletin, not a revision
+
+    ytd_prev = {"values": {"rec.promedio.2026": sf.value("rec.promedio.2026", 1880, unit="reclamos", period="2026-09",
+                                                          source="s", locator="l", kind="captured")}}
+    full = {"values": {"rec.promedio.2026": sf.value("rec.promedio.2026", 1900, unit="reclamos", period="2027-03",
+                                                      source="s", locator="l", kind="captured")}}
+    assert sf.detect_revisions(full, ytd_prev) == []  # year-to-date then full year: not a revision (review of #209)
