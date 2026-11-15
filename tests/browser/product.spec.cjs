@@ -348,10 +348,10 @@ test('Cards V2 keep Bupa, sanctions and reviewed Circular 535 copy understandabl
  // Rights policy (Dirección 28-oct-2026): the Bupa piece is paywalled DF, so the card keeps the
  // publisher headline and public lead only; the editorial rewrite built on the locked body is gone.
  const bupa=page.locator('article').filter({has:page.getByRole('heading',{name:/Bupa acelera inversiones/})});
- await bupa.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).toContainText('La Dehesa');await expect(page.locator('#detailBody')).toContainText('Clínicas Huinganal');await expect(page.locator('#detailBody')).toContainText('Mindplace en San Damián');
+ await bupa.locator('[data-detail]').first().click();await expect(page.locator('#detailBody')).not.toContainText('La Dehesa');await expect(page.locator('#detailBody')).not.toContainText('Mindplace en San Damián');
  // Dirección 28-oct 08:20 (punto 4): the news ficha no longer carries the why-it-matters paragraph.
  await expect(page.locator('#detailBody')).not.toContainText('No es solo expansión física');
- await expect(page.locator('#detailBody')).toContainText('Mostramos sólo el titular y la bajada pública');
+ await expect(page.locator('#detailBody')).toContainText('Mostramos solo el titular');
  await expect(bupa).not.toContainText('…');
  await expect(bupa.locator('.rk-meta')).toContainText(/\d{1,2} \p{L}+\.?( 2026)? · /u);// option B (12-nov-2026)
  for(const derived of ['No es solo expansión física','La Dehesa: inauguración','Clínicas Huinganal: crecimiento mediante adquisición','capacidad nueva, compra y diversificación de servicios','Bupa refuerza su red'])
@@ -862,7 +862,10 @@ test('Global rows match Home rows: dot toggle, title opens the ficha, source and
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
 });
 test('news fichas are lean: headline, Qué pasó and sources, never why it matters (Dirección 28-oct 08:20)',async({page})=>{
- await page.goto('/');await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"]) .title-open').first().click();await expect(page.locator('#signalDetail')).toBeVisible();
+ await page.goto('/');await expect(page.locator('#local article[data-card]').first()).toBeVisible();
+ const ok=await page.evaluate(()=>allSignals.filter(s=>s.paywalled!==true).map(idFor));// paywalled rows show no Qué pasó (#208)
+ const rowId=await page.locator('#local article[data-card]:not([data-card^="stats-ficha:"])').evaluateAll((xs,ok)=>xs.map(x=>x.dataset.card).find(id=>ok.includes(id)),ok);
+ await page.locator(`#local article[data-card="${rowId}"] .title-open`).first().click();await expect(page.locator('#signalDetail')).toBeVisible();
  await expect(page.locator('#detailBody')).not.toContainText(/Contexto editorial|Enriquecimiento editorial|Por qué importa/);
  await expect(page.locator('#detailBody .ficha-h').first()).toHaveText(/Qué pasó/i);expect(await page.locator('#detailBody > p').count()).toBeGreaterThanOrEqual(1);
 });

@@ -116,7 +116,7 @@ const corrUrlOk=u=>/^https:\/\/[^\s\/?#]+\.[^\s\/?#]+(\/\S*)?$/.test(String(u||'
 function corroborationWhat(s){const c=corroboration(s);if(!c)return'';const groups=[];for(const w of arr(c.what).filter(w=>w&&w.text&&w.attribution&&corrUrlOk(w.source_url))){const g=groups[groups.length-1];if(g&&g.a===w.attribution&&g.u===w.source_url)g.t.push(w.text);else groups.push({a:w.attribution,u:w.source_url,t:[w.text]})}return groups.map(g=>`<p class="corroborated">Según ${esc(g.a)}: ${esc(g.t.join(' '))} <a href="${esc(g.u)}" target="_blank" rel="noopener">Ver fuente ↗</a></p>`).join('')}
 // "Fuentes relacionadas" sits in the ficha's Fuentes section; the paywalled piece keeps originalLink ("Fuente original") and paywallNote.
 function corroborationRelated(s){const c=corroboration(s);const rel=c?arr(c.related_sources).filter(x=>x&&corrUrlOk(x.url)):[];return rel.length?`<div class="related-sources"><h4>Fuentes relacionadas</h4><ul>${rel.map(x=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.source_name||'Fuente')} · ${esc(x.title||'Ver publicación')} ↗</a>${x.event_date?` <span class="related-desc">${fmtDate(x.event_date)}</span>`:''}</li>`).join('')}</ul></div>`:''}
-function paywallNote(s){return s&&s.paywalled===true?`<p class="paywall-note">${esc(s.paywall_label||'Contenido para suscriptores')}. Mostramos sólo el titular y la bajada pública.</p>`:''}
+function paywallNote(s){return s&&s.paywalled===true?`<p class="paywall-note">${esc(s.paywall_label||'Contenido para suscriptores')}. Mostramos solo el titular; la nota completa está en la fuente original.</p>`:''}
 function readAction(read){return `${read?unreadIcon:checkIcon}<span class="read-label">${read?'Leído':'No leído'}</span>`}
 // Global teaser copy (Dirección 28-oct, punto 8): an invitation to the premium section, never a limit.
 const GLOBAL_TEASER={label:'Global · noticia de la semana',cta:'Entrar a Global'};
@@ -211,7 +211,9 @@ function detailHtml(s){
   // matters" paragraph. Data-analysis fichas (summary table, verified insights, data pulses) keep their own
   // analysis and limits. Punto 5: a section without data is not rendered, and nothing fills it in.
   const analysis=Boolean(s.summary_table?.rows?.length||arr(s.data_insights).length||s.event_type==='DATA_PULSE');
-  const texts=[s.card_what||s.what_happened,s.normative_context,...arr(s.key_points),...arr(s.key_facts)].filter(fresh);
+  // Dirección 12-nov-2026 (audit point 3): press with limited rights shows its title and link only — not the outlet's
+  // bajada. «Qué pasó» appears only when an authorised open source covers the same fact (corroboration below).
+  const texts=s.paywalled===true?[]:[s.card_what||s.what_happened,s.normative_context,...arr(s.key_points),...arr(s.key_facts)].filter(fresh);
   // Paywall corroboration (Dirección 28-oct 15:16): attributed sentences from authorized open sources join "Qué pasó".
   const corr=corroborationWhat(s);
   // Dirección 13-nov-2026: pulses (acreditación, sanciones) list their acts by group — bold label, one bullet each.
@@ -342,7 +344,7 @@ const verifiedTriageTitles={
  'https://www.minsal.cl/consejo-para-mejorar-eficiencia-y-reducir-deficit-estructural-en-salud-incorpora-mirada-de-servicios-de-salud-y-hospitales-en-su-segunda-sesion/':'Minsal suma hospitales y Servicios de Salud al consejo sobre eficiencia y déficit',
  'https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion':'Max Luksic propone alianza municipal para ejecutar recursos de atención primaria'
 };
-function triageTitle(s){const title=String(s.title||'').trim();if(s.display_title)return String(s.display_title).trim();if(verifiedTriageTitles[s.source_url])return verifiedTriageTitles[s.source_url];if(/^(resolución|circular|decreto|oficio)\b/i.test(title)&&s.normative_document_label){const subject=s.normative_subject||firstComplete(s.card_why||s.card_what||s.why_it_matters||s.what_happened);if(subject)return `${s.normative_document_label} sobre ${String(subject).charAt(0).toLowerCase()+String(subject).slice(1)}`}if(s.editorial_review_id)return title;if(/^(resolución|circular|decreto|oficio)\b/i.test(title)&&s.card_what)return firstComplete(s.card_what);if(title.length>95&&s.card_what&&s.card_what.length<title.length)return firstComplete(s.card_what);return title||firstComplete(s.card_what||s.what_happened||'Señal verificada')}
+function triageTitle(s){const title=String(s.title||'').trim();if(s.display_title)return String(s.display_title).trim();if(verifiedTriageTitles[s.source_url])return verifiedTriageTitles[s.source_url];if(s.paywalled===true)return title||'Señal verificada';if(/^(resolución|circular|decreto|oficio)\b/i.test(title)&&s.normative_document_label){const subject=s.normative_subject||firstComplete(s.card_why||s.card_what||s.why_it_matters||s.what_happened);if(subject)return `${s.normative_document_label} sobre ${String(subject).charAt(0).toLowerCase()+String(subject).slice(1)}`}if(s.editorial_review_id)return title;if(/^(resolución|circular|decreto|oficio)\b/i.test(title)&&s.card_what)return firstComplete(s.card_what);if(title.length>95&&s.card_what&&s.card_what.length<title.length)return firstComplete(s.card_what);return title||firstComplete(s.card_what||s.what_happened||'Señal verificada')}
 function triageSummary(s){const what=trimSummary(s),why=s.card_why||firstComplete(s.why_it_matters);return distinct(what,triageTitle(s))?what:why}
 async function setReadWithoutReorder(s,value=true){const id=idFor(s);await AlicantoRead.set(id,value);syncReadUI();readStatus(value?'Marcado como leído.':'Marcado como no leído.');}
 function syncReadUI(){

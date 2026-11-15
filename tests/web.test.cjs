@@ -360,6 +360,8 @@ test('paywall corroboration renders inside the option-B ficha (Qué pasó + Fuen
  assert.ok(h.indexOf('Fuentes relacionadas')>fu);assert.match(h,/<p class='source ficha-origin'>Diario Financiero<\/p>/);assert.match(h,/paywall-note/);assert.doesNotMatch(h,/javascript:/);
  assert.doesNotMatch(c.detailHtml({...s,paywalled:false}),/Fuentes relacionadas|Según Superintendencia/);
  assert.doesNotMatch(c.detailHtml({...s,corroboration:{...s.corroboration,status:'rejected'}}),/Fuentes relacionadas|Según Superintendencia/);
+ // Dirección 12-nov-2026: limited-rights press never shows the outlet's bajada; «Qué pasó» only with an open source.
+ assert.doesNotMatch(h,/Bajada pública/);const bare=c.detailHtml({...s,corroboration:null});assert.doesNotMatch(bare,/Bajada pública|Qué pasó/);assert.match(bare,/Mostramos solo el titular/);
 });
 test('Global translation (Dirección 29-oct): Spanish row and ficha, original title kept, links, attribution and read keys unchanged',()=>{
  const c={AlicantoRead:{readSet:new Set()},localStorage:{getItem:()=>null,setItem:()=>{}},Date,Intl,Set,Map,URL};vm.createContext(c);vm.runInContext(fs.readFileSync('web/inbox-bar.js','utf8'),c);c.AlicantoBar=c.AlicantoBar||c.window?.AlicantoBar||c.globalThis?.AlicantoBar;vm.runInContext(fs.readFileSync('web/global.js','utf8').split('AlicantoRead.subscribe(')[0],c);
