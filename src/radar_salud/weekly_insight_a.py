@@ -677,7 +677,8 @@ def run_weekly_a(signals: list[dict], *, as_of: date | None = None, root: Path =
         "reviewer": f"{review_model} (revisor independiente del redactor {draft_model})",
         "deterministic_verification": verification, "lenses": review.get("lenses") or {},
         "minor_issues": [i for i in review.get("issues") or [] if isinstance(i, dict) and i.get("severity") != "blocker"],
-        "presentation": {"format": weekly.get("schema_version") or SCHEMA, "approved_by": "pipeline (verificación determinista + revisor independiente)"}})
+        "presentation": {"format": weekly.get("schema_version") or SCHEMA, "approved_by": "pipeline (verificación determinista + revisor independiente)"},
+        "headline_selection": out.get("headline_selection")})
     return out
 
 
