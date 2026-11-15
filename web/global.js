@@ -60,7 +60,7 @@ const SIGLAS={OMS:'Organización Mundial de la Salud',OPS:'Organización Panamer
 const ABBR=/\b(?:EE|UU|EE\. ?UU|Dr|Dra|Sr|Sra|N|Nº|art|núm|etc)\.$/;
 function firstSentence(t){t=str(t);const re=/[.!?](?=\s+[A-ZÁÉÍÓÚÑ¿¡]|$)/g;let m;while((m=re.exec(t))){const head=t.slice(0,m.index+1);if(!ABBR.test(head))return head.replace(/[.]$/,'')}return t.replace(/[.]$/,'')}
 // Spanish text names the WHO «OMS» (audit P1, Dirección 13-nov-2026); the original English title stays as published.
-function es(s){return str(s).replace(/\bWHO\b/g,'OMS')}
+function es(s){return str(s).replace(/\b([Ll])a WHO Academy\b/g,'$1a Academia de la OMS').replace(/\bWHO Academy\b/g,'Academia de la OMS').replace(/\b([Ll])a WHO\b/g,'$1a OMS').replace(/\bdel? WHO\b/g,'de la OMS').replace(/\b([Aa]l) WHO\b/g,'$1 la OMS').replace(/\b([Ee])l WHO\b/g,(m,e)=>e==='E'?'La OMS':'la OMS').replace(/(^|[.!?¿¡]\s*)WHO\b/g,'$1La OMS').replace(/\bWHO\b/g,'la OMS')}
 function shownTitle(x){return translated(x)?es(x.title_es):summarized(x)?es(firstSentence(x.summary_es)):x.title}
 function headlineEntry(x){return {kind:'headline',id:x.id,dom:`daily-${x.id}`,key:feedKey(x.id),date:String(x.published_at).slice(0,10),seen:String(x.first_seen_on||'').slice(0,10),title:shownTitle(x),publishers:[x.source_label].filter(Boolean),url:httpsUrl(x.url),priority:Number(x.priority)||0,x}}
 function buildEntries(){entries=[...themes.map(themeEntry),...headlines.map(headlineEntry)]}
@@ -81,7 +81,7 @@ function license(x){const u=httpsUrl(x.rights_basis?.license_url);return u?` · 
 // Every machine translation is marked on its row ("Traducido por Alicanto"), public-domain sources included; this also
 // indicates the change for CC BY/OGL. A source whose licence forbids translation says so.
 function langNote(x){const t=x.translation||{};if(translated(x))return ` · <span class="tr-note">${esc(str(t.row_note_es)||ROW_NOTE)}</span>`;if(summarized(x))return ` · <span class="tr-note">${esc(str(t.notice_es)||SUMMARY_NOTICE)}</span>`;return t.status==='not_allowed'&&str(t.note_es)?` · <span class="tr-note">${esc(t.note_es)}</span>`:''}
-function metaFor(e){if(e.kind==='theme')return `${esc(e.publishers.join(' + '))} · ${dateText(e.date)}`;const x=e.x,a=authors(x);return `${esc(x.source_label)}${a?` (${esc(a)})`:''} · ${dateText(e.date)}${license(x)}${langNote(x)}`}
+function metaFor(e){if(e.kind==='theme')return `${esc(e.publishers.map(p=>p==='WHO'?'OMS':p).join(' + '))} · ${dateText(e.date)}`;const x=e.x,a=authors(x);return `${esc(x.source_label)}${a?` (${esc(a)})`:''} · ${dateText(e.date)}${license(x)}${langNote(x)}`}
 // Option B (Dirección 12-nov-2026): the pill names the topic (first tag) inside Global; beside it «día · fuente», the
 // authors, the licence link and the translation/summary notice (source rights: CC BY/OGL rows say what changed).
 function kickerFor(e){const tag=e.kind==='theme'?'Tema':((e.x&&Array.isArray(e.x.tags_es)&&e.x.tags_es[0])||'Global');const a=e.kind==='theme'?'':authors(e.x);const src=e.kind==='theme'?esc(e.publishers.join(' + ')):`${esc(e.x.source_label)}${a?` (${esc(a)})`:''}${license(e.x)}${langNote(e.x)}`;return AlicantoBar.kicker('global',tag,[AlicantoBar.shortDay(e.date),src].filter(Boolean).join(' · '))}

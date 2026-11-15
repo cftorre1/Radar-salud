@@ -21,6 +21,13 @@ ENFORCEMENT_PAGES = [
 ]
 
 
+
+def _day(iso) -> str:
+    """«9 de noviembre de 2026» (audit P1, Dirección 13-nov-2026)."""
+    from .congreso_sources import _when
+    s = str(iso or "")[:10]
+    return _when(s) if len(s) == 10 and s[4] == "-" else str(iso)
+
 def current_professional_suspension(url, metadata, as_of):
     """A current restriction is stock context, never a new issue/publication date."""
     if (canonical_url(url) != ENFORCEMENT_PAGES[0][1]
@@ -99,7 +106,7 @@ def parse_enforcement_listing(html, name, page, kind):
                 event_date_basis='emission', date_conflicts=conflicts,
                 listing_url=page, listing_name=name, scopes=['Prestadores','COMPIN','Isapres'],
                 affected_actors=['COMPIN','Isapres'],
-                validity_text=f'Suspensión de emisión de licencias: {start} a {end}, ambas fechas inclusive. El registro no acredita fecha de publicación ni notificación.')
+                validity_text=f'Suspensión de emisión de licencias: {_day(start)} a {_day(end)}, ambas fechas inclusive. El registro no acredita fecha de publicación ni notificación.')
             text = f'SUSESO registra para {entity} una multa de {amount:g} UTM y suspensión de emisión de licencias por {days} días, del {start} al {end}.' if amount is not None and days is not None else 'Registro de sanción con campos incompletos.'
             out.append(RawItem('suseso_fiscalizacion','Oficio ' + identity + ' · sanción a emisor de licencias',page,
                 'Superintendencia de Seguridad Social (SUSESO)','official',emitted,text,metadata))
