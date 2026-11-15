@@ -73,6 +73,9 @@ def test_refresh_drafts_reviews_caches_and_never_pays_twice(tmp_path, monkeypatc
     card = cg.with_report_summary(ROW, tmp_path)
     assert card["key_facts"][1].startswith("El informe dice que la comisión aprobó en general el proyecto")
     assert card["key_facts"][0].startswith("Trámite oficial") and card["key_facts"][2].startswith("Etapa actual")
+    link = card["source_alternatives"][-1]
+    assert link["url"].startswith("https://tramitacion.senado.cl/") and link["title"] == "Informe de la comisión (PDF)"
+    assert cg.with_report_summary(card, tmp_path) == card  # idempotent: no second line, no second link
 
 
 def test_failed_review_or_verification_publishes_nothing(tmp_path, monkeypatch):

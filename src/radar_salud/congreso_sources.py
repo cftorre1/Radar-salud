@@ -299,7 +299,14 @@ def with_report_summary(row: dict, root=".") -> dict:
     if not line or line in (row.get("key_facts") or []):
         return row
     facts = list(row.get("key_facts") or [])
-    return {**row, "key_facts": [*facts[:1], line, *facts[1:]], "report_summary": True, "report_url": rec.get("url")}
+    out = {**row, "key_facts": [*facts[:1], line, *facts[1:]], "report_summary": True, "report_url": rec.get("url")}
+    url = str(rec.get("url") or "")
+    alts = list(row.get("source_alternatives") or [])
+    if url.startswith("https://") and all(a.get("url") != url for a in alts if isinstance(a, dict)):
+        # the reader can open the report the summary comes from (open tramitacion host, no challenge)
+        out["source_alternatives"] = [*alts, {"source_name": "Senado", "title": "Informe de la comisión (PDF)", "url": url,
+                                              "event_date": str(row.get("event_date") or "")[:10]}]
+    return out
 
 
 def restructure(row: dict) -> dict:
