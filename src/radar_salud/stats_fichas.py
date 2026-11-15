@@ -192,6 +192,11 @@ def detect_revisions(current: dict, previous: dict | None) -> list[dict]:
         cur = (current.get("values") or {}).get(vid)
         if not cur or prev.get("kind") != "captured" or cur.get("kind") != "captured":
             continue
+        # A revision is the same figure for the same period, republished with another value. An id that holds the
+        # latest period (e.g. F6 «acr.acreditados», jun → sep) moving to a new period is a new release, not a
+        # revision (review of #202, 13-nov-2026).
+        if prev.get("period") and cur.get("period") and str(prev["period"]) != str(cur["period"]):
+            continue
         a, b = prev.get("value"), cur.get("value")
         if not isinstance(a, (int, float)) or not isinstance(b, (int, float)) or a == b:
             continue
