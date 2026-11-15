@@ -322,7 +322,7 @@ def test_end_to_end_stats_anchor_publishes_with_selection_record(selected):
     assert result["status"] == "pass", (result.get("verification"), result.get("review"))
     assert [c["feature"] for c in fake.calls] == ["weekly_insight_a_stats_draft", "weekly_headline_candidates", "weekly_insight_a_review"]
     assert [c["model"] for c in fake.calls] == ["gpt-6-astra", "gpt-6-astra", "gpt-5.6-terra"]  # same writer and reviewer
-    assert "CONTRATO FICHA ≠ INSIGHT" in fake.calls[0]["prompt"] and "CONTRATO FICHA" in fake.calls[1]["prompt"]
+    assert "CONTRATO FICHA ≠ INSIGHT" in fake.calls[0]["prompt"] and "CONTRATO FICHA" in fake.calls[-1]["prompt"]
     assert result["topic_selection"]["status"] == "selected"
     assert result["verification"]["stats_anchor_contract"]["verdict"] == "PASS"
     assert result["weekly_insight"]["stats_anchor"]["ficha_id"] == "stats-ficha:F1:2026-08"
