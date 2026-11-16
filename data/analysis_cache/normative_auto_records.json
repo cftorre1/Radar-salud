@@ -456,6 +456,17 @@
    },
    "final": true,
    "final_at": "2026-11-10T09:56:28.373376+00:00"
+  },
+  "https://www.suseso.gob.cl/612/w3-article-794641.html": {
+   "problems": [
+    "unparseable_model_output:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
+   ],
+   "evidence_sha256": "9e0d987a1bd9d31f671b1937710bbad01ed034366f8f3f815f1aa1552cbe7708",
+   "at": "2026-11-16T21:26:08.104419+00:00",
+   "run_id": "43951674195",
+   "attempts": 4,
+   "runs": 2,
+   "last_draft": null
   }
  },
  "acts": {
@@ -1817,10 +1828,11 @@
    "first_attempt_at": "2026-11-16T18:06:35.122654+00:00",
    "published_at": null,
    "runs": [
-    "43918748368"
+    "43918748368",
+    "43951674195"
    ],
-   "attempts": 1,
-   "status": "pending",
+   "attempts": 4,
+   "status": "rejected",
    "attempt_log": [
     {
      "at": "2026-11-16T18:06:35.122654+00:00",
@@ -1855,10 +1867,51 @@
      "kind": "normative_autorecord_review",
      "cost_usd": 0.003798,
      "problems": []
+    },
+    {
+     "at": "2026-11-16T21:25:02.220523+00:00",
+     "run_id": "43951674195",
+     "attempt": 2,
+     "kind": "normative_autorecord",
+     "cost_usd": null,
+     "problems": [
+      "unparseable_model_output:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
+     ]
+    },
+    {
+     "at": "2026-11-16T21:25:26.764953+00:00",
+     "run_id": "43951674195",
+     "attempt": 3,
+     "kind": "normative_autorecord_repair",
+     "cost_usd": null,
+     "problems": [
+      "unparseable_model_output:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
+     ]
+    },
+    {
+     "at": "2026-11-16T21:25:47.898642+00:00",
+     "run_id": "43951674195",
+     "attempt": 4,
+     "kind": "normative_autorecord_repair",
+     "cost_usd": null,
+     "problems": [
+      "unparseable_model_output:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
+     ]
     }
    ],
-   "rejection_history": [],
-   "last_run_id": "43918748368"
+   "rejection_history": [
+    {
+     "problems": [
+      "unparseable_model_output:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
+     ],
+     "evidence_sha256": "9e0d987a1bd9d31f671b1937710bbad01ed034366f8f3f815f1aa1552cbe7708",
+     "at": "2026-11-16T21:26:08.104419+00:00",
+     "run_id": "43951674195",
+     "attempts": 4,
+     "runs": 2
+    }
+   ],
+   "last_run_id": "43951674195"
   }
  }
 }
