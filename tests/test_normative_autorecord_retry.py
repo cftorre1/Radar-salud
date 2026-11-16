@@ -314,3 +314,16 @@ def test_registro_act_is_redrafted_once_under_the_fixed_structure(tmp_path):
     # once redrafted (or while the redraft runs) it is never started again
     log.clear()
     assert auto.build_auto_records(tmp_path, signals, call=_fake([]), today=TODAY, run_id="r3") == [] and log == []
+
+
+def test_title_style_is_one_present_verb_with_capital_and_acronyms_stay():
+    from src.radar_salud.normative_autorecord import _title_case_fix as fix
+    t = lambda s: fix({"plain_language_title": s})["plain_language_title"]  # noqa: E731
+    assert t("Circular IF/N°541 · ACLARA la base de cálculo del deducible CAEC") == \
+        "Circular IF/N°541 · Aclara la base de cálculo del deducible CAEC"
+    assert t("Circular IF/N°540 · actualiza el Formato Único") == "Circular IF/N°540 · Actualiza el Formato Único"
+    assert t("Circular IF/N°538 · Incorporar cobertura de Terapia Ocupacional") == \
+        "Circular IF/N°538 · Incorpora cobertura de Terapia Ocupacional"
+    for same in ("Circular 3 · CAEC: nuevo plazo", "Circular 3 · FONASA informa", "Circular 4 · Hogar de cuidados",
+                 "Circular IF/N°1 · Aclara algo"):
+        assert t(same) == same

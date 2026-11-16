@@ -115,8 +115,36 @@ def canonical_identity(*texts: Any) -> str:
     return ""
 
 
+# Infinitive → present (3rd person) for the usual verbs of a normative title (explicit list: never a guess).
+_PRESENT = {"aclarar": "aclara", "actualizar": "actualiza", "incorporar": "incorpora", "modificar": "modifica",
+            "establecer": "establece", "precisar": "precisa", "informar": "informa", "regular": "regula",
+            "fijar": "fija", "impartir": "imparte", "instruir": "instruye", "derogar": "deroga", "aprobar": "aprueba",
+            "complementar": "complementa", "reemplazar": "reemplaza", "ampliar": "amplía", "extender": "extiende",
+            "suspender": "suspende", "dejar": "deja", "incluir": "incluye", "exigir": "exige", "definir": "define"}
+
+
+def _title_case_fix(rec: dict[str, Any]) -> dict[str, Any]:
+    """«Circular IF/N°541 · ACLARA …», «· actualiza …», «· Incorporar …» → «· Aclara …» (one style, Dirección 16-nov)."""
+    title = str(rec.get("plain_language_title") or "")
+    head, sep, rest = title.partition(" · ")
+    m = re.match(r"^([^\W\d_]+)(.*)$", rest, re.S)
+    if not sep or not m:
+        return rec
+    word, tail = m.group(1), m.group(2)
+    low = word.lower()
+    if low in _PRESENT:
+        fixed = _PRESENT[low]
+    elif word.isupper() and low in _PRESENT.values():  # «ACLARA» (an acronym such as «CAEC» or «FONASA» stays)
+        fixed = low
+    else:
+        fixed = word
+    fixed = fixed[:1].upper() + fixed[1:]
+    return rec if fixed == word else dict(rec, plain_language_title=f"{head}{sep}{fixed}{tail}")
+
+
 def _canonical_record(rec: dict[str, Any]) -> dict[str, Any]:
     """Read-time fix for records written with a listing identity: rewrite only the identity prefix of the title."""
+    rec = _title_case_fix(rec)
     old = str(rec.get("legal_identity") or "")
     new = canonical_identity(old)
     if not old or new == old:
@@ -251,7 +279,7 @@ _PROBLEM_HINTS = {
 
 def _json_spec(label: str) -> str:
     return ("Responde SOLO JSON con: plain_language_title (empieza con "
-            f"'{label} · ', luego tema y acción concreta en lenguaje simple, máx. 140 caracteres), subject_terms "
+            f"'{label} · ', luego un verbo en presente con mayúscula inicial —Aclara, Actualiza, Incorpora; nunca infinitivo ni MAYÚSCULAS— y el tema en lenguaje simple, máx. 140 caracteres), subject_terms "
             "(1-3 palabras del tema presentes en el título), action_terms (1-3 verbos/efectos presentes en el título), "
             "normative_context (ESTRUCTURA FIJA, 3 frases propias, en este orden: 1) qué cambia; 2) a quién obliga o "
             "aplica; 3) desde cuándo rige, con las palabras del texto (p. ej. «desde su publicación») si no da una fecha; cifras y fechas tal como en el texto; sin pegar trozos del documento, sin "
