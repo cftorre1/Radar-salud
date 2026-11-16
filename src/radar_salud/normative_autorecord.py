@@ -139,7 +139,12 @@ def _title_case_fix(rec: dict[str, Any]) -> dict[str, Any]:
     else:
         fixed = word
     fixed = fixed[:1].upper() + fixed[1:]
-    return rec if fixed == word else dict(rec, plain_language_title=f"{head}{sep}{fixed}{tail}")
+    if fixed == word:
+        return rec
+    # The verified action terms follow the title (review of #214: «incorporar» is not inside «Incorpora …»).
+    terms = rec.get("action_terms")
+    terms = [_PRESENT.get(str(x).lower(), x) if isinstance(x, str) else x for x in terms] if isinstance(terms, list) else terms
+    return dict(rec, plain_language_title=f"{head}{sep}{fixed}{tail}", action_terms=terms)
 
 
 def _canonical_record(rec: dict[str, Any]) -> dict[str, Any]:

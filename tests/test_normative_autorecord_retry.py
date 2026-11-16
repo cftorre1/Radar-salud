@@ -327,3 +327,12 @@ def test_title_style_is_one_present_verb_with_capital_and_acronyms_stay():
     for same in ("Circular 3 · CAEC: nuevo plazo", "Circular 3 · FONASA informa", "Circular 4 · Hogar de cuidados",
                  "Circular IF/N°1 · Aclara algo"):
         assert t(same) == same
+
+
+def test_title_style_fix_keeps_the_action_terms_inside_the_title():
+    import re
+    from src.radar_salud.normative_autorecord import _title_case_fix as fix
+    rec = fix({"plain_language_title": "Circular IF/N°538 · Incorporar cobertura de Terapia Ocupacional",
+               "action_terms": ["incorporar"], "subject_terms": ["Terapia Ocupacional"]})
+    norm = lambda x: re.sub(r"[^a-z0-9]+", " ", str(x).lower()).strip()  # noqa: E731 - the export's has_action test
+    assert rec["action_terms"] == ["incorpora"] and any(norm(a) in norm(rec["plain_language_title"]) for a in rec["action_terms"])
