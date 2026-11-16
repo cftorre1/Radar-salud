@@ -99,7 +99,9 @@ def test_no_link_yet_is_retried_and_other_milestones_are_ignored(tmp_path, monke
     stats = ci.refresh(tmp_path, [early, {**ROW, "bill_milestone": "ingreso"}], today=date(2026, 11, 15),
                        fetch=_fetch([]), call=_call([], []), robots=lambda u: True)
     assert stats == {"candidates": 1, "no_link_yet": 1, "written": 0, "failed": 0, "errors": 0}
-    assert not (tmp_path / ci.CACHE_DIR).exists()
+    last = json.loads((tmp_path / ci.CACHE_DIR / "_last_run.json").read_text(encoding="utf-8"))
+    assert last["reasons"] == ["18255-31:no_link_yet"] and last["day"] == "2026-11-15"  # readable without Actions logs
+    assert [p.name for p in (tmp_path / ci.CACHE_DIR).iterdir()] == ["_last_run.json"]  # no report cached
 
 
 def test_other_committee_same_day_is_never_attached_and_lowercasing_keeps_proper_nouns():
@@ -129,3 +131,4 @@ def test_robots_disallow_fetches_nothing(tmp_path):
     stats = ci.refresh(tmp_path, [ROW], today=date(2026, 11, 15), fetch=_fetch(urls), call=_call([], []),
                        robots=lambda u: False)
     assert urls == [] and stats["errors"] == 1
+    assert json.loads((tmp_path / ci.CACHE_DIR / "_last_run.json").read_text(encoding="utf-8"))["reasons"] == ["18255-31:robots_ws"]
