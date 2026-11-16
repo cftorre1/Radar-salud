@@ -143,7 +143,8 @@ def _title_case_fix(rec: dict[str, Any]) -> dict[str, Any]:
         return rec
     # The verified action terms follow the title (review of #214: «incorporar» is not inside «Incorpora …»).
     terms = rec.get("action_terms")
-    terms = [_PRESENT.get(str(x).lower(), x) if isinstance(x, str) else x for x in terms] if isinstance(terms, list) else terms
+    # Only the term that was the rewritten word (an «instruir» later in the title keeps its form).
+    terms = [fixed.lower() if isinstance(x, str) and x.lower() == low else x for x in terms] if isinstance(terms, list) else terms
     return dict(rec, plain_language_title=f"{head}{sep}{fixed}{tail}", action_terms=terms)
 
 

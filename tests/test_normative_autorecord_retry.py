@@ -336,3 +336,6 @@ def test_title_style_fix_keeps_the_action_terms_inside_the_title():
                "action_terms": ["incorporar"], "subject_terms": ["Terapia Ocupacional"]})
     norm = lambda x: re.sub(r"[^a-z0-9]+", " ", str(x).lower()).strip()  # noqa: E731 - the export's has_action test
     assert rec["action_terms"] == ["incorpora"] and any(norm(a) in norm(rec["plain_language_title"]) for a in rec["action_terms"])
+    two = fix({"plain_language_title": "Circular 9 · Incorporar cobertura e instruir a las isapres",
+               "action_terms": ["incorporar", "instruir"]})
+    assert two["action_terms"] == ["incorpora", "instruir"]  # review of #214: only the rewritten word
