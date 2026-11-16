@@ -85,7 +85,8 @@ publishes an anchored Insight.
 The ~250-word block with fixed sections («Qué pasó», «Lectura Alicanto», «Qué mirar») becomes a ~750-word essay
 that reads like a news story. Schema `weekly_insight_a_v2`; the code and the field-by-field schema live in
 [`src/radar_salud/weekly_insight_essay.py`](../../src/radar_salud/weekly_insight_essay.py). The reference
-example is the 9-nov residencias insight in `editorial_approved.json`, migrated from the approved mockup.
+example is the 9-nov residencias insight, migrated from the approved mockup; since the 16-nov insight it lives in
+`archive/2026-11-09.json` (the tests' fixture).
 
 - **Cutover.** Every Monday insight anchored on or after **16-nov-2026** must be v2. A v1 Monday insight from that
   date fails `presentation_a_errors` (`schema_v1_retired_use_weekly_insight_a_v2`) and is never served. Archived

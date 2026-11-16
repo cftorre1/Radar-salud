@@ -183,8 +183,9 @@ test('approved insight renders presentation A with charts, footnoted limits and 
 // Dirección 10-nov-2026: the weekly insight is a news-style essay (weekly_insight_a_v2). No «Qué pasó / Lectura Alicanto /
 // Qué mirar» labels; charts inside the text after their paragraph; quotes with a linked source; every named source links
 // to the original and to the numbered list (Oficial/Prensa badge); estimates dashed with their formula; method collapsed.
-test('current approved insight renders the v2 essay faithfully to the approved mockup',()=>{
- const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight,body={innerHTML:''};
+// The 9-nov insight is the reference mockup; since 16-nov it lives in the archive (the committed insight is checked below).
+test('reference insight (9-nov, archive) renders the v2 essay faithfully to the approved mockup',()=>{
+ const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/archive/2026-11-09.json')).weekly_insight,body={innerHTML:''};
  assert.equal(w.schema_version,'weekly_insight_a_v2');
  c.document={getElementById:id=>body};c.renderWeeklyDetail(w);
  const html=body.innerHTML;
@@ -611,8 +612,8 @@ test('Home specials: Global weekly pick and insight footer',()=>{
  const old=new Date(mon);old.setDate(old.getDate()-7);c.old={...c.pick,week_anchor:iso(old)};vm.runInContext("globalWeekly=old",c);assert.equal(c.specials().filter(x=>x.kind==='global').length,0);
  vm.runInContext("globalWeekly=null",c);assert.equal(c.specials().length,0);
  const w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight;c.w=w;vm.runInContext("currentWeekly=()=>w",c);
- const x=c.specials().find(s=>s.kind==='weekly');assert.equal(x.summary,w.dek);assert.equal(x.source,'10 fuentes');assert.equal(x.date,null);
- const card=c.specialCard(x);assert.match(card,/<span class="rk-pill rk-insight">[^]*?Insight de la semana<\/span>/);assert.match(card,/<span class="meta-text">10 fuentes<\/span>/);assert.doesNotMatch(card,/FNE ·|· prensa/);
+ const n=`${w.sources.length} fuentes`;const x=c.specials().find(s=>s.kind==='weekly');assert.equal(x.summary,w.dek);assert.equal(x.source,n);assert.equal(x.date,null);
+ const card=c.specialCard(x);assert.match(card,/<span class="rk-pill rk-insight">[^]*?Insight de la semana<\/span>/);assert.ok(card.includes(`<span class="meta-text">${n}</span>`));assert.doesNotMatch(card,/FNE ·|· prensa/);
 });
 
 // Dirección 11-nov-2026: ONE norm card for Normativa and Al día (norma-card.js): the default Al día actions plus the
@@ -644,4 +645,15 @@ test('option B: follow marker and correction tag sit beside the meta, never insi
  assert.match(html,/<span class="rk-meta">12 nov · Diario Financiero<\/span><span class="sr-only"> · <\/span><span class="rk-extra"><span class="tag">Corregido el 10 nov<\/span><\/span>/);// DOM order = visual order
  assert.doesNotMatch(html.match(/<span class="rk-meta">[^]*?<\/span>/)[0],/Corregido/);
  const css=fs.readFileSync('web/home-inbox.css','utf8');assert.match(css,/\.rk-extra\{flex:none/);
+});
+
+// The committed insight (whatever Monday it is) renders without raw markup, with every source linked and the byline count.
+test('committed insight renders the v2 essay with linked sources and no raw markup',()=>{
+ const c=context(),w=JSON.parse(fs.readFileSync('data/weekly_insight/editorial_approved.json')).weekly_insight,body={innerHTML:''};
+ assert.equal(w.schema_version,'weekly_insight_a_v2');assert.equal(w.kicker,undefined);
+ c.document={getElementById:id=>body};c.renderWeeklyDetail(w);const html=body.innerHTML;
+ assert.doesNotMatch(html,/\]\((f\d+|est:)/);assert.ok(html.includes(`<span>${w.sources.length} fuentes</span>`));
+ for(const s of w.sources){assert.ok(html.includes(`href="${s.url}"`),s.id);assert.ok(html.includes(`id="we-src-${s.id}"`),s.id)}
+ for(const gone of ['Qué pasó','Lectura Alicanto','Dato oficial','>Prensa<','>Oficial<'])assert.ok(!html.includes(gone),gone);
+ assert.equal((html.match(/<figure class="we-fig/g)||[]).length,w.charts.length);
 });
