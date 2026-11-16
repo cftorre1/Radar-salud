@@ -215,6 +215,7 @@ def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Ca
     """Draft summaries for recent report cards that lack one. Returns counters for the run log."""
     root = Path(root)
     stats = {"candidates": 0, "no_link_yet": 0, "written": 0, "failed": 0, "errors": 0}
+    reasons: list[str] = []
     if fetch is None:
         from .official_open import fetch as _fetch
 
@@ -252,15 +253,18 @@ def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Ca
             ws = WS.format(n=boletin.split("-")[0])
             if not robots(ws):
                 stats["errors"] += 1
+                reasons.append(f"{boletin}:robots_ws")
                 continue
             xml = fetch(ws, "application/xml")
             inf = match_informe(parse_informes(xml if isinstance(xml, bytes) else str(xml).encode("utf-8")), day,
                                 tramite)
             if not inf:
                 stats["no_link_yet"] += 1
+                reasons.append(f"{boletin}:no_link_yet")
                 continue
             if not robots(inf["url"]):
                 stats["errors"] += 1
+                reasons.append(f"{boletin}:robots_pdf")
                 continue
             pdf = fetch(inf["url"], "application/pdf")
             pdf = pdf if isinstance(pdf, bytes) else str(pdf).encode("latin-1", "ignore")
@@ -284,8 +288,19 @@ def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Ca
             path.write_text(json.dumps(rec, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         except RuntimeError as exc:  # budget exhausted or provider failure: stop, nothing is published
             stats["errors"] += 1
+            reasons.append(f"{boletin}:{type(exc).__name__}:{str(exc)[:80]}")
             if "budget" in str(exc):
                 break
-        except Exception:  # noqa: BLE001 - one bad report never stops the export
+        except Exception as exc:  # noqa: BLE001 - one bad report never stops the export
             stats["errors"] += 1
+            reasons.append(f"{boletin}:{type(exc).__name__}:{str(exc)[:80]}")
+    if stats["candidates"]:
+        # Actions logs are not readable from the agent environment: the last run's counters stay next to the cache.
+        try:
+            (root / CACHE_DIR).mkdir(parents=True, exist_ok=True)
+            (root / CACHE_DIR / "_last_run.json").write_text(json.dumps(
+                {"day": today.isoformat(), **stats, "reasons": reasons[:20]}, ensure_ascii=False, indent=1) + "\n",
+                encoding="utf-8")
+        except OSError:
+            pass
     return stats
