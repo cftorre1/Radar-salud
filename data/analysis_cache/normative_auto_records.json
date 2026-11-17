@@ -459,14 +459,31 @@
   },
   "https://www.suseso.gob.cl/612/w3-article-794641.html": {
    "problems": [
-    "unparseable_model_output:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
+    "context_missing_or_redundant"
    ],
    "evidence_sha256": "9e0d987a1bd9d31f671b1937710bbad01ed034366f8f3f815f1aa1552cbe7708",
-   "at": "2026-11-16T21:26:08.104419+00:00",
-   "run_id": "43951674195",
-   "attempts": 4,
-   "runs": 2,
-   "last_draft": null
+   "at": "2026-11-17T01:08:14.252553+00:00",
+   "run_id": "43992857011",
+   "attempts": 6,
+   "runs": 3,
+   "last_draft": {
+    "plain_language_title": "Circular N°3940 · MODIFICA obligaciones de organismos administradores y Sistema Nacional de Información",
+    "subject_terms": [
+     "organismos administradores",
+     "Sistema Nacional de Información"
+    ],
+    "action_terms": [
+     "MODIFICA"
+    ],
+    "normative_context": "MODIFICA el TÍTULO II. Responsabilidades y obligaciones de los organismos administradores y de los administradores delegados y el TÍTULO I. Sistema Nacional de Información de Seguridad y Salud en el Trabajo. Instruye a MUTUALIDAD DE EMPLEADORES; INSTITUTO DE SEGURIDAD LABORAL (ISL); DIVISIÓN CODELCO ANDINA ADMINISTRADOR DELEGADO DEL SEGURO DE LA LEY N°16.744; DIVISIÓN CODELCO CHUQUICAMATA ADMINISTRADOR DELEGADO DEL SEGURO DE LA LEY N°16.744; DIVISIÓN CODELCO EL TENIENTE ADMINISTRADOR DELEGADO DEL SEGURO DE LA LEY N°16.744; DIVISIÓN CODELCO SALVADOR ADMINISTRADOR DELEGADO DEL SEGURO DE LA LEY N°16.744. Vigencia: 1 de enero de 2027.",
+    "evidence_quotes": [
+     "MODIFICA EL TÍTULO II. RESPONSABILIDADES Y OBLIGACIONES DE LOS ORGANISMOS ADMINISTRADORES Y DE LOS ADMINISTRADORES DELEGADOS DEL LIBRO IV. PRESTACIONES PREVENTIVAS Y EL TÍTULO I. SISTEMA NACIONAL DE INFORMACIÓN DE SEGURIDAD Y SALUD EN EL TRABAJO DEL LIBRO IX. SISTEMAS DE INFORMACIÓN. INFORMES Y REPORTES, DEL COMPENDIO DE NORMAS DEL SEGURO SOCIAL DE ACCIDENTES DEL TRABAJO Y ENFERMEDADES PROFESIONALES DE LA LEY N°16.744",
+     "Destinatario: MUTUALIDAD DE EMPLEADORES; INSTITUTO DE SEGURIDAD LABORAL (ISL); DIVISIÓN CODELCO ANDINA ADMINISTRADOR DELEGADO DEL SEGURO DE LA LEY N°16.744; DIVISIÓN CODELCO CHUQUICAMATA ADMINISTRADOR DELEGADO DEL SEGURO DE LA LEY N°16.744; DIVISIÓN CODELCO EL TENIENTE ADMINISTRADOR DELEGADO DEL SEGURO DE LA LEY N°16.744; DIVISIÓN CODELCO SALVADOR ADMINISTRADOR DELEGADO DEL SEGURO DE LA LEY N°16.744",
+     "Observación: Vigencia: 1 de enero de 2027 Acción: Instruye Vigencia: No Alterado"
+    ]
+   },
+   "final": true,
+   "final_at": "2026-11-17T01:08:14.252567+00:00"
   }
  },
  "acts": {
@@ -1829,10 +1846,11 @@
    "published_at": null,
    "runs": [
     "43918748368",
-    "43951674195"
+    "43951674195",
+    "43992857011"
    ],
-   "attempts": 4,
-   "status": "rejected",
+   "attempts": 6,
+   "status": "final_rejected",
    "attempt_log": [
     {
      "at": "2026-11-16T18:06:35.122654+00:00",
@@ -1897,6 +1915,26 @@
      "problems": [
       "unparseable_model_output:model_call_failed:JSONDecodeError:Expecting value: line 1 column 1 (char 0)"
      ]
+    },
+    {
+     "at": "2026-11-17T01:07:35.988481+00:00",
+     "run_id": "43992857011",
+     "attempt": 5,
+     "kind": "normative_autorecord_repair",
+     "cost_usd": null,
+     "problems": [
+      "unparseable_model_output:model_call_failed:JSONDecodeError:Unterminated string starting at: line 1 column"
+     ]
+    },
+    {
+     "at": "2026-11-17T01:07:56.264352+00:00",
+     "run_id": "43992857011",
+     "attempt": 6,
+     "kind": "normative_autorecord_repair",
+     "cost_usd": 0.022352,
+     "problems": [
+      "context_missing_or_redundant"
+     ]
     }
    ],
    "rejection_history": [
@@ -1909,9 +1947,28 @@
      "run_id": "43951674195",
      "attempts": 4,
      "runs": 2
+    },
+    {
+     "problems": [
+      "context_missing_or_redundant"
+     ],
+     "evidence_sha256": "9e0d987a1bd9d31f671b1937710bbad01ed034366f8f3f815f1aa1552cbe7708",
+     "at": "2026-11-17T01:08:14.252553+00:00",
+     "run_id": "43992857011",
+     "attempts": 6,
+     "runs": 3
+    },
+    {
+     "final": true,
+     "at": "2026-11-17T01:08:14.252567+00:00",
+     "problems": [
+      "context_missing_or_redundant"
+     ],
+     "attempts": 6,
+     "runs": 3
     }
    ],
-   "last_run_id": "43951674195"
+   "last_run_id": "43992857011"
   }
  }
 }
