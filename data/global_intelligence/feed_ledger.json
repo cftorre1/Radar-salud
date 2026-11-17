@@ -3294,6 +3294,99 @@
           "technical_failures": []
         }
       }
+    },
+    {
+      "run_id": "44018875279",
+      "generated_at": "2026-11-17T06:12:29.419558+00:00",
+      "as_of": "2026-11-17",
+      "network_requests": 18,
+      "sources": {
+        "kff_health_news": {
+          "checked_at": "2026-11-17T06:12:11.831671+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 18,
+            "90": 18
+          },
+          "relevant_items": 13,
+          "excluded_items": 5,
+          "technical_failures": []
+        },
+        "ema": {
+          "checked_at": "2026-11-17T06:12:15.557596+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 13,
+            "90": 13
+          },
+          "relevant_items": 1,
+          "excluded_items": 12,
+          "technical_failures": []
+        },
+        "fda": {
+          "checked_at": "2026-11-17T06:12:17.641880+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 9,
+            "90": 20
+          },
+          "relevant_items": 6,
+          "excluded_items": 14,
+          "technical_failures": []
+        },
+        "cdc": {
+          "checked_at": "2026-11-17T06:12:20.885192+00:00",
+          "technical_status": "error",
+          "counts": {
+            "30": 0,
+            "90": 0
+          },
+          "relevant_items": 0,
+          "excluded_items": 0,
+          "technical_failures": [
+            {
+              "source": "cdc",
+              "section": "newsroom",
+              "url": "https://tools.cdc.gov/api/v2/resources/media/132608.rss",
+              "stage": "parse",
+              "error": "ValueError: feed_xml_parse_error: no element found: line 1, column 0"
+            }
+          ]
+        },
+        "nih": {
+          "checked_at": "2026-11-17T06:12:23.466370+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 0,
+            "90": 0
+          },
+          "relevant_items": 0,
+          "excluded_items": 0,
+          "technical_failures": []
+        },
+        "ecdc": {
+          "checked_at": "2026-11-17T06:12:26.900046+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 20,
+            "90": 20
+          },
+          "relevant_items": 2,
+          "excluded_items": 18,
+          "technical_failures": []
+        },
+        "ec_health": {
+          "checked_at": "2026-11-17T06:12:29.149358+00:00",
+          "technical_status": "ok",
+          "counts": {
+            "30": 30,
+            "90": 30
+          },
+          "relevant_items": 5,
+          "excluded_items": 25,
+          "technical_failures": []
+        }
+      }
     }
   ]
 }

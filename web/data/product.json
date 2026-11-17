@@ -703899,7 +703899,7 @@
     },
     "global_who": {
       "name": "WHO",
-      "checked_at": "2026-11-16T21:40:50.203413+00:00",
+      "checked_at": "2026-11-17T05:46:39.686921+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -703913,8 +703913,8 @@
       "next_cadence_validation_not_before": null,
       "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-08-19",
-      "coverage_to": "2026-11-16",
+      "coverage_from": "2026-08-20",
+      "coverage_to": "2026-11-17",
       "pages_checked": 7,
       "recent_items": 104,
       "discovery_recall_30": {
@@ -703927,8 +703927,8 @@
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 280,
-        "detected": 280,
+        "inventory_url_count": 279,
+        "detected": 279,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -703937,25 +703937,25 @@
         "30": "complete_on_declared_surfaces",
         "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 280,
-      "unique_items": 280,
+      "unique_language_urls_90": 279,
+      "unique_items": 279,
       "counts": {
         "30": 104,
-        "90": 280
+        "90": 279
       },
       "indexed_counts": {
         "30": 104,
-        "90": 280
+        "90": 279
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 149,
+      "material_items": 148,
       "published": 0,
       "rejected": 6,
-      "deferred": 274,
+      "deferred": 273,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 280,
-      "new": 1,
+      "discovered": 279,
+      "new": 0,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -703979,7 +703979,7 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/43951674195/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44018875279/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -703988,17 +703988,13 @@
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
-        "activated": true,
-        "evidence_run_ids": [
-          "43748463687",
-          "43951674195"
-        ],
-        "reason": "two_consecutive_successful_daily_live_runs",
+        "activated": false,
+        "evidence_run_ids": [],
+        "reason": "missed_day_breaks_consecutive_sequence",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 93119,
         "earned_at": "2026-11-08T18:02:43.264345+00:00",
         "earned_evidence_run_ids": [
           "42381528433",
@@ -704008,23 +704004,23 @@
     },
     "global_paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-16T22:07:44.372612+00:00",
-      "status": "warning",
-      "technical_status": "error",
-      "coverage_status": "incomplete",
-      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+      "checked_at": "2026-11-17T06:12:01.427381+00:00",
+      "status": "ok",
+      "technical_status": "ok",
+      "coverage_status": "complete",
+      "outcome": "READY_FOR_INTEGRATION",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
-      "recurrent_operation_proven": false,
+      "recurrent_operation_proven": true,
       "cadence_seconds": 86400,
-      "cadence_validation_pending": true,
+      "cadence_validation_pending": false,
       "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
-      "next_cadence_validation_not_before": "2026-11-17T22:07:44.372612+00:00",
-      "coverage_completeness": "incomplete",
+      "next_cadence_validation_not_before": null,
+      "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-08-19",
-      "coverage_to": "2026-11-16",
-      "pages_checked": 133,
+      "coverage_from": "2026-08-20",
+      "coverage_to": "2026-11-17",
+      "pages_checked": 136,
       "recent_items": 194,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
@@ -704036,40 +704032,35 @@
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 715,
-        "detected": 715,
+        "inventory_url_count": 713,
+        "detected": 713,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "window_completeness": {
-        "30": "incomplete_lower_bound",
-        "90": "incomplete_lower_bound"
+        "30": "complete_on_declared_surfaces",
+        "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 715,
-      "unique_items": 564,
+      "unique_language_urls_90": 713,
+      "unique_items": 562,
       "counts": {
         "30": 194,
-        "90": 564
+        "90": 562
       },
       "indexed_counts": {
-        "30": 195,
-        "90": 565
+        "30": 194,
+        "90": 562
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 243,
+      "material_items": 242,
       "published": 0,
       "rejected": 11,
-      "deferred": 554,
+      "deferred": 551,
       "pending_date_items": 0,
-      "technical_failures": [
-        {
-          "url": "https://www.paho.org/es/noticias/5-11-2026-convocatoria-para-produccion-suministro-baloxavir-marboxil-america-latina",
-          "error": "ValueError: http_403"
-        }
-      ],
-      "discovered": 565,
-      "new": 2,
+      "technical_failures": [],
+      "discovered": 562,
+      "new": 1,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "regional_news",
@@ -704083,17 +704074,17 @@
         {
           "section": "regional_news",
           "stop": "verified_date_partition_coverage",
-          "pages": 44
+          "pages": 45
         },
         {
           "section": "regional_news_es",
           "stop": "verified_date_partition_coverage",
-          "pages": 82
+          "pages": 83
         },
         {
           "section": "chile_news",
           "stop": "verified_older_boundary",
-          "pages": 1
+          "pages": 2
         },
         {
           "section": "chile_news_es",
@@ -704111,19 +704102,18 @@
           "pages": 2
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/43951674195/inventory.json",
-      "source_quality_disposition": "hold_technical",
-      "publication_activation": false,
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44018875279/inventory.json",
+      "source_quality_disposition": "pass_data",
+      "publication_activation": true,
       "content_freshness": "recent",
-      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
-      "publication_activation_suspended_reason": "current_run_not_successful_or_contract_changed",
+      "editorial_outcome": "publication_activated_pending_editorial_approval",
       "publication_activation_decision": {
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
         "activated": false,
         "evidence_run_ids": [],
-        "reason": "current_run_not_successful_live_complete",
+        "reason": "failed_live_run_since_previous_daily_success",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
@@ -704179,7 +704169,7 @@
     "global_kff_health_news": {
       "name": "KFF Health News",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-16T22:07:56.070271+00:00",
+      "checked_at": "2026-11-17T06:12:11.831671+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704254,7 +704244,7 @@
     "global_ema": {
       "name": "EMA (European Medicines Agency)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-16T22:07:59.820138+00:00",
+      "checked_at": "2026-11-17T06:12:15.557596+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704325,7 +704315,7 @@
     "global_fda": {
       "name": "US FDA (press releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-16T22:08:01.992507+00:00",
+      "checked_at": "2026-11-17T06:12:17.641880+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704393,14 +704383,14 @@
     "global_cdc": {
       "name": "US CDC (newsroom + MMWR)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-16T22:08:06.188830+00:00",
-      "status": "warning",
-      "technical_status": "ok",
+      "checked_at": "2026-11-17T06:12:20.885192+00:00",
+      "status": "error",
+      "technical_status": "error",
       "operation_mode": "licensed_feed_metadata_only",
       "coverage_status": "feed_window_only",
       "coverage_completeness": "feed_window_only_not_archive",
       "coverage_window_days": 90,
-      "outcome": "FEED_METADATA_CAPTURED",
+      "outcome": "FEED_TECHNICAL_HOLD",
       "recurrent_operation_proven": false,
       "cadence_validation_pending": true,
       "counts": {
@@ -704422,7 +704412,15 @@
         "newsroom",
         "mmwr"
       ],
-      "technical_failures": [],
+      "technical_failures": [
+        {
+          "source": "cdc",
+          "section": "newsroom",
+          "url": "https://tools.cdc.gov/api/v2/resources/media/132608.rss",
+          "stage": "parse",
+          "error": "ValueError: feed_xml_parse_error: no element found: line 1, column 0"
+        }
+      ],
       "rights": {
         "basis": "us_federal_government_work_17_usc_105",
         "license": "Public domain (most CDC content); third-party/contractor material and logos excluded",
@@ -704462,7 +704460,7 @@
     "global_nih": {
       "name": "US NIH (news releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-16T22:08:08.584378+00:00",
+      "checked_at": "2026-11-17T06:12:23.466370+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704528,7 +704526,7 @@
     "global_ecdc": {
       "name": "ECDC",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-16T22:08:12.632597+00:00",
+      "checked_at": "2026-11-17T06:12:26.900046+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704599,7 +704597,7 @@
     "global_ec_health": {
       "name": "European Commission (Public Health)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-16T22:08:15.903773+00:00",
+      "checked_at": "2026-11-17T06:12:29.149358+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
