@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "as_of": "2026-11-18",
-  "generated_at": "2026-11-18T05:23:03.774493+00:00",
+  "generated_at": "2026-11-18T14:56:47.276402+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,8 +16,8 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-11-18",
-    "items_last_2_days": 1,
-    "items_last_7_days": 1,
+    "items_last_2_days": 2,
+    "items_last_7_days": 2,
     "status": "fresh",
     "stale_after_days": 2
   },
@@ -50,9 +50,8 @@
     "not_global_interest:single_product_approval": 1,
     "not_global_interest:source_rule_exclusion": 5,
     "not_material_or_unverified": 322,
-    "not_relevant_or_undated": 78,
-    "official_title_without_executive_keyword": 184,
-    "publication_activation_pending_who": 290
+    "not_relevant_or_undated": 77,
+    "official_title_without_executive_keyword": 184
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
@@ -62,9 +61,10 @@
     {
       "segment": "pharma",
       "label_es": "Medicamentos y farma",
-      "count": 1,
+      "count": 2,
       "item_ids": [
-        "fbdc6698417d2333c104"
+        "fbdc6698417d2333c104",
+        "dea9c5d51de78b1e25e2"
       ]
     }
   ],
@@ -122,6 +122,62 @@
         "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
         "change_notice_es": "Traducción de Alicanto",
         "cache_key": "f9496fb7c5ad4129f04561149f072f5f"
+      }
+    },
+    {
+      "id": "dea9c5d51de78b1e25e2",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "EU Health Security Committee calls for urgent action against antibiotic-resistant bacteria",
+      "url": "https://ec.europa.eu/newsroom/sante/newsletter-archives/81588",
+      "published_at": "2026-11-18",
+      "segments": [
+        "pharma"
+      ],
+      "description": "EU Health Security Committee calls for urgent action against antibiotic-resistant bacteria",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 68,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-11-18",
+      "title_es": "El Comité de Seguridad Sanitaria de la UE llama a tomar medidas urgentes contra las bacterias resistentes a los antibióticos",
+      "description_es": "El Comité de Seguridad Sanitaria de la UE llama a tomar medidas urgentes contra las bacterias resistentes a los antibióticos",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "7d7ddf759eb910a5e91db3dab08361df"
       }
     },
     {
@@ -1216,16 +1272,16 @@
     }
   ],
   "translation": {
-    "translated": 13,
+    "translated": 14,
     "summarized": 5,
-    "from_cache": 17,
+    "from_cache": 18,
     "verification_failed": 11,
     "review_failed": 0,
     "not_allowed": 21,
     "pending": 0,
     "source_in_spanish": 4
   },
-  "ai_text_items": 18,
+  "ai_text_items": 19,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget",
   "weekly_pick": {
     "rule": "global_weekly_pick_v1",
@@ -1245,7 +1301,7 @@
   },
   "display": {
     "spanish_only": true,
-    "shown": 22,
+    "shown": 23,
     "hidden": 32,
     "hidden_by_reason": {
       "not_allowed_without_verified_summary": 21,

@@ -703899,7 +703899,7 @@
     },
     "global_who": {
       "name": "WHO",
-      "checked_at": "2026-11-18T04:55:57.996845+00:00",
+      "checked_at": "2026-11-18T14:21:41.555853+00:00",
       "status": "warning",
       "technical_status": "error",
       "coverage_status": "incomplete",
@@ -703910,57 +703910,80 @@
       "cadence_seconds": 86400,
       "cadence_validation_pending": true,
       "coverage_contract_id": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
-      "next_cadence_validation_not_before": "2026-11-19T04:55:57.996845+00:00",
+      "next_cadence_validation_not_before": "2026-11-19T14:21:41.555853+00:00",
       "coverage_completeness": "incomplete",
       "coverage_window_days": 90,
       "coverage_from": "2026-08-21",
       "coverage_to": "2026-11-18",
-      "pages_checked": 7,
-      "recent_items": 112,
+      "pages_checked": 0,
+      "recent_items": 0,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 112,
-        "detected": 112,
+        "inventory_url_count": 0,
+        "detected": 0,
         "omitted_urls": [],
-        "recall": 1.0,
+        "recall": null,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 290,
-        "detected": 290,
+        "inventory_url_count": 0,
+        "detected": 0,
         "omitted_urls": [],
-        "recall": 1.0,
+        "recall": null,
         "whole_source_archive_claim": false
       },
       "window_completeness": {
         "30": "incomplete_lower_bound",
         "90": "incomplete_lower_bound"
       },
-      "unique_language_urls_90": 290,
-      "unique_items": 289,
+      "unique_language_urls_90": 0,
+      "unique_items": 0,
       "counts": {
-        "30": 112,
-        "90": 289
+        "30": 0,
+        "90": 0
       },
       "indexed_counts": {
-        "30": 112,
-        "90": 290
+        "30": 0,
+        "90": 0
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 151,
+      "material_items": 0,
       "published": 0,
-      "rejected": 6,
-      "deferred": 284,
+      "rejected": 0,
+      "deferred": 0,
       "pending_date_items": 0,
       "technical_failures": [
         {
-          "url": "https://www.who.int/news/item/22-09-2026-country-comparable-childhood-cancer-survival-data-now-available-through-who-data-portal",
-          "error": "TimeoutError: The read operation timed out"
+          "route": {
+            "source": "who",
+            "section": "news",
+            "url": "https://www.who.int/news",
+            "format": "who_api"
+          },
+          "error": "page_fetch_failure: TimeoutError: The read operation timed out"
+        },
+        {
+          "route": {
+            "source": "who",
+            "section": "publications",
+            "url": "https://www.who.int/publications/i",
+            "format": "who_api"
+          },
+          "error": "page_fetch_failure: TimeoutError: The read operation timed out"
+        },
+        {
+          "route": {
+            "source": "who",
+            "section": "disease_outbreak_news",
+            "url": "https://www.who.int/emergencies/disease-outbreak-news",
+            "format": "who_api"
+          },
+          "error": "page_fetch_failure: TimeoutError: The read operation timed out"
         }
       ],
-      "discovered": 290,
-      "new": 2,
+      "discovered": 0,
+      "new": 0,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -703970,24 +703993,24 @@
       "boundary_evidence": [
         {
           "section": "news",
-          "stop": "verified_older_boundary",
-          "pages": 3
+          "stop": "page_fetch_failure: TimeoutError: The read operation timed out",
+          "pages": 0
         },
         {
           "section": "publications",
-          "stop": "verified_older_boundary",
-          "pages": 3
+          "stop": "page_fetch_failure: TimeoutError: The read operation timed out",
+          "pages": 0
         },
         {
           "section": "disease_outbreak_news",
-          "stop": "verified_older_boundary",
-          "pages": 1
+          "stop": "page_fetch_failure: TimeoutError: The read operation timed out",
+          "pages": 0
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44232713434/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44314356289/inventory.json",
       "source_quality_disposition": "hold_technical",
       "publication_activation": false,
-      "content_freshness": "recent",
+      "content_freshness": "no_verified_recent_items",
       "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
       "publication_activation_suspended_reason": "current_run_not_successful_or_contract_changed",
       "publication_activation_decision": {
@@ -704010,7 +704033,7 @@
     },
     "global_paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-18T05:22:29.316473+00:00",
+      "checked_at": "2026-11-18T14:56:10.234418+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -704066,7 +704089,7 @@
       "pending_date_items": 0,
       "technical_failures": [],
       "discovered": 571,
-      "new": 6,
+      "new": 1,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "regional_news",
@@ -704108,7 +704131,7 @@
           "pages": 2
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44232713434/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44314356289/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -704119,15 +704142,15 @@
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
         "activated": true,
         "evidence_run_ids": [
-          "44018875279",
-          "44232713434"
+          "44097652769",
+          "44314356289"
         ],
         "reason": "two_consecutive_successful_daily_live_runs",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 83427,
+        "gap_seconds": 84423,
         "earned_at": "2026-11-04T01:00:32.943483+00:00",
         "earned_evidence_run_ids": [
           "41539638382",
@@ -704179,7 +704202,7 @@
     "global_kff_health_news": {
       "name": "KFF Health News",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T05:22:42.957520+00:00",
+      "checked_at": "2026-11-18T14:56:25.682697+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704195,11 +704218,11 @@
       },
       "recent_items": 17,
       "unique_items": 17,
-      "material_items": 13,
-      "relevant_items": 13,
-      "excluded_items": 4,
-      "rejected": 4,
-      "deferred": 13,
+      "material_items": 15,
+      "relevant_items": 15,
+      "excluded_items": 2,
+      "rejected": 2,
+      "deferred": 15,
       "discovered": 17,
       "new": 0,
       "published": 0,
@@ -704254,7 +704277,7 @@
     "global_ema": {
       "name": "EMA (European Medicines Agency)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T05:22:46.570755+00:00",
+      "checked_at": "2026-11-18T14:56:29.677514+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704325,7 +704348,7 @@
     "global_fda": {
       "name": "US FDA (press releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T05:22:48.755002+00:00",
+      "checked_at": "2026-11-18T14:56:33.141510+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704393,7 +704416,7 @@
     "global_cdc": {
       "name": "US CDC (newsroom + MMWR)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T05:22:52.632629+00:00",
+      "checked_at": "2026-11-18T14:56:36.856948+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704462,7 +704485,7 @@
     "global_nih": {
       "name": "US NIH (news releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T05:22:55.137559+00:00",
+      "checked_at": "2026-11-18T14:56:39.245879+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704528,7 +704551,7 @@
     "global_ecdc": {
       "name": "ECDC",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T05:22:59.054491+00:00",
+      "checked_at": "2026-11-18T14:56:43.012371+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704599,7 +704622,7 @@
     "global_ec_health": {
       "name": "European Commission (Public Health)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T05:23:01.932472+00:00",
+      "checked_at": "2026-11-18T14:56:45.984101+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -704615,11 +704638,11 @@
       },
       "recent_items": 30,
       "unique_items": 30,
-      "material_items": 4,
-      "relevant_items": 4,
-      "excluded_items": 26,
-      "rejected": 26,
-      "deferred": 4,
+      "material_items": 5,
+      "relevant_items": 5,
+      "excluded_items": 25,
+      "rejected": 25,
+      "deferred": 5,
       "discovered": 30,
       "new": 0,
       "published": 0,
