@@ -668,4 +668,6 @@ test('fichaTitle rebuilds a cut official title from the full one',()=>{const c=c
   const s={display_title:'Res. exenta E 5.558/2026 · Instruye el envío de un Plan de Manejo de Riesgos de productos…',source_title_full:'Resolución exenta número E 5.558, de 2026.- Instruye el envío de un Plan de Manejo de Riesgos para los productos farmacéuticos que contienen hidroxietil almidón'};
   assert.equal(c.fichaTitle(s),'Res. exenta E 5.558/2026 · Instruye el envío de un Plan de Manejo de Riesgos para los productos farmacéuticos que contienen hidroxietil almidón');
   assert.equal(c.fichaTitle({display_title:'Circular IF/N°541 · Aclara la base'}),'Circular IF/N°541 · Aclara la base');
+  assert.equal(c.fichaTitle({display_title:'Decreto 12/2026 · Aprueba…',source_title_full:'Decreto número 12 aprueba norma'}),'Decreto 12/2026 · Aprueba…');
+  assert.equal(c.fichaTitle({display_title:'Res. 1/2026 · Aprueba…',source_title_full:'Resolución 1.- Aprueba norma.- Deroga la anterior.'}),'Res. 1/2026 · Aprueba norma. Deroga la anterior');
   assert.equal(c.multiTopicSource('Diario Oficial'),true);assert.equal(c.multiTopicSource('Superintendencia de Salud'),false)});
