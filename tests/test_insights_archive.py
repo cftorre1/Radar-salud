@@ -51,6 +51,8 @@ def test_published_files_match_the_repository_archive():
     assert d["schema"] == "alicanto_insights_v1" and not held & {x["slug"] for x in d["items"]}
     for x in d["items"]:
         assert (ROOT / "web" / x["share_path"]).exists() and x["weekly"] and x["dek"] and x["date"]
+    if d.get("current"):  # this week's share page too (review of #215)
+        assert (ROOT / "web" / d["current"]["share_path"]).exists()
     app = (ROOT / "web/app.js").read_text(encoding="utf-8")
     assert "{k:'insights',label:'Insights',group:'Temas'" in app and "openSharedInsight()" in app
 
@@ -60,3 +62,5 @@ def test_the_daily_export_refreshes_the_insights_feed():
     from pathlib import Path
     src = Path("scripts/export_web_snapshot.py").read_text(encoding="utf-8")
     assert "export_insights.py" in src and "_mod.write(Path(\".\"),out.parent.parent)" in src
+    for wf in ("daily-radar.yml", "queue-hourly.yml"):  # the share pages are committed with the snapshot
+        assert "[ -d web/i ] && git add web/i" in Path(".github/workflows", wf).read_text(encoding="utf-8")
