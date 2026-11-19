@@ -657,3 +657,15 @@ test('committed insight renders the v2 essay with linked sources and no raw mark
  for(const gone of ['Qué pasó','Lectura Alicanto','Dato oficial','>Prensa<','>Oficial<'])assert.ok(!html.includes(gone),gone);
  assert.equal((html.match(/<figure class="we-fig/g)||[]).length,w.charts.length);
 });
+
+test('ficha shows the whole official title and multi-topic sources name the topic in the row (Dirección 18-nov-2026)',()=>{
+  const app=require('fs').readFileSync(require('path').join(__dirname,'..','web','app.js'),'utf8');
+  assert.match(app,/const title=fichaTitle\(s\),seen=/);
+  assert.match(app,/function multiTopicSource\(n\)\{return \/\^\(Diario Oficial\|Congreso Nacional/);
+  assert.match(app,/tema\?`<span class="kicker-topic">/);
+});
+test('fichaTitle rebuilds a cut official title from the full one',()=>{const c=context();
+  const s={display_title:'Res. exenta E 5.558/2026 · Instruye el envío de un Plan de Manejo de Riesgos de productos…',source_title_full:'Resolución exenta número E 5.558, de 2026.- Instruye el envío de un Plan de Manejo de Riesgos para los productos farmacéuticos que contienen hidroxietil almidón'};
+  assert.equal(c.fichaTitle(s),'Res. exenta E 5.558/2026 · Instruye el envío de un Plan de Manejo de Riesgos para los productos farmacéuticos que contienen hidroxietil almidón');
+  assert.equal(c.fichaTitle({display_title:'Circular IF/N°541 · Aclara la base'}),'Circular IF/N°541 · Aclara la base');
+  assert.equal(c.multiTopicSource('Diario Oficial'),true);assert.equal(c.multiTopicSource('Superintendencia de Salud'),false)});
