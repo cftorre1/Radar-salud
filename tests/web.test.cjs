@@ -666,3 +666,17 @@ test('tameCaps lowers shouting but keeps acronyms, brands, numerals and the text
   assert.equal(f('Circular N°3938 · COMPLEMENTA instrucciones sobre el REGISTRO de los INCIDENTES PELIGROSOS'),'Circular N°3938 · Complementa instrucciones sobre el registro de los incidentes peligrosos');
   for(const same of ['Clínica MEDS abre sede','Acreditadora GECASEP y la plataforma VIGÍA','Pulso de sanciones · Últimos 30 días','Res. exenta E 5.558','Boletín · enero–septiembre 2026','SUSESO sanciona · registro de 90 días','Clínicas de Chile y CENS'])assert.equal(f(same),same);
   assert.equal(f('APRUEBA REGLAMENTO DEL D.S. N°44 DEL MINISTERIO DEL TRABAJO Y PREVISIÓN SOCIAL SOBRE LA LEY N°16.744 Y CIE-10, TÍTULO XVII.'),'Aprueba reglamento del D.S. N°44 del Ministerio del Trabajo y Previsión Social sobre la Ley N°16.744 y CIE-10, título XVII.')});
+
+test('ficha shows the whole official title and multi-topic sources name the topic in the row (Dirección 18-nov-2026)',()=>{
+  const app=require('fs').readFileSync(require('path').join(__dirname,'..','web','app.js'),'utf8');
+  assert.match(app,/const title=fichaTitle\(s\),seen=/);
+  assert.match(app,/function multiTopicSource\(n\)\{return \/\^\(Diario Oficial\|Congreso Nacional/);
+  assert.match(app,/tema\?`<span class="kicker-topic">/);
+});
+test('fichaTitle rebuilds a cut official title from the full one',()=>{const c=context();
+  const s={display_title:'Res. exenta E 5.558/2026 · Instruye el envío de un Plan de Manejo de Riesgos de productos…',source_title_full:'Resolución exenta número E 5.558, de 2026.- Instruye el envío de un Plan de Manejo de Riesgos para los productos farmacéuticos que contienen hidroxietil almidón'};
+  assert.equal(c.fichaTitle(s),'Res. exenta E 5.558/2026 · Instruye el envío de un Plan de Manejo de Riesgos para los productos farmacéuticos que contienen hidroxietil almidón');
+  assert.equal(c.fichaTitle({display_title:'Circular IF/N°541 · Aclara la base'}),'Circular IF/N°541 · Aclara la base');
+  assert.equal(c.fichaTitle({display_title:'Decreto 12/2026 · Aprueba…',source_title_full:'Decreto número 12 aprueba norma'}),'Decreto 12/2026 · Aprueba…');
+  assert.equal(c.fichaTitle({display_title:'Res. 1/2026 · Aprueba…',source_title_full:'Resolución 1.- Aprueba norma.- Deroga la anterior.'}),'Res. 1/2026 · Aprueba norma. Deroga la anterior');
+  assert.equal(c.multiTopicSource('Diario Oficial'),true);assert.equal(c.multiTopicSource('Superintendencia de Salud'),false)});
