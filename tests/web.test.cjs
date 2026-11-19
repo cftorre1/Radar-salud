@@ -262,8 +262,9 @@ test('Global keeps every eligible theme beyond ten while preserving publisher fi
  vm.runInContext("themes=input;headlines=[];buildEntries();periodMode='90'",c);
  assert.equal(c.visibleEntries().length,14);
  // Sources are a multi-select since Global adopted bar A (Dirección 27-oct 23:13): OR between publishers.
- vm.runInContext("activePublishers.add('OECD')",c);assert.equal(c.visibleEntries().length,7);
- vm.runInContext("activePublishers.add('WHO')",c);assert.equal(c.visibleEntries().length,14);
+ // publisher keys are the shown names since the mobile audit (19-nov-2026): WHO→OMS, OECD→OCDE, one option each
+ vm.runInContext("activePublishers.add('OCDE')",c);assert.equal(c.visibleEntries().length,7);
+ vm.runInContext("activePublishers.add('OMS')",c);assert.equal(c.visibleEntries().length,14);
 });
 
 test('source panel never equates transport errors or absent telemetry with no news',()=>{
@@ -657,6 +658,14 @@ test('committed insight renders the v2 essay with linked sources and no raw mark
  for(const gone of ['Qué pasó','Lectura Alicanto','Dato oficial','>Prensa<','>Oficial<'])assert.ok(!html.includes(gone),gone);
  assert.equal((html.match(/<figure class="we-fig/g)||[]).length,w.charts.length);
 });
+test('«Qué pasó» says each sentence once and lowers shouted official text (mobile audit, 19-nov-2026)',()=>{const c=context();
+  const out=c.cleanParas(['La circular actualiza el Formato Único. Comenzará a regir a partir del 1° de enero de 2027.','Las instrucciones comenzarán a regir a partir del 1° de enero de 2027.','COMPLEMENTA INSTRUCCIONES SOBRE EL REGISTRO DE LOS INCIDENTES PELIGROSOS EN FONASA.']);
+  assert.equal(out.length,2);assert.match(out[1],/^Complementa instrucciones sobre el registro de los incidentes peligrosos en FONASA\.$/);
+  assert.equal(out[0],'La circular actualiza el Formato Único. Comenzará a regir a partir del 1° de enero de 2027.')});
+test('tameCaps lowers shouting but keeps acronyms, brands, numerals and the text after «·» (review of #220)',()=>{const c=context();const f=c.AlicantoBar.tameCaps;
+  assert.equal(f('Circular N°3938 · COMPLEMENTA instrucciones sobre el REGISTRO de los INCIDENTES PELIGROSOS'),'Circular N°3938 · Complementa instrucciones sobre el registro de los incidentes peligrosos');
+  for(const same of ['Clínica MEDS abre sede','Acreditadora GECASEP y la plataforma VIGÍA','Pulso de sanciones · Últimos 30 días','Res. exenta E 5.558','Boletín · enero–septiembre 2026','SUSESO sanciona · registro de 90 días','Clínicas de Chile y CENS'])assert.equal(f(same),same);
+  assert.equal(f('APRUEBA REGLAMENTO DEL D.S. N°44 DEL MINISTERIO DEL TRABAJO Y PREVISIÓN SOCIAL SOBRE LA LEY N°16.744 Y CIE-10, TÍTULO XVII.'),'Aprueba reglamento del D.S. N°44 del Ministerio del Trabajo y Previsión Social sobre la Ley N°16.744 y CIE-10, título XVII.')});
 
 test('ficha shows the whole official title and multi-topic sources name the topic in the row (Dirección 18-nov-2026)',()=>{
   const app=require('fs').readFileSync(require('path').join(__dirname,'..','web','app.js'),'utf8');

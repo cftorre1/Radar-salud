@@ -248,11 +248,14 @@ test('Global read state is shared across Home and the research page',async({page
  // Global homologated to the Home bar A (Dirección 27-oct 23:13): sources are a multi-select in the filters
  // dropdown and read status is the Pendientes · Leídas · Todas control; Todas lists read and unread rows.
  await page.locator('#globalFilters summary').click();
- await page.locator(`#globalPublisher [data-publisher="${publisher}"]`).click();await page.keyboard.press('Escape');
- await expect(page.locator('#globalFilterLabel')).toHaveText(publisher);
- const publisherCount=globalData.themes.filter(t=>t.sources.some(s=>s.publisher===publisher)).length;
- await expect(page.locator('#globalLanes [data-lane="p"] span')).toHaveText(String(publisherCount-1));
+ const shownPub=({WHO:'OMS',OECD:'OCDE'})[publisher]||publisher;// keys are the shown names since the mobile audit (19-nov-2026)
+ await page.locator(`#globalPublisher [data-publisher="${shownPub}"]`).click();await page.keyboard.press('Escape');
+ await expect(page.locator('#globalFilterLabel')).toHaveText(shownPub);
+ const publisherCount=globalData.themes.filter(t=>t.sources.some(s=>(({WHO:'OMS',OECD:'OCDE'})[s.publisher]||s.publisher)===shownPub)).length;
  await expect(page.locator('.theme')).toHaveCount(publisherCount-1);
+ // WHO themes and OMS daily headlines are one source now: the lane counts both kinds of row (review of #220)
+ const dailyPending=await page.locator('[id^="daily-"]:not(.read)').count();
+ await expect(page.locator('#globalLanes [data-lane="p"] span')).toHaveText(String(publisherCount-1+dailyPending));
  await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(publisherCount);
  const theme=page.locator(`#theme-${teaserId}`);
