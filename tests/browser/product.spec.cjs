@@ -252,8 +252,10 @@ test('Global read state is shared across Home and the research page',async({page
  await page.locator(`#globalPublisher [data-publisher="${shownPub}"]`).click();await page.keyboard.press('Escape');
  await expect(page.locator('#globalFilterLabel')).toHaveText(shownPub);
  const publisherCount=globalData.themes.filter(t=>t.sources.some(s=>(({WHO:'OMS',OECD:'OCDE'})[s.publisher]||s.publisher)===shownPub)).length;
- await expect(page.locator('#globalLanes [data-lane="p"] span')).toHaveText(String(publisherCount-1));
  await expect(page.locator('.theme')).toHaveCount(publisherCount-1);
+ // WHO themes and OMS daily headlines are one source now: the lane counts both kinds of row (review of #220)
+ const dailyPending=await page.locator('[id^="daily-"]:not(.read)').count();
+ await expect(page.locator('#globalLanes [data-lane="p"] span')).toHaveText(String(publisherCount-1+dailyPending));
  await page.locator('#globalLanes [data-lane="t"]').click();
  await expect(page.locator('.theme')).toHaveCount(publisherCount);
  const theme=page.locator(`#theme-${teaserId}`);

@@ -662,3 +662,7 @@ test('«Qué pasó» says each sentence once and lowers shouted official text (m
   const out=c.cleanParas(['La circular actualiza el Formato Único. Comenzará a regir a partir del 1° de enero de 2027.','Las instrucciones comenzarán a regir a partir del 1° de enero de 2027.','COMPLEMENTA INSTRUCCIONES SOBRE EL REGISTRO DE LOS INCIDENTES PELIGROSOS EN FONASA.']);
   assert.equal(out.length,2);assert.match(out[1],/^Complementa instrucciones sobre el registro de los incidentes peligrosos en FONASA\.$/);
   assert.equal(out[0],'La circular actualiza el Formato Único. Comenzará a regir a partir del 1° de enero de 2027.')});
+test('tameCaps lowers shouting but keeps acronyms, brands, numerals and the text after «·» (review of #220)',()=>{const c=context();const f=c.AlicantoBar.tameCaps;
+  assert.equal(f('Circular N°3938 · COMPLEMENTA instrucciones sobre el REGISTRO de los INCIDENTES PELIGROSOS'),'Circular N°3938 · Complementa instrucciones sobre el registro de los incidentes peligrosos');
+  for(const same of ['Clínica MEDS abre sede','Acreditadora GECASEP y la plataforma VIGÍA','Pulso de sanciones · Últimos 30 días','Res. exenta E 5.558','Boletín · enero–septiembre 2026','SUSESO sanciona · registro de 90 días','Clínicas de Chile y CENS'])assert.equal(f(same),same);
+  assert.equal(f('APRUEBA REGLAMENTO DEL D.S. N°44 DEL MINISTERIO DEL TRABAJO Y PREVISIÓN SOCIAL SOBRE LA LEY N°16.744 Y CIE-10, TÍTULO XVII.'),'Aprueba reglamento del D.S. N°44 del Ministerio del Trabajo y Previsión Social sobre la Ley N°16.744 y CIE-10, título XVII.')});

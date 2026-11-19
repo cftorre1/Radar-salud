@@ -112,12 +112,30 @@
  function stateChip(text,tone){return text?`<span class="rk-state rk-st-${tone||'ok'}">${esc(text)}</span>`:''}
  function typeMark(kind){const k=TYPE_WORD[kind]?kind:'noticia';return `<span class="ty ty-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${TYPE_WORD[k]}<span class="sr-only"> · </span></span>`}
  
-// Official texts arrive with shouted words («COMPLEMENTA … REGISTRO de los INCIDENTES PELIGROSOS»). Readers get sentence
-// case; real acronyms stay (Dirección 19-nov-2026, mobile audit P1-2/3). A mostly-uppercase paragraph is lowered whole.
-const KEEP_CAPS=new Set('SIS ISP FNE GES AUGE CAEC FONASA SUSESO MINSAL CENABAST COMPIN PAD TEA EMP RND DFL UF UTM IPC OMS OPS OCDE CMF SII ACHS IST ISL RUT UE EU EMA DIPRES SEREMI ICSA MAS IVA PIB ENS INE CIPER BCN CChC SENAMA SENADIS JUNJI SAPU SAR CESFAM APS HEA VIH TBC COVID LME SIL ISAPRE ISAPRES IF II III IV VI VII VIII IX XI XII XIII XIV XV XVI'.split(' '));
+// Official texts arrive with shouted words («COMPLEMENTA … REGISTRO de los INCIDENTES PELIGROSOS»). Conservative by design
+// (review of #220): a single capitalised word is an acronym or a brand (MEDS, CENS, VIGÍA) unless it is a known verb or
+// noun of official titles; only runs of two or more shouted words, or a mostly-uppercase paragraph, are lowered.
+// Acronyms on the list, words with dots, hyphens or digits (D.S., CIE-10) and roman numerals keep their capitals.
+// Only words that were lowered get a capital back, and only at the start of a sentence or after «·».
+const KEEP_CAPS=new Set('SIS ISP FNE GES AUGE CAEC FONASA SUSESO MINSAL CENABAST COMPIN PAD TEA EMP RND DFL DS UF UTM IPC OMS OPS OCDE OECD CMF SII ACHS IST ISL RUT UE EU EMA DIPRES SEREMI ICSA MAS IVA PIB ENS INE CIPER BCN SENAMA SENADIS JUNJI SAPU SAR CESFAM APS HEA VIH TBC COVID LME SIL IPS CIE SANNA RM CCAF CASEN PRAIS CONASET CENS MEDS INDISA UC CHRISTUS GECASEP VIGÍA EARS EUPHA KARIN USD CLP PYME ONG ONU CODELCO FDA ECDC EEUU UTI UCI'.split(' '));
+const SHOUT_WORDS=new Set('COMPLEMENTA ACLARA MODIFICA INSTRUYE ACTUALIZA IMPARTE ESTABLECE REGULA APRUEBA DEROGA FIJA DICTA REGISTRO INSTRUCCIONES LICENCIAS MÉDICAS CIRCULAR RESOLUCIÓN'.split(' '));
+const INSTITUTION=/^(ministerio|superintendencia|instituto|subsecretaría|servicio|comisión|fondo|consejo|tribunal|contraloría|corte)$/;
+const ROMAN=/^[IVXLC]+$/;
 function tameCaps(text){const s=String(text||'');const letters=s.replace(/[^A-Za-zÁÉÍÓÚÑÜáéíóúñü]/g,'');if(!letters)return s;
- const upper=letters.replace(/[^A-ZÁÉÍÓÚÑÜ]/g,'').length/letters.length,whole=upper>0.6&&letters.length>12;
- let out=s.replace(whole?/(?<![\p{L}])[A-ZÁÉÍÓÚÑÜ]+(?![\p{L}°º])/gu:/(?<![\p{L}])[A-ZÁÉÍÓÚÑÜ][A-ZÁÉÍÓÚÑÜ]+(?![\p{L}])/gu,w=>{if(KEEP_CAPS.has(w)&&!/^ISAPRES?$/.test(w))return w;if(/^ISAPRES?$/.test(w))return w.toLowerCase();return (whole||w.length>=4)?w.toLowerCase():w});
- return out.replace(/(^|[.!?]\s+|·\s+)(\p{Ll})/gu,(m,p,c)=>p+c.toUpperCase())}
+ const whole=letters.replace(/[^A-ZÁÉÍÓÚÑÜ]/g,'').length/letters.length>0.6&&letters.length>12;
+ const re=whole?/(?<![\p{L}\d.\-/])[A-ZÁÉÍÓÚÑÜ]+(?![\p{L}\d°º.\-/])/gu:/(?<![\p{L}\d.\-/])[A-ZÁÉÍÓÚÑÜ]{2,}(?![\p{L}\d°º.\-/])/gu,caps=[...s.matchAll(re)];if(!caps.length)return s;
+ const keep=w=>KEEP_CAPS.has(w)||ROMAN.test(w);
+ const lowerSet=new Set();
+ caps.forEach((m,k)=>{const w=m[0];if(keep(w)&&!whole)return;if(keep(w))return;
+  if(whole||SHOUT_WORDS.has(w)||w.length>=9){lowerSet.add(m.index);return}// nine letters or more is a word, not an acronym
+  const near=x=>x&&!keep(x[0])&&/^[\s,:;]*(?:(?:de|del|la|las|los|el|y|a|en|para|por|sobre|con)\s+)?$/u.test(s.slice(Math.min(m.index,x.index)+(m.index<x.index?w.length:x[0].length),Math.max(m.index,x.index)));
+  if(near(caps[k-1])||near(caps[k+1]))lowerSet.add(m.index)});
+ let out='',last=0,instit=false;
+ for(const m of caps){if(!lowerSet.has(m.index))continue;const before=out+s.slice(last,m.index);let w=m[0].toLowerCase();
+  const start=/(^|[.!?]\s+|·\s+)$/u.test(before)&&!/\b(?:Res|Ord|Art|Inc|Nro|Dr|Dra|Sr|Sra|N)\.\s+$/.test(before);
+  if(start)w=w[0].toUpperCase()+w.slice(1);out=before+w;last=m.index+m[0].length}
+ out+=s.slice(last);
+ if(whole){out=out.replace(/\b(ministerio|superintendencia|instituto|subsecretaría|servicio|comisión|fondo|consejo|tribunal|contraloría|corte)((?:\s+(?:del?|la|las|los|el|y|e)?\s*\p{Ll}+){1,4})/gu,(m0,a,b)=>{let stop=false;return a[0].toUpperCase()+a.slice(1)+b.replace(/(\s+)(\p{Ll}+)/gu,(x,sp,w)=>{if(stop||/^(sobre|que|para|en|a|con|según|desde|hasta)$/.test(w)){stop=true;return x}return sp+(/^(del?|la|las|los|el|y|e)$/.test(w)?w:w[0].toUpperCase()+w.slice(1))})});out=out.replace(/\bley(?=\s+(?:N\s?[°º]|número|\d))/g,'Ley')}
+ return out}
 root.AlicantoBar={tameCaps,syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull,kicker,stateChip,shortDay,longPeriod,TYPE_WORD};
 })(typeof window!=='undefined'?window:globalThis);
