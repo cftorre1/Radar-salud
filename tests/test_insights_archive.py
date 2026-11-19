@@ -53,3 +53,10 @@ def test_published_files_match_the_repository_archive():
         assert (ROOT / "web" / x["share_path"]).exists() and x["weekly"] and x["dek"] and x["date"]
     app = (ROOT / "web/app.js").read_text(encoding="utf-8")
     assert "{k:'insights',label:'Insights',group:'Temas'" in app and "openSharedInsight()" in app
+
+
+def test_the_daily_export_refreshes_the_insights_feed():
+    # Until 18-nov only product_report.py wrote it and no scheduled workflow runs that script: the feed froze at 13-nov.
+    from pathlib import Path
+    src = Path("scripts/export_web_snapshot.py").read_text(encoding="utf-8")
+    assert "export_insights.py" in src and "_mod.write(Path(\".\"),out.parent.parent)" in src

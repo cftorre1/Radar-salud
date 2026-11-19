@@ -985,6 +985,16 @@ def main():
     # Review previews (Dirección 4-nov-2026): fichas held only by their first-review gate, for web/preview.html.
     from radar_salud import review_preview
     review_preview.write(Path("."),out.parent)
+    # Past weekly insights stay in the feed with their share page (Dirección 12-nov-2026). Until 18-nov this ran only
+    # from product_report.py, which no scheduled workflow calls: insights.json was frozen at 13-nov.
+    if not args.offline and args.as_of is None and out.parent.name=="data":
+        try:
+            import importlib.util as _ilu
+            _spec=_ilu.spec_from_file_location("export_insights",Path(__file__).with_name("export_insights.py"))
+            _mod=_ilu.module_from_spec(_spec);_spec.loader.exec_module(_mod)
+            _mod.write(Path("."),out.parent.parent)
+        except Exception as exc:  # noqa: BLE001 - never blocks the snapshot
+            print("insights archive not written:",type(exc).__name__,exc)
     health=Path("data/source_health.json")
     if health.exists():shutil.copyfile(health,out.parent/"source_health.json")
     from radar_salud.public_source_catalog import export_public_sources
