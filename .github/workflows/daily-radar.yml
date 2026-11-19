@@ -207,6 +207,8 @@ jobs:
           git add data/audits/global_integration_2026_10_11
           if [ "${{ job.status }}" = success ]; then
             git add web/data
+            # Insight share pages (export_insights, Dirección 12-nov-2026) live next to web/data.
+            [ -d web/i ] && git add web/i
             # Normativa registry (Dirección 11-nov-2026): no 90-day logic, it only grows; kept only with an accepted snapshot.
             [ -d data/normativa ] && git add data/normativa
           else
@@ -216,6 +218,7 @@ jobs:
             git add web/data/source_health.json web/data/product.json
             git checkout -- web/data
             git clean -fdq -- web/data
+            [ -d web/i ] && { git checkout -- web/i; git clean -fdq -- web/i; } || true
           fi
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "chore: refresh Alicanto Salud"
