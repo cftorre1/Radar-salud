@@ -153,3 +153,14 @@ def test_report_formats_pdf_word_and_a_clear_error_for_html_or_legacy_doc():
         z.writestr("word/document.xml", "<w:p><w:r><w:t>Artículo</w:t><w:tab/><w:t>1</w:t><w:delText>borrado</w:delText>"
                                         "<w:instrText>PAGE</w:instrText></w:r></w:p>")
     assert ci._pdf_text(buf.getvalue()) == "Artículo 1\n"
+    buf = _io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("word/document.xml", "<w:p><w:delText/><w:t>visible</w:t><w:delText>x</w:delText></w:p>")
+    assert ci._pdf_text(buf.getvalue()) == "visible\n"  # an empty delText never swallows text (review of #216)
+    for name, content, reason in (("content.xml", "x", "zip_not_word"),
+                                  ("word/document.xml", "0" * (41 * 1024 * 1024), "report_too_large:docx")):
+        buf = _io.BytesIO()
+        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+            z.writestr(name, content)
+        with pytest.raises(ValueError, match=reason):
+            ci._pdf_text(buf.getvalue())

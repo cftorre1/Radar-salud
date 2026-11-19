@@ -242,7 +242,7 @@ def _pdf_text(data: bytes) -> str:
             with z.open(info) as f:
                 xml = f.read(cap + 1).decode("utf-8", "ignore")
         # deleted tracked changes and field codes are not the report's text; tabs and breaks separate words
-        xml = re.sub(r"<w:(delText|instrText)\b[^>]*>.*?</w:\1>", "", xml, flags=re.S)
+        xml = re.sub(r"<w:(delText|instrText)\b[^>]*(?<!/)>.*?</w:\1>", "", xml, flags=re.S)
         xml = re.sub(r"<w:(tab|br)\b[^>]*/>", " ", xml)
         xml = re.sub(r"</w:p>", "\n", xml)
         return html.unescape(re.sub(r"<[^>]+>", "", xml))
