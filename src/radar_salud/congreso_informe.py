@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import html
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -204,9 +205,48 @@ def summarize(text: str, title: str, tramite: str, call: Callable[..., Any]) -> 
 # Run step (online export only; offline exports and tests never fetch nor call a model)
 # ------------------------------------------------------------------------------------------------------------------
 
+def _doc_kind(data: bytes) -> str:
+    head = data[:8]
+    if head.startswith(b"%PDF"):
+        return "pdf"
+    if head.startswith(b"PK\x03\x04"):
+        return "docx"
+    if head.startswith(b"\xd0\xcf\x11\xe0"):
+        return "doc"
+    if data[:5].lstrip().startswith(b"{\\rtf"):
+        return "rtf"
+    if b"<html" in data[:2048].lower() or b"<!doctype" in data[:2048].lower():
+        return "html"
+    return "unknown:" + head.hex()
+
+
 def _pdf_text(data: bytes) -> str:
-    from pypdf import PdfReader
-    return "\n".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(data)).pages)
+    """Text of the report. The Senate serves «getDocto» as PDF or as Word; an HTML page or a legacy .doc is reported
+    (18-nov: a non-PDF body raised PdfStreamError and the summary never ran)."""
+    kind = _doc_kind(data)
+    if kind == "pdf":
+        if b"%%EOF" not in data[-1024:]:
+            raise ValueError("truncated_pdf")
+        from pypdf import PdfReader
+        return "\n".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(data)).pages)
+    if kind == "docx":
+        import zipfile
+        cap = 40 * 1024 * 1024  # unpacked bound (review of #216: a zip bomb must not exhaust the export job)
+        with zipfile.ZipFile(io.BytesIO(data)) as z:
+            try:
+                info = z.getinfo("word/document.xml")
+            except KeyError:
+                raise ValueError("unsupported_report_format:zip_not_word") from None
+            if info.file_size > cap:
+                raise ValueError("report_too_large:docx")
+            with z.open(info) as f:
+                xml = f.read(cap + 1).decode("utf-8", "ignore")
+        # deleted tracked changes and field codes are not the report's text; tabs and breaks separate words
+        xml = re.sub(r"<w:(delText|instrText)\b[^>]*(?<!/)>.*?</w:\1>", "", xml, flags=re.S)
+        xml = re.sub(r"<w:(tab|br)\b[^>]*/>", " ", xml)
+        xml = re.sub(r"</w:p>", "\n", xml)
+        return html.unescape(re.sub(r"<[^>]+>", "", xml))
+    raise ValueError(f"unsupported_report_format:{kind}")
 
 
 def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Callable[..., bytes] | None = None,
