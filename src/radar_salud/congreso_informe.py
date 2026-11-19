@@ -225,12 +225,25 @@ def _pdf_text(data: bytes) -> str:
     (18-nov: a non-PDF body raised PdfStreamError and the summary never ran)."""
     kind = _doc_kind(data)
     if kind == "pdf":
+        if b"%%EOF" not in data[-1024:]:
+            raise ValueError("truncated_pdf")
         from pypdf import PdfReader
         return "\n".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(data)).pages)
     if kind == "docx":
         import zipfile
+        cap = 40 * 1024 * 1024  # unpacked bound (review of #216: a zip bomb must not exhaust the export job)
         with zipfile.ZipFile(io.BytesIO(data)) as z:
-            xml = z.read("word/document.xml").decode("utf-8", "ignore")
+            try:
+                info = z.getinfo("word/document.xml")
+            except KeyError:
+                raise ValueError("unsupported_report_format:zip_not_word") from None
+            if info.file_size > cap:
+                raise ValueError("report_too_large:docx")
+            with z.open(info) as f:
+                xml = f.read(cap + 1).decode("utf-8", "ignore")
+        # deleted tracked changes and field codes are not the report's text; tabs and breaks separate words
+        xml = re.sub(r"<w:(delText|instrText)\b[^>]*>.*?</w:\1>", "", xml, flags=re.S)
+        xml = re.sub(r"<w:(tab|br)\b[^>]*/>", " ", xml)
         xml = re.sub(r"</w:p>", "\n", xml)
         return html.unescape(re.sub(r"<[^>]+>", "", xml))
     raise ValueError(f"unsupported_report_format:{kind}")

@@ -145,3 +145,11 @@ def test_report_formats_pdf_word_and_a_clear_error_for_html_or_legacy_doc():
     for body, kind in ((b"<!DOCTYPE html><html>login</html>", "html"), (b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1rest", "doc")):
         with pytest.raises(ValueError, match=f"unsupported_report_format:{kind}"):
             ci._pdf_text(body)
+    for body, kind in ((b"%PDF-1.4 cut short", "truncated_pdf"),):
+        with pytest.raises(ValueError, match=kind):
+            ci._pdf_text(body)
+    buf = _io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("word/document.xml", "<w:p><w:r><w:t>Artículo</w:t><w:tab/><w:t>1</w:t><w:delText>borrado</w:delText>"
+                                        "<w:instrText>PAGE</w:instrText></w:r></w:p>")
+    assert ci._pdf_text(buf.getvalue()) == "Artículo 1\n"
