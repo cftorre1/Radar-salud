@@ -190,7 +190,7 @@ function httpsSource(value){try{const url=new URL(value);return url.protocol==='
 function detailHtml(s){
  // Statistics ficha (Dirección 28-oct-2026): self-contained renderer in stats-ficha.js.
  if(s.stats_ficha&&typeof AlicantoFicha!=='undefined')return AlicantoFicha.render(s.stats_ficha,{shareId:`sig-${idFor(s)}`,shareUrl:s.share_url,title:datosByPiece.get(idFor(s))?.index_title,shareTitle:datosByPiece.get(idFor(s))?.share_title});
- const v3=String(s.editorial_schema_version)==='3';const title=triageTitle(s),seen=new Set([String(title).trim().toLowerCase()]);
+ const v3=String(s.editorial_schema_version)==='3';const title=fichaTitle(s),seen=new Set([String(title).trim().toLowerCase()]);
  const fresh=x=>{if(!x)return false;const n=String(x).trim().toLowerCase();if(seen.has(n))return false;seen.add(n);return true};
  let body='';
  if(!s.statistical_view&&String(s.source_url||'').includes('estadisticas-financieras-del-sistema-isapre-a-marzo-2026/'))s={...s,statistical_view:{publication_status:'HOLD',limitations:['La nota de cobertura contradice cifras institucionales de Esencial; comparaciones y agregados afectados pendientes de aclaración.'],source_url:s.source_url}};
@@ -278,7 +278,10 @@ function formatTag(s){return typeof AlicantoFicha!=='undefined'?AlicantoFicha.co
 // A rolling register (sanciones, acreditación) keeps «Actualizado» (Dirección 10-nov-2026): it is updated data.
 // Dirección 13-nov-2026: the row shows the same date the inbox sorts and groups by (feedDate). A data ficha that
 // Alicanto verified after the source published it reads «Agregado <día>»; its source date stays in the ficha.
-function kickerMeta(s){const fd=String(feedDate(s)||'').slice(0,10),ev=String(s.event_date||'').slice(0,10),later=fd&&ev&&fd>ev,day=AlicantoBar.shortDay(later?fd:s.event_date),rolling=/^Actualizado /.test(String(rowMeta(s)||''))&&!s.stats_ficha;return [day?(rolling?`Actualizado ${day}`:later?`Agregado ${day}`:day):'',esc(AlicantoDataCard.feedSource(s.source_name))].filter(Boolean).join(' · ')}
+function kickerMeta(s){const fd=String(feedDate(s)||'').slice(0,10),ev=String(s.event_date||'').slice(0,10),later=fd&&ev&&fd>ev,day=AlicantoBar.shortDay(later?fd:s.event_date),rolling=/^Actualizado /.test(String(rowMeta(s)||''))&&!s.stats_ficha;const src=AlicantoDataCard.feedSource(s.source_name),tema=multiTopicSource(s.source_name)?(topicsOf(s)[0]||{}).label:'';return [day?(rolling?`Actualizado ${day}`:later?`Agregado ${day}`:day):'',tema?`<span class="kicker-topic">${esc(tema)}</span>`:'',esc(src)].filter(Boolean).join(' · ')}
+// Publishers of every subject (Diario Oficial, Congreso, Contraloría): the row also names the topic, only there, so the
+// feed does not get one more label per row (Dirección 18-nov-2026).
+function multiTopicSource(n){return /^(Diario Oficial|Congreso Nacional|Senado|Cámara de Diputad|Contraloría|Biblioteca del Congreso)/i.test(String(n||''))}
 // Rows carry no actor chips (Dirección 28-oct 21:49): who is involved is named in the ficha ('Menciona: …'),
 // and a row of a followed topic keeps only its small follow marker (Dirección 4-nov-2026).
 const followIcon='<svg class="mini-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"></path></svg>';
@@ -346,6 +349,8 @@ const verifiedTriageTitles={
  'https://www.minsal.cl/consejo-para-mejorar-eficiencia-y-reducir-deficit-estructural-en-salud-incorpora-mirada-de-servicios-de-salud-y-hospitales-en-su-segunda-sesion/':'Minsal suma hospitales y Servicios de Salud al consejo sobre eficiencia y déficit',
  'https://www.df.cl/empresas/salud/max-luksic-propone-alianza-entre-municipalidades-para-mejorar-atencion':'Max Luksic propone alianza municipal para ejecutar recursos de atención primaria'
 };
+// The feed may cut an official title («…»); the ficha shows it whole (Dirección 18-nov-2026).
+function fichaTitle(s){const t=String(triageTitle(s)||'');if(!/…$/.test(t))return t;const full=String(s.source_title_full||s.title||'').trim();if(!full)return t;const i=t.indexOf(' · ');const parts=full.split(/\.-\s*/);if(parts.length<2)return t;const rest=parts.slice(1).join('. ').replace(/\.$/,'');return i>0?`${t.slice(0,i)} · ${rest.charAt(0).toUpperCase()}${rest.slice(1)}`:full}
 function triageTitle(s){const title=String(s.title||'').trim();if(s.display_title)return String(s.display_title).trim();if(verifiedTriageTitles[s.source_url])return verifiedTriageTitles[s.source_url];if(s.paywalled===true)return title||'Señal verificada';if(/^(resolución|circular|decreto|oficio)\b/i.test(title)&&s.normative_document_label){const subject=s.normative_subject||firstComplete(s.card_why||s.card_what||s.why_it_matters||s.what_happened);if(subject)return `${s.normative_document_label} sobre ${String(subject).charAt(0).toLowerCase()+String(subject).slice(1)}`}if(s.editorial_review_id)return title;if(/^(resolución|circular|decreto|oficio)\b/i.test(title)&&s.card_what)return firstComplete(s.card_what);if(title.length>95&&s.card_what&&s.card_what.length<title.length)return firstComplete(s.card_what);return title||firstComplete(s.card_what||s.what_happened||'Señal verificada')}
 function triageSummary(s){const what=trimSummary(s),why=s.card_why||firstComplete(s.why_it_matters);return distinct(what,triageTitle(s))?what:why}
 async function setReadWithoutReorder(s,value=true){const id=idFor(s);await AlicantoRead.set(id,value);syncReadUI();readStatus(value?'Marcado como leído.':'Marcado como no leído.');}
