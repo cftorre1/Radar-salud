@@ -26,3 +26,28 @@ test('short mode fits its time budget and tells how many remain',()=>{
   assert.match(r.segments.at(-1).text,new RegExp(`Te quedan ${r.left} pendientes`));
   const e=L.buildScript(many,{mode:'extenso'});assert.ok(e.included>r.included&&e.minutes<=20);
 });
+test('ear text: abbreviations, dates, money, boletín and press suffix (review of #219)',()=>{
+  assert.equal(L.speakable(L.sentences('Aprobó el D.S. Nº 30. Otra frase.',1)),'Aprobó el decreto supremo número 30.');
+  assert.equal(L.speakable('Rige desde el 19/11/2026 hasta 2026-2028'),'Rige desde el 19 de noviembre de 2026 hasta 2026 a 2028.');
+  assert.equal(L.speakable('Inversión de USD 45 millones en 10.576 m²'),'Inversión de 45 millones de dólares en 10.576 metros cuadrados.');
+  assert.equal(L.speakable('El proyecto (Boletín N° 18255-31) avanza'),'El proyecto avanza.');
+  assert.equal(L.speakable('Clínica inauguró instalaciones - Andes Salud'),'Clínica inauguró instalaciones.');
+  assert.equal(L.speakable('Suseso Contigo y la Superintendencia de Salud (SIS)'),'Suseso Contigo y la Superintendencia de Salud.');
+});
+test('important items are chosen first; the rest in feed order (review of #219)',()=>{
+  const many=Array.from({length:60},(_,i)=>({id:'x'+i,kind:'noticia',title:'Título '+i,what:'Una frase larga '+'con muchas palabras '.repeat(12)+'.',topic:i%2?'isapres':'farma',important:i===55}));
+  const r=L.buildScript(many,{mode:'corto'});const ids=r.segments.filter(s=>s.id).map(s=>s.id);
+  assert.ok(ids.includes('x55')&&ids.includes('x0')&&!ids.includes('x54'));
+});
+test('a cancelled utterance never marks or advances (Safari fires end on cancel)',async()=>{
+  const said=[],done=[];let cur=null;
+  globalThis.SpeechSynthesisUtterance=function(t){this.text=t};
+  globalThis.speechSynthesis={speak(u){cur=u;said.push(u.text)},cancel(){const u=cur;cur=null;u&&u.onend&&u.onend()},getVoices(){return[]}};
+  globalThis.document={addEventListener(){}};globalThis.navigator={};
+  const P=L.Player({onItemDone:id=>done.push(id),onState(){}});
+  P.play({segments:[{id:null,text:'intro'},{id:'a',text:'A'},{id:'b',text:'B'},{id:null,text:'fin'}]});
+  cur.onend();// intro finished
+  P.next();// skip «A» while it plays: Safari fires its end on cancel
+  assert.deepEqual(done,[]);assert.equal(said.at(-1),'B');
+  cur.onend();assert.deepEqual(done,['b']);
+});
