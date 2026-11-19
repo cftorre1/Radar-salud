@@ -99,7 +99,9 @@ def test_no_link_yet_is_retried_and_other_milestones_are_ignored(tmp_path, monke
     stats = ci.refresh(tmp_path, [early, {**ROW, "bill_milestone": "ingreso"}], today=date(2026, 11, 15),
                        fetch=_fetch([]), call=_call([], []), robots=lambda u: True)
     assert stats == {"candidates": 1, "no_link_yet": 1, "written": 0, "failed": 0, "errors": 0}
-    assert not (tmp_path / ci.CACHE_DIR).exists()
+    last = json.loads((tmp_path / ci.CACHE_DIR / "_last_run.json").read_text(encoding="utf-8"))
+    assert last["reasons"] == ["18255-31:no_link_yet"] and last["day"] == "2026-11-15"  # readable without Actions logs
+    assert [p.name for p in (tmp_path / ci.CACHE_DIR).iterdir()] == ["_last_run.json"]  # no report cached
 
 
 def test_other_committee_same_day_is_never_attached_and_lowercasing_keeps_proper_nouns():
@@ -129,3 +131,36 @@ def test_robots_disallow_fetches_nothing(tmp_path):
     stats = ci.refresh(tmp_path, [ROW], today=date(2026, 11, 15), fetch=_fetch(urls), call=_call([], []),
                        robots=lambda u: False)
     assert urls == [] and stats["errors"] == 1
+    assert json.loads((tmp_path / ci.CACHE_DIR / "_last_run.json").read_text(encoding="utf-8"))["reasons"] == ["18255-31:robots_ws"]
+
+
+def test_report_formats_pdf_word_and_a_clear_error_for_html_or_legacy_doc():
+    import io as _io, zipfile
+    buf = _io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("word/document.xml", "<w:document><w:body><w:p><w:r><w:t>La Comisión aprobó &amp; despachó"
+                                        "</w:t></w:r></w:p><w:p><w:r><w:t>Segundo párrafo</w:t></w:r></w:p></w:body></w:document>")
+    assert ci._pdf_text(buf.getvalue()) == "La Comisión aprobó & despachó\nSegundo párrafo\n"
+    import pytest
+    for body, kind in ((b"<!DOCTYPE html><html>login</html>", "html"), (b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1rest", "doc")):
+        with pytest.raises(ValueError, match=f"unsupported_report_format:{kind}"):
+            ci._pdf_text(body)
+    for body, kind in ((b"%PDF-1.4 cut short", "truncated_pdf"),):
+        with pytest.raises(ValueError, match=kind):
+            ci._pdf_text(body)
+    buf = _io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("word/document.xml", "<w:p><w:r><w:t>Artículo</w:t><w:tab/><w:t>1</w:t><w:delText>borrado</w:delText>"
+                                        "<w:instrText>PAGE</w:instrText></w:r></w:p>")
+    assert ci._pdf_text(buf.getvalue()) == "Artículo 1\n"
+    buf = _io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("word/document.xml", "<w:p><w:delText/><w:t>visible</w:t><w:delText>x</w:delText></w:p>")
+    assert ci._pdf_text(buf.getvalue()) == "visible\n"  # an empty delText never swallows text (review of #216)
+    for name, content, reason in (("content.xml", "x", "zip_not_word"),
+                                  ("word/document.xml", "0" * (41 * 1024 * 1024), "report_too_large:docx")):
+        buf = _io.BytesIO()
+        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+            z.writestr(name, content)
+        with pytest.raises(ValueError, match=reason):
+            ci._pdf_text(buf.getvalue())

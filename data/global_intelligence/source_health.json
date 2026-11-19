@@ -2,7 +2,7 @@
   "sources": {
     "who": {
       "name": "WHO",
-      "checked_at": "2026-11-15T23:44:35.011324+00:00",
+      "checked_at": "2026-11-18T20:13:55.798817+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -16,22 +16,22 @@
       "next_cadence_validation_not_before": null,
       "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-08-18",
-      "coverage_to": "2026-11-15",
+      "coverage_from": "2026-08-21",
+      "coverage_to": "2026-11-18",
       "pages_checked": 7,
-      "recent_items": 92,
+      "recent_items": 118,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 92,
-        "detected": 92,
+        "inventory_url_count": 118,
+        "detected": 118,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 272,
-        "detected": 272,
+        "inventory_url_count": 296,
+        "detected": 296,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -40,25 +40,25 @@
         "30": "complete_on_declared_surfaces",
         "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 272,
-      "unique_items": 272,
+      "unique_language_urls_90": 296,
+      "unique_items": 296,
       "counts": {
-        "30": 92,
-        "90": 272
+        "30": 118,
+        "90": 296
       },
       "indexed_counts": {
-        "30": 92,
-        "90": 272
+        "30": 118,
+        "90": 296
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 146,
+      "material_items": 157,
       "published": 0,
       "rejected": 6,
-      "deferred": 266,
+      "deferred": 290,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 272,
-      "new": 0,
+      "discovered": 296,
+      "new": 296,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -82,7 +82,7 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/43772609694/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44375275522/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -91,17 +91,13 @@
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
-        "activated": true,
-        "evidence_run_ids": [
-          "43649188047",
-          "43772609694"
-        ],
-        "reason": "two_consecutive_successful_daily_live_runs",
+        "activated": false,
+        "evidence_run_ids": [],
+        "reason": "failed_live_run_since_previous_daily_success",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 86546,
         "earned_at": "2026-11-08T18:02:43.264345+00:00",
         "earned_evidence_run_ids": [
           "42381528433",
@@ -111,63 +107,392 @@
     },
     "paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-16T00:09:17.497951+00:00",
-      "status": "ok",
-      "technical_status": "ok",
-      "coverage_status": "complete",
-      "outcome": "READY_FOR_INTEGRATION",
+      "checked_at": "2026-11-18T20:42:17.267713+00:00",
+      "status": "warning",
+      "technical_status": "error",
+      "coverage_status": "incomplete",
+      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
-      "recurrent_operation_proven": true,
+      "recurrent_operation_proven": false,
       "cadence_seconds": 86400,
-      "cadence_validation_pending": false,
+      "cadence_validation_pending": true,
       "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
-      "next_cadence_validation_not_before": null,
-      "coverage_completeness": "complete",
+      "next_cadence_validation_not_before": "2026-11-19T20:42:17.267713+00:00",
+      "coverage_completeness": "incomplete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-08-18",
-      "coverage_to": "2026-11-15",
-      "pages_checked": 129,
-      "recent_items": 190,
+      "coverage_from": "2026-08-21",
+      "coverage_to": "2026-11-18",
+      "pages_checked": 145,
+      "recent_items": 153,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 237,
-        "detected": 237,
+        "inventory_url_count": 258,
+        "detected": 258,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 708,
-        "detected": 708,
+        "inventory_url_count": 730,
+        "detected": 730,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "window_completeness": {
-        "30": "complete_on_declared_surfaces",
-        "90": "complete_on_declared_surfaces"
+        "30": "incomplete_lower_bound",
+        "90": "incomplete_lower_bound"
       },
-      "unique_language_urls_90": 708,
-      "unique_items": 562,
+      "unique_language_urls_90": 730,
+      "unique_items": 512,
       "counts": {
-        "30": 190,
-        "90": 562
+        "30": 153,
+        "90": 512
       },
       "indexed_counts": {
-        "30": 190,
-        "90": 562
+        "30": 221,
+        "90": 594
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 244,
+      "material_items": 212,
       "published": 0,
-      "rejected": 11,
-      "deferred": 551,
+      "rejected": 10,
+      "deferred": 584,
       "pending_date_items": 0,
-      "technical_failures": [],
-      "discovered": 562,
-      "new": 0,
+      "technical_failures": [
+        {
+          "url": "https://www.paho.org/es/noticias/11-11-2026-seis-paises-sudamerica-se-reunen-bolivia-para-fortalecer-respuesta-sanitaria-0",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/11-11-2026-santa-cruz-fortalece-capacidades-personal-salud-para-mejorar-atencion-0",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/11-11-2026-ops-con-apoyo-unitaid-logra-primeros-acuerdos-acceso-escala-regional-para",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-jujuy-profundiza-respuesta-sector-salud-ante-violencias-por-motivos-genero",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-adolescentes-santa-cruz-se-forman-como-lideres-para-promover-sus-derechos-0",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-fao-ops-panaftosa-lanzan-iniciativa-pionera-para-fortalecer-inocuidad",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-opsoms-sus-centros-colaboradores-chile-impulsan-movimiento-para-acercar-ciencia",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-ops-llama-fortalecer-atencion-menopausia-para-promover-envejecimiento-saludable",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-paraguay-promueve-acciones-para-prevenir-enfermedades-zoonoticas-fortalecer",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-curso-virtual-ops-busca-fortalecer-deteccion-temprana-tratamiento-pie-equino",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-guatemala-impulse-fortalecimiento-atencion-emergencias-red-salud",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/10-11-2026-chiapas-fortalece-atencion-hemorragia-obstetrica-e-incorpora-enfoque-sola-salud",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/9-11-2026-ninas-ninos-qeqchi-guatemala-aprenden-jugando-jornada-lavado-manos",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/9-11-2026-uno-cada-cuatro-adolescentes-todo-mundo-declaro-no-haber-tenido-ningun-dia",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/9-11-2026-costa-rica-fortalece-redes-comunitarias-para-apoyar-eliminacion-malaria",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/9-11-2026-bolivia-forma-15-especialistas-epidemiologia-campo-para-fortalecer-deteccion",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-gran-chaco-une-esfuerzos-para-que-servicios-salud-detecten-atiendan-violencia",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-bolivia-ops-fortalecen-cooperacion-para-deteccion-temprana-notificacion-eventos",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-trabajo-conjunto-ops-fundasalud-permitio-reabrir-emergencia-cpt-cantarrana",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-sectores-acuerdan-prioridades-para-fortalecer-proteccion-motociclistas-argentina",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-ops-emite-recomendaciones-para-viajeros-ante-visita-papa-leon-xiv-america-latina",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-region-noroeste-argentino-fortalece-sus-capacidades-seguridad-vacunas",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-nuevo-plan-ops-busca-acelerar-eliminacion-malaria-americas-proximos-cuatro-anos",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-san-luis-avanza-elaboracion-protocolo-para-respuesta-sistema-salud-ante",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-ops-acompano-unam-primer-foro-transdisciplinario-salud-humana-animal-ambiental",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/6-11-2026-segundo-taller-capacitacion-para-integrantes-comite-nacional-farmacoterapia",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/18-11-2026-panama-fortalece-prevencion-abordaje-pie-diabetico-atencion-primaria",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/18-11-2026-brasil-uruguay-intercambian-experiencias-para-fortalecer-vigilancia-zoonosis",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/18-11-2026-opsoms-destaca-atencion-primaria-accion-intersectorial-para-fortalecer",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/18-11-2026-salvador-realiza-medicion-madurez-sus-redes-integradas-e-integrales-servicios",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/17-11-2026-paises-sudamericanos-trazan-agenda-regional-para-anticipar-riesgos-calor",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/17-11-2026-mujeres-indigenas-guaranies-fortalecen-sus-capacidades-para-ejercicio",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/17-11-2026-brigadas-atencion-integral-fortalecen-acceso-servicios-salud-para-personas",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/17-11-2026-panama-aprueba-ley-para-eliminar-grasas-trans-produccion-industrial-proteger",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/17-11-2026-ops-insta-paises-intensificar-esfuerzos-para-detener-brotes-sarampion-avanzar",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/17-11-2026-sarampion-americas-preguntas-respuestas-referencia-tecnica-para-periodistas",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/16-11-2026-ops-inaugura-lima-su-nodo-servicios-compartidos-para-modernizar-sus-operaciones",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/16-11-2026-ops-lanza-ingles-curso-virtual-para-fortalecer-prevencion-suicidio-desde",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/16-11-2026-ops-lanza-regia-plataforma-para-consultar-comparar-requisitos-regulatorios",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/16-11-2026-secretaria-salud-publica-ciudad-mexico-fortalece-atencion-prehospitalaria",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/16-11-2026-opsoms-chile-acompana-ministerio-salud-lanzamiento-campana-pa-que-fumas-que",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/16-11-2026-uruguay-celebra-dia-nacional-donacion-trasplante-con-region-renovando-su",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/16-11-2026-bireme-2026-2031-seis-decadas-historia-seis-directrices-para-futuro",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/14-11-2026-salud-mental-mas-cerca-comunidades-honduras-lleva-atencion-al-primer-nivel",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/14-11-2026-cuando-llegar-servicios-salud-es-dificil-diabetes-no-puede-esperar",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/14-11-2026-paraguay-actualiza-su-estrategia-gestion-integrada-para-prevencion-control",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/14-11-2026-salud-publica-opsoms-llaman-detectar-diabetes-tiempo-caminata-por-dia-mundial",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/14-11-2026-no-basta-con-tener-agua-servicios-salud-fortalecen-vigilancia-su-calidad",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/14-11-2026-protocolo-practica-hospital-san-felipe-revisa-sus-procesos-para-atencion",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/13-11-2026-nicaragua-fortalece-capacidades-modelo-atencion-para-apoyar-cesacion-consumo",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/13-11-2026-nicaragua-fortalece-modelo-atencion-salud-mental-comunitaria-desde-atencion",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/13-11-2026-bogota-se-realizo-taller-para-actualizacion-plan-nacional-despliegue-vacunacion",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/13-11-2026-paises-america-latina-fortalecen-vacunacion-tamizaje-acceso-tecnologias-para",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/13-11-2026-hospitales-publicos-universitarios-americas-avanzan-hacia-alianza-regional-para",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/13-11-2026-paises-americas-avanzan-hoja-ruta-para-fortalecer-diagnostico-atencion-personas",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/13-11-2026-bolivia-avanza-calidad-atencion-materna-neonatal-con-validacion-normas-0",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/noticias/13-11-2026-uruguay-inicia-proceso-trabajo-hacia-20-anos-sistema-nacional-integrado-salud",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/en/documents/epidemiological-alert-collection-and-consumption-wild-mushrooms-americas-region-17",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/en/documents/epidemiological-alert-seasonal-influenza-and-other-respiratory-viruses-start-season",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/en/documents/epidemiological-update-dengue-and-chikungunya-americas-region-20-october-2026",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/en/documents/epidemiological-alert-myiasis-caused-cochliomyia-hominivorax-americas-region-16-october",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/en/documents/epidemiological-update-avian-influenza-ah5-americas-region-26-august-2026",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/iniciativa-para-eliminacion-tracoma-americas-tercer-ano-implementacion-informe-anual",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-44-13",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-43-6",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/acceso-medicamentos-antihipertensivos-como-abordar-cuellos-botella-cadena-suministro",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/hacia-atencion-salud-bucodental-libre-mercurio-region-americas-taller-regional-sobre",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-42-30",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/plan-accion-para-eliminacion-malaria-americas-2026-2030",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-41-23",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/cuadro-indicadores-estrategia-regional-donacion-trasplante-2019-2030",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-40-16",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-39-9",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/articulacion-entre-movimiento-regional-municipios-ciudades-comunidades-saludables-red",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-38-2",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/plan-andino-salud-cambio-climatico-2026-2031",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-37-25",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-36-18",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-35-11",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-34-4",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-33-28",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        },
+        {
+          "url": "https://www.paho.org/es/documentos/actualizacion-regional-influenza-otros-virus-respiratorios-semana-epidemiologica-32-21",
+          "error": "ValueError: capture_campaign_budget_exhausted_without_request"
+        }
+      ],
+      "discovered": 594,
+      "new": 7,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "regional_news",
@@ -181,17 +506,17 @@
         {
           "section": "regional_news",
           "stop": "verified_date_partition_coverage",
-          "pages": 41
+          "pages": 45
         },
         {
           "section": "regional_news_es",
           "stop": "verified_date_partition_coverage",
-          "pages": 81
+          "pages": 92
         },
         {
           "section": "chile_news",
           "stop": "verified_older_boundary",
-          "pages": 1
+          "pages": 2
         },
         {
           "section": "chile_news_es",
@@ -209,26 +534,23 @@
           "pages": 2
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/43772609694/inventory.json",
-      "source_quality_disposition": "pass_data",
-      "publication_activation": true,
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44375275522/inventory.json",
+      "source_quality_disposition": "hold_technical",
+      "publication_activation": false,
       "content_freshness": "recent",
-      "editorial_outcome": "publication_activated_pending_editorial_approval",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+      "publication_activation_suspended_reason": "current_run_not_successful_or_contract_changed",
       "publication_activation_decision": {
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
-        "activated": true,
-        "evidence_run_ids": [
-          "43649188047",
-          "43772609694"
-        ],
-        "reason": "two_consecutive_successful_daily_live_runs",
+        "activated": false,
+        "evidence_run_ids": [],
+        "reason": "current_run_not_successful_live_complete",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 86481,
         "earned_at": "2026-11-04T01:00:32.943483+00:00",
         "earned_evidence_run_ids": [
           "41539638382",
