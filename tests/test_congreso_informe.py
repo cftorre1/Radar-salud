@@ -132,3 +132,16 @@ def test_robots_disallow_fetches_nothing(tmp_path):
                        robots=lambda u: False)
     assert urls == [] and stats["errors"] == 1
     assert json.loads((tmp_path / ci.CACHE_DIR / "_last_run.json").read_text(encoding="utf-8"))["reasons"] == ["18255-31:robots_ws"]
+
+
+def test_report_formats_pdf_word_and_a_clear_error_for_html_or_legacy_doc():
+    import io as _io, zipfile
+    buf = _io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("word/document.xml", "<w:document><w:body><w:p><w:r><w:t>La Comisión aprobó &amp; despachó"
+                                        "</w:t></w:r></w:p><w:p><w:r><w:t>Segundo párrafo</w:t></w:r></w:p></w:body></w:document>")
+    assert ci._pdf_text(buf.getvalue()) == "La Comisión aprobó & despachó\nSegundo párrafo\n"
+    import pytest
+    for body, kind in ((b"<!DOCTYPE html><html>login</html>", "html"), (b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1rest", "doc")):
+        with pytest.raises(ValueError, match=f"unsupported_report_format:{kind}"):
+            ci._pdf_text(body)

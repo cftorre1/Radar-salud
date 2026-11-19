@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import html
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -204,9 +205,35 @@ def summarize(text: str, title: str, tramite: str, call: Callable[..., Any]) -> 
 # Run step (online export only; offline exports and tests never fetch nor call a model)
 # ------------------------------------------------------------------------------------------------------------------
 
+def _doc_kind(data: bytes) -> str:
+    head = data[:8]
+    if head.startswith(b"%PDF"):
+        return "pdf"
+    if head.startswith(b"PK\x03\x04"):
+        return "docx"
+    if head.startswith(b"\xd0\xcf\x11\xe0"):
+        return "doc"
+    if data[:5].lstrip().startswith(b"{\\rtf"):
+        return "rtf"
+    if b"<html" in data[:2048].lower() or b"<!doctype" in data[:2048].lower():
+        return "html"
+    return "unknown:" + head.hex()
+
+
 def _pdf_text(data: bytes) -> str:
-    from pypdf import PdfReader
-    return "\n".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(data)).pages)
+    """Text of the report. The Senate serves «getDocto» as PDF or as Word; an HTML page or a legacy .doc is reported
+    (18-nov: a non-PDF body raised PdfStreamError and the summary never ran)."""
+    kind = _doc_kind(data)
+    if kind == "pdf":
+        from pypdf import PdfReader
+        return "\n".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(data)).pages)
+    if kind == "docx":
+        import zipfile
+        with zipfile.ZipFile(io.BytesIO(data)) as z:
+            xml = z.read("word/document.xml").decode("utf-8", "ignore")
+        xml = re.sub(r"</w:p>", "\n", xml)
+        return html.unescape(re.sub(r"<[^>]+>", "", xml))
+    raise ValueError(f"unsupported_report_format:{kind}")
 
 
 def refresh(root: Path, signals: list[dict[str, Any]], *, today: date, fetch: Callable[..., bytes] | None = None,
