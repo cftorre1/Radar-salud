@@ -111,5 +111,13 @@
  function kicker(kind,label,meta,extra){const k=TYPE_ICON[kind]?kind:'noticia';return `<div class="rk"><span class="rk-pill rk-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${esc(label||TYPE_WORD[k])}</span>${meta?`<span class="rk-meta">${meta}</span><span class="sr-only"> · </span>`:''}${extra?`<span class="rk-extra">${extra}</span>`:''}</div>`}
  function stateChip(text,tone){return text?`<span class="rk-state rk-st-${tone||'ok'}">${esc(text)}</span>`:''}
  function typeMark(kind){const k=TYPE_WORD[kind]?kind:'noticia';return `<span class="ty ty-${k}"><svg class="ty-ic" viewBox="0 0 24 24" aria-hidden="true">${TYPE_ICON[k]}</svg>${TYPE_WORD[k]}<span class="sr-only"> · </span></span>`}
- root.AlicantoBar={syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull,kicker,stateChip,shortDay,longPeriod,TYPE_WORD};
+ 
+// Official texts arrive with shouted words («COMPLEMENTA … REGISTRO de los INCIDENTES PELIGROSOS»). Readers get sentence
+// case; real acronyms stay (Dirección 19-nov-2026, mobile audit P1-2/3). A mostly-uppercase paragraph is lowered whole.
+const KEEP_CAPS=new Set('SIS ISP FNE GES AUGE CAEC FONASA SUSESO MINSAL CENABAST COMPIN PAD TEA EMP RND DFL UF UTM IPC OMS OPS OCDE CMF SII ACHS IST ISL RUT UE EU EMA DIPRES SEREMI ICSA MAS IVA PIB ENS INE CIPER BCN CChC SENAMA SENADIS JUNJI SAPU SAR CESFAM APS HEA VIH TBC COVID LME SIL ISAPRE ISAPRES IF II III IV VI VII VIII IX XI XII XIII XIV XV XVI'.split(' '));
+function tameCaps(text){const s=String(text||'');const letters=s.replace(/[^A-Za-zÁÉÍÓÚÑÜáéíóúñü]/g,'');if(!letters)return s;
+ const upper=letters.replace(/[^A-ZÁÉÍÓÚÑÜ]/g,'').length/letters.length,whole=upper>0.6&&letters.length>12;
+ let out=s.replace(whole?/(?<![\p{L}])[A-ZÁÉÍÓÚÑÜ]+(?![\p{L}°º])/gu:/(?<![\p{L}])[A-ZÁÉÍÓÚÑÜ][A-ZÁÉÍÓÚÑÜ]+(?![\p{L}])/gu,w=>{if(KEEP_CAPS.has(w)&&!/^ISAPRES?$/.test(w))return w;if(/^ISAPRES?$/.test(w))return w.toLowerCase();return (whole||w.length>=4)?w.toLowerCase():w});
+ return out.replace(/(^|[.!?]\s+|·\s+)(\p{Ll})/gu,(m,p,c)=>p+c.toUpperCase())}
+root.AlicantoBar={tameCaps,syncLanes,wireLanes,dropdown,selectionLabel,esc,icons,dotInner,dotLabel,dotButton,syncDot,sourceLink,miniShare,httpsUrl,sourceAct,shareAct,rowActions,fichaActions,shareCard,rowUndo,clearRowUndo,feedUndo,placeStrip,UNDO_MS,typeMark,sheetPull,kicker,stateChip,shortDay,longPeriod,TYPE_WORD};
 })(typeof window!=='undefined'?window:globalThis);

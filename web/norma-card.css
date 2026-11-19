@@ -1,4 +1,6 @@
 /* Norm card shared by Normativa and Al día (norma-card.js, Dirección 11-nov-2026). Tokens from home-inbox.css. */
+/* the ficha's bottom bar sits outside .nm-ficha: «Implementada» needs the token there too (mobile audit P1-1, 19-nov) */
+:root{--ok:#3B6B4A;--ok-soft:#E5EFE7}
 .nm-card,.nm-wrap,.nm-ficha{--urg:#A4471F;--urg-soft:#F8E4D9;--warn:#9A6A12;--warn-soft:#FBF1DC;--ok:#3B6B4A;--ok-soft:#E5EFE7;--rev:#6B4E8A;--rev-soft:#EFE9F5;--off:#6E6E6E;--off-soft:#ECECEC}
 /* cards */
 .nm-list{display:grid;gap:10px}
