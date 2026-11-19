@@ -43,12 +43,12 @@ const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','se
 const SPOKEN=[[/\s\((?:SIS|ISP|FNE|SUSESO|CMF|Minsal|MINSAL|FONASA|Fonasa|HEA|LRS)\)/g,''],[/\s?\((?:Boletín|boletín)[^)]*\)/g,''],[/\bBoletín\s+(?:N\s?[°º]\s?)?\d[\d.]*-\d+/g,'el proyecto'],
  [/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/g,(m,d,mo,y)=>`${+d} de ${MES[+mo-1]||mo} de ${y}`],[/\b(20\d\d)-(20\d\d)\b/g,'$1 a $2'],
  [/\bUSD\s?([\d.,]+)(\s(?:mil\s)?millones)?/g,(m,n,mm)=>mm?`${n}${mm} de dólares`:`${n} dólares`],[/(\d)\s?m²/g,'$1 metros cuadrados'],
- [/\bUTM\b/g,'U T M'],[/\bSEREMI\b/gi,'Seremi'],[/\bHEA\b/g,'H E A'],[/\bLRS\b/g,'Ley Ricarte Soto'],[/\bIPS\b/g,'I P S'],[/\bIP\//g,'I P '],[/\bRes\.\s*exenta\b/gi,'resolución exenta'],[/\bRes\.\s/g,'resolución '],[/\bN\s?[°º]\s?/g,'número '],
+ [/\b(20\d\d)-(0[1-9]|1[0-2])\b/g,(m,y,mo)=>`${MES[+mo-1]} de ${y}`],[/\bACHS\b/g,'A C H S'],[/\bIST\b/g,'I S T'],[/\bISL\b/g,'I S L'],[/\bUTM\b/g,'U T M'],[/\bSEREMI\b/gi,'Seremi'],[/\bHEA\b/g,'H E A'],[/\bLRS\b/g,'Ley Ricarte Soto'],[/\bIPS\b/g,'I P S'],[/\bIP\//g,'I P '],[/\bRes\.\s*exenta\b/gi,'resolución exenta'],[/\bRes\.\s/g,'resolución '],[/\bN\s?[°º]\s?/g,'número '],
  [/\bIF\//g,'I F '],[/\bSIS\b/g,'la Superintendencia de Salud'],[/\bSUSESO\b/gi,'Suseso'],[/\bFNE\b/g,'la Fiscalía Nacional Económica'],
  [/\bISP\b/g,'el I S P'],[/\bCMF\b/g,'la C M F'],[/\bGES\b/g,'G E S'],[/\bCAEC\b/g,'cae'],[/\bUF\b/g,'U F'],[/\bPAD\b/g,'P A D'],
  [/\bDipres\b/g,'Dipres'],[/(\d)\/(\d{4})\b/g,'$1 de $2'],[/(\d)\s?%/g,'$1 por ciento'],[/\s·\s/g,'. '],[/…/g,''],
  [/\s+—\s+/g,', '],[/(\p{L})–(\p{L})/gu,'$1 a $2'],[/\b(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre) (\d{4})\b/gi,'$1 de $2'],[/\s{2,}/g,' ']];
-function speakable(t){let s=expand(t).replace(/\s+[-–|]\s+[A-ZÁÉÍÓÚ][\w .ÁÉÍÓÚáéíóúñ]{2,40}$/u,'');for(const [a,b] of SPOKEN)s=s.replace(a,b);s=s.replace(/\b(el|la) (el|la) /gi,'$2 ');s=s.trim().replace(/([^.!?])$/,'$1.');return s.replace(/(^|[.!?]\s+)(\p{Ll})/gu,(m,p,c)=>p+c.toUpperCase())}
+function speakable(t){let s=expand(t).replace(/\s+[-–|]\s+[A-ZÁÉÍÓÚ][\w .ÁÉÍÓÚáéíóúñ]{2,40}$/u,'');for(const [a,b] of SPOKEN)s=s.replace(a,b);s=s.replace(/\b(el|la) (el|la) /gi,'$2 ').replace(/\bdel el /g,'del ').replace(/\b(de|a) el /g,(m,p)=>p==='de'?'del ':'al ');s=s.trim().replace(/([^.!?])$/,'$1.');return s.replace(/(^|[.!?]\s+)(\p{Ll})/gu,(m,p,c)=>p+c.toUpperCase())}
 function sentences(t,n){const parts=expand(t).replace(/\s+/g,' ').trim().split(/(?<=[.!?])\s+(?=[\p{Lu}«"(¿¡])/u).filter(Boolean);return parts.slice(0,n).join(' ').trim()}
 function fold(x){return String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim()}
 function restates(what,title){const w=fold(what).slice(0,400),ts=fold(String(title).replace(/^[^·]{0,60}·\s*/,'').replace(/^[^:]{0,40}:\s*/,'')).split(' ').filter(x=>x.length>3);return ts.length>=3&&ts.filter(x=>w.includes(x)).length/ts.length>=0.6}
