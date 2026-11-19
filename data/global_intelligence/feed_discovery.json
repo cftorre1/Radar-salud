@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "as_of": "2026-11-18",
-  "generated_at": "2026-11-18T20:42:47.493936+00:00",
-  "run_id": "44375275522",
-  "network_requests": 18,
+  "as_of": "2026-11-19",
+  "generated_at": "2026-11-19T04:12:19.448399+00:00",
+  "run_id": "44447275989",
+  "network_requests": 17,
   "paid_ai_calls": 0,
   "publication_count": 0,
   "content_use": "metadata_and_link_only",
@@ -13,7 +13,7 @@
     "kff_health_news": {
       "name": "KFF Health News",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T20:42:28.863247+00:00",
+      "checked_at": "2026-11-19T04:12:03.133286+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -88,7 +88,7 @@
     "ema": {
       "name": "EMA (European Medicines Agency)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T20:42:32.158350+00:00",
+      "checked_at": "2026-11-19T04:12:06.397667+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -159,35 +159,43 @@
     "fda": {
       "name": "US FDA (press releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T20:42:34.537959+00:00",
-      "status": "warning",
-      "technical_status": "ok",
+      "checked_at": null,
+      "status": "error",
+      "technical_status": "error",
       "operation_mode": "licensed_feed_metadata_only",
       "coverage_status": "feed_window_only",
       "coverage_completeness": "feed_window_only_not_archive",
       "coverage_window_days": 90,
-      "outcome": "FEED_METADATA_CAPTURED",
+      "outcome": "FEED_TECHNICAL_HOLD",
       "recurrent_operation_proven": false,
       "cadence_validation_pending": true,
       "counts": {
-        "30": 10,
-        "90": 20
+        "30": 0,
+        "90": 0
       },
-      "recent_items": 10,
-      "unique_items": 20,
-      "material_items": 7,
-      "relevant_items": 7,
-      "excluded_items": 13,
-      "rejected": 13,
-      "deferred": 7,
-      "discovered": 20,
+      "recent_items": 0,
+      "unique_items": 0,
+      "material_items": 0,
+      "relevant_items": 0,
+      "excluded_items": 0,
+      "rejected": 0,
+      "deferred": 0,
+      "discovered": 0,
       "new": 0,
       "published": 0,
       "pages_checked": 1,
       "parser_routes": [
         "press_releases"
       ],
-      "technical_failures": [],
+      "technical_failures": [
+        {
+          "source": "fda",
+          "section": "press_releases",
+          "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
+          "stage": "robots",
+          "error": "ValueError: robots_redirect_to_content_denied"
+        }
+      ],
       "rights": {
         "basis": "us_federal_government_work_17_usc_105",
         "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
@@ -227,7 +235,7 @@
     "cdc": {
       "name": "US CDC (newsroom + MMWR)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T20:42:38.479022+00:00",
+      "checked_at": "2026-11-19T04:12:10.734926+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -296,7 +304,7 @@
     "nih": {
       "name": "US NIH (news releases)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T20:42:40.837569+00:00",
+      "checked_at": "2026-11-19T04:12:12.968711+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -362,7 +370,7 @@
     "ecdc": {
       "name": "ECDC",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T20:42:44.437522+00:00",
+      "checked_at": "2026-11-19T04:12:16.507670+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -433,7 +441,7 @@
     "ec_health": {
       "name": "European Commission (Public Health)",
       "discovery_scope": "global_intelligence",
-      "checked_at": "2026-11-18T20:42:47.314764+00:00",
+      "checked_at": "2026-11-19T04:12:19.280039+00:00",
       "status": "warning",
       "technical_status": "ok",
       "operation_mode": "licensed_feed_metadata_only",
@@ -513,8 +521,8 @@
       "newest_entry": "2026-11-18",
       "capture": {
         "feed_url": "https://kffhealthnews.org/feed/",
-        "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-        "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+        "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+        "fetched_at": "2026-11-19T04:12:00.299872+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -530,7 +538,7 @@
       "capture": {
         "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
         "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-        "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+        "fetched_at": "2026-11-19T04:12:03.133286+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -545,8 +553,8 @@
       "newest_entry": "2026-11-17",
       "capture": {
         "feed_url": "https://www.ema.europa.eu/en/news.xml",
-        "body_sha256": "ab7648d9860f45cbef06c58fcd7ba65c4e9e228d324a568f7fea4e2d0658e3a9",
-        "fetched_at": "2026-11-18T20:42:31.123297+00:00",
+        "body_sha256": "db320c173dad316ea0091432fef044bac501df51ebfb382ee33df393ef5a703a",
+        "fetched_at": "2026-11-19T04:12:05.286787+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -561,8 +569,8 @@
       "newest_entry": "2026-11-13",
       "capture": {
         "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-        "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-        "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+        "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+        "fetched_at": "2026-11-19T04:12:06.397667+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -571,17 +579,8 @@
       "source": "fda",
       "section": "press_releases",
       "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "status": "ok",
-      "entries": 20,
-      "oldest_entry": "2026-09-23",
-      "newest_entry": "2026-11-17",
-      "capture": {
-        "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-        "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-        "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-        "http_status": 200,
-        "tls_verified": true
-      }
+      "status": "error",
+      "entries": 0
     },
     "cdc/newsroom": {
       "source": "cdc",
@@ -594,7 +593,7 @@
       "capture": {
         "feed_url": "https://tools.cdc.gov/api/v2/resources/media/132608.rss",
         "body_sha256": "b883f5bf98b251e38f981cda89f15259f7f17852f343568d0951478cc7e88062",
-        "fetched_at": "2026-11-18T20:42:37.111704+00:00",
+        "fetched_at": "2026-11-19T04:12:09.539421+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -610,7 +609,7 @@
       "capture": {
         "feed_url": "https://tools.cdc.gov/api/v2/resources/media/342778.rss",
         "body_sha256": "7e7b244240ec053e3a5663b2b9f5b1476c7b2bb4db62edd64c5685201264bede",
-        "fetched_at": "2026-11-18T20:42:38.479022+00:00",
+        "fetched_at": "2026-11-19T04:12:10.734926+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -626,7 +625,7 @@
       "capture": {
         "feed_url": "https://www.nih.gov/news-releases/feed.xml",
         "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-        "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+        "fetched_at": "2026-11-19T04:12:12.968711+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -642,7 +641,7 @@
       "capture": {
         "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
         "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-        "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+        "fetched_at": "2026-11-19T04:12:15.385523+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -658,7 +657,7 @@
       "capture": {
         "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
         "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-        "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+        "fetched_at": "2026-11-19T04:12:16.507670+00:00",
         "http_status": 200,
         "tls_verified": true
       }
@@ -674,13 +673,20 @@
       "capture": {
         "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
         "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-        "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+        "fetched_at": "2026-11-19T04:12:19.280039+00:00",
         "http_status": 200,
         "tls_verified": true
       }
     }
   },
   "technical_failures": [
+    {
+      "source": "fda",
+      "section": "press_releases",
+      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
+      "stage": "robots",
+      "error": "ValueError: robots_redirect_to_content_denied"
+    },
     {
       "source": "cdc",
       "section": "newsroom",
@@ -38484,7 +38490,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -38546,7 +38552,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -38611,7 +38617,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -38671,7 +38677,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -38731,7 +38737,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -38796,7 +38802,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -38856,7 +38862,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -38916,7 +38922,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -38976,7 +38982,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39038,7 +39044,7 @@
         {
           "feed_url": "https://www.nih.gov/news-releases/feed.xml",
           "body_sha256": "db51ed1639e529884004ca54810322bf29deef8e6b4aea2aabf9158d9077a02b",
-          "fetched_at": "2026-11-18T20:42:40.837569+00:00",
+          "fetched_at": "2026-11-19T04:12:12.968711+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39104,8 +39110,8 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39176,8 +39182,8 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39252,8 +39258,8 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39330,15 +39336,15 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39414,15 +39420,15 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39498,8 +39504,8 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39579,8 +39585,8 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39650,8 +39656,8 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39729,15 +39735,15 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         },
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39812,8 +39818,8 @@
       "index_evidence": [
         {
           "feed_url": "https://kffhealthnews.org/feed/",
-          "body_sha256": "d12d23af4fb84d6f63c76a5908dd824cad6fd39b54e180cafc056c20ba747da4",
-          "fetched_at": "2026-11-18T20:42:26.039235+00:00",
+          "body_sha256": "82be78a26656bb09d322d791df2364347200ddc414b2e74c3e25a301ffee9c8b",
+          "fetched_at": "2026-11-19T04:12:00.299872+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39897,7 +39903,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -39974,7 +39980,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40051,7 +40057,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40128,7 +40134,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40200,7 +40206,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40283,7 +40289,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40355,7 +40361,7 @@
         {
           "feed_url": "https://kffhealthnews.org/topics/health-industry/feed/",
           "body_sha256": "9d24df14b9f01b7517decbf882f4ed0e3f580d58724b6b58310cab4be03873c1",
-          "fetched_at": "2026-11-18T20:42:28.863247+00:00",
+          "fetched_at": "2026-11-19T04:12:03.133286+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -40395,1286 +40401,6 @@
       "item_id": "004da7c39cbd1de206c9"
     },
     {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Launches the Global Reliance Disclosure Program to Expand Patient Access to Medicines Worldwide",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-launches-global-reliance-disclosure-program-expand-patient-access-medicines-worldwide",
-      "raw_publication_dates": [
-        "Tue, 17 Nov 2026 15:32:16 EST"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-launches-global-reliance-disclosure-program-expand-patient-access-medicines-worldwide",
-      "published_at": "2026-11-17",
-      "publication_date_error": null,
-      "description": "FDA today announced the Global Reliance Disclosure Program (GRDP), a landmark initiative that will fundamentally transform how the FDA's regulatory drug and biologic approval decisions are leveraged by health authorities around the world.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "pharma",
-          "regulation"
-        ],
-        "priority": 81,
-        "category": "pharma",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "international_study_or_trend",
-        "signals": [
-          "international_study_or_trend"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "f0eddf418fa3c40f23e3"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves First Drug Shown to Help Patients with Infantile-Onset Niemann-Pick Disease Type C Live Longer",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-drug-shown-help-patients-infantile-onset-niemann-pick-disease-type-c-live-longer",
-      "raw_publication_dates": [
-        "Tue, 17 Nov 2026 14:15:22 EST"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-drug-shown-help-patients-infantile-onset-niemann-pick-disease-type-c-live-longer",
-      "published_at": "2026-11-17",
-      "publication_date_error": null,
-      "description": "FDA approved Lembaz (adrabetadex) injection, the first treatment shown to help people with a severe form of Niemann-Pick disease type C (NPC) live longer.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "pharma",
-          "regulation"
-        ],
-        "priority": 81,
-        "category": "pharma",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "new_technology",
-        "signals": [
-          "new_technology"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "aecb95a9c5d8c2746b1d"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves First Factor Xla Inhibitor to Help Prevent Stroke in Certain Adults at High Risk",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-factor-xla-inhibitor-help-prevent-stroke-certain-adults-high-risk",
-      "raw_publication_dates": [
-        "Mon, 09 Nov 2026 17:15:46 EST"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-factor-xla-inhibitor-help-prevent-stroke-certain-adults-high-risk",
-      "published_at": "2026-11-09",
-      "publication_date_error": null,
-      "description": "FDA today approved Sunharbo (asundexian) 50 mg tablets, the first factor XIa (FXIa) inhibitor for use in combination with antiplatelet therapy to reduce the risk of stroke in adults following a recent mild-to-moderate non-cardioembolic ischemic stroke or a high-risk transient ischemic attack.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "single_product_approval",
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "single_product_approval",
-        "signals": [],
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:single_product_approval",
-      "item_id": "c54b5fe51e5537d9baad"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Grants Accelerated Approval to a New Treatment for Head and Neck Squamous Cell Carcinoma",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-grants-accelerated-approval-new-treatment-head-and-neck-squamous-cell-carcinoma",
-      "raw_publication_dates": [
-        "Thu, 05 Nov 2026 17:30:38 EST"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-grants-accelerated-approval-new-treatment-head-and-neck-squamous-cell-carcinoma",
-      "published_at": "2026-11-05",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today granted accelerated approval to Rybrevant Faspro (amivantamab and hyaluronidase-lpuj) for the treatment of adults with recurrent or metastatic head and neck squamous cell carcinoma (HNSCC) whose disease has progressed on or after platinum-based chemotherap",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "single_product_approval",
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "single_product_approval",
-        "signals": [],
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:single_product_approval",
-      "item_id": "74b10c79f011e2c3a4fa"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Provides Clarity to Support Cell and Gene Therapy Development and Quality",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-provides-clarity-support-cell-and-gene-therapy-development-and-quality",
-      "raw_publication_dates": [
-        "Mon, 02 Nov 2026 08:56:06 EST"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-provides-clarity-support-cell-and-gene-therapy-development-and-quality",
-      "published_at": "2026-11-02",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today issued final guidance for manufacturers of cellular and gene therapy (CGT) products to implement a comprehensive, science- and risk-based plan for making sure their products meet potency standards.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "pharma",
-          "regulation"
-        ],
-        "priority": 81,
-        "category": "pharma",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "new_technology",
-        "signals": [
-          "new_technology"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "6041c398b60aaa07606b"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves First Plasmid DNA-based Immunotherapy for Adults with Recurrent Respiratory Papillomatosis",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-plasmid-dna-based-immunotherapy-adults-recurrent-respiratory-papillomatosis",
-      "raw_publication_dates": [
-        "Fri, 30 Oct 2026 16:32:08 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-plasmid-dna-based-immunotherapy-adults-recurrent-respiratory-papillomatosis",
-      "published_at": "2026-10-30",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today granted accelerated approval for Voceryq (doruxapapogene ralaplasmid and lalikinogene sifuplasmid-gxfd) for treatment of adults with recurrent respiratory papillomatosis (RRP).",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "single_product_approval",
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "single_product_approval",
-        "signals": [],
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:single_product_approval",
-      "item_id": "3313649621fa888ae819"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Launches New Program to Advance Neuroscience Medical Product Development",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-launches-new-program-advance-neuroscience-medical-product-development",
-      "raw_publication_dates": [
-        "Thu, 22 Oct 2026 12:58:19 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-launches-new-program-advance-neuroscience-medical-product-development",
-      "published_at": "2026-10-22",
-      "publication_date_error": null,
-      "description": "FDA announces the launch of the Neuroscience Advancement and Innovation Nexus (NAIN), a new agency program aligned with the Trump Administration’s efforts to accelerate medical innovation and deliver breakthrough treatments.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "42e9b4629e2841671821"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Issues Final Guidance on Prescription Drug Apps and Software",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-issues-final-guidance-prescription-drug-apps-and-software",
-      "raw_publication_dates": [
-        "Tue, 20 Oct 2026 09:03:14 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-issues-final-guidance-prescription-drug-apps-and-software",
-      "published_at": "2026-10-20",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today released final guidance establishing a clear framework for how drug companies can develop, distribute, and label apps used alongside their prescription medicines.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "pharma",
-          "regulation",
-          "healthtech"
-        ],
-        "priority": 89,
-        "category": "pharma",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "new_technology",
-        "signals": [
-          "new_technology"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "363698bbe819db64daac"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves Once-Weekly Generic Hormone Therapy Patch for Women",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-once-weekly-generic-hormone-therapy-patch-women",
-      "raw_publication_dates": [
-        "Tue, 20 Oct 2026 11:57:36 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-once-weekly-generic-hormone-therapy-patch-women",
-      "published_at": "2026-10-20",
-      "publication_date_error": null,
-      "description": "Today, the U.S. Food and Drug Administration approved the first generic of Climara Pro (estradiol and levonorgestrel transdermal system, 0.045 mg per day/0.015 mg), a transdermal hormone therapy patch for women with an intact uterus applied once a week.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "single_product_approval",
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "single_product_approval",
-        "signals": [],
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:single_product_approval",
-      "item_id": "ee84b76236b7a64f00b0"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves First-of-Its-Kind Chronic Hepatitis B Treatment",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-its-kind-chronic-hepatitis-b-treatment",
-      "raw_publication_dates": [
-        "Tue, 20 Oct 2026 15:40:38 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-its-kind-chronic-hepatitis-b-treatment",
-      "published_at": "2026-10-20",
-      "publication_date_error": null,
-      "description": "FDA today approved Hibsago (bepirovirsen) injection, in combination with existing antiviral therapy, to treat chronic hepatitis B virus (HBV) infection in certain adults without cirrhosis.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "regulation"
-        ],
-        "priority": 73,
-        "category": "regulation",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "new_technology",
-        "signals": [
-          "new_technology"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "e6174bc977b43ae3cc33"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves Immunotherapy That May Allow Certain Patients with Rectal Cancer to Avoid Chemotherapy, Radiation and Surgery",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-immunotherapy-may-allow-certain-patients-rectal-cancer-avoid-chemotherapy-radiation-and",
-      "raw_publication_dates": [
-        "Mon, 19 Oct 2026 12:19:38 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-immunotherapy-may-allow-certain-patients-rectal-cancer-avoid-chemotherapy-radiation-and",
-      "published_at": "2026-10-19",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today granted accelerated approval for a new use of the immunotherapy Jemperli (dostarlimab-gxly) that may allow some patients with locally advanced rectal cancer to avoid common treatments that can have a lasting impact on their daily life.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "single_product_approval",
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "single_product_approval",
-        "signals": [],
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:single_product_approval",
-      "item_id": "28430ea71391395f362e"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Launches the Rare Disease Framework Initiative to Develop a Holistic, Fit-For-Purpose Framework for Rare Disease Drug Development",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-launches-rare-disease-framework-initiative-develop-holistic-fit-purpose-framework-rare-disease",
-      "raw_publication_dates": [
-        "Wed, 14 Oct 2026 11:50:52 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-launches-rare-disease-framework-initiative-develop-holistic-fit-purpose-framework-rare-disease",
-      "published_at": "2026-10-14",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration, a division within the U.S. Department of Health and Human Services (HHS), today announced the Rare Disease Framework Initiative to reimagine the development of drugs and biologics for rare diseases.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "bfdc0202ba06f9e6b9ab"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves First Treatment for Certain People With BCG-Unresponsive Bladder Cancer",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-certain-people-bcg-unresponsive-bladder-cancer",
-      "raw_publication_dates": [
-        "Wed, 14 Oct 2026 11:14:51 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-certain-people-bcg-unresponsive-bladder-cancer",
-      "published_at": "2026-10-14",
-      "publication_date_error": null,
-      "description": "FDA Approves First Treatment for Certain People With BCG-Unresponsive Bladder Cancer",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "regulation"
-        ],
-        "priority": 73,
-        "category": "regulation",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "new_technology",
-        "signals": [
-          "new_technology"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "6129483e4257e705dcf4"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Seeks Public Input to Support Ibogaine Research",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-seeks-public-input-support-ibogaine-research",
-      "raw_publication_dates": [
-        "Mon, 05 Oct 2026 09:02:06 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-seeks-public-input-support-ibogaine-research",
-      "published_at": "2026-10-05",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today announced a request for information (RFI) describing approaches the agency is considering for the design of early-phase clinical trials of ibogaine drug products and seeking public input on those approaches.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "61b4373c4f6f06824faf"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves First Heart Valve Designed to Grow with Children",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-heart-valve-designed-grow-children",
-      "raw_publication_dates": [
-        "Thu, 01 Oct 2026 15:02:08 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-heart-valve-designed-grow-children",
-      "published_at": "2026-10-01",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today approved the Autus Size-Adjustable Valve, a surgically implanted pulmonary heart valve for pediatric patients with congenital pulmonary valve disease.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "single_product_approval",
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "single_product_approval",
-        "signals": [],
-        "reason": "not_global_interest:single_product_approval",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:single_product_approval",
-      "item_id": "83e34b9db61bc9cc1f9b"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Launches Nationwide Effort to Expand Scientific Expertise and Consumer Voices to Advisory Committees",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-launches-nationwide-effort-expand-scientific-expertise-and-consumer-voices-advisory-committees",
-      "raw_publication_dates": [
-        "Wed, 30 Sep 2026 09:26:33 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-launches-nationwide-effort-expand-scientific-expertise-and-consumer-voices-advisory-committees",
-      "published_at": "2026-09-30",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today announced a broad, nationwide recruitment effort to expand the range of qualified voices and perspectives on its advisory committees— the independent bodies that inform some of the most consequential decisions in American public health.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "91bde3dd942935c2a53e"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Investigation Leads to Charges Against Two Indian Nationals Involved in Transnational Counterfeit Drug Distribution Scheme",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-investigation-leads-charges-against-two-indian-nationals-involved-transnational-counterfeit-drug",
-      "raw_publication_dates": [
-        "Tue, 29 Sep 2026 17:01:07 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-investigation-leads-charges-against-two-indian-nationals-involved-transnational-counterfeit-drug",
-      "published_at": "2026-09-29",
-      "publication_date_error": null,
-      "description": "The U.S. Attorney’s Office for the Middle District of Florida and the Criminal Division of the U.S. Department of Justice today announced federal charges against Swapnadip Roy, 33, and Vicky Ramancha, 37, both Indian nationals.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "safety_alert_or_recall",
-        "reason": "not_global_interest:safety_alert_or_recall",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "safety_alert_or_recall",
-        "signals": [],
-        "reason": "not_global_interest:safety_alert_or_recall",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:safety_alert_or_recall",
-      "item_id": "7d2ef3c2fdbe31d5d2fa"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA intends to evaluate changes to the PMTA regulatory framework",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-intends-evaluate-changes-pmta-regulatory-framework",
-      "raw_publication_dates": [
-        "Mon, 28 Sep 2026 17:00:01 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-intends-evaluate-changes-pmta-regulatory-framework",
-      "published_at": "2026-09-28",
-      "publication_date_error": null,
-      "description": "FDA is carefully reviewing its experience implementing the Premarket Tobacco Product Application (PMTA) rule, as well as recent judicial developments, including a federal lawsuit filed in the U.S. District Court for the Northern District of Texas challenging the current regulatory framework.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "07effc69c7f88a077b8b"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "FDA Approves First Treatment for MCT8 Deficiency",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-mct8-deficiency",
-      "raw_publication_dates": [
-        "Mon, 28 Sep 2026 17:43:18 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-mct8-deficiency",
-      "published_at": "2026-09-28",
-      "publication_date_error": null,
-      "description": "The U.S. Food and Drug Administration today approved Emcitate (tiratricol) tablets for oral suspension to treat peripheral thyrotoxicosis (excess thyroid hormone levels in the blood that causes symptoms, such as rapid heart rate, increased blood pressure and adverse effects on metabolism) in patient",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "candidate",
-        "relevant": true,
-        "segments": [
-          "regulation"
-        ],
-        "priority": 73,
-        "category": "regulation",
-        "reason": "segment_keyword_match",
-        "method": "deterministic_rules_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        },
-        "chile_transfer": "hypothesis_only"
-      },
-      "global_interest": {
-        "relevant": true,
-        "category": "new_technology",
-        "signals": [
-          "new_technology"
-        ],
-        "reason": "global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "pending",
-      "reason": "awaiting_editorial_corroboration_and_rights_review",
-      "item_id": "d2674c5a4f395eda7822"
-    },
-    {
-      "source": "fda",
-      "section": "press_releases",
-      "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-      "title": "Federal Court Enters Consent Decree Against Gold Star Distribution, Inc. Following Persistent Insanitary Warehouse Conditions",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "categories": [],
-      "guid": "http://www.fda.gov/news-events/press-announcements/federal-court-enters-consent-decree-against-gold-star-distribution-inc-following-persistent",
-      "raw_publication_dates": [
-        "Wed, 23 Sep 2026 15:50:17 EDT"
-      ],
-      "publication_date_basis": "publisher_feed_declared_date",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "url": "https://www.fda.gov/news-events/press-announcements/federal-court-enters-consent-decree-against-gold-star-distribution-inc-following-persistent",
-      "published_at": "2026-09-23",
-      "publication_date_error": null,
-      "description": "A U.S. Food and Drug Administration investigation resulted in a federal court order, dated Sept. 21, 2026, stopping a warehouse operator from distributing FDA-regulated products including food, drugs, medical devices, and cosmetics until it fixes its operations to meet federal legal requirements.",
-      "description_truncated": false,
-      "description_basis": "publisher_feed_summary_verbatim",
-      "sections": [
-        "press_releases"
-      ],
-      "index_evidence": [
-        {
-          "feed_url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
-          "body_sha256": "6e00897a4c95c36f9602a4a0c31a3414976ca9bae48c8483605de7dbb74add34",
-          "fetched_at": "2026-11-18T20:42:34.537959+00:00",
-          "http_status": 200,
-          "tls_verified": true
-        }
-      ],
-      "classification": {
-        "materiality": "excluded",
-        "relevant": false,
-        "segments": [],
-        "priority": 0,
-        "category": "no_global_interest_signal",
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "ai_gate": {
-          "invoked": false,
-          "reason": "paid_ai_calls_contract_0"
-        }
-      },
-      "global_interest": {
-        "relevant": false,
-        "category": "no_global_interest_signal",
-        "signals": [],
-        "reason": "not_global_interest:no_global_interest_signal",
-        "method": "direccion_global_interest_v1",
-        "source": "fda"
-      },
-      "publication_ready": false,
-      "paid_tier_eligible": true,
-      "status": "rejected",
-      "reason": "not_global_interest:no_global_interest_signal",
-      "item_id": "eb6d04ae8d35ebbaefc1"
-    },
-    {
       "source": "ema",
       "section": "news",
       "feed_url": "https://www.ema.europa.eu/en/news.xml",
@@ -41701,8 +40427,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "ab7648d9860f45cbef06c58fcd7ba65c4e9e228d324a568f7fea4e2d0658e3a9",
-          "fetched_at": "2026-11-18T20:42:31.123297+00:00",
+          "body_sha256": "db320c173dad316ea0091432fef044bac501df51ebfb382ee33df393ef5a703a",
+          "fetched_at": "2026-11-19T04:12:05.286787+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41761,8 +40487,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "ab7648d9860f45cbef06c58fcd7ba65c4e9e228d324a568f7fea4e2d0658e3a9",
-          "fetched_at": "2026-11-18T20:42:31.123297+00:00",
+          "body_sha256": "db320c173dad316ea0091432fef044bac501df51ebfb382ee33df393ef5a703a",
+          "fetched_at": "2026-11-19T04:12:05.286787+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41822,8 +40548,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-          "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+          "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+          "fetched_at": "2026-11-19T04:12:06.397667+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41883,8 +40609,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-          "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+          "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+          "fetched_at": "2026-11-19T04:12:06.397667+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -41944,8 +40670,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-          "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+          "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+          "fetched_at": "2026-11-19T04:12:06.397667+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42005,8 +40731,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-          "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+          "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+          "fetched_at": "2026-11-19T04:12:06.397667+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42066,8 +40792,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-          "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+          "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+          "fetched_at": "2026-11-19T04:12:06.397667+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42127,8 +40853,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-          "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+          "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+          "fetched_at": "2026-11-19T04:12:06.397667+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42188,8 +40914,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-          "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+          "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+          "fetched_at": "2026-11-19T04:12:06.397667+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42249,8 +40975,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/new-human-medicine-new.xml",
-          "body_sha256": "bf4d714568375e95e04e8ba4dbb905a0a7c4008b1a8b5393add83cda48b274f5",
-          "fetched_at": "2026-11-18T20:42:32.158350+00:00",
+          "body_sha256": "eb794193e9b1dce371fa0d259cac90837403069eaf227c2cd5dd19792c450cdd",
+          "fetched_at": "2026-11-19T04:12:06.397667+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42310,8 +41036,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "ab7648d9860f45cbef06c58fcd7ba65c4e9e228d324a568f7fea4e2d0658e3a9",
-          "fetched_at": "2026-11-18T20:42:31.123297+00:00",
+          "body_sha256": "db320c173dad316ea0091432fef044bac501df51ebfb382ee33df393ef5a703a",
+          "fetched_at": "2026-11-19T04:12:05.286787+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42371,8 +41097,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "ab7648d9860f45cbef06c58fcd7ba65c4e9e228d324a568f7fea4e2d0658e3a9",
-          "fetched_at": "2026-11-18T20:42:31.123297+00:00",
+          "body_sha256": "db320c173dad316ea0091432fef044bac501df51ebfb382ee33df393ef5a703a",
+          "fetched_at": "2026-11-19T04:12:05.286787+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42432,8 +41158,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "ab7648d9860f45cbef06c58fcd7ba65c4e9e228d324a568f7fea4e2d0658e3a9",
-          "fetched_at": "2026-11-18T20:42:31.123297+00:00",
+          "body_sha256": "db320c173dad316ea0091432fef044bac501df51ebfb382ee33df393ef5a703a",
+          "fetched_at": "2026-11-19T04:12:05.286787+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42492,8 +41218,8 @@
       "index_evidence": [
         {
           "feed_url": "https://www.ema.europa.eu/en/news.xml",
-          "body_sha256": "ab7648d9860f45cbef06c58fcd7ba65c4e9e228d324a568f7fea4e2d0658e3a9",
-          "fetched_at": "2026-11-18T20:42:31.123297+00:00",
+          "body_sha256": "db320c173dad316ea0091432fef044bac501df51ebfb382ee33df393ef5a703a",
+          "fetched_at": "2026-11-19T04:12:05.286787+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42561,7 +41287,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42628,7 +41354,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42691,7 +41417,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42753,7 +41479,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42821,7 +41547,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42889,7 +41615,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -42951,7 +41677,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43013,7 +41739,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43076,7 +41802,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43138,7 +41864,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43202,7 +41928,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43265,7 +41991,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43327,7 +42053,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1244/feed",
           "body_sha256": "bae90e0bca258ae7694cf74439de1a53fdb715fe6c32375f74bfa8741d36a084",
-          "fetched_at": "2026-11-18T20:42:44.437522+00:00",
+          "fetched_at": "2026-11-19T04:12:16.507670+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43389,7 +42115,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43453,7 +42179,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43515,7 +42241,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43577,7 +42303,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43644,7 +42370,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43706,7 +42432,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43768,7 +42494,7 @@
         {
           "feed_url": "https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed",
           "body_sha256": "5ed903fc262663eeba2de828a00943b820025682b3d14dca4f71f3f788646f23",
-          "fetched_at": "2026-11-18T20:42:43.254846+00:00",
+          "fetched_at": "2026-11-19T04:12:15.385523+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43833,7 +42559,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43898,7 +42624,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -43964,7 +42690,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44035,7 +42761,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44106,7 +42832,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44174,7 +42900,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44241,7 +42967,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44308,7 +43034,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44373,7 +43099,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44438,7 +43164,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44511,7 +43237,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44579,7 +43305,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44645,7 +43371,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44710,7 +43436,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44779,7 +43505,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44852,7 +43578,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44925,7 +43651,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -44993,7 +43719,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45059,7 +43785,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45124,7 +43850,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45197,7 +43923,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45270,7 +43996,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45335,7 +44061,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45400,7 +44126,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45465,7 +44191,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45530,7 +44256,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45595,7 +44321,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45660,7 +44386,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45726,7 +44452,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45793,7 +44519,7 @@
         {
           "feed_url": "https://health.ec.europa.eu/node/2/rss_en",
           "body_sha256": "d8c10513c9dca57b026508a908a1c739d1bc053a5c210a938b7fc755f978c055",
-          "fetched_at": "2026-11-18T20:42:47.314764+00:00",
+          "fetched_at": "2026-11-19T04:12:19.280039+00:00",
           "http_status": 200,
           "tls_verified": true
         }
@@ -45861,32 +44587,6 @@
       "url": "https://health.ec.europa.eu/latest-updates/new-guidance-document-mdcg-2026-6-guidance-clinical-evidence-orphan-ivds-2026-11-03_en",
       "title": "New guidance document MDCG 2026-6 on Guidance on clinical evidence for orphan IVDs",
       "published_at": "2026-11-03",
-      "segments": [
-        "pharma",
-        "regulation",
-        "healthtech"
-      ],
-      "priority": 89,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "363698bbe819db64daac",
-      "source": "fda",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-issues-final-guidance-prescription-drug-apps-and-software",
-      "title": "FDA Issues Final Guidance on Prescription Drug Apps and Software",
-      "published_at": "2026-10-20",
       "segments": [
         "pharma",
         "regulation",
@@ -46031,56 +44731,6 @@
       ]
     },
     {
-      "item_id": "f0eddf418fa3c40f23e3",
-      "source": "fda",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-launches-global-reliance-disclosure-program-expand-patient-access-medicines-worldwide",
-      "title": "FDA Launches the Global Reliance Disclosure Program to Expand Patient Access to Medicines Worldwide",
-      "published_at": "2026-11-17",
-      "segments": [
-        "pharma",
-        "regulation"
-      ],
-      "priority": 81,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "aecb95a9c5d8c2746b1d",
-      "source": "fda",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-drug-shown-help-patients-infantile-onset-niemann-pick-disease-type-c-live-longer",
-      "title": "FDA Approves First Drug Shown to Help Patients with Infantile-Onset Niemann-Pick Disease Type C Live Longer",
-      "published_at": "2026-11-17",
-      "segments": [
-        "pharma",
-        "regulation"
-      ],
-      "priority": 81,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
       "item_id": "d77abcc1a0e5b3cc3bb5",
       "source": "ec_health",
       "attribution": "European Commission – Public Health (DG SANTE)",
@@ -46091,31 +44741,6 @@
       "segments": [
         "regulation",
         "healthtech"
-      ],
-      "priority": 81,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "6041c398b60aaa07606b",
-      "source": "fda",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-provides-clarity-support-cell-and-gene-therapy-development-and-quality",
-      "title": "FDA Provides Clarity to Support Cell and Gene Therapy Development and Quality",
-      "published_at": "2026-11-02",
-      "segments": [
-        "pharma",
-        "regulation"
       ],
       "priority": 81,
       "status": "pending_editorial",
@@ -46287,78 +44912,6 @@
         "pharma"
       ],
       "priority": 76,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "e6174bc977b43ae3cc33",
-      "source": "fda",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-its-kind-chronic-hepatitis-b-treatment",
-      "title": "FDA Approves First-of-Its-Kind Chronic Hepatitis B Treatment",
-      "published_at": "2026-10-20",
-      "segments": [
-        "regulation"
-      ],
-      "priority": 73,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "6129483e4257e705dcf4",
-      "source": "fda",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-certain-people-bcg-unresponsive-bladder-cancer",
-      "title": "FDA Approves First Treatment for Certain People With BCG-Unresponsive Bladder Cancer",
-      "published_at": "2026-10-14",
-      "segments": [
-        "regulation"
-      ],
-      "priority": 73,
-      "status": "pending_editorial",
-      "publication_ready": false,
-      "chile_transfer": "hypothesis_only",
-      "requires": [
-        "verified_business_consequence",
-        "independent_corroboration",
-        "rights_review",
-        "editorial_approval"
-      ]
-    },
-    {
-      "item_id": "d2674c5a4f395eda7822",
-      "source": "fda",
-      "attribution": "U.S. Food and Drug Administration (FDA)",
-      "bylines": [
-        "FDA"
-      ],
-      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-mct8-deficiency",
-      "title": "FDA Approves First Treatment for MCT8 Deficiency",
-      "published_at": "2026-09-28",
-      "segments": [
-        "regulation"
-      ],
-      "priority": 73,
       "status": "pending_editorial",
       "publication_ready": false,
       "chile_transfer": "hypothesis_only",
