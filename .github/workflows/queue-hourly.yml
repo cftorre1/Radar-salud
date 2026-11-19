@@ -131,10 +131,15 @@ jobs:
           git add data/state data/history data/analysis_cache data/ai_usage data/source_health.json data/inbox data/outbox
           if [ "${{ job.status }}" = success ]; then
             git add web/data
+            # Insight share pages (export_insights, Dirección 12-nov-2026) live next to web/data.
+            [ -d web/i ] && git add web/i
+            # Normativa registry (Dirección 11-nov-2026): no 90-day logic, it only grows; kept only with an accepted snapshot.
+            [ -d data/normativa ] && git add data/normativa
           else
             # Rejected snapshot: drop it so it is neither published nor left unstaged to block the rebase.
             git checkout -- web/data
             git clean -fdq -- web/data
+            [ -d web/i ] && { git checkout -- web/i; git clean -fdq -- web/i; } || true
           fi
           if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           web_changed=false; git diff --cached --quiet -- web/data || web_changed=true

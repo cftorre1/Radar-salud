@@ -152,6 +152,13 @@ jobs:
           echo "### Live beta validation" >> "$GITHUB_STEP_SUMMARY"
           echo "Outcome: ${{ steps.beta_validation.outcome }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Beta source failures remain repair-required but do not suppress independent core collection." >> "$GITHUB_STEP_SUMMARY"
+      # 9-nov-2026: external model failures (e.g. RateLimitError) silently held verified normative
+      # records. Deterministic ledger read, no model call; warns in the run summary, never blocks.
+      - name: External AI failure alert (warning only)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python -m radar_salud.ai_health
       - name: Snapshot reviewer after collection
         timeout-minutes: 15
         run: python -m pytest -q tests/test_reviewer.py
@@ -200,6 +207,10 @@ jobs:
           git add data/audits/global_integration_2026_10_11
           if [ "${{ job.status }}" = success ]; then
             git add web/data
+            # Insight share pages (export_insights, Dirección 12-nov-2026) live next to web/data.
+            [ -d web/i ] && git add web/i
+            # Normativa registry (Dirección 11-nov-2026): no 90-day logic, it only grows; kept only with an accepted snapshot.
+            [ -d data/normativa ] && git add data/normativa
           else
             # Rejected snapshot (10-nov-2026, same fix as queue-hourly #168): drop the unstaged web/data so it is
             # neither published nor left behind to block the rebase; the paid data staged above still persists.
@@ -207,6 +218,7 @@ jobs:
             git add web/data/source_health.json web/data/product.json
             git checkout -- web/data
             git clean -fdq -- web/data
+            [ -d web/i ] && { git checkout -- web/i; git clean -fdq -- web/i; } || true
           fi
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "chore: refresh Alicanto Salud"
