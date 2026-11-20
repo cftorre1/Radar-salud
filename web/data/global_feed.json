@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-11-19",
-  "generated_at": "2026-11-19T04:12:20.578742+00:00",
+  "as_of": "2026-11-20",
+  "generated_at": "2026-11-20T03:04:53.743615+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,9 +16,9 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-11-18",
-    "items_last_2_days": 2,
+    "items_last_2_days": 0,
     "items_last_7_days": 2,
-    "status": "fresh",
+    "status": "stale",
     "stale_after_days": 2
   },
   "sources": [
@@ -39,23 +39,37 @@
       "FDA"
     ],
     [
+      "paho",
+      "OPS"
+    ],
+    [
       "who",
       "OMS"
     ]
   ],
   "held": {
-    "feed_not_authorized_for_display": 17,
-    "not_global_interest:facility_opening": 1,
-    "not_global_interest:no_global_interest_signal": 25,
-    "not_global_interest:source_rule_exclusion": 3,
-    "not_material_or_unverified": 138,
-    "not_relevant_or_undated": 64,
-    "official_title_without_executive_keyword": 93,
-    "publication_activation_pending_paho": 568
+    "feed_not_authorized_for_display": 18,
+    "not_global_interest:facility_opening": 2,
+    "not_global_interest:no_global_interest_signal": 58,
+    "not_global_interest:single_product_approval": 1,
+    "not_global_interest:source_rule_exclusion": 8,
+    "not_material_or_unverified": 481,
+    "not_relevant_or_undated": 76,
+    "official_title_without_executive_keyword": 281
   },
   "capped_per_source_day": 0,
-  "duplicates_merged": 0,
-  "duplicates": [],
+  "duplicates_merged": 1,
+  "duplicates": [
+    {
+      "kept_id": "444047af244f7312c9d4",
+      "merged_id": "05b21e98add9d71ab8dd",
+      "source": "paho",
+      "url": "https://www.paho.org/en/news/8-10-2026-who-issues-first-global-guidelines-child-and-adolescent-obesity",
+      "published_at": "2026-10-08",
+      "title": "WHO issues first global guidelines on child and adolescent obesity",
+      "reason": "cross_source_same_title"
+    }
+  ],
   "description_policy": "publisher_summary_verbatim_max_300_chars_or_title_only",
   "weekly_signal": [
     {
@@ -164,7 +178,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-19",
+      "first_seen_on": "2026-11-20",
       "title_es": "El Comité de Seguridad Sanitaria de la UE llama a tomar medidas urgentes contra las bacterias resistentes a los antibióticos",
       "description_es": "El Comité de Seguridad Sanitaria de la UE llama a tomar medidas urgentes contra las bacterias resistentes a los antibióticos",
       "translation": {
@@ -270,7 +284,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-19",
+      "first_seen_on": "2026-11-20",
       "title_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "description_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "translation": {
@@ -961,6 +975,14 @@
       },
       "sections": [],
       "first_seen_on": "2026-11-18",
+      "also_reported_by": [
+        {
+          "source": "paho",
+          "source_label": "OPS",
+          "url": "https://www.paho.org/en/news/8-10-2026-who-issues-first-global-guidelines-child-and-adolescent-obesity",
+          "published_at": "2026-10-08"
+        }
+      ],
       "summary_es": "La WHO emite las primeras directrices mundiales sobre obesidad infantil y adolescente.",
       "translation": {
         "status": "summarized",
@@ -1031,6 +1053,53 @@
         "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
         "change_notice_es": "Traducción de Alicanto",
         "cache_key": "a17b1b0b221762be5d0dbaa3c5857451"
+      }
+    },
+    {
+      "id": "4a10d661d54e0ec6cb43",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "PAHO and Curaçao sign first Country Cooperation Strategy to strengthen health system resilience and primary health care",
+      "url": "https://www.paho.org/en/news/1-10-2026-paho-and-curacao-sign-first-country-cooperation-strategy-strengthen-health-system",
+      "published_at": "2026-10-01",
+      "segments": [
+        "providers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Prestadores"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 88,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-20",
+      "summary_es": "PAHO y Curaçao firmaron su primera Estrategia de Cooperación País para fortalecer la resiliencia del sistema de salud y la atención primaria.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "48c286ef079237a50ea8d6da0147070e"
       }
     },
     {
@@ -1252,6 +1321,53 @@
       "summary_input": "publisher_page_meta_description"
     },
     {
+      "id": "7d8ec099e01b14f06c82",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Nicaragua strengthens its readiness for the responsible adoption of artificial intelligence in health",
+      "url": "https://www.paho.org/en/news/17-9-2026-nicaragua-strengthens-its-readiness-responsible-adoption-artificial-intelligence",
+      "published_at": "2026-09-17",
+      "segments": [
+        "ai_in_health"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "IA en salud"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-20",
+      "summary_es": "Nicaragua fortalece su preparación para adoptar responsablemente la inteligencia artificial en salud.",
+      "translation": {
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "cache_key": "05caf8fcebfa9a9ac81a0bbc9f776b29"
+      }
+    },
+    {
       "id": "463a07f32cd10e2546fc",
       "source": "fda",
       "source_label": "FDA",
@@ -1453,6 +1569,117 @@
       }
     },
     {
+      "id": "d8e07172a870d3694565",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Seguro Social de Guatemala fortalece la gestión de antirretrovirales con cooperación técnica de la OPS",
+      "url": "https://www.paho.org/es/noticias/10-9-2026-seguro-social-guatemala-fortalece-gestion-antirretrovirales-con-cooperacion",
+      "published_at": "2026-09-10",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 75,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-20",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
+      "id": "cf71ca0b4e4bb3b122f5",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Salud y OPS en Argentina colaboran en el desarrollo de estrategias y registro nominal de vacunación electrónico en tiempo real en la región de Cuyo",
+      "url": "https://www.paho.org/es/noticias/7-9-2026-salud-ops-argentina-colaboran-desarrollo-estrategias-registro-nominal-vacunacion",
+      "published_at": "2026-09-07",
+      "segments": [
+        "pharma"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Medicamentos y farma"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-20",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
+      "id": "aba890b2cd30d6d2853c",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Bolivia presenta en Brasilia su Plan Nacional de Salud 2026-2030 enfocado en la reingeniería del sistema sanitario y la transformación digital",
+      "url": "https://www.paho.org/es/noticias/3-9-2026-bolivia-presenta-brasilia-su-plan-nacional-salud-2026-2030-enfocado-reingenieria",
+      "published_at": "2026-09-03",
+      "segments": [
+        "healthtech"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-20",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
       "id": "78c6485f030d4ad75096",
       "source": "who",
       "source_label": "OMS",
@@ -1607,6 +1834,43 @@
       "summary_input": "publisher_page_meta_description"
     },
     {
+      "id": "14fca5ddec979f05df8f",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Bolivia inicia fortalecimiento de las Redes Integradas de Servicios de Salud y la APS en el marco de la Estrategia Global de Acceso y Cobertura Universal de Salud",
+      "url": "https://www.paho.org/es/noticias/1-9-2026-bolivia-inicia-fortalecimiento-redes-integradas-servicios-salud-aps-marco-0",
+      "published_at": "2026-09-01",
+      "segments": [
+        "payers"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "Aseguradores y financiamiento"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 90,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-20",
+      "translation": {
+        "status": "source_in_spanish"
+      }
+    },
+    {
       "id": "0e2cceea0cf02f02cd4d",
       "source": "who",
       "source_label": "OMS",
@@ -1753,15 +2017,15 @@
   ],
   "translation": {
     "translated": 14,
-    "summarized": 18,
-    "from_cache": 32,
-    "verification_failed": 11,
-    "review_failed": 0,
-    "not_allowed": 15,
+    "summarized": 20,
+    "from_cache": 34,
+    "verification_failed": 14,
+    "review_failed": 2,
+    "not_allowed": 35,
     "pending": 0,
-    "source_in_spanish": 0
+    "source_in_spanish": 4
   },
-  "ai_text_items": 32,
+  "ai_text_items": 34,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget",
   "weekly_pick": {
     "rule": "global_weekly_pick_v1",
@@ -1781,11 +2045,11 @@
   },
   "display": {
     "spanish_only": true,
-    "shown": 32,
-    "hidden": 26,
+    "shown": 38,
+    "hidden": 47,
     "hidden_by_reason": {
-      "not_allowed_without_verified_summary": 15,
-      "translation_verification_failed": 11
+      "not_allowed_without_verified_summary": 35,
+      "translation_verification_failed": 12
     },
     "authorized_by": "Dirección (cftorre1)",
     "authorized_at": "2026-10-30"
