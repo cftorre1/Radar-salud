@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "as_of": "2026-11-20",
-  "generated_at": "2026-11-20T03:04:53.743615+00:00",
+  "generated_at": "2026-11-20T19:54:43.389685+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -15,9 +15,9 @@
   "window_days": 90,
   "retention_days": 90,
   "freshness": {
-    "newest_published_at": "2026-11-19",
-    "items_last_2_days": 1,
-    "items_last_7_days": 9,
+    "newest_published_at": "2026-11-20",
+    "items_last_2_days": 2,
+    "items_last_7_days": 10,
     "status": "fresh",
     "stale_after_days": 2
   },
@@ -53,9 +53,9 @@
     "not_global_interest:no_global_interest_signal": 58,
     "not_global_interest:single_product_approval": 1,
     "not_global_interest:source_rule_exclusion": 8,
-    "not_material_or_unverified": 481,
-    "not_relevant_or_undated": 76,
-    "official_title_without_executive_keyword": 281
+    "not_material_or_unverified": 491,
+    "not_relevant_or_undated": 64,
+    "official_title_without_executive_keyword": 283
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 1,
@@ -95,15 +95,55 @@
       ]
     },
     {
-      "segment": "providers",
-      "label_es": "Prestadores",
+      "segment": "ai_in_health",
+      "label_es": "IA en salud",
       "count": 1,
       "item_ids": [
-        "353961edf9ce28e97388"
+        "b8891628df8b074abe12"
       ]
     }
   ],
   "items": [
+    {
+      "id": "b8891628df8b074abe12",
+      "source": "paho",
+      "source_label": "OPS",
+      "attribution": "Organización Panamericana de la Salud (OPS)",
+      "bylines": [],
+      "title": "Artificial Intelligence for Health: New PAHO Publication Examines the Opportunities and Risks of Reinforcement Learning",
+      "url": "https://www.paho.org/en/news/20-11-2026-artificial-intelligence-health-new-paho-publication-examines-opportunities-and",
+      "published_at": "2026-11-20",
+      "segments": [
+        "ai_in_health"
+      ],
+      "description": null,
+      "description_truncated": false,
+      "description_source": null,
+      "tags_es": [
+        "IA en salud"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 85,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "license": "metadata_and_link_only (Dirección 27-oct)",
+        "attribution": null,
+        "evidence_urls": [],
+        "verified_on": null
+      },
+      "sections": [],
+      "first_seen_on": "2026-11-20",
+      "translation": {
+        "status": "not_allowed",
+        "reason": "PAHO publications are CC BY-NC-SA 3.0 IGO (commercial use needs permission; translations under the same licence with a disclaimer); website news not addressed -> unclear, keep the original. PAHO Spanish pages (/es/) are already in Spanish.",
+        "note_es": "Contenido en inglés (licencia no permite traducción)",
+        "summary_status": "verification_failed"
+      }
+    },
     {
       "id": "353961edf9ce28e97388",
       "source": "paho",
@@ -4057,9 +4097,9 @@
     "translated": 14,
     "summarized": 20,
     "from_cache": 34,
-    "verification_failed": 14,
-    "review_failed": 2,
-    "not_allowed": 35,
+    "verification_failed": 13,
+    "review_failed": 1,
+    "not_allowed": 36,
     "pending": 0,
     "source_in_spanish": 4
   },
