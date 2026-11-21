@@ -79,7 +79,7 @@ def test_build_groups_inputs_topics_review_and_ficha():
     assert by["Circular N°3935"]["review"]["kind"] == "susp" and by["Circular N°3935"]["kind"] == "none"
     assert by["Circular IF/N°541"]["in_feed"] and not by["Circular N°3930"]["in_feed"]
     assert all(x["ficha"].startswith(f"index.html?abrir=1&desde=normativa&n={x['id']}#sig-") for x in ix["items"])
-    assert ix["review_pending"] == 1  # the Dictamen; 3935 has a decision; the others carry a literal rule
+    assert ix["review_pending"] == 0  # Dirección 21-nov-2026: a text with no date is in force from its date
 
 
 def test_signal_id_matches_al_dia():
@@ -213,9 +213,15 @@ def test_term_from_publication_is_computed_only_in_calendar_units():
     assert f("6 meses corridos contados desde su publicación. Contiene disposiciones transitorias.", "2026-10-28")["eff"] == "2027-04-28"
     assert f("90 días corridos desde su publicación", "2026-01-31")["eff"] == "2026-05-01"
     assert f("un año contado desde su publicación", "2024-02-29")["eff"] == "2025-02-28"
-    assert f("30 días hábiles desde su publicación", "2026-10-28") is None  # holidays: never computed
-    assert f("30 días desde su publicación", "2026-10-28") is None  # may be business days
-    assert f("seis meses contados desde su publicación en el Diario Oficial", "2026-10-28") is None
+    # Dirección 21-nov-2026: business days are computed (no Saturdays, Sundays or holidays: 8-dic-2026);
+    # «30 días» alone are calendar days (review of #223: no Ley 19.880 exception without Dirección).
+    assert f("30 días hábiles desde su publicación", "2026-10-28")["eff"] == "2026-12-10"
+    assert f("30 días desde su publicación", "2026-10-28")["eff"] == "2026-11-27"
+    assert f("30 días desde su publicación, conforme a la Ley N° 19.880", "2026-10-28")["eff"] == "2026-11-27"  # still calendar
+    assert f("30 días hábiles desde su publicación", "2029-10-28") is None  # holidays of 2029 not listed: never guessed
+    # Counted from the Diario Oficial: from the captured edition; pending while it is not captured.
+    assert f("seis meses contados desde su publicación en el Diario Oficial", "2026-10-28") == {"kind": "on_publication_do", "eff": None, "prec": None}
+    assert f("seis meses contados desde su publicación en el Diario Oficial", "2026-10-28", "2026-11-11")["eff"] == "2027-05-11"
 
 
 def test_diario_oficial_date_comes_from_the_captured_edition_not_from_detection():
@@ -228,11 +234,11 @@ def test_diario_oficial_date_comes_from_the_captured_edition_not_from_detection(
     assert ni.diario_oficial_date({**rec, "label": "Circular IF/N°540"}, rows) is None
 
 
-def test_deadlines_and_diario_oficial_terms_are_never_computed():
+def test_deadlines_are_never_an_entry_into_force_and_diario_oficial_terms_wait_for_the_edition():
     f = ni.term_from_publication
     assert f("Las isapres tendrán un plazo de seis meses contados desde su publicación para adecuar sus sistemas", "2026-10-28") is None
     assert f("Deberán informar dentro de 30 días corridos desde su publicación", "2026-10-28") is None
-    assert f("Regirá seis meses contados desde la publicación de la presente circular en el Diario Oficial", "2026-10-28") is None
+    assert f("Regirá seis meses contados desde la publicación de la presente circular en el Diario Oficial", "2026-10-28")["kind"] == "on_publication_do"
     rec = {"label": "Circular IF/N°539", "type": "Circular", "date": "2026-10-30"}
     other_year = [{"source_name": "Diario Oficial", "event_date": "2026-11-11", "title": "Circular número IF/539, de 2025.- Otra"}]
     assert ni.diario_oficial_date(rec, other_year) is None
@@ -249,3 +255,75 @@ def test_validity_from_the_issuer_page_evidence_when_the_capture_missed_it(tmp_p
     (tmp_path / "b.json").write_text(json.dumps({"page_url": "https://www.suseso.gob.cl/x.html",
         "text": "Observación: Vigencia desde 2 de mayo de 2027 Vigencia: No Alterado Acción: Imparte"}), encoding="utf-8")
     assert ni.evidence_validity("https://www.suseso.gob.cl/x.html", tmp_path) == "Vigencia desde 2 de mayo de 2027"  # review of #222
+
+
+def test_chilean_business_days():
+    from radar_salud import cl_calendar as cc
+    from datetime import date
+    assert cc.add_business_days(date(2027, 1, 1), 10) == date(2027, 1, 15)  # 1-ene holiday, weekends skipped
+    assert cc.add_business_days(date(2026, 12, 4), 2) == date(2026, 12, 9)  # 8-dic-2026 Inmaculada Concepción
+    assert cc.add_business_days(date(2027, 12, 20), 30) is None  # 2028 not listed
+    assert cc.add_term(date(2026, 1, 31), 1, "mes") == date(2026, 2, 28)
+    assert cc.add_term(date(2026, 1, 1), 24, "horas") is None
+
+
+def test_compliance_deadlines_from_the_official_text():
+    # Dirección 21-nov-2026: duties with a term, apart from the entry into force, each with its countdown.
+    f = ni.compliance_terms
+    t538 = ("Asimismo, deberán informar a las personas beneficiarias la cobertura y los topes aplicables a dichas prestaciones, "
+            "mediante los canales registrados, dentro de los diez días hábiles siguientes a la vigencia de las presentes instrucciones.")
+    [p] = f(t538)
+    assert (p["accion"], p["n"], p["habiles"], p["anchor"]) == ("Informar a las personas beneficiarias la cobertura y los topes aplicables a dichas prestaciones", 10, True, "vigencia")
+    [d] = ni.due_dates([p], "2027-01-01", "2026-10-26", None)
+    assert d == {"accion": p["accion"], "plazo": "10 días hábiles", "desde": "desde la entrada en vigencia", "due": "2027-01-15", "caso": False, "pendiente": False}
+    [c] = f("La Isapre deberá pronunciarse respecto de la solicitud dentro del plazo de cinco días hábiles contado desde su presentación y derivar.")
+    assert c["anchor"] == "caso" and c["desde"] == "desde su presentación"
+    assert ni.due_dates([c], "2027-01-01", "2026-10-26", None)[0]["due"] is None
+    [o] = f("c) Comunicar directamente a los Operadores el número de contacto, dato requerido, dentro de 5 días hábiles contados desde la fecha del presente oficio.")
+    assert o["anchor"] == "acto" and ni.due_dates([o], None, "2026-09-29", None)[0]["due"] == "2026-10-06"
+    [x] = f("Las isapres deberán implementar el mecanismo de registro a más tardar el 1 de noviembre de 2026.")
+    assert x == {"accion": "Implementar el mecanismo de registro", "due": "2026-11-01", "anchor": "fecha", "quote": x["quote"]}
+    # A deadline anchored to an entry into force not yet known waits; recitals and objectives are not duties.
+    assert ni.due_dates([p], None, "2026-10-26", None)[0]["pendiente"] is True
+    assert f("OBJETIVO Aclarar el momento a partir del cual se computa el plazo de veinticuatro horas para informar.") == []
+    assert f("solicita que se le conceda una extensión del plazo de seis meses, que deberá resolverse dentro de 10 días.") == []
+    assert ni.unsplit("la cobertu ra y de la solicitud", {"cobertura", "dela"}) == "la cobertura y de la solicitud"
+
+
+def test_no_date_means_in_force_from_its_date_and_only_undatable_terms_stay_in_review():
+    reg = {"items": {k: {"id": k, "label": f"Resolución Exenta IF/N°{n}", "type": "Resolución Exenta", "emisor": "SIS",
+                         "date": "2026-10-01", "subject": "Isapres", "url": f"https://x/{k}", "validity": v, "related": [], "signal_id": k}
+                     for k, n, v in (("a", 1, None), ("b", 2, "Seis meses contados desde su notificación."))}}
+    built = {x["id"]: x for x in ni.build(reg, {"decisions": {}}, set())["items"]}
+    assert ni.effective_base(built["a"]) == "2026-10-01" and not built["a"].get("unclear")
+    assert built["b"]["unclear"] is True and ni.effective_base(built["b"]) is None
+
+
+def test_review_223_month_precision_suspensions_short_actions_and_persistence(tmp_path):
+    # A month-only entry into force is not a day: a deadline counted from it waits.
+    assert ni.effective_base({"kind": "date", "eff": "2027-03-01", "prec": "month"}) is None
+    assert ni.effective_base({"kind": "date", "eff": "2027-03-01", "prec": "month", "review": {"kind": "date", "eff": "2027-03-15"}}) == "2027-03-15"
+    assert ni.effective_base({"kind": "none", "unclear": True, "date": "2026-10-01", "review": {"kind": "nofija"}}) == "2026-10-01"
+    # A bare verb is not shown; the duty nearest the term is; «desde» never cut mid-word.
+    assert ni.compliance_terms("El Anexo deberá contemplar, en su envío, el detalle, a más tardar el 23 de noviembre de 2026.") == []
+    [p] = ni.compliance_terms("Las isapres deberán consignarse en el registro. Las entidades deberán enviar la planificación anual a la Superintendencia a más tardar el 15 de noviembre de 2026.")
+    assert p["accion"].startswith("Enviar la planificación anual")
+    [q] = ni.compliance_terms("Las entidades deberán remitir el informe dentro de 10 días hábiles siguientes a la recepción del presente requerimiento de información adicional (en caso de haberlo).")
+    assert q["anchor"] == "caso" and "(" not in q["desde"] and not q["desde"].endswith(("de", "del"))
+    # Suspended or repealed: no deadline in the public index.
+    reg = {"items": {"a": {"id": "a", "label": "Circular IF/N°1", "type": "Circular", "emisor": "SIS", "date": "2026-10-01",
+                           "subject": "Isapres", "url": "https://x/a", "validity": None, "related": [], "signal_id": "a",
+                           "plazos": [{"accion": "Informar a la Superintendencia", "n": 5, "unit": "días", "habiles": True, "anchor": "acto", "desde": "x"}]}}}
+    assert ni.build(reg, {"decisions": {}}, set())["items"][0]["plazos"][0]["due"] == "2026-10-08"
+    susp = {"decisions": {"a": {"kind": "susp", "by": "Resolución Exenta N°9", "quote": "Se suspende la aplicación de la circular.", "on": "2026-11-12"}}}
+    assert "plazos" not in ni.build(reg, susp, set())["items"][0]
+    # Persistence: the extracted deadlines are carried over, never recomputed for a norm already read.
+    (tmp_path / "e.json").write_text(json.dumps({"page_url": "https://www.superdesalud.gob.cl/a", "text": "Las isapres deberán informar a sus afiliados dentro de 10 días hábiles siguientes a la vigencia."}), encoding="utf-8")
+    sg = sig("Circular IF/N°777", "Circular", validity="Rige desde el 1 de enero de 2027.")
+    sg["source_url"] = "https://www.superdesalud.gob.cl/a"
+    r1 = ni.update_registry({"items": {}}, [sg], date(2026, 11, 21), evidence_dir=tmp_path)
+    rec = next(iter(r1["items"].values()))
+    assert rec["plazos"][0]["accion"] == "Informar a sus afiliados" and rec["plazos_v"] == ni.PLAZOS_V
+    (tmp_path / "e.json").write_text(json.dumps({"page_url": "https://www.superdesalud.gob.cl/a", "text": "otro texto"}), encoding="utf-8")
+    r2 = ni.update_registry(r1, [sg], date(2026, 11, 22), evidence_dir=tmp_path)
+    assert r2 == r1

@@ -65,3 +65,11 @@ button.nm-open{all:unset;cursor:pointer;display:inline}button.nm-open:focus-visi
 
 /* Suspension / review note inside the open ficha (no «Texto oficial» toggle since 11-nov-2026). */
 .nm-note{font-size:12.5px;color:var(--ink84);margin:4px 0 0}.nm-note .k{color:var(--ink48);font-weight:600}
+/* Dirección 21-nov-2026: «pendiente de Diario Oficial» and compliance deadlines, apart from the entry into force. */
+.nm-vig.pdo{background:var(--warn-soft);color:var(--warn)}
+.nm-plz{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:3px}
+.nm-pz{font-size:12px;line-height:1.4;color:var(--ink68,#4a4a4a);padding-left:8px;border-left:2px solid var(--warn)}
+.nm-pz .k{font-weight:650}
+.nm-pz.vence b{color:var(--urg)}
+.nm-pz.vencido,.nm-pz.caso{border-left-color:var(--off-soft,#ddd)}
+.nm-pz.vencido{color:var(--off,#777)}

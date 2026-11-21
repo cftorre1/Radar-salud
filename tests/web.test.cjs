@@ -626,17 +626,25 @@ test('norm card: same renderer in both sections, literal dates, groups and imple
  const base={id:'sis-circular-if-n534',label:'Circular IF/N°534',type:'Circular',emisor:'SIS',date:'2026-09-14',subject:'Bonos electrónicos',url:'https://www.superdesalud.gob.cl/x/',tema:'Isapres: planes, GES y CAEC',validity:'Las disposiciones entran en vigencia el 1 de diciembre de 2026.',kind:'date',eff:'2026-12-01',prec:'day',signal_id:'abc'};
  assert.equal(N.grp(base),'p30');assert.equal(N.vstat(base).days,20);
  assert.equal(N.grp({...base,eff:'2027-03-01'}),'p30p');assert.equal(N.grp({...base,eff:'2026-11-01'}),'v30');assert.equal(N.grp({...base,eff:'2026-08-01'}),'vhist');
- assert.equal(N.grp({...base,kind:'none',eff:null}),'sin');assert.equal(N.grp({...base,kind:'on_publication',eff:null,date:'2026-11-06'}),'v30');
- assert.equal(N.grp({...base,kind:'on_publication_do',eff:null}),'sin');assert.match(N.chip({...base,kind:'on_notification',eff:null}),/>Vigente desde su notificación<\/span>/);// no «(fecha no informada)» (11-nov-2026)
- assert.match(N.chip({...base,eff:'2027-03-01',prec:'month'}),/Entra en vigencia en 110 días · marzo de 2027/);assert.match(N.chip({...base,partial:true}),/con excepciones o texto incompleto/);
+ assert.equal(N.grp({...base,kind:'none',eff:null}),'vhist');assert.equal(N.grp({...base,kind:'none',eff:null,unclear:true}),'sin');assert.equal(N.grp({...base,kind:'on_publication',eff:null,date:'2026-11-06'}),'v30');
+ assert.equal(N.grp({...base,kind:'on_publication_do',eff:null}),'pdo');assert.match(N.chip({...base,kind:'on_publication_do',eff:null}),/>Desde su publicación en Diario Oficial, aún pendiente<\/span>/);assert.match(N.chip({...base,kind:'on_notification',eff:null}),/>Vigente desde su notificación<\/span>/);// no «(fecha no informada)» (11-nov-2026)
+ assert.match(N.chip({...base,eff:'2027-03-01',prec:'month'}),/Entra en vigencia en 110 días · marzo de 2027/);assert.match(N.chip({...base,partial:true}),/con excepciones: ver texto oficial/);
  assert.equal(N.grp({...base,review:{kind:'susp',by:'Res. Ex. 1',quote:'Se suspende la circular.',on:'2026-11-12'}}),'susp');
  const html=N.render(base,{read:false,readId:'abc',openHref:'index.html?abrir=1#sig-abc',dateLine:N.dateLine(base)});
  for(const re of [/data-read="abc"/,/Entra en vigencia en 20 días · 1 dic 2026/,/<span class="rk-pill rk-normativa">[^]*?Circular<\/span><span class="rk-meta">14 sep(?: 2026)? · SIS<\/span>/,/act act-open" href="index\.html\?abrir=1#sig-abc"/,/act act-src" href="https:\/\/www\.superdesalud\.gob\.cl\/x\/"/,/act act-share" data-share="n-sis-circular-if-n534"/,/class="nm-ck" data-impl="sis-circular-if-n534" role="checkbox" aria-checked="false"/])assert.match(html,re);
  assert.doesNotMatch(html,/Texto oficial de vigencia|nm-det/);
- assert.match(N.render({...base,kind:'none',eff:null,validity:null}),/El texto no indica desde cuándo rige <span class="tag">· fechada el 14 sep 2026<\/span> <span class="tag">· en revisión<\/span>/);
+ // Dirección 21-nov-2026: no date in the text → in force from the norm's own date; no technical notes.
+ assert.match(N.render({...base,kind:'none',eff:null,validity:null}),/>Vigente desde 14 sep 2026<\/span>/);assert.match(N.chip({...base,kind:'none',eff:null,unclear:true}),/>Vigencia en revisión</);
  // Dirección 20-nov-2026: the Diario Oficial edition gives the date; a computed term says so.
- assert.equal(N.grp({...base,kind:'on_publication_do',eff:null,do_date:'2026-11-11'}),'v30');assert.match(N.chip({...base,kind:'on_publication_do',eff:null,do_date:'2026-11-11'}),/Vigente desde su publicación en el Diario Oficial · 11 nov 2026/);
- assert.match(N.chip({...base,eff:'2027-04-28',computed:'6 meses corridos contados desde su publicación (2026-10-28)'}),/calculada: plazo contado desde la fecha de la norma/);
+ assert.equal(N.grp({...base,kind:'on_publication_do',eff:null,do_date:'2026-11-11'}),'v30');assert.match(N.chip({...base,kind:'on_publication_do',eff:null,do_date:'2026-11-11'}),/>Vigente desde 11 nov 2026<\/span>/);
+ assert.doesNotMatch(N.chip({...base,eff:'2027-04-28',computed:'6 meses corridos contados desde su publicación (2026-10-28)'}),/calculada|Diario Oficial/);
+ // Compliance deadlines: apart from the state, with their own countdown.
+ const pz=N.plazos({...base,plazos:[{accion:'Informar a las personas',plazo:'10 días hábiles',desde:'desde la entrada en vigencia',due:'2026-11-26',caso:false,pendiente:false},{accion:'Pronunciarse',plazo:'5 días hábiles',desde:'desde su presentación',due:null,caso:true,pendiente:false},{accion:'Comunicar',plazo:'5 días hábiles',desde:'desde la fecha de la norma',due:'2026-10-06',caso:false,pendiente:false},{accion:'Adecuar',plazo:'30 días corridos',desde:'desde la entrada en vigencia',due:null,caso:false,pendiente:true}]});
+ assert.match(pz,/Plazo:<\/span> Informar a las personas · <b>vence en 15 días<\/b> · 26 nov 2026/);assert.match(pz,/Plazo por caso:<\/span> Pronunciarse · 5 días hábiles desde su presentación/);
+ assert.match(pz,/Comunicar · venció el 6 oct 2026/);assert.match(pz,/Adecuar · 30 días corridos desde la entrada en vigencia · fecha pendiente/);
+ assert.equal(N.nextDue({...base,plazos:[{accion:'a',due:'2026-11-26'}]}),15);assert.equal(N.nextDue(base),null);
+ const sus={...base,review:{kind:'susp',by:'Res. Ex. 1',quote:'Se suspende la circular.',on:'2026-11-12'},plazos:[{accion:'a',due:'2026-11-26'}]};assert.equal(N.nextDue(sus),null);assert.equal(N.plazos(sus),'');
+ assert.match(N.plazos({...base,plazos:[{accion:'<img src=x>',plazo:'5 días',desde:'"x"',due:null,caso:true}]}),/&lt;img src=x&gt;[^]*&quot;x&quot;/);
  // «Implementada» is a mark: it never moves the norm out of its group or the countdown (review 11-nov).
  assert.equal(N.toggleImpl(base.id),true);assert.equal(N.isImpl(base.id),true);assert.equal(N.grp(base),'p30');assert.match(store[N.IMPL_KEY],/sis-circular-if-n534/);
  // Al día uses this same renderer for its Normativa rows and loads the same index.

@@ -13,9 +13,14 @@ test('Normativa: countdown, groups, months, filters, shared card and implementad
  // Countdown first: the days lead.
  const hc=page.locator('#nmHero .nm-hc').first();await expect(hc.locator('.nm-hd b')).toHaveText(/^\d+$/);
  await expect(page.locator('#nmCount')).toContainText(`${d.items.length} de ${d.items.length} normas`);
- await page.locator('#nmGroups [data-g="sin"]').click();const sin=d.items.filter(x=>(x.kind==='none'||(x.kind==='on_publication_do'&&!x.do_date))&&!x.review).length;// a DO edition gives the date (20-nov-2026)
- await expect(page.locator('#nmFeed .nm-card')).toHaveCount(sin);await expect(page.locator('#nmFeed .nm-vig.sin').first()).toContainText('en revisión');
- await page.locator('#nmGroups [data-g="all"]').click();
+ // Dirección 21-nov-2026: five states; «En revisión» only for a term Alicanto cannot date; no technical notes.
+ const sin=d.items.filter(x=>x.unclear&&!x.review).length;await expect(page.locator('#nmGroups [data-g="sin"]')).toHaveCount(sin?1:0);
+ const pdo=d.items.filter(x=>x.kind==='on_publication_do'&&!x.do_date&&!x.review).length;
+ if(pdo){await page.locator('#nmGroups [data-g="pdo"]').click();await expect(page.locator('#nmFeed .nm-card')).toHaveCount(pdo);await expect(page.locator('#nmFeed .nm-vig.pdo').first()).toHaveText('Desde su publicación en Diario Oficial, aún pendiente');await page.locator('#nmGroups [data-g="all"]').click()}
+ await expect(page.locator('#nmFeed')).not.toContainText('calculada');
+ // Compliance deadlines with their own countdown; «Plazos por vencer» filters the norms with one ahead.
+ const plz=d.items.filter(x=>(x.plazos||[]).some(p=>p.due&&p.due>='2026-11-11')).length;
+ if(plz){await page.locator('#nmGroups [data-g="plz"]').click();await expect(page.locator('#nmFeed .nm-card')).toHaveCount(plz);await expect(page.locator('#nmFeed .nm-pz.vence').first()).toContainText(/vence en \d+ días?/);await page.locator('#nmGroups [data-g="all"]').click()}
  // Default actions of any Al día card + the Implementada check (no «Texto oficial» toggle, Dirección 11-nov-2026).
  const card=page.locator('#nmFeed .nm-card').first();
  for(const sel of ['.dotbtn','.nm-ck','.act-open','.act-share'])await expect(card.locator(sel)).toHaveCount(1);
