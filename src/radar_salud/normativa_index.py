@@ -288,7 +288,23 @@ def diario_oficial_date(rec: dict, rows: list[dict]) -> str | None:
     return days[0] if days else None
 
 
-def update_registry(registry: dict, signals: list[dict], today: date, history: list[dict] | None = None) -> dict:
+def evidence_validity(url: Any, evidence_dir: Path | None) -> str | None:
+    """«Observación: Vigencia desde su publicación» on the issuer's own page (SUSESO), from Alicanto's stored evidence of
+    that same URL. Literal text only; nothing is inferred (Dirección 20-nov-2026, Circular 3935)."""
+    if not url or evidence_dir is None or not evidence_dir.is_dir():
+        return None
+    for f in sorted(evidence_dir.glob("*.json")):
+        d = _read(f, {})
+        if url not in (d.get("page_url"), d.get("document_url")):
+            continue
+        m = re.search(r"Observaci[oó]n:\s*(Vigencia\s+(?:desde|a\s+contar)[^.;]{3,120}?)(?=\s+(?:Acci[oó]n|Fuentes|Materia|Destinatarios):|[.;]|$)", str(d.get("text") or ""))
+        if m:
+            return " ".join(m.group(1).split())
+    return None
+
+
+def update_registry(registry: dict, signals: list[dict], today: date, history: list[dict] | None = None,
+                    evidence_dir: Path | None = None) -> dict:
     """Upsert today's Normativa signals; never drop a record by age (no 90-day logic).
 
     A record changes only when its captured fields change (no daily churn). A norm that Al día stops showing (HOLD,
@@ -310,6 +326,8 @@ def update_registry(registry: dict, signals: list[dict], today: date, history: l
             rec["do_date"] = prev["do_date"]  # the Diario Oficial date stays once found (review of #221)
         if not rec["validity"] and (prev or {}).get("validity"):
             rec["validity"] = prev["validity"]  # a later capture without the text never erases what was literal
+        if not rec["validity"]:
+            rec["validity"] = evidence_validity(rec.get("url"), evidence_dir)
         if prev != rec:
             items[rec["id"]] = rec
     # Review round 2: curation drops hidden/rejected cards before they reach this function, so a norm withdrawn later
@@ -402,7 +420,8 @@ def export(signals: list[dict], root: Path, out_dir: Path, today: date, generate
     review = _read(rev_path, {"decisions": {}})
     wanted = set(review.get("archive_include") or [])
     old = [a for a in (archive or []) if (r := record_from_signal(a)) and r["id"] in wanted]
-    registry = update_registry(_read(reg_path, {"items": {}}), list(signals) + old, today, history)
+    registry = update_registry(_read(reg_path, {"items": {}}), list(signals) + old, today, history,
+                               evidence_dir=root / "data" / "analysis_cache" / "normative_evidence")
     if persist:
         reg_path.parent.mkdir(parents=True, exist_ok=True)
         text = json.dumps(registry, ensure_ascii=False, indent=2) + "\n"
