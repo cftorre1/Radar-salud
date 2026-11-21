@@ -46,8 +46,8 @@
   return `<span class="nm-vig sin">Vigencia en revisión${tag}</span>`}
  // Compliance deadlines (Dirección 21-nov-2026): apart from the entry into force, each with its own countdown.
  function plazoState(p){if(!p.due)return {k:p.caso?'caso':'pend'};const e=D(p.due),days=Math.round((e-today)/DAY);return {k:days>=0?'vence':'vencido',days,e}}
- const nextDue=x=>{const ds=(x.plazos||[]).map(plazoState).filter(s=>s.k==='vence').map(s=>s.days);return ds.length?Math.min(...ds):null};
- function plazos(x){const ps=x.plazos||[];if(!ps.length)return '';
+ const nextDue=x=>{if(legalOf(x))return null;const ds=(x.plazos||[]).map(plazoState).filter(s=>s.k==='vence').map(s=>s.days);return ds.length?Math.min(...ds):null};
+ function plazos(x){const ps=legalOf(x)?[]:(x.plazos||[]);if(!ps.length)return '';
   return `<ul class="nm-plz">${ps.map(p=>{const s=plazoState(p),term=p.plazo?`${esc(p.plazo)} ${esc(p.desde||'')}`.trim():'';
    const due=s.k==='vence'?`<b>${s.days===0?'vence hoy':`vence en ${nd(s.days)}`}</b> · ${fmt(s.e)}`:s.k==='vencido'?`venció el ${fmt(s.e)}`:s.k==='caso'?term:`${term} · fecha pendiente`;
    return `<li class="nm-pz ${s.k}"><span class="k">${s.k==='caso'?'Plazo por caso':'Plazo'}:</span> ${esc(p.accion)} · ${due}</li>`}).join('')}</ul>`}

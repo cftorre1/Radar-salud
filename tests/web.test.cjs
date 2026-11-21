@@ -643,6 +643,8 @@ test('norm card: same renderer in both sections, literal dates, groups and imple
  assert.match(pz,/Plazo:<\/span> Informar a las personas · <b>vence en 15 días<\/b> · 26 nov 2026/);assert.match(pz,/Plazo por caso:<\/span> Pronunciarse · 5 días hábiles desde su presentación/);
  assert.match(pz,/Comunicar · venció el 6 oct 2026/);assert.match(pz,/Adecuar · 30 días corridos desde la entrada en vigencia · fecha pendiente/);
  assert.equal(N.nextDue({...base,plazos:[{accion:'a',due:'2026-11-26'}]}),15);assert.equal(N.nextDue(base),null);
+ const sus={...base,review:{kind:'susp',by:'Res. Ex. 1',quote:'Se suspende la circular.',on:'2026-11-12'},plazos:[{accion:'a',due:'2026-11-26'}]};assert.equal(N.nextDue(sus),null);assert.equal(N.plazos(sus),'');
+ assert.match(N.plazos({...base,plazos:[{accion:'<img src=x>',plazo:'5 días',desde:'"x"',due:null,caso:true}]}),/&lt;img src=x&gt;[^]*&quot;x&quot;/);
  // «Implementada» is a mark: it never moves the norm out of its group or the countdown (review 11-nov).
  assert.equal(N.toggleImpl(base.id),true);assert.equal(N.isImpl(base.id),true);assert.equal(N.grp(base),'p30');assert.match(store[N.IMPL_KEY],/sis-circular-if-n534/);
  // Al día uses this same renderer for its Normativa rows and loads the same index.

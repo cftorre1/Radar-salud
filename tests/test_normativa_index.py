@@ -214,10 +214,10 @@ def test_term_from_publication_is_computed_only_in_calendar_units():
     assert f("90 días corridos desde su publicación", "2026-01-31")["eff"] == "2026-05-01"
     assert f("un año contado desde su publicación", "2024-02-29")["eff"] == "2025-02-28"
     # Dirección 21-nov-2026: business days are computed (no Saturdays, Sundays or holidays: 8-dic-2026);
-    # «30 días» alone are calendar days, unless the text invokes Ley 19.880 (art. 25: business days).
+    # «30 días» alone are calendar days (review of #223: no Ley 19.880 exception without Dirección).
     assert f("30 días hábiles desde su publicación", "2026-10-28")["eff"] == "2026-12-10"
     assert f("30 días desde su publicación", "2026-10-28")["eff"] == "2026-11-27"
-    assert f("30 días desde su publicación, conforme a la Ley N° 19.880", "2026-10-28")["eff"] == "2026-12-10"
+    assert f("30 días desde su publicación, conforme a la Ley N° 19.880", "2026-10-28")["eff"] == "2026-11-27"  # still calendar
     assert f("30 días hábiles desde su publicación", "2029-10-28") is None  # holidays of 2029 not listed: never guessed
     # Counted from the Diario Oficial: from the captured edition; pending while it is not captured.
     assert f("seis meses contados desde su publicación en el Diario Oficial", "2026-10-28") == {"kind": "on_publication_do", "eff": None, "prec": None}
@@ -297,3 +297,33 @@ def test_no_date_means_in_force_from_its_date_and_only_undatable_terms_stay_in_r
     built = {x["id"]: x for x in ni.build(reg, {"decisions": {}}, set())["items"]}
     assert ni.effective_base(built["a"]) == "2026-10-01" and not built["a"].get("unclear")
     assert built["b"]["unclear"] is True and ni.effective_base(built["b"]) is None
+
+
+def test_review_223_month_precision_suspensions_short_actions_and_persistence(tmp_path):
+    # A month-only entry into force is not a day: a deadline counted from it waits.
+    assert ni.effective_base({"kind": "date", "eff": "2027-03-01", "prec": "month"}) is None
+    assert ni.effective_base({"kind": "date", "eff": "2027-03-01", "prec": "month", "review": {"kind": "date", "eff": "2027-03-15"}}) == "2027-03-15"
+    assert ni.effective_base({"kind": "none", "unclear": True, "date": "2026-10-01", "review": {"kind": "nofija"}}) == "2026-10-01"
+    # A bare verb is not shown; the duty nearest the term is; «desde» never cut mid-word.
+    assert ni.compliance_terms("El Anexo deberá contemplar, en su envío, el detalle, a más tardar el 23 de noviembre de 2026.") == []
+    [p] = ni.compliance_terms("Las isapres deberán consignarse en el registro. Las entidades deberán enviar la planificación anual a la Superintendencia a más tardar el 15 de noviembre de 2026.")
+    assert p["accion"].startswith("Enviar la planificación anual")
+    [q] = ni.compliance_terms("Las entidades deberán remitir el informe dentro de 10 días hábiles siguientes a la recepción del presente requerimiento de información adicional (en caso de haberlo).")
+    assert q["anchor"] == "caso" and "(" not in q["desde"] and not q["desde"].endswith(("de", "del"))
+    # Suspended or repealed: no deadline in the public index.
+    reg = {"items": {"a": {"id": "a", "label": "Circular IF/N°1", "type": "Circular", "emisor": "SIS", "date": "2026-10-01",
+                           "subject": "Isapres", "url": "https://x/a", "validity": None, "related": [], "signal_id": "a",
+                           "plazos": [{"accion": "Informar a la Superintendencia", "n": 5, "unit": "días", "habiles": True, "anchor": "acto", "desde": "x"}]}}}
+    assert ni.build(reg, {"decisions": {}}, set())["items"][0]["plazos"][0]["due"] == "2026-10-08"
+    susp = {"decisions": {"a": {"kind": "susp", "by": "Resolución Exenta N°9", "quote": "Se suspende la aplicación de la circular.", "on": "2026-11-12"}}}
+    assert "plazos" not in ni.build(reg, susp, set())["items"][0]
+    # Persistence: the extracted deadlines are carried over, never recomputed for a norm already read.
+    (tmp_path / "e.json").write_text(json.dumps({"page_url": "https://www.superdesalud.gob.cl/a", "text": "Las isapres deberán informar a sus afiliados dentro de 10 días hábiles siguientes a la vigencia."}), encoding="utf-8")
+    sg = sig("Circular IF/N°777", "Circular", validity="Rige desde el 1 de enero de 2027.")
+    sg["source_url"] = "https://www.superdesalud.gob.cl/a"
+    r1 = ni.update_registry({"items": {}}, [sg], date(2026, 11, 21), evidence_dir=tmp_path)
+    rec = next(iter(r1["items"].values()))
+    assert rec["plazos"][0]["accion"] == "Informar a sus afiliados" and rec["plazos_v"] == ni.PLAZOS_V
+    (tmp_path / "e.json").write_text(json.dumps({"page_url": "https://www.superdesalud.gob.cl/a", "text": "otro texto"}), encoding="utf-8")
+    r2 = ni.update_registry(r1, [sg], date(2026, 11, 22), evidence_dir=tmp_path)
+    assert r2 == r1
