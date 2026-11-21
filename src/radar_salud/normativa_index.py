@@ -225,6 +225,15 @@ def term_from_publication(text: Any, published: Any) -> dict | None:
     («días hábiles») are never computed (holidays), nor a term counted from the Diario Oficial."""
     t = " ".join(str(text or "").split())
     m = _TERM_FROM_PUB.search(t)
+    if m:
+        start = t.rfind('.', 0, m.start()) + 1
+        end = t.find('.', m.end())
+        sentence = t[start:end if end >= 0 else len(t)]
+        before = t[start:m.start()]
+        # review of #221: a deadline («plazo de seis meses … para adecuar», «deberán … dentro de») is not the entry
+        # into force, and a term counted from the Diario Oficial is never counted from the issuer's date.
+        if _DIARIO_OFICIAL.search(sentence) or _BAD.search(before) or re.search(r"\b(?:dentro\s+de|para\s+\w+r)\b", sentence, re.I):
+            return None
     if not m or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(published or "")) or re.search(r"h[aá]biles", m.group(0), re.I):
         return None
     n = int(m.group(1)) if m.group(1).isdigit() else _WORDNUM.get(m.group(1).lower())
@@ -243,6 +252,19 @@ def term_from_publication(text: Any, published: Any) -> dict | None:
     return {"kind": "date", "eff": eff.isoformat(), "prec": "day", "computed": f"{m.group(0)} ({base.isoformat()})"}
 
 
+def _plus_days(d: Any, n: int) -> str:
+    try:
+        return (date.fromisoformat(str(d)[:10]) + timedelta(days=n)).isoformat()
+    except ValueError:
+        return ""
+
+
+def _same_year(title: str, d: Any) -> bool:
+    """«Circular número IF/539, de 2026.-»: the act's year must be the norm's (review of #221)."""
+    m = re.search(r",\s*de\s+((?:19|20)\d\d)\b", title)
+    return bool(m) and m.group(1) == str(d or "")[:4]
+
+
 def _act_number(label: str) -> tuple[str, str] | None:
     m = re.search(r"\b(IF|IP|SS)?\s*/?\s*N\s*[°º]?\s*([\d\.]+)", label or "")
     return ((m.group(1) or "").upper(), m.group(2).replace(".", "")) if m else None
@@ -252,13 +274,17 @@ def diario_oficial_date(rec: dict, rows: list[dict]) -> str | None:
     """Date of the Diario Oficial edition that published this act, from Alicanto's own DO captures."""
     num = _act_number(rec.get("label") or "")
     typ = str(rec.get("type") or "").split()[0].lower()
+    if "exenta" in str(rec.get("type") or "").lower():
+        typ = typ + r"\w*\s+exenta"  # exenta and non-exenta resolutions are numbered apart
     if not num or not typ:
         return None
     pre, n = num
-    pat = re.compile(rf"\b{re.escape(typ)}\w*\s+(?:n[uú]mero|N\s*[°º])\s*{re.escape(pre)}\s*/?\s*{re.escape(n)}\b", re.I)
+    pat = re.compile(rf"\b{typ if 'exenta' in typ else re.escape(typ)}\w*\s+(?:n[uú]mero|N\s*[°º])\s*{re.escape(pre)}\s*/?\s*{re.escape(n)}\b", re.I)
     days = sorted(str(r.get("event_date") or "")[:10] for r in rows
                   if "Diario Oficial" in str(r.get("source_name") or "") and str(r.get("event_date") or "")[:10] >= str(rec.get("date") or "")
-                  and pat.search(str(r.get("title") or r.get("source_title_full") or "")))
+                  and str(r.get("event_date") or "")[:10] <= _plus_days(rec.get("date"), 120)
+                  and pat.search(str(r.get("title") or r.get("source_title_full") or ""))
+                  and _same_year(str(r.get("title") or r.get("source_title_full") or ""), rec.get("date")))
     return days[0] if days else None
 
 
@@ -280,6 +306,8 @@ def update_registry(registry: dict, signals: list[dict], today: date, history: l
                 items[rec["id"]] = {**prev, "withheld": True}
             continue
         rec["first_seen"] = (prev or {}).get("first_seen") or today.isoformat()
+        if (prev or {}).get("do_date"):
+            rec["do_date"] = prev["do_date"]  # the Diario Oficial date stays once found (review of #221)
         if not rec["validity"] and (prev or {}).get("validity"):
             rec["validity"] = prev["validity"]  # a later capture without the text never erases what was literal
         if prev != rec:

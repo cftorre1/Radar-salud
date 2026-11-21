@@ -226,3 +226,13 @@ def test_diario_oficial_date_comes_from_the_captured_edition_not_from_detection(
             {"source_name": "Superintendencia de Salud", "event_date": "2026-10-30", "title": "Circular IF/N°539"}]
     assert ni.diario_oficial_date(rec, rows) == "2026-11-11"
     assert ni.diario_oficial_date({**rec, "label": "Circular IF/N°540"}, rows) is None
+
+
+def test_deadlines_and_diario_oficial_terms_are_never_computed():
+    f = ni.term_from_publication
+    assert f("Las isapres tendrán un plazo de seis meses contados desde su publicación para adecuar sus sistemas", "2026-10-28") is None
+    assert f("Deberán informar dentro de 30 días corridos desde su publicación", "2026-10-28") is None
+    assert f("Regirá seis meses contados desde la publicación de la presente circular en el Diario Oficial", "2026-10-28") is None
+    rec = {"label": "Circular IF/N°539", "type": "Circular", "date": "2026-10-30"}
+    other_year = [{"source_name": "Diario Oficial", "event_date": "2026-11-11", "title": "Circular número IF/539, de 2025.- Otra"}]
+    assert ni.diario_oficial_date(rec, other_year) is None
