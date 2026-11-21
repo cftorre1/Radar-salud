@@ -2,7 +2,7 @@
   "sources": {
     "who": {
       "name": "WHO",
-      "checked_at": "2026-11-20T19:23:04.876312+00:00",
+      "checked_at": "2026-11-21T02:22:17.567689+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -19,19 +19,19 @@
       "coverage_from": "2026-08-23",
       "coverage_to": "2026-11-20",
       "pages_checked": 7,
-      "recent_items": 109,
+      "recent_items": 110,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 109,
-        "detected": 109,
+        "inventory_url_count": 110,
+        "detected": 110,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 303,
-        "detected": 303,
+        "inventory_url_count": 304,
+        "detected": 304,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -40,25 +40,25 @@
         "30": "complete_on_declared_surfaces",
         "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 303,
-      "unique_items": 303,
+      "unique_language_urls_90": 304,
+      "unique_items": 304,
       "counts": {
-        "30": 109,
-        "90": 303
+        "30": 110,
+        "90": 304
       },
       "indexed_counts": {
-        "30": 109,
-        "90": 303
+        "30": 110,
+        "90": 304
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 161,
+      "material_items": 162,
       "published": 0,
       "rejected": 6,
-      "deferred": 297,
+      "deferred": 298,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 303,
-      "new": 6,
+      "discovered": 304,
+      "new": 1,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -82,7 +82,7 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44789019970/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44849696470/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -91,13 +91,17 @@
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
-        "activated": false,
-        "evidence_run_ids": [],
-        "reason": "missed_day_breaks_consecutive_sequence",
+        "activated": true,
+        "evidence_run_ids": [
+          "44653769616",
+          "44849696470"
+        ],
+        "reason": "two_consecutive_successful_daily_live_runs",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
+        "gap_seconds": 85598,
         "earned_at": "2026-11-08T18:02:43.264345+00:00",
         "earned_evidence_run_ids": [
           "42381528433",
@@ -107,7 +111,7 @@
     },
     "paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-20T19:54:16.837230+00:00",
+      "checked_at": "2026-11-21T02:49:16.058448+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -124,19 +128,19 @@
       "coverage_from": "2026-08-23",
       "coverage_to": "2026-11-20",
       "pages_checked": 130,
-      "recent_items": 216,
+      "recent_items": 218,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 271,
-        "detected": 271,
+        "inventory_url_count": 274,
+        "detected": 274,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 763,
-        "detected": 763,
+        "inventory_url_count": 765,
+        "detected": 765,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
@@ -145,25 +149,25 @@
         "30": "complete_on_declared_surfaces",
         "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 763,
-      "unique_items": 603,
+      "unique_language_urls_90": 765,
+      "unique_items": 604,
       "counts": {
-        "30": 216,
-        "90": 603
+        "30": 218,
+        "90": 604
       },
       "indexed_counts": {
-        "30": 216,
-        "90": 603
+        "30": 218,
+        "90": 604
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 254,
+      "material_items": 255,
       "published": 0,
       "rejected": 11,
-      "deferred": 592,
+      "deferred": 593,
       "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 603,
-      "new": 12,
+      "discovered": 604,
+      "new": 2,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "regional_news",
@@ -205,7 +209,7 @@
           "pages": 2
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44789019970/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/44849696470/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -214,13 +218,17 @@
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
-        "activated": false,
-        "evidence_run_ids": [],
-        "reason": "failed_live_run_since_previous_daily_success",
+        "activated": true,
+        "evidence_run_ids": [
+          "44653769616",
+          "44849696470"
+        ],
+        "reason": "two_consecutive_successful_daily_live_runs",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
+        "gap_seconds": 85496,
         "earned_at": "2026-11-04T01:00:32.943483+00:00",
         "earned_evidence_run_ids": [
           "41539638382",
