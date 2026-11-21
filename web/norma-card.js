@@ -25,6 +25,8 @@
   if(eff){const e=D(eff),days=Math.round((e-today)/DAY);return days>0?{k:'prox',days,e,rev:r.kind==='date'}:{k:'vig',e,since:-days,rev:r.kind==='date'}}
   // In force since publication/notification: the emission day only orders it (it is not shown as its effective date).
   // Publication in the Diario Oficial: the DO date is not captured, so it is not asserted as in force (review of #180).
+  // Dirección 20-nov-2026: the DO edition Alicanto captured for the same act gives the date (not the detection day).
+  if(x.kind==='on_publication_do'&&x.do_date){const e=D(x.do_date),days=Math.round((e-today)/DAY);return days>0?{k:'prox',days,e,do:true}:{k:'vig',e,since:-days,do:true}}
   if(x.kind==='on_publication_do')return {k:'sin',pubdo:true};
   if(['on_publication','on_notification','on_emission'].includes(x.kind)&&x.date){const e=D(x.date);return {k:'vig',e,since:Math.round((today-e)/DAY),pub:x.kind}}
   return {k:'sin',nofija:r.kind==='nofija'}}
@@ -39,12 +41,13 @@
  const PUB={on_publication:'Vigente desde su publicación',on_notification:'Vigente desde su notificación',on_emission:'Vigente desde la fecha de la norma'};
  function chip(x){const g=grp(x),s=vstat(x),r=x.review||{},who=x.target?`${esc(x.target)} `:'';
   if(g==='susp'||g==='sinef')return `<span class="nm-vig off">${g==='susp'?'Suspendida':'Sin efecto'} por ${esc(r.by)}</span>`;
-  const tag=(s.rev?' <span class="tag">· fecha registrada en revisión</span>':'')+(x.partial?' <span class="tag">· con excepciones o texto incompleto: ver texto oficial</span>':'');
+  const tag=(s.rev?' <span class="tag">· fecha registrada en revisión</span>':'')+(x.computed&&!s.rev?' <span class="tag">· calculada: plazo contado desde la fecha de la norma</span>':'')+(x.partial?' <span class="tag">· con excepciones o texto incompleto: ver texto oficial</span>':'');
   // The countdown lives in the chip now (no left column): «Entra en vigencia en 110 días · 1 mar 2027».
   if(s.k==='prox')return `<span class="nm-vig ${g}">${who}${x.target?'entra':'Entra'} en vigencia en ${s.days} ${s.days===1?'día':'días'} · ${monthOnly(x)?when(x,s.e):fmt(s.e)}${tag}</span>`;
+  if(s.k==='vig'&&s.do)return `<span class="nm-vig v">Vigente desde su publicación en el Diario Oficial · ${fmt(s.e)}${tag}</span>`;
   if(s.k==='vig')return `<span class="nm-vig v">${s.pub?PUB[s.pub]:`${who}${x.target?'vigente':'Vigente'} desde ${when(x,s.e)}`}${tag}</span>`;
   if(s.pubdo)return `<span class="nm-vig sin">Rige desde su publicación en el Diario Oficial (fecha no informada) <span class="tag">· en revisión</span>${tag}</span>`;
-  return s.nofija?'<span class="nm-vig sin">La norma no fija fecha de vigencia <span class="tag">· revisado</span></span>':'<span class="nm-vig sin">Vigencia no informada en la fuente <span class="tag">· en revisión</span></span>'}
+  const em=x.date?` <span class="tag">· fechada el ${fmt(D(x.date))}</span>`:'';return s.nofija?`<span class="nm-vig sin">La norma no fija fecha de vigencia${em} <span class="tag">· revisado</span></span>`:`<span class="nm-vig sin">El texto no indica desde cuándo rige${em} <span class="tag">· en revisión</span></span>`}
  function box(x){const g=grp(x),s=vstat(x);
   if(g==='p30'||g==='p30p')return `<div class="nm-dd ${g}" aria-hidden="true"><b>${s.days}</b><span>${s.days===1?'día':'días'}</span></div>`;
   if((g==='v30'||g==='vhist')&&s.pub)return '<div class="nm-dd v" aria-hidden="true"><b>✓</b><span>vigente</span></div>';

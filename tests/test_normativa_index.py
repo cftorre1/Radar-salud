@@ -205,3 +205,34 @@ def test_withheld_registry_records_leave_the_published_index():
                            "related": [], "withheld": True}}}
     built = ni.build(reg, {"decisions": {}}, set(), "2026-11-12T00:00:00+00:00")
     assert [x["id"] for x in built["items"]] == ["a"] and built["count"] == 1
+
+
+def test_term_from_publication_is_computed_only_in_calendar_units():
+    # Dirección 20-nov-2026: «Sin fecha» only when the text truly gives none.
+    f = ni.term_from_publication
+    assert f("6 meses corridos contados desde su publicación. Contiene disposiciones transitorias.", "2026-10-28")["eff"] == "2027-04-28"
+    assert f("90 días corridos desde su publicación", "2026-01-31")["eff"] == "2026-05-01"
+    assert f("un año contado desde su publicación", "2024-02-29")["eff"] == "2025-02-28"
+    assert f("30 días hábiles desde su publicación", "2026-10-28") is None  # holidays: never computed
+    assert f("30 días desde su publicación", "2026-10-28") is None  # may be business days
+    assert f("seis meses contados desde su publicación en el Diario Oficial", "2026-10-28") is None
+
+
+def test_diario_oficial_date_comes_from_the_captured_edition_not_from_detection():
+    rec = {"label": "Circular IF/N°539", "type": "Circular", "date": "2026-10-30"}
+    rows = [{"source_name": "Diario Oficial", "event_date": "2026-11-11",
+             "title": "Circular número IF/539, de 2026.- Aclara el inicio del cómputo del plazo"},
+            {"source_name": "Diario Oficial", "event_date": "2026-11-12", "title": "Circular número IF/5390, de 2026.- Otra"},
+            {"source_name": "Superintendencia de Salud", "event_date": "2026-10-30", "title": "Circular IF/N°539"}]
+    assert ni.diario_oficial_date(rec, rows) == "2026-11-11"
+    assert ni.diario_oficial_date({**rec, "label": "Circular IF/N°540"}, rows) is None
+
+
+def test_deadlines_and_diario_oficial_terms_are_never_computed():
+    f = ni.term_from_publication
+    assert f("Las isapres tendrán un plazo de seis meses contados desde su publicación para adecuar sus sistemas", "2026-10-28") is None
+    assert f("Deberán informar dentro de 30 días corridos desde su publicación", "2026-10-28") is None
+    assert f("Regirá seis meses contados desde la publicación de la presente circular en el Diario Oficial", "2026-10-28") is None
+    rec = {"label": "Circular IF/N°539", "type": "Circular", "date": "2026-10-30"}
+    other_year = [{"source_name": "Diario Oficial", "event_date": "2026-11-11", "title": "Circular número IF/539, de 2025.- Otra"}]
+    assert ni.diario_oficial_date(rec, other_year) is None

@@ -13,7 +13,7 @@ test('Normativa: countdown, groups, months, filters, shared card and implementad
  // Countdown first: the days lead.
  const hc=page.locator('#nmHero .nm-hc').first();await expect(hc.locator('.nm-hd b')).toHaveText(/^\d+$/);
  await expect(page.locator('#nmCount')).toContainText(`${d.items.length} de ${d.items.length} normas`);
- await page.locator('#nmGroups [data-g="sin"]').click();const sin=d.items.filter(x=>['none','on_publication_do'].includes(x.kind)&&!x.review).length;
+ await page.locator('#nmGroups [data-g="sin"]').click();const sin=d.items.filter(x=>(x.kind==='none'||(x.kind==='on_publication_do'&&!x.do_date))&&!x.review).length;// a DO edition gives the date (20-nov-2026)
  await expect(page.locator('#nmFeed .nm-card')).toHaveCount(sin);await expect(page.locator('#nmFeed .nm-vig.sin').first()).toContainText('en revisión');
  await page.locator('#nmGroups [data-g="all"]').click();
  // Default actions of any Al día card + the Implementada check (no «Texto oficial» toggle, Dirección 11-nov-2026).
