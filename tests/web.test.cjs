@@ -633,7 +633,10 @@ test('norm card: same renderer in both sections, literal dates, groups and imple
  const html=N.render(base,{read:false,readId:'abc',openHref:'index.html?abrir=1#sig-abc',dateLine:N.dateLine(base)});
  for(const re of [/data-read="abc"/,/Entra en vigencia en 20 días · 1 dic 2026/,/<span class="rk-pill rk-normativa">[^]*?Circular<\/span><span class="rk-meta">14 sep(?: 2026)? · SIS<\/span>/,/act act-open" href="index\.html\?abrir=1#sig-abc"/,/act act-src" href="https:\/\/www\.superdesalud\.gob\.cl\/x\/"/,/act act-share" data-share="n-sis-circular-if-n534"/,/class="nm-ck" data-impl="sis-circular-if-n534" role="checkbox" aria-checked="false"/])assert.match(html,re);
  assert.doesNotMatch(html,/Texto oficial de vigencia|nm-det/);
- assert.match(N.render({...base,kind:'none',eff:null,validity:null}),/Vigencia no informada en la fuente <span class="tag">· en revisión<\/span>/);
+ assert.match(N.render({...base,kind:'none',eff:null,validity:null}),/El texto no indica desde cuándo rige <span class="tag">· fechada el 14 sep 2026<\/span> <span class="tag">· en revisión<\/span>/);
+ // Dirección 20-nov-2026: the Diario Oficial edition gives the date; a computed term says so.
+ assert.equal(N.grp({...base,kind:'on_publication_do',eff:null,do_date:'2026-11-11'}),'v30');assert.match(N.chip({...base,kind:'on_publication_do',eff:null,do_date:'2026-11-11'}),/Vigente desde su publicación en el Diario Oficial · 11 nov 2026/);
+ assert.match(N.chip({...base,eff:'2027-04-28',computed:'6 meses corridos contados desde su publicación (2026-10-28)'}),/calculada: plazo contado desde la fecha de la norma/);
  // «Implementada» is a mark: it never moves the norm out of its group or the countdown (review 11-nov).
  assert.equal(N.toggleImpl(base.id),true);assert.equal(N.isImpl(base.id),true);assert.equal(N.grp(base),'p30');assert.match(store[N.IMPL_KEY],/sis-circular-if-n534/);
  // Al día uses this same renderer for its Normativa rows and loads the same index.
