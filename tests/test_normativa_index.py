@@ -236,3 +236,16 @@ def test_deadlines_and_diario_oficial_terms_are_never_computed():
     rec = {"label": "Circular IF/N°539", "type": "Circular", "date": "2026-10-30"}
     other_year = [{"source_name": "Diario Oficial", "event_date": "2026-11-11", "title": "Circular número IF/539, de 2025.- Otra"}]
     assert ni.diario_oficial_date(rec, other_year) is None
+
+
+def test_validity_from_the_issuer_page_evidence_when_the_capture_missed_it(tmp_path):
+    # Circular 3935 (Dirección 20-nov-2026): the SUSESO page says «Observación: Vigencia desde su publicación».
+    (tmp_path / "a.json").write_text(json.dumps({"page_url": "https://www.suseso.gob.cl/612/w3-article-793852.html",
+        "text": "TODAS LAS COMPIN Observación: Vigencia desde su publicación Acción: Instruye Fuentes: Ley N° 16.395"}), encoding="utf-8")
+    url = "https://www.suseso.gob.cl/612/w3-article-793852.html"
+    assert ni.evidence_validity(url, tmp_path) == "Vigencia desde su publicación"
+    assert ni.parse_validity(ni.evidence_validity(url, tmp_path))["kind"] == "on_publication"
+    assert ni.evidence_validity("https://otra.cl/x", tmp_path) is None and ni.evidence_validity(url, None) is None
+    (tmp_path / "b.json").write_text(json.dumps({"page_url": "https://www.suseso.gob.cl/x.html",
+        "text": "Observación: Vigencia desde 2 de mayo de 2027 Vigencia: No Alterado Acción: Imparte"}), encoding="utf-8")
+    assert ni.evidence_validity("https://www.suseso.gob.cl/x.html", tmp_path) == "Vigencia desde 2 de mayo de 2027"  # review of #222
