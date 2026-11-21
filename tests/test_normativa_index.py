@@ -246,3 +246,6 @@ def test_validity_from_the_issuer_page_evidence_when_the_capture_missed_it(tmp_p
     assert ni.evidence_validity(url, tmp_path) == "Vigencia desde su publicación"
     assert ni.parse_validity(ni.evidence_validity(url, tmp_path))["kind"] == "on_publication"
     assert ni.evidence_validity("https://otra.cl/x", tmp_path) is None and ni.evidence_validity(url, None) is None
+    (tmp_path / "b.json").write_text(json.dumps({"page_url": "https://www.suseso.gob.cl/x.html",
+        "text": "Observación: Vigencia desde 2 de mayo de 2027 Vigencia: No Alterado Acción: Imparte"}), encoding="utf-8")
+    assert ni.evidence_validity("https://www.suseso.gob.cl/x.html", tmp_path) == "Vigencia desde 2 de mayo de 2027"  # review of #222

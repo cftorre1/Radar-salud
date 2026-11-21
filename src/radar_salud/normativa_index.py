@@ -297,7 +297,7 @@ def evidence_validity(url: Any, evidence_dir: Path | None) -> str | None:
         d = _read(f, {})
         if url not in (d.get("page_url"), d.get("document_url")):
             continue
-        m = re.search(r"Observaci[oó]n:\s*(Vigencia\s+(?:desde|a\s+contar)[^.;]{3,120}?)(?=\s+(?:Acci[oó]n|Fuentes|Materia|Destinatarios):|[.;]|$)", str(d.get("text") or ""))
+        m = re.search(r"Observaci[oó]n:\s*(Vigencia\s+(?:desde|a\s+contar)[^.;]{3,120}?)(?=\s+(?:Acci[oó]n|Fuentes|Materia|Destinatarios|Vigencia|Departamento|Estado|Fecha):|[.;]|$)", str(d.get("text") or ""))
         if m:
             return " ".join(m.group(1).split())
     return None
