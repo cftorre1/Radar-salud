@@ -20,40 +20,44 @@
  function toggleImpl(id){impl.has(id)?impl.delete(id):impl.add(id);try{root.localStorage.setItem(IMPL_KEY,JSON.stringify([...impl]))}catch{}return impl.has(id)}
  const isImpl=id=>impl.has(id);
  const legalOf=x=>{const k=x&&x.review&&x.review.kind;return k==='susp'||k==='sinef'?k:null};
- // Effective state from the literal date, or Dirección's review when the source gave none.
- function vstat(x){const r=x.review||{},eff=r.kind==='date'?r.eff:(x.kind==='date'?x.eff:null);
-  if(eff){const e=D(eff),days=Math.round((e-today)/DAY);return days>0?{k:'prox',days,e,rev:r.kind==='date'}:{k:'vig',e,since:-days,rev:r.kind==='date'}}
-  // In force since publication/notification: the emission day only orders it (it is not shown as its effective date).
-  // Publication in the Diario Oficial: the DO date is not captured, so it is not asserted as in force (review of #180).
-  // Dirección 20-nov-2026: the DO edition Alicanto captured for the same act gives the date (not the detection day).
-  if(x.kind==='on_publication_do'&&x.do_date){const e=D(x.do_date),days=Math.round((e-today)/DAY);return days>0?{k:'prox',days,e,do:true}:{k:'vig',e,since:-days,do:true}}
-  if(x.kind==='on_publication_do')return {k:'sin',pubdo:true};
-  if(['on_publication','on_notification','on_emission'].includes(x.kind)&&x.date){const e=D(x.date);return {k:'vig',e,since:Math.round((today-e)/DAY),pub:x.kind}}
-  return {k:'sin',nofija:r.kind==='nofija'}}
- // Groups of the Normativa feed (implementada is a mark, not a legal state, so it is skipped when noImpl).
- // «Implementada» is a mark, never a position (review 11-nov): it does not move the norm nor take it out of the countdown.
+ // Effective state. Dirección 21-nov-2026: five states, no technical notes («calculada», «Diario Oficial»):
+ // próxima (countdown) · vigente · pendiente de Diario Oficial · suspendida · derogada. A norm whose text gives no date is
+ // in force from its own date; only a term Alicanto cannot date («seis meses desde su notificación») stays «en revisión».
+ function vstat(x){const r=x.review||{},eff=r.kind==='date'?r.eff:(x.kind==='date'?x.eff:(x.kind==='on_publication_do'?x.do_date:null));
+  if(eff){const e=D(eff),days=Math.round((e-today)/DAY);return days>0?{k:'prox',days,e}:{k:'vig',e,since:-days}}
+  if(x.kind==='on_publication_do')return {k:'pdo'};
+  if(x.unclear&&r.kind!=='nofija')return {k:'sin'};
+  if(x.date){const e=D(x.date);return {k:'vig',e,since:Math.round((today-e)/DAY),pub:x.kind==='on_notification'?'notif':'fecha'}}
+  return {k:'sin'}}
+ // Groups of the Normativa feed. «Implementada» is a mark, never a position (review 11-nov).
  function grp(x){const l=legalOf(x);if(l)return l;const s=vstat(x);
-  if(s.k==='prox')return s.days<=30?'p30':'p30p';if(s.k==='vig')return s.since<=30?'v30':'vhist';return 'sin'}
+  if(s.k==='prox')return s.days<=30?'p30':'p30p';if(s.k==='vig')return s.since<=30?'v30':'vhist';return s.k}
  const effKey=x=>{const s=vstat(x);return s.e&&!s.pub?ymd(s.e):''};
  const monthOnly=x=>x.prec==='month'&&!(x.review&&x.review.kind==='date');
  const when=(x,e)=>monthOnly(x)?`${MESL[e.getUTCMonth()]} de ${e.getUTCFullYear()}`:fmt(e);
- // Dirección 11-nov-2026: «Vigente desde su notificación» says enough; no «(fecha no informada)».
- const PUB={on_publication:'Vigente desde su publicación',on_notification:'Vigente desde su notificación',on_emission:'Vigente desde la fecha de la norma'};
+ const nd=n=>`${n} ${n===1?'día':'días'}`;
  function chip(x){const g=grp(x),s=vstat(x),r=x.review||{},who=x.target?`${esc(x.target)} `:'';
-  if(g==='susp'||g==='sinef')return `<span class="nm-vig off">${g==='susp'?'Suspendida':'Sin efecto'} por ${esc(r.by)}</span>`;
-  const tag=(s.rev?' <span class="tag">· fecha registrada en revisión</span>':'')+(x.computed&&!s.rev?' <span class="tag">· calculada: plazo contado desde la fecha de la norma</span>':'')+(x.partial?' <span class="tag">· con excepciones o texto incompleto: ver texto oficial</span>':'');
-  // The countdown lives in the chip now (no left column): «Entra en vigencia en 110 días · 1 mar 2027».
-  if(s.k==='prox')return `<span class="nm-vig ${g}">${who}${x.target?'entra':'Entra'} en vigencia en ${s.days} ${s.days===1?'día':'días'} · ${monthOnly(x)?when(x,s.e):fmt(s.e)}${tag}</span>`;
-  if(s.k==='vig'&&s.do)return `<span class="nm-vig v">Vigente desde su publicación en el Diario Oficial · ${fmt(s.e)}${tag}</span>`;
-  if(s.k==='vig')return `<span class="nm-vig v">${s.pub?PUB[s.pub]:`${who}${x.target?'vigente':'Vigente'} desde ${when(x,s.e)}`}${tag}</span>`;
-  if(s.pubdo)return `<span class="nm-vig sin">Rige desde su publicación en el Diario Oficial (fecha no informada) <span class="tag">· en revisión</span>${tag}</span>`;
-  const em=x.date?` <span class="tag">· fechada el ${fmt(D(x.date))}</span>`:'';return s.nofija?`<span class="nm-vig sin">La norma no fija fecha de vigencia${em} <span class="tag">· revisado</span></span>`:`<span class="nm-vig sin">El texto no indica desde cuándo rige${em} <span class="tag">· en revisión</span></span>`}
+  if(g==='susp'||g==='sinef')return `<span class="nm-vig off">${g==='susp'?'Suspendida':'Derogada'} por ${esc(r.by)}</span>`;
+  const tag=x.partial?' <span class="tag">· con excepciones: ver texto oficial</span>':'';
+  if(s.k==='prox')return `<span class="nm-vig ${g}">${who}${x.target?'entra':'Entra'} en vigencia en ${nd(s.days)} · ${when(x,s.e)}${tag}</span>`;
+  if(s.k==='vig'&&s.pub==='notif')return `<span class="nm-vig v">Vigente desde su notificación${tag}</span>`;
+  if(s.k==='vig')return `<span class="nm-vig v">${who}${x.target?'vigente':'Vigente'} desde ${when(x,s.e)}${tag}</span>`;
+  if(s.k==='pdo')return `<span class="nm-vig pdo">Desde su publicación en Diario Oficial, aún pendiente${tag}</span>`;
+  return `<span class="nm-vig sin">Vigencia en revisión${tag}</span>`}
+ // Compliance deadlines (Dirección 21-nov-2026): apart from the entry into force, each with its own countdown.
+ function plazoState(p){if(!p.due)return {k:p.caso?'caso':'pend'};const e=D(p.due),days=Math.round((e-today)/DAY);return {k:days>=0?'vence':'vencido',days,e}}
+ const nextDue=x=>{const ds=(x.plazos||[]).map(plazoState).filter(s=>s.k==='vence').map(s=>s.days);return ds.length?Math.min(...ds):null};
+ function plazos(x){const ps=x.plazos||[];if(!ps.length)return '';
+  return `<ul class="nm-plz">${ps.map(p=>{const s=plazoState(p),term=p.plazo?`${esc(p.plazo)} ${esc(p.desde||'')}`.trim():'';
+   const due=s.k==='vence'?`<b>${s.days===0?'vence hoy':`vence en ${nd(s.days)}`}</b> · ${fmt(s.e)}`:s.k==='vencido'?`venció el ${fmt(s.e)}`:s.k==='caso'?term:`${term} · fecha pendiente`;
+   return `<li class="nm-pz ${s.k}"><span class="k">${s.k==='caso'?'Plazo por caso':'Plazo'}:</span> ${esc(p.accion)} · ${due}</li>`}).join('')}</ul>`}
  function box(x){const g=grp(x),s=vstat(x);
   if(g==='p30'||g==='p30p')return `<div class="nm-dd ${g}" aria-hidden="true"><b>${s.days}</b><span>${s.days===1?'día':'días'}</span></div>`;
   if((g==='v30'||g==='vhist')&&s.pub)return '<div class="nm-dd v" aria-hidden="true"><b>✓</b><span>vigente</span></div>';
   if(g==='v30'||g==='vhist')return `<div class="nm-dd v" aria-hidden="true"><b>${s.e.getUTCDate()}</b><span>${MES[s.e.getUTCMonth()]} ${String(s.e.getUTCFullYear()).slice(2)}</span></div>`;
-  if(g==='susp'||g==='sinef')return `<div class="nm-dd off" aria-hidden="true"><b>‖</b><span>${g==='susp'?'susp.':'sin efecto'}</span></div>`;
-  return '<div class="nm-dd sin" aria-hidden="true"><b>?</b><span>sin fecha</span></div>'}
+  if(g==='susp'||g==='sinef')return `<div class="nm-dd off" aria-hidden="true"><b>‖</b><span>${g==='susp'?'susp.':'derogada'}</span></div>`;
+  if(g==='pdo')return '<div class="nm-dd sin" aria-hidden="true"><b>DO</b><span>pendiente</span></div>';
+  return '<div class="nm-dd sin" aria-hidden="true"><b>?</b><span>en revisión</span></div>'}
  // Match on the raw text, then escape each slice (never inside an entity).
  function hl(t,q){t=String(t??'');if(!q)return esc(t);const i=t.toLowerCase().indexOf(String(q).toLowerCase());return i<0?esc(t):`${esc(t.slice(0,i))}<mark>${esc(t.slice(i,i+q.length))}</mark>${esc(t.slice(i+q.length))}`}
  const title=x=>`${x.label} · ${x.subject}`;
@@ -70,7 +74,7 @@
    // Option B (Dirección 12-nov-2026): pill («Normativa» in Al día, the act type in Normativa) + «día · emisor» above
    // the title; the validity chip and «Implementada» stay under it.
    (Bar&&Bar.kicker?Bar.kicker('normativa',o.kickerLabel||x.type||'Normativa',[Bar.shortDay(x.date),esc(x.emisor)].filter(Boolean).join(' · '),o.topExtra||''):'')+
-   `<h3 class="nm-title">${o.openAttr?`<button type="button" class="title-open nm-open" ${o.openAttr}>`:href?`<a class="nm-open" href="${esc(href)}">`:''}<span class="lab">${hl(x.label,q)}</span> · ${hl(AlicantoBar.tameCaps(x.subject),q)}${o.openAttr?'</button>':href?'</a>':''}</h3><div class="nm-state">${chip(x)}${legal?'':`<button type="button" class="nm-ck" data-impl="${esc(x.id)}" role="checkbox" aria-checked="${on}" aria-label="Implementada: ${esc(x.label)}"><span class="nm-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Implementada</button>`}</div>`+
+   `<h3 class="nm-title">${o.openAttr?`<button type="button" class="title-open nm-open" ${o.openAttr}>`:href?`<a class="nm-open" href="${esc(href)}">`:''}<span class="lab">${hl(x.label,q)}</span> · ${hl(AlicantoBar.tameCaps(x.subject),q)}${o.openAttr?'</button>':href?'</a>':''}</h3><div class="nm-state">${chip(x)}${legal?'':`<button type="button" class="nm-ck" data-impl="${esc(x.id)}" role="checkbox" aria-checked="${on}" aria-label="Implementada: ${esc(x.label)}"><span class="nm-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>Implementada</button>`}</div>${plazos(x)}`+
 
    `<div class="row-acts" role="group" aria-label="Acciones">${open}${Bar?Bar.sourceAct(o.srcUrl||x.url,t):''}${Bar?Bar.shareAct(o.shareId||`n-${x.id}`,t,o.shareUrl):''}</div></div>`;
  }
@@ -80,9 +84,9 @@
  // only a suspension, «sin efecto» or an editorial date decision is quoted inline, since it explains the state.
  function fichaState(x){const r=x.review||{},legal=legalOf(x);
   const note=legal?`<p class="nm-note"><span class="k">${legal==='susp'?'Suspensión':'Sin efecto'}:</span> ${esc(r.by)}: <q>${esc(r.quote)}</q></p>`:r.kind==='date'?`<p class="nm-note"><span class="k">Fecha de vigencia registrada en revisión:</span> <q>${esc(r.quote)}</q></p>`:'';
-  return `<div class="nm-ficha"><div class="nm-state">${chip(x)}</div>${note}</div>`}
+  return `<div class="nm-ficha"><div class="nm-state">${chip(x)}</div>${plazos(x)}${note}</div>`}
  // The date line both pages print: the norm's emission and its issuer («Emitida 6 nov 2026 · SUSESO»).
  function dateLine(x){return [x.date?`Emitida ${fmt(D(x.date))}`:'',esc(x.emisor)].filter(Boolean).join(' · ')}
- root.AlicantoNormCard={vstat,grp,effKey,chip,box,render,dateLine,fichaState,title,toggleImpl,isImpl,legalOf,fmt,ymd,D,MES,MESL,IMPL_KEY,
+ root.AlicantoNormCard={vstat,grp,effKey,chip,box,plazos,plazoState,nextDue,render,dateLine,fichaState,title,toggleImpl,isImpl,legalOf,fmt,ymd,D,MES,MESL,IMPL_KEY,
   setToday:d=>{today=D(ymd(d))}};
 })(typeof window==='undefined'?globalThis:window);

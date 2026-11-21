@@ -12,20 +12,22 @@ const Read=window.AlicantoRead||null;
 let items=[];
 const S={g:'all',month:null,q:'',emi:'',tema:'',open:new Set()};
 // Review 11-nov: one name per group in pills and headers; «Implementadas» is a filter on the reader's mark, not a group.
-const GROUPS=[['p30','Próximos 30 días'],['p30p','Más de 30 días'],['v30','Vigentes · últimos 30 días'],['vhist','Vigentes · histórico'],
- ['sin','Sin fecha · en revisión'],['susp','Suspendidas'],['sinef','Derogadas o sin efecto']];
-const PANEL=[['all','Todas',null],['p30','Próximos 30 días',['p30']],['p30p','Más de 30 días',['p30p']],['vig','Vigentes',['v30','vhist']],
- ['sin','Sin fecha',['sin']],['impl','Implementadas',null],['susp','Suspendidas',['susp']],['sinef','Derogadas o sin efecto',['sinef']]];
+// Dirección 21-nov-2026: five states (próximas, vigentes, pendientes de Diario Oficial, suspendidas, derogadas); «En revisión»
+// only for a term Alicanto cannot date. «Plazos por vencer» filters the norms with a compliance deadline ahead.
+const GROUPS=[['p30','Próximos 30 días'],['p30p','Más de 30 días'],['pdo','Pendientes de Diario Oficial'],['v30','Vigentes · últimos 30 días'],['vhist','Vigentes · histórico'],
+ ['sin','En revisión'],['susp','Suspendidas'],['sinef','Derogadas']];
+const PANEL=[['all','Todas',null],['plz','Plazos por vencer',null],['p30','Próximos 30 días',['p30']],['p30p','Más de 30 días',['p30p']],['pdo','Pendientes de DO',['pdo']],['vig','Vigentes',['v30','vhist']],
+ ['sin','En revisión',['sin']],['impl','Implementadas',null],['susp','Suspendidas',['susp']],['sinef','Derogadas',['sinef']]];
 const FOLD=['vhist','susp','sinef'];
 const vstat=NC.vstat,grp=NC.grp,effKey=NC.effKey;
 function base(){const q=S.q.trim().toLowerCase();return items.filter(x=>(!q||[x.label,x.subject,x.tema,x.target].join(' ').toLowerCase().includes(q))&&(!S.emi||x.emisor===S.emi)&&(!S.tema||x.tema===S.tema))}
-const keysOf=k=>k==='all'||k==='impl'?null:(PANEL.find(p=>p[0]===k)||[])[2]||[k];
-function shown(){const ks=keysOf(S.g);return base().filter(x=>(!ks||ks.includes(grp(x)))&&(S.g!=='impl'||NC.isImpl(x.id))&&(!S.month||effKey(x).startsWith(S.month)))}
+const keysOf=k=>k==='all'||k==='impl'||k==='plz'?null:(PANEL.find(p=>p[0]===k)||[])[2]||[k];
+function shown(){const ks=keysOf(S.g);return base().filter(x=>(!ks||ks.includes(grp(x)))&&(S.g!=='impl'||NC.isImpl(x.id))&&(S.g!=='plz'||NC.nextDue(x)!==null)&&(!S.month||effKey(x).startsWith(S.month)))}
 const when=(x,e)=>x.prec==='month'&&!(x.review&&x.review.kind==='date')?`${MESL[e.getUTCMonth()]} de ${e.getUTCFullYear()}`:fmt(e);
 const isRead=x=>Boolean(Read&&Read.readSet&&Read.readSet.has(x.signal_id||x.id));
 // Same card as Al día (norma-card.js): read dot, date line, Ver ficha (the Al día ficha), Fuente original, Compartir.
 function card(x){return `<article class="nm-item${isRead(x)?' read':''}" id="n-${esc(x.id)}" tabindex="-1">${NC.render(x,{read:isRead(x),readId:x.signal_id||x.id,openHref:x.ficha,shareId:`n-${x.id}`,q:S.q.trim(),open:S.open.has(x.id)})}</article>`}
-function counts(){const xs=base(),c={};for(const [k,,ks] of PANEL)c[k]=k==='impl'?xs.filter(x=>NC.isImpl(x.id)).length:ks?xs.filter(x=>ks.includes(grp(x))).length:xs.length;return c}
+function counts(){const xs=base(),c={};for(const [k,,ks] of PANEL)c[k]=k==='impl'?xs.filter(x=>NC.isImpl(x.id)).length:k==='plz'?xs.filter(x=>NC.nextDue(x)!==null).length:ks?xs.filter(x=>ks.includes(grp(x))).length:xs.length;return c}
 // Empty groups have no pill (except the selected one), so the row fits; each pill reads «Vigentes: 13 normas».
 function drawGroups(){const c=counts();document.getElementById('nmGroups').innerHTML=PANEL.filter(([k])=>k==='all'||c[k]||S.g===k).map(([k,l])=>`<button type="button" data-g="${k}" aria-pressed="${S.g===k}" aria-label="${l}: ${c[k]} ${c[k]===1?'norma':'normas'}">${l} <b>${c[k]}</b></button>`).join('')}
 function drawMonths(){const xs=base().filter(x=>!(x.review&&['susp','sinef'].includes(x.review.kind)));const keys=[...new Set(xs.map(effKey).filter(Boolean).map(k=>k.slice(0,7)))].sort();
@@ -33,8 +35,10 @@ function drawMonths(){const xs=base().filter(x=>!(x.review&&['susp','sinef'].inc
  const n=k=>xs.filter(x=>effKey(x).startsWith(k)).length,max=Math.max(1,...ks.map(n));
  document.getElementById('nmMonths').innerHTML=ks.map(k=>{const [y,m]=k.split('-').map(Number),c=n(k);return `<button type="button" class="nm-mo${k<cur?' past':''}${k===cur?' cur':''}" data-month="${k}" aria-pressed="${S.month===k}" aria-label="${MESL[m-1]} ${y}: ${c} con fecha de entrada en vigencia"><span class="m">${MES[m-1]} ${String(y).slice(2)}</span><span class="c">${c}</span>${k===cur?'<span class="hoy">hoy</span>':''}<span class="bar"><i style="width:${(c/max*100).toFixed(0)}%"></i></span></button>`}).join('');
  document.getElementById('nmMonths').hidden=!ks.length}
-function drawHero(){const xs=base().filter(x=>['p30','p30p'].includes(grp(x))).sort((a,b)=>vstat(a).days-vstat(b).days).slice(0,3);const h=document.getElementById('nmHero');
- h.innerHTML=xs.length?`<p class="nm-hero-h">Próximas entradas en vigencia</p><div class="nm-hero-row">${xs.map(x=>{const s=vstat(x);return `<a class="nm-hc${s.days<=30?' u':''}" href="#n-${esc(x.id)}" data-jump="${esc(x.id)}"><span class="nm-hd"><b>${s.days}</b><span>${s.days===1?'día':'días'}</span></span><span class="nm-hw">para entrar en vigencia · ${when(x,s.e)}${x.computed?' (calculada)':''}</span><span class="nm-ht">${esc(x.target||x.label)}</span><span class="nm-hs">${esc(x.emisor)} · ${esc(x.subject)}</span></a>`}).join('')}</div>`:'';h.hidden=!xs.length}
+function drawHero(){const vig=base().filter(x=>['p30','p30p'].includes(grp(x))).map(x=>({x,days:vstat(x).days,e:vstat(x).e,t:'vig'}));
+ const plz=base().filter(x=>NC.nextDue(x)!==null).map(x=>{const p=(x.plazos||[]).map(p=>({p,s:NC.plazoState(p)})).filter(o=>o.s.k==='vence').sort((a,b)=>a.s.days-b.s.days)[0];return {x,days:p.s.days,e:p.s.e,t:'plz',p:p.p}});
+ const xs=[...vig,...plz].sort((a,b)=>a.days-b.days).slice(0,3);const h=document.getElementById('nmHero');
+ h.innerHTML=xs.length?`<p class="nm-hero-h">Próximas entradas en vigencia y plazos</p><div class="nm-hero-row">${xs.map(({x,days,e,t,p})=>`<a class="nm-hc${days<=30?' u':''}${t==='plz'?' plz':''}" href="#n-${esc(x.id)}" data-jump="${esc(x.id)}"><span class="nm-hd"><b>${days}</b><span>${days===1?'día':'días'}</span></span><span class="nm-hw">${t==='plz'?'para vencer el plazo':'para entrar en vigencia'} · ${t==='plz'?fmt(e):when(x,e)}</span><span class="nm-ht">${esc(x.target||x.label)}</span><span class="nm-hs">${t==='plz'?esc(p.accion):`${esc(x.emisor)} · ${esc(x.subject)}`}</span></a>`).join('')}</div>`:'';h.hidden=!xs.length}
 function drawCount(){const ch=[];const lab={...Object.fromEntries(PANEL.map(p=>[p[0],p[1]]))};if(S.g!=='all')ch.push(['g',lab[S.g]]);if(S.month){const [y,m]=S.month.split('-').map(Number);ch.push(['month',`${MESL[m-1]} ${y}`])}if(S.emi)ch.push(['emi',S.emi]);if(S.tema)ch.push(['tema',S.tema]);if(S.q.trim())ch.push(['q',`«${S.q.trim()}»`]);
  const n=(S.emi?1:0)+(S.tema?1:0)+(S.q.trim()?1:0);document.getElementById('nmFxN').textContent=n?` · ${n}`:'';
  document.getElementById('nmCount').innerHTML=`<span>${shown().length} de ${items.length} normas</span>${ch.map(([k,l])=>`<span class="nm-chip">${esc(l)}<button type="button" data-clear="${k}" aria-label="Quitar filtro ${esc(l)}">×</button></span>`).join('')}${ch.length>1?'<button type="button" class="nm-lnk" data-clear="all">Limpiar</button>':''}`}

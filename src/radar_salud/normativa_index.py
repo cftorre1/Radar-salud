@@ -22,6 +22,8 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
+from .cl_calendar import add_term
+
 SCHEMA = "normativa_v1"
 REGISTRY = Path("data/normativa/registry.json")
 REVIEW = Path("data/normativa/review.json")
@@ -211,45 +213,178 @@ def publishable(s: dict) -> bool:
             and bool((s.get("display_title") or s.get("title")) and s.get("normative_document_label") and s.get("source_url")))
 
 
-# Dirección 20-nov-2026: «Sin fecha» only when the text truly gives none. Two cases are computed, never guessed:
-# a term counted in calendar units from the publication («6 meses corridos contados desde su publicación») and
-# «a contar de la fecha de su publicación en el Diario Oficial», resolved with the Diario Oficial edition Alicanto
-# captured for that same act (the publication stamp, not the day Alicanto detected it).
+# Dirección 20-nov-2026: «Sin fecha» only when the text truly gives none. A term counted from the publication
+# («6 meses corridos contados desde su publicación») is computed from the act's date; counted from the Diario Oficial,
+# from the Diario Oficial edition Alicanto captured for that same act (the publication stamp, not the detection day).
+# Dirección 21-nov-2026: business days are computed (cl_calendar); «N días» with no qualifier are calendar days, except
+# when the text invokes Ley 19.880, whose day terms are business days (art. 25).
 _WORDNUM = {"un": 1, "uno": 1, "una": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, "seis": 6, "siete": 7, "ocho": 8,
-            "nueve": 9, "diez": 10, "quince": 15, "veinte": 20, "treinta": 30, "sesenta": 60, "noventa": 90}
-_TERM_FROM_PUB = re.compile(rf"\b({_NUM})\s+(d[ií]as?|mes(?:es)?|a[ñn]os?)(?:\s+(corridos?))?\s+(?:contad[oa]s?\s+)?(?:desde|a\s+contar\s+de)\s+(?:su|la)\s+publicaci[oó]n\b(?!\s+en\s+el\s+Diario)", re.I)
+            "nueve": 9, "diez": 10, "quince": 15, "veinte": 20, "treinta": 30, "sesenta": 60, "noventa": 90,
+            "veinticuatro": 24, "cuarenta y ocho": 48, "setenta y dos": 72}
+_NUM2 = r"(?:\d+|un[oa]?|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|quince|veinte|treinta|sesenta|noventa|veinticuatro|cuarenta\s+y\s+ocho|setenta\s+y\s+dos)"
+_TERM_FROM_PUB = re.compile(rf"\b({_NUM})\s+(d[ií]as?|mes(?:es)?|a[ñn]os?)(?:\s+(corridos?|h[aá]biles))?\s+(?:contad[oa]s?\s+)?(?:desde|a\s+contar\s+de)\s+(?:su|la)\s+(?:fecha\s+de\s+(?:su\s+)?)?publicaci[oó]n\b", re.I)
 
 
-def term_from_publication(text: Any, published: Any) -> dict | None:
-    """«6 meses corridos contados desde su publicación» + the act's date → the computed day. Business days
-    («días hábiles») are never computed (holidays), nor a term counted from the Diario Oficial."""
+def _n(word: str) -> int | None:
+    w = " ".join(word.lower().split())
+    return int(w) if w.isdigit() else _WORDNUM.get(w)
+
+
+def term_from_publication(text: Any, published: Any, do_date: Any = None) -> dict | None:
+    """«6 meses corridos contados desde su publicación» + the act's date → the computed day. A term counted from the
+    Diario Oficial uses ``do_date``; while that edition is not captured the norm is «pendiente de Diario Oficial»."""
     t = " ".join(str(text or "").split())
     m = _TERM_FROM_PUB.search(t)
-    if m:
-        start = t.rfind('.', 0, m.start()) + 1
-        end = t.find('.', m.end())
-        sentence = t[start:end if end >= 0 else len(t)]
-        before = t[start:m.start()]
-        # review of #221: a deadline («plazo de seis meses … para adecuar», «deberán … dentro de») is not the entry
-        # into force, and a term counted from the Diario Oficial is never counted from the issuer's date.
-        if _DIARIO_OFICIAL.search(sentence) or _BAD.search(before) or re.search(r"\b(?:dentro\s+de|para\s+\w+r)\b", sentence, re.I):
-            return None
-    if not m or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(published or "")) or re.search(r"h[aá]biles", m.group(0), re.I):
+    if not m:
         return None
-    n = int(m.group(1)) if m.group(1).isdigit() else _WORDNUM.get(m.group(1).lower())
-    unit = m.group(2).lower()
-    if not n or (unit.startswith("d") and not m.group(3)):
-        return None  # «30 días» without «corridos» may be business days: not computed
-    base = date.fromisoformat(str(published))
-    if unit.startswith("d"):
-        eff = base + timedelta(days=n)
-    else:
-        months = n * (12 if unit.startswith("a") else 1)
-        y, mo = divmod(base.month - 1 + months, 12)
-        y, mo = base.year + y, mo + 1
-        import calendar
-        eff = date(y, mo, min(base.day, calendar.monthrange(y, mo)[1]))
-    return {"kind": "date", "eff": eff.isoformat(), "prec": "day", "computed": f"{m.group(0)} ({base.isoformat()})"}
+    start = t.rfind('.', 0, m.start()) + 1
+    end = t.find('.', m.end())
+    sentence = t[start:end if end >= 0 else len(t)]
+    # review of #221: a deadline («plazo de seis meses … para adecuar», «deberán … dentro de») is not the entry into force.
+    if _BAD.search(t[start:m.start()]) or re.search(r"\b(?:dentro\s+de|para\s+\w+r)\b", sentence, re.I):
+        return None
+    n = _n(m.group(1))
+    if not n:
+        return None
+    do = bool(_DIARIO_OFICIAL.search(sentence))
+    base_s = do_date if do else published
+    if do and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(base_s or "")):
+        return {"kind": "on_publication_do", "eff": None, "prec": None}
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(base_s or "")):
+        return None
+    business = bool(m.group(3) and m.group(3).lower().startswith("h")) or (not m.group(3) and "19.880" in t)
+    eff = add_term(date.fromisoformat(str(base_s)), n, m.group(2), business)
+    if eff is None:
+        return None  # a year whose holidays are not listed: never guessed
+    return {"kind": "date", "eff": eff.isoformat(), "prec": "day", "computed": f"{m.group(0)} ({base_s})"}
+
+
+# Dirección 21-nov-2026: compliance deadlines («informar dentro de los diez días hábiles siguientes a la vigencia»)
+# are shown apart from the entry into force, with their own countdown. Only from the official text Alicanto stored
+# (normative_evidence), only sentences that impose a duty; a per-case term («dentro de cinco días hábiles contado desde
+# su presentación», «24 horas») has no countdown.
+_DUTY = re.compile(r"\bdeber[aá]n?\b|\bdeben\b|\btendr[aá]n?\s+(?:un\s+)?plazo\b|^\s*[a-z]\)\s+[A-ZÁÉÍÓÚ][a-záéíóú]+r(?:se)?\b")
+_RECITAL = re.compile(r"recurso|reposici[oó]n|jer[aá]rquico|solicita|OBJETIVO|se\s+computa|transitorio\s+de\s+la\s+Ley|aludía", re.I)
+_TERM = re.compile(rf"(?:dentro\s+(?:del\s+plazo\s+)?de(?:\s+(?:los|las))?|en\s+(?:un|el)\s+plazo\s+(?:m[aá]ximo\s+)?de|a\s+m[aá]s\s+tardar\s+(?:dentro\s+de|en))\s+"
+                   rf"({_NUM2})\s+(d[ií]as|meses|a[ñn]os|horas)(?:\s+(h[aá]biles|corridos))?"
+                   r"(?:\s+((?:siguientes|posteriores)\s+a|contad[oa]s?\s+desde|a\s+contar\s+de(?:sde)?|desde)\s+([^,.;]{3,90}))?", re.I)
+_BY_DATE = re.compile(r"\b(?:a\s+m[aá]s\s+tardar|no\s+m[aá]s\s+all[aá])\s+(?:del?|el)\s+", re.I)
+_A_VIG = re.compile(r"^(?:la\s+)?(?:entrada\s+en\s+)?vigencia\b", re.I)
+_A_ACT = re.compile(r"^(?:la\s+fecha\s+de(?:l)?\s+)?(?:la\s+|el\s+)?(?:presente|este|esta)\s+(?:oficio|circular|resoluci[oó]n|dictamen)|^la\s+fecha\s+del?\s+presente|^(?:su|la)\s+publicaci[oó]n", re.I)
+_A_NOTIF = re.compile(r"^(?:su|la)\s+notificaci[oó]n", re.I)
+_SPLIT_FIX_MIN = 4
+_STOP = {"a", "al", "de", "del", "el", "en", "la", "las", "lo", "los", "y", "e", "o", "u", "un", "una", "se", "su", "sus",
+         "que", "con", "por", "es", "le", "les", "ni", "no", "si", "ya"}
+
+
+def _vocab(evidence_dir: Path | None) -> set[str]:
+    out: set[str] = set()
+    if evidence_dir is None or not evidence_dir.is_dir():
+        return out
+    for f in sorted(evidence_dir.glob("*.json")):
+        out.update(w.lower() for w in re.findall(r"[A-Za-zÁÉÍÓÚáéíóúÑñÜü]{%d,}" % _SPLIT_FIX_MIN, str(_read(f, {}).get("text") or "")))
+    return out
+
+
+def unsplit(text: str, vocab: set[str]) -> str:
+    """Rejoin words the PDF capture split («cobertu ra», «comunicac ión»): two pieces join only when the whole word is
+    in the vocabulary of the official texts and at least one piece is not a word by itself."""
+    toks = text.split(" ")
+    out: list[str] = []
+    i = 0
+    while i < len(toks):
+        a = toks[i]
+        while i + 1 < len(toks):
+            b = toks[i + 1]
+            wa, wb = re.match(r"^([A-Za-zÁÉÍÓÚáéíóúÑñ]*)$", a), re.match(r"^([A-Za-zÁÉÍÓÚáéíóúÑñ]+)([^A-Za-zÁÉÍÓÚáéíóúÑñ]*)$", b)
+            if not (wa and wb and a and b[:1].islower()) or a.lower() in _STOP or wb.group(1).lower() in _STOP:
+                break
+            whole = (a + wb.group(1)).lower()
+            if whole in vocab and not (a.lower() in vocab and wb.group(1).lower() in vocab):
+                a, i = a + b, i + 1
+            else:
+                break
+        out.append(a)
+        i += 1
+    return " ".join(out)
+
+
+def _action(sentence: str, at: int) -> str:
+    head = sentence[:at]
+    m = re.search(r"\bdeber[aá]n?\s+(?:\w+\s+)?(\w+r(?:se|le|les)?)\b", head) or re.search(r"\bdeben\s+(\w+r(?:se)?)\b", head) \
+        or re.match(r"^\s*[a-z]\)\s+([A-ZÁÉÍÓÚ]\w+r(?:se)?)\b", head)
+    if not m:
+        return ""
+    act = head[m.start(1):].strip()
+    act = re.split(r",\s+|\s+mediante\s|\s+a\s+trav[eé]s\s+de\s", act)[0].strip(" ,;:")
+    if len(act) > 140:
+        act = act[:140].rsplit(" ", 1)[0] + "…"
+    return act[:1].upper() + act[1:]
+
+
+def compliance_terms(text: Any, vocab: set[str] | None = None) -> list[dict]:
+    """Duties with a term in the official text: [{accion, n, unit, habiles, anchor, desde, quote} | {accion, due, quote}].
+    anchor: vigencia | acto | do | notif | caso."""
+    t = " ".join(str(text or "").split())
+    if vocab:
+        t = unsplit(t, vocab)
+    out: list[dict] = []
+    for sent in re.split(r"(?<=[.;])\s+", t):
+        if not _DUTY.search(sent) or _RECITAL.search(sent):
+            continue
+        for m in _TERM.finditer(sent):
+            n = _n(m.group(1))
+            if not n:
+                continue
+            tail = re.split(r"\s+(?:y|e|o)\s+", (m.group(5) or "").strip())[0]
+            unit = m.group(2).lower()
+            if unit.startswith("h") or not m.group(4):
+                anchor = "caso"
+            elif _A_VIG.search(tail):
+                anchor = "vigencia"
+            elif _A_ACT.search(tail):
+                anchor = "do" if _DIARIO_OFICIAL.search(tail) else "acto"
+            elif _A_NOTIF.search(tail):
+                anchor = "notif"
+            else:
+                anchor = "caso"
+            action = _action(sent, m.start())
+            if not action:
+                continue
+            desde = {"vigencia": "desde la entrada en vigencia", "acto": "desde la fecha de la norma",
+                     "do": "desde su publicación en Diario Oficial", "notif": "desde su notificación"}.get(anchor)
+            if anchor == "caso" and m.group(4):
+                desde = re.sub(r"\s+(?:y|e|o)$", "", " ".join(f"{m.group(4)} {tail}".split())[:60])
+                desde = re.sub(r"^contad[oa]s?\s+", "", desde)
+            out.append({"accion": action, "n": n, "unit": "días" if unit.startswith("d") else unit.replace("anos", "años"),
+                        "habiles": bool(m.group(3) and m.group(3).lower().startswith("h")) or (not m.group(3) and "19.880" in t),
+                        "anchor": anchor, "desde": desde, "quote": sent[:400]})
+        for m in _BY_DATE.finditer(sent):
+            dm = _DAY_DATE.match(sent, m.end())
+            d = dm and _as_date(dm.group(3), dm.group(2), dm.group(1))
+            action = _action(sent, m.start())
+            if d and action:
+                out.append({"accion": action, "due": d.isoformat(), "anchor": "fecha", "quote": sent[:400]})
+    seen, uniq = set(), []
+    for x in out:
+        k = (x["accion"].lower(), x.get("n"), x.get("unit"), x.get("due"))
+        if k not in seen:
+            seen.add(k)
+            uniq.append(x)
+    return uniq[:4]
+
+
+def _evidence_text(url: Any, evidence_dir: Path | None) -> str:
+    if not url or evidence_dir is None or not evidence_dir.is_dir():
+        return ""
+    for f in sorted(evidence_dir.glob("*.json")):
+        d = _read(f, {})
+        if url in (d.get("page_url"), d.get("document_url")):
+            return str(d.get("text") or "")
+    return ""
+
+
+PLAZOS_V = 1
 
 
 def _plus_days(d: Any, n: int) -> str:
@@ -348,10 +483,17 @@ def update_registry(registry: dict, signals: list[dict], today: date, history: l
     # Diario Oficial date for «rige desde su publicación en el Diario Oficial» (Dirección 20-nov-2026).
     rows = [*signals, *(history or [])]
     for rid, rec in list(items.items()):
-        if not rec.get("do_date") and parse_validity(rec.get("validity")).get("kind") == "on_publication_do":
+        if not rec.get("do_date") and _DIARIO_OFICIAL.search(str(rec.get("validity") or "")):
             d = diario_oficial_date(rec, rows)
             if d:
                 items[rid] = {**rec, "do_date": d}
+    # Dirección 21-nov-2026: compliance deadlines from the official text, read once per extraction version.
+    vocab: set[str] | None = None
+    for rid, rec in list(items.items()):
+        if rec.get("plazos_v") != PLAZOS_V and evidence_dir is not None:
+            if vocab is None:
+                vocab = _vocab(evidence_dir)
+            items[rid] = {**rec, "plazos": compliance_terms(_evidence_text(rec.get("url"), evidence_dir), vocab), "plazos_v": PLAZOS_V}
     # Dirección 12-nov-2026: norms outside health leave the index too (kept in the registry as withheld).
     from .health_scope import outside_health
     for rid, rec in list(items.items()):
@@ -381,7 +523,9 @@ def build(registry: dict, review: dict, feed_ids: set[str], generated_at: str | 
     for rec in (registry.get("items") or {}).values():
         v = parse_validity(rec.get("validity"))
         if v.get("kind") == "none":
-            v = {**v, **(term_from_publication(rec.get("validity"), rec.get("date")) or {})}
+            v = {**v, **(term_from_publication(rec.get("validity"), rec.get("date"), rec.get("do_date")) or {})}
+        if v.get("kind") == "none" and _RELATIVE.search(" ".join(str(rec.get("validity") or "").split())):
+            v["unclear"] = True  # «seis meses desde su notificación»: a term Alicanto cannot date → «en revisión»
         rv = _review_entry(decisions.get(rec["id"]))
         if rec.get("withheld") or (rv or {}).get("kind") == "retirada":
             continue  # not public: withheld by Al día's gates or withdrawn by Dirección
@@ -389,14 +533,57 @@ def build(registry: dict, review: dict, feed_ids: set[str], generated_at: str | 
         item.update(v, tema=topic(rec.get("subject") or "", rec.get("emisor")))
         if rv:
             item["review"] = rv
+        plazos = due_dates(rec.get("plazos") or [], effective_base(item), rec.get("date"), rec.get("do_date"))
+        if plazos:
+            item["plazos"] = plazos
         # «Ver ficha» always opens the Al día ficha: from the live feed, or from normativa_cards.json once it left it.
         item["ficha"] = f"index.html?abrir=1&desde=normativa&n={rec['id']}#sig-{rec['signal_id']}" if rec.get("signal_id") else None
         item["in_feed"] = rec.get("signal_id") in feed_ids
         out.append(item)
     out.sort(key=lambda x: (str(x.get("date") or ""), x["id"]), reverse=True)
-    pending = [x["id"] for x in out if x["kind"] == "none" and not x.get("review")]
+    pending = [x["id"] for x in out if x.get("unclear") and not x.get("review")]
     return {"schema": SCHEMA, "generated_at": generated_at, "count": len(out), "review_pending": len(pending),
             "topic_rule": "keywords_on_official_subject_v1 (a validar por el comité)", "items": out}
+
+
+def effective_base(item: dict) -> str | None:
+    """The day a norm entered (or enters) into force, by the same rules as the page: a literal or computed date, the
+    Diario Oficial edition, else the act's own date (Dirección 21-nov-2026: «si no dicen fecha, vigentes desde su
+    fecha»). None while pending (Diario Oficial not yet captured, or a term Alicanto cannot date)."""
+    r = item.get("review") or {}
+    if r.get("kind") == "date":
+        return r.get("eff")
+    k = item.get("kind")
+    if k == "date":
+        return item.get("eff")
+    if k == "on_publication_do":
+        return item.get("do_date")
+    if k == "on_notification" or item.get("unclear"):
+        return None
+    return item.get("date")
+
+
+def due_dates(plazos: list[dict], vig: str | None, act: Any, do: Any) -> list[dict]:
+    """Public compliance deadlines: {accion, plazo, desde, due|None, caso, pendiente}."""
+    out = []
+    for p in plazos:
+        if p.get("anchor") == "fecha":
+            out.append({"accion": p["accion"], "plazo": None, "desde": None, "due": p["due"], "caso": False, "pendiente": False})
+            continue
+        base = {"vigencia": vig, "acto": act, "do": do}.get(p.get("anchor"))
+        caso = p.get("anchor") in ("caso", "notif")
+        due = None
+        if base and not caso and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(base)):
+            d = add_term(date.fromisoformat(str(base)), int(p["n"]), p["unit"], bool(p.get("habiles")))
+            due = d.isoformat() if d else None
+        n, unit = int(p["n"]), p["unit"]
+        unit = {"días": "día", "meses": "mes", "años": "año", "horas": "hora"}.get(unit, unit) if n == 1 else unit
+        plazo = f"{n} {unit}{' hábiles' if p.get('habiles') else (' corridos' if unit.startswith('d') else '')}"
+        if n == 1 and p.get("habiles"):
+            plazo = f"1 {unit} hábil"
+        out.append({"accion": p["accion"], "plazo": plazo, "desde": p.get("desde"), "due": due, "caso": caso,
+                    "pendiente": not caso and due is None})
+    return out
 
 
 def _read(path: Path, default):
