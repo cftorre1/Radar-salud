@@ -8,8 +8,8 @@
       "label": "la Ley N° 19.966 (Régimen de Garantías Explícitas en Salud, GES)",
       "tipo": "ley",
       "numero": "19966",
-      "last_request_day": "2026-11-21",
-      "last_checked_at": "2026-11-21T17:17:10.781493+00:00",
+      "last_request_day": "2026-11-22",
+      "last_checked_at": "2026-11-22T15:39:16.237426+00:00",
       "last_http_status": 401,
       "last_sha256": "31e171c5675b4fedbe48f5b4afa723e1056d5f2b5c3e19553ffadc6df86c996a",
       "last_error": "HTTPError: HTTP Error 401: Unauthorized",
@@ -45,8 +45,8 @@
       "label": "el DFL N° 1 de 2005 del Ministerio de Salud (texto refundido de Fonasa e Isapres)",
       "tipo": "decreto con fuerza de ley",
       "numero": "1",
-      "last_request_day": "2026-11-21",
-      "last_checked_at": "2026-11-21T17:17:10.956538+00:00",
+      "last_request_day": "2026-11-22",
+      "last_checked_at": "2026-11-22T15:39:16.292377+00:00",
       "last_error": "HTTPError: HTTP Error 401: Unauthorized",
       "search": {
         "url": "https://www.leychile.cl/Consulta/obtxml?opt=61&cadena=texto%20refundido%20decreto%20ley%202763%20leyes%2018933%2018469",
@@ -99,8 +99,8 @@
       "label": "la Ley N° 20.584 (derechos y deberes de las personas en su atención de salud)",
       "tipo": "ley",
       "numero": "20584",
-      "last_request_day": "2026-11-21",
-      "last_checked_at": "2026-11-21T17:17:11.102509+00:00",
+      "last_request_day": "2026-11-22",
+      "last_checked_at": "2026-11-22T15:39:16.369641+00:00",
       "last_http_status": 401,
       "last_sha256": "4a673a22b001e9b30aa03099c9fadfadf4630a39d37ec44fd6e263d5e8ffc2d8",
       "last_error": "HTTPError: HTTP Error 401: Unauthorized",
@@ -137,8 +137,8 @@
       "label": "el Decreto Supremo N° 3 de 1984 del Ministerio de Salud (reglamento de licencias médicas)",
       "tipo": "decreto",
       "numero": "3",
-      "last_request_day": "2026-11-21",
-      "last_checked_at": "2026-11-21T17:17:11.254498+00:00",
+      "last_request_day": "2026-11-22",
+      "last_checked_at": "2026-11-22T15:39:16.553200+00:00",
       "last_error": "HTTPError: HTTP Error 401: Unauthorized",
       "search": {
         "url": "https://www.leychile.cl/Consulta/obtxml?opt=61&cadena=reglamento%20autorizacion%20licencias%20medicas%20COMPIN%20instituciones%20de%20salud%20previsional",
@@ -191,8 +191,8 @@
       "label": "la Ley N° 21.674 (ley corta de Isapres)",
       "tipo": "ley",
       "numero": "21674",
-      "last_request_day": "2026-11-21",
-      "last_checked_at": "2026-11-21T17:17:11.400028+00:00",
+      "last_request_day": "2026-11-22",
+      "last_checked_at": "2026-11-22T15:39:16.611036+00:00",
       "last_http_status": 401,
       "last_sha256": "79f41ddb3a6ecbd35c1bf7026e0541c6ddaeb6c74ecf5c43b7ef0f2c5c41c4f5",
       "last_error": "HTTPError: HTTP Error 401: Unauthorized",
@@ -226,7 +226,7 @@
     }
   },
   "candidates": [],
-  "last_run_day": "2026-11-21",
+  "last_run_day": "2026-11-22",
   "probe": {
     "passed": true,
     "at": "2026-11-04T00:13:12.163724+00:00",
@@ -490,6 +490,44 @@
     {
       "day": "2026-11-21",
       "at": "2026-11-21T17:17:10.222163+00:00",
+      "requests": 5,
+      "baselines": [],
+      "changes": [],
+      "errors": [
+        {
+          "norm": "ley_19966",
+          "error": "HTTPError: HTTP Error 401: Unauthorized",
+          "http_status": 401
+        },
+        {
+          "norm": "dfl_1_2005_salud",
+          "error": "HTTPError: HTTP Error 401: Unauthorized",
+          "http_status": 401
+        },
+        {
+          "norm": "ley_20584",
+          "error": "HTTPError: HTTP Error 401: Unauthorized",
+          "http_status": 401
+        },
+        {
+          "norm": "ds_3_1984_salud",
+          "error": "HTTPError: HTTP Error 401: Unauthorized",
+          "http_status": 401
+        },
+        {
+          "norm": "ley_21674",
+          "error": "HTTPError: HTTP Error 401: Unauthorized",
+          "http_status": 401
+        }
+      ],
+      "status": "ok_partial",
+      "robots": {
+        "www.leychile.cl": "parsed"
+      }
+    },
+    {
+      "day": "2026-11-22",
+      "at": "2026-11-22T15:39:15.753516+00:00",
       "requests": 5,
       "baselines": [],
       "changes": [],
