@@ -23,8 +23,8 @@ APPROVED = ROOT / "data/weekly_insight/archive/2026-11-09.json"   # reference ex
 EVIDENCE = ROOT / "data/weekly_insight/candidates/2026-11-09-residencias-evidence.json"
 ANCHOR = date(2026, 11, 9)
 CURRENT = ROOT / "data/weekly_insight/editorial_approved.json"
-CURRENT_EVIDENCE = ROOT / "data/weekly_insight/candidates/2026-11-16-natalidad-evidence.json"
-CURRENT_ANCHOR = date(2026, 11, 16)
+CURRENT_EVIDENCE = ROOT / "data/weekly_insight/candidates/2026-11-23-trasplantes-evidence.json"
+CURRENT_ANCHOR = date(2026, 11, 23)
 
 
 def payload():
@@ -54,17 +54,18 @@ def test_committed_insight_is_v2_and_passes_with_its_evidence():
     assert 600 <= essay.essay_words(w) <= 900 and "kicker" not in w
     review = w["independent_review"]
     assert review["status"] == "final" and review["verdict"] == "PASS"
-    assert (w["freshness_anchor_date"], w["expires_on"]) == ("2026-11-16", "2026-11-23")
-    assert [bool(reviewed_weekly(p, date(2026, 11, d))) for d in (15, 16, 22, 23)] == [False, True, True, False]
+    assert (w["freshness_anchor_date"], w["expires_on"]) == ("2026-11-23", "2026-11-30")
+    assert [bool(reviewed_weekly(p, date(2026, 11, d))) for d in (22, 23, 29, 30)] == [False, True, True, False]
 
 
 def test_public_copies_serve_a_reviewed_v2_insight():
-    """latest.json and free_value.json serve the same reviewed insight: the reference (until the Monday refresh) or the
-    committed one."""
+    """latest.json and free_value.json serve the same reviewed insight: the committed one, or (until the Monday refresh)
+    the reference or the archived insight still in force."""
     latest = json.loads((ROOT / "data/weekly_insight/latest.json").read_text())["weekly_insight"]
     free = json.loads((ROOT / "web/data/free_value.json").read_text())
     assert free["weekly_insight"] == latest or free["weekly_insight"] == json.loads(CURRENT.read_text())["weekly_insight"]
-    assert free["weekly_insight"] in (weekly(), json.loads(CURRENT.read_text())["weekly_insight"])
+    archived = [json.loads(Path(f).read_text())["weekly_insight"] for f in glob.glob(str(ROOT / "data/weekly_insight/archive/*.json"))]
+    assert free["weekly_insight"] in (weekly(), json.loads(CURRENT.read_text())["weekly_insight"], *archived)
     assert free["selection_policy"]["weekly_presentation"] == {"format": essay.SCHEMA_V2, "errors": []}
 
 
@@ -89,7 +90,7 @@ def test_migration_uses_only_existing_evidence_urls_and_archives_nothing_new():
     assert {s["url"] for s in w["sources"]} == set(ev["allowed_urls"]) == set(w["source_refs"])
     assert {s["type"] for s in w["sources"]} == {"oficial", "prensa"}
     assert sorted(Path(p).name for p in glob.glob(str(ROOT / "data/weekly_insight/archive/*.json"))) == [
-        "2026-09-14.json", "2026-10-10.json", "2026-10-23.json", "2026-11-02.json", "2026-11-09.json"]
+        "2026-09-14.json", "2026-10-10.json", "2026-10-23.json", "2026-11-02.json", "2026-11-09.json", "2026-11-16.json"]
 
 
 def test_archived_v1_insights_still_pass_their_own_rules():
