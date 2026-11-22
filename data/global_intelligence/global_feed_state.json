@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-11-21",
-  "generated_at": "2026-11-22T01:09:44.729547+00:00",
+  "as_of": "2026-11-22",
+  "generated_at": "2026-11-22T21:07:47.893323+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,9 +16,9 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-11-20",
-    "items_last_2_days": 1,
+    "items_last_2_days": 0,
     "items_last_7_days": 10,
-    "status": "fresh",
+    "status": "stale",
     "stale_after_days": 2
   },
   "sources": [
@@ -52,10 +52,10 @@
     "not_global_interest:facility_opening": 2,
     "not_global_interest:no_global_interest_signal": 59,
     "not_global_interest:single_product_approval": 1,
-    "not_global_interest:source_rule_exclusion": 8,
-    "not_material_or_unverified": 488,
+    "not_global_interest:source_rule_exclusion": 7,
+    "not_material_or_unverified": 484,
     "not_relevant_or_undated": 76,
-    "official_title_without_executive_keyword": 283
+    "official_title_without_executive_keyword": 279
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 1,
@@ -369,7 +369,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-21",
+      "first_seen_on": "2026-11-22",
       "title_es": "El Comité de Seguridad Sanitaria de la UE llama a tomar medidas urgentes contra las bacterias resistentes a los antibióticos",
       "description_es": "El Comité de Seguridad Sanitaria de la UE llama a tomar medidas urgentes contra las bacterias resistentes a los antibióticos",
       "translation": {
@@ -751,7 +751,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-21",
+      "first_seen_on": "2026-11-22",
       "title_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "description_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "translation": {
@@ -4049,48 +4049,6 @@
         "note_es": "Contenido en inglés (licencia no permite traducción)",
         "cache_key": "06a2dd08eef1f98ffd6adaad68e3ac01"
       }
-    },
-    {
-      "id": "481c0c92c15789d62f1f",
-      "source": "who",
-      "source_label": "OMS",
-      "attribution": "Organización Mundial de la Salud (OMS)",
-      "bylines": [],
-      "title": "Mozambique strengthens regulation of medicines and imported vaccines, boosting health protection",
-      "url": "https://www.who.int/news/item/24-08-2026-mozambique-strengthens-regulation-of-medicines-and-imported-vaccines--boosting-health-protection",
-      "published_at": "2026-08-24",
-      "segments": [
-        "pharma",
-        "regulation"
-      ],
-      "description": "Mozambique has reached a major milestone in strengthening the regulation of medicines and imported vaccines, with its national regulatory authority recognized by the World Health Organization (WHO) as having a stable, well-functioning and integrated regulatory system.The Autoridade Nacional Reguladora de Medicamentos de Moçambique (ANARME) has achieved Maturity Level 3 (ML3) for the regulation of medicines and imported vaccines under WHO’s global classification of national regulatory authorities.Mozambique becomes the 10th country in Africa to reach ML3, joining Egypt, Ethiopia, Ghana…",
-      "description_truncated": true,
-      "description_source": "publisher_page_meta_description",
-      "tags_es": [
-        "Medicamentos y farma",
-        "Regulación"
-      ],
-      "summary_method": "deterministic_template_v1",
-      "ai_used": false,
-      "priority": 90,
-      "kind": "headline",
-      "content_use": "metadata_and_link_only",
-      "body_stored": false,
-      "chile_transfer": "hypothesis_only",
-      "rights_basis": {
-        "license": "metadata_and_link_only (Dirección 27-oct)",
-        "attribution": null,
-        "evidence_urls": [],
-        "verified_on": null
-      },
-      "sections": [],
-      "first_seen_on": "2026-11-21",
-      "translation": {
-        "status": "not_allowed",
-        "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
-        "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "verification_failed"
-      }
     }
   ],
   "translation": {
@@ -4099,7 +4057,7 @@
     "from_cache": 34,
     "verification_failed": 12,
     "review_failed": 0,
-    "not_allowed": 36,
+    "not_allowed": 35,
     "pending": 0,
     "source_in_spanish": 4
   },
