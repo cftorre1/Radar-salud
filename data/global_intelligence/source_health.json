@@ -2,7 +2,7 @@
   "sources": {
     "who": {
       "name": "WHO",
-      "checked_at": "2026-11-22T20:38:29.959875+00:00",
+      "checked_at": "2026-11-23T00:55:40.776956+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -82,7 +82,7 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/45060795305/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/45084698906/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -91,13 +91,17 @@
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
-        "activated": false,
-        "evidence_run_ids": [],
-        "reason": "failed_live_run_since_previous_daily_success",
+        "activated": true,
+        "evidence_run_ids": [
+          "44962140071",
+          "45084698906"
+        ],
+        "reason": "two_consecutive_successful_daily_live_runs",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
+        "gap_seconds": 87181,
         "earned_at": "2026-11-08T18:02:43.264345+00:00",
         "earned_evidence_run_ids": [
           "42381528433",
@@ -107,7 +111,7 @@
     },
     "paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-22T21:07:19.441959+00:00",
+      "checked_at": "2026-11-23T01:22:06.015950+00:00",
       "status": "ok",
       "technical_status": "ok",
       "coverage_status": "complete",
@@ -205,7 +209,7 @@
           "pages": 2
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/45060795305/inventory.json",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/45084698906/inventory.json",
       "source_quality_disposition": "pass_data",
       "publication_activation": true,
       "content_freshness": "recent",
@@ -216,15 +220,15 @@
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
         "activated": true,
         "evidence_run_ids": [
-          "44938902167",
-          "45060795305"
+          "44962140071",
+          "45084698906"
         ],
         "reason": "two_consecutive_successful_daily_live_runs",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 88431,
+        "gap_seconds": 87170,
         "earned_at": "2026-11-04T01:00:32.943483+00:00",
         "earned_evidence_run_ids": [
           "41539638382",
