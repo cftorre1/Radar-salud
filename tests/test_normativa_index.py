@@ -300,8 +300,9 @@ def test_no_date_means_in_force_from_its_date_and_only_undatable_terms_stay_in_r
 
 
 def test_review_223_month_precision_suspensions_short_actions_and_persistence(tmp_path):
-    # A month-only entry into force is not a day: a deadline counted from it waits.
-    assert ni.effective_base({"kind": "date", "eff": "2027-03-01", "prec": "month"}) is None
+    # Dirección 23-nov-2026: a month-only entry into force counts from the 1st of that month.
+    assert ni.effective_base({"kind": "date", "eff": "2027-03-01", "prec": "month"}) == "2027-03-01"
+    assert ni.effective_base({"kind": "date", "eff": "2027-03-17", "prec": "month"}) == "2027-03-01"
     assert ni.effective_base({"kind": "date", "eff": "2027-03-01", "prec": "month", "review": {"kind": "date", "eff": "2027-03-15"}}) == "2027-03-15"
     assert ni.effective_base({"kind": "none", "unclear": True, "date": "2026-10-01", "review": {"kind": "nofija"}}) == "2026-10-01"
     # A bare verb is not shown; the duty nearest the term is; «desde» never cut mid-word.
