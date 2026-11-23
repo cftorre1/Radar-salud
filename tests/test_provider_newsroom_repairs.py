@@ -180,6 +180,11 @@ def test_davila_official_chain_preserves_threshold_and_rejects_unverified_suppor
         primary=target==url
         return f'<span>Novedades {"24" if primary else "20"}/08/2026</span><h1>{title if primary else support_title}</h1><p>'+('Programa Enlace: se ejecutaron treinta cirugías con cinco pabellones. '*4 if primary else 'El Programa Enlace compromete quinientos pacientes en diez jornadas y diez meses. '*4)+'</p>'
     monkeypatch.setattr(beta_sources,'fetch_html',fetch)
+    # Freeze the clock: the 90-day backfill horizon is relative to today, and 2026-08-24 left it on 23-nov-2026.
+    class _Today(beta_sources.date):
+        @classmethod
+        def today(cls):return beta_sources.date(2026,9,1)
+    monkeypatch.setattr(beta_sources,'date',_Today)
     inputs=[]
     monkeypatch.setattr(llm_analysis,'analyze_news',lambda **kw:inputs.append(kw['text']) or {'relevance_score':74,'reason':'Convenio cuantificado, impacto acotado territorialmente.', 'what_happened':'El prestador ejecutó treinta cirugías bajo un convenio de diez meses con la red pública.', 'why_it_matters':'Aporta capacidad privada para resolver espera odontológica en un hospital de referencia.'})
     assert beta_sources.process_curated_beta_source(raw,{}) is None
