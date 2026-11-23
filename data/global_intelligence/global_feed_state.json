@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "as_of": "2026-11-23",
-  "generated_at": "2026-11-23T14:53:27.958766+00:00",
+  "generated_at": "2026-11-23T23:21:49.627019+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -15,10 +15,10 @@
   "window_days": 90,
   "retention_days": 90,
   "freshness": {
-    "newest_published_at": "2026-11-20",
-    "items_last_2_days": 0,
-    "items_last_7_days": 9,
-    "status": "stale",
+    "newest_published_at": "2026-11-23",
+    "items_last_2_days": 3,
+    "items_last_7_days": 12,
+    "status": "fresh",
     "stale_after_days": 2
   },
   "sources": [
@@ -46,13 +46,13 @@
   "held": {
     "feed_not_authorized_for_display": 17,
     "not_global_interest:facility_opening": 1,
-    "not_global_interest:no_global_interest_signal": 34,
+    "not_global_interest:no_global_interest_signal": 35,
     "not_global_interest:single_product_approval": 1,
     "not_global_interest:source_rule_exclusion": 4,
-    "not_material_or_unverified": 339,
-    "not_relevant_or_undated": 76,
-    "official_title_without_executive_keyword": 185,
-    "publication_activation_pending_who": 299
+    "not_material_or_unverified": 341,
+    "not_relevant_or_undated": 74,
+    "official_title_without_executive_keyword": 187,
+    "publication_activation_pending_who": 301
   },
   "capped_per_source_day": 0,
   "duplicates_merged": 0,
@@ -62,35 +62,193 @@
     {
       "segment": "pharma",
       "label_es": "Medicamentos y farma",
-      "count": 7,
+      "count": 8,
       "item_ids": [
+        "7124b9d43bebc4d7c2ac",
         "7eec4348157bd9a16eff",
         "f0eddf418fa3c40f23e3",
         "aecb95a9c5d8c2746b1d",
-        "fbdc6698417d2333c104",
-        "dea9c5d51de78b1e25e2"
+        "fbdc6698417d2333c104"
       ]
     },
     {
       "segment": "regulation",
       "label_es": "Regulación",
-      "count": 3,
+      "count": 6,
       "item_ids": [
+        "fb7a3efc1eae9895b662",
+        "7124b9d43bebc4d7c2ac",
         "7eec4348157bd9a16eff",
         "f0eddf418fa3c40f23e3",
         "aecb95a9c5d8c2746b1d"
       ]
     },
     {
-      "segment": "ai_in_health",
-      "label_es": "IA en salud",
+      "segment": "healthtech",
+      "label_es": "Salud digital y dispositivos",
       "count": 1,
       "item_ids": [
-        "b8891628df8b074abe12"
+        "fb7a3efc1eae9895b662"
       ]
     }
   ],
   "items": [
+    {
+      "id": "fb7a3efc1eae9895b662",
+      "source": "ec_health",
+      "source_label": "Comisión Europea",
+      "attribution": "European Commission – Public Health (DG SANTE)",
+      "bylines": [],
+      "title": "HTA Regulation - Commission selects third medical device for joint clinical assessment",
+      "url": "https://ec.europa.eu/newsroom/sante/newsletter-archives/81762",
+      "published_at": "2026-11-23",
+      "segments": [
+        "regulation",
+        "healthtech"
+      ],
+      "description": "HTA Regulation - Commission selects third medical device for joint clinical assessment",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación",
+        "Salud digital y dispositivos"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": true,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "commission_legal_notice_cc_by_4_0_decision_2011_833",
+        "license": "CC BY 4.0 for EU-owned content (Commission Decision 2011/833/EU); logos, trademarks and third-party content excluded",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "license_label": "CC BY 4.0",
+        "attribution": "Source: European Commission, CC BY 4.0 (link to the licence), with link",
+        "evidence_urls": [
+          "https://health.ec.europa.eu/legal-notice_en",
+          "https://commission.europa.eu/legal-notice_en"
+        ],
+        "verified_on": "2026-10-28"
+      },
+      "sections": [
+        "latest_updates"
+      ],
+      "first_seen_on": "2026-11-23",
+      "title_es": "Reglamento sobre HTA: la Comisión selecciona el tercer dispositivo médico para una evaluación clínica conjunta",
+      "description_es": "Reglamento sobre HTA: la Comisión selecciona el tercer dispositivo médico para una evaluación clínica conjunta",
+      "translation": {
+        "status": "translated",
+        "kind": "translation",
+        "method": "machine_translation_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Traducción automática de Alicanto",
+        "row_note_es": "Traducido por Alicanto",
+        "check_note_es": "Control automático de cifras, fechas, siglas y nombres frente al original y revisión de fidelidad por un segundo modelo; puede contener errores",
+        "change_notice_es": "Traducción de Alicanto",
+        "cache_key": "8354a13c8532e556c41ba3020a78e91e"
+      }
+    },
+    {
+      "id": "7124b9d43bebc4d7c2ac",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Approves First New Hormone Therapy for Early-Stage Breast Cancer in More Than 20 Years",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-new-hormone-therapy-early-stage-breast-cancer-more-20-years",
+      "published_at": "2026-11-23",
+      "segments": [
+        "pharma",
+        "regulation"
+      ],
+      "description": "The FDA today approved Wilserdly (giredestrant), used alone after surgery in adults with estrogen receptor–positive, HER2-negative breast cancer — the most common subtype of the disease.",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Medicamentos y farma",
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 81,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-11-23",
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "description:code_missing:HER2-negative"
+        ]
+      }
+    },
+    {
+      "id": "90bafe5ac66c1c4c62bc",
+      "source": "fda",
+      "source_label": "FDA",
+      "attribution": "U.S. Food and Drug Administration (FDA)",
+      "bylines": [],
+      "title": "FDA Approves First Treatment for Limb-Girdle Muscular Dystrophy Type 2I/R9",
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-approves-first-treatment-limb-girdle-muscular-dystrophy-type-2ir9",
+      "published_at": "2026-11-23",
+      "segments": [
+        "regulation"
+      ],
+      "description": "The U.S. Food and Drug Administration today approved the first medicine for treating limb-girdle muscular dystrophy type 2I/R9 (LGMD2I/R9), a rare inherited muscle disease, for adults and pediatric patients weighing at least 30 kg.",
+      "description_truncated": false,
+      "description_source": "publisher_feed_summary_verbatim",
+      "tags_es": [
+        "Regulación"
+      ],
+      "summary_method": "deterministic_template_v1",
+      "ai_used": false,
+      "priority": 73,
+      "kind": "headline",
+      "content_use": "metadata_and_link_only",
+      "body_stored": false,
+      "chile_transfer": "hypothesis_only",
+      "rights_basis": {
+        "basis": "us_federal_government_work_17_usc_105",
+        "license": "US federal government works are not subject to copyright (17 U.S.C. §105); third-party material on fda.gov excluded",
+        "license_url": null,
+        "license_label": null,
+        "attribution": "Source: U.S. FDA, with link; no implied endorsement",
+        "evidence_urls": [
+          "https://fda.gov/AboutFDA/ContactFDA/StayInformed/RSSFeeds/default.htm",
+          "https://www.fda.gov/about-fda/about-website/website-policies"
+        ],
+        "verified_on": "2026-10-27"
+      },
+      "sections": [
+        "press_releases"
+      ],
+      "first_seen_on": "2026-11-23",
+      "translation": {
+        "status": "verification_failed",
+        "reason": [
+          "description:acronym_added:FDA"
+        ]
+      }
+    },
     {
       "id": "b8891628df8b074abe12",
       "source": "paho",
@@ -2798,15 +2956,15 @@
     }
   ],
   "translation": {
-    "translated": 14,
+    "translated": 15,
     "summarized": 5,
     "from_cache": 19,
-    "verification_failed": 12,
+    "verification_failed": 14,
     "review_failed": 0,
     "not_allowed": 22,
     "pending": 0,
     "source_in_spanish": 4
   },
-  "ai_text_items": 19,
+  "ai_text_items": 20,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget"
 }
