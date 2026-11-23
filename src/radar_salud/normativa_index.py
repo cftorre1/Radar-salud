@@ -563,7 +563,10 @@ def effective_base(item: dict) -> str | None:
         return r.get("eff")
     k = item.get("kind")
     if k == "date":
-        return None if item.get("prec") == "month" else item.get("eff")  # «marzo de 2027» is not a day (review of #223)
+        if item.get("prec") == "month":  # Dirección 23-nov-2026: «a contar del mes de marzo» → counted from 1-mar
+            e = str(item.get("eff") or "")
+            return e[:8] + "01" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", e) else None
+        return item.get("eff")
     if k == "on_publication_do":
         return item.get("do_date")
     if k == "on_notification" or (item.get("unclear") and r.get("kind") != "nofija"):
