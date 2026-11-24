@@ -484,6 +484,31 @@
    },
    "final": true,
    "final_at": "2026-11-17T01:08:14.252567+00:00"
+  },
+  "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n13656-emision-20-11-2026/": {
+   "problems": [
+    "quote_not_literal"
+   ],
+   "evidence_sha256": "6a8aa09710fe09ffd94d8fe37da8a91d863a0f387ffc37e819080e40ca2ddb19",
+   "at": "2026-11-24T02:50:32.317509+00:00",
+   "run_id": "45310881857",
+   "attempts": 3,
+   "runs": 1,
+   "last_draft": {
+    "plain_language_title": "Resolución Exenta IF/N°13656 · Rechaza recurso de reposición de Isapre Nueva Masvida",
+    "subject_terms": [
+     "recurso de reposición",
+     "Isapre Nueva Masvida"
+    ],
+    "action_terms": [
+     "Rechaza"
+    ],
+    "normative_context": "Se rechaza el recurso de reposición en contra de las instrucciones impartidas. Se aplica a la Isapre Nueva Masvida. Las instrucciones solo pueden producir efectos hacia el futuro.",
+    "evidence_quotes": [
+     "la Isapre Nueva Masvida, mediante presentación ingreso Nº17659, de fecha 22 de septiembre de 2026, ha interpuesto recurso de reposición en contra de las instrucciones impartidas en la citada normativa.",
+     "cualquiera sea lo que se resuelva en definitiva respecto de los recursos interpuestos contra la Circular IF/Nº535, sus instrucciones solo pueden producir efectos hacia el futuro."
+    ]
+   }
   }
  },
  "acts": {
@@ -1969,6 +1994,63 @@
     }
    ],
    "last_run_id": "43992857011"
+  },
+  "https://www.superdesalud.gob.cl/normativa/resolucion-exenta-if-n13656-emision-20-11-2026/": {
+   "legal_identity": "Resolución Exenta IF/N°13656",
+   "detected_at": "2026-11-24T02:16:15.706242+00:00",
+   "evidence_at": "2026-11-24T02:49:19.259089+00:00",
+   "first_attempt_at": "2026-11-24T02:49:39.797794+00:00",
+   "published_at": null,
+   "runs": [
+    "45310881857"
+   ],
+   "attempts": 3,
+   "status": "rejected",
+   "attempt_log": [
+    {
+     "at": "2026-11-24T02:49:39.797794+00:00",
+     "run_id": "45310881857",
+     "attempt": 1,
+     "kind": "normative_autorecord",
+     "cost_usd": 0.026404,
+     "problems": [
+      "number_not_backed_by_quote:535"
+     ]
+    },
+    {
+     "at": "2026-11-24T02:49:52.959047+00:00",
+     "run_id": "45310881857",
+     "attempt": 2,
+     "kind": "normative_autorecord_repair",
+     "cost_usd": null,
+     "problems": [
+      "unparseable_model_output:model_call_failed:JSONDecodeError:Unterminated string starting at: line 1 column"
+     ]
+    },
+    {
+     "at": "2026-11-24T02:50:14.594721+00:00",
+     "run_id": "45310881857",
+     "attempt": 3,
+     "kind": "normative_autorecord_repair",
+     "cost_usd": 0.031034,
+     "problems": [
+      "quote_not_literal"
+     ]
+    }
+   ],
+   "rejection_history": [
+    {
+     "problems": [
+      "quote_not_literal"
+     ],
+     "evidence_sha256": "6a8aa09710fe09ffd94d8fe37da8a91d863a0f387ffc37e819080e40ca2ddb19",
+     "at": "2026-11-24T02:50:32.317509+00:00",
+     "run_id": "45310881857",
+     "attempts": 3,
+     "runs": 1
+    }
+   ],
+   "last_run_id": "45310881857"
   }
  }
 }
