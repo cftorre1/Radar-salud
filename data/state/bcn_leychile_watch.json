@@ -8,11 +8,11 @@
       "label": "la Ley N° 19.966 (Régimen de Garantías Explícitas en Salud, GES)",
       "tipo": "ley",
       "numero": "19966",
-      "last_request_day": "2026-11-23",
-      "last_checked_at": "2026-11-24T02:26:57.024273+00:00",
-      "last_http_status": 200,
+      "last_request_day": "2026-11-24",
+      "last_checked_at": "2026-11-24T19:21:52.057246+00:00",
+      "last_http_status": 401,
       "last_sha256": "31e171c5675b4fedbe48f5b4afa723e1056d5f2b5c3e19553ffadc6df86c996a",
-      "last_error": null,
+      "last_error": "HTTPError: HTTP Error 401: Unauthorized",
       "id_norma": "229834",
       "resolution_basis": "opt7_idLey_response_normaId",
       "resolved_at": "2026-11-04T00:13:12.163738+00:00",
@@ -45,13 +45,13 @@
       "label": "el DFL N° 1 de 2005 del Ministerio de Salud (texto refundido de Fonasa e Isapres)",
       "tipo": "decreto con fuerza de ley",
       "numero": "1",
-      "last_request_day": "2026-11-23",
-      "last_checked_at": "2026-11-24T02:26:58.205778+00:00",
+      "last_request_day": "2026-11-24",
+      "last_checked_at": "2026-11-24T19:21:53.511928+00:00",
       "last_error": null,
       "search": {
         "url": "https://www.leychile.cl/Consulta/obtxml?opt=61&cadena=texto%20refundido%20decreto%20ley%202763%20leyes%2018933%2018469",
-        "at": "2026-11-24T02:26:58.205789+00:00",
-        "sha256": "164f4e6e0a333fcb484176b4a470e807d30c420440e9e5ed9f89f017a30b4b93",
+        "at": "2026-11-24T19:21:53.511942+00:00",
+        "sha256": "af0f178fae4eb5b32474bce23496b02ad8f322cdd0e5e1cfff7aaca0f5bd0660",
         "candidates": [
           {
             "id_norma": "1039480",
@@ -99,11 +99,11 @@
       "label": "la Ley N° 20.584 (derechos y deberes de las personas en su atención de salud)",
       "tipo": "ley",
       "numero": "20584",
-      "last_request_day": "2026-11-23",
-      "last_checked_at": "2026-11-24T02:26:58.666151+00:00",
-      "last_http_status": 401,
+      "last_request_day": "2026-11-24",
+      "last_checked_at": "2026-11-24T19:21:53.805082+00:00",
+      "last_http_status": 200,
       "last_sha256": "4a673a22b001e9b30aa03099c9fadfadf4630a39d37ec44fd6e263d5e8ffc2d8",
-      "last_error": "HTTPError: HTTP Error 401: Unauthorized",
+      "last_error": null,
       "id_norma": "1039348",
       "resolution_basis": "opt7_idLey_response_normaId",
       "resolved_at": "2026-11-04T00:13:31.869421+00:00",
@@ -137,9 +137,9 @@
       "label": "el Decreto Supremo N° 3 de 1984 del Ministerio de Salud (reglamento de licencias médicas)",
       "tipo": "decreto",
       "numero": "3",
-      "last_request_day": "2026-11-23",
-      "last_checked_at": "2026-11-24T02:26:59.594180+00:00",
-      "last_error": null,
+      "last_request_day": "2026-11-24",
+      "last_checked_at": "2026-11-24T19:21:53.905824+00:00",
+      "last_error": "HTTPError: HTTP Error 401: Unauthorized",
       "search": {
         "url": "https://www.leychile.cl/Consulta/obtxml?opt=61&cadena=reglamento%20autorizacion%20licencias%20medicas%20COMPIN%20instituciones%20de%20salud%20previsional",
         "at": "2026-11-24T02:26:59.594190+00:00",
@@ -191,8 +191,8 @@
       "label": "la Ley N° 21.674 (ley corta de Isapres)",
       "tipo": "ley",
       "numero": "21674",
-      "last_request_day": "2026-11-23",
-      "last_checked_at": "2026-11-24T02:27:00.870778+00:00",
+      "last_request_day": "2026-11-24",
+      "last_checked_at": "2026-11-24T19:21:55.319446+00:00",
       "last_http_status": 200,
       "last_sha256": "79f41ddb3a6ecbd35c1bf7026e0541c6ddaeb6c74ecf5c43b7ef0f2c5c41c4f5",
       "last_error": null,
@@ -226,7 +226,7 @@
     }
   },
   "candidates": [],
-  "last_run_day": "2026-11-23",
+  "last_run_day": "2026-11-24",
   "probe": {
     "passed": true,
     "at": "2026-11-04T00:13:12.163724+00:00",
@@ -572,6 +572,29 @@
       "errors": [
         {
           "norm": "ley_20584",
+          "error": "HTTPError: HTTP Error 401: Unauthorized",
+          "http_status": 401
+        }
+      ],
+      "status": "ok_partial",
+      "robots": {
+        "www.leychile.cl": "parsed"
+      }
+    },
+    {
+      "day": "2026-11-24",
+      "at": "2026-11-24T19:21:51.697406+00:00",
+      "requests": 5,
+      "baselines": [],
+      "changes": [],
+      "errors": [
+        {
+          "norm": "ley_19966",
+          "error": "HTTPError: HTTP Error 401: Unauthorized",
+          "http_status": 401
+        },
+        {
+          "norm": "ds_3_1984_salud",
           "error": "HTTPError: HTTP Error 401: Unauthorized",
           "http_status": 401
         }
