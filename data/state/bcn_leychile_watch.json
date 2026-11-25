@@ -8,11 +8,11 @@
       "label": "la Ley N° 19.966 (Régimen de Garantías Explícitas en Salud, GES)",
       "tipo": "ley",
       "numero": "19966",
-      "last_request_day": "2026-11-24",
-      "last_checked_at": "2026-11-24T19:21:52.057246+00:00",
-      "last_http_status": 401,
+      "last_request_day": "2026-11-25",
+      "last_checked_at": "2026-11-25T05:13:25.142196+00:00",
+      "last_http_status": 200,
       "last_sha256": "31e171c5675b4fedbe48f5b4afa723e1056d5f2b5c3e19553ffadc6df86c996a",
-      "last_error": "HTTPError: HTTP Error 401: Unauthorized",
+      "last_error": null,
       "id_norma": "229834",
       "resolution_basis": "opt7_idLey_response_normaId",
       "resolved_at": "2026-11-04T00:13:12.163738+00:00",
@@ -45,13 +45,13 @@
       "label": "el DFL N° 1 de 2005 del Ministerio de Salud (texto refundido de Fonasa e Isapres)",
       "tipo": "decreto con fuerza de ley",
       "numero": "1",
-      "last_request_day": "2026-11-24",
-      "last_checked_at": "2026-11-24T19:21:53.511928+00:00",
+      "last_request_day": "2026-11-25",
+      "last_checked_at": "2026-11-25T05:13:26.015685+00:00",
       "last_error": null,
       "search": {
         "url": "https://www.leychile.cl/Consulta/obtxml?opt=61&cadena=texto%20refundido%20decreto%20ley%202763%20leyes%2018933%2018469",
-        "at": "2026-11-24T19:21:53.511942+00:00",
-        "sha256": "af0f178fae4eb5b32474bce23496b02ad8f322cdd0e5e1cfff7aaca0f5bd0660",
+        "at": "2026-11-25T05:13:26.015693+00:00",
+        "sha256": "061d4f67b930e3ee47de49420e84585cc1091b38cbd9b7b6abce90e9df8d3144",
         "candidates": [
           {
             "id_norma": "1039480",
@@ -99,8 +99,8 @@
       "label": "la Ley N° 20.584 (derechos y deberes de las personas en su atención de salud)",
       "tipo": "ley",
       "numero": "20584",
-      "last_request_day": "2026-11-24",
-      "last_checked_at": "2026-11-24T19:21:53.805082+00:00",
+      "last_request_day": "2026-11-25",
+      "last_checked_at": "2026-11-25T05:13:26.067154+00:00",
       "last_http_status": 200,
       "last_sha256": "4a673a22b001e9b30aa03099c9fadfadf4630a39d37ec44fd6e263d5e8ffc2d8",
       "last_error": null,
@@ -137,13 +137,13 @@
       "label": "el Decreto Supremo N° 3 de 1984 del Ministerio de Salud (reglamento de licencias médicas)",
       "tipo": "decreto",
       "numero": "3",
-      "last_request_day": "2026-11-24",
-      "last_checked_at": "2026-11-24T19:21:53.905824+00:00",
-      "last_error": "HTTPError: HTTP Error 401: Unauthorized",
+      "last_request_day": "2026-11-25",
+      "last_checked_at": "2026-11-25T05:13:27.567978+00:00",
+      "last_error": null,
       "search": {
         "url": "https://www.leychile.cl/Consulta/obtxml?opt=61&cadena=reglamento%20autorizacion%20licencias%20medicas%20COMPIN%20instituciones%20de%20salud%20previsional",
-        "at": "2026-11-24T02:26:59.594190+00:00",
-        "sha256": "19c7fc01aa24569bdab223b933752cae7fe70bb67e52013247adcfa159f32edf",
+        "at": "2026-11-25T05:13:27.567986+00:00",
+        "sha256": "a76ad8faad1df50cd1216dc11d26e23aeb8da8534e8782546e8f62537e054797",
         "candidates": [
           {
             "id_norma": "7281",
@@ -191,8 +191,8 @@
       "label": "la Ley N° 21.674 (ley corta de Isapres)",
       "tipo": "ley",
       "numero": "21674",
-      "last_request_day": "2026-11-24",
-      "last_checked_at": "2026-11-24T19:21:55.319446+00:00",
+      "last_request_day": "2026-11-25",
+      "last_checked_at": "2026-11-25T05:13:28.751233+00:00",
       "last_http_status": 200,
       "last_sha256": "79f41ddb3a6ecbd35c1bf7026e0541c6ddaeb6c74ecf5c43b7ef0f2c5c41c4f5",
       "last_error": null,
@@ -226,7 +226,7 @@
     }
   },
   "candidates": [],
-  "last_run_day": "2026-11-24",
+  "last_run_day": "2026-11-25",
   "probe": {
     "passed": true,
     "at": "2026-11-04T00:13:12.163724+00:00",
@@ -600,6 +600,18 @@
         }
       ],
       "status": "ok_partial",
+      "robots": {
+        "www.leychile.cl": "parsed"
+      }
+    },
+    {
+      "day": "2026-11-25",
+      "at": "2026-11-25T05:13:24.571919+00:00",
+      "requests": 5,
+      "baselines": [],
+      "changes": [],
+      "errors": [],
+      "status": "ok",
       "robots": {
         "www.leychile.cl": "parsed"
       }

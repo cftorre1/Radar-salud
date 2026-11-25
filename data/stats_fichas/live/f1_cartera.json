@@ -1029,21 +1029,21 @@
             {
               "label": "Ene",
               "period": "2026-01",
-              "value": 1835.6366174624168,
+              "value": 1835.6366174624166,
               "ref": "hhi.2026-01",
               "emphasis": false
             },
             {
               "label": "Feb",
               "period": "2026-02",
-              "value": 1833.2050518111078,
+              "value": 1833.2050518111075,
               "ref": "hhi.2026-02",
               "emphasis": false
             },
             {
               "label": "Mar",
               "period": "2026-03",
-              "value": 1829.5873017209367,
+              "value": 1829.5873017209365,
               "ref": "hhi.2026-03",
               "emphasis": false
             },
@@ -1071,14 +1071,14 @@
             {
               "label": "Jul",
               "period": "2026-07",
-              "value": 1818.2517563639542,
+              "value": 1818.251756363954,
               "ref": "hhi.2026-07",
               "emphasis": false
             },
             {
               "label": "Ago",
               "period": "2026-08",
-              "value": 1815.5255689189105,
+              "value": 1815.5255689189107,
               "ref": "hhi.2026-08",
               "emphasis": true
             }
@@ -1275,8 +1275,8 @@
   },
   "watch": [
     {
-      "headline": "Cartera a septiembre 2026.",
-      "explanation": "Si la variación mensual supera 0,25% del stock o los cotizantes cambian de signo, la ficha pasa a destacada."
+      "headline": "Cartera a septiembre 2026: publicación atrasada.",
+      "explanation": "Lleva 23 días de atraso según el calendario histórico."
     },
     {
       "headline": "Participación de Banmédica entre las abiertas (22,5% en agosto).",
@@ -1318,7 +1318,7 @@
       "url": "https://www.superdesalud.gob.cl/app/uploads/2026/09/estadistica-mensual-de-cartera-de-beneficiarios-2026.xlsx",
       "sha256": "b1dc62eb1a40b0f34452f67e7fdecefb91adc175235ffc046b60a6e5e0c7e4ee",
       "published_at": "2026-10-02",
-      "fetched_at": "2026-11-13T00:24:42.870932+00:00",
+      "fetched_at": "2026-11-25T05:11:37.820625+00:00",
       "label": "SIS · Estadística mensual de cartera de beneficiarios 2026 (xlsx)",
       "role": "beneficiarios, cotizantes y cargas por Isapre, enero–agosto",
       "locator": "Enero…Agosto!C8:E19 · fila Total Sistema",
@@ -1355,14 +1355,16 @@
       "key": "cartera_prev"
     }
   ],
-  "machine_note": "Ficha generada por la regla \"nuevo período\" (release del 2 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador.",
+  "machine_note": "Ficha generada por la regla \"publicación vigente\" (release del 2 oct). Las cifras las calcula el código desde el paquete de evidencia; solo la Lectura Alicanto puede escribirla un modelo, y pasa por un verificador.",
   "featured": true,
   "triggers": [
-    "new_period",
     "threshold_crossed",
-    "format_update"
+    "late_release"
   ],
-  "late_release": null,
+  "late_release": {
+    "expected_on": "2026-11-02",
+    "days_late": 23
+  },
   "revisions": [],
   "lectura": {
     "status": "retired",
@@ -1370,7 +1372,7 @@
     "cost_usd": 0.0
   },
   "status": "PASS",
-  "generated_at": "2026-11-13T11:31:14.474412+00:00",
+  "generated_at": "2026-11-25T05:27:24.488007+00:00",
   "builder_version": "f1_index_topic_v11",
   "verification": {
     "verdict": "PASS",
@@ -6469,7 +6471,7 @@
       },
       "hhi.2026-01": {
         "id": "hhi.2026-01",
-        "value": 1835.6366174624168,
+        "value": 1835.6366174624166,
         "unit": "puntos",
         "period": "2026-01",
         "source": "cartera",
@@ -6692,7 +6694,7 @@
       },
       "hhi.2026-02": {
         "id": "hhi.2026-02",
-        "value": 1833.2050518111078,
+        "value": 1833.2050518111075,
         "unit": "puntos",
         "period": "2026-02",
         "source": "cartera",
@@ -6915,7 +6917,7 @@
       },
       "hhi.2026-03": {
         "id": "hhi.2026-03",
-        "value": 1829.5873017209367,
+        "value": 1829.5873017209365,
         "unit": "puntos",
         "period": "2026-03",
         "source": "cartera",
@@ -7807,7 +7809,7 @@
       },
       "hhi.2026-07": {
         "id": "hhi.2026-07",
-        "value": 1818.2517563639542,
+        "value": 1818.251756363954,
         "unit": "puntos",
         "period": "2026-07",
         "source": "cartera",
@@ -7925,7 +7927,7 @@
       },
       "hhi.2026-08": {
         "id": "hhi.2026-08",
-        "value": 1815.5255689189105,
+        "value": 1815.5255689189107,
         "unit": "puntos",
         "period": "2026-08",
         "source": "cartera",
@@ -8043,7 +8045,7 @@
       },
       "hhi.delta": {
         "id": "hhi.delta",
-        "value": -20.111048543506286,
+        "value": -20.11104854350583,
         "unit": "puntos",
         "period": "2026-08",
         "source": "cartera",
@@ -8879,7 +8881,8 @@
       6,
       2,
       7,
-      10000
+      10000,
+      23
     ],
     "entity_codes": [
       63,

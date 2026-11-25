@@ -2,63 +2,63 @@
   "sources": {
     "who": {
       "name": "WHO",
-      "checked_at": "2026-11-23T22:54:26.113299+00:00",
-      "status": "warning",
+      "checked_at": "2026-11-25T05:43:56.106494+00:00",
+      "status": "ok",
       "technical_status": "ok",
-      "coverage_status": "incomplete",
-      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
+      "coverage_status": "complete",
+      "outcome": "READY_FOR_INTEGRATION",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
-      "recurrent_operation_proven": false,
+      "recurrent_operation_proven": true,
       "cadence_seconds": 86400,
-      "cadence_validation_pending": true,
+      "cadence_validation_pending": false,
       "coverage_contract_id": "e3d743535f7487ae2dc94f921c893afb7a1a887eacc5bf862a82c0b401883c56",
-      "next_cadence_validation_not_before": "2026-11-24T22:54:26.113299+00:00",
-      "coverage_completeness": "incomplete",
+      "next_cadence_validation_not_before": null,
+      "coverage_completeness": "complete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-08-26",
-      "coverage_to": "2026-11-23",
+      "coverage_from": "2026-08-28",
+      "coverage_to": "2026-11-25",
       "pages_checked": 7,
-      "recent_items": 110,
+      "recent_items": 122,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 110,
-        "detected": 110,
+        "inventory_url_count": 122,
+        "detected": 122,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 300,
-        "detected": 300,
+        "inventory_url_count": 309,
+        "detected": 309,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "window_completeness": {
-        "30": "incomplete_lower_bound",
-        "90": "incomplete_lower_bound"
+        "30": "complete_on_declared_surfaces",
+        "90": "complete_on_declared_surfaces"
       },
-      "unique_language_urls_90": 300,
-      "unique_items": 300,
+      "unique_language_urls_90": 309,
+      "unique_items": 309,
       "counts": {
-        "30": 110,
-        "90": 300
+        "30": 122,
+        "90": 309
       },
       "indexed_counts": {
-        "30": 110,
-        "90": 300
+        "30": 122,
+        "90": 309
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 159,
+      "material_items": 162,
       "published": 0,
-      "rejected": 6,
-      "deferred": 295,
-      "pending_date_items": 1,
+      "rejected": 5,
+      "deferred": 304,
+      "pending_date_items": 0,
       "technical_failures": [],
-      "discovered": 301,
-      "new": 3,
+      "discovered": 309,
+      "new": 14,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "news",
@@ -82,89 +82,98 @@
           "pages": 1
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/45276800906/inventory.json",
-      "source_quality_disposition": "hold_coverage",
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/45548127646/inventory.json",
+      "source_quality_disposition": "pass_data",
       "publication_activation": false,
       "content_freshness": "recent",
       "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
-      "publication_activation_suspended_reason": "current_run_not_successful_or_contract_changed",
+      "publication_activation_revoked_reason": "no_successful_live_run_within_48h",
       "publication_activation_decision": {
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
         "activated": false,
         "evidence_run_ids": [],
-        "reason": "current_run_not_successful_live_complete",
+        "reason": "failed_live_run_since_previous_daily_success",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "earned_at": "2026-11-08T18:02:43.264345+00:00",
-        "earned_evidence_run_ids": [
-          "42381528433",
-          "42501440703"
-        ]
+        "earned_at": null,
+        "earned_evidence_run_ids": []
       }
     },
     "paho": {
       "name": "PAHO",
-      "checked_at": "2026-11-23T23:21:18.619121+00:00",
-      "status": "ok",
-      "technical_status": "ok",
-      "coverage_status": "complete",
-      "outcome": "READY_FOR_INTEGRATION",
+      "checked_at": "2026-11-25T06:09:42.071561+00:00",
+      "status": "warning",
+      "technical_status": "error",
+      "coverage_status": "incomplete",
+      "outcome": "IMPLEMENTED_WITH_DECLARED_COVERAGE_GAPS",
       "operation_mode": "isolated_qualification",
       "discovery_scope": "global_intelligence",
-      "recurrent_operation_proven": true,
+      "recurrent_operation_proven": false,
       "cadence_seconds": 86400,
-      "cadence_validation_pending": false,
+      "cadence_validation_pending": true,
       "coverage_contract_id": "10f7a75d3b571eaf9952dfe456fc75ac6b1cbd6e78c391c9618edc2ea343fa1e",
-      "next_cadence_validation_not_before": null,
-      "coverage_completeness": "complete",
+      "next_cadence_validation_not_before": "2026-11-26T06:09:42.071561+00:00",
+      "coverage_completeness": "incomplete",
       "coverage_window_days": 90,
-      "coverage_from": "2026-08-26",
-      "coverage_to": "2026-11-23",
-      "pages_checked": 139,
+      "coverage_from": "2026-08-28",
+      "coverage_to": "2026-11-25",
+      "pages_checked": 144,
       "recent_items": 192,
       "discovery_recall_30": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 239,
-        "detected": 239,
+        "inventory_url_count": 240,
+        "detected": 240,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "discovery_recall_90": {
         "basis": "independent_native_index_control_on_declared_surfaces",
-        "inventory_url_count": 757,
-        "detected": 757,
+        "inventory_url_count": 743,
+        "detected": 743,
         "omitted_urls": [],
         "recall": 1.0,
         "whole_source_archive_claim": false
       },
       "window_completeness": {
-        "30": "complete_on_declared_surfaces",
-        "90": "complete_on_declared_surfaces"
+        "30": "incomplete_lower_bound",
+        "90": "incomplete_lower_bound"
       },
-      "unique_language_urls_90": 757,
-      "unique_items": 596,
+      "unique_language_urls_90": 743,
+      "unique_items": 584,
       "counts": {
         "30": 192,
-        "90": 596
+        "90": 584
       },
       "indexed_counts": {
         "30": 192,
-        "90": 596
+        "90": 584
       },
       "count_basis": "deduplicated_detail_identity_and_publication_verified_items",
-      "material_items": 255,
+      "material_items": 250,
       "published": 0,
-      "rejected": 10,
-      "deferred": 586,
+      "rejected": 11,
+      "deferred": 573,
       "pending_date_items": 0,
-      "technical_failures": [],
-      "discovered": 596,
-      "new": 5,
+      "technical_failures": [
+        {
+          "route": {
+            "source": "paho",
+            "section": "regional_news_es",
+            "url": "https://www.paho.org/es/noticias",
+            "format": "paho_html",
+            "date_slice_days": 7
+          },
+          "url": "https://www.paho.org/es/noticias?date%5Bmin%5D=2026-10-29&date%5Bmax%5D=2026-11-06",
+          "error": "page_parse_failure: date_filter_not_corroborated"
+        }
+      ],
+      "discovered": 584,
+      "new": 12,
       "new_basis": "identities_absent_from_previous_discovery_inventory_not_live_publications",
       "parser_routes": [
         "regional_news",
@@ -182,13 +191,13 @@
         },
         {
           "section": "regional_news_es",
-          "stop": "verified_date_partition_coverage",
-          "pages": 85
+          "stop": "date_partition_coverage_incomplete",
+          "pages": 91
         },
         {
           "section": "chile_news",
           "stop": "verified_older_boundary",
-          "pages": 2
+          "pages": 1
         },
         {
           "section": "chile_news_es",
@@ -206,26 +215,23 @@
           "pages": 2
         }
       ],
-      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/45276800906/inventory.json",
-      "source_quality_disposition": "pass_data",
-      "publication_activation": true,
+      "evidence_ref": "data/audits/global_source_recovery_2026_10_11/runs/45548127646/inventory.json",
+      "source_quality_disposition": "hold_technical",
+      "publication_activation": false,
       "content_freshness": "recent",
-      "editorial_outcome": "publication_activated_pending_editorial_approval",
+      "editorial_outcome": "discovery_only_pending_editorial_and_rights_review",
+      "publication_activation_suspended_reason": "current_run_not_successful_or_contract_changed",
       "publication_activation_decision": {
         "rule": "two_consecutive_successful_daily_live_runs",
         "authorized": true,
         "authorized_by": "Dirección (autorizado 27-oct-2026)",
-        "activated": true,
-        "evidence_run_ids": [
-          "45060795305",
-          "45276800906"
-        ],
-        "reason": "two_consecutive_successful_daily_live_runs",
+        "activated": false,
+        "evidence_run_ids": [],
+        "reason": "current_run_not_successful_live_complete",
         "publication_still_requires": [
           "editorial_approval",
           "rights_review"
         ],
-        "gap_seconds": 94439,
         "earned_at": "2026-11-04T01:00:32.943483+00:00",
         "earned_evidence_run_ids": [
           "41539638382",
