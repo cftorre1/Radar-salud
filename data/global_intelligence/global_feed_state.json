@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "as_of": "2026-11-26",
-  "generated_at": "2026-11-26T20:51:48.741936+00:00",
+  "as_of": "2026-11-27",
+  "generated_at": "2026-11-27T05:33:18.415857+00:00",
   "enabled": true,
   "authorized_by": "Dirección (cftorre1)",
   "authorized_at": "2026-10-28",
@@ -16,8 +16,8 @@
   "retention_days": 90,
   "freshness": {
     "newest_published_at": "2026-11-26",
-    "items_last_2_days": 5,
-    "items_last_7_days": 10,
+    "items_last_2_days": 1,
+    "items_last_7_days": 9,
     "status": "fresh",
     "stale_after_days": 2
   },
@@ -54,7 +54,7 @@
     "not_global_interest:one_off_diplomatic_or_country": 2,
     "not_global_interest:single_product_approval": 1,
     "not_global_interest:source_rule_exclusion": 6,
-    "not_material_or_unverified": 488,
+    "not_material_or_unverified": 489,
     "not_relevant_or_undated": 72,
     "official_title_without_executive_keyword": 283
   },
@@ -477,7 +477,7 @@
         "Salud digital y dispositivos"
       ],
       "summary_method": "deterministic_template_v1",
-      "ai_used": false,
+      "ai_used": true,
       "priority": 75,
       "kind": "headline",
       "content_use": "metadata_and_link_only",
@@ -491,12 +491,18 @@
       },
       "sections": [],
       "first_seen_on": "2026-11-26",
+      "summary_es": "Un informe resume la quinta consulta de expertos de la OMS sobre incorporar dispositivos portátiles al monitoreo de la actividad física en niños y adolescentes de 6 a 17 años. Identifica especificaciones y métricas prioritarias, brechas de evidencia y la necesidad de estándares armonizados.",
       "translation": {
-        "status": "not_allowed",
+        "status": "summarized",
+        "kind": "summary",
+        "method": "alicanto_summary_es_two_layer_v2",
+        "verified": true,
+        "independent_review": true,
+        "notice_es": "Resumen de Alicanto (la fuente no permite traducir)",
+        "check_note_es": "Escrito automáticamente por Alicanto solo con el título y la descripción de la fuente; cifras, fechas, siglas y nombres contrastados con ellos y revisión de fidelidad por un segundo modelo; puede contener errores",
         "reason": "WHO materials are CC BY-NC-SA 3.0 IGO: commercial use needs WHO permission and a translation must carry the same/similar licence and WHO's disclaimer. Global is PREMIUM (commercial) -> keep the original.",
         "note_es": "Contenido en inglés (licencia no permite traducción)",
-        "summary_status": "pending",
-        "summary_reason": "malformed_output"
+        "cache_key": "824f96d5140155c9bc3ddb3b3bd3999f"
       }
     },
     {
@@ -812,7 +818,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-26",
+      "first_seen_on": "2026-11-27",
       "title_es": "El Comité de Seguridad Sanitaria de la UE llama a tomar medidas urgentes contra las bacterias resistentes a los antibióticos",
       "description_es": "El Comité de Seguridad Sanitaria de la UE llama a tomar medidas urgentes contra las bacterias resistentes a los antibióticos",
       "translation": {
@@ -1194,7 +1200,7 @@
       "sections": [
         "latest_updates"
       ],
-      "first_seen_on": "2026-11-26",
+      "first_seen_on": "2026-11-27",
       "title_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "description_es": "Conferencia Europea de Salud Pública 2026: el programa prioritario de la Unión Europea de la Salud",
       "translation": {
@@ -4362,14 +4368,14 @@
   ],
   "translation": {
     "translated": 16,
-    "summarized": 19,
-    "from_cache": 33,
-    "verification_failed": 17,
-    "review_failed": 1,
-    "not_allowed": 37,
+    "summarized": 20,
+    "from_cache": 35,
+    "verification_failed": 15,
+    "review_failed": 0,
+    "not_allowed": 36,
     "pending": 0,
     "source_in_spanish": 4
   },
-  "ai_text_items": 35,
+  "ai_text_items": 36,
   "translation_policy": "Spanish title/summary translated only where the source's rights allow it (config rights.translation_allowed); for sources Dirección listed whose rights do not allow it, a short Alicanto-written Spanish summary of the item's own title/description (translation.kind=summary); both machine-written, published only after a deterministic check and an independent second-model fidelity review; original kept on failure or without budget"
 }
